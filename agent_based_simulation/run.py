@@ -393,6 +393,7 @@ def run_experiment(args, treatment, signal_mode="normal"):
                     group_size_info=getattr(args, 'group_size_info', False),
                     elicit_beliefs=getattr(args, 'elicit_beliefs', False),
                     elicit_second_order=getattr(args, 'elicit_second_order', False),
+                    belief_order=getattr(args, 'belief_order', 'post'),
                 )
             else:
                 # Resolve fixed messages for this (country, period) if available
@@ -407,10 +408,12 @@ def run_experiment(args, treatment, signal_mode="normal"):
                     llm_empty_retries=args.llm_empty_retries,
                     cost=args.cost, signal_mode=signal_mode,
                     surveillance=getattr(args, 'surveillance', False),
+                    surveillance_mode=getattr(args, 'surveillance_mode', 'full'),
                     group_size_info=getattr(args, 'group_size_info', False),
                     elicit_beliefs=getattr(args, 'elicit_beliefs', False),
                     elicit_second_order=getattr(args, 'elicit_second_order', False),
                     fixed_messages=period_fixed,
+                    belief_order=getattr(args, 'belief_order', 'post'),
                 )
 
             completed[0] += 1
@@ -570,6 +573,14 @@ def main():
     parser.add_argument("--fixed-messages", type=str, default=None,
                         help="Path to a communication experiment log JSON. Replaces live message "
                              "generation with pre-recorded messages (for fixed-message surveillance test)")
+    parser.add_argument("--belief-order", type=str, choices=["post", "pre", "both"], default="post",
+                        help="When to elicit beliefs: 'post' (after decision, default), "
+                             "'pre' (before decision), 'both' (before and after). "
+                             "Only effective with --elicit-beliefs.")
+    parser.add_argument("--surveillance-mode", type=str, choices=["full", "placebo", "anonymous"], default="full",
+                        help="Surveillance framing: 'full' (consequences, default), "
+                             "'placebo' (monitored, no consequences), 'anonymous' (aggregated anonymously). "
+                             "Only effective with --surveillance.")
 
     args = parser.parse_args()
     from .briefing import normalize_language_variant

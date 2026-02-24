@@ -8,11 +8,13 @@ Usage: uv run python verify_paper_stats.py
 """
 
 import json
+import re
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 from scipy import stats
+from scipy.optimize import curve_fit
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 ROOT = PROJECT_ROOT / "output"
@@ -619,6 +621,531 @@ def compute_robustness():
 
 
 # ═══════════════════════════════════════════════════════════════════
+# A1: BELIEF ANALYSIS
+# ═══════════════════════════════════════════════════════════════════
+
+# Belief data sources
+_MISTRAL_DIR = ROOT / "mistralai--mistral-small-creative"
+_BELIEF_SOURCES = {
+    "pure": _MISTRAL_DIR / "_overwrite_200period_backup" / "experiment_pure_beliefs_log.json",
+    "surveillance": _MISTRAL_DIR / "_overwrite_200period_backup" / "experiment_surveillance_beliefs_log.json",
+    "comm": _MISTRAL_DIR / "_beliefs_comm" / "mistralai--mistral-small-creative" / "experiment_comm_log.json",
+    "propaganda_k5": _MISTRAL_DIR / "_beliefs_propaganda_k5" / "mistralai--mistral-small-creative" / "experiment_comm_log.json",
+}
+
+
+def _load_belief_agents(log_path: Path) -> list[dict]:
+    """Extract flat agent-level records with beliefs from a log file."""
+    if not log_path.exists():
+        return []
+    with open(log_path) as f:
+        periods = json.load(f)
+    sigma = 0.3
+    rows = []
+    for p in periods:
+        theta = p["theta"]
+        theta_star = p["theta_star"]
+        x_star = theta_star + sigma * stats.norm.ppf(max(min(theta_star, 1 - 1e-6), 1e-6))
+        for a in p["agents"]:
+            if a.get("belief") is None or a.get("api_error"):
+                continue
+            if a.get("is_propaganda"):
+                continue
+            signal = a["signal"]
+            belief = a["belief"] / 100.0
+            decision = 1 if a["decision"] == "JOIN" else 0
+            posterior = stats.norm.cdf((theta_star - signal) / sigma)
+            rows.append({
+                "theta": theta, "theta_star": theta_star, "signal": signal,
+                "z_score": a["z_score"], "belief": belief, "decision": decision,
+                "posterior": posterior,
+            })
+    return rows
+
+
+def compute_beliefs() -> dict:
+    """Compute belief analysis statistics (A1)."""
+    results = {}
+    all_treatments = {}
+
+    for treatment, path in _BELIEF_SOURCES.items():
+        rows = _load_belief_agents(path)
+        if not rows:
+            results[treatment] = {"status": "missing", "path": str(path)}
+            continue
+        all_treatments[treatment] = rows
+        n = len(rows)
+        beliefs = np.array([r["belief"] for r in rows])
+        decisions = np.array([r["decision"] for r in rows])
+        signals = np.array([r["signal"] for r in rows])
+        posteriors = np.array([r["posterior"] for r in rows])
+
+        # Core correlations
+        r_post = pearson_with_ci(posteriors, beliefs)
+        r_bel_dec = pearson_with_ci(beliefs, decisions)
+
+        # Partial r(belief, decision | signal): residualize both on signal
+        slope_ds, int_ds = np.polyfit(signals, decisions, 1)
+        resid_d = decisions - (int_ds + slope_ds * signals)
+        slope_bs, int_bs = np.polyfit(signals, beliefs, 1)
+        resid_b = beliefs - (int_bs + slope_bs * signals)
+        r_partial = pearson_with_ci(resid_b, resid_d)
+
+        # Join rate by belief bin (5 bins)
+        bins = [(0, 0.2), (0.2, 0.4), (0.4, 0.6), (0.6, 0.8), (0.8, 1.01)]
+        bin_stats = []
+        for lo, hi in bins:
+            mask = (beliefs >= lo) & (beliefs < hi)
+            if mask.sum() > 0:
+                bin_stats.append({
+                    "bin": f"{lo:.0%}-{hi:.0%}",
+                    "join_rate": round(float(decisions[mask].mean()), 4),
+                    "mean_belief": round(float(beliefs[mask].mean()), 4),
+                    "n": int(mask.sum()),
+                })
+
+        join_beliefs = beliefs[decisions == 1]
+        stay_beliefs = beliefs[decisions == 0]
+
+        entry = {
+            "n": n,
+            "mean_belief": round(float(beliefs.mean()), 4),
+            "std_belief": round(float(beliefs.std()), 4),
+            "mean_join_rate": round(float(decisions.mean()), 4),
+            "r_posterior_belief": r_post,
+            "r_belief_decision": r_bel_dec,
+            "r_partial_belief_decision_given_signal": r_partial,
+            "mean_belief_join": round(float(join_beliefs.mean()), 4) if len(join_beliefs) else None,
+            "mean_belief_stay": round(float(stay_beliefs.mean()), 4) if len(stay_beliefs) else None,
+            "join_rate_by_bin": bin_stats,
+        }
+        results[treatment] = entry
+
+    # Cross-treatment comparisons (pure vs surveillance)
+    if "pure" in all_treatments and "surveillance" in all_treatments:
+        pure_b = np.array([r["belief"] for r in all_treatments["pure"]])
+        surv_b = np.array([r["belief"] for r in all_treatments["surveillance"]])
+        pure_d = np.array([r["decision"] for r in all_treatments["pure"]])
+        surv_d = np.array([r["decision"] for r in all_treatments["surveillance"]])
+        t_bel, p_bel = stats.ttest_ind(pure_b, surv_b)
+        t_dec, p_dec = stats.ttest_ind(pure_d, surv_d)
+        results["_cross_pure_vs_surv"] = {
+            "belief_shift": round(float(surv_b.mean() - pure_b.mean()), 4),
+            "action_shift": round(float(surv_d.mean() - pure_d.mean()), 4),
+            "t_belief": round(float(t_bel), 4),
+            "p_belief": round(float(p_bel), 6),
+            "t_action": round(float(t_dec), 4),
+            "p_action": round(float(p_dec), 6),
+        }
+
+    return results
+
+
+# ═══════════════════════════════════════════════════════════════════
+# A2-A3, A5: MESSAGE CONTENT ANALYSIS
+# ═══════════════════════════════════════════════════════════════════
+
+ACTION_WORDS = {
+    "act", "action", "rise", "rising", "revolt", "rebel", "join", "fight",
+    "resist", "overthrow", "protest", "strike", "march", "mobilize", "move",
+    "now", "cracking", "crumbling", "collapse", "collapsing", "falling",
+    "weak", "weakening", "fracture", "fracturing", "breaking", "fragile",
+    "opportunity", "moment", "window", "momentum", "ready", "time",
+    "together", "unite", "unified", "solidarity", "everyone",
+}
+
+CAUTION_WORDS = {
+    "wait", "careful", "caution", "cautious", "patience", "patient", "risk",
+    "risky", "dangerous", "danger", "trap", "stable", "strong", "strength",
+    "grip", "control", "powerful", "secure", "security", "surveillance",
+    "monitor", "watching", "uncertain", "unclear", "premature",
+    "hold", "hesitate", "steady", "firm", "loyal", "intact",
+    "suppress", "crackdown", "retaliate", "punish",
+}
+
+# Specific keywords cited in the paper
+PAPER_KEYWORDS = [
+    "act", "fight", "ready", "moment", "patience", "loyal", "stable",
+    "strong", "cautious", "risk", "unite", "together", "cracking",
+]
+
+_MSG_LOG_PATHS = {
+    "comm": ROOT / "mistralai--mistral-small-creative" / "experiment_comm_log.json",
+    "surveillance": ROOT / "surveillance" / "mistralai--mistral-small-creative" / "experiment_comm_log.json",
+    "propaganda_k5": ROOT / "propaganda-k5" / "mistralai--mistral-small-creative" / "experiment_comm_log.json",
+    "propaganda_k10": ROOT / "propaganda-k10" / "mistralai--mistral-small-creative" / "experiment_comm_log.json",
+}
+
+
+def _extract_msg_features(message: str) -> dict | None:
+    """Extract text features from a single message."""
+    if not message:
+        return None
+    words = re.findall(r"[a-z]+", message.lower())
+    n_words = len(words)
+    if n_words == 0:
+        return None
+    n_action = sum(1 for w in words if w in ACTION_WORDS)
+    n_caution = sum(1 for w in words if w in CAUTION_WORDS)
+    # Per-keyword frequencies
+    kw_freq = {}
+    for kw in PAPER_KEYWORDS:
+        kw_freq[f"kw_{kw}"] = sum(1 for w in words if w == kw) / n_words
+    return {
+        "msg_length": len(message),
+        "word_count": n_words,
+        "n_action": n_action,
+        "n_caution": n_caution,
+        "action_score": (n_action - n_caution) / n_words,
+        **kw_freq,
+    }
+
+
+def _load_msg_agents(path: Path) -> pd.DataFrame:
+    """Load comm log into agent-level DataFrame with message features."""
+    if not path.exists():
+        return pd.DataFrame()
+    with open(path) as f:
+        data = json.load(f)
+    rows = []
+    for period in data:
+        theta = period["theta"]
+        for agent in period["agents"]:
+            if agent.get("is_propaganda"):
+                continue
+            msg = agent.get("message_sent", "")
+            if not msg:
+                continue
+            feats = _extract_msg_features(msg)
+            if feats is None:
+                continue
+            decision = 1 if agent.get("decision", "").upper() == "JOIN" else 0
+            rows.append({
+                "theta": theta,
+                "z_score": agent["z_score"],
+                "direction": agent.get("direction", np.nan),
+                "decision": decision,
+                **feats,
+            })
+    return pd.DataFrame(rows)
+
+
+def compute_message_content() -> dict:
+    """Compute message content statistics (A2-A3, A5)."""
+    results = {}
+
+    for treatment, path in _MSG_LOG_PATHS.items():
+        df = _load_msg_agents(path)
+        if len(df) == 0:
+            results[treatment] = {"status": "missing"}
+            continue
+
+        entry = {"n_obs": len(df)}
+
+        # Per-keyword frequencies
+        kw_cols = [c for c in df.columns if c.startswith("kw_")]
+        kw_freqs = {}
+        for col in kw_cols:
+            kw = col[3:]  # strip "kw_"
+            kw_freqs[kw] = round(float(df[col].mean() * 100), 2)  # percent
+        entry["keyword_freq_pct"] = kw_freqs
+
+        # Mean message length
+        entry["mean_msg_length"] = round(float(df["msg_length"].mean()), 1)
+        entry["mean_word_count"] = round(float(df["word_count"].mean()), 1)
+
+        # Action-signaling classification (A3):
+        # A message is "action-signaling" if action_score > 0
+        # (more action words than caution words)
+        join_mask = df["decision"] == 1
+        stay_mask = df["decision"] == 0
+
+        # Among JOIN agents: fraction with action_score > 0
+        if join_mask.sum() > 0:
+            entry["action_signaling_join"] = round(
+                float((df.loc[join_mask, "action_score"] > 0).mean()), 4
+            )
+        # Among STAY agents: fraction with caution > action (action_score < 0)
+        if stay_mask.sum() > 0:
+            entry["caution_signaling_stay"] = round(
+                float((df.loc[stay_mask, "action_score"] < 0).mean()), 4
+            )
+
+        # Overall action-signaling rate
+        entry["action_signaling_rate"] = round(
+            float((df["action_score"] > 0).mean()), 4
+        )
+
+        # R² of text features → θ
+        text_cols = ["word_count", "action_score", "msg_length"]
+        text_cols = [c for c in text_cols if c in df.columns]
+        if text_cols and len(df) > 10:
+            X = df[text_cols].values
+            y = df["theta"].values
+            X_full = np.column_stack([np.ones(len(X)), X])
+            try:
+                beta = np.linalg.lstsq(X_full, y, rcond=None)[0]
+                y_hat = X_full @ beta
+                ss_res = np.sum((y - y_hat) ** 2)
+                ss_tot = np.sum((y - y.mean()) ** 2)
+                entry["R2_text_to_theta"] = round(1 - ss_res / ss_tot, 4) if ss_tot > 0 else None
+            except Exception:
+                entry["R2_text_to_theta"] = None
+
+        results[treatment] = entry
+
+    # Cross-treatment comparisons and t-tests
+    if "comm" in results and "surveillance" in results:
+        comm_df = _load_msg_agents(_MSG_LOG_PATHS["comm"])
+        surv_df = _load_msg_agents(_MSG_LOG_PATHS["surveillance"])
+        if len(comm_df) > 0 and len(surv_df) > 0:
+            # T-test on action_score
+            t_as, p_as = stats.ttest_ind(comm_df["action_score"], surv_df["action_score"])
+            # Fisher z-test on per-keyword differences
+            kw_tests = {}
+            for kw in PAPER_KEYWORDS:
+                col = f"kw_{kw}"
+                if col in comm_df.columns and col in surv_df.columns:
+                    t_kw, p_kw = stats.ttest_ind(comm_df[col], surv_df[col])
+                    kw_tests[kw] = {
+                        "comm_pct": round(float(comm_df[col].mean() * 100), 2),
+                        "surv_pct": round(float(surv_df[col].mean() * 100), 2),
+                        "t_stat": round(float(t_kw), 4),
+                        "p_value": round(float(p_kw), 6),
+                    }
+            results["_comm_vs_surv"] = {
+                "action_score_t": round(float(t_as), 4),
+                "action_score_p": round(float(p_as), 6),
+                "keyword_tests": kw_tests,
+            }
+
+    # Propaganda keyword shifts (A5)
+    if "comm" in results and "propaganda_k5" in results:
+        comm_df = _load_msg_agents(_MSG_LOG_PATHS["comm"])
+        prop_df = _load_msg_agents(_MSG_LOG_PATHS["propaganda_k5"])
+        if len(comm_df) > 0 and len(prop_df) > 0:
+            kw_tests = {}
+            for kw in PAPER_KEYWORDS:
+                col = f"kw_{kw}"
+                if col in comm_df.columns and col in prop_df.columns:
+                    t_kw, p_kw = stats.ttest_ind(comm_df[col], prop_df[col])
+                    kw_tests[kw] = {
+                        "comm_pct": round(float(comm_df[col].mean() * 100), 2),
+                        "prop_k5_pct": round(float(prop_df[col].mean() * 100), 2),
+                        "t_stat": round(float(t_kw), 4),
+                        "p_value": round(float(p_kw), 6),
+                    }
+            # Caution-coded messages among STAY agents
+            comm_stay = comm_df[comm_df["decision"] == 0]
+            prop_stay = prop_df[prop_df["decision"] == 0]
+            comm_caution_rate = float((comm_stay["action_score"] < 0).mean()) if len(comm_stay) > 0 else None
+            prop_caution_rate = float((prop_stay["action_score"] < 0).mean()) if len(prop_stay) > 0 else None
+            results["_comm_vs_propaganda_k5"] = {
+                "keyword_tests": kw_tests,
+                "caution_stay_comm": round(comm_caution_rate, 4) if comm_caution_rate is not None else None,
+                "caution_stay_prop_k5": round(prop_caution_rate, 4) if prop_caution_rate is not None else None,
+            }
+
+    return results
+
+
+# ═══════════════════════════════════════════════════════════════════
+# A4: SURVEILLANCE T-TEST
+# ═══════════════════════════════════════════════════════════════════
+
+def compute_surveillance_ttest() -> dict:
+    """Unpaired t-test: surveillance join fraction vs baseline comm (A4)."""
+    results = {}
+    surv_base = ROOT / "surveillance"
+    for f in _find_summaries(surv_base, "experiment_comm_summary.csv"):
+        model_slug = _model_slug_from_summary_path(f, surv_base)
+        if model_slug is None:
+            continue
+        surv_df = _load_summary(f)
+        base_comm = _load_summary(ROOT / model_slug / "experiment_comm_summary.csv")
+        if len(surv_df) == 0 or len(base_comm) == 0:
+            continue
+        surv_jcol = _join_col(surv_df)
+        base_jcol = _join_col(base_comm)
+        t_stat, p_val = stats.ttest_ind(
+            surv_df[surv_jcol].dropna(), base_comm[base_jcol].dropna()
+        )
+        results[SHORT.get(model_slug, model_slug)] = {
+            "t_stat": round(float(t_stat), 4),
+            "p_value": round(float(p_val), 6),
+            "surv_mean": round(float(surv_df[surv_jcol].mean()), 4),
+            "base_mean": round(float(base_comm[base_jcol].mean()), 4),
+            "surv_n": int(len(surv_df)),
+            "base_n": int(len(base_comm)),
+        }
+    return results
+
+
+# ═══════════════════════════════════════════════════════════════════
+# A8: PROPAGANDA CROSS-CHECK (CSV vs JSON)
+# ═══════════════════════════════════════════════════════════════════
+
+def compute_propaganda_crosscheck() -> dict:
+    """Cross-check propaganda real-citizen computation: CSV vs JSON (A8)."""
+    results = {}
+    for k in [2, 5, 10]:
+        prop_base = ROOT / f"propaganda-k{k}"
+        for f in _find_summaries(prop_base, "experiment_comm_summary.csv"):
+            model_slug = _model_slug_from_summary_path(f, prop_base)
+            if model_slug is None:
+                continue
+            csv_df = _load_summary(f)
+            if len(csv_df) == 0:
+                continue
+            # CSV method: n_join / (25 - k)
+            if "n_join" in csv_df.columns:
+                csv_real = (csv_df["n_join"] / (25 - k)).mean()
+            else:
+                continue
+            # JSON method: exclude is_propaganda agents
+            log_path = f.parent / "experiment_comm_log.json"
+            logs = _load_experiment_log(log_path)
+            if not logs:
+                continue
+            json_real = float(_real_join_from_comm_log(logs).mean())
+
+            divergence = abs(csv_real - json_real)
+            results[f"k={k}_{SHORT.get(model_slug, model_slug)}"] = {
+                "csv_real_mean": round(float(csv_real), 4),
+                "json_real_mean": round(float(json_real), 4),
+                "divergence": round(float(divergence), 4),
+                "warning": divergence > 0.01,
+            }
+    return results
+
+
+# ═══════════════════════════════════════════════════════════════════
+# A9: TEXT BASELINE LOGISTIC SLOPE
+# ═══════════════════════════════════════════════════════════════════
+
+def _logistic_func(x, b0, b1):
+    return 1.0 / (1.0 + np.exp(b0 + b1 * x))
+
+
+def compute_text_baseline() -> dict:
+    """Compute naive text predictor (1-direction) logistic slope (A9)."""
+    results = {}
+    for model in PART1_MODELS:
+        log_path = ROOT / model / "experiment_pure_log.json"
+        if not log_path.exists():
+            continue
+        with open(log_path) as f:
+            data = json.load(f)
+
+        directions, decisions = [], []
+        for period in data:
+            for agent in period["agents"]:
+                if agent.get("api_error"):
+                    continue
+                d = agent.get("direction")
+                if d is None or (isinstance(d, float) and np.isnan(d)):
+                    continue
+                dec = 1 if agent.get("decision") == "JOIN" else 0
+                directions.append(d)
+                decisions.append(dec)
+
+        if len(directions) < 50:
+            continue
+
+        dirs = np.array(directions)
+        decs = np.array(decisions)
+        naive = 1.0 - dirs  # naive predictor: low direction → high join
+
+        # Fit logistic: P(JOIN) = 1/(1+exp(b0+b1*naive))
+        try:
+            popt, _ = curve_fit(_logistic_func, naive, decs, p0=[0, 2], maxfev=10000)
+            b0, b1 = popt
+            # Also fit to the LLM behavioral sigmoid on theta
+            r_naive = pearson_with_ci(naive, decs)
+            results[SHORT.get(model, model)] = {
+                "logistic_slope": round(float(b1), 4),
+                "logistic_intercept": round(float(b0), 4),
+                "r_naive_vs_decision": r_naive,
+                "n": len(dirs),
+            }
+        except RuntimeError:
+            pass
+
+    return results
+
+
+# ═══════════════════════════════════════════════════════════════════
+# A10: PAPER CLAIMS VALIDATOR
+# ═══════════════════════════════════════════════════════════════════
+
+def validate_paper_claims(all_stats: dict) -> list[dict]:
+    """Parse key numeric claims from paper.tex and check vs verified_stats (A10)."""
+    paper_path = PROJECT_ROOT / "paper" / "paper.tex"
+    if not paper_path.exists():
+        return [{"issue": "paper.tex not found"}]
+
+    tex = paper_path.read_text()
+    discrepancies = []
+
+    def _check(claim_label: str, paper_val: float, computed_val: float, tol: float = 0.02):
+        if computed_val is None or (isinstance(computed_val, float) and np.isnan(computed_val)):
+            discrepancies.append({
+                "claim": claim_label,
+                "paper_value": paper_val,
+                "computed_value": None,
+                "status": "UNVERIFIABLE",
+            })
+            return
+        diff = abs(paper_val - computed_val)
+        status = "OK" if diff <= tol else "MISMATCH"
+        if status == "MISMATCH":
+            discrepancies.append({
+                "claim": claim_label,
+                "paper_value": round(paper_val, 4),
+                "computed_value": round(computed_val, 4),
+                "diff": round(diff, 4),
+                "status": status,
+            })
+
+    # Extract known claims via regex
+    part1 = all_stats.get("part1", {})
+
+    # Mean |r| across models
+    m = re.search(r"mean.*\|r\|.*?=\s*([0-9.]+)", tex, re.IGNORECASE)
+    if m:
+        paper_mean_r = float(m.group(1))
+        computed = part1.get("_mean_abs_r_pure_vs_theta")
+        _check("mean |r| across models", paper_mean_r, computed)
+
+    # Pooled r values (look for patterns like r = -0.XXX or $r = -0.XXX$)
+    pooled_pure = part1.get("_pooled_pure", {})
+    pooled_r = (pooled_pure.get("r_vs_attack") or {}).get("r")
+
+    # Belief stats
+    beliefs = all_stats.get("beliefs", {})
+    pure_beliefs = beliefs.get("pure", {})
+    if isinstance(pure_beliefs, dict) and "r_posterior_belief" in pure_beliefs:
+        r_post = pure_beliefs["r_posterior_belief"].get("r") if isinstance(pure_beliefs["r_posterior_belief"], dict) else None
+        # Look for r(posterior, belief) pattern in paper
+        m = re.search(r"r\(posterior.*?belief\).*?([+-]?[0-9.]+)", tex, re.IGNORECASE)
+        if m and r_post is not None:
+            _check("r(posterior, belief)", float(m.group(1)), r_post)
+
+    # Surveillance t-test — check against primary model (Mistral Small Creative)
+    surv_tests = all_stats.get("surveillance_ttest", {})
+    surv_matches = re.finditer(r"(?:surveillance|chilling).*?t\s*=\s*([+-]?[0-9.]+)", tex, re.IGNORECASE)
+    primary_surv = surv_tests.get("Mistral Small Creative", {})
+    for match in surv_matches:
+        paper_t = float(match.group(1))
+        computed_t = primary_surv.get("t_stat")
+        if computed_t is not None:
+            _check("surveillance t-test (Mistral Small Creative)", paper_t, computed_t, tol=0.1)
+            break
+
+    return discrepancies
+
+
+# ═══════════════════════════════════════════════════════════════════
 # DISCREPANCY ANALYSIS (optional; kept minimal to avoid drift)
 # ═══════════════════════════════════════════════════════════════════
 
@@ -685,17 +1212,41 @@ def main():
     print("Running pooled OLS...")
     ols = pooled_ols(None)
 
+    print("Computing belief analysis (A1)...")
+    beliefs = compute_beliefs()
+
+    print("Computing message content analysis (A2-A3, A5)...")
+    msg_content = compute_message_content()
+
+    print("Computing surveillance t-tests (A4)...")
+    surv_ttest = compute_surveillance_ttest()
+
+    print("Computing propaganda cross-check (A8)...")
+    prop_crosscheck = compute_propaganda_crosscheck()
+
+    print("Computing text baseline (A9)...")
+    text_baseline = compute_text_baseline()
+
     all_stats = {
         "part1": part1,
         "infodesign": infodesign,
         "regime_control": regime,
         "robustness": robust,
         "pooled_ols": ols,
+        "beliefs": beliefs,
+        "message_content": msg_content,
+        "surveillance_ttest": surv_ttest,
+        "propaganda_crosscheck": prop_crosscheck,
+        "text_baseline": text_baseline,
     }
 
     print("\nRunning discrepancy analysis...")
     discrepancies = discrepancy_report(all_stats)
     all_stats["discrepancy_report"] = discrepancies
+
+    print("Validating paper claims (A10)...")
+    claim_issues = validate_paper_claims(all_stats)
+    all_stats["paper_claim_validation"] = claim_issues
 
     # Print summary
     print("\n" + "="*70)
@@ -718,6 +1269,44 @@ def main():
 
     if ols:
         print(f"  OLS: join = {ols['intercept']} + {ols['slope']} * A(θ), R² = {ols['r_squared']}")
+
+    # Belief summary
+    print("\n  BELIEFS:")
+    for treatment in ["pure", "surveillance", "comm", "propaganda_k5"]:
+        b = beliefs.get(treatment, {})
+        if isinstance(b, dict) and "n" in b:
+            r_post = (b.get("r_posterior_belief") or {}).get("r", "?")
+            r_bel = (b.get("r_belief_decision") or {}).get("r", "?")
+            print(f"    {treatment}: n={b['n']}, r(post,bel)={r_post}, r(bel,dec)={r_bel}")
+    cross = beliefs.get("_cross_pure_vs_surv", {})
+    if cross:
+        print(f"    Pure→Surv: belief Δ={cross.get('belief_shift')}, action Δ={cross.get('action_shift')}")
+
+    # Surveillance t-tests
+    print("\n  SURVEILLANCE T-TESTS:")
+    for model, t in surv_ttest.items():
+        print(f"    {model}: t={t['t_stat']}, p={t['p_value']}")
+
+    # Propaganda cross-check warnings
+    warnings = [k for k, v in prop_crosscheck.items() if v.get("warning")]
+    if warnings:
+        print(f"\n  WARNING: Propaganda cross-check divergences > 0.01: {warnings}")
+    else:
+        print(f"\n  Propaganda cross-check: all consistent (N={len(prop_crosscheck)})")
+
+    # Text baseline
+    print("\n  TEXT BASELINE (logistic slope of 1-direction predictor):")
+    for model, tb in text_baseline.items():
+        print(f"    {model}: slope={tb['logistic_slope']}")
+
+    # Paper claim validation
+    if claim_issues:
+        print(f"\n  PAPER CLAIM VALIDATION: {len(claim_issues)} issue(s)")
+        for issue in claim_issues:
+            print(f"    {issue.get('status', '?')}: {issue.get('claim', '?')} "
+                  f"(paper={issue.get('paper_value')}, computed={issue.get('computed_value')})")
+    else:
+        print("\n  PAPER CLAIM VALIDATION: all checked claims OK")
 
     # Save
     with open(OUT, "w") as f:

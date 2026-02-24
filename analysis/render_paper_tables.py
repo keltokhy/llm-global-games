@@ -485,6 +485,159 @@ Channel & Mean & $r$ & $\Delta$ \\
     return tex
 
 
+def render_tab_beliefs(stats: dict) -> str:
+    """Belief analysis table (A7): correlation, partial r, join rate by bin."""
+    beliefs = stats.get("beliefs", {})
+    treatments = ["pure", "comm", "surveillance", "propaganda_k5"]
+    labels = {"pure": "Pure", "comm": "Communication",
+              "surveillance": "Surveillance", "propaganda_k5": "Propaganda $k{=}5$"}
+
+    rows = []
+    for t in treatments:
+        b = beliefs.get(t, {})
+        if not isinstance(b, dict) or "n" not in b:
+            continue
+        r_post = (b.get("r_posterior_belief") or {}).get("r")
+        r_bel_dec = (b.get("r_belief_decision") or {}).get("r")
+        r_partial = (b.get("r_partial_belief_decision_given_signal") or {}).get("r")
+        n = b.get("n")
+        mean_bel = b.get("mean_belief")
+        rows.append(
+            f"{labels.get(t, t)} & {n} & ${_fmt_r(r_post)}$ & ${_fmt_r(r_bel_dec)}$ "
+            f"& ${_fmt_r(r_partial)}$ & {_fmt_num(mean_bel, 3)} \\\\"
+        )
+
+    # Cross-treatment
+    cross = beliefs.get("_cross_pure_vs_surv", {})
+    cross_row = ""
+    if cross:
+        cross_row = (
+            r"\midrule" "\n"
+            r"\multicolumn{6}{l}{\textit{Pure $\to$ Surveillance shift: "
+            f"$\\Delta$belief $= {_fmt_r(cross.get('belief_shift'), 3)}$, "
+            f"$\\Delta$action $= {_fmt_r(cross.get('action_shift'), 3)}$"
+            r"}}" " \\"
+        )
+
+    tex = r"""\begin{table}[t]
+\centering
+\caption{Belief elicitation analysis (primary model: Mistral Small Creative). $r_{\text{post}}$: correlation between Bayesian posterior and stated belief. $r_{\text{b,d}}$: belief--decision correlation. $r_{\text{partial}}$: partial correlation of belief and decision controlling for signal.}
+\label{tab:beliefs}
+\small
+\begin{tabular}{lccccc}
+\toprule
+Treatment & $N$ & $r_{\text{post}}$ & $r_{\text{b,d}}$ & $r_{\text{partial}}$ & Mean belief \\
+\midrule
+"""
+    tex += "\n".join(rows) + "\n"
+    if cross_row:
+        tex += cross_row + "\n"
+    tex += r"""\bottomrule
+\end{tabular}
+\end{table}
+"""
+    return tex
+
+
+def render_tab_message_content(stats: dict) -> str:
+    """Message content table (A7/B3): keyword frequencies and action-signaling."""
+    msg = stats.get("message_content", {})
+    treatments = ["comm", "surveillance", "propaganda_k5"]
+    labels = {"comm": "Comm", "surveillance": "Surveillance",
+              "propaganda_k5": "Prop $k{=}5$"}
+
+    # Determine which keywords to include (all in PAPER_KEYWORDS)
+    keywords = ["act", "fight", "ready", "moment", "patience", "loyal",
+                "stable", "strong", "cautious", "risk"]
+
+    # Header
+    kw_header = " & ".join([f"\\texttt{{{kw}}}" for kw in keywords])
+
+    rows = []
+    for t in treatments:
+        entry = msg.get(t, {})
+        if not isinstance(entry, dict) or "keyword_freq_pct" not in entry:
+            continue
+        kw_freqs = entry["keyword_freq_pct"]
+        cells = []
+        for kw in keywords:
+            val = kw_freqs.get(kw)
+            cells.append(f"{val:.1f}" if val is not None else "---")
+        action_sig = entry.get("action_signaling_rate")
+        msg_len = entry.get("mean_msg_length")
+        n = entry.get("n_obs")
+        rows.append(
+            f"{labels.get(t, t)} & {n} & " + " & ".join(cells)
+            + f" & {_fmt_num(action_sig, 2) if action_sig is not None else '---'}"
+            + f" & {int(msg_len) if msg_len is not None else '---'}"
+            + r" \\"
+        )
+
+    tex = r"""\begin{table*}[t]
+\centering
+\caption{Message content by treatment (primary model: Mistral Small Creative). Keyword columns show frequency (\%\ of words). Action-signal: fraction of messages with more action than caution words. Length: mean characters.}
+\label{tab:message_content}
+\tiny
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lc""" + "c" * len(keywords) + r"""cc}
+\toprule
+Treatment & $N$ & """ + kw_header + r""" & Act-sig & Len \\
+\midrule
+"""
+    tex += "\n".join(rows) + "\n"
+    tex += r"""\bottomrule
+\end{tabular}
+\end{table*}
+"""
+    return tex
+
+
+def render_tab_calibration_robustness(stats: dict) -> str:
+    """Calibration robustness table (B2): r_vs_theta, calibrated centers."""
+    part1 = stats.get("part1", {})
+    text_baseline = stats.get("text_baseline", {})
+    models = [
+        "Mistral Small Creative", "Llama 3.3 70B", "OLMo 3 7B",
+        "Ministral 3B", "Qwen3 30B", "GPT-OSS 120B",
+        "Qwen3 235B", "Trinity Large", "MiniMax M2-Her",
+    ]
+
+    rows = []
+    for m in models:
+        entry = part1.get(m, {})
+        pure = entry.get("pure", {})
+        if not isinstance(pure, dict) or "r_vs_theta" not in pure:
+            continue
+        r_theta = (pure.get("r_vs_theta") or {}).get("r")
+        r_attack = (pure.get("r_vs_attack") or {}).get("r")
+        rmse = pure.get("rmse_vs_attack")
+        tb = text_baseline.get(m, {})
+        text_slope = tb.get("logistic_slope")
+
+        rows.append(
+            f"{m} & ${_fmt_r(r_theta)}$ & ${_fmt_r(r_attack)}$ "
+            f"& {_fmt_num(rmse, 3) if rmse is not None else '---'} "
+            f"& {_fmt_num(text_slope, 1) if text_slope is not None else '---'} \\\\"
+        )
+
+    tex = r"""\begin{table}[t]
+\centering
+\caption{Calibration robustness. $r_\theta$: raw correlation with regime strength. $r_A$: correlation with theoretical attack mass. RMSE: root mean squared error vs.\ $A(\theta)$. Text slope: logistic slope of na\"ive $1 - \text{direction}$ predictor.}
+\label{tab:calibration_robustness}
+\small
+\begin{tabular}{lcccc}
+\toprule
+Model & $r_\theta$ & $r_A$ & RMSE & Text slope \\
+\midrule
+"""
+    tex += "\n".join(rows) + "\n"
+    tex += r"""\bottomrule
+\end{tabular}
+\end{table}
+"""
+    return tex
+
+
 def main() -> None:
     stats = _load()
 
@@ -497,6 +650,9 @@ def main() -> None:
         "tab_bandwidth.tex": render_tab_bandwidth(stats),
         "tab_crossmodel.tex": render_tab_crossmodel(stats),
         "tab_decomposition.tex": render_tab_decomposition(stats),
+        "tab_beliefs.tex": render_tab_beliefs(stats),
+        "tab_message_content.tex": render_tab_message_content(stats),
+        "tab_calibration_robustness.tex": render_tab_calibration_robustness(stats),
     }
 
     for name, content in tables.items():

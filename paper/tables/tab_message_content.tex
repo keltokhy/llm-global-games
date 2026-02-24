@@ -1,0 +1,16 @@
+\begin{table*}[t]
+\centering
+\caption{Message content by treatment (primary model: Mistral Small Creative). Keyword columns show frequency (\%\ of words). Action-signal: fraction of messages with more action than caution words. Length: mean characters.}
+\label{tab:message_content}
+\tiny
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lccccccccccccc}
+\toprule
+Treatment & $N$ & \texttt{act} & \texttt{fight} & \texttt{ready} & \texttt{moment} & \texttt{patience} & \texttt{loyal} & \texttt{stable} & \texttt{strong} & \texttt{cautious} & \texttt{risk} & Act-sig & Len \\
+\midrule
+Comm & 15000 & 0.0 & 0.0 & 0.3 & 0.1 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.49 & 342 \\
+Surveillance & 25000 & 0.0 & 0.0 & 0.3 & 0.1 & 0.1 & 0.0 & 0.1 & 0.0 & 0.0 & 0.0 & 0.39 & 252 \\
+Prop $k{=}5$ & 10000 & 0.0 & 0.0 & 0.3 & 0.1 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.49 & 341 \\
+\bottomrule
+\end{tabular}
+\end{table*}
