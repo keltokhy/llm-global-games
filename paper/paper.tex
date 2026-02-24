@@ -201,7 +201,7 @@ For the information design experiments, I fix $B = C = 1$ (so $\theta^* = 0.50$)
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{figures/fig01_sigmoid.pdf}
-  \caption{Empirical join fraction vs.\ theoretical attack mass $A(\theta)$, pooled across all nine models. Each point is one country--period (1,600 observations). The pooled correlation is $r = +0.67$; the mean across individual models is $r = +0.73$ (Table~\ref{tab:main_results}), with all nine individually significant at $p < 0.001$.}
+  \caption{Empirical join fraction vs.\ regime strength $\theta$ (Mistral Small Creative, 600 country--periods). Grey points show binned means with 95\% CIs; solid line is the fitted logistic. Dashed red: theoretical attack mass $A(\theta)$. The fitted sigmoid center ($\hat{\theta}^* = -0.37$) closely tracks the theoretical threshold ($\theta^* = 0.50$). Cross-model results in Table~\ref{tab:main_results} (mean $r = +0.73$, all nine significant at $p < 0.001$).}
   \label{fig:sigmoid}
 \end{figure}
 
@@ -292,12 +292,12 @@ Actions are nearly perfectly monotone in stated beliefs ($r = +0.96$ in pure, $+
 %% ============================================================
 \section{Communication} \label{sec:communication}
 
-\begin{figure*}[t]
+\begin{figure}[t]
   \centering
-  \includegraphics[width=\textwidth]{figures/fig05_communication.pdf}
+  \includegraphics[width=\columnwidth]{figures/fig05_communication.pdf}
   \caption{Communication effect by regime strength, pooled across nine models. Communication increases join rates for weak regimes ($\theta < \theta^*$) but has no effect or slightly reduces join rates for strong regimes ($\theta > \theta^*$).}
   \label{fig:communication}
-\end{figure*}
+\end{figure}
 
 \begin{result}[Communication raises join rates asymmetrically]
 Pre-play communication raises the mean join rate by 3.7 percentage points, from 0.429 to 0.466 ($t = 2.75$, $p < 0.01$), pooled across nine models. The effect is concentrated in weak-regime environments ($+8.8$~pp for $\theta < \theta^* - 1$) and reverses for strong regimes ($-2.5$~pp for $\theta > \theta^* + 1$).
@@ -308,13 +308,6 @@ Agents send a message to their network neighbors and observe received messages b
 The belief elicitation data (Section~\ref{sec:falsification}) reveals a subtlety that the aggregate statistics obscure: communication raises beliefs but not actions. The channel that transmits information about regime weakness also transmits strategic uncertainty about others' willingness to act, and this uncertainty induces caution. The remaining sections show that this vulnerability is precisely what authoritarian information control exploits.
 
 The communication effect is also sensitive to what agents know about the coordination environment. In a robustness check (Appendix~\ref{sec:robustness}), agents are told ``you are one of 25 citizens''---providing a basis for threshold reasoning absent in the main experiment. With group-size knowledge, the communication premium reverses: communication \textit{lowers} join rates by 3.4~pp rather than raising them. When agents can reason about critical mass, messages revealing others' reluctance become more informative about the probability of reaching the coordination threshold, amplifying the deterrent effect of cautious peers. This reinforces the interpretation that communication's net effect on coordination is theoretically ambiguous: the same channel that transmits information about regime weakness also transmits evidence of others' caution.
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{figures/fig06_agent_threshold.pdf}
-  \caption{Agent-level threshold behavior. The probability of joining as a function of the agent's z-score, pooled across models.}
-  \label{fig:agent_threshold}
-\end{figure}
 
 
 %% ============================================================

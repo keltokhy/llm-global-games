@@ -28,3 +28,5 @@ output/*.pdf
 
 # uv
 uv.lock
+paper/placeins.sty
+paper/multirow.sty

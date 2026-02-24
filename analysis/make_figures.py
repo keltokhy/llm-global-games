@@ -247,42 +247,35 @@ INFODESIGN_MODELS.sort()
 
 def fig01_sigmoid():
     pure = primary_data["pure"]
-    comm = primary_data["comm"]
 
     fig, ax = plt.subplots(figsize=(COL_W, 2.5))
     theta_grid = np.linspace(-3.5, 3.5, 200)
 
     (b0_p, b1_p), _ = fit_logistic(pure)
-    (b0_c, b1_c), _ = fit_logistic(comm)
 
     cp, mp, sep = binned(pure, n_bins=15)
-    cc, mc, sec = binned(comm, n_bins=15)
 
     ax.plot(theta_grid, logistic(theta_grid, b0_p, b1_p),
-            color=C_PURE, linewidth=1.2, zorder=2)
-    ax.plot(theta_grid, logistic(theta_grid, b0_c, b1_c),
-            color=C_COMM, linewidth=1.2, zorder=2)
-
+            color=C_PURE, linewidth=1.2, zorder=2, label="Fitted logistic")
     ax.scatter(cp, mp, color=C_PURE, s=12, alpha=0.8, zorder=3,
-               edgecolors="none", label="Pure")
+               edgecolors="none")
     ax.errorbar(cp, mp, yerr=sep * 1.96, fmt="none", ecolor=C_PURE,
                 alpha=0.3, linewidth=0.5, zorder=1)
 
-    ax.scatter(cc, mc, color=C_COMM, s=12, alpha=0.8, zorder=3,
-               marker="s", edgecolors="none", label="Communication")
-    ax.errorbar(cc, mc, yerr=sec * 1.96, fmt="none", ecolor=C_COMM,
-                alpha=0.3, linewidth=0.5, zorder=1)
+    # Theoretical attack mass A(θ) = Φ((x* - θ)/σ) where x* = θ* + σΦ⁻¹(θ*)
+    sigma = 0.3
+    theta_star = 1.0 / (1.0 + 1.0)  # B/(1+B) with B=1
+    x_star = theta_star + sigma * stats.norm.ppf(np.clip(theta_star, 1e-6, 1 - 1e-6))
+    am_vals = stats.norm.cdf((x_star - theta_grid) / sigma)
+    ax.plot(theta_grid, am_vals, color="#d62728", linewidth=1.0, linestyle="--",
+            zorder=1, alpha=0.7, label="Theoretical $A(\\theta)$")
 
     ts_p = -b0_p / b1_p
-    ts_c = -b0_c / b1_c
     ax.axvline(ts_p, color=C_PURE, linestyle=":", linewidth=0.5, alpha=0.5)
-    ax.axvline(ts_c, color=C_COMM, linestyle=":", linewidth=0.5, alpha=0.5)
 
     r_p = stats.pearsonr(pure["theta"], pure["join_fraction"])[0]
-    r_c = stats.pearsonr(comm["theta"], comm["join_fraction"])[0]
     ax.text(0.03, 0.03,
-            f"Pure: r = {r_p:.2f}, $\\theta^*$ = {ts_p:.2f}\n"
-            f"Comm: r = {r_c:.2f}, $\\theta^*$ = {ts_c:.2f}",
+            f"$r$ = {r_p:.2f}, $\\theta^*$ = {ts_p:.2f}",
             transform=ax.transAxes, fontsize=6, va="bottom",
             bbox=dict(boxstyle="round,pad=0.2", facecolor="white",
                       alpha=0.8, edgecolor="#ccc", linewidth=0.4))
@@ -488,11 +481,7 @@ def fig05_communication():
     pure = primary_data["pure"]
     comm = primary_data["comm"]
 
-    fig, axes = plt.subplots(1, 2, figsize=(TEXT_W, 3.0),
-                             gridspec_kw={"width_ratios": [1, 1.2]})
-
-    # Panel A: Dumbbell by theta bin
-    ax = axes[0]
+    fig, ax = plt.subplots(1, 1, figsize=(COL_W, 3.0))
     n_q = 8
     all_theta = pd.concat([pure["theta"], comm["theta"]])
     _, bin_edges = pd.qcut(all_theta, n_q, retbins=True, duplicates="drop")
@@ -536,32 +525,7 @@ def fig05_communication():
     ax.set_yticklabels(bin_labels)
     ax.set_ylabel(r"$\theta$ bin center")
     ax.set_xlabel("Join fraction")
-    ax.set_title("A. Communication effect by regime strength")
     ax.legend(fontsize=6, loc="upper right")
-
-    # Panel B: Sigmoid overlay
-    ax = axes[1]
-    theta_grid = np.linspace(-3.5, 3.5, 200)
-
-    for label, df, color, marker in [
-        ("Pure", pure, C_PURE, "o"),
-        ("Communication", comm, C_COMM, "s"),
-    ]:
-        c, m, se = binned(df, n_bins=15)
-        ax.scatter(c, m, color=color, s=10, marker=marker, alpha=0.7,
-                   zorder=3, edgecolors="none")
-        ax.fill_between(c, m - 1.96 * se, m + 1.96 * se,
-                        color=color, alpha=0.08, zorder=1)
-        (b0, b1), _ = fit_logistic(df)
-        ax.plot(theta_grid, logistic(theta_grid, b0, b1),
-                color=color, linewidth=1.0, zorder=2, label=label)
-
-    ax.legend(fontsize=6, loc="upper right")
-    ax.set_xlabel(r"$\theta$ (regime strength)")
-    ax.set_ylabel("Join fraction")
-    ax.set_title("B. Sigmoid comparison")
-    ax.set_ylim(-0.03, 1.03)
-    ax.set_xlim(-3.5, 3.5)
 
     plt.tight_layout()
     save(fig, "fig05_communication")
