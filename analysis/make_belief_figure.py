@@ -2,7 +2,7 @@
 
 Two-panel figure (figure*):
   (a) Stated belief vs Bayesian posterior — showing beliefs track strategic prediction
-  (b) Join rate by belief bin, Pure vs Surveillance — showing preference falsification
+  (b) Join rate by belief bin, Pure vs Comm vs Surveillance — showing treatment effects
 
 Uses the same style as make_figures.py.
 """
@@ -19,6 +19,7 @@ import matplotlib.pyplot as plt
 # ── Paths ─────────────────────────────────────────────────────────
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 BACKUP = PROJECT_ROOT / "output" / "mistralai--mistral-small-creative" / "_overwrite_200period_backup"
+COMM_DIR = PROJECT_ROOT / "output" / "mistralai--mistral-small-creative" / "_beliefs_comm" / "mistralai--mistral-small-creative"
 FIG_DIR = PROJECT_ROOT / "paper" / "figures"
 FIG_DIR.mkdir(exist_ok=True)
 
@@ -42,6 +43,7 @@ plt.rcParams.update({
 })
 
 C_PURE = "#636363"
+C_COMM = "#2166ac"
 C_SURV = "#7b3294"
 
 
@@ -54,14 +56,12 @@ def load_agents(log_path):
     for p in periods:
         theta = p["theta"]
         theta_star = p["theta_star"]
-        x_star = theta_star + sigma * stats.norm.ppf(theta_star)
         for a in p["agents"]:
             if a.get("belief") is None or a.get("api_error"):
                 continue
             signal = a["signal"]
             belief = a["belief"] / 100.0
             decision = 1 if a["decision"] == "JOIN" else 0
-            # P(success | x_i) = P(theta < theta* | x_i) = Phi((theta* - x_i) / sigma)
             posterior = stats.norm.cdf((theta_star - signal) / sigma)
             rows.append({
                 "belief": belief,
@@ -93,6 +93,7 @@ def bin_data(x, y, edges):
 
 def main():
     pure = load_agents(BACKUP / "experiment_pure_beliefs_log.json")
+    comm = load_agents(COMM_DIR / "experiment_comm_log.json")
     surv = load_agents(BACKUP / "experiment_surveillance_beliefs_log.json")
 
     fig, (ax_a, ax_b) = plt.subplots(1, 2, figsize=(TEXT_W, 2.6))
@@ -101,7 +102,6 @@ def main():
     posteriors = np.array([r["posterior"] for r in pure])
     beliefs = np.array([r["belief"] for r in pure])
 
-    # Bin posteriors into 20 equal-width bins
     edges = np.linspace(0, 1, 21)
     bc, bm, bse, bn = bin_data(posteriors, beliefs, edges)
 
@@ -127,62 +127,51 @@ def main():
                         alpha=0.8, edgecolor="#ccc", linewidth=0.4))
     ax_a.set_title("(a) Beliefs track Bayesian posterior", fontsize=8, loc="left")
 
-    # ── Panel (b): Join rate by belief bin — Pure vs Surveillance ─
+    # ── Panel (b): Join rate by belief bin — three treatments ─────
+    bin_edges = np.array([0, 0.2, 0.4, 0.6, 0.8, 1.01])
+    bin_labels = ["0\u201320", "20\u201340", "40\u201360", "60\u201380", "80\u2013100"]
+
     pure_beliefs = np.array([r["belief"] for r in pure])
     pure_decisions = np.array([r["decision"] for r in pure])
+    comm_beliefs = np.array([r["belief"] for r in comm])
+    comm_decisions = np.array([r["decision"] for r in comm])
     surv_beliefs = np.array([r["belief"] for r in surv])
     surv_decisions = np.array([r["decision"] for r in surv])
 
-    bin_edges = np.array([0, 0.2, 0.4, 0.6, 0.8, 1.01])
-    bin_labels = ["0\u201320", "20\u201340", "40\u201360", "60\u201380", "80\u2013100"]
     pc, pm, pse, pn = bin_data(pure_beliefs, pure_decisions, bin_edges)
+    cc, cm, cse, cn = bin_data(comm_beliefs, comm_decisions, bin_edges)
     sc, sm, sse, sn = bin_data(surv_beliefs, surv_decisions, bin_edges)
 
     x_pos = np.arange(len(pc))
-    bar_w = 0.35
-    ax_b.bar(x_pos - bar_w/2, pm, width=bar_w, color=C_PURE, alpha=0.85,
+    bar_w = 0.25
+    ax_b.bar(x_pos - bar_w, pm, width=bar_w, color=C_PURE, alpha=0.85,
              label="Pure", zorder=3, edgecolor="white", linewidth=0.3)
-    ax_b.bar(x_pos + bar_w/2, sm, width=bar_w, color=C_SURV, alpha=0.85,
+    ax_b.bar(x_pos, cm, width=bar_w, color=C_COMM, alpha=0.85,
+             label="Communication", zorder=3, edgecolor="white", linewidth=0.3)
+    ax_b.bar(x_pos + bar_w, sm, width=bar_w, color=C_SURV, alpha=0.85,
              label="Surveillance", zorder=3, edgecolor="white", linewidth=0.3)
 
     # Error bars
-    ax_b.errorbar(x_pos - bar_w/2, pm, yerr=1.96 * pse, fmt="none",
+    ax_b.errorbar(x_pos - bar_w, pm, yerr=1.96 * pse, fmt="none",
                   ecolor=C_PURE, elinewidth=0.6, capsize=2, zorder=4)
-    ax_b.errorbar(x_pos + bar_w/2, sm, yerr=1.96 * sse, fmt="none",
+    ax_b.errorbar(x_pos, cm, yerr=1.96 * cse, fmt="none",
+                  ecolor=C_COMM, elinewidth=0.6, capsize=2, zorder=4)
+    ax_b.errorbar(x_pos + bar_w, sm, yerr=1.96 * sse, fmt="none",
                   ecolor=C_SURV, elinewidth=0.6, capsize=2, zorder=4)
 
-    # Annotate the preference falsification gap at the 60-80% bin
-    gap_idx = 3  # 60-80% bin
-    if gap_idx < len(pm) and gap_idx < len(sm):
-        gap_x = x_pos[gap_idx] + bar_w/2 + 0.15
-        ax_b.annotate("", xy=(gap_x, sm[gap_idx] + 0.02),
-                     xytext=(gap_x, pm[gap_idx] - 0.02),
-                     arrowprops=dict(arrowstyle="<->", color="#333",
-                                    linewidth=0.8))
-        gap_pp = (pm[gap_idx] - sm[gap_idx]) * 100
-        ax_b.text(gap_x + 0.08, (pm[gap_idx] + sm[gap_idx]) / 2,
-                  f"{gap_pp:.0f} pp", fontsize=6.5, va="center")
-
-    # Count annotations
-    for i in range(len(pc)):
-        y_max = max(pm[i], sm[i])
-        ax_b.text(x_pos[i], -0.08, f"$n$={int(pn[i]+sn[i]):,}",
-                  ha="center", va="top", fontsize=5.5, color="#999")
-
-    ax_b.set_xlabel("Stated belief $P(\\mathrm{success})$, %")
+    ax_b.set_xlabel("Stated belief (percent)")
     ax_b.set_ylabel("Join rate")
     ax_b.set_xticks(x_pos)
     ax_b.set_xticklabels(bin_labels)
-    ax_b.set_ylim(-0.12, 1.08)
+    ax_b.set_ylim(-0.05, 1.08)
     ax_b.legend(loc="upper left", framealpha=0.9, edgecolor="#ccc")
-    ax_b.set_title("(b) Preference falsification under surveillance", fontsize=8, loc="left")
+    ax_b.set_title("(b) Actions diverge from beliefs under treatment", fontsize=8, loc="left")
 
     plt.tight_layout()
     out = FIG_DIR / "fig16_beliefs.pdf"
     fig.savefig(out, bbox_inches="tight")
     print(f"Saved {out}")
 
-    # Also save PNG for quick preview
     fig.savefig(out.with_suffix(".png"), bbox_inches="tight")
     print(f"Saved {out.with_suffix('.png')}")
 
