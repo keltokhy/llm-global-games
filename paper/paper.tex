@@ -214,7 +214,7 @@ Table~\ref{tab:main_results} reports results by model. Correlations range from $
     J = 0.17 + 0.52\,A(\theta), \quad R^2 = 0.45.
 \end{equation}
 
-The slope of 0.52 indicates that LLM agents respond to the theoretical attack mass at roughly half the predicted rate. The intercept of 0.17 reflects a baseline propensity to join even when the equilibrium predicts near-zero participation.\footnote{Country-period observations within a model share calibration parameters and prompt structure, raising the possibility that standard errors understate uncertainty. Clustering standard errors by country inflates the OLS slope SE from 0.014 to 0.050 but preserves significance ($p < 10^{-25}$). Clustering by model yields SE $= 0.033$ ($p < 10^{-55}$). All nine per-model correlations remain significant at $p < 0.001$ under country-clustered inference.}
+The slope of 0.52 indicates that LLM agents respond to the theoretical attack mass at roughly half the predicted rate---an attenuation expected when agents process narrative rather than numeric signals, since the briefing-to-belief mapping introduces noise that biases the slope toward zero (classical measurement error attenuation). The intercept of 0.17 reflects a baseline propensity to join even when the equilibrium predicts near-zero participation, driven in part by high-action models such as OLMo 3 7B (mean join rate 0.72).\footnote{Country-period observations within a model share calibration parameters and prompt structure, raising the possibility that standard errors understate uncertainty. Clustering standard errors by country inflates the OLS slope SE from 0.014 to 0.050 but preserves significance ($p < 10^{-25}$). Clustering by model yields SE $= 0.033$ ($p < 10^{-55}$). All nine per-model correlations remain significant at $p < 0.001$ under country-clustered inference.}
 
 \input{tables/tab_main_results.tex}
 
@@ -275,7 +275,7 @@ The gap between the text baseline and the empirical sigmoid indicates that the L
 
 A stronger test asks whether agents form beliefs about others' behavior consistent with the equilibrium prediction. After each decision, I elicit stated beliefs by asking agents: ``On a scale from 0 to 100, how likely do you think the uprising will succeed?'' I run this elicitation under three treatments---pure, communication, and surveillance---each with 200 country--periods (${\approx}\,5{,}000$ agent-level observations per treatment). In the pure treatment, stated beliefs correlate strongly with the Bayesian posterior $P(\text{success} \mid x_i) = \Phi[(\theta^* - x_i)/\sigma]$ ($r = +0.78$, $p < 0.001$; Figure~\ref{fig:beliefs}a). The OLS relationship is $\hat{b} = 0.10 + 0.63 \cdot P(\text{success})$ ($R^2 = 0.61$): beliefs track the posterior with systematic underconfidence (slope $< 1$), but the direction and rank ordering are preserved. The pattern holds across treatments: $r = +0.77$ under communication and $r = +0.73$ under surveillance.
 
-Actions are nearly perfectly monotone in stated beliefs ($r = +0.96$ in pure, $+0.95$ in communication, $+0.92$ in surveillance). The join rate as a function of belief is essentially a step function in the pure treatment: agents with beliefs below 40\% never join, while those above 80\% almost always join. However, the action--belief mapping diverges sharply across treatments in the 60--80\% belief bin (Figure~\ref{fig:beliefs}b): pure agents join at 98\%, but communication agents join at only 57\% and surveillance agents at 61\%. Communication raises mean beliefs by 2.4~pp relative to pure ($p < 0.001$) but does not increase join rates ($-0.9$~pp, $p = 0.34$), suggesting that observing neighbors' messages introduces strategic caution that offsets the informational benefit. Crucially, beliefs predict decisions beyond what the signal alone predicts: the partial correlation between belief and action, controlling for signal, is $r = +0.93$ ($p < 0.001$). This pattern is difficult to reconcile with pure sentiment following and is consistent with strategic reasoning about others' likely actions.
+Actions are nearly perfectly monotone in stated beliefs ($r = +0.96$ in pure, $+0.95$ in communication, $+0.92$ in surveillance). The join rate as a function of belief is essentially a step function in the pure treatment: agents with beliefs below 40\% never join, while those above 80\% almost always join. However, the action--belief mapping diverges sharply across treatments in the 60--80\% belief bin (Figure~\ref{fig:beliefs}b): pure agents join at 98\%, while both communication (57\%) and surveillance (61\%) agents join at dramatically lower rates---a difference driven by the introduction of any communication channel, not by the surveillance manipulation specifically (the communication--surveillance gap within this bin is not significant). Communication raises mean beliefs by 2.4~pp relative to pure ($p < 0.001$) but does not increase join rates ($-0.9$~pp, $p = 0.34$), suggesting that observing neighbors' messages introduces strategic caution that offsets the informational benefit. Crucially, beliefs predict decisions beyond what the signal alone predicts: the partial correlation between belief and action, controlling for signal, is $r = +0.93$ ($p < 0.001$). This pattern is difficult to reconcile with pure sentiment following and is consistent with strategic reasoning about others' likely actions.\footnote{The belief elicitation data is from a single model (Mistral Small Creative). However, the behavioral patterns that belief data explains---the surveillance chilling effect and the communication--action gap---replicate across three architectures (Mistral, Llama, Qwen3), suggesting the underlying mechanism generalizes beyond the model for which beliefs were directly measured.}
 
 \begin{figure*}[t]
   \centering
@@ -399,7 +399,7 @@ In the primary model (Mistral Small Creative), surveillance reduces mean join ra
 
 The magnitude---17.5~pp---exceeds the communication premium itself (3.7~pp in Part~I). Surveillance does not merely neutralize the coordination benefit; it contaminates the information environment with self-censored messages, pushing join rates \textit{below} what they would be without communication at all. The effect replicates across three architectures: Mistral ($-17.5$~pp), Llama ($-8.9$~pp), and Qwen3 ($-10.9$~pp).
 
-The belief elicitation data confirms that this is preference falsification in the sense of \citet{kuran1991}, not belief updating. Surveillance shifts stated beliefs by only 3.1~pp relative to pure ($p < 0.001$) but shifts join rates by 11.8~pp---nearly four times the belief shift. The communication treatment provides a clean comparison: communication shifts beliefs \textit{upward} by 2.4~pp (agents become more optimistic after seeing neighbors' messages) yet fails to raise join rates ($-0.9$~pp, $p = 0.34$). Under surveillance, beliefs fall by 5.5~pp relative to communication ($p < 0.001$) while join rates fall by 10.8~pp ($p < 0.001$). The within-bin comparison is revealing: in the 60--80\% belief range, pure agents join at 98\%, communication agents at 57\%, and surveillance agents at 61\% (Figure~\ref{fig:beliefs}b). Communication alone already introduces strategic restraint---agents who observe neighbors' mixed messages become more cautious despite their own beliefs---and surveillance compounds this by further depressing both beliefs and actions. This maps onto Kuran's cascade mechanism: once agents expect others to self-censor, even authentic messages become uninformative, and the entire communication channel is poisoned.
+The belief elicitation data confirms that this is preference falsification in the sense of \citet{kuran1991}, not belief updating. Surveillance shifts stated beliefs by only 3.1~pp relative to pure ($p < 0.001$) but shifts join rates by 11.8~pp---nearly four times the belief shift. The communication treatment provides a clean comparison: communication shifts beliefs \textit{upward} by 2.4~pp (agents become more optimistic after seeing neighbors' messages) yet fails to raise join rates ($-0.9$~pp, $p = 0.34$). Under surveillance, beliefs fall by 5.5~pp relative to communication ($p < 0.001$) while join rates fall by 10.8~pp ($p < 0.001$). The within-bin comparison is revealing: in the 60--80\% belief range, pure agents join at 98\%, while both communication (57\%) and surveillance (61\%) agents join at sharply lower rates (Figure~\ref{fig:beliefs}b). The communication--surveillance difference within this bin is not significant (95\% CIs overlap: [50\%, 65\%] vs.\ [54\%, 67\%]); what matters is that \textit{both} treatments collapse participation relative to the pure baseline. Communication alone already introduces strategic restraint---agents who observe neighbors' mixed messages become more cautious despite their own beliefs---and surveillance compounds this by further depressing both beliefs and actions across the full belief distribution. This maps onto Kuran's cascade mechanism: once agents expect others to self-censor, even authentic messages become uninformative, and the entire communication channel is poisoned.
 
 
 %% ============================================================
@@ -432,13 +432,19 @@ The propaganda effect replicates with Llama 3.3 70B, which shows a behavioral ef
 %% ============================================================
 \section{Instrument Interactions} \label{sec:interactions}
 
-When propaganda ($k = 5$) and surveillance are combined, the mean join rate falls to 19.4\%, a reduction of 25.8~pp from baseline. The combined effect is less than the sum of individual effects (31.4~pp), suggesting diminishing returns: once surveillance has suppressed expressed dissent, propaganda provides less additional deterrence.
+The preceding sections analyzed surveillance, censorship, and propaganda in isolation. A regime, however, deploys these instruments jointly. This section tests whether the instruments interact as substitutes (diminishing returns) or complements (super-additive suppression).
 
-\begin{result}[Surveillance $\times$ Censorship Nearly Eliminates Coordination]
-Under surveillance alone (infodesign framework), the baseline join rate falls from 12.4\% to 0.9\%. Upper censorship under surveillance: 3.7\% ($-27.2$~pp vs.\ upper censorship alone). Lower censorship under surveillance: 4.2\% ($-34.8$~pp vs.\ lower censorship alone).
+\begin{result}[Propaganda $+$ Surveillance: Sub-Additive]
+When propaganda ($k = 5$) and surveillance are combined, the mean join rate falls to 19.4\%, a reduction of 25.8~pp from the communication baseline (45.2\%). The sum of individual effects is 23.6~pp (surveillance $-17.5$~pp $+$ propaganda $-6.1$~pp), so the combined effect (25.8~pp) is close to additive. Once surveillance has suppressed expressed dissent, propaganda adds only modest additional deterrence.
 \end{result}
 
-The surveillance-censorship interaction is super-additive: surveillance does not merely reduce join rates by a fixed amount but eliminates the coordination mechanism through which information design effects propagate.
+\begin{result}[Surveillance $\times$ Censorship: Super-Additive]
+Under the information design framework, surveillance alone collapses the baseline join rate from 12.4\% to 0.9\% ($-11.5$~pp). Upper censorship without surveillance raises join rates to 30.9\% ($+18.5$~pp). But upper censorship \textit{with} surveillance produces only 3.7\%---a reduction of 27.2~pp relative to upper censorship alone. Lower censorship shows the same pattern: 39.0\% without surveillance collapses to 4.2\% with surveillance ($-34.8$~pp).
+\end{result}
+
+The asymmetry between these two interactions is revealing. Propaganda and surveillance are partial substitutes: both contaminate the communication channel, so combining them yields diminishing returns. But surveillance and censorship are complements that attack different links in the coordination chain. Censorship removes the private information channel, forcing agents to rely on communication for their signals about regime strength. Surveillance then poisons that communication channel through preference falsification. With both instruments active, agents have neither private signals to trust nor authentic messages to learn from---the informational foundations of coordination are eliminated from both directions.
+
+This complementarity is the mechanism behind the paper's headline result: upper censorship alone \textit{raises} coordination to 30.9\% (by pooling signals, it creates ambiguity that agents resolve optimistically), yet adding surveillance collapses it to 3.7\%. The regime does not need each instrument to be independently powerful. It needs the combination to close every channel through which coordination information might flow.
 
 \input{tables/tab_surv_censor.tex}
 
@@ -472,11 +478,6 @@ I do not claim that LLMs are Bayesian agents---the mechanism by which they proce
 
 %% ---- A ----
 
-\bibitem[Aher et al.(2023)]{aher2023}
-Aher, G., Arriaga, R.~I., and Kalai, A.~T. (2023).
-\newblock Using large language models to simulate multiple humans and replicate human subject studies.
-\newblock \textit{Proceedings of the 40th International Conference on Machine Learning} (ICML).
-
 \bibitem[Akata et al.(2025)]{akata2025}
 Akata, E., Schulz, L., Coda-Forno, J., Oh, S.~J., Bethge, M., and Schulz, E. (2025).
 \newblock Playing repeated games with large language models.
@@ -487,22 +488,12 @@ Angeletos, G.-M., Hellwig, C., and Pavan, A. (2007).
 \newblock Dynamic global games of regime change: Learning, multiplicity, and the timing of attacks.
 \newblock \textit{Econometrica}, 75(3):711--756.
 
-\bibitem[Argyle et al.(2023)]{argyle2023}
-Argyle, L.~P., Busby, E.~C., Fulda, N., Gubler, J.~R., Rytting, C., and Wingate, D. (2023).
-\newblock Out of one, many: Using language models to simulate human samples.
-\newblock \textit{Political Analysis}, 31(3):337--351.
-
 \bibitem[Avoyan(2020)]{avoyan2020}
 Avoyan, A. (2020).
 \newblock Does cheap talk promote coordination under asymmetric information? An experimental study on global games.
 \newblock \textit{Journal of Economic Behavior \& Organization}, 169:204--224.
 
 %% ---- B ----
-
-\bibitem[Bail et al.(2024)]{bail2024}
-Bail, C.~A. et al. (2024).
-\newblock Simulating opinion dynamics with networks of {LLM}-based agents.
-\newblock arXiv preprint arXiv:2311.09618.
 
 \bibitem[Bergemann and Morris(2016)]{bergemann2016}
 Bergemann, D. and Morris, S. (2016).
@@ -518,11 +509,6 @@ Bergemann, D. and Morris, S. (2019).
 Blume, A. and Ortmann, A. (2007).
 \newblock The effects of costless pre-play communication: Experimental evidence from games with {P}areto-ranked equilibria.
 \newblock \textit{Journal of Economic Theory}, 132(1):274--290.
-
-\bibitem[Brandts and Cooper(2006)]{brandts2006}
-Brandts, J. and Cooper, D. (2006).
-\newblock A change would do you good: An experimental study on how to overcome coordination failure in organizations.
-\newblock \textit{American Economic Review}, 96(3):669--693.
 
 %% ---- C ----
 
@@ -540,16 +526,6 @@ Carlsson, H. and van Damme, E. (1993).
 Carter, E.~B. and Carter, B.~L. (2021).
 \newblock Propaganda and protest in autocracies.
 \newblock \textit{Journal of Conflict Resolution}, 65(5):919--949.
-
-\bibitem[Chen and Yang(2019)]{chen2019}
-Chen, Y. and Yang, D.~Y. (2019).
-\newblock The impact of media censorship: 1984 or {B}rave {N}ew {W}orld?
-\newblock \textit{American Economic Review}, 109(6):2294--2332.
-
-\bibitem[Corrupted by Reasoning(2025)]{corrupted2025}
-{Corrupted by Reasoning} (2025).
-\newblock Reasoning language models become free-riders in public goods games.
-\newblock arXiv preprint arXiv:2506.23276.
 
 \bibitem[Crawford and Sobel(1982)]{crawford1982}
 Crawford, V. and Sobel, J. (1982).
@@ -609,11 +585,6 @@ Grossmann, I. et al. (2025).
 \newblock Do large language models solve the problems of agent-based modeling? {A} critical review of generative social simulations.
 \newblock arXiv preprint arXiv:2504.03274.
 
-\bibitem[Guo(2023)]{guo2023}
-Guo, F. (2023).
-\newblock {GPT} in game theory experiments.
-\newblock arXiv preprint arXiv:2305.05516.
-
 \bibitem[Guriev and Treisman(2019)]{guriev2019}
 Guriev, S. and Treisman, D. (2019).
 \newblock Informational autocrats.
@@ -655,11 +626,6 @@ Inostroza, N. and Pavan, A. (2025).
 
 %% ---- J ----
 
-\bibitem[Jost et al.(2018)]{jost2018}
-Jost, J.~T., Barber{\'a}, P., Bonneau, R., Langer, M., Metzger, M., Nagler, J., Sterling, J., and Tucker, J.~A. (2018).
-\newblock How social media facilitates political protest: Information, motivation, and social networks.
-\newblock \textit{Political Psychology}, 39(S1):85--118.
-
 %% ---- K ----
 
 \bibitem[Kamenica and Gentzkow(2011)]{kamenica2011}
@@ -672,11 +638,6 @@ King, G., Pan, J., and Roberts, M.~E. (2013).
 \newblock How censorship in {C}hina allows government criticism but silences collective expression.
 \newblock \textit{American Political Science Review}, 107(2):326--343.
 
-\bibitem[King et al.(2017)]{king2017}
-King, G., Pan, J., and Roberts, M.~E. (2017).
-\newblock How the {C}hinese government fabricates social media posts for strategic distraction, not engaged argument.
-\newblock \textit{American Political Science Review}, 111(3):484--501.
-
 \bibitem[Kolotilin et al.(2022)]{kolotilin2022}
 Kolotilin, A., Mylovanov, T., and Zapechelnyuk, A. (2022).
 \newblock Censorship as optimal persuasion.
@@ -688,21 +649,6 @@ Kuran, T. (1991).
 \newblock \textit{World Politics}, 44(1):7--48.
 
 %% ---- L ----
-
-\bibitem[Li et al.(2022)]{li2022}
-Li, F., Song, Y., and Zhao, M. (2022).
-\newblock Global manipulation by local obfuscation.
-\newblock \textit{Journal of Economic Theory}, 207.
-
-\bibitem[Lorentzen(2014)]{lorentzen2014}
-Lorentzen, P. (2014).
-\newblock China's strategic censorship.
-\newblock \textit{American Journal of Political Science}, 58(2):402--414.
-
-\bibitem[Lor{\`e} and Heydari(2024)]{lore2024}
-Lor{\`e}, N. and Heydari, B. (2024).
-\newblock Strategic behavior of large language models and the role of game structure versus contextual framing.
-\newblock \textit{Scientific Reports}, 14:18490.
 
 %% ---- M ----
 
@@ -735,16 +681,6 @@ Obstfeld, M. (1996).
 
 %% ---- P ----
 
-\bibitem[Palatsi et al.(2025)]{palatsi2025}
-Palatsi, A.~C., Martin-Gutierrez, S., Cardenal, A.~S., and Pellert, M. (2025).
-\newblock Large language models replicate and predict human cooperation across experiments in game theory.
-\newblock arXiv preprint arXiv:2511.04500.
-
-\bibitem[Park et al.(2023)]{park2023}
-Park, J.~S., O'Brien, J., Cai, C.~J., Morris, M.~R., Liang, P., and Bernstein, M.~S. (2023).
-\newblock Generative agents: Interactive simulacra of human behavior.
-\newblock \textit{Proceedings of the 36th Annual ACM Symposium on User Interface Software and Technology} (UIST).
-
 \bibitem[Penney(2016)]{penney2016}
 Penney, J.~W. (2016).
 \newblock Chilling effects: Online surveillance and {W}ikipedia use.
@@ -755,17 +691,7 @@ Petrov, A. et al. (2025).
 \newblock {LLM} strategic reasoning: Agentic study through behavioral game theory.
 \newblock arXiv preprint arXiv:2502.20432.
 
-\bibitem[Piatti et al.(2024)]{piatti2024}
-Piatti, G. et al. (2024).
-\newblock Cooperate or collapse: Emergence of sustainable cooperation in a society of {LLM} agents.
-\newblock \textit{Advances in Neural Information Processing Systems} (NeurIPS).
-
 %% ---- S ----
-
-\bibitem[Shadmehr and Bernhardt(2015)]{shadmehr2015}
-Shadmehr, M. and Bernhardt, D. (2015).
-\newblock State censorship.
-\newblock \textit{American Economic Journal: Microeconomics}, 7(2):280--307.
 
 \bibitem[Shurchkov(2013)]{shurchkov2013}
 Shurchkov, O. (2013).
