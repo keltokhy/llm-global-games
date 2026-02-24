@@ -13,16 +13,19 @@ __pycache__/
 *.fls
 
 # Compiled PDFs (regenerate from .tex)
-paper.pdf
-online_appendix.pdf
+paper/paper.pdf
+paper/online_appendix.pdf
 
 # Large LLM trace logs
 output/**/*_log.json
-output/*_log.json
 
 # Calibration raw data (large)
 output/**/*_raw.csv
 output/**/*_history.csv
+
+# Prevent loose figures at output/ root (use paper/figures/ instead)
+output/*.png
+output/*.pdf
 
 # OS
 .DS_Store

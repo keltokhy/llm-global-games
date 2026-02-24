@@ -12,6 +12,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+OUTPUT_DIR = PROJECT_ROOT / "output"
+
 
 def model_slug(model_name: str) -> str:
     """Sanitize model names for filesystem paths."""
@@ -93,7 +96,7 @@ def add_common_args(parser) -> None:
     parser.add_argument("--calibration-dir", type=str, default=None,
                         help="Directory containing calibrated_index.json (defaults to --output-dir)")
     parser.add_argument("--output-dir", type=str,
-                        default=str(Path(__file__).resolve().parent / "output"))
+                        default=str(OUTPUT_DIR))
 
 
 # ── Model discovery (was model_discovery.py) ─────────────────────────

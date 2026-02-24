@@ -24,7 +24,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from .runtime import model_slug, parse_float_list, resolve_model_output_dir, add_common_args
+from .runtime import model_slug, parse_float_list, resolve_model_output_dir, add_common_args, OUTPUT_DIR
 
 
 def _save_calibrated_params(output_dir: Path, model_name: str, params: dict):
@@ -56,7 +56,7 @@ def _load_calibrated_params(calibration_dir: Path, model_name: str) -> dict:
 
     # Search order: explicit calibration_dir, then default model output dir
     search_dirs = [Path(calibration_dir)]
-    default_model_dir = Path(__file__).resolve().parent / "output" / slug
+    default_model_dir = OUTPUT_DIR / slug
     if default_model_dir != search_dirs[0] and default_model_dir.exists():
         search_dirs.append(default_model_dir)
 

@@ -1,0 +1,22 @@
+\begin{table}[t]
+\centering
+\caption{Propaganda and surveillance effects (primary model: Mistral Small Creative). ``All'' includes propaganda agents; ``Real'' excludes them (computed from logs). $\Delta$ is the change in real-agent mean join vs.\ baseline communication.}
+\label{tab:surveillance_propaganda}
+\small
+\begin{tabular}{lcccc}
+\toprule
+ & \multicolumn{2}{c}{Mean join} & & \\
+\cmidrule(lr){2-3}
+Treatment & All & Real & $r$ & $\Delta$ \\
+\midrule
+Comm (baseline) & .434 & .434 & $-0.837$ & --- \\
+\midrule
+Prop $k=2$ & .375 & --- & $-0.809$ & --- \\
+Prop $k=5$ & .313 & --- & $-0.822$ & --- \\
+Prop $k=10$ & .233 & --- & $-0.818$ & --- \\
+\midrule
+Surveillance & .278 & .278 & $-0.809$ & -0.157 \\
+Prop+Surv & .194 & --- & $-0.829$ & --- \\
+\bottomrule
+\end{tabular}
+\end{table}

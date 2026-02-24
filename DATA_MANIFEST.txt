@@ -1,0 +1,124 @@
+DATA MANIFEST — output/
+========================
+
+DIRECTORY STRUCTURE
+-------------------
+output/
+├── <model-slug>/                        Per-model experiment results
+│   ├── calibrated_*.json                Calibration parameters
+│   ├── autocalibrate_final_raw.csv      Calibration raw data (gitignored)
+│   ├── autocalibrate_history.csv        Calibration search history (gitignored)
+│   ├── autocalibrate_final_curve.png    Calibration fit plot
+│   ├── experiment_*_summary.csv         Experiment results
+│   ├── experiment_*_log.json            LLM trace logs (gitignored)
+│   ├── figures/                         Per-model diagnostic plots
+│   └── manifests/                       Run manifests (provenance)
+├── <experiment-variant>/                Robustness / special experiments
+│   └── <model-slug>/                    Same file structure as above
+└── comparison/                          Cross-model comparison
+    ├── model_comparison_summary.csv
+    └── figures/
+
+
+PAPER 1: "Do Large Language Models Play Global Games?"
+------------------------------------------------------
+Core experiments (per model directory):
+  experiment_pure_summary.csv     — Pure treatment (private signal only)
+  experiment_comm_summary.csv     — Communication treatment (network messages)
+  experiment_scramble_summary.csv — Falsification: signal text scrambled
+  experiment_flip_summary.csv     — Falsification: signal direction reversed
+
+Models with full experiment suite:
+  allenai--olmo-3-7b-instruct/
+  arcee-ai--trinity-large-preview_free/
+  meta-llama--llama-3.3-70b-instruct/
+  minimax--minimax-m2-her/
+  mistralai--ministral-3b-2512/
+  mistralai--mistral-small-creative/       (primary model, 600 obs)
+  openai--gpt-oss-120b/                    (200 obs, no scramble/flip)
+  qwen--qwen3-235b-a22b-2507/             (200 obs, no scramble/flip)
+  qwen--qwen3-30b-a3b-instruct-2507/
+
+Robustness — agent count (n):
+  mistralai--mistral-small-creative-n5/    → experiment_pure_summary.csv
+  mistralai--mistral-small-creative-n10/   → experiment_pure_summary.csv
+  mistralai--mistral-small-creative-n50/   → experiment_pure_summary.csv
+  mistralai--mistral-small-creative-n100/  → experiment_pure_summary.csv
+  (default n=25 is in mistralai--mistral-small-creative/)
+
+Robustness — network topology:
+  network-k8/                              → experiment_comm_summary.csv
+  (default k=4 is in mistralai--mistral-small-creative/)
+
+Cross-model comparison:
+  comparison/model_comparison_summary.csv  — r values, coup rates, all models
+
+Mixed-model experiments:
+  mixed-5model-pure/                       → experiment_pure_summary.csv
+  mixed-5model-comm/                       → experiment_comm_summary.csv
+  mixed-mistral-gptoss-comm/               → experiment_comm_summary.csv
+
+Critique response:
+  holdout-validation/                      → autocalibrate_history.csv (holdout RMSE)
+  group-size-info/                         → pure + comm with --group-size-info
+
+
+PAPER 2: "Information Design in LLM Coordination Games"
+--------------------------------------------------------
+Core infodesign experiments (per model directory):
+  experiment_infodesign_all_summary.csv       — All designs in one file
+  experiment_infodesign_baseline_summary.csv  — Baseline (normal signals)
+  experiment_infodesign_stability_summary.csv — Stability design
+  experiment_infodesign_instability_summary.csv
+  experiment_infodesign_censor_upper_summary.csv
+  experiment_infodesign_censor_lower_summary.csv
+  experiment_infodesign_public_signal_summary.csv
+  experiment_infodesign_scramble_summary.csv  — Falsification
+  experiment_infodesign_flip_summary.csv      — Falsification
+
+Stability decomposition (primary model only):
+  experiment_infodesign_stability_clarity_summary.csv
+  experiment_infodesign_stability_direction_summary.csv
+  experiment_infodesign_stability_dissent_summary.csv
+
+Infodesign with communication:
+  mistralai--mistral-small-creative-infodesign-comm/
+
+Surveillance:
+  surveillance/                             → experiment_comm_summary.csv
+
+Surveillance x Censorship interaction:
+  surveillance-x-censorship/                → experiment_infodesign_all_summary.csv
+
+Propaganda dose-response:
+  propaganda-k2/                            → experiment_comm_summary.csv
+  propaganda-k5/                            → experiment_comm_summary.csv
+  propaganda-k10/                           → experiment_comm_summary.csv
+  propaganda-surveillance/                  → experiment_comm_summary.csv
+
+Bandwidth robustness:
+  bandwidth-005/                            → infodesign summaries (BW=0.05)
+  bandwidth-030/                            → infodesign summaries (BW=0.30)
+  (default BW=0.15 is in main model directories)
+
+z-centered robustness:
+  z-centered/                               → infodesign baseline/stability/instability
+
+
+CSV COLUMN REFERENCE
+--------------------
+Pure/comm/scramble/flip experiments:
+  country, period, treatment, theta, theta_star, z, benefit,
+  n_join, join_fraction, n_valid, n_api_error, n_unparseable,
+  join_fraction_valid, api_error_rate, unparseable_rate,
+  coup_success, theoretical_attack
+
+Infodesign experiments:
+  design, signal_mode, theta, theta_star, theta_relative, rep,
+  join_fraction, join_fraction_valid, n_join, n_agents, n_valid,
+  n_api_error, n_unparseable, api_error_rate, unparseable_rate,
+  coup_success, theoretical_attack, benefit, cost, model, treatment
+
+Model comparison summary:
+  model, mean_delta, median_delta, r_pure, r_comm, r_scramble,
+  r_flip, coup_rate_pure, coup_rate_comm, cutoff_center
