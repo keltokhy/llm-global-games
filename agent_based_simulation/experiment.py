@@ -30,6 +30,7 @@ class Agent:
     decision: str = "STAY"
     reasoning: str = ""
     belief: float | None = None  # elicited P(success), 0-100 scale
+    second_order_belief: float | None = None  # elicited "% who will JOIN", 0-100 scale
     model: str | None = None  # per-agent model override for mixed games
     is_propaganda: bool = False  # regime plant: sends pro-regime messages, always STAYs
     persona: str | None = None  # role framing: "military officer", "student", etc.
@@ -322,6 +323,31 @@ async def _elicit_beliefs(agents, client, model_name, semaphore, call_kwargs):
         agent.belief = _parse_belief(response)
 
 
+SYSTEM_ELICIT_SECOND_ORDER = (
+    "You just made your decision. Now, what percentage of citizens "
+    "do you think will choose to JOIN the uprising? "
+    "Reply with just a number from 0 to 100."
+)
+
+
+async def _elicit_second_order(agents, client, model_name, semaphore, call_kwargs):
+    """Fire second-order belief elicitation: expected fraction of JOINers."""
+    real_agents = [a for a in agents if not a.is_propaganda]
+    coros = [
+        _call_llm(
+            client, agent.model or model_name,
+            SYSTEM_ELICIT_SECOND_ORDER,
+            f"You said: {agent.decision}. {agent.reasoning}\n\n"
+            "What percentage of citizens do you think will choose to JOIN? (0-100)",
+            semaphore, **call_kwargs,
+        )
+        for agent in real_agents
+    ]
+    responses = await asyncio.gather(*coros)
+    for agent, response in zip(real_agents, responses):
+        agent.second_order_belief = _parse_belief(response)
+
+
 def _retry_kwargs(llm_max_retries: int, llm_empty_retries: int) -> dict:
     return {
         "max_retries": llm_max_retries,
@@ -381,6 +407,8 @@ def _serialize_agents(agents, include_messages: bool = False) -> list[dict]:
         }
         if a.belief is not None:
             row["belief"] = a.belief
+        if a.second_order_belief is not None:
+            row["second_order_belief"] = a.second_order_belief
         if a.model is not None:
             row["model"] = a.model
         if a.is_propaganda:
@@ -446,7 +474,8 @@ async def run_pure_global_game(agents, theta, z, sigma, benefit, briefing_gen,
                                 cost=1.0, signal_mode="normal",
                                 briefing_overrides=None,
                                 group_size_info=False,
-                                elicit_beliefs=False):
+                                elicit_beliefs=False,
+                                elicit_second_order=False):
     """Run one period of the pure global game (no communication).
 
     signal_mode: "normal", "scramble" (permute briefings), or "flip" (negate z-score).
@@ -485,6 +514,8 @@ async def run_pure_global_game(agents, theta, z, sigma, benefit, briefing_gen,
 
     if elicit_beliefs:
         await _elicit_beliefs(agents, client, model_name, semaphore, call_kwargs)
+    if elicit_second_order:
+        await _elicit_second_order(agents, client, model_name, semaphore, call_kwargs)
 
     theoretical_attack = float(_am(theta_star, theta, sigma)) if benefit > 0 else 0.0
 
@@ -509,12 +540,16 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
                                   briefing_overrides=None,
                                   surveillance=False,
                                   group_size_info=False,
-                                  elicit_beliefs=False):
+                                  elicit_beliefs=False,
+                                  elicit_second_order=False,
+                                  fixed_messages=None):
     """Run one period with communication round before decision.
 
     signal_mode: "normal", "scramble" (permute briefings), or "flip" (negate z-score).
     briefing_overrides: if provided, replaces generated briefings (cross-period scramble).
     surveillance: if True, agents are told their messages are monitored by regime security.
+    fixed_messages: if provided, dict mapping agent_id -> message string. Skips the
+        message-generation LLM call and uses these pre-recorded messages instead.
     """
     rng = np.random.default_rng(hash((country, period, "signals")) % 2**32)
 
@@ -534,28 +569,32 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
     call_kwargs = _retry_kwargs(llm_max_retries, llm_empty_retries)
     prop_rng = np.random.default_rng(hash((country, period, "propaganda")) % 2**32)
 
-    # Communication round — propaganda agents get fixed pro-regime messages
-    comm_system_base = SYSTEM_COMMUNICATE_SURVEILLED if surveillance else SYSTEM_COMMUNICATE
-    real_agents = [a for a in agents if not a.is_propaganda]
-    comm_coros = [
-        _call_llm(client, agent.model or model_name,
-                   _persona_system(comm_system_base, agent.persona),
-                   f"Your briefing:\n\n{agent.briefing.render()}\n\n"
-                   f"Write a message to your contacts about the situation:",
-                   semaphore, **call_kwargs)
-        for agent in real_agents
-    ]
+    # Communication round — use fixed messages if provided, else generate via LLM
+    if fixed_messages is not None:
+        for agent in agents:
+            agent.message_sent = fixed_messages.get(agent.agent_id, "(No message recorded.)")
+    else:
+        comm_system_base = SYSTEM_COMMUNICATE_SURVEILLED if surveillance else SYSTEM_COMMUNICATE
+        real_agents = [a for a in agents if not a.is_propaganda]
+        comm_coros = [
+            _call_llm(client, agent.model or model_name,
+                       _persona_system(comm_system_base, agent.persona),
+                       f"Your briefing:\n\n{agent.briefing.render()}\n\n"
+                       f"Write a message to your contacts about the situation:",
+                       semaphore, **call_kwargs)
+            for agent in real_agents
+        ]
 
-    comm_responses = await asyncio.gather(*comm_coros)
+        comm_responses = await asyncio.gather(*comm_coros)
 
-    resp_iter = iter(comm_responses)
-    for agent in agents:
-        if agent.is_propaganda:
-            agent.message_sent = _PROPAGANDA_MESSAGES[
-                prop_rng.integers(len(_PROPAGANDA_MESSAGES))
-            ]
-        else:
-            agent.message_sent = next(resp_iter)
+        resp_iter = iter(comm_responses)
+        for agent in agents:
+            if agent.is_propaganda:
+                agent.message_sent = _PROPAGANDA_MESSAGES[
+                    prop_rng.integers(len(_PROPAGANDA_MESSAGES))
+                ]
+            else:
+                agent.message_sent = next(resp_iter)
 
     for agent in agents:
         for neighbor_id in agent.neighbors:
@@ -590,6 +629,8 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
 
     if elicit_beliefs:
         await _elicit_beliefs(agents, client, model_name, semaphore, call_kwargs)
+    if elicit_second_order:
+        await _elicit_second_order(agents, client, model_name, semaphore, call_kwargs)
 
     theoretical_attack = float(_am(theta_star, theta, sigma)) if benefit > 0 else 0.0
 

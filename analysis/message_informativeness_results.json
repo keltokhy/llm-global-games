@@ -1,0 +1,53 @@
+{
+  "comm": {
+    "n_obs": 15000,
+    "R2_text_to_theta": 0.12033908435140828,
+    "R2_action_score_to_theta": 0.031406323211538134,
+    "R2_direction_to_theta": 0.7285362494597745,
+    "corr_action_score_theta": -0.17721829254210214,
+    "pval_action_score_theta": 4.371184556156883e-106,
+    "corr_action_score_z_score": -0.18696106621501773,
+    "pval_action_score_z_score": 4.628579203498762e-118,
+    "corr_action_score_decision": 0.1531985472798859,
+    "pval_action_score_decision": 1.9071595572182813e-79,
+    "mean_word_count": 64.2864,
+    "mean_action_rate": 0.022090736950255412,
+    "mean_caution_rate": 0.012626322833297302,
+    "mean_action_score": 0.009464414116958116,
+    "join_rate": 0.45213333333333333
+  },
+  "surveillance": {
+    "n_obs": 25000,
+    "R2_text_to_theta": 0.023367632664367144,
+    "R2_action_score_to_theta": 0.007672187777064132,
+    "R2_direction_to_theta": 0.7472730050969792,
+    "corr_action_score_theta": -0.08759102566510032,
+    "pval_action_score_theta": 8.937063957660157e-44,
+    "corr_action_score_z_score": -0.09364089890375474,
+    "pval_action_score_z_score": 8.345271400268414e-50,
+    "corr_action_score_decision": 0.13407890947591544,
+    "pval_action_score_decision": 1.2660482214395792e-100,
+    "mean_word_count": 46.88676,
+    "mean_action_rate": 0.01722462618591243,
+    "mean_caution_rate": 0.011319025526181817,
+    "mean_action_score": 0.0059056006597306135,
+    "join_rate": 0.2772
+  },
+  "propaganda_k5": {
+    "n_obs": 12500,
+    "R2_text_to_theta": 0.0816439075471973,
+    "R2_action_score_to_theta": 0.017709252967458622,
+    "R2_direction_to_theta": 0.7171796835030578,
+    "corr_action_score_theta": -0.13307611719410312,
+    "pval_action_score_theta": 1.7202700440718914e-50,
+    "corr_action_score_z_score": -0.14639277624268907,
+    "pval_action_score_z_score": 7.813457419700021e-61,
+    "corr_action_score_decision": 0.24774528857031825,
+    "pval_action_score_decision": 3.5836828015270024e-174,
+    "mean_word_count": 58.35288,
+    "mean_action_rate": 0.02310737752111958,
+    "mean_caution_rate": 0.017360229714512575,
+    "mean_action_score": 0.005747147806607004,
+    "join_rate": 0.31296
+  }
+}

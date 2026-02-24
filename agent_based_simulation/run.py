@@ -247,6 +247,28 @@ def _apply_calibrated_params(args):
           f"direction_slope={args.direction_slope:.3f}")
 
 
+def _load_fixed_messages(path: str) -> dict[tuple[int, int], dict[int, str]]:
+    """Load pre-recorded messages from a communication experiment log JSON.
+
+    Returns dict mapping (country, period) -> {agent_id: message_sent}.
+    """
+    with open(path) as f:
+        log_entries = json.load(f)
+
+    messages_by_period = {}
+    for entry in log_entries:
+        key = (entry["country"], entry["period"])
+        agent_msgs = {}
+        for agent_data in entry.get("agents", []):
+            aid = agent_data["id"]
+            msg = agent_data.get("message_sent", "")
+            if msg:
+                agent_msgs[aid] = msg
+        if agent_msgs:
+            messages_by_period[key] = agent_msgs
+    return messages_by_period
+
+
 def run_experiment(args, treatment, signal_mode="normal"):
     """Run an experiment (pure or communication). All periods run in parallel."""
     from .experiment import (
@@ -259,6 +281,13 @@ def run_experiment(args, treatment, signal_mode="normal"):
 
     # Load calibrated params if requested
     _apply_calibrated_params(args)
+
+    # Load fixed messages if provided (for fixed-message surveillance test)
+    fixed_messages_map = None
+    if getattr(args, 'fixed_messages', None):
+        fixed_messages_map = _load_fixed_messages(args.fixed_messages)
+        print(f"  Loaded fixed messages from: {args.fixed_messages}")
+        print(f"  Periods with messages: {len(fixed_messages_map)}")
 
     async def _run():
         api_key = os.environ.get("OPENROUTER_API_KEY", "") or "not-needed"
@@ -363,8 +392,14 @@ def run_experiment(args, treatment, signal_mode="normal"):
                     briefing_overrides=overrides,
                     group_size_info=getattr(args, 'group_size_info', False),
                     elicit_beliefs=getattr(args, 'elicit_beliefs', False),
+                    elicit_second_order=getattr(args, 'elicit_second_order', False),
                 )
             else:
+                # Resolve fixed messages for this (country, period) if available
+                period_fixed = None
+                if fixed_messages_map is not None:
+                    period_fixed = fixed_messages_map.get((spec["c"], spec["t"]))
+
                 result = await run_communication_game(
                     task_agents, spec["theta"], spec["z"], args.sigma, spec["benefit"],
                     briefing_gen, client, args.model, semaphore, spec["c"], spec["t"],
@@ -374,6 +409,8 @@ def run_experiment(args, treatment, signal_mode="normal"):
                     surveillance=getattr(args, 'surveillance', False),
                     group_size_info=getattr(args, 'group_size_info', False),
                     elicit_beliefs=getattr(args, 'elicit_beliefs', False),
+                    elicit_second_order=getattr(args, 'elicit_second_order', False),
+                    fixed_messages=period_fixed,
                 )
 
             completed[0] += 1
@@ -528,6 +565,11 @@ def main():
                         help="Tell agents how many citizens are in the group (enables strategic reasoning about coordination thresholds)")
     parser.add_argument("--elicit-beliefs", action="store_true",
                         help="After each decision, ask agents for P(uprising succeeds) on 0-100 scale")
+    parser.add_argument("--elicit-second-order", action="store_true",
+                        help="After each decision, ask agents what %% of citizens will JOIN (0-100 scale)")
+    parser.add_argument("--fixed-messages", type=str, default=None,
+                        help="Path to a communication experiment log JSON. Replaces live message "
+                             "generation with pre-recorded messages (for fixed-message surveillance test)")
 
     args = parser.parse_args()
     from .briefing import normalize_language_variant
