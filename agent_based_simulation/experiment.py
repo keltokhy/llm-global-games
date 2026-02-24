@@ -342,7 +342,7 @@ async def _elicit_beliefs(agents, client, model_name, semaphore, call_kwargs):
             f"You chose to {agent.decision}. "
             "How likely is the uprising to succeed (0 = impossible, 100 = certain)?\n\n"
             "Answer with just the number:",
-            semaphore, **call_kwargs,
+            semaphore, min_content_chars=1, **call_kwargs,
         )
         for agent in real_agents
     ]
@@ -362,7 +362,7 @@ async def _elicit_beliefs_pre(agents, client, model_name, semaphore, call_kwargs
             "Based on your intelligence briefing, how likely is the uprising to succeed "
             "(0 = impossible, 100 = certain)?\n\n"
             "Answer with just the number:",
-            semaphore, **call_kwargs,
+            semaphore, min_content_chars=1, **call_kwargs,
         )
         for agent in real_agents
     ]
@@ -388,7 +388,7 @@ async def _elicit_second_order(agents, client, model_name, semaphore, call_kwarg
             f"You chose to {agent.decision}. "
             "What percentage of citizens will choose to JOIN the uprising "
             "(0 = none, 100 = all)?\n\nAnswer with just the number:",
-            semaphore, **call_kwargs,
+            semaphore, min_content_chars=1, **call_kwargs,
         )
         for agent in real_agents
     ]

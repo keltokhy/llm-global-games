@@ -285,7 +285,7 @@ Could a pure sentiment reader produce the observed sigmoid? The briefing generat
   \label{fig:text_baseline}
 \end{figure}
 
-A stronger test: do agents form beliefs consistent with equilibrium? After each decision, I ask: ``On a scale from 0 to 100, how likely do you think the uprising will succeed?'' Three treatments, 200 country--periods each (${\approx}\,5{,}000$ agent observations per treatment). Stated beliefs track the Bayesian posterior $P(\text{success} \mid x_i) = \Phi[(\theta^* - x_i)/\sigma]$: $r = +0.78$ in pure ($p < 0.001$; Figure~\ref{fig:beliefs}a, Table~\ref{tab:beliefs}), $+0.77$ in communication, $+0.73$ under surveillance. The OLS fit is $\hat{b} = 0.10 + 0.63 \cdot P(\text{success})$ ($R^2 = 0.61$)---systematically underconfident but correctly ordered.
+A stronger test: do agents form beliefs consistent with equilibrium? After each decision, I ask: ``On a scale from 0 to 100, how likely do you think the uprising will succeed?'' Three treatments, 200 country--periods each (${\approx}\,5{,}000$ agent observations per treatment).\footnote{Post-decision belief elicitation risks rationalization. A separate run eliciting beliefs \textit{before} the decision produces nearly identical results: mean pre-decision belief $= 36.4$, mean post-decision belief $= 38.4$ ($+1.9$~pp, $n = 5{,}000$). Agents do not substantially revise beliefs to justify their choices.} Stated beliefs track the Bayesian posterior $P(\text{success} \mid x_i) = \Phi[(\theta^* - x_i)/\sigma]$: $r = +0.78$ in pure ($p < 0.001$; Figure~\ref{fig:beliefs}a, Table~\ref{tab:beliefs}), $+0.77$ in communication, $+0.73$ under surveillance. The OLS fit is $\hat{b} = 0.10 + 0.63 \cdot P(\text{success})$ ($R^2 = 0.61$)---systematically underconfident but correctly ordered.
 
 Actions are nearly a step function in beliefs ($r = +0.96$ in pure, $+0.95$ in communication, $+0.92$ in surveillance, $+0.95$ in propaganda): below 40\% belief, nobody joins; above 80\%, almost everyone does. The interesting action is in between. In the 60--80\% belief bin (Figure~\ref{fig:beliefs}b), pure agents join at 98\%---but communication (57\%), surveillance (61\%), and propaganda $k{=}5$ (60\%) agents all join at sharply lower rates. The drop is driven by introducing \textit{any} communication channel, not the specific manipulation (pairwise gaps within this bin are not significant). Communication raises beliefs by 2.4~pp ($p < 0.001$) but does not raise join rates ($-0.9$~pp, $p = 0.34$). Propaganda preserves the belief--posterior correlation ($r = +0.78$, identical to pure) while suppressing actions---a mechanical channel. Crucially, beliefs predict decisions beyond what the signal alone predicts: partial $r = +0.93$ ($p < 0.001$), controlling for signal. The starkest evidence is the three-way divergence under surveillance (Section~\ref{sec:surveillance}): agents who believe the uprising will succeed, and who privately join, write cautious pro-regime messages. They know their messages are watched, and they lie.\footnote{Belief data is from Mistral Small Creative. The behavioral patterns it explains---the surveillance chilling effect and communication--action gap---replicate across three architectures (Mistral, Llama, Qwen3), suggesting the mechanism generalizes.}
 
@@ -413,6 +413,8 @@ The messages tell the story. Across 15,000 communication and 25,000 surveillance
 
 A competing explanation is that surveillance triggers safety-aligned caution rather than strategic misrepresentation. Two features of the data argue against this. First, agents who self-censor their messages nevertheless JOIN at rates that track $\theta$---pure safety-mode behavior would suppress both speech and action uniformly. Second, the correlation between $\theta$ and join fraction is preserved ($r = -0.809$ vs.\ $-0.817$ in baseline communication), indicating that agents process signals identically but change only what they express.
 
+A direct test sharpens the identification. I run two placebo variants: a \textit{monitoring-without-consequences} treatment (``communications are monitored for research purposes; there are no consequences'') and an \textit{anonymous-aggregation} treatment (``communications are aggregated anonymously; individual identities cannot be linked''). If the chilling effect were a safety-alignment reflex triggered by the word ``monitored,'' all three variants should suppress coordination similarly. They do not. Placebo join rates (43.7\%) and anonymous join rates (45.2\%) are indistinguishable from the baseline (45.2\%; $p = 0.65$ and $p = 0.99$), while full surveillance collapses to 32.1\% ($p = 0.002$ vs.\ placebo, $p < 0.001$ vs.\ anonymous). The chilling effect requires perceived consequences, not mere observation. Agents distinguish between being watched and being punished---exactly the calculation a strategic actor would make.
+
 The contrast with propaganda sharpens the point. Propaganda agents inject pro-regime language mechanically, but real agents who join under propaganda continue to signal honestly (${\approx}\,86\%$ action-signaling across all doses). Surveillance is qualitatively different---active misrepresentation by agents who are simultaneously planning to act. The regime does not need to change what agents believe. It needs only to give them a reason to lie.
 
 
@@ -528,9 +530,9 @@ Blume, A. and Ortmann, A. (2007).
 
 %% ---- C ----
 
-\bibitem[Carlini et al.(2025)]{carlini2025}
-Carlini, A. et al. (2025).
-\newblock Large language models show amplified cognitive biases in moral decision-making.
+\bibitem[Cheung et al.(2025)]{carlini2025}
+Cheung, V., Maier, M., and Lieder, F. (2025).
+\newblock Large language models amplify human biases in moral decision-making.
 \newblock \textit{Proceedings of the National Academy of Sciences}, 122.
 
 \bibitem[Carlsson and van Damme(1993)]{carlsson1993}
@@ -586,8 +588,8 @@ Frankel, D.~M., Morris, S., and Pauzner, A. (2003).
 
 %% ---- G ----
 
-\bibitem[Gao et al.(2025)]{gao2025}
-Gao, C. et al. (2025).
+\bibitem[Larooij and T{\"o}rnberg(2025b)]{gao2025}
+Larooij, M. and T{\"o}rnberg, P. (2025b).
 \newblock Validation is the central challenge for generative social simulation: A critical review of {LLM}s in agent-based modeling.
 \newblock \textit{Artificial Intelligence Review}, 58.
 
@@ -596,8 +598,8 @@ Goldstein, I. and Huang, C. (2016).
 \newblock Bayesian persuasion in coordination games.
 \newblock \textit{American Economic Review: Papers \& Proceedings}, 106(5):592--596.
 
-\bibitem[Grossmann et al.(2025)]{grossmann2025}
-Grossmann, I. et al. (2025).
+\bibitem[Larooij and T{\"o}rnberg(2025a)]{grossmann2025}
+Larooij, M. and T{\"o}rnberg, P. (2025a).
 \newblock Do large language models solve the problems of agent-based modeling? {A} critical review of generative social simulations.
 \newblock arXiv preprint arXiv:2504.03274.
 
@@ -609,7 +611,7 @@ Guriev, S. and Treisman, D. (2019).
 %% ---- H ----
 
 \bibitem[Helland et al.(2021)]{helland2021}
-Helland, L., Holm, S., and Saethre, M. (2021).
+Helland, L., Iachan, F.~S., Juelsrud, R.~E., and Nenov, P.~T. (2021).
 \newblock Information quality and regime change: Evidence from the lab.
 \newblock \textit{Journal of Economic Behavior \& Organization}, 191:538--554.
 
@@ -628,8 +630,8 @@ Horton, J.~J. (2023).
 \newblock Large language models as simulated economic agents: What can we learn from homo silicus?
 \newblock \textit{NBER Working Paper} No.~31122.
 
-\bibitem[Huang et al.(2024)]{huang2024}
-Huang, S. et al. (2024).
+\bibitem[Ouyang et al.(2024)]{huang2024}
+Ouyang, S., Yun, H., and Zheng, X. (2024).
 \newblock How ethical should {AI} be? {H}ow {AI} alignment shapes the risk preferences of {LLM}s.
 \newblock arXiv preprint arXiv:2406.01168.
 
@@ -707,8 +709,8 @@ Penney, J.~W. (2016).
 \newblock Chilling effects: Online surveillance and {W}ikipedia use.
 \newblock \textit{Berkeley Technology Law Journal}, 31(1):117--182.
 
-\bibitem[Petrov et al.(2025)]{petrov2025}
-Petrov, A. et al. (2025).
+\bibitem[Jia et al.(2025)]{petrov2025}
+Jia, J., Yuan, Z., Pan, J., McNamara, P.~E., and Chen, D. (2025).
 \newblock {LLM} strategic reasoning: Agentic study through behavioral game theory.
 \newblock arXiv preprint arXiv:2502.20432.
 
