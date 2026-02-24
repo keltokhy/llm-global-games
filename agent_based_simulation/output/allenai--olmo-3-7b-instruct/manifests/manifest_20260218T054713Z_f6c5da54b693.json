@@ -1,0 +1,70 @@
+{
+  "created_at": "2026-02-18T05:47:13.879918+00:00",
+  "spec": {
+    "version": 1,
+    "name": "paper1_paper",
+    "output_dir": "agent_based_simulation/output",
+    "cache_dir": "agent_based_simulation/output/llm_cache",
+    "api_base_url": "https://openrouter.ai/api/v1",
+    "execution": {
+      "parallel_models": 2,
+      "shuffle_models": true,
+      "shuffle_seed": 5150
+    },
+    "models": [
+      "mistralai/ministral-3b-2512",
+      "allenai/olmo-3-7b-instruct",
+      "mistralai/mistral-small-creative",
+      "meta-llama/llama-3.3-70b-instruct",
+      "qwen/qwen3-30b-a3b-instruct-2507"
+    ],
+    "calibration": {
+      "mode": "autocalibrate",
+      "n_reps": 10,
+      "z_steps": 21,
+      "max_rounds": 5,
+      "tolerance": 0.15
+    },
+    "runs": [
+      "pure",
+      "comm",
+      "scramble",
+      "flip"
+    ],
+    "common": {
+      "n_agents": 25,
+      "n_countries": 5,
+      "n_periods": 20,
+      "sigma": 0.3,
+      "benefit": 1.0,
+      "cost": 1.0,
+      "seed": 5150,
+      "max_concurrent": 100,
+      "language_variant": "baseline",
+      "load_calibrated": true
+    },
+    "analysis": {
+      "figures": true,
+      "compare_models": true,
+      "paper_figures": true
+    },
+    "infodesign": {
+      "enable": true
+    }
+  },
+  "resolved": {
+    "model": "allenai/olmo-3-7b-instruct",
+    "model_slug": "allenai--olmo-3-7b-instruct",
+    "output_dir": "/Users/khaled/GitHub/Global-Games-and-Coups/agent_based_simulation/output/allenai--olmo-3-7b-instruct",
+    "api_base_url": "https://openrouter.ai/api/v1",
+    "runs": [
+      "pure",
+      "comm",
+      "scramble",
+      "flip"
+    ],
+    "cache_dir": "/Users/khaled/GitHub/Global-Games-and-Coups/agent_based_simulation/output/llm_cache",
+    "resume": true,
+    "dry_run": false
+  }
+}

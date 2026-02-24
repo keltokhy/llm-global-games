@@ -1,0 +1,110 @@
+\documentclass[10pt]{article}
+\usepackage{amssymb,amsmath,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{float}
+
+\urlstyle{same}
+\interfootnotelinepenalty=10000
+
+\title{Online Appendix:\\LLMs Can Play (Global) Games}
+\author{Khaled Eltokhy}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Decomposition: Which Channel Drives the Stability Effect?}
+
+The stability design manipulates three channels simultaneously (direction, clarity, dissent). To determine which drives the effect, I run three single-channel treatments, each activating only one manipulation while holding the other two at baseline.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.9\linewidth]{figures/fig11_decomposition.pdf}
+  \caption{Single-channel decomposition of the stability design. Each panel shows the treatment effect $\Delta(\theta)$ for one channel in isolation.}
+\end{figure}
+
+The direction channel produces the largest average treatment effect at $+2.4$~pp, with effects concentrated near $\theta^*$. The dissent channel contributes $+1.6$~pp uniformly. The clarity channel produces only $+0.3$~pp with a non-monotone pattern.
+
+\input{tables/tab_decomposition.tex}
+
+The sum of single-channel effects is $+4.3$~pp, far smaller than the full stability design effect ($+19.5$~pp). This implies strong complementarities: combining ambiguity (clarity), softened direction, and mixed-valence cues shifts behavior much more than the sum of each channel in isolation.
+
+\section{Robustness Details}
+
+\subsection{Agent Count Variation}
+
+I vary the number of agents per period ($n \in \{5, 10, 25, 50, 100\}$) using Mistral Small Creative. The correlation is stable: $r = +0.60$ ($n = 5$), $r = +0.63$ ($n = 10$), $r = +0.67$ ($n = 25$), $r = +0.65$ ($n = 50$), $r = +0.65$ ($n = 100$). The slight increase from $n = 5$ to $n = 25$ likely reflects reduced discretization noise.
+
+\subsection{Network Topology}
+
+I compare the baseline communication network ($k = 4$) with a denser network ($k = 8$). The denser network produces $r = +0.66$ (vs.\ $+0.68$ for $k = 4$), with a slightly lower mean join rate of 0.41 (vs.\ 0.45). Additional contacts do not substantially amplify coordination.
+
+\subsection{Mixed-Model Games}
+
+A five-model mixed-population game produces $r = +0.77$ (pure) and $r = +0.75$ (communication)---if anything, higher than single-model correlations. Equilibrium alignment is not an artifact of model homogeneity.
+
+\subsection{Bandwidth Sensitivity}
+
+\input{tables/tab_bandwidth.tex}
+
+Qualitative treatment effects are robust across bandwidths, though magnitudes vary---especially for the stability design, whose effect peaks at the baseline bandwidth. The baseline bandwidth of 0.15 is approximately optimal for detecting treatment effects on the experimental grid.
+
+\subsection{Cross-Model Replication of Information Design}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.95\linewidth]{figures/fig14_cross_model_infodesign.pdf}
+  \caption{Cross-model replication of information design treatments. Each panel shows join fraction vs.\ $\theta$ for one model under baseline, stability, scramble, and flip conditions.}
+  \label{fig:oa_crossmodel_infodesign}
+\end{figure}
+
+Table~\ref{tab:crossmodel} reports cross-model replication of information design treatments. The flip inversion replicates across all models tested ($r > +0.43$ for all six). The scramble test shows more heterogeneity: Mistral, GPT-OSS, and Qwen3 235B show clean collapse ($r \approx 0$), but Llama 3.3 70B and Ministral 3B retain baseline-level correlations under scramble ($r = -0.81$ and $r = -0.66$), suggesting these models extract signal from features the scramble does not disrupt (e.g., within-country narrative coherence). OLMo shows an attenuated baseline relationship, while Qwen3 30B shows a large reduction in correlation under scramble and a clear flip effect.
+
+\input{tables/tab_crossmodel.tex}
+
+\subsection{Information Design with Communication}
+
+Under baseline information design with communication, mean join rate is 3.0\% ($-9.3$~pp vs.\ baseline without communication). Communication \textit{reduces} join rates across all information design conditions---superficially counterintuitive, but resolved by noting that additional information from others' messages tends to reveal that the regime is strong (the $\theta$ grid extends upward from $\theta^*$).
+
+\section{Implementation Details}
+
+\subsection{LLM Decoding Parameters}
+
+All LLM calls use temperature $= 0.7$ and \texttt{max\_tokens} $= 512$. Each agent produces a single sample per decision (no majority voting or averaging). The API provider is OpenRouter; all calls use the same endpoint and parameters across models.
+
+\subsection{Prompt Templates}
+
+\paragraph{Decision prompt (pure treatment).}
+\begin{quote}
+\small
+\texttt{You are a citizen deciding whether to JOIN an uprising or STAY home.}
+
+\texttt{You only have your private briefing below. You do not know how many others will JOIN.}
+
+\texttt{Start your first line with exactly JOIN or STAY, then give 1--2 concise sentences of reasoning.}
+\end{quote}
+
+\paragraph{Communication prompt.}
+\begin{quote}
+\small
+\texttt{You are a citizen in a country with an authoritarian regime. You have received a private intelligence briefing. You are now in contact with a small number of trusted people. Based on your briefing, write a brief message (1--2 sentences) to share your read of the situation. Be natural---you're talking to people you trust.}
+\end{quote}
+
+\paragraph{Surveillance communication prompt.} Identical to the communication prompt, with the addition:
+\begin{quote}
+\small
+\texttt{IMPORTANT: You have reason to believe that your communications are being monitored by regime security services. Messages deemed subversive could have serious consequences for you and your contacts.}
+\end{quote}
+
+\subsection{Randomization}
+
+Each country--period draws $\theta$ from $\mathcal{N}(\bar{z}, 0.05^2)$, where $\bar{z}$ is itself drawn once per country. Private signals are $x_i = \theta + \varepsilon_i$, $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$ with $\sigma = 0.3$. The communication network is a Watts--Strogatz small-world graph with $k = 4$ neighbors and rewiring probability $p = 0.3$, regenerated each period. All random draws use NumPy's default \texttt{Generator} with no fixed seed; exact sequences are logged in per-run JSON files included in the replication archive.
+
+\subsection{Code and Data Availability}
+
+All code, prompts, cached LLM responses, and output data will be available at \texttt{[repository URL]} upon publication.
+
+\end{document}

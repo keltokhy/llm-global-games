@@ -1,0 +1,31 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.env
+
+# LaTeX intermediates
+*.aux
+*.log
+*.out
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+
+# Compiled PDFs (regenerate from .tex)
+paper.pdf
+online_appendix.pdf
+
+# Large LLM trace logs
+output/**/*_log.json
+output/*_log.json
+
+# Calibration raw data (large)
+output/**/*_raw.csv
+output/**/*_history.csv
+
+# OS
+.DS_Store
+
+# uv
+uv.lock

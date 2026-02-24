@@ -1,0 +1,24 @@
+\begin{table}[t]
+\centering
+\caption{Model summary. Columns report country-period counts in the pure, communication, and falsification (scramble+flip) suites. All runs use $N=25$ agents per period and $\sigma=0.3$.}
+\label{tab:models}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llccc}
+\toprule
+Model & Arch. & Pure & Comm & Falsif. \\
+\midrule
+Mistral Small Creative & Mistral & 600 & 600 & 200 \\
+Llama 3.3 70B & Llama & 100 & 100 & 200 \\
+OLMo 3 7B & OLMo & 100 & 100 & 200 \\
+Ministral 3B & Mistral & 100 & 100 & 200 \\
+Qwen3 30B & Qwen (MoE) & 100 & 100 & 200 \\
+GPT-OSS 120B & GPT & 200 & 200 & 1000 \\
+Qwen3 235B & Qwen (MoE) & 200 & 200 & --- \\
+Trinity Large & Arcee & 100 & 100 & 200 \\
+MiniMax M2-Her & MiniMax & 100 & 100 & 200 \\
+\midrule
+\textbf{Total} & & \textbf{1600} & \textbf{1600} & \textbf{2400} \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,36 @@
+{
+  "qwen/qwen3-30b-a3b-instruct-2507": {
+    "cutoff_center": -1.983927991329236,
+    "clarity_width": 1.0,
+    "direction_slope": 0.8,
+    "coordination_slope": 0.6,
+    "dissent_floor": 0.25,
+    "mixed_cue_clarity": 0.5,
+    "bottomline_cuts": [
+      0.15,
+      0.25,
+      0.35,
+      0.45,
+      0.55,
+      0.65,
+      0.75,
+      0.85
+    ],
+    "unclear_cuts": [
+      0.18,
+      0.33,
+      0.48,
+      0.62,
+      0.77
+    ],
+    "coordination_cuts": [
+      0.12,
+      0.25,
+      0.42,
+      0.58,
+      0.75
+    ],
+    "coordination_blend_prob": 0.6,
+    "language_variant": "baseline"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "created_at": "2026-02-18T01:36:11.894320+00:00",
+  "spec": {
+    "version": 1,
+    "name": "paper1_example",
+    "output_dir": "agent_based_simulation/output",
+    "cache_dir": "agent_based_simulation/output/llm_cache",
+    "api_base_url": "https://openrouter.ai/api/v1",
+    "models": [
+      "arcee-ai/trinity-large-preview:free"
+    ],
+    "calibration": {
+      "mode": "autocalibrate",
+      "n_reps": 10,
+      "z_steps": 21,
+      "max_rounds": 5,
+      "tolerance": 0.15
+    },
+    "runs": [
+      "pure",
+      "comm",
+      "scramble",
+      "flip"
+    ],
+    "common": {
+      "n_agents": 25,
+      "n_countries": 5,
+      "n_periods": 20,
+      "sigma": 0.3,
+      "benefit": 1.0,
+      "cost": 1.0,
+      "seed": 5150,
+      "max_concurrent": 25,
+      "language_variant": "baseline",
+      "load_calibrated": true
+    },
+    "analysis": {
+      "figures": true,
+      "compare_models": false,
+      "paper_figures": false
+    },
+    "infodesign": {
+      "enable": false
+    }
+  },
+  "resolved": {
+    "model": "arcee-ai/trinity-large-preview:free",
+    "model_slug": "arcee-ai--trinity-large-preview_free",
+    "output_dir": "/Users/khaled/GitHub/Global-Games-and-Coups/agent_based_simulation/output/arcee-ai--trinity-large-preview_free",
+    "api_base_url": "https://openrouter.ai/api/v1",
+    "runs": [
+      "pure",
+      "comm",
+      "scramble",
+      "flip"
+    ],
+    "cache_dir": "/Users/khaled/GitHub/Global-Games-and-Coups/agent_based_simulation/output/llm_cache",
+    "resume": true,
+    "dry_run": false
+  }
+}

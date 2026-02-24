@@ -1,0 +1,67 @@
+{
+  "created_at": "2026-02-18T03:36:08.946746+00:00",
+  "spec": {
+    "version": 1,
+    "name": "paper1_paper",
+    "output_dir": "agent_based_simulation/output",
+    "cache_dir": "agent_based_simulation/output/llm_cache",
+    "api_base_url": "https://openrouter.ai/api/v1",
+    "execution": {
+      "parallel_models": 2,
+      "shuffle_models": true,
+      "shuffle_seed": 5150
+    },
+    "models": [
+      "mistralai/mistral-small-creative",
+      "minimax/minimax-m2-her"
+    ],
+    "calibration": {
+      "mode": "autocalibrate",
+      "n_reps": 10,
+      "z_steps": 21,
+      "max_rounds": 5,
+      "tolerance": 0.15
+    },
+    "runs": [
+      "pure",
+      "comm",
+      "scramble",
+      "flip"
+    ],
+    "common": {
+      "n_agents": 25,
+      "n_countries": 5,
+      "n_periods": 20,
+      "sigma": 0.3,
+      "benefit": 1.0,
+      "cost": 1.0,
+      "seed": 5150,
+      "max_concurrent": 100,
+      "language_variant": "baseline",
+      "load_calibrated": true
+    },
+    "analysis": {
+      "figures": true,
+      "compare_models": true,
+      "paper_figures": true
+    },
+    "infodesign": {
+      "enable": true
+    }
+  },
+  "resolved": {
+    "model": "minimax/minimax-m2-her",
+    "model_slug": "minimax--minimax-m2-her",
+    "output_dir": "/Users/khaled/GitHub/Global-Games-and-Coups/agent_based_simulation/output/minimax--minimax-m2-her",
+    "api_base_url": "https://openrouter.ai/api/v1",
+    "runs": [
+      "pure",
+      "comm",
+      "scramble",
+      "flip"
+    ],
+    "cache_dir": "/Users/khaled/GitHub/Global-Games-and-Coups/agent_based_simulation/output/llm_cache",
+    "resume": true,
+    "dry_run": false
+  }
+}

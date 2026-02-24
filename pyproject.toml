@@ -1,0 +1,14 @@
+[project]
+name = "llm-global-games"
+version = "0.1.0"
+description = "LLMs Can Play (Global) Games — Testing LLM agents in the Morris-Shin regime change game"
+requires-python = ">=3.12"
+dependencies = [
+    "matplotlib>=3.10",
+    "networkx>=3.0",
+    "numpy>=2.0",
+    "openai>=1.0",
+    "pandas>=2.0",
+    "scipy>=1.14",
+    "tqdm>=4.0",
+]

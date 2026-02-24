@@ -1,0 +1,26 @@
+\begin{table*}[t]
+\centering
+\caption{Equilibrium alignment by model and treatment. Cells report Pearson $r$ between the empirical join fraction and the theoretical attack mass $A(\theta)$.}
+\label{tab:main_results}
+\small
+\begin{tabular}{lcccccc}
+\toprule
+& \multicolumn{2}{c}{Main treatments} & \multicolumn{2}{c}{Falsification} & & \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+Model & Pure & Comm & Scramble & Flip & $n_{\text{pure}}$ & Mean join \\
+\midrule
+Mistral Small Creative & $+0.67$ & $+0.68$ & $+0.42$ & $-0.62$ & 600 & 0.37 \\
+Llama 3.3 70B & $+0.79$ & $+0.78$ & $+0.33$ & $-0.73$ & 100 & 0.44 \\
+OLMo 3 7B & $+0.65$ & $+0.71$ & $+0.14$ & $-0.56$ & 100 & 0.72 \\
+Ministral 3B & $+0.79$ & $+0.74$ & $+0.30$ & $-0.74$ & 100 & 0.45 \\
+Qwen3 30B & $+0.78$ & $+0.79$ & $+0.32$ & $-0.71$ & 100 & 0.50 \\
+GPT-OSS 120B & $+0.70$ & $+0.69$ & $-0.13$ & $-0.64$ & 200 & 0.41 \\
+Qwen3 235B & $+0.70$ & $+0.66$ & $\text{---}$ & $\text{---}$ & 200 & 0.42 \\
+Trinity Large & $+0.84$ & $+0.81$ & $+0.32$ & $-0.70$ & 100 & 0.46 \\
+MiniMax M2-Her & $+0.66$ & $+0.69$ & $+0.14$ & $-0.69$ & 100 & 0.44 \\
+\midrule
+\textbf{Pooled} & $+0.67$ & $+0.67$ & $+0.10$ & $-0.63$ & 1600 & 0.43 \\
+\textbf{Mean across models} & $+0.73$ & $+0.73$ & $+0.23$ & $-0.67$ & --- & --- \\
+\bottomrule
+\end{tabular}
+\end{table*}

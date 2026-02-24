@@ -1,0 +1,938 @@
+\pdfoutput=1
+\documentclass[10pt,twocolumn]{article}
+\usepackage{amssymb,amsmath,amsthm}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage[round]{natbib}
+\usepackage{xcolor}
+\usepackage{subcaption}
+\usepackage{multirow}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{hypothesis}{Hypothesis}
+\newtheorem{result}{Result}
+
+\urlstyle{same}
+\interfootnotelinepenalty=10000
+
+\title{LLMs Can Play (Global) Games}
+
+\author{
+  Khaled Eltokhy \\
+  Department of Economics \\
+  The Graduate Center, CUNY
+}
+\date{February 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+The canonical Morris--Shin (2003) regime change game---continuous private signals, large groups, strategic uncertainty---has not been implemented experimentally. I embed nine large language models spanning six architecture families in the full game, conveying each agent's private signal as a natural-language intelligence briefing. Across nine models and 1,600 country--periods in the pure treatment (40,000 individual decisions), join rates track the Bayesian Nash equilibrium prediction (mean $r = +0.73$, $p < 0.001$ for every model). Scrambling briefings across periods collapses the correlation to $r = +0.23$; inverting signals flips it to $r = -0.67$---confirming that behavior is driven by briefing content. I then implement censorship, surveillance, and propaganda treatments drawn from the information design and authoritarian control literatures. Upper censorship raises join rates by 18.5~pp through pooling; surveillance reduces them by 17.5~pp through preference falsification; combining the two nearly eliminates coordination ($30.9\% \to 3.7\%$).
+\end{abstract}
+
+
+%% ============================================================
+%% 1. INTRODUCTION
+%% ============================================================
+\section{Introduction}
+
+Coordination games with multiple equilibria are central to the analysis of bank runs \citep{diamond1983}, currency attacks \citep{obstfeld1996}, and political upheaval \citep{angeletos2007a}. The theory of global games \citep{carlsson1993, morris2003, frankel03} resolves the multiplicity by introducing private information: when agents observe noisy private signals about an underlying fundamental, a unique equilibrium emerges in threshold strategies. The canonical application---regime change---has been extensively studied theoretically. Laboratory experiments have tested the theory in simplified settings: small groups with numeric signals and stylized payoffs \citep{heinemann2004, heinemann2009, szkup2020}. But the full Morris--Shin regime change game---continuous private signals, large groups, strategic uncertainty---has not been implemented experimentally. Field data from actual crises confounds strategic behavior with institutional and informational heterogeneity.
+
+I take a different approach: I embed large language model (LLM) agents directly in the \citet{morris2003} regime change game. Each agent receives a private signal $x_i = \theta + \varepsilon_i$, translated into a natural-language intelligence briefing describing the political, economic, and security situation. No explicit payoff table is provided---the stakes of joining or staying are embedded in the narrative, forcing agents to extract strategic information from language rather than from a formatted matrix. I run this experiment across nine architecturally distinct models spanning six families (Mistral, Llama, Qwen, OLMo, GPT, and MiniMax), with 25 agents per country--period and pure-treatment sample sizes of 100--600 country--periods per model (Table~\ref{tab:models}), totaling 1,600 country--periods (40,000 individual decisions) in the pure treatment alone.
+
+The main finding is that LLM agents exhibit behavioral alignment with the Bayesian Nash equilibrium prediction. The correlation between the theoretical attack mass $A(\theta) = \Phi[(x^* - \theta)/\sigma]$ and the empirical join fraction averages $r = +0.73$ ($p < 0.001$ for every model). Two falsification tests confirm that this correlation is driven by briefing content: randomly scrambling briefings across periods reduces it to $r = +0.23$, and inverting the signal direction flips it to $r = -0.67$. In both cases the change relative to the pure treatment is significant (Fisher $z$-test, $p < 0.001$). Pre-play communication raises join rates by 3.7 percentage points, concentrated in weak-regime environments.
+
+Taking this behavioral foundation as given, I then ask: \textit{what can an information designer accomplish?} I implement information designs---stability, instability, public signals, and censorship---and find large effects. Public signal injection reduces join rates by 10.7~pp; upper censorship raises them by 18.5~pp through pooling, consistent with \citet{kolotilin2022}. I then test authoritarian information control: surveillance reduces join rates by 17.5~pp ($p < 0.001$) through \citet{kuran1991} preference falsification, propaganda suppresses coordination in a dose-response pattern, and combining surveillance with censorship nearly eliminates coordination ($30.9\% \to 3.7\%$).
+
+The paper makes three contributions. First, it provides the first implementation of the full Morris--Shin regime change game---with continuous private signals, large groups, and narrative information---going beyond the simplified coordination games tested in existing laboratory experiments. Second, it provides the first experimental tests of information design and authoritarian control predictions from \citet{goldstein2016}, \citet{kolotilin2022}, and \citet{edmond2013} in a coordination game---including censorship, surveillance, and propaganda treatments that are difficult to implement with human subjects at scale. Third, it demonstrates that LLMs can serve as experimental subjects for strategic environments, extending the \citet{horton2023} \textit{homo silicus} methodology beyond $2 \times 2$ games to the continuous-signal, $N$-player coordination games that dominate applied theory.
+
+Section~\ref{sec:literature} reviews the related literature. Section~\ref{sec:model} presents the theoretical framework. Section~\ref{sec:design} describes the experimental design. Section~\ref{sec:results} reports the main results on equilibrium alignment; Section~\ref{sec:falsification} presents the falsification tests. Section~\ref{sec:communication} analyzes pre-play communication. Sections~\ref{sec:infodesign}--\ref{sec:interactions} cover information design, surveillance, propaganda, and their interactions. Appendix~\ref{sec:robustness} reports robustness checks. Section~\ref{sec:conclusion} concludes.
+
+
+%% ============================================================
+%% 2. RELATED LITERATURE
+%% ============================================================
+\section{Related Literature} \label{sec:literature}
+
+This paper connects five literatures: global games and equilibrium selection, information design and Bayesian persuasion, communication in coordination games, the political economy of authoritarian information control, and the emerging field of LLMs as economic agents.
+
+%% --- Global Games ---
+\subsection{Global Games and Equilibrium Selection}
+
+The theory of global games resolves the equilibrium multiplicity that plagues coordination games by introducing heterogeneous private information. \citet{carlsson1993} showed that adding arbitrarily small noise to a 2$\times$2 coordination game generically selects the risk-dominant equilibrium via iterated dominance. \citet{morris1998} applied this technique to currency crises, demonstrating that heterogeneous private signals about fundamentals deliver a unique threshold equilibrium even in large-player coordination games. \citet{frankel03} generalized the result to $N$-player, multi-action games with strategic complementarities.
+
+The canonical regime change application---in which citizens decide whether to join an uprising against a regime of uncertain strength---was developed by \citet{morris2003}, who established the threshold equilibrium structure I implement experimentally. \citet{angeletos2007a} extended the framework to dynamic settings where agents learn across periods, showing that multiplicity can re-emerge when agents observe whether the regime survived previous rounds. \citet{morris2002} demonstrated that public signals are overweighted in coordination games because they predict others' actions, a finding central to my communication and information design treatments.
+
+Laboratory experiments have tested the theory in stylized settings that necessarily depart from the canonical regime change game. \citet{heinemann2004} ran coordination games with public and private signals, finding that subjects' thresholds match the global game prediction under private information but tilt toward payoff-dominance under common information. \citet{heinemann2009} measured strategic uncertainty directly through certainty equivalents. \citet{shurchkov2013} tested dynamic global games, finding that subjects learn from failed attacks. \citet{szkup2020} elicited beliefs alongside actions, finding that comparative statics of thresholds with respect to signal precision are reversed relative to theory---subjects become more cautious with noisier signals, consistent with level-$k$ thinking rather than Bayesian Nash equilibrium. \citet{helland2021} tested information quality in a regime change game with numeric signals and small groups, confirming the level-$k$ reversal. These experiments share a common limitation: subjects receive numeric signal draws and face stylized payoff tables, compressing the rich information processing that real-world coordination requires into a simple decision problem.
+
+This paper implements the full Morris--Shin regime change game with natural-language private signals and 25-agent groups, going beyond the small-group, numeric-signal designs of existing experiments to test the threshold equilibrium prediction in the canonical application for which it was developed.
+
+%% --- Information Design ---
+\subsection{Information Design and Bayesian Persuasion}
+
+\citet{kamenica2011} established the Bayesian persuasion framework: a sender who commits to an information structure can influence a Bayesian receiver's action by shaping the posterior distribution of beliefs. \citet{bergemann2016} unified Bayesian persuasion with correlated equilibrium under the concept of Bayes Correlated Equilibrium. \citet{bergemann2019information} provided a comprehensive survey integrating cheap talk, persuasion, and robust mechanism design.
+
+The application to coordination games is directly relevant. \citet{goldstein2016} applied Bayesian persuasion to the regime change game, showing that a credible commitment to abandon the regime below a threshold functions as an optimal signal. \citet{inostroza2025} solved the optimal public information design problem in a global game with heterogeneous private signals, characterizing when pass/fail structures are optimal. \citet{kolotilin2022} proved that upper censorship---pooling all states above a threshold while revealing below---is optimal for all priors when the sender's marginal utility is quasi-concave. \citet{mathevet2020} characterized the extent to which an information designer can manipulate agents' higher-order beliefs.
+
+My information design experiments implement these theoretical designs computationally within a full-scale coordination game, providing the first experimental test of information design predictions in a global game.
+
+%% --- Communication ---
+\subsection{Communication in Coordination Games}
+
+The strategic communication literature begins with \citet{crawford1982}, who characterized the partition equilibria of one-way cheap talk games. \citet{farrell1996} introduced the concept of \textit{self-committing} messages---messages credible because the speaker has an incentive to follow through if believed---which is the mechanism through which pre-play communication improves coordination.
+
+Experimental evidence on cheap talk in coordination games is extensive. \citet{blume2007} found that pre-play cheap talk dramatically increases coordination on the Pareto-dominant equilibrium. \citet{ellingsen2010} used the level-$k$ model to predict when communication helps or hurts. \citet{brandts2006} showed that leadership communication helps escape low-effort traps in minimum-effort games. \citet{avoyan2020} showed that cheap talk improves investment efficiency in a two-player global game.
+
+In real-world coordination, network structure matters. \citet{enikolopov2020} provided causal evidence that social media penetration increased protest incidence in Russia's 2011--12 protests. \citet{jost2018} reviewed how social media facilitates protest through information sharing and network-based social pressure.
+
+My communication treatment embeds agents in a Watts-Strogatz small-world network and allows natural-language messaging before the coordination decision.
+
+%% --- Authoritarian Information Control ---
+\subsection{Regime Change, Censorship, and Surveillance}
+
+The theoretical literature on authoritarian information control builds directly on the global games framework. \citet{edmond2013} embedded costly propaganda into the Morris--Shin regime change game: the regime shifts the distribution of citizens' signals to make itself appear stronger. \citet{li2022} extended this to adversarial information design with heterogeneous ``local obfuscation.''
+
+On censorship, \citet{shadmehr2015} characterized when a ruler benefits from censoring media reports. \citet{lorentzen2014} modeled strategic censorship where regimes permit watchdog journalism while suppressing content revealing regime-wide discontent. \citet{king2013} provided empirical evidence that Chinese censorship targets content with \textit{collective action potential}. \citet{king2017} documented that the Chinese government fabricates approximately 448 million social media posts per year, predominantly cheerleading rather than engaged argument.
+
+The surveillance literature documents chilling effects. \citet{penney2016} found that Wikipedia views of terrorism-related articles declined after the Snowden revelations. \citet{stoycheff2016} showed experimentally that surveillance awareness suppresses minority opinion expression. \citet{chen2019} found that free VPN access does not generate demand for uncensored information---censorship works partly through preference shaping.
+
+\citet{kuran1991} provides the foundational theory: \textit{preference falsification}---the systematic misrepresentation of political preferences under social pressure---explains how authoritarian regimes maintain apparent stability. \citet{guriev2019} documented the rise of ``informational autocrats'' who maintain power through information manipulation rather than mass repression. \citet{carter2021} found that pro-regime propaganda reduces protest probability by 15\% per standard deviation.
+
+My surveillance and propaganda treatments directly test these mechanisms computationally within the full regime change game---an environment that would be difficult to implement with human subjects at this scale, and where surveillance and propaganda manipulations raise ethical concerns that computational subjects avoid.
+
+%% --- LLMs as Economic Agents ---
+\subsection{LLMs as Economic and Strategic Agents}
+
+\citet{horton2023} proposed treating LLMs as ``homo silicus''---computational models of human decision-makers. \citet{argyle2023} showed that GPT-3 conditioned on demographic backstories achieves ``algorithmic fidelity'' in replicating attitudinal distributions. \citet{aher2023} introduced the ``Turing Experiment'' framework, replicating results from the Ultimatum Game, Milgram experiment, and Wisdom of Crowds.
+
+In game-theoretic settings, \citet{akata2025} ran LLMs in finitely repeated 2$\times$2 games, finding that LLMs perform well in self-interested games but struggle in coordination games. \citet{lore2024} compared GPT-3.5, GPT-4, and LLaMA-2 across multiple game types, finding distinct strategic signatures. \citet{guo2023} found GPT exhibits level-0 to level-1 strategic depth.
+
+Several papers document systematic behavioral differences across model families. \citet{palatsi2025} found that Llama replicates human cooperation with high fidelity while Qwen tracks Nash equilibrium closely. \citet{petrov2025} evaluated 22 LLMs on a behavioral game theory battery, finding that model scale alone does not predict strategic performance. \citet{corrupted2025} showed that reasoning-focused models free-ride in public goods games at much higher rates than standard models.
+
+The alignment literature provides further context. \citet{huang2024} found that increasing ethical alignment increases risk aversion by 2--8\%. \citet{carlini2025} showed that fine-tuning for chatbot use amplifies omission bias. These findings motivate my design choice to convey strategic stakes through narrative rather than an explicit payoff matrix: more capable models can identify dominant strategies from formatted tables and short-circuit the information-processing channel I aim to study.
+
+The LLM-based agent-based modeling literature has expanded rapidly. \citet{park2023} demonstrated emergent social behavior among 25 LLM agents in a simulated town. \citet{piatti2024} introduced GovSim, where only GPT-4 and Claude-3 Opus achieve sustainable equilibrium. \citet{bail2024} showed that networks of LLM agents reproduce empirically observed opinion dynamics. Critical reviews by \citet{gao2025} and \citet{grossmann2025} warn that validation remains poorly addressed. \citet{sun2025survey} identify coordination games as a consistent failure mode.
+
+No existing paper places LLM agents in a Morris--Shin global game---the specific game form where private noisy signals about an underlying state variable determine a threshold equilibrium. I provide the first such implementation, and extend it to information design, surveillance, and propaganda.
+
+
+%% ============================================================
+%% 3. THEORETICAL FRAMEWORK
+%% ============================================================
+\section{The Global Game of Regime Change} \label{sec:model}
+
+\subsection{Setup}
+
+A continuum of citizens indexed by $i \in [0,1]$ simultaneously choose whether to join an uprising ($a_i = 1$) or stay home ($a_i = 0$). The regime has strength $\theta \in \mathbb{R}$, drawn from a diffuse (improper uniform) prior. States $\theta \leq 0$ represent regimes so weak they fall without opposition; states $\theta \geq 1$ represent regimes that survive even unanimous attack. The regime falls if the mass of citizens who join exceeds $\theta$:
+\begin{equation}
+    \text{Regime falls} \iff A \equiv \int_0^1 a_i \, di > \theta.
+\end{equation}
+
+Payoffs depend on the citizen's action and the outcome:
+\begin{equation}
+    u_i(a_i, A, \theta) = \begin{cases}
+        B & \text{if } a_i = 1 \text{ and } A > \theta \\
+        -C & \text{if } a_i = 1 \text{ and } A \leq \theta \\
+        0 & \text{if } a_i = 0
+    \end{cases}
+\end{equation}
+where $B > 0$ is the payoff to joining a successful uprising and $C > 0$ is the cost of joining a failed attempt. Non-participants receive zero regardless of the outcome.
+
+Each citizen observes a private signal $x_i = \theta + \varepsilon_i$, where $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$ independently across citizens.
+
+\subsection{Equilibrium}
+
+\begin{proposition}[Morris and Shin, 2003]
+In the limit of diffuse priors, there exists a unique Bayesian Nash equilibrium in threshold strategies. An agent joins if and only if $x_i < x^*$, where
+\begin{equation}
+    x^* = \theta^* + \sigma \Phi^{-1}(\theta^*)
+\end{equation}
+and $\theta^* = B/(B+C)$.
+\end{proposition}
+
+The \textit{attack mass}---the fraction of the population that joins at regime strength $\theta$---is:
+\begin{equation} \label{eq:attack_mass}
+    A(\theta) = \Phi\!\left(\frac{x^* - \theta}{\sigma}\right).
+\end{equation}
+
+This is a decreasing function of $\theta$: weaker regimes face larger uprisings.
+
+\subsection{Information Design in the Regime Change Game}
+
+An information designer controls the mapping $\pi: \Theta \to \Delta(\mathcal{S})$ from states to signal distributions, but cannot control agents' actions. In my implementation, $\pi$ is the function mapping regime strength $\theta$ to the parameters of the briefing generator---a deterministic system that produces a natural-language intelligence briefing from a z-score derived from the agent's private signal.
+
+The briefing generator has three control parameters:
+\begin{enumerate}
+    \item \textbf{Clarity.} The width of the Gaussian kernel that maps z-scores to text. Wider kernels produce more ambiguous briefings; narrower kernels produce more informative briefings.
+    \item \textbf{Directional precision.} The slope of the mapping from z-score to briefing sentiment. A steeper slope means briefings more accurately reflect the direction of the underlying signal.
+    \item \textbf{Dissent framing.} The floor on the probability that the briefing includes language about public discontent.
+\end{enumerate}
+
+The designer concentrates manipulation near $\theta^*$ using a Gaussian proximity weight:
+\begin{equation}
+    w(\theta) = \exp\!\left(-\left(\frac{\theta - \theta^*}{\text{bandwidth}}\right)^2\right)
+\end{equation}
+where $\text{bandwidth} = 0.15$ in the baseline specification.
+
+\subsection{Testable Predictions}
+
+The framework generates testable predictions for both the baseline game and information design:
+
+\begin{hypothesis}[Equilibrium Alignment] \label{hyp:alignment}
+The empirical join fraction should be positively correlated with the theoretical attack mass $A(\theta)$.
+\end{hypothesis}
+
+\begin{hypothesis}[Signal Dependence] \label{hyp:scramble}
+The correlation in Hypothesis~\ref{hyp:alignment} should collapse when the mapping from $\theta$ to briefing content is broken (scramble test).
+\end{hypothesis}
+
+\begin{hypothesis}[Signal Direction] \label{hyp:flip}
+The correlation should invert when signals are flipped.
+\end{hypothesis}
+
+\begin{hypothesis}[Communication Effect] \label{hyp:comm}
+Pre-play communication should increase join rates, with the effect strongest near $\theta^*$ where strategic uncertainty is highest.
+\end{hypothesis}
+
+\begin{hypothesis}[Stability Design] \label{hyp:stability}
+Increasing ambiguity and mixed evidence near $\theta^*$ should flatten the $\theta$--join relationship and induce pooling.
+\end{hypothesis}
+
+\begin{hypothesis}[Upper Censorship] \label{hyp:censor}
+Upper censorship should raise join rates in censored states by creating pooling \citep{kolotilin2022}.
+\end{hypothesis}
+
+\begin{hypothesis}[Surveillance Chilling Effect] \label{hyp:surveillance}
+Informing agents that communications are monitored should reduce coordination \citep{kuran1991}.
+\end{hypothesis}
+
+\begin{hypothesis}[Propaganda Dose-Response] \label{hyp:propaganda}
+Regime plant agents transmitting pro-regime messages should suppress coordination, with the effect increasing in the number of plants \citep{edmond2013}.
+\end{hypothesis}
+
+
+%% ============================================================
+%% 4. EXPERIMENTAL DESIGN
+%% ============================================================
+\section{Experimental Design} \label{sec:design}
+
+\subsection{Overview}
+
+The experiment has two parts. Part~I tests whether LLM agents play the global game: a pure treatment (private signals only), a communication treatment (pre-play messaging), and falsification tests. Part~II takes the behavioral foundation as given and studies information design: stability/instability designs, censorship, single-channel decomposition, surveillance, and propaganda. All LLM interactions use the same prompt structure across models.
+
+\subsection{Signal Generation and Briefing Rendering}
+
+For each country--period, nature draws $\theta$ from a normal distribution. Each agent $i$ receives a private signal $x_i = \theta + \varepsilon_i$ and computes a z-score $z_i = (x_i - \bar{z})/\sigma$, where $\bar{z}$ is a public prior mean drawn randomly for each country. The z-score is then translated into a multi-paragraph intelligence briefing by a deterministic generator that maps signal strength to narrative content about regime stability, economic conditions, public sentiment, and coordination prospects.
+
+The briefing rendering is calibrated once per model using a separate z-score sweep to ensure that join probability is monotone in $z$ and roughly centered near the cutoff. Calibration adjusts a single parameter---the cutoff center---via a damped iterative procedure that shifts the center until the fitted logistic is approximately zero-centered. The sigmoid shape (its slope and curvature) is emergent from the LLM's own response pattern and is never optimized or penalized. Holdout validation (30\% of z-grid points withheld) suggests no overfitting: holdout RMSE (0.112) is comparable to training RMSE (0.131). Calibration does not use $\theta$ draws or any global-game outcome data, and all reported treatments and falsification tests hold calibrated parameters fixed.
+
+\subsection{Decision Prompt}
+
+Each agent receives a system prompt identifying them as a citizen deciding whether to JOIN or STAY, followed by their intelligence briefing. No explicit payoff table is provided---the stakes are conveyed entirely through the narrative.
+
+This design choice is substantive. In preliminary experiments, providing an explicit payoff table caused sophisticated models to short-circuit the information-processing channel: they computed the optimal strategy from the table and ignored briefing content, producing flat join rates uncorrelated with regime strength. The no-payoff-table design forces agents to form beliefs from the narrative, mirroring how real citizens process political information from news and rumors rather than from a formatted decision matrix.
+
+\subsection{Part I Treatments}
+
+\paragraph{Pure global game.} Each agent decides independently based on their private briefing.
+
+\paragraph{Communication.} Before deciding, agents send a message to a small network of ``trusted contacts'' (Watts-Strogatz small-world network, $k=4$, $p=0.3$). They then decide with access to both their briefing and received messages.
+
+\paragraph{Falsification: Scramble.} All briefings across all periods within a country are pooled and randomly redistributed, breaking the link between a period's $\theta$ and the distribution of briefings.
+
+\paragraph{Falsification: Flip.} The z-score is negated before briefing generation: agents who should see weak-regime cues receive strong-regime cues and vice versa.
+
+\subsection{Part II Treatments}
+
+\paragraph{Stability-maximizing.} Near $\theta^*$, clarity width is multiplied by 4, the dissent floor is raised to 0.45, and the directional slope is flattened by a factor of 0.25.
+
+\paragraph{Instability-maximizing.} Near $\theta^*$, clarity width is multiplied by 0.15, the dissent floor is lowered to 0.05, and the directional slope is steepened by a factor of 3.
+
+\paragraph{Public signal injection.} A shared ``news bulletin'' generated from $\theta$ with 4 observations is appended to each agent's private briefing, creating a common-knowledge channel.
+
+\paragraph{Upper censorship.} States above $\theta^*$ are pooled: agents receive an identical censored briefing. States below $\theta^*$ are fully revealed \citep{kolotilin2022}.
+
+\paragraph{Lower censorship.} The mirror image: states below $\theta^*$ are pooled, and states above are fully revealed.
+
+\paragraph{Surveillance.} The communication prompt is augmented with: \textit{``You have reason to believe that your communications are being monitored by regime security services. Messages deemed subversive could have serious consequences for you and your contacts.''}
+
+\paragraph{Propaganda.} Regime plant agents ($k = 2, 5, 10$) participate in the communication network but transmit fixed pro-regime messages and always STAY.
+
+\subsection{Models and Parameters}
+
+\input{tables/tab_models.tex}
+
+I test nine architecturally distinct models spanning six architecture families (Table~\ref{tab:models}). Models range from 3 billion to 235 billion parameters, including both dense architectures (Llama, Mistral, OLMo) and mixture-of-experts (Qwen). All experiments use $N = 25$ agents per country--period and $\sigma = 0.3$, with sample sizes varying by model and treatment as reported in Table~\ref{tab:models}. I vary $B$ and $C$ such that $\theta^* = B/(B+C)$ has a mean of approximately 0.45 across periods.
+
+For the information design experiments, I fix $B = C = 1$ (so $\theta^* = 0.50$) and a grid of 9 values of $\theta$ spanning $[\theta^* - 0.30, \theta^* + 0.30] = [0.20, 0.80]$, running repeated country--periods per $(\text{design}, \theta)$ cell with 25 agents each. Baseline, stability, censorship, scramble, and flip use 30 repetitions per cell (270 observations per design). Instability and public signal use 60 repetitions per cell (540 observations). Single-channel decomposition uses 10 repetitions per cell (90 observations) for each channel. The primary model is Mistral Small Creative. Cross-model replication uses six additional models.
+
+
+%% ============================================================
+%% 5. RESULTS: PURE GLOBAL GAME
+%% ============================================================
+\section{Do LLM Agents Play the Global Game?} \label{sec:results}
+
+\subsection{Aggregate Alignment}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig01_sigmoid.pdf}
+  \caption{Empirical join fraction vs.\ theoretical attack mass $A(\theta)$, pooled across all nine models. Each point is one country--period (1,600 observations). The pooled correlation is $r = +0.67$; the mean across individual models is $r = +0.73$ (Table~\ref{tab:main_results}), with all nine individually significant at $p < 0.001$.}
+  \label{fig:sigmoid}
+\end{figure}
+
+\begin{result}[Equilibrium Alignment]
+Across nine models and 1,600 country--periods in the pure global game treatment, the Pearson correlation between the empirical join fraction and the theoretical attack mass $A(\theta)$ averages $r = +0.73$ ($p < 0.001$ for every model).
+\end{result}
+
+Table~\ref{tab:main_results} reports results by model. Correlations range from $r = +0.65$ (OLMo 3 7B) to $r = +0.84$ (Trinity Large), with the pooled correlation at $r = +0.67$---lower than any individual model's because heterogeneous mean join rates across models add noise when pooling. The pooled OLS regression yields:
+\begin{equation}
+    J = 0.17 + 0.52\,A(\theta), \quad R^2 = 0.45.
+\end{equation}
+
+The slope of 0.52 indicates that LLM agents respond to the theoretical attack mass at roughly half the predicted rate. The intercept of 0.17 reflects a baseline propensity to join even when the equilibrium predicts near-zero participation.
+
+\input{tables/tab_main_results.tex}
+
+The mean join rate across all models is 0.43, slightly below the theoretical mean. OLMo 3 7B stands out with a mean join rate of 0.72---a substantial action bias---yet it still produces a significant positive correlation ($r = +0.65$, $p < 0.001$), indicating that even a model biased toward joining responds to the direction of the signal.
+
+\subsection{Cross-Model Heterogeneity}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig02_cross_model.pdf}
+  \caption{Cross-model summary of signal monotonicity. Points report $|r(\theta,\ \mathrm{join})|$ under pure and communication; $x$ markers (if any) indicate models where scrambling does not collapse the correlation ($|r|>0.3$).}
+  \label{fig:cross_model}
+\end{figure}
+
+The cross-model results reveal two patterns. First, the equilibrium alignment is stable across architectures: the nine models span a range of only $r \in [0.65, 0.84]$, despite differing in parameter count by nearly two orders of magnitude (3B to 235B). This suggests that the ability to extract decision-relevant content from narrative text is a generic capability of instruction-tuned language models.
+
+Second, the mean join rate varies across models---from 0.37 (Mistral Small Creative) to 0.72 (OLMo 3 7B)---reflecting model-specific action biases. These biases shift the intercept of the join-fraction-vs-attack-mass relationship but do not substantially affect the slope or correlation. In the language of the global games model, different LLMs implement different cutoff strategies, but all respond monotonically to the underlying signal.
+
+
+%% ============================================================
+%% 6. FALSIFICATION
+%% ============================================================
+\section{Falsification Tests} \label{sec:falsification}
+
+The positive correlation documented in Section~\ref{sec:results} admits an alternative explanation: LLM agents might simply produce stereotyped responses that happen to correlate with regime strength for reasons unrelated to the briefing content. The scramble and flip tests discriminate between this alternative and genuine signal extraction.
+
+\subsection{Cross-Period Scramble}
+
+\begin{result}[Signal Dependence]
+Cross-period scrambling of briefings reduces the mean correlation from $r = +0.73$ to $r = +0.23$ across eight models. The pooled correlation drops from $r = +0.67$ to $r = +0.10$ (Fisher $z = 18.59$, $p < 0.001$).
+\end{result}
+
+The scramble preserves the marginal distribution of briefing content but breaks the mapping from each period's $\theta$ to the signals agents receive. The residual positive correlation ($+0.23$ mean, $+0.10$ pooled) is small relative to the baseline and varies across models ($-0.13$ to $+0.42$), consistent with noise in finite samples.
+
+\subsection{Signal Flip}
+
+\begin{result}[Signal Direction]
+Inverting the signal direction flips the mean correlation from $r = +0.73$ to $r = -0.67$ across eight models. The pooled correlation moves from $r = +0.67$ to $r = -0.63$ (Fisher $z = 40.76$, $p < 0.001$).
+\end{result}
+
+The flip negates the z-score before briefing generation, producing a near-symmetric reversal ($+0.73 \to -0.67$). This makes it unlikely that the baseline correlation reflects structural features of the prompt or model-specific tendencies.
+
+\subsection{Cross-Model Replication}
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/fig03_falsification.pdf}
+  \caption{Falsification triptych. \textit{Left:} Pure global game (mean $r = +0.73$). \textit{Center:} Cross-period scramble breaks the $\theta$-to-briefing mapping (mean $r = +0.23$). \textit{Right:} Signal flip inverts the mapping (mean $r = -0.67$). Each panel pools data from models with full falsification suites.}
+  \label{fig:falsification}
+\end{figure*}
+
+The pure $\to$ scramble $\to$ flip pattern replicates across all models with full falsification suites:
+
+\begin{itemize}
+    \item \textbf{Mistral Small Creative:} $+0.67 \to +0.42 \to -0.62$
+    \item \textbf{Llama 3.3 70B:} $+0.79 \to +0.33 \to -0.73$
+    \item \textbf{OLMo 3 7B:} $+0.65 \to +0.14 \to -0.56$
+    \item \textbf{Ministral 3B:} $+0.79 \to +0.30 \to -0.74$
+    \item \textbf{Qwen3 30B:} $+0.78 \to +0.32 \to -0.71$
+    \item \textbf{GPT-OSS 120B:} $+0.70 \to -0.13 \to -0.64$
+    \item \textbf{Trinity Large:} $+0.84 \to +0.32 \to -0.70$
+    \item \textbf{MiniMax M2-Her:} $+0.66 \to +0.14 \to -0.69$
+\end{itemize}
+
+Every model shows the same qualitative pattern: strong positive correlation under pure, collapse under scramble, and sign reversal under flip. This holds for every model with the full falsification suite.
+
+\subsection{Identification: Text Baseline Test}
+
+The briefing generator maps z-scores monotonically to text---could a model that simply reads briefing sentiment, without any strategic reasoning, produce the observed sigmoid? To test this, I construct the simplest possible text-only predictor.
+
+The generator assigns each briefing an internal \textit{direction} score $d \in [0,1]$, where $d = 1$ indicates regime-favorable language. A naive baseline predicts $\hat{p}_{\text{join}} = 1 - d$: join whenever the text sounds bad for the regime. This is the prediction a pure sentiment reader would make.
+
+The correlation between this baseline and actual LLM decisions is $r = 0.80$---confirming that the text carries signal (as designed, since briefings are constructed to convey z-score content). However, the LLM's empirical join curve is substantially steeper than the text baseline (Figure~\ref{fig:text_baseline}). The fitted logistic has slope 1.78, producing a sharp transition around $z = 0$, while the text baseline drifts gradually from $\approx 0.93$ to $\approx 0.10$ across the full z-score range. The encoder is essentially monotone ($r(z, d) = 0.995$).
+
+The gap between the text baseline and the empirical sigmoid indicates that the LLM sharpens the signal beyond surface sentiment, producing threshold-like behavior rather than linearly tracking the briefing's tone. This is consistent with---though does not prove---strategic information processing.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig15_text_baseline.pdf}
+  \caption{Text baseline identification test. Blue: empirical LLM join rate across z-scores. Orange: naive text-only predictor ($1 - \text{direction}$, $r = 0.80$). Red: fitted logistic (slope = 1.78). The LLM produces a steeper transition than the text baseline, indicating processing beyond sentiment reading. Mistral Small Creative, 210 observations.}
+  \label{fig:text_baseline}
+\end{figure}
+
+
+%% ============================================================
+%% 7. COMMUNICATION
+%% ============================================================
+\section{Communication} \label{sec:communication}
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/fig05_communication.pdf}
+  \caption{Communication effect by regime strength, pooled across nine models. Communication increases join rates for weak regimes ($\theta < \theta^*$) but has no effect or slightly reduces join rates for strong regimes ($\theta > \theta^*$).}
+  \label{fig:communication}
+\end{figure*}
+
+\begin{result}[Communication raises join rates asymmetrically]
+Pre-play communication raises the mean join rate by 3.7 percentage points, from 0.429 to 0.466 ($t = 2.75$, $p < 0.01$), pooled across nine models. The effect is concentrated in weak-regime environments ($+8.8$~pp for $\theta < \theta^* - 1$) and reverses for strong regimes ($-2.5$~pp for $\theta > \theta^* + 1$).
+\end{result}
+
+Agents send a message to their network neighbors and observe received messages before deciding. The effect is heterogeneous across models: six of nine show positive effects ($+0.1$ to $+8.3$~pp), while three show small negative effects ($-2.3$ to $-4.6$~pp). Communication does not change the \textit{correlation} with the theoretical prediction ($r = +0.73$ vs.\ $+0.73$ under pure); it shifts the level of coordination but preserves the signal structure. The asymmetry is consistent with passive Bayesian updating: agents update toward joining when neighbors' correlated signals reveal regime weakness, with a floor effect preventing further declines under strong regimes where join rates are already near zero.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig06_agent_threshold.pdf}
+  \caption{Agent-level threshold behavior. The probability of joining as a function of the agent's z-score, pooled across models.}
+  \label{fig:agent_threshold}
+\end{figure}
+
+
+%% ============================================================
+%% 8. INFORMATION DESIGN
+%% ============================================================
+\section{Information Design} \label{sec:infodesign}
+
+Part~I reported alignment using $r(J, A(\theta))$, which is positive because both the attack mass and the join fraction decrease in $\theta$. From this section onward, the information design experiments use a fixed $\theta$-grid and report $r(J, \theta)$ directly, which is \textit{negative} under equilibrium play. The sign change reflects the convention, not a behavioral reversal.
+
+\subsection{Treatment Effects}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig07_all_designs.pdf}
+  \caption{Join fraction as a function of $\theta$ under baseline, stability, instability, and public signal information designs. Baseline and stability have $N = 270$; instability and public signal have $N = 540$. Mistral Small Creative model.}
+  \label{fig:all_designs}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig08_treatment_effect.pdf}
+  \caption{Treatment effect $\Delta(\theta) = \text{design join} - \text{baseline join}$ as a function of $\theta$. Negative values indicate the design suppresses coordination.}
+  \label{fig:treatment_effect}
+\end{figure}
+
+Table~\ref{tab:infodesign_summary} summarizes the main results. The baseline condition produces a mean join rate of 12.4\% with a strong negative correlation between $\theta$ and join fraction ($r = -0.812$, $p < 0.001$).
+
+\begin{result}[Information Design Shifts Coordination]
+All three information designs produce measurable shifts in coordination relative to baseline.
+\end{result}
+
+The \textbf{stability design} sharply increases coordination: mean join rises from 12.4\% to 31.9\% ($+19.5$~pp), and the $\theta$--join relationship flattens ($r = -0.626$ vs.\ $-0.812$ at baseline). The increase is present at every $\theta$ grid point; even at $\theta = 0.80$, join rises from 0.8\% to 13.9\%. This pattern is consistent with pooling induced by ambiguity and mixed evidence: when strong-regime briefings retain substantial destabilizing cues, agents no longer sharply reduce participation in high-$\theta$ states.
+
+The \textbf{instability design} reduces the mean join rate to 6.7\%, a reduction of 5.7~pp from baseline. The sharper signals allow agents to more accurately perceive regime strength, and agents with sharper information about states above $\theta^*$ are more clearly deterred from joining.
+
+The \textbf{public signal} produces the largest reduction in coordination: mean join rate falls to 1.7\%, a reduction of 10.7~pp. The common news bulletin reveals that the regime is strong (since the grid is centered on $\theta^*$ and extends upward), and the overweighting of public information documented by \citet{morris2002} amplifies its effect. The correlation between $\theta$ and join fraction drops to $r = -0.537$, suggesting agents weight the public signal heavily enough to partially displace private information.
+
+\input{tables/tab_infodesign_summary.tex}
+
+\subsection{Censorship}
+
+\citet{kolotilin2022} proved that upper censorship is optimal for all priors when the sender's marginal utility is quasi-concave. I implement two censorship designs.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/fig09_censorship.pdf}
+  \caption{Join fraction under upper and lower censorship vs.\ baseline. Upper censorship pools states above $\theta^*$, creating a flat join rate in the censored region.}
+  \label{fig:censorship}
+\end{figure*}
+
+\begin{result}[Upper Censorship Raises Join Rates]
+Upper censorship raises the mean join rate to 30.9\%, an increase of 18.5~pp over baseline. The effect is concentrated in the censored region ($\theta \geq \theta^*$): at $\theta = 0.50$, join rates rise from 12.3\% to 52.7\% ($+40.4$~pp). Below the censorship threshold, join rates are essentially unchanged.
+\end{result}
+
+The flat plateau at approximately 53\% in the censored region is clear: agents who cannot distinguish $\theta = 0.50$ from $\theta = 0.80$ behave as if the regime is moderately vulnerable. This is consistent with the pooling effect predicted by the theory.
+
+\begin{result}[Lower Censorship Creates a Symmetric Plateau]
+Lower censorship produces a mean join rate of 39.0\% ($+26.6$~pp over baseline). The correlation flips sign to $r = +0.731$, reflecting the inverted structure.
+\end{result}
+
+\subsection{Falsification Within Information Design}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig10_infodesign_falsification.pdf}
+  \caption{Falsification within information design. Scrambling collapses the $\theta$-join correlation to $r = +0.037$; flipping inverts it to $r = +0.823$.}
+  \label{fig:infodesign_falsification}
+\end{figure}
+
+Under the scramble condition, the correlation between $\theta$ and join fraction collapses to $r = +0.037$ ($p = 0.55$). Under the flip condition, the correlation inverts to $r = +0.823$ ($p < 0.001$) with mean join rate soaring to 66.3\%. These results confirm that the information design effects operate through the intended signal channel.
+
+
+%% ============================================================
+%% 9. SURVEILLANCE
+%% ============================================================
+\section{Surveillance: Computational Preference Falsification} \label{sec:surveillance}
+
+\citet{kuran1991} argued that authoritarian regimes sustain themselves partly through preference falsification. I test this by introducing a surveillance treatment in the communication game.
+
+\subsection{Design}
+
+In the surveillance treatment, the communication prompt is augmented with a warning that communications are being monitored by regime security services. The surveillance manipulation affects only the communication phase; the decision prompt is unchanged. This isolates the chilling effect: any difference must arise from agents self-censoring their communications.
+
+\subsection{Results}
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/fig12_surveillance.pdf}
+  \caption{Join rates under regular communication vs.\ surveillance communication. Surveillance reduces join rates by 17.5 percentage points ($p < 0.001$). Results shown for three models: Mistral ($-17.5$~pp), Llama ($-8.9$~pp), and Qwen3 ($-10.9$~pp).}
+  \label{fig:surveillance}
+\end{figure*}
+
+\begin{result}[Surveillance Produces a Large Chilling Effect]
+In the primary model (Mistral Small Creative), surveillance reduces mean join rates from 45.2\% to 27.7\%, a difference of 17.5 percentage points ($t = -9.17$, $p < 0.001$). The correlation between $\theta$ and join fraction is preserved under surveillance ($r = -0.809$ vs.\ $-0.817$), indicating that surveillance operates as a level shift rather than disrupting signal processing.
+\end{result}
+
+The magnitude---17.5~pp---exceeds the communication premium itself (3.7~pp in Part~I). Surveillance does not merely neutralize the coordination benefit; it contaminates the information environment with self-censored messages, pushing join rates \textit{below} what they would be without communication at all. The effect replicates across three architectures: Mistral ($-17.5$~pp), Llama ($-8.9$~pp), and Qwen3 ($-10.9$~pp).
+
+
+%% ============================================================
+%% 10. PROPAGANDA
+%% ============================================================
+\section{Propaganda: Information Contamination} \label{sec:propaganda}
+
+\citet{edmond2013} modeled propaganda as the regime shifting citizens' signal distributions. I implement this by introducing propaganda agents---regime plants who transmit fixed pro-regime messages and always STAY.
+
+\subsection{Results}
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/fig13_propaganda.pdf}
+  \caption{Dose-response relationship between number of propaganda agents and mean join rate. Results shown for Mistral (primary) and Llama (replication). Regular communication ($k = 0$) serves as baseline.}
+  \label{fig:propaganda}
+\end{figure*}
+
+\begin{result}[Propaganda Suppresses Coordination Primarily Through Mechanical Dilution]
+Mean join fraction falls from 45.2\% ($k = 0$) to 37.5\% ($k = 2$), 31.3\% ($k = 5$), and 23.3\% ($k = 10$). However, the behavioral effect on real citizens is much smaller and saturates: 45.2\% ($k = 0$), 40.7\% ($k = 2$, $-4.5$~pp), 39.1\% ($k = 5$, $-6.1$~pp), 38.8\% ($k = 10$, $-6.4$~pp).
+\end{result}
+
+Propaganda works through two channels: a \textit{mechanical} channel (plants always STAY, directly reducing attack mass) and a \textit{behavioral} channel (pro-regime messages reduce real citizens' willingness to join). The mechanical channel is approximately linear in $k$; the behavioral channel saturates quickly---doubling plants from 5 to 10 produces essentially no additional behavioral effect ($-0.3$~pp).
+
+The propaganda effect replicates with Llama 3.3 70B, which shows a behavioral effect of $-2.7$~pp at $k = 5$---smaller than Mistral's $-6.1$~pp but in the same direction, confirming the qualitative pattern across architectures.
+
+\input{tables/tab_surveillance_propaganda.tex}
+
+
+%% ============================================================
+%% 12. INSTRUMENT INTERACTIONS
+%% ============================================================
+\section{Instrument Interactions} \label{sec:interactions}
+
+\subsection{Propaganda $\times$ Surveillance}
+
+When propaganda ($k = 5$) and surveillance are combined, the mean join rate falls to 19.4\%, a reduction of 25.8~pp from baseline. The combined effect is less than the sum of individual effects (31.4~pp), suggesting diminishing returns: once surveillance has suppressed expressed dissent, propaganda provides less additional deterrence.
+
+\subsection{Surveillance $\times$ Censorship}
+
+\begin{result}[Surveillance $\times$ Censorship Nearly Eliminates Coordination]
+Under surveillance alone (infodesign framework), the baseline join rate falls from 12.4\% to 0.9\%. Upper censorship under surveillance: 3.7\% ($-27.2$~pp vs.\ upper censorship alone). Lower censorship under surveillance: 4.2\% ($-34.8$~pp vs.\ lower censorship alone).
+\end{result}
+
+The surveillance-censorship interaction is super-additive: surveillance does not merely reduce join rates by a fixed amount but eliminates the coordination mechanism through which information design effects propagate.
+
+\input{tables/tab_surv_censor.tex}
+
+
+%% ============================================================
+%% 14. CONCLUSION
+%% ============================================================
+\section{Conclusion} \label{sec:conclusion}
+
+Nine architecturally distinct LLMs, given private signals as natural-language briefings, produce aggregate behavior that tracks the Bayesian Nash equilibrium of the \citet{morris2003} regime change game (mean $r = +0.73$, $p < 0.001$). Scrambling and inverting signals confirm that this correlation is driven by briefing content, not prompt artifacts. Information design then shifts coordination in the directions theory predicts: censorship raises join rates through pooling, surveillance suppresses them through preference falsification, and the combination nearly eliminates coordination.
+
+I do not claim that LLMs are Bayesian agents---the mechanism by which they process narrative text likely differs fundamentally from Bayesian updating. But the behavioral regularity is precisely what the global games framework predicts: monotone response to signal content, threshold-like decisions, and sensitivity to the information structure. This regularity is what makes the platform useful.
+
+The full regime change game has resisted laboratory implementation because it requires conveying rich private signals, creating genuine strategic uncertainty, and coordinating large groups. LLM agents sidestep these practical constraints. They can be given arbitrary information structures, embedded in any network topology, and run at scale. The same platform can be applied to currency crises, bank runs, and other coordination games where information processing is central to behavior.
+
+
+%% ============================================================
+%% REFERENCES
+%% ============================================================
+\FloatBarrier
+\bibliographystyle{plainnat}
+
+\begingroup
+\setlength{\bibsep}{0pt}
+\setlength{\itemsep}{0pt}
+\scriptsize
+\renewcommand{\baselinestretch}{0.93}\selectfont
+\begin{thebibliography}{99}
+
+%% ---- A ----
+
+\bibitem[Aher et al.(2023)]{aher2023}
+Aher, G., Arriaga, R.~I., and Kalai, A.~T. (2023).
+\newblock Using large language models to simulate multiple humans and replicate human subject studies.
+\newblock \textit{Proceedings of the 40th International Conference on Machine Learning} (ICML).
+
+\bibitem[Akata et al.(2025)]{akata2025}
+Akata, E., Schulz, L., Coda-Forno, J., Oh, S.~J., Bethge, M., and Schulz, E. (2025).
+\newblock Playing repeated games with large language models.
+\newblock \textit{Nature Human Behaviour}, 9:1380--1390.
+
+\bibitem[Angeletos et al.(2007)]{angeletos2007a}
+Angeletos, G.-M., Hellwig, C., and Pavan, A. (2007).
+\newblock Dynamic global games of regime change: Learning, multiplicity, and the timing of attacks.
+\newblock \textit{Econometrica}, 75(3):711--756.
+
+\bibitem[Argyle et al.(2023)]{argyle2023}
+Argyle, L.~P., Busby, E.~C., Fulda, N., Gubler, J.~R., Rytting, C., and Wingate, D. (2023).
+\newblock Out of one, many: Using language models to simulate human samples.
+\newblock \textit{Political Analysis}, 31(3):337--351.
+
+\bibitem[Avoyan(2020)]{avoyan2020}
+Avoyan, A. (2020).
+\newblock Does cheap talk promote coordination under asymmetric information? An experimental study on global games.
+\newblock \textit{Journal of Economic Behavior \& Organization}, 169:204--224.
+
+%% ---- B ----
+
+\bibitem[Bail et al.(2024)]{bail2024}
+Bail, C.~A. et al. (2024).
+\newblock Simulating opinion dynamics with networks of {LLM}-based agents.
+\newblock arXiv preprint arXiv:2311.09618.
+
+\bibitem[Bergemann and Morris(2016)]{bergemann2016}
+Bergemann, D. and Morris, S. (2016).
+\newblock Information design, {B}ayesian persuasion, and {B}ayes correlated equilibrium.
+\newblock \textit{American Economic Review}, 106(5):586--591.
+
+\bibitem[Bergemann and Morris(2019)]{bergemann2019information}
+Bergemann, D. and Morris, S. (2019).
+\newblock Information design: A unified perspective.
+\newblock \textit{Journal of Economic Literature}, 57(1):44--95.
+
+\bibitem[Blume and Ortmann(2007)]{blume2007}
+Blume, A. and Ortmann, A. (2007).
+\newblock The effects of costless pre-play communication: Experimental evidence from games with {P}areto-ranked equilibria.
+\newblock \textit{Journal of Economic Theory}, 132(1):274--290.
+
+\bibitem[Brandts and Cooper(2006)]{brandts2006}
+Brandts, J. and Cooper, D. (2006).
+\newblock A change would do you good: An experimental study on how to overcome coordination failure in organizations.
+\newblock \textit{American Economic Review}, 96(3):669--693.
+
+%% ---- C ----
+
+\bibitem[Carlini et al.(2025)]{carlini2025}
+Carlini, A. et al. (2025).
+\newblock Large language models show amplified cognitive biases in moral decision-making.
+\newblock \textit{Proceedings of the National Academy of Sciences}, 122.
+
+\bibitem[Carlsson and van Damme(1993)]{carlsson1993}
+Carlsson, H. and van Damme, E. (1993).
+\newblock Global games and equilibrium selection.
+\newblock \textit{Econometrica}, 61(5):989--1018.
+
+\bibitem[Carter and Carter(2021)]{carter2021}
+Carter, E.~B. and Carter, B.~L. (2021).
+\newblock Propaganda and protest in autocracies.
+\newblock \textit{Journal of Conflict Resolution}, 65(5):919--949.
+
+\bibitem[Chen and Yang(2019)]{chen2019}
+Chen, Y. and Yang, D.~Y. (2019).
+\newblock The impact of media censorship: 1984 or {B}rave {N}ew {W}orld?
+\newblock \textit{American Economic Review}, 109(6):2294--2332.
+
+\bibitem[Corrupted by Reasoning(2025)]{corrupted2025}
+{Corrupted by Reasoning} (2025).
+\newblock Reasoning language models become free-riders in public goods games.
+\newblock arXiv preprint arXiv:2506.23276.
+
+\bibitem[Crawford and Sobel(1982)]{crawford1982}
+Crawford, V. and Sobel, J. (1982).
+\newblock Strategic information transmission.
+\newblock \textit{Econometrica}, 50(6):1431--1451.
+
+%% ---- D ----
+
+\bibitem[Diamond and Dybvig(1983)]{diamond1983}
+Diamond, D.~W. and Dybvig, P.~H. (1983).
+\newblock Bank runs, deposit insurance, and liquidity.
+\newblock \textit{Journal of Political Economy}, 91(3):401--419.
+
+%% ---- E ----
+
+\bibitem[Edmond(2013)]{edmond2013}
+Edmond, C. (2013).
+\newblock Information manipulation, coordination, and regime change.
+\newblock \textit{Review of Economic Studies}, 80(4):1422--1458.
+
+\bibitem[Ellingsen and {\"O}stling(2010)]{ellingsen2010}
+Ellingsen, T. and {\"O}stling, R. (2010).
+\newblock When does communication improve coordination?
+\newblock \textit{American Economic Review}, 100(4):1695--1724.
+
+\bibitem[Enikolopov et al.(2020)]{enikolopov2020}
+Enikolopov, R., Makarin, A., and Petrova, M. (2020).
+\newblock Social media and protest participation: Evidence from {R}ussia.
+\newblock \textit{Econometrica}, 88(4):1478--1514.
+
+%% ---- F ----
+
+\bibitem[Farrell and Rabin(1996)]{farrell1996}
+Farrell, J. and Rabin, M. (1996).
+\newblock Cheap talk.
+\newblock \textit{Journal of Economic Perspectives}, 10(3):103--118.
+
+\bibitem[Frankel et al.(2003)]{frankel03}
+Frankel, D.~M., Morris, S., and Pauzner, A. (2003).
+\newblock Equilibrium selection in global games with strategic complementarities.
+\newblock \textit{Journal of Economic Theory}, 108(1):1--44.
+
+%% ---- G ----
+
+\bibitem[Gao et al.(2025)]{gao2025}
+Gao, C. et al. (2025).
+\newblock Validation is the central challenge for generative social simulation: A critical review of {LLM}s in agent-based modeling.
+\newblock \textit{Artificial Intelligence Review}, 58.
+
+\bibitem[Goldstein and Huang(2016)]{goldstein2016}
+Goldstein, I. and Huang, C. (2016).
+\newblock Bayesian persuasion in coordination games.
+\newblock \textit{American Economic Review: Papers \& Proceedings}, 106(5):592--596.
+
+\bibitem[Grossmann et al.(2025)]{grossmann2025}
+Grossmann, I. et al. (2025).
+\newblock Do large language models solve the problems of agent-based modeling? {A} critical review of generative social simulations.
+\newblock arXiv preprint arXiv:2504.03274.
+
+\bibitem[Guo(2023)]{guo2023}
+Guo, F. (2023).
+\newblock {GPT} in game theory experiments.
+\newblock arXiv preprint arXiv:2305.05516.
+
+\bibitem[Guriev and Treisman(2019)]{guriev2019}
+Guriev, S. and Treisman, D. (2019).
+\newblock Informational autocrats.
+\newblock \textit{Journal of Economic Perspectives}, 33(4):100--127.
+
+%% ---- H ----
+
+\bibitem[Helland et al.(2021)]{helland2021}
+Helland, L., Holm, S., and Saethre, M. (2021).
+\newblock Information quality and regime change: Evidence from the lab.
+\newblock \textit{Journal of Economic Behavior \& Organization}, 191:538--554.
+
+\bibitem[Heinemann et al.(2004)]{heinemann2004}
+Heinemann, F., Nagel, R., and Ockenfels, P. (2004).
+\newblock The theory of global games on test: Experimental analysis of coordination games with public and private information.
+\newblock \textit{Econometrica}, 72(5):1583--1599.
+
+\bibitem[Heinemann et al.(2009)]{heinemann2009}
+Heinemann, F., Nagel, R., and Ockenfels, P. (2009).
+\newblock Measuring strategic uncertainty in coordination games.
+\newblock \textit{Review of Economic Studies}, 76(1):181--221.
+
+\bibitem[Horton(2023)]{horton2023}
+Horton, J.~J. (2023).
+\newblock Large language models as simulated economic agents: What can we learn from homo silicus?
+\newblock \textit{NBER Working Paper} No.~31122.
+
+\bibitem[Huang et al.(2024)]{huang2024}
+Huang, S. et al. (2024).
+\newblock How ethical should {AI} be? {H}ow {AI} alignment shapes the risk preferences of {LLM}s.
+\newblock arXiv preprint arXiv:2406.01168.
+
+%% ---- I ----
+
+\bibitem[Inostroza and Pavan(2025)]{inostroza2025}
+Inostroza, N. and Pavan, A. (2025).
+\newblock Adversarial coordination and public information design.
+\newblock \textit{Theoretical Economics}, 20:763--813.
+
+%% ---- J ----
+
+\bibitem[Jost et al.(2018)]{jost2018}
+Jost, J.~T., Barber{\'a}, P., Bonneau, R., Langer, M., Metzger, M., Nagler, J., Sterling, J., and Tucker, J.~A. (2018).
+\newblock How social media facilitates political protest: Information, motivation, and social networks.
+\newblock \textit{Political Psychology}, 39(S1):85--118.
+
+%% ---- K ----
+
+\bibitem[Kamenica and Gentzkow(2011)]{kamenica2011}
+Kamenica, E. and Gentzkow, M. (2011).
+\newblock Bayesian persuasion.
+\newblock \textit{American Economic Review}, 101(6):2590--2615.
+
+\bibitem[King et al.(2013)]{king2013}
+King, G., Pan, J., and Roberts, M.~E. (2013).
+\newblock How censorship in {C}hina allows government criticism but silences collective expression.
+\newblock \textit{American Political Science Review}, 107(2):326--343.
+
+\bibitem[King et al.(2017)]{king2017}
+King, G., Pan, J., and Roberts, M.~E. (2017).
+\newblock How the {C}hinese government fabricates social media posts for strategic distraction, not engaged argument.
+\newblock \textit{American Political Science Review}, 111(3):484--501.
+
+\bibitem[Kolotilin et al.(2022)]{kolotilin2022}
+Kolotilin, A., Mylovanov, T., and Zapechelnyuk, A. (2022).
+\newblock Censorship as optimal persuasion.
+\newblock \textit{Theoretical Economics}, 17:561--585.
+
+\bibitem[Kuran(1991)]{kuran1991}
+Kuran, T. (1991).
+\newblock Now out of never: The element of surprise in the {E}ast {E}uropean revolution of 1989.
+\newblock \textit{World Politics}, 44(1):7--48.
+
+%% ---- L ----
+
+\bibitem[Li et al.(2022)]{li2022}
+Li, F., Song, Y., and Zhao, M. (2022).
+\newblock Global manipulation by local obfuscation.
+\newblock \textit{Journal of Economic Theory}, 207.
+
+\bibitem[Lorentzen(2014)]{lorentzen2014}
+Lorentzen, P. (2014).
+\newblock China's strategic censorship.
+\newblock \textit{American Journal of Political Science}, 58(2):402--414.
+
+\bibitem[Lor{\`e} and Heydari(2024)]{lore2024}
+Lor{\`e}, N. and Heydari, B. (2024).
+\newblock Strategic behavior of large language models and the role of game structure versus contextual framing.
+\newblock \textit{Scientific Reports}, 14:18490.
+
+%% ---- M ----
+
+\bibitem[Mathevet et al.(2020)]{mathevet2020}
+Mathevet, L., Perego, J., and Taneva, I. (2020).
+\newblock On information design in games.
+\newblock \textit{Journal of Political Economy}, 128(4):1370--1404.
+
+\bibitem[Morris and Shin(1998)]{morris1998}
+Morris, S. and Shin, H.~S. (1998).
+\newblock Unique equilibrium in a model of self-fulfilling currency attacks.
+\newblock \textit{American Economic Review}, 88(3):587--597.
+
+\bibitem[Morris and Shin(2002)]{morris2002}
+Morris, S. and Shin, H.~S. (2002).
+\newblock Social value of public information.
+\newblock \textit{American Economic Review}, 92(5):1521--1534.
+
+\bibitem[Morris and Shin(2003)]{morris2003}
+Morris, S. and Shin, H.~S. (2003).
+\newblock Global games: Theory and applications.
+\newblock In Dewatripont, M., Hansen, L.~P., and Turnovsky, S.~J., editors, \textit{Advances in Economics and Econometrics}, pages 56--114. Cambridge University Press.
+
+%% ---- O ----
+
+\bibitem[Obstfeld(1996)]{obstfeld1996}
+Obstfeld, M. (1996).
+\newblock Models of currency crises with self-fulfilling features.
+\newblock \textit{European Economic Review}, 40(3-5):1037--1047.
+
+%% ---- P ----
+
+\bibitem[Palatsi et al.(2025)]{palatsi2025}
+Palatsi, A.~C., Martin-Gutierrez, S., Cardenal, A.~S., and Pellert, M. (2025).
+\newblock Large language models replicate and predict human cooperation across experiments in game theory.
+\newblock arXiv preprint arXiv:2511.04500.
+
+\bibitem[Park et al.(2023)]{park2023}
+Park, J.~S., O'Brien, J., Cai, C.~J., Morris, M.~R., Liang, P., and Bernstein, M.~S. (2023).
+\newblock Generative agents: Interactive simulacra of human behavior.
+\newblock \textit{Proceedings of the 36th Annual ACM Symposium on User Interface Software and Technology} (UIST).
+
+\bibitem[Penney(2016)]{penney2016}
+Penney, J.~W. (2016).
+\newblock Chilling effects: Online surveillance and {W}ikipedia use.
+\newblock \textit{Berkeley Technology Law Journal}, 31(1):117--182.
+
+\bibitem[Petrov et al.(2025)]{petrov2025}
+Petrov, A. et al. (2025).
+\newblock {LLM} strategic reasoning: Agentic study through behavioral game theory.
+\newblock arXiv preprint arXiv:2502.20432.
+
+\bibitem[Piatti et al.(2024)]{piatti2024}
+Piatti, G. et al. (2024).
+\newblock Cooperate or collapse: Emergence of sustainable cooperation in a society of {LLM} agents.
+\newblock \textit{Advances in Neural Information Processing Systems} (NeurIPS).
+
+%% ---- S ----
+
+\bibitem[Shadmehr and Bernhardt(2015)]{shadmehr2015}
+Shadmehr, M. and Bernhardt, D. (2015).
+\newblock State censorship.
+\newblock \textit{American Economic Journal: Microeconomics}, 7(2):280--307.
+
+\bibitem[Shurchkov(2013)]{shurchkov2013}
+Shurchkov, O. (2013).
+\newblock Coordination and learning in dynamic global games: Experimental evidence.
+\newblock \textit{Experimental Economics}, 16(2):313--334.
+
+\bibitem[Stoycheff(2016)]{stoycheff2016}
+Stoycheff, E. (2016).
+\newblock Under surveillance: Examining {F}acebook's spiral of silence effects in the wake of {NSA} internet monitoring.
+\newblock \textit{Journalism and Mass Communication Quarterly}, 93(2):296--311.
+
+\bibitem[Sun et al.(2025)]{sun2025survey}
+Sun, H. et al. (2025).
+\newblock Game theory meets large language models: A systematic survey with taxonomy and new frontiers.
+\newblock \textit{Proceedings of the International Joint Conference on Artificial Intelligence} (IJCAI).
+
+\bibitem[Szkup and Trevino(2020)]{szkup2020}
+Szkup, M. and Trevino, I. (2020).
+\newblock Sentiments, strategic uncertainty, and information structures in coordination games.
+\newblock \textit{Games and Economic Behavior}, 124:534--553.
+
+\end{thebibliography}
+\endgroup
+
+\clearpage
+\appendix
+\renewcommand{\thefigure}{A\arabic{figure}}
+\setcounter{figure}{0}
+\renewcommand{\thetable}{A\arabic{table}}
+\setcounter{table}{0}
+
+\section{Robustness} \label{sec:robustness}
+
+\begin{figure}[t]
+  \centering
+  \begin{subfigure}{0.49\columnwidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/figA1_agent_count.pdf}
+    \caption{Agent count variation ($n \in \{5, 10, 25, 50, 100\}$).}
+  \end{subfigure}\hfill
+  \begin{subfigure}{0.49\columnwidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/figA2_network.pdf}
+    \caption{Network density ($k = 4$ vs.\ $k = 8$).}
+  \end{subfigure}
+
+  \begin{subfigure}{0.98\columnwidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/figA3_bandwidth.pdf}
+    \caption{Bandwidth sensitivity (0.05, 0.15, 0.30).}
+  \end{subfigure}
+  \caption{Robustness checks for equilibrium alignment and treatment effects.}
+  \label{fig:robustness}
+\end{figure}
+
+These checks show that equilibrium alignment and the qualitative information design effects are stable to agent count, network density, and the proximity bandwidth.
+
+\paragraph{Group-size awareness.} In the main experiments, agents are told ``You do not know how many others will JOIN'' but are not told the group size, leaving them no basis for reasoning about coordination thresholds. As a robustness check, I run the pure and communication treatments with modified prompts that state ``You are one of 25 citizens deciding whether to JOIN an uprising or STAY home.'' Over 100 country--periods per treatment, the pure join rate is 0.507 (vs.\ 0.369 baseline) and the communication join rate is 0.473 (vs.\ 0.452 baseline). Monotone response to signals is preserved in both treatments. The communication premium, however, reverses: with group-size knowledge, communication \textit{lowers} join rates by 3.4~pp rather than raising them. One interpretation is that when agents know the group size, messages revealing others' reluctance become more informative about the probability of reaching critical mass, amplifying the deterrent effect of cautious peers. The level shift in the pure treatment suggests that group-size knowledge increases baseline willingness to coordinate, but the core finding---monotone signal response---is robust.
+
+\medskip
+\noindent \textit{Online appendix.} Additional supplemental material is in \texttt{online\_appendix.tex}.
+
+\end{document}
