@@ -12,9 +12,8 @@ __pycache__/
 *.fdb_latexmk
 *.fls
 
-# Compiled PDFs (regenerate from .tex)
-paper/paper.pdf
-paper/online_appendix.pdf
+# LaTeX build artifacts (not the PDFs themselves)
+paper/*.synctex.gz
 
 # Calibration raw data (large)
 output/**/*_raw.csv
