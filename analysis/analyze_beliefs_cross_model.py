@@ -56,6 +56,9 @@ def load_agents(log_path, verbose=False):
 def analyze_treatment(rows, label):
     """Compute key belief statistics for one treatment."""
     n = len(rows)
+    if n < 3:
+        print(f"\n  {label}: SKIP (N={n}, too few observations)")
+        return None
     beliefs = np.array([r["belief"] for r in rows])
     decisions = np.array([r["decision"] for r in rows])
     posteriors = np.array([r["posterior"] for r in rows])
@@ -151,8 +154,10 @@ def main():
                 results.append(analyze_treatment(rows, label))
                 seen_labels.add(label)
 
-    if not any("Llama" in r["label"] for r in results):
+    if not any(r and "Llama" in r["label"] for r in results):
         print("\nSKIP: Llama belief runs not found yet — run scripts/run_beliefs.sh first")
+
+    results = [r for r in results if r is not None]
 
     # Cross-model comparison table
     if len(results) > 1:
