@@ -33,7 +33,7 @@ uv run python -m agent_based_simulation.run comm \
   --n-periods 200 --n-countries 1 \
   --max-concurrent 200 \
   --elicit-beliefs --surveillance \
-  --output-dir output/meta-llama--llama-3.3-70b-instruct/_beliefs
+  --output-dir output/meta-llama--llama-3.3-70b-instruct/_beliefs_surveillance
 
 echo "=== 4/4: Mistral propaganda k=5 beliefs ==="
 uv run python -m agent_based_simulation.run comm \

@@ -30,6 +30,7 @@ class Agent:
     decision: str = "STAY"
     reasoning: str = ""
     belief: float | None = None  # elicited P(success), 0-100 scale
+    belief_raw: str = ""  # raw LLM response for debugging parse failures
     second_order_belief: float | None = None  # elicited "% who will JOIN", 0-100 scale
     model: str | None = None  # per-agent model override for mixed games
     is_propaganda: bool = False  # regime plant: sends pro-regime messages, always STAYs
@@ -286,9 +287,8 @@ def _parse_decision(response):
 
 
 SYSTEM_ELICIT_BELIEF = (
-    "You just made your decision. Now, on a scale from 0 to 100, "
-    "how likely do you think the uprising will succeed? "
-    "Reply with just a number from 0 to 100."
+    "Respond with ONLY a single integer between 0 and 100. "
+    "No words, no explanation, no punctuation — just the number."
 )
 
 
@@ -296,10 +296,17 @@ def _parse_belief(response: str) -> float | None:
     """Extract a 0-100 belief from the elicitation response."""
     if not response or _is_api_error_response(response):
         return None
-    # Find the first number (integer or decimal) in the response.
-    m = re.search(r"(\d+(?:\.\d+)?)", response)
+    # Try 1: response is just a number (ideal case).
+    stripped = response.strip().rstrip(".%")
+    m = re.match(r"^(\d+(?:\.\d+)?)$", stripped)
     if m:
         val = float(m.group(1))
+        if 0.0 <= val <= 100.0:
+            return val
+    # Try 2: find any number in 0-100 range in the response.
+    candidates = re.findall(r"\b(\d+(?:\.\d+)?)\b", response)
+    for c in candidates:
+        val = float(c)
         if 0.0 <= val <= 100.0:
             return val
     return None
@@ -312,21 +319,22 @@ async def _elicit_beliefs(agents, client, model_name, semaphore, call_kwargs):
         _call_llm(
             client, agent.model or model_name,
             SYSTEM_ELICIT_BELIEF,
-            f"You said: {agent.decision}. {agent.reasoning}\n\n"
-            "How likely (0-100) do you think the uprising will succeed?",
+            f"You chose to {agent.decision}. "
+            "How likely is the uprising to succeed (0 = impossible, 100 = certain)?\n\n"
+            "Answer with just the number:",
             semaphore, **call_kwargs,
         )
         for agent in real_agents
     ]
     responses = await asyncio.gather(*coros)
     for agent, response in zip(real_agents, responses):
+        agent.belief_raw = response or ""
         agent.belief = _parse_belief(response)
 
 
 SYSTEM_ELICIT_SECOND_ORDER = (
-    "You just made your decision. Now, what percentage of citizens "
-    "do you think will choose to JOIN the uprising? "
-    "Reply with just a number from 0 to 100."
+    "Respond with ONLY a single integer between 0 and 100. "
+    "No words, no explanation, no punctuation — just the number."
 )
 
 
@@ -337,8 +345,9 @@ async def _elicit_second_order(agents, client, model_name, semaphore, call_kwarg
         _call_llm(
             client, agent.model or model_name,
             SYSTEM_ELICIT_SECOND_ORDER,
-            f"You said: {agent.decision}. {agent.reasoning}\n\n"
-            "What percentage of citizens do you think will choose to JOIN? (0-100)",
+            f"You chose to {agent.decision}. "
+            "What percentage of citizens will choose to JOIN the uprising "
+            "(0 = none, 100 = all)?\n\nAnswer with just the number:",
             semaphore, **call_kwargs,
         )
         for agent in real_agents
@@ -407,6 +416,8 @@ def _serialize_agents(agents, include_messages: bool = False) -> list[dict]:
         }
         if a.belief is not None:
             row["belief"] = a.belief
+        if a.belief_raw:
+            row["belief_raw"] = a.belief_raw
         if a.second_order_belief is not None:
             row["second_order_belief"] = a.second_order_belief
         if a.model is not None:

@@ -20,6 +20,7 @@ import matplotlib.pyplot as plt
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 BACKUP = PROJECT_ROOT / "output" / "mistralai--mistral-small-creative" / "_overwrite_200period_backup"
 COMM_DIR = PROJECT_ROOT / "output" / "mistralai--mistral-small-creative" / "_beliefs_comm" / "mistralai--mistral-small-creative"
+PROP_DIR = PROJECT_ROOT / "output" / "mistralai--mistral-small-creative" / "_beliefs_propaganda_k5" / "mistralai--mistral-small-creative"
 FIG_DIR = PROJECT_ROOT / "paper" / "figures"
 FIG_DIR.mkdir(exist_ok=True)
 
@@ -45,6 +46,7 @@ plt.rcParams.update({
 C_PURE = "#636363"
 C_COMM = "#2166ac"
 C_SURV = "#7b3294"
+C_PROP = "#d6604d"
 
 
 def load_agents(log_path):
@@ -96,6 +98,11 @@ def main():
     comm = load_agents(COMM_DIR / "experiment_comm_log.json")
     surv = load_agents(BACKUP / "experiment_surveillance_beliefs_log.json")
 
+    # Propaganda k=5 (optional — may not exist yet)
+    prop_path = PROP_DIR / "experiment_comm_log.json"
+    prop = load_agents(prop_path) if prop_path.exists() else []
+    has_prop = len(prop) > 50
+
     fig, (ax_a, ax_b) = plt.subplots(1, 2, figsize=(TEXT_W, 2.6))
 
     # ── Panel (a): Stated belief vs Bayesian posterior ────────────
@@ -127,7 +134,7 @@ def main():
                         alpha=0.8, edgecolor="#ccc", linewidth=0.4))
     ax_a.set_title("(a) Beliefs track Bayesian posterior", fontsize=8, loc="left")
 
-    # ── Panel (b): Join rate by belief bin — three treatments ─────
+    # ── Panel (b): Join rate by belief bin — treatments ────────────
     bin_edges = np.array([0, 0.2, 0.4, 0.6, 0.8, 1.01])
     bin_labels = ["0\u201320", "20\u201340", "40\u201360", "60\u201380", "80\u2013100"]
 
@@ -142,22 +149,34 @@ def main():
     cc, cm, cse, cn = bin_data(comm_beliefs, comm_decisions, bin_edges)
     sc, sm, sse, sn = bin_data(surv_beliefs, surv_decisions, bin_edges)
 
+    n_groups = 4 if has_prop else 3
+    bar_w = 0.8 / n_groups
     x_pos = np.arange(len(pc))
-    bar_w = 0.25
-    ax_b.bar(x_pos - bar_w, pm, width=bar_w, color=C_PURE, alpha=0.85,
+
+    offsets = np.linspace(-0.4 + bar_w / 2, 0.4 - bar_w / 2, n_groups)
+    ax_b.bar(x_pos + offsets[0], pm, width=bar_w, color=C_PURE, alpha=0.85,
              label="Pure", zorder=3, edgecolor="white", linewidth=0.3)
-    ax_b.bar(x_pos, cm, width=bar_w, color=C_COMM, alpha=0.85,
+    ax_b.bar(x_pos + offsets[1], cm, width=bar_w, color=C_COMM, alpha=0.85,
              label="Communication", zorder=3, edgecolor="white", linewidth=0.3)
-    ax_b.bar(x_pos + bar_w, sm, width=bar_w, color=C_SURV, alpha=0.85,
+    ax_b.bar(x_pos + offsets[2], sm, width=bar_w, color=C_SURV, alpha=0.85,
              label="Surveillance", zorder=3, edgecolor="white", linewidth=0.3)
 
     # Error bars
-    ax_b.errorbar(x_pos - bar_w, pm, yerr=1.96 * pse, fmt="none",
+    ax_b.errorbar(x_pos + offsets[0], pm, yerr=1.96 * pse, fmt="none",
                   ecolor=C_PURE, elinewidth=0.6, capsize=2, zorder=4)
-    ax_b.errorbar(x_pos, cm, yerr=1.96 * cse, fmt="none",
+    ax_b.errorbar(x_pos + offsets[1], cm, yerr=1.96 * cse, fmt="none",
                   ecolor=C_COMM, elinewidth=0.6, capsize=2, zorder=4)
-    ax_b.errorbar(x_pos + bar_w, sm, yerr=1.96 * sse, fmt="none",
+    ax_b.errorbar(x_pos + offsets[2], sm, yerr=1.96 * sse, fmt="none",
                   ecolor=C_SURV, elinewidth=0.6, capsize=2, zorder=4)
+
+    if has_prop:
+        prop_beliefs = np.array([r["belief"] for r in prop])
+        prop_decisions = np.array([r["decision"] for r in prop])
+        rc, rm, rse, rn = bin_data(prop_beliefs, prop_decisions, bin_edges)
+        ax_b.bar(x_pos + offsets[3], rm, width=bar_w, color=C_PROP, alpha=0.85,
+                 label="Propaganda $k{=}5$", zorder=3, edgecolor="white", linewidth=0.3)
+        ax_b.errorbar(x_pos + offsets[3], rm, yerr=1.96 * rse, fmt="none",
+                      ecolor=C_PROP, elinewidth=0.6, capsize=2, zorder=4)
 
     ax_b.set_xlabel("Stated belief (percent)")
     ax_b.set_ylabel("Join rate")

@@ -19,17 +19,23 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SIGMA = 0.3
 
 
-def load_agents(log_path):
+def load_agents(log_path, verbose=False):
     """Extract flat agent-level records from a log file."""
     with open(log_path) as f:
         periods = json.load(f)
     rows = []
+    total = 0
+    parsed = 0
     for p in periods:
         theta = p["theta"]
         theta_star = p["theta_star"]
         for a in p["agents"]:
-            if a.get("belief") is None or a.get("api_error"):
+            if a.get("api_error") or a.get("is_propaganda"):
                 continue
+            total += 1
+            if a.get("belief") is None:
+                continue
+            parsed += 1
             signal = a["signal"]
             belief = a["belief"] / 100.0
             decision = 1 if a["decision"] == "JOIN" else 0
@@ -42,6 +48,8 @@ def load_agents(log_path):
                 "theta": theta,
                 "theta_star": theta_star,
             })
+    if verbose and total > 0:
+        print(f"  Parse rate: {parsed}/{total} ({100*parsed/total:.1f}%)")
     return rows
 
 
@@ -105,7 +113,7 @@ def main():
         (mistral_backup / "experiment_surveillance_beliefs_log.json", "Mistral — Surveillance"),
     ]:
         if path.exists():
-            rows = load_agents(path)
+            rows = load_agents(path, verbose=True)
             results.append(analyze_treatment(rows, label))
         else:
             print(f"SKIP: {path} not found")
@@ -117,42 +125,34 @@ def main():
     ]
     for p in prop_paths:
         if p.exists():
-            rows = load_agents(p)
+            rows = load_agents(p, verbose=True)
             results.append(analyze_treatment(rows, "Mistral — Propaganda k=5"))
             break
     else:
         print("\nSKIP: Mistral propaganda k=5 beliefs not found yet")
 
-    # Llama treatments
-    llama_dir = PROJECT_ROOT / "output" / "meta-llama--llama-3.3-70b-instruct" / "_beliefs"
-    for fname, label in [
-        ("experiment_pure_log.json", "Llama 70B — Pure"),
-        ("experiment_comm_log.json", "Llama 70B — Comm"),
-        ("experiment_surveillance_beliefs_log.json", "Llama 70B — Surveillance"),
-    ]:
-        path = llama_dir / fname
+    # Llama treatments — check both direct and nested path structures
+    llama_base = PROJECT_ROOT / "output" / "meta-llama--llama-3.3-70b-instruct"
+    llama_search_paths = [
+        (llama_base / "_beliefs" / "meta-llama--llama-3.3-70b-instruct" / "experiment_pure_log.json", "Llama 70B — Pure"),
+        (llama_base / "_beliefs" / "meta-llama--llama-3.3-70b-instruct" / "experiment_comm_log.json", "Llama 70B — Comm"),
+        (llama_base / "_beliefs_surveillance" / "meta-llama--llama-3.3-70b-instruct" / "experiment_comm_log.json", "Llama 70B — Surveillance"),
+        # Fallback: direct paths
+        (llama_base / "_beliefs" / "experiment_pure_log.json", "Llama 70B — Pure"),
+        (llama_base / "_beliefs" / "experiment_comm_log.json", "Llama 70B — Comm"),
+    ]
+    seen_labels = set()
+    for path, label in llama_search_paths:
+        if label in seen_labels:
+            continue
         if path.exists():
-            rows = load_agents(path)
-            results.append(analyze_treatment(rows, label))
-    # Also check alternative surveillance filename
-    for alt in ["experiment_comm_log.json"]:
-        # surveillance comm log might be named differently
-        pass
+            rows = load_agents(path, verbose=True)
+            if len(rows) > 0:
+                results.append(analyze_treatment(rows, label))
+                seen_labels.add(label)
 
     if not any("Llama" in r["label"] for r in results):
-        # Try alternative path structure
-        llama_dir2 = PROJECT_ROOT / "output" / "meta-llama--llama-3.3-70b-instruct" / "_beliefs" / "meta-llama--llama-3.3-70b-instruct"
-        for fname, label in [
-            ("experiment_pure_log.json", "Llama 70B — Pure"),
-            ("experiment_comm_log.json", "Llama 70B — Comm"),
-        ]:
-            path = llama_dir2 / fname
-            if path.exists():
-                rows = load_agents(path)
-                results.append(analyze_treatment(rows, label))
-
-        if not any("Llama" in r["label"] for r in results):
-            print("\nSKIP: Llama belief runs not found yet — run scripts/run_beliefs.sh first")
+        print("\nSKIP: Llama belief runs not found yet — run scripts/run_beliefs.sh first")
 
     # Cross-model comparison table
     if len(results) > 1:
