@@ -201,7 +201,7 @@ For the information design experiments, I fix $B = C = 1$ (so $\theta^* = 0.50$)
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{figures/fig01_sigmoid.pdf}
-  \caption{Empirical join fraction vs.\ regime strength $\theta$ (Mistral Small Creative, 600 country--periods). Grey points show binned means with 95\% CIs; solid line is the fitted logistic. Dashed red: theoretical attack mass $A(\theta)$. The fitted sigmoid center ($\hat{\theta}^* = -0.37$) closely tracks the theoretical threshold ($\theta^* = 0.50$). Cross-model results in Table~\ref{tab:main_results} (mean $r = +0.73$, all nine significant at $p < 0.001$).}
+  \caption{Empirical join fraction vs.\ regime strength $\theta$ (Mistral Small Creative, 600 country--periods). Grey points show binned means with 95\% CIs; solid line is the fitted logistic. Dashed red: theoretical attack mass $A(\theta)$. The empirical sigmoid is shifted leftward ($\hat{\theta}^* = -0.37$) relative to the theoretical threshold ($\theta^* = 0.50$), reflecting the attenuation and baseline action bias discussed in the text. Cross-model results in Table~\ref{tab:main_results} (mean $r = +0.73$, all nine significant at $p < 0.001$).}
   \label{fig:sigmoid}
 \end{figure}
 
@@ -468,8 +468,6 @@ I do not claim that LLMs are Bayesian agents---the mechanism by which they proce
 %% REFERENCES
 %% ============================================================
 \FloatBarrier
-\bibliographystyle{plainnat}
-
 \begingroup
 \setlength{\bibsep}{0pt}
 \setlength{\itemsep}{0pt}

@@ -6,6 +6,8 @@ __pycache__/
 
 # LaTeX intermediates
 *.aux
+*.bbl
+*.blg
 *.log
 *.out
 *.synctex.gz
