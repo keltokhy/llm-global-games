@@ -16,9 +16,6 @@ __pycache__/
 paper/paper.pdf
 paper/online_appendix.pdf
 
-# Large LLM trace logs
-output/**/*_log.json
-
 # Calibration raw data (large)
 output/**/*_raw.csv
 output/**/*_history.csv
