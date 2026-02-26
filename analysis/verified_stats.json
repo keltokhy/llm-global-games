@@ -2220,6 +2220,56 @@
       }
     }
   },
+  "calibration": {
+    "Mistral Small Creative": {
+      "cutoff_center": 0.2128,
+      "abs_cutoff_center": 0.2128
+    },
+    "Llama 3.3 70B": {
+      "cutoff_center": -0.483,
+      "abs_cutoff_center": 0.483
+    },
+    "OLMo 3 7B": {
+      "cutoff_center": -0.7968,
+      "abs_cutoff_center": 0.7968
+    },
+    "Ministral 3B": {
+      "cutoff_center": -1.5435,
+      "abs_cutoff_center": 1.5435
+    },
+    "Qwen3 30B": {
+      "cutoff_center": -1.9839,
+      "abs_cutoff_center": 1.9839
+    },
+    "GPT-OSS 120B": {
+      "cutoff_center": 0.874,
+      "abs_cutoff_center": 0.874
+    },
+    "Qwen3 235B": {
+      "cutoff_center": -0.5272,
+      "abs_cutoff_center": 0.5272
+    },
+    "Trinity Large": {
+      "cutoff_center": 0.1332,
+      "abs_cutoff_center": 0.1332
+    },
+    "MiniMax M2-Her": {
+      "cutoff_center": 1.1015,
+      "abs_cutoff_center": 1.1015
+    },
+    "_summary": {
+      "n_models": 9,
+      "mean_abs_cutoff_center": 0.8507,
+      "median_abs_cutoff_center": 0.7968,
+      "max_abs_cutoff_center": 1.9839,
+      "min_abs_cutoff_center": 0.1332,
+      "range_cutoff_center": [
+        -1.9839,
+        1.1015
+      ],
+      "largest_adjustment_model": "Qwen3 30B"
+    }
+  },
   "pooled_ols": {
     "intercept": 0.1728,
     "slope": 0.5184,
