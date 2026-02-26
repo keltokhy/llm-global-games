@@ -32,3 +32,4 @@ output/*.pdf
 uv.lock
 paper/placeins.sty
 paper/multirow.sty
+.claude/worktrees/
