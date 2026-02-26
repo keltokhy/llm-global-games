@@ -686,7 +686,7 @@ def fig09_censorship():
         print("  SKIPPED fig09 — no infodesign data")
         return
 
-    fig, axes = plt.subplots(1, 2, figsize=(TEXT_W, 2.8), sharey=True)
+    fig, axes = plt.subplots(1, 2, figsize=(TEXT_W, 2.8))
 
     ax = axes[0]
     for design in ["baseline", "censor_upper", "censor_lower"]:
@@ -733,10 +733,15 @@ def fig09_censorship():
         ax.set_title("B. Slope decomposition")
 
         for i, (_, row) in enumerate(sd.iterrows()):
-            offset = 0.015 if row["slope"] >= 0 else -0.015
-            ha = "left" if row["slope"] >= 0 else "right"
+            if row["slope"] >= 0:
+                offset, ha, color = 0.015, "left", "#333"
+            elif row["slope"] < -0.8:
+                # Very long negative bar: place label inside
+                offset, ha, color = 0.015, "left", "white"
+            else:
+                offset, ha, color = -0.015, "right", "#333"
             ax.text(row["slope"] + offset, i, f'{row["slope"]:.3f}',
-                    fontsize=6, va="center", ha=ha, color="#333")
+                    fontsize=6, va="center", ha=ha, color=color)
 
     plt.tight_layout()
     save(fig, "fig09_censorship")
