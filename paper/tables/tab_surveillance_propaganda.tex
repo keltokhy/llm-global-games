@@ -1,22 +1,22 @@
 \begin{table}[t]
 \centering
-\caption{Propaganda and surveillance effects (primary model: Mistral Small Creative). ``All'' includes propaganda agents; ``Real'' excludes them (computed from logs). $\Delta$ is the change in real-agent mean join vs.\ baseline communication. Fall~\% is the fraction of periods in which the regime falls.}
+\caption{Propaganda and surveillance effects (primary model: Mistral Small Creative). ``All'' includes propaganda agents; ``Real'' excludes them (computed from logs). $\Delta$ is the change in real-agent mean join vs.\ baseline communication.}
 \label{tab:surveillance_propaganda}
 \small
-\begin{tabular}{lccccc}
+\begin{tabular}{lcccc}
 \toprule
- & \multicolumn{2}{c}{Mean join} & & & \\
+ & \multicolumn{2}{c}{Mean join} & & \\
 \cmidrule(lr){2-3}
-Treatment & All & Real & $r$ & $\Delta$ & Fall~\% \\
+Treatment & All & Real & $r$ & $\Delta$ \\
 \midrule
-Comm (baseline) & .452 & .452 & $-0.817$ & --- & 57.3 \\
+Comm (baseline) & .411 & .411 & $-0.802$ & --- \\
 \midrule
-Prop $k=2$ & .375 & .407 & $-0.809$ & -0.045 & 56.2 \\
-Prop $k=5$ & .313 & .391 & $-0.822$ & -0.061 & 55.4 \\
-Prop $k=10$ & .233 & .388 & $-0.818$ & -0.064 & 55.0 \\
+Prop $k=2$ & .375 & .407 & $-0.809$ & -0.004 \\
+Prop $k=5$ & .313 & .391 & $-0.822$ & -0.020 \\
+Prop $k=10$ & .233 & .388 & $-0.818$ & -0.023 \\
 \midrule
-Surveillance & .278 & .278 & $-0.809$ & -0.175 & 58.6 \\
-Prop+Surv & .194 & --- & $-0.829$ & --- & 56.8 \\
+Surveillance & .278 & .278 & $-0.809$ & -0.134 \\
+Prop+Surv & .194 & --- & $-0.829$ & --- \\
 \bottomrule
 \end{tabular}
 \end{table}

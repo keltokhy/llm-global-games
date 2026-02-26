@@ -32,21 +32,6 @@ The direction channel produces the largest average treatment effect at $+2.4$~pp
 
 The sum of single-channel effects is $+4.3$~pp, far smaller than the full stability design effect ($+19.5$~pp). This implies strong complementarities: combining ambiguity (clarity), softened direction, and mixed-valence cues shifts behavior much more than the sum of each channel in isolation.
 
-\section{Construct Validity: Latent Feature Baseline}
-
-A natural concern is that the behavioral sigmoid reflects nothing more than sentiment classification: models read the briefing's tone and respond accordingly, without any strategic reasoning. I test this by fitting a logistic classifier on the three latent features that generate each briefing---direction ($d$), clarity, and coordination---and comparing its predictions to actual LLM decisions.
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=0.95\linewidth]{figures/fig_construct_validity.pdf}
-  \caption{Construct validity test. \textit{Left:} 5-fold cross-validated accuracy of latent feature classifiers (1-feature vs.\ 3-feature) by model. \textit{Right:} Mean residual (actual $-$ predicted) by treatment, where the classifier is trained on pure data only. The surveillance residual of $-15.5$~pp indicates LLMs suppress joining beyond what text features predict.}
-  \label{fig:construct_validity}
-\end{figure}
-
-Across nine models, the 3-feature classifier achieves mean accuracy of 82.6\%, nearly identical to the 1-feature (direction-only) baseline at 82.0\%. Direction dominates; clarity and coordination contribute minimally on average (though Llama 3.3 70B and Qwen3 235B show meaningful gains of $+1.5$ and $+3.8$~pp respectively, suggesting they attend to coordination cues).
-
-The critical test is cross-treatment departure. I train the classifier on pure treatment data and predict decisions under communication and surveillance. If LLMs merely classify sentiment, treatment should not shift residuals. Under communication, the mean residual is $+1.5$~pp---agents join slightly more than text features predict, consistent with coordination amplification. Under surveillance, the mean residual is $-15.5$~pp: agents join substantially \textit{less} than the text-only classifier predicts. The latent features are identical across treatments; the chilling effect cannot be explained by sentiment classification. LLMs respond to the strategic context---being watched---not merely to the briefing's tone.
-
 \section{Robustness Details}
 
 \subsection{Agent Count Variation}
@@ -60,6 +45,19 @@ I compare the baseline communication network ($k = 4$) with a denser network ($k
 \subsection{Mixed-Model Games}
 
 A five-model mixed-population game produces $r = +0.77$ (pure) and $r = +0.75$ (communication)---if anything, higher than single-model correlations. Equilibrium alignment is not an artifact of model homogeneity.
+
+\subsection{Calibration Robustness Across Models}
+
+The main experiments calibrate a single parameter (cutoff center) per model to center the sigmoid at $z = 0$. A natural concern is whether the monotone threshold pattern is an artifact of this calibration step. To test this, I run the pure global game with default parameters (cutoff center $= 0$, no calibration) for three architecturally distinct models. The correlation between regime strength $\theta$ and join fraction remains strongly negative for all three: Mistral Small Creative ($r = -0.865$, $p < 10^{-30}$), Llama~3.3~70B ($r = -0.875$, $p < 10^{-32}$), and Qwen3~235B ($r = -0.857$, $p < 10^{-29}$). All three exceed $|r| > 0.85$ with default parameters, confirming that the sigmoid relationship is an emergent property of how these models process narrative signals rather than an artifact of the calibration procedure. Calibration shifts the center of the response function but does not create the monotone structure (Table~\ref{tab:uncalibrated}).
+
+\input{tables/tab_uncalibrated.tex}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.95\linewidth]{figures/figA4_calibration.pdf}
+  \caption{Calibration convergence. \textit{Left:} Trajectory of the fitted logistic center $c$ across autocalibration rounds for each model. The green band marks the convergence criterion ($|c| < 0.15$). All models converge within 2--3 rounds. \textit{Right:} Final calibrated cutoff center per model. Most models require only modest shifts ($|c| < 0.3$).}
+  \label{fig:calibration_convergence}
+\end{figure}
 
 \subsection{Bandwidth Sensitivity}
 
@@ -83,27 +81,6 @@ Table~\ref{tab:crossmodel} reports cross-model replication of information design
 \subsection{Information Design with Communication}
 
 Under baseline information design with communication, mean join rate is 3.0\% ($-9.3$~pp vs.\ baseline without communication). Communication \textit{reduces} join rates across all information design conditions---superficially counterintuitive, but resolved by noting that additional information from others' messages tends to reveal that the regime is strong (the $\theta$ grid extends upward from $\theta^*$).
-
-\subsection{Linguistic Analysis of Surveillance Messages}
-
-Table~\ref{tab:message_content} reports per-keyword frequencies across communication, surveillance, and propaganda treatments. Surveillance agents drop action language and substitute hedging: ``act'' falls from 19.0\% to 3.8\%, ``collapse'' from 11.6\% to 0.6\%, while ``careful'' rises from 1.5\% to 4.8\% and ``stable'' from 1.7\% to 4.2\%. The action-signaling rate (fraction of messages with more action than caution words) falls from 49\% to 39\% under surveillance.
-
-\input{tables/tab_message_content.tex}
-
-\subsection{Calibration Robustness Across Models}
-
-Table~\ref{tab:calibration_robustness} reports signal alignment metrics across all nine models. The raw correlation $r_\theta$ (between regime strength $\theta$ and join fraction, with no dependence on the theoretical attack mass formula) is strongly negative for all models ($-0.70$ to $-0.87$), confirming that the behavioral pattern is not an artifact of the calibration procedure. The text baseline logistic slope varies across models (from $-2.0$ to $-25.1$), reflecting differences in how sensitively each model responds to the direction feature of the briefing text.
-
-\input{tables/tab_calibration_robustness.tex}
-
-Figure~\ref{fig:calibration} shows the calibration convergence process. Panel~(a) plots the fitted logistic center across calibration rounds for each model; all models converge within 4--6 rounds to a center near zero. Panel~(b) reports the final calibrated \texttt{cutoff\_center} parameter by model.
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\columnwidth]{figures/figA4_calibration.pdf}
-  \caption{Calibration convergence. \textit{(a)}~Fitted logistic center across calibration rounds. \textit{(b)}~Final calibrated \texttt{cutoff\_center} parameter by model.}
-  \label{fig:calibration}
-\end{figure}
 
 \section{Implementation Details}
 
