@@ -34,6 +34,7 @@ class Agent:
     belief_pre: float | None = None  # elicited P(success) BEFORE decision, 0-100 scale
     belief_pre_raw: str = ""  # raw LLM response for pre-decision belief
     second_order_belief: float | None = None  # elicited "% who will JOIN", 0-100 scale
+    second_order_belief_raw: str = ""  # raw LLM response for debugging
     model: str | None = None  # per-agent model override for mixed games
     is_propaganda: bool = False  # regime plant: sends pro-regime messages, always STAYs
     persona: str | None = None  # role framing: "military officer", "student", etc.
@@ -339,6 +340,7 @@ async def _elicit_beliefs(agents, client, model_name, semaphore, call_kwargs):
         _call_llm(
             client, agent.model or model_name,
             SYSTEM_ELICIT_BELIEF,
+            f"YOUR BRIEFING:\n{agent.briefing.render()}\n\n"
             f"You chose to {agent.decision}. "
             "How likely is the uprising to succeed (0 = impossible, 100 = certain)?\n\n"
             "Answer with just the number:",
@@ -359,6 +361,7 @@ async def _elicit_beliefs_pre(agents, client, model_name, semaphore, call_kwargs
         _call_llm(
             client, agent.model or model_name,
             SYSTEM_ELICIT_BELIEF,
+            f"YOUR BRIEFING:\n{agent.briefing.render()}\n\n"
             "Based on your intelligence briefing, how likely is the uprising to succeed "
             "(0 = impossible, 100 = certain)?\n\n"
             "Answer with just the number:",
@@ -385,6 +388,7 @@ async def _elicit_second_order(agents, client, model_name, semaphore, call_kwarg
         _call_llm(
             client, agent.model or model_name,
             SYSTEM_ELICIT_SECOND_ORDER,
+            f"YOUR BRIEFING:\n{agent.briefing.render()}\n\n"
             f"You chose to {agent.decision}. "
             "What percentage of citizens will choose to JOIN the uprising "
             "(0 = none, 100 = all)?\n\nAnswer with just the number:",
@@ -394,6 +398,7 @@ async def _elicit_second_order(agents, client, model_name, semaphore, call_kwarg
     ]
     responses = await asyncio.gather(*coros)
     for agent, response in zip(real_agents, responses):
+        agent.second_order_belief_raw = response or ""
         agent.second_order_belief = _parse_belief(response)
 
 
@@ -464,6 +469,8 @@ def _serialize_agents(agents, include_messages: bool = False) -> list[dict]:
             row["belief_raw"] = a.belief_raw
         if a.second_order_belief is not None:
             row["second_order_belief"] = a.second_order_belief
+        if a.second_order_belief_raw:
+            row["second_order_belief_raw"] = a.second_order_belief_raw
         if a.model is not None:
             row["model"] = a.model
         if a.is_propaganda:
