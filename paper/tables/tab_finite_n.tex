@@ -1,0 +1,31 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Finite-$N$ Benchmark: Predicted vs.\ Empirical Regime Fall Rates}
+\label{tab:finite_n}
+\begin{tabular}{lccccc}
+\toprule
+Model & $N$ periods & Logistic $x_0$ & Pearson $r$ & RMSE & MAE \\
+\midrule
+  Mistral & 499 & $-0.22$ & $0.997^{***}$ & $0.042$ & $0.015$ \\
+  Llama 70B & 99 & $0.04$ & $0.954^{***}$ & $0.156$ & $0.059$ \\
+  OLMo 7B & 99 & $2.32$ & $0.990^{***}$ & $0.070$ & $0.023$ \\
+  Ministral 3B & 99 & $0.01$ & $0.942^{***}$ & $0.174$ & $0.065$ \\
+  Qwen 30B & 99 & $0.17$ & $0.987^{***}$ & $0.087$ & $0.029$ \\
+  GPT-OSS 120B & 199 & $-0.03$ & $0.998^{***}$ & $0.034$ & $0.012$ \\
+  Qwen 235B & 199 & $-0.04$ & $0.992^{***}$ & $0.063$ & $0.022$ \\
+  Trinity & 99 & $0.18$ & $0.979^{***}$ & $0.107$ & $0.043$ \\
+  MiniMax & 99 & $1.06$ & $0.999^{***}$ & $0.028$ & $0.013$ \\
+\midrule
+  \textit{Pooled} & 1499 & $0.02$ & $0.998^{***}$ & $0.031$ & $0.011$ \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\small
+\item \textit{Notes:} For each $\theta$ bin, the predicted fall rate is
+$\Pr(\text{Binom}(25, \hat{p}(\theta)) > 25\theta)$ where $\hat{p}(\theta)$
+is the fitted logistic join probability. Pearson $r$ measures correlation
+between predicted and empirical fall rates across $\theta$ bins.
+${}^{*}p<0.10$, ${}^{**}p<0.05$, ${}^{***}p<0.01$.
+\end{tablenotes}
+\end{table}

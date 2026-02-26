@@ -1,0 +1,54 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Agent-Level Regressions}
+\label{tab:regressions}
+\begin{tabular}{lcccccc}
+\toprule
+ & \multicolumn{2}{c}{(1) Join Decision} & \multicolumn{2}{c}{(2) Coordination} & \multicolumn{2}{c}{(3) Belief $\to$ Action} \\
+ & \multicolumn{2}{c}{Logit} & \multicolumn{2}{c}{Logit} & \multicolumn{2}{c}{Logit} \\
+\midrule
+$\theta$ & $-1.530^{***}$ & $(0.038)$ &  &  &  &  \\
+Direction &  &  & $-11.202^{***}$ & $(1.051)$ &  &  \\
+Coordination &  &  & $-7.416^{***}$ & $(1.191)$ &  &  \\
+Dir $\times$ Coord &  &  & $-0.796^{**}$ & $(0.367)$ &  &  \\
+Belief &  &  &  &  & $0.367^{***}$ & $(0.021)$ \\
+$z$-score &  &  &  &  & $-0.040$ & $(0.077)$ \\
+Comm & $0.229^{***}$ & $(0.021)$ &  &  &  &  \\
+Flip & $-0.077$ & $(0.052)$ &  &  &  &  \\
+Propaganda K10 & $-0.390^{***}$ & $(0.062)$ &  &  &  &  \\
+Propaganda K2 & $-0.240^{***}$ & $(0.065)$ &  &  &  &  \\
+Propaganda K5 & $-1.149^{***}$ & $(0.061)$ &  &  &  &  \\
+Propaganda Surveillance & $-1.553^{***}$ & $(0.065)$ &  &  &  &  \\
+Scramble & $-0.059$ & $(0.037)$ &  &  &  &  \\
+Surveillance & $-1.696^{***}$ & $(0.058)$ &  &  &  &  \\
+$\theta \times$ Comm & $-0.510^{***}$ & $(0.035)$ &  &  &  &  \\
+$\theta \times$ Flip & $3.032^{***}$ & $(0.066)$ &  &  &  &  \\
+$\theta \times$ Propaganda K10 & $-1.234^{***}$ & $(0.109)$ &  &  &  &  \\
+$\theta \times$ Propaganda K2 & $-1.326^{***}$ & $(0.114)$ &  &  &  &  \\
+$\theta \times$ Propaganda K5 & $-2.156^{***}$ & $(0.092)$ &  &  &  &  \\
+$\theta \times$ Propaganda Surveillance & $-0.471^{***}$ & $(0.081)$ &  &  &  &  \\
+$\theta \times$ Scramble & $1.482^{***}$ & $(0.040)$ &  &  &  &  \\
+$\theta \times$ Surveillance & $-1.202^{***}$ & $(0.083)$ &  &  &  &  \\
+Beliefs Propaganda K5 (belief) &  &  &  &  & $0.009$ & $(0.244)$ \\
+Beliefs Pure (belief) &  &  &  &  & $4.819^{***}$ & $(1.106)$ \\
+Beliefs Surveillance (belief) &  &  &  &  & $0.028$ & $(0.253)$ \\
+Constant & $1.630^{***}$ & $(0.079)$ & $9.109^{***}$ & $(1.122)$ & $-26.495^{***}$ & $(1.581)$ \\
+\midrule
+Model FE & \multicolumn{2}{c}{Yes} & \multicolumn{2}{c}{No} & \multicolumn{2}{c}{No} \\
+Clustered SE & \multicolumn{2}{c}{Yes} & \multicolumn{2}{c}{Yes} & \multicolumn{2}{c}{Yes} \\
+$N$ & \multicolumn{2}{c}{281,186} & \multicolumn{2}{c}{39,490} & \multicolumn{2}{c}{18,990} \\
+Pseudo $R^2$ & \multicolumn{2}{c}{0.376} & \multicolumn{2}{c}{0.348} & \multicolumn{2}{c}{0.975} \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\small
+\item \textit{Notes:} Logit coefficients reported with clustered standard errors
+(model--country--period) in parentheses.
+Column (1): agent-level join decision on $\theta$, treatment dummies, and interactions,
+with model fixed effects. Base category: pure treatment.
+Column (2): coordination ablation using briefing slider values (pure treatment only).
+Column (3): partial effect of elicited belief on action, controlling for $z$-score.
+${}^{*}p<0.10$, ${}^{**}p<0.05$, ${}^{***}p<0.01$.
+\end{tablenotes}
+\end{table}
