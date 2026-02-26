@@ -5,6 +5,19 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{float}
+\usepackage{listings}
+\lstset{
+  basicstyle=\small\ttfamily,
+  breaklines=true,
+  breakatwhitespace=false,
+  frame=single,
+  xleftmargin=1em,
+  framexleftmargin=0.5em,
+  columns=fullflexible,
+  keepspaces=true,
+  aboveskip=0.8em,
+  belowskip=0.8em,
+}
 
 \urlstyle{same}
 \interfootnotelinepenalty=10000
@@ -75,29 +88,234 @@ Under baseline information design with communication, mean join rate is 3.0\% ($
 
 All LLM calls use temperature $= 0.7$ and \texttt{max\_tokens} $= 512$. Each agent produces a single sample per decision (no majority voting or averaging). The API provider is OpenRouter; all calls use the same endpoint and parameters across models.
 
-\subsection{Prompt Templates}
+\subsection{Prompt Catalog} \label{sec:prompts}
 
-\paragraph{Decision prompt (pure treatment).}
-\begin{quote}
-\small
-\texttt{You are a citizen deciding whether to JOIN an uprising or STAY home.}
+This section documents every prompt template used in the experiments. Each LLM call consists of a \textbf{system prompt} (setting the agent's role and instructions) and a \textbf{user prompt} (providing the briefing, messages, or elicitation question). All prompts are reproduced verbatim from the codebase.
 
-\texttt{You only have your private briefing below. You do not know how many others will JOIN.}
+\subsubsection{Decision Prompts}
 
-\texttt{Start your first line with exactly JOIN or STAY, then give 1--2 concise sentences of reasoning.}
-\end{quote}
+\paragraph{Pure game decision (system prompt).}
+Used in the pure global game treatment, where agents decide based only on their private briefing.
 
-\paragraph{Communication prompt.}
-\begin{quote}
-\small
-\texttt{You are a citizen in a country with an authoritarian regime. You have received a private intelligence briefing. You are now in contact with a small number of trusted people. Based on your briefing, write a brief message (1--2 sentences) to share your read of the situation. Be natural---you're talking to people you trust.}
-\end{quote}
+\begin{lstlisting}
+You are a citizen deciding whether to JOIN an uprising or STAY home.
 
-\paragraph{Surveillance communication prompt.} Identical to the communication prompt, with the addition:
-\begin{quote}
-\small
-\texttt{IMPORTANT: You have reason to believe that your communications are being monitored by regime security services. Messages deemed subversive could have serious consequences for you and your contacts.}
-\end{quote}
+You only have your private briefing below. You do not know how many others will JOIN.
+
+Start your first line with exactly JOIN or STAY, then give 1-2 concise sentences of reasoning.
+\end{lstlisting}
+
+\paragraph{Pure game decision with group-size information (system prompt).}
+When \texttt{--group-size-info} is enabled, the opening line is replaced. This variant is used in the robustness tests reported in the main paper.
+
+\begin{lstlisting}
+You are one of 25 citizens deciding whether to JOIN an uprising or STAY home.
+
+You only have your private briefing below. You do not know how many others will JOIN.
+
+Start your first line with exactly JOIN or STAY, then give 1-2 concise sentences of reasoning.
+\end{lstlisting}
+
+\paragraph{Communication game decision (system prompt).}
+Used in the communication treatment, where agents have both a briefing and messages from contacts.
+
+\begin{lstlisting}
+You are a citizen deciding whether to JOIN an uprising or STAY home.
+
+Use your private briefing and messages from trusted contacts. You do not know how many others will JOIN.
+
+Start your first line with exactly JOIN or STAY, then give 1-2 concise sentences of reasoning.
+\end{lstlisting}
+
+\paragraph{Decision user prompt (both treatments).}
+The user prompt is assembled from the agent's briefing text and, in the communication treatment, any received messages:
+
+\begin{lstlisting}
+YOUR INTELLIGENCE BRIEFING:
+
+[Rendered briefing text -- see Section 3.5 for examples]
+
+MESSAGES FROM TRUSTED CONTACTS:
+Trusted contact: "[message from neighbor 1]"
+Trusted contact: "[message from neighbor 2]"
+...
+
+What is your decision?
+\end{lstlisting}
+
+\noindent In the pure treatment, the ``Messages from trusted contacts'' block is omitted entirely.
+
+\subsubsection{Communication Prompts}
+
+\paragraph{Baseline communication (system prompt).}
+Used in the standard communication treatment. Agents produce a short message to share with their network neighbors before the decision round.
+
+\begin{lstlisting}
+You are a citizen in a country with an authoritarian regime. You have received a private intelligence briefing. You are now in contact with a small number of trusted people. Based on your briefing, write a brief message (1-2 sentences) to share your read of the situation. Be natural -- you're talking to people you trust.
+\end{lstlisting}
+
+\paragraph{Surveillance communication (system prompt).}
+Used in the surveillance treatment. The surveillance manipulation affects only the communication phase; the decision prompt is unchanged. This isolates the chilling effect: any behavioral difference must arise from self-censored communication content.
+
+\begin{lstlisting}
+You are a citizen in a country with an authoritarian regime. You have received a private intelligence briefing. You are now in contact with a small number of people. Based on your briefing, write a brief message (1-2 sentences) to share your read of the situation.
+
+IMPORTANT: You have reason to believe that your communications are being monitored by regime security services. Messages deemed subversive could have serious consequences for you and your contacts.
+\end{lstlisting}
+
+\noindent Note the subtle wording change: under surveillance, contacts are described as ``a small number of people'' rather than ``a small number of \textit{trusted} people,'' and the naturalness instruction (``Be natural --- you're talking to people you trust'') is removed. These changes reinforce the surveillance framing without explicitly instructing the agent to self-censor.
+
+\paragraph{Communication user prompt (all communication variants).}
+The user prompt for the communication round is the same across baseline and surveillance conditions:
+
+\begin{lstlisting}
+Your briefing:
+
+[Rendered briefing text]
+
+Write a message to your contacts about the situation:
+\end{lstlisting}
+
+\subsubsection{Belief Elicitation Prompts}
+
+\paragraph{Post-decision belief (system prompt).}
+Used to elicit the agent's subjective probability that the uprising succeeds, after the agent has already made its JOIN/STAY decision.
+
+\begin{lstlisting}
+Respond with ONLY a single integer between 0 and 100. No words, no explanation, no punctuation -- just the number.
+\end{lstlisting}
+
+\paragraph{Post-decision belief (user prompt).}
+
+\begin{lstlisting}
+You chose to [JOIN/STAY]. How likely is the uprising to succeed (0 = impossible, 100 = certain)?
+
+Answer with just the number:
+\end{lstlisting}
+
+\paragraph{Second-order belief (system prompt).}
+Identical to the first-order belief system prompt:
+
+\begin{lstlisting}
+Respond with ONLY a single integer between 0 and 100. No words, no explanation, no punctuation -- just the number.
+\end{lstlisting}
+
+\paragraph{Second-order belief (user prompt).}
+
+\begin{lstlisting}
+You chose to [JOIN/STAY]. What percentage of citizens will choose to JOIN the uprising (0 = none, 100 = all)?
+
+Answer with just the number:
+\end{lstlisting}
+
+\subsubsection{Propaganda Messages}
+
+Propaganda agents are regime plants who participate in the communication network but send fixed pro-regime messages and always STAY. Each propaganda agent's message is drawn uniformly at random from the following pool of eight messages:
+
+\begin{enumerate}
+\item \textit{``Everything I'm hearing says the regime is solid --- the military is loyal, the economy is holding, and the streets are quiet. Anyone talking about change is dreaming. This isn't the moment.''}
+
+\item \textit{``Look, I've been watching closely and the government has never been stronger. The security forces are unified, the opposition is scattered, and ordinary people just want stability. Don't believe the hype.''}
+
+\item \textit{``From what I can tell, the regime's grip is tighter than ever. The elites are in line, the army is well-paid, and there's no real movement on the ground. Anyone suggesting otherwise is wishful thinking.''}
+
+\item \textit{``I'm telling you --- nothing is happening. The regime has weathered worse than this. The institutions are intact, the commanders are loyal, and the population is too exhausted to act. Stay home.''}
+
+\item \textit{``The situation is calmer than people think. Yes, there's always grumbling, but the fundamentals haven't changed --- the regime controls the security apparatus, the media, and the money. This isn't going anywhere.''}
+
+\item \textit{``Trust me on this --- the regime is not going anywhere. They've consolidated power, the opposition has no leadership, and international support is holding. Anyone who moves now is walking into a trap.''}
+
+\item \textit{``I've seen regimes in trouble before and this isn't it. The top brass are unified, the rank-and-file are fed and housed, and there's no credible alternative. The smart move is patience.''}
+
+\item \textit{``Word on the street is that people are scared to act, and for good reason --- the regime's intelligence networks are everywhere, the military exercises were a show of strength, and the economy hasn't collapsed. This is not the time.''}
+\end{enumerate}
+
+\noindent The messages are designed to sound like genuine peer communication rather than official propaganda. They cover different aspects of regime strength (military cohesion, economic stability, opposition weakness, public apathy) with varied conversational registers.
+
+\subsubsection{Complete Example Briefings} \label{sec:example_briefings}
+
+To illustrate the briefing generator's output, this section shows complete (untruncated) briefings at three z-score values: $z = -2.0$ (strong weak-regime signal), $z = 0.0$ (ambiguous), and $z = +2.0$ (strong strong-regime signal). All briefings use the default \texttt{baseline} language variant with default calibration parameters (\texttt{cutoff\_center} $= 0$, \texttt{clarity\_width} $= 1.0$, \texttt{dissent\_floor} $= 0.25$).
+
+\paragraph{Briefing at $z = -2.0$ (weak regime).}
+
+\begin{lstlisting}
+PRIVATE BRIEFING
+
+BOTTOM LINE: What you're seeing is not a rough patch -- it's a pattern of accelerating deterioration.
+ATMOSPHERE: Coordination is happening in plain sight -- meetings, signals, preparations that would have been unthinkable a month ago.
+
+EVIDENCE:
+  - [Elite Cohesion] the leader's closest ally has been conspicuously absent from state functions for over a week -- the trend settling and stabilizing
+  - [Security Forces] two garrison commanders have not responded to a routine readiness assessment -- unprecedented in recent memory (overwhelming convergence -- every channel telling the same story independently)
+  - [Money And Logistics] a prominent businessman known for his regime connections has quietly sold off assets (overwhelming convergence -- every channel telling the same story independently)
+  - [Street Mood] public events and festivals are proceeding normally, with ordinary turnout -- the trend settling and stabilizing
+  - [Information Control] leaked documents are circulating faster than the regime can discredit them -- the trend settling and stabilizing
+  - [Personal Observations] the local clinic has been quietly stocking extra supplies, according to a nurse you know (overwhelming convergence -- every channel telling the same story independently)
+  - [Diplomatic Signals] a friendly foreign government issued a statement calling for 'dialogue' -- diplomatic code for concern
+  - [Institutional Functioning] public transportation is running on schedule and recently expanded a route -- investment in routine services continues (overwhelming convergence -- every channel telling the same story independently)
+
+UNCERTAINTIES:
+  - Whether any of the apparent weakness is being deliberately staged to flush out opponents.
+  - How much of the disarray is structural versus a temporary response to a specific crisis.
+\end{lstlisting}
+
+\paragraph{Briefing at $z = 0.0$ (ambiguous).}
+
+\begin{lstlisting}
+PRIVATE BRIEFING
+
+BOTTOM LINE: The situation is balanced on a knife's edge -- small events could determine which way it falls.
+ATMOSPHERE: People who were cautious a week ago are now actively reaching out to expand their networks.
+
+EVIDENCE:
+  - [Elite Cohesion] the leadership is functioning, but with a brittleness that wasn't there six months ago
+  - [Security Forces] the security apparatus is functioning but has shifted to a defensive posture -- protecting assets, not projecting power (a couple of contacts mentioning it independently)
+  - [Money And Logistics] economic indicators are mixed -- retail spending is down but construction permits are up (a couple of contacts mentioning it independently)
+  - [Street Mood] younger people are visibly more restless than older people, who counsel patience and caution (a couple of contacts mentioning it independently)
+  - [Information Control] information control seems to be holding, but at increasing cost in resources and credibility (a couple of contacts mentioning it independently)
+  - [Personal Observations] a friend who's usually pessimistic and a friend who's usually optimistic gave you the exact same assessment: 'uncertain' (a couple of contacts mentioning it independently)
+  - [Diplomatic Signals] a regional power issued a carefully worded statement supporting 'institutional stability' -- ambiguous enough to cover any outcome
+  - [Institutional Functioning] routine government business continues but with more errors and corrections than usual (a couple of contacts mentioning it independently)
+
+UNCERTAINTIES:
+  - If external conditions change -- an economic shock, a regional crisis -- whether the regime's stability would hold.
+  - If there are hidden vulnerabilities that the regime's confident exterior is designed to conceal.
+\end{lstlisting}
+
+\paragraph{Briefing at $z = +2.0$ (strong regime).}
+
+\begin{lstlisting}
+PRIVATE BRIEFING
+
+BOTTOM LINE: By every measure available to you, the regime's hold on power is firm and likely to remain so.
+ATMOSPHERE: Information circulates in whisper networks -- you hear things third-hand, never from the original source.
+
+EVIDENCE:
+  - [Elite Cohesion] the leader's closest ally has been conspicuously absent from state functions for over a week -- the trend accelerating noticeably
+  - [Security Forces] two garrison commanders have not responded to a routine readiness assessment -- unprecedented in recent memory (overwhelming convergence -- every channel telling the same story independently)
+  - [Money And Logistics] the black-market premium on hard currency has actually narrowed (overwhelming convergence -- every channel telling the same story independently)
+  - [Street Mood] public events and festivals are proceeding normally, with ordinary turnout -- the trend accelerating noticeably
+  - [Information Control] social media monitoring appears sophisticated and well-resourced -- the trend accelerating noticeably
+  - [Personal Observations] the local clinic has been quietly stocking extra supplies, according to a nurse you know (overwhelming convergence -- every channel telling the same story independently)
+  - [Diplomatic Signals] foreign military attaches report no unusual activity -- routine operations only
+  - [Institutional Functioning] public transportation is running on schedule and recently expanded a route -- investment in routine services continues (overwhelming convergence -- every channel telling the same story independently)
+
+UNCERTAINTIES:
+  - Whether the regime's strength is being accurately perceived by potential challengers -- overestimation could be self-fulfilling.
+  - If unrest flares, the response capacity seems intact -- though no system is invulnerable to surprises.
+\end{lstlisting}
+
+\noindent The key contrasts are visible across the three signals. At $z = -2.0$, the bottom line describes ``accelerating deterioration,'' the atmosphere reports open coordination, and evidence bullets emphasize regime weakness (commander non-response, asset sell-offs, leaked documents). At $z = 0.0$, the bottom line is ``balanced on a knife's edge,'' evidence is genuinely mixed across domains, and the atmosphere describes cautious network expansion. At $z = +2.0$, the bottom line asserts the regime's ``firm'' hold, the atmosphere describes suppressed information flows (``whisper networks''), and evidence emphasizes stability signals (narrowing currency premium, sophisticated monitoring). Dissenting cues appear even in extreme briefings (the \texttt{dissent\_floor} $= 0.25$ parameter ensures at least $\sim$25\% of evidence contradicts the dominant signal), preventing any briefing from being unanimously one-sided.
+
+\subsection{Payoff Table Short-Circuit} \label{sec:payoff_shortcircuit}
+
+In preliminary experiments, I provided agents with an explicit payoff table alongside the intelligence briefing. The table displayed the game parameters directly: benefit $B = 1.0$, cost $C = 1.0$, and the implied equilibrium threshold $\theta^* = B/(B+C) = 0.50$.
+
+Models with access to the payoff table produced flat join rates uncorrelated with regime strength $\theta$. Rather than using the briefing to form beliefs about $\theta$ and then applying a threshold strategy, the models computed optimal strategies directly from the table---typically reasoning about the expected value of joining versus staying as a function of the threshold---and ignored the briefing content entirely. This short-circuit behavior is consistent with the models' strength at structured mathematical reasoning: when given a decision matrix, they default to explicit expected-utility calculations rather than processing qualitative narrative evidence.
+
+This observation motivated the central design choice of the paper: embedding stakes in the narrative rather than providing a formatted decision matrix. By withholding the payoff table, agents are forced to form beliefs from the intelligence briefing, mirroring how real citizens process political information from news, rumors, and personal observations rather than from a known payoff structure. The resulting behavior---a monotone sigmoid in $\theta$ with emergent slope and threshold---is therefore a property of the models' language understanding, not of their ability to solve a textbook optimization problem.
+
+The payoff table short-circuit also has a substantive interpretation. In real political crises, citizens rarely know the exact payoffs or the precise threshold for regime collapse. The ``game'' is embedded in a rich information environment where stakes are conveyed through narrative cues (reports of repression severity, economic consequences of failed uprisings, stories of successful transitions elsewhere). The no-payoff-table design captures this feature of the real-world setting.
 
 \subsection{Randomization}
 
