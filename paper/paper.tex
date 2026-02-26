@@ -220,6 +220,10 @@ The slope of 0.52 indicates that LLM agents respond to the theoretical attack ma
 
 \input{tables/tab_main_results.tex}
 
+Table~\ref{tab:main_results} also reports regime fall rates---the fraction of country--periods in which the uprising succeeds ($J > \theta$). The empirical fall rate aligns closely with a finite-$N$ benchmark: passing each model's fitted logistic $\hat{p}(\theta)$ through a $\text{Binomial}(25, \hat{p}(\theta))$ distribution predicts fall rates with $r = 0.998$ pooled across models (Table~\ref{tab:finite_n}). This micro-to-macro consistency confirms that aggregate outcomes emerge from independent threshold decisions rather than from correlated errors or coordination artifacts.
+
+\input{tables/tab_finite_n.tex}
+
 The mean join rate across all models is 0.43, slightly below the theoretical mean. OLMo 3 7B stands out with a mean join rate of 0.72---a substantial action bias---yet it still produces a significant positive correlation ($r = +0.65$, $p < 0.001$), indicating that even a model biased toward joining responds to the direction of the signal.
 
 \begin{figure}[t]
@@ -287,6 +291,10 @@ Actions are nearly perfectly monotone in stated beliefs ($r = +0.96$ in pure, $+
   \caption{Belief elicitation results (Mistral Small Creative, 200 country--periods per treatment, ${\approx}\,5{,}000$ agent observations each). \textit{Left:} Stated beliefs track the Bayesian posterior $P(\text{success} \mid x_i)$ with $r = +0.78$ and systematic underconfidence (slope $= 0.63$). Dashed line: perfect calibration. \textit{Right:} Join rate by stated belief bin under four treatments. Agents with 60--80\% beliefs join at 98\% in the pure treatment but only 57--61\% under communication, surveillance, and propaganda ($k{=}5$). Propaganda preserves the belief--posterior correlation ($r = +0.78$, identical to pure) while suppressing actions---consistent with a mechanical rather than belief-based channel.}
   \label{fig:beliefs}
 \end{figure*}
+
+Table~\ref{tab:regressions} consolidates the agent-level evidence. Column~(1) reports a logit of individual join decisions on $\theta$, treatment dummies, and their interactions with model fixed effects ($N = 281{,}186$ agent-decisions). The $\theta$ coefficient is strongly negative ($-1.53$, $p < 0.001$), confirming monotone response at the individual level. Surveillance ($-1.70$) and propaganda-with-surveillance ($-1.55$) produce the largest treatment effects. Column~(2) decomposes the signal: both the direction and coordination features of the briefing independently predict join decisions, with coordination contributing a large independent effect ($-7.42$, $p < 0.001$) beyond what sentiment alone predicts. Column~(3) shows that beliefs fully mediate the signal-to-action channel: controlling for stated belief, the z-score coefficient drops to $-0.04$ ($p = 0.61$), confirming that agents act on their beliefs rather than directly on the signal.
+
+\input{tables/tab_regressions.tex}
 
 
 %% ============================================================

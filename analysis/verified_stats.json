@@ -2864,39 +2864,93 @@
   "calibration": {
     "Mistral Small Creative": {
       "cutoff_center": 0.2128,
-      "abs_cutoff_center": 0.2128
+      "abs_cutoff_center": 0.2128,
+      "n_rounds": 2,
+      "uncalibrated_center": -0.304,
+      "final_fitted_center": -0.0002,
+      "converged": true,
+      "final_loss": 0.1666,
+      "final_fitted_slope": 1.7828
     },
     "Llama 3.3 70B": {
       "cutoff_center": -0.483,
-      "abs_cutoff_center": 0.483
+      "abs_cutoff_center": 0.483,
+      "n_rounds": 2,
+      "uncalibrated_center": 0.69,
+      "final_fitted_center": -0.03,
+      "converged": true,
+      "final_loss": 0.2699,
+      "final_fitted_slope": 2.5604
     },
     "OLMo 3 7B": {
       "cutoff_center": -0.7968,
-      "abs_cutoff_center": 0.7968
+      "abs_cutoff_center": 0.7968,
+      "n_rounds": 5,
+      "uncalibrated_center": 2.8915,
+      "final_fitted_center": 2.905,
+      "converged": false,
+      "final_loss": 1.5118,
+      "final_fitted_slope": 0.7137
     },
     "Ministral 3B": {
       "cutoff_center": -1.5435,
-      "abs_cutoff_center": 1.5435
+      "abs_cutoff_center": 1.5435,
+      "n_rounds": 3,
+      "uncalibrated_center": 1.8147,
+      "final_fitted_center": 0.1273,
+      "converged": true,
+      "final_loss": 0.1799,
+      "final_fitted_slope": 1.116
     },
     "Qwen3 30B": {
       "cutoff_center": -1.9839,
-      "abs_cutoff_center": 1.9839
+      "abs_cutoff_center": 1.9839,
+      "n_rounds": 4,
+      "uncalibrated_center": 1.5156,
+      "final_fitted_center": 0.0352,
+      "converged": true,
+      "final_loss": 0.2527,
+      "final_fitted_slope": 0.7991
     },
     "GPT-OSS 120B": {
       "cutoff_center": 0.874,
-      "abs_cutoff_center": 0.874
+      "abs_cutoff_center": 0.874,
+      "n_rounds": 2,
+      "uncalibrated_center": -1.2486,
+      "final_fitted_center": -0.0302,
+      "converged": true,
+      "final_loss": 0.1695,
+      "final_fitted_slope": 1.8755
     },
     "Qwen3 235B": {
       "cutoff_center": -0.5272,
-      "abs_cutoff_center": 0.5272
+      "abs_cutoff_center": 0.5272,
+      "n_rounds": 3,
+      "uncalibrated_center": 0.603,
+      "final_fitted_center": -0.1217,
+      "converged": true,
+      "final_loss": 0.1809,
+      "final_fitted_slope": 1.5737
     },
     "Trinity Large": {
       "cutoff_center": 0.1332,
-      "abs_cutoff_center": 0.1332
+      "abs_cutoff_center": 0.1332,
+      "n_rounds": 3,
+      "uncalibrated_center": 0.194,
+      "final_fitted_center": -0.0252,
+      "converged": true,
+      "final_loss": 0.3562,
+      "final_fitted_slope": 0.5963
     },
     "MiniMax M2-Her": {
       "cutoff_center": 1.1015,
-      "abs_cutoff_center": 1.1015
+      "abs_cutoff_center": 1.1015,
+      "n_rounds": 4,
+      "uncalibrated_center": -0.7485,
+      "final_fitted_center": 0.0006,
+      "converged": true,
+      "final_loss": 0.4277,
+      "final_fitted_slope": 0.2328
     },
     "_summary": {
       "n_models": 9,

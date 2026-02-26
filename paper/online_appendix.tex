@@ -96,6 +96,15 @@ Table~\ref{tab:calibration_robustness} reports signal alignment metrics across a
 
 \input{tables/tab_calibration_robustness.tex}
 
+Figure~\ref{fig:calibration} shows the calibration convergence process. Panel~(a) plots the fitted logistic center across calibration rounds for each model; all models converge within 4--6 rounds to a center near zero. Panel~(b) reports the final calibrated \texttt{cutoff\_center} parameter by model.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/figA4_calibration.pdf}
+  \caption{Calibration convergence. \textit{(a)}~Fitted logistic center across calibration rounds. \textit{(b)}~Final calibrated \texttt{cutoff\_center} parameter by model.}
+  \label{fig:calibration}
+\end{figure}
+
 \section{Implementation Details}
 
 \subsection{LLM Decoding Parameters}
