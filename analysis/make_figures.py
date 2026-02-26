@@ -4,6 +4,28 @@ Figure generation for "LLM Agents in Global Games."
 
 Generates all figures to figures/ with sequential numbering matching paper order.
 
+Main figures:
+  01. Core sigmoid — join fraction vs theta (pure + comm)
+  02. Cross-model r-value forest plot
+  03. Falsification triptych — pure / scramble / flip
+  04. Cross-model r-value bar chart
+  05. Communication effect — dumbbell + sigmoid overlay
+  06. Agent-level threshold vs theoretical attack mass
+  07. Information design — all designs on one canvas
+  08. Treatment effect delta(theta)
+  09. Censorship — curves + slope decomposition
+  10. Infodesign falsification — scramble/flip
+  11. Stability decomposition — single-channel
+  12. Surveillance chilling effect
+  13. Propaganda dose-response
+  14. Cross-model infodesign replication
+
+Appendix:
+  A1. Agent count robustness
+  A2. Network topology
+  A3. Bandwidth robustness
+  A4. Calibration convergence and per-model shift
+
 Usage: uv run python analysis/make_figures.py
 """
 
@@ -1440,6 +1462,113 @@ def fig16_beliefs():
 
 
 # ═══════════════════════════════════════════════════════════════════
+# FIGURE A4: Calibration convergence
+# ═══════════════════════════════════════════════════════════════════
+
+def figA4_calibration():
+    """Two-panel figure: (A) convergence of fitted_center across rounds,
+    (B) bar chart of final cutoff_center per model."""
+    import json as _json
+
+    # ── Load autocalibrate_history.csv for each model ────────────
+    histories = {}
+    for model in ALL_MODELS:
+        hp = ROOT / model / "autocalibrate_history.csv"
+        if hp.exists():
+            histories[model] = pd.read_csv(hp)
+
+    # ── Load calibrated_params JSON for each model ───────────────
+    cal_params = {}
+    for model in ALL_MODELS:
+        pp = ROOT / model / f"calibrated_params_{model}.json"
+        if pp.exists():
+            with open(pp) as _f:
+                cal_params[model] = _json.load(_f)
+
+    if not histories and not cal_params:
+        print("  SKIPPED figA4 — no calibration data")
+        return
+
+    fig, axes = plt.subplots(1, 2, figsize=(TEXT_W, 2.6))
+
+    # ── Panel A: Convergence trajectories ────────────────────────
+    ax = axes[0]
+
+    if histories:
+        # Pick models with history data; use model colors
+        all_centers_hist = []
+        for model, hist_df in sorted(histories.items()):
+            color = MODEL_COLORS.get(model, "#636363")
+            label = SHORT_NAMES.get(model, model)
+            rounds = hist_df["round"].values
+            centers = hist_df["fitted_center"].values
+            all_centers_hist.extend(centers.tolist())
+            ax.plot(rounds, centers, "o-", color=color, markersize=3,
+                    linewidth=0.9, label=label, zorder=2)
+
+        # Convergence band
+        ax.axhspan(-0.15, 0.15, color="#d9f0d3", alpha=0.35, zorder=0,
+                   label=r"$|c| < 0.15$ (converged)")
+        ax.axhline(0, color="#636363", linewidth=0.5, linestyle=":", zorder=1)
+
+        ax.set_xlabel("Calibration round")
+        ax.set_ylabel("Fitted logistic center $c$")
+        ax.set_title("(A) Convergence of fitted center", fontsize=8)
+        ax.legend(fontsize=5, loc="upper right", ncol=2, framealpha=0.8)
+
+        # Nice x-axis ticks (integer rounds only)
+        max_round = max(h["round"].max() for h in histories.values())
+        ax.set_xticks(range(1, int(max_round) + 1))
+        ax.set_xlim(0.6, max_round + 0.4)
+
+        # Auto-scale y-axis to show all trajectories with some padding
+        if all_centers_hist:
+            y_lo = min(all_centers_hist) - 0.3
+            y_hi = max(all_centers_hist) + 0.3
+            ax.set_ylim(y_lo, y_hi)
+    else:
+        # No history CSVs available — show note
+        ax.text(0.5, 0.5, "No autocalibrate_history.csv\nfiles found",
+                transform=ax.transAxes, ha="center", va="center",
+                fontsize=7, color="#999")
+        ax.set_title("(A) Convergence of fitted center", fontsize=8)
+        ax.set_xlabel("Calibration round")
+        ax.set_ylabel("Fitted logistic center $c$")
+
+    # ── Panel B: Final cutoff_center bar chart ───────────────────
+    ax = axes[1]
+
+    if cal_params:
+        # Sort by absolute cutoff_center for visual clarity
+        items = sorted(cal_params.items(),
+                       key=lambda kv: abs(kv[1].get("cutoff_center", 0)))
+        names = [SHORT_NAMES.get(m, m) for m, _ in items]
+        centers = [p.get("cutoff_center", 0) for _, p in items]
+        colors = [MODEL_COLORS.get(m, "#636363") for m, _ in items]
+
+        bars = ax.barh(range(len(names)), centers, color=colors,
+                       edgecolor="white", linewidth=0.3, height=0.6)
+        ax.set_yticks(range(len(names)))
+        ax.set_yticklabels(names, fontsize=6)
+        ax.axvline(0, color="#636363", linewidth=0.5, linestyle=":")
+        ax.set_xlabel("Calibrated cutoff center")
+        ax.set_title("(B) Per-model calibration shift", fontsize=8)
+
+        # Add value labels
+        for i, (bar, val) in enumerate(zip(bars, centers)):
+            ha = "left" if val >= 0 else "right"
+            offset = 0.03 if val >= 0 else -0.03
+            ax.text(val + offset, i, f"{val:.2f}", va="center", ha=ha,
+                    fontsize=5.5, color="#333")
+    else:
+        ax.text(0.5, 0.5, "No calibrated params found",
+                transform=ax.transAxes, ha="center", va="center", fontsize=7)
+
+    fig.tight_layout(w_pad=1.5)
+    save(fig, "figA4_calibration")
+
+
+# ═══════════════════════════════════════════════════════════════════
 # MAIN
 # ═══════════════════════════════════════════════════════════════════
 
@@ -1466,5 +1595,6 @@ if __name__ == "__main__":
     figA2_network()
     figA3_bandwidth()
     fig16_beliefs()
+    figA4_calibration()
 
     print(f"\nAll figures saved to {FIG_DIR}")

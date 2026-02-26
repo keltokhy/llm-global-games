@@ -1244,6 +1244,83 @@ def validate_paper_claims(all_stats: dict) -> list[dict]:
 
 
 # ═══════════════════════════════════════════════════════════════════
+# CALIBRATION
+# ═══════════════════════════════════════════════════════════════════
+
+def compute_calibration():
+    """Compute calibration statistics for all models.
+
+    Loads calibrated_params JSON and autocalibrate_history CSV per model.
+    Reports cutoff_center, rounds to convergence, and final loss.
+    """
+    results = {}
+    all_centers = []
+
+    for model in PART1_MODELS:
+        name = SHORT[model]
+        entry = {}
+
+        # Load calibrated params
+        params_path = ROOT / model / f"calibrated_params_{model}.json"
+        if params_path.exists():
+            with open(params_path) as f:
+                params = json.load(f)
+            cc = params.get("cutoff_center", float("nan"))
+            entry["cutoff_center"] = round(cc, 4)
+            entry["abs_cutoff_center"] = round(abs(cc), 4)
+            all_centers.append(cc)
+        else:
+            entry["cutoff_center"] = None
+
+        # Load autocalibrate history
+        hist_path = ROOT / model / "autocalibrate_history.csv"
+        if hist_path.exists():
+            hist = pd.read_csv(hist_path)
+            n_rounds = int(hist["round"].max())
+            entry["n_rounds"] = n_rounds
+
+            # Initial (round 1) fitted_center = uncalibrated bias
+            entry["uncalibrated_center"] = round(float(hist.iloc[0]["fitted_center"]), 4)
+
+            # Final round fitted_center = residual after calibration
+            entry["final_fitted_center"] = round(float(hist.iloc[-1]["fitted_center"]), 4)
+
+            # Convergence: did |fitted_center| < 0.15 at termination?
+            final_fc = abs(float(hist.iloc[-1]["fitted_center"]))
+            entry["converged"] = bool(final_fc < 0.15)
+
+            # Final loss
+            loss_col = "calibration_loss"
+            if loss_col in hist.columns:
+                entry["final_loss"] = round(float(hist.iloc[-1][loss_col]), 4)
+
+            # Final fitted slope (emergent)
+            entry["final_fitted_slope"] = round(float(hist.iloc[-1]["fitted_slope"]), 4)
+
+        results[name] = entry
+
+    # Aggregate statistics
+    if all_centers:
+        abs_centers = [abs(c) for c in all_centers]
+        results["_summary"] = {
+            "n_models": len(all_centers),
+            "mean_abs_cutoff_center": round(float(np.mean(abs_centers)), 4),
+            "median_abs_cutoff_center": round(float(np.median(abs_centers)), 4),
+            "max_abs_cutoff_center": round(float(np.max(abs_centers)), 4),
+            "min_abs_cutoff_center": round(float(np.min(abs_centers)), 4),
+            "range_cutoff_center": [
+                round(float(np.min(all_centers)), 4),
+                round(float(np.max(all_centers)), 4),
+            ],
+            "largest_adjustment_model": SHORT[PART1_MODELS[
+                int(np.argmax(abs_centers))
+            ]],
+        }
+
+    return results
+
+
+# ═══════════════════════════════════════════════════════════════════
 # DISCREPANCY ANALYSIS (optional; kept minimal to avoid drift)
 # ═══════════════════════════════════════════════════════════════════
 
@@ -1307,6 +1384,9 @@ def main():
     print("Computing robustness statistics...")
     robust = compute_robustness()
 
+    print("Computing calibration statistics...")
+    calibration = compute_calibration()
+
     print("Running pooled OLS...")
     ols = pooled_ols(None)
 
@@ -1330,6 +1410,7 @@ def main():
         "infodesign": infodesign,
         "regime_control": regime,
         "robustness": robust,
+        "calibration": calibration,
         "pooled_ols": ols,
         "beliefs": beliefs,
         "message_content": msg_content,
