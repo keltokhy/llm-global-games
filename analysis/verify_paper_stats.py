@@ -107,6 +107,17 @@ def _safe_std(x) -> float:
     return float(x.std()) if len(x) else float("nan")
 
 
+def _coup_success_rate(df: pd.DataFrame) -> float:
+    """Compute regime fall rate from coup_success column."""
+    if "coup_success" not in df.columns or len(df) == 0:
+        return float("nan")
+    cs = df["coup_success"]
+    # Handle True/False strings and booleans
+    if cs.dtype == object:
+        cs = cs.map({"True": True, "False": False, True: True, False: False})
+    return float(cs.astype(float).mean())
+
+
 def _load_summary(path: Path) -> pd.DataFrame:
     if not path.exists():
         return pd.DataFrame()
@@ -213,6 +224,7 @@ def compute_part1():
                 "mean_join": round(_safe_mean(jf), 4),
                 "std_join": round(_safe_std(jf), 4),
                 "mean_theta": round(_safe_mean(theta), 4),
+                "regime_fall_rate": round(_coup_success_rate(df), 4),
                 "rmse_vs_attack": round(rmse, 4) if np.isfinite(rmse) else None,
                 "mae_vs_attack": round(mae, 4) if np.isfinite(mae) else None,
             }
@@ -278,6 +290,7 @@ def compute_part1():
             "r_vs_theta": pearson_with_ci(pooled["theta"], pooled[jcol]),
             "n_obs": int(len(pooled)),
             "mean_join": round(_safe_mean(pooled[jcol]), 4),
+            "regime_fall_rate": round(_coup_success_rate(pooled), 4),
         }
         if "theoretical_attack" in pooled.columns:
             out["r_vs_attack"] = pearson_with_ci(pooled["theoretical_attack"], pooled[jcol])
@@ -400,6 +413,7 @@ def compute_infodesign():
             if "theoretical_attack" in sub.columns else {}
         results[design] = {
             "mean_join": round(sub[jcol].mean(), 4),
+            "regime_fall_rate": round(_coup_success_rate(sub), 4),
             "r_vs_theta": r_theta,
             "r_vs_attack": r_attack,
             "n_obs": len(sub),
@@ -408,10 +422,57 @@ def compute_infodesign():
     # Treatment effects relative to baseline
     if "baseline" in results:
         baseline_mean = results["baseline"]["mean_join"]
+        baseline_fall = results["baseline"]["regime_fall_rate"]
         for design in results:
             if design != "baseline":
                 delta = results[design]["mean_join"] - baseline_mean
                 results[design]["delta_vs_baseline"] = round(delta, 4)
+                delta_fall = results[design]["regime_fall_rate"] - baseline_fall
+                results[design]["delta_fall_vs_baseline"] = round(delta_fall, 4)
+
+    # Regime fall rate by theta for infodesign experiments
+    if "theta" in df_all.columns:
+        fall_by_theta = {}
+        for design in designs:
+            sub = df_all[df_all["design"] == design]
+            if "coup_success" not in sub.columns:
+                continue
+            cs = sub["coup_success"]
+            if cs.dtype == object:
+                cs = cs.map({"True": True, "False": False, True: True, False: False})
+            sub = sub.copy()
+            sub["_cs"] = cs.astype(float)
+            by_t = sub.groupby("theta")["_cs"].agg(["mean", "count"])
+            fall_by_theta[design] = {
+                str(round(t, 2)): {"fall_rate": round(float(row["mean"]), 4), "n": int(row["count"])}
+                for t, row in by_t.iterrows()
+            }
+        results["_fall_by_theta"] = fall_by_theta
+
+    # T-tests comparing regime fall rates between designs
+    if "baseline" in results:
+        fall_ttests = {}
+        base_sub = df_all[df_all["design"] == "baseline"]
+        base_cs = base_sub["coup_success"]
+        if base_cs.dtype == object:
+            base_cs = base_cs.map({"True": True, "False": False, True: True, False: False})
+        base_cs = base_cs.astype(float).dropna()
+        for design in designs:
+            if design == "baseline":
+                continue
+            dsub = df_all[df_all["design"] == design]
+            dcs = dsub["coup_success"]
+            if dcs.dtype == object:
+                dcs = dcs.map({"True": True, "False": False, True: True, False: False})
+            dcs = dcs.astype(float).dropna()
+            if len(base_cs) > 1 and len(dcs) > 1:
+                t_stat, t_p = stats.ttest_ind(dcs, base_cs)
+                fall_ttests[design] = {
+                    "t_stat": round(float(t_stat), 4),
+                    "p_value": round(float(t_p), 6),
+                    "delta_pp": round((float(dcs.mean()) - float(base_cs.mean())) * 100, 2),
+                }
+        results["_fall_rate_ttests"] = fall_ttests
 
     # Cross-model infodesign replication
     cross = {}
@@ -426,6 +487,7 @@ def compute_infodesign():
             r_t = pearson_with_ci(sub["theta"], sub[jcol])
             cross[name][design] = {
                 "mean_join": round(sub[jcol].mean(), 4),
+                "regime_fall_rate": round(_coup_success_rate(sub), 4),
                 "r_vs_theta": r_t,
                 "n_obs": len(sub),
             }
@@ -452,6 +514,7 @@ def compute_regime_control():
         jcol = _join_col(df)
         out = {
             "mean_join": round(_safe_mean(df[jcol]), 4),
+            "regime_fall_rate": round(_coup_success_rate(df), 4),
             "r_vs_theta": pearson_with_ci(df["theta"], df[jcol]),
             "n_obs": int(len(df)),
         }
@@ -461,6 +524,24 @@ def compute_regime_control():
             bj = _join_col(base_comm)
             out["delta_vs_baseline_pp"] = round((out["mean_join"] - _safe_mean(base_comm[bj])) * 100, 2)
             out["baseline_mean_join"] = round(_safe_mean(base_comm[bj]), 4)
+            base_fall = _coup_success_rate(base_comm)
+            out["baseline_fall_rate"] = round(base_fall, 4)
+            out["delta_fall_vs_baseline_pp"] = round((out["regime_fall_rate"] - base_fall) * 100, 2)
+            # T-test for fall rates (surveillance vs baseline)
+            surv_cs = df["coup_success"] if "coup_success" in df.columns else pd.Series(dtype=float)
+            base_cs = base_comm["coup_success"] if "coup_success" in base_comm.columns else pd.Series(dtype=float)
+            if surv_cs.dtype == object:
+                surv_cs = surv_cs.map({"True": True, "False": False, True: True, False: False})
+            if base_cs.dtype == object:
+                base_cs = base_cs.map({"True": True, "False": False, True: True, False: False})
+            surv_cs = surv_cs.astype(float).dropna()
+            base_cs = base_cs.astype(float).dropna()
+            if len(surv_cs) > 1 and len(base_cs) > 1:
+                t_stat, t_p = stats.ttest_ind(surv_cs, base_cs)
+                out["fall_rate_ttest"] = {
+                    "t_stat": round(float(t_stat), 4),
+                    "p_value": round(float(t_p), 6),
+                }
         results.setdefault("surveillance", {})[SHORT.get(model_slug, model_slug)] = out
 
     # Propaganda k=2,5,10
@@ -474,6 +555,7 @@ def compute_regime_control():
             jcol = _join_col(df)
             out = {
                 "mean_join_all": round(_safe_mean(df[jcol]), 4),
+                "regime_fall_rate": round(_coup_success_rate(df), 4),
                 "r_vs_theta_all": pearson_with_ci(df["theta"], df[jcol]),
                 "n_obs": int(len(df)),
             }
@@ -508,6 +590,7 @@ def compute_regime_control():
         jcol = _join_col(df)
         out = {
             "mean_join_all": round(_safe_mean(df[jcol]), 4),
+            "regime_fall_rate": round(_coup_success_rate(df), 4),
             "r_vs_theta_all": pearson_with_ci(df["theta"], df[jcol]),
             "n_obs": int(len(df)),
         }
@@ -528,6 +611,11 @@ def compute_regime_control():
         jcol = _join_col(df)
         by_design = df.groupby("design")[jcol].mean().to_dict()
         out = {k: round(float(v), 4) for k, v in by_design.items()}
+        # Regime fall rate by design (surveillance condition)
+        fall_by_design = {}
+        for design_name, gdf in df.groupby("design"):
+            fall_by_design[design_name] = round(_coup_success_rate(gdf), 4)
+        out["fall_rate"] = fall_by_design
         # deltas vs no-surveillance infodesign baseline
         base_info = _load_summary(ROOT / model_slug / "experiment_infodesign_all_summary.csv")
         if len(base_info):
@@ -537,6 +625,16 @@ def compute_regime_control():
                 k: round((float(v) - float(base_means.get(k, np.nan))) * 100, 2)
                 for k, v in by_design.items()
                 if k in base_means
+            }
+            # Fall rate deltas vs no-surveillance
+            base_fall = {}
+            for design_name, gdf in base_info.groupby("design"):
+                base_fall[design_name] = _coup_success_rate(gdf)
+            out["nosurv_fall_rate"] = {k: round(float(v), 4) for k, v in base_fall.items()}
+            out["delta_fall_vs_nosurv_pp"] = {
+                k: round((float(fall_by_design.get(k, np.nan)) - float(base_fall.get(k, np.nan))) * 100, 2)
+                for k in fall_by_design
+                if k in base_fall
             }
         results.setdefault("surveillance_x_censorship", {})[SHORT.get(model_slug, model_slug)] = out
 

@@ -1,15 +1,17 @@
 \begin{table}[t]
 \centering
-\caption{Surveillance $\times$ censorship interaction (primary model: Mistral Small Creative).}
+\caption{Surveillance $\times$ censorship interaction (primary model: Mistral Small Creative). Fall~\% columns show the fraction of periods in which the regime falls.}
 \label{tab:surv_censor}
 \small
-\begin{tabular}{lccc}
+\begin{tabular}{lccccc}
 \toprule
-Design & No Surv. & Surv. & $\Delta$ \\
+& \multicolumn{2}{c}{Mean join} & & \multicolumn{2}{c}{Fall~\%} \\
+\cmidrule(lr){2-3} \cmidrule(lr){5-6}
+Design & No Surv. & Surv. & $\Delta$ & No Surv. & Surv. \\
 \midrule
-Baseline & 0.124 & 0.009 & -0.115 \\
-Upper cens. & 0.309 & 0.037 & -0.272 \\
-Lower cens. & 0.390 & 0.042 & -0.348 \\
+Baseline & 0.124 & 0.009 & -0.115 & 12.2 & 0.0 \\
+Upper cens. & 0.309 & 0.037 & -0.272 & 51.1 & 0.0 \\
+Lower cens. & 0.390 & 0.042 & -0.348 & 21.5 & 0.0 \\
 \bottomrule
 \end{tabular}
 \end{table}
