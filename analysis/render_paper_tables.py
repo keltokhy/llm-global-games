@@ -41,6 +41,18 @@ def _fmt_r(x: float, nd: int = 2) -> str:
     return f"{sign}{x:.{nd}f}"
 
 
+def _fmt_pct(x: float | None, nd: int = 1) -> str:
+    """Format a fraction as a percentage (e.g., 0.237 -> '23.7')."""
+    if x is None:
+        return "---"
+    try:
+        if x != x:  # nan
+            return "---"
+    except Exception:
+        return "---"
+    return f"{x * 100:.{nd}f}"
+
+
 def _fmt_mean(x: float, nd: int = 2) -> str:
     return _fmt_num(x, nd=nd)
 
@@ -171,6 +183,10 @@ def render_tab_main_results(stats: dict) -> str:
         d = part1.get(m, {}).get("pure", {})
         return _fmt_mean(d.get("mean_join"), nd=2)
 
+    def fall_pct(m: str) -> str:
+        d = part1.get(m, {}).get("pure", {})
+        return _fmt_pct(d.get("regime_fall_rate"))
+
     def n_pure(m: str) -> str:
         d = part1.get(m, {}).get("pure", {})
         return str(d.get("n_obs") or "---")
@@ -178,7 +194,7 @@ def render_tab_main_results(stats: dict) -> str:
     rows = []
     for m in models:
         rows.append(
-            f"{m} & {r_attack(m,'pure')} & {r_attack(m,'comm')} & {r_attack(m,'scramble')} & {r_attack(m,'flip')} & {n_pure(m)} & {mean_join(m)} \\\\"
+            f"{m} & {r_attack(m,'pure')} & {r_attack(m,'comm')} & {r_attack(m,'scramble')} & {r_attack(m,'flip')} & {n_pure(m)} & {mean_join(m)} & {fall_pct(m)} \\\\"
         )
 
     pooled = part1.get("_pooled_pure", {}).get("r_vs_attack", {}).get("r")
@@ -187,6 +203,7 @@ def render_tab_main_results(stats: dict) -> str:
     pooled_flip = part1.get("_pooled_flip", {}).get("r_vs_attack", {}).get("r")
     pooled_n = part1.get("_pooled_pure", {}).get("n_obs")
     pooled_mean = part1.get("_pooled_pure", {}).get("mean_join")
+    pooled_fall = part1.get("_pooled_pure", {}).get("regime_fall_rate")
 
     mean_pure = part1.get("_mean_r_pure_vs_attack")
     mean_comm = mean_r_attack("comm")
@@ -195,20 +212,20 @@ def render_tab_main_results(stats: dict) -> str:
 
     tex = r"""\begin{table*}[t]
 \centering
-\caption{Equilibrium alignment by model and treatment. Cells report Pearson $r$ between the empirical join fraction and the theoretical attack mass $A(\theta)$.}
+\caption{Equilibrium alignment by model and treatment. Cells report Pearson $r$ between the empirical join fraction and the theoretical attack mass $A(\theta)$. Fall~\% is the fraction of periods in which the regime falls ($\text{join fraction} > \theta$) under the pure treatment.}
 \label{tab:main_results}
 \small
-\begin{tabular}{lcccccc}
+\begin{tabular}{lccccccc}
 \toprule
-& \multicolumn{2}{c}{Main treatments} & \multicolumn{2}{c}{Falsification} & & \\
+& \multicolumn{2}{c}{Main treatments} & \multicolumn{2}{c}{Falsification} & & & \\
 \cmidrule(lr){2-3} \cmidrule(lr){4-5}
-Model & Pure & Comm & Scramble & Flip & $n_{\text{pure}}$ & Mean join \\
+Model & Pure & Comm & Scramble & Flip & $n_{\text{pure}}$ & Mean join & Fall~\% \\
 \midrule
 """
     tex += "\n".join(rows) + "\n"
     tex += r"""\midrule
-\textbf{Pooled} & $""" + _fmt_r(pooled, 2) + r"""$ & $""" + _fmt_r(pooled_comm, 2) + r"""$ & $""" + _fmt_r(pooled_scr, 2) + r"""$ & $""" + _fmt_r(pooled_flip, 2) + r"""$ & """ + f"{pooled_n}" + r""" & """ + _fmt_mean(pooled_mean, 2) + r""" \\
-\textbf{Mean across models} & """ + r_cell(mean_pure, 2) + r""" & """ + r_cell(mean_comm, 2) + r""" & """ + r_cell(mean_scr, 2) + r""" & """ + r_cell(mean_flip, 2) + r""" & --- & --- \\
+\textbf{Pooled} & $""" + _fmt_r(pooled, 2) + r"""$ & $""" + _fmt_r(pooled_comm, 2) + r"""$ & $""" + _fmt_r(pooled_scr, 2) + r"""$ & $""" + _fmt_r(pooled_flip, 2) + r"""$ & """ + f"{pooled_n}" + r""" & """ + _fmt_mean(pooled_mean, 2) + r""" & """ + _fmt_pct(pooled_fall) + r""" \\
+\textbf{Mean across models} & """ + r_cell(mean_pure, 2) + r""" & """ + r_cell(mean_comm, 2) + r""" & """ + r_cell(mean_scr, 2) + r""" & """ + r_cell(mean_flip, 2) + r""" & --- & --- & --- \\
 \bottomrule
 \end{tabular}
 \end{table*}
@@ -231,22 +248,23 @@ def render_tab_infodesign(stats: dict) -> str:
     for key, label in designs:
         d = info.get(key, {})
         mean = d.get("mean_join")
+        fall = d.get("regime_fall_rate")
         r = (d.get("r_vs_theta") or {}).get("r")
         delta = d.get("delta_vs_baseline")
         n = d.get("n_obs")
         delta_cell = "---" if delta is None else _fmt_r(delta, nd=3).replace("+", "+")
         rows.append(
-            f"{label} & {_fmt_num(mean,3)} & ${_fmt_r(r,3)}$ & {delta_cell} & {n} \\\\"
+            f"{label} & {_fmt_num(mean,3)} & {_fmt_pct(fall)} & ${_fmt_r(r,3)}$ & {delta_cell} & {n} \\\\"
         )
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{Information design treatment summary (primary model: Mistral Small Creative). $r$ is the Pearson correlation between $\theta$ and join fraction.}
+\caption{Information design treatment summary (primary model: Mistral Small Creative). $r$ is the Pearson correlation between $\theta$ and join fraction. Fall~\% is the fraction of periods in which the regime falls.}
 \label{tab:infodesign_summary}
 \small
-\begin{tabular}{lcccc}
+\begin{tabular}{lccccc}
 \toprule
-Design & Mean & $r$ & $\Delta$ & $N$ \\
+Design & Mean & Fall~\% & $r$ & $\Delta$ & $N$ \\
 \midrule
 """
     tex += "\n".join(rows) + "\n"
@@ -265,6 +283,7 @@ def render_tab_surveillance_propaganda(stats: dict) -> str:
     base = part1["Mistral Small Creative"]["comm"]
     base_mean = base["mean_join"]
     base_r = base["r_vs_theta"]["r"]
+    base_fall = base.get("regime_fall_rate")
 
     def row_prop(k: int) -> tuple[str, dict]:
         d = regime["propaganda"][f"k={k}"]["Mistral Small Creative"]
@@ -275,7 +294,7 @@ def render_tab_surveillance_propaganda(stats: dict) -> str:
     ps = regime["propaganda_surveillance"]["Mistral Small Creative"]
 
     lines = []
-    lines.append(f"Comm (baseline) & {_fmt_num(base_mean,3).lstrip('0')} & {_fmt_num(base_mean,3).lstrip('0')} & ${_fmt_r(base_r,3)}$ & --- \\\\")
+    lines.append(f"Comm (baseline) & {_fmt_num(base_mean,3).lstrip('0')} & {_fmt_num(base_mean,3).lstrip('0')} & ${_fmt_r(base_r,3)}$ & --- & {_fmt_pct(base_fall)} \\\\")
     lines.append(r"\midrule")
 
     for label, d in prop_rows:
@@ -284,28 +303,31 @@ def render_tab_surveillance_propaganda(stats: dict) -> str:
         r = d["r_vs_theta_all"]["r"]
         delta_real = d.get("delta_real_vs_baseline_pp")
         delta_cell = "---" if delta_real is None else f"{_fmt_r(delta_real/100,3)}"
+        fall = d.get("regime_fall_rate")
         lines.append(
-            f"{label} & {_fmt_num(mean_all,3).lstrip('0')} & {_fmt_num(mean_real,3).lstrip('0')} & ${_fmt_r(r,3)}$ & {delta_cell} \\\\"
+            f"{label} & {_fmt_num(mean_all,3).lstrip('0')} & {_fmt_num(mean_real,3).lstrip('0')} & ${_fmt_r(r,3)}$ & {delta_cell} & {_fmt_pct(fall)} \\\\"
         )
 
     lines.append(r"\midrule")
+    surv_fall = surv.get("regime_fall_rate")
     lines.append(
-        f"Surveillance & {_fmt_num(surv['mean_join'],3).lstrip('0')} & {_fmt_num(surv['mean_join'],3).lstrip('0')} & ${_fmt_r(surv['r_vs_theta']['r'],3)}$ & {_fmt_r(surv['delta_vs_baseline_pp']/100,3)} \\\\"
+        f"Surveillance & {_fmt_num(surv['mean_join'],3).lstrip('0')} & {_fmt_num(surv['mean_join'],3).lstrip('0')} & ${_fmt_r(surv['r_vs_theta']['r'],3)}$ & {_fmt_r(surv['delta_vs_baseline_pp']/100,3)} & {_fmt_pct(surv_fall)} \\\\"
     )
+    ps_fall = ps.get("regime_fall_rate")
     lines.append(
-        f"Prop+Surv & {_fmt_num(ps['mean_join_all'],3).lstrip('0')} & --- & ${_fmt_r(ps['r_vs_theta_all']['r'],3)}$ & --- \\\\"
+        f"Prop+Surv & {_fmt_num(ps['mean_join_all'],3).lstrip('0')} & --- & ${_fmt_r(ps['r_vs_theta_all']['r'],3)}$ & --- & {_fmt_pct(ps_fall)} \\\\"
     )
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{Propaganda and surveillance effects (primary model: Mistral Small Creative). ``All'' includes propaganda agents; ``Real'' excludes them (computed from logs). $\Delta$ is the change in real-agent mean join vs.\ baseline communication.}
+\caption{Propaganda and surveillance effects (primary model: Mistral Small Creative). ``All'' includes propaganda agents; ``Real'' excludes them (computed from logs). $\Delta$ is the change in real-agent mean join vs.\ baseline communication. Fall~\% is the fraction of periods in which the regime falls.}
 \label{tab:surveillance_propaganda}
 \small
-\begin{tabular}{lcccc}
+\begin{tabular}{lccccc}
 \toprule
- & \multicolumn{2}{c}{Mean join} & & \\
+ & \multicolumn{2}{c}{Mean join} & & & \\
 \cmidrule(lr){2-3}
-Treatment & All & Real & $r$ & $\Delta$ \\
+Treatment & All & Real & $r$ & $\Delta$ & Fall~\% \\
 \midrule
 """
     tex += "\n".join(lines) + "\n"
@@ -327,21 +349,31 @@ def render_tab_surv_censor(stats: dict) -> str:
     up = m("censor_upper")
     lo = m("censor_lower")
 
+    # Fall rates: no-surveillance from infodesign, surveillance from sxc
+    nosurv_fall = sxc.get("nosurv_fall_rate", {})
+    surv_fall = sxc.get("fall_rate", {})
+
     lines = []
     for label, key in [("Baseline", "baseline"), ("Upper cens.", "censor_upper"), ("Lower cens.", "censor_lower")]:
         no = {"baseline": baseline, "censor_upper": up, "censor_lower": lo}[key]
         yes = float(sxc[key])
         delta = yes - no
-        lines.append(f"{label} & {_fmt_num(no,3)} & {_fmt_num(yes,3)} & {_fmt_r(delta,nd=3)} \\\\")
+        no_fall = nosurv_fall.get(key)
+        yes_fall = surv_fall.get(key)
+        lines.append(
+            f"{label} & {_fmt_num(no,3)} & {_fmt_num(yes,3)} & {_fmt_r(delta,nd=3)} & {_fmt_pct(no_fall)} & {_fmt_pct(yes_fall)} \\\\"
+        )
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{Surveillance $\times$ censorship interaction (primary model: Mistral Small Creative).}
+\caption{Surveillance $\times$ censorship interaction (primary model: Mistral Small Creative). Fall~\% columns show the fraction of periods in which the regime falls.}
 \label{tab:surv_censor}
 \small
-\begin{tabular}{lccc}
+\begin{tabular}{lccccc}
 \toprule
-Design & No Surv. & Surv. & $\Delta$ \\
+& \multicolumn{2}{c}{Mean join} & & \multicolumn{2}{c}{Fall~\%} \\
+\cmidrule(lr){2-3} \cmidrule(lr){5-6}
+Design & No Surv. & Surv. & $\Delta$ & No Surv. & Surv. \\
 \midrule
 """
     tex += "\n".join(lines) + "\n"
