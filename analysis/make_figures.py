@@ -1262,16 +1262,40 @@ def figA3_bandwidth():
 def fig16_beliefs():
     import json as _json
 
-    BACKUP = ROOT / "mistralai--mistral-small-creative" / "_overwrite_200period_backup"
-    COMM_DIR = ROOT / "mistralai--mistral-small-creative" / "_beliefs_comm" / "mistralai--mistral-small-creative"
-    PROP_DIR = ROOT / "mistralai--mistral-small-creative" / "_beliefs_propaganda_k5" / "mistralai--mistral-small-creative"
+    MISTRAL = ROOT / "mistralai--mistral-small-creative"
+    PROP_DIR = MISTRAL / "_beliefs_propaganda_k5" / "mistralai--mistral-small-creative"
 
     C_BELIEF_PURE = "#636363"
     C_BELIEF_COMM = "#2166ac"
     C_BELIEF_SURV = "#7b3294"
     C_BELIEF_PROP = "#d6604d"
 
+    def _load_belief_v2_agents(log_path, slice_range=None):
+        """Load v2 belief agents (those with second_order_belief_raw)."""
+        if not log_path.exists():
+            return []
+        with open(log_path) as f:
+            periods = _json.load(f)
+        if slice_range is not None:
+            periods = periods[slice_range]
+        rows = []
+        sigma = 0.3
+        for p in periods:
+            theta_star = p["theta_star"]
+            for a in p.get("agents", []):
+                if a.get("belief") is None or a.get("api_error"):
+                    continue
+                if "second_order_belief_raw" not in a:
+                    continue
+                signal = a["signal"]
+                belief = a["belief"] / 100.0
+                decision = 1 if a["decision"] == "JOIN" else 0
+                posterior = stats.norm.cdf((theta_star - signal) / sigma)
+                rows.append({"belief": belief, "decision": decision, "posterior": posterior})
+        return rows
+
     def _load_belief_agents(log_path):
+        """Load all belief agents (fallback for propaganda data)."""
         if not log_path.exists():
             return []
         with open(log_path) as f:
@@ -1280,7 +1304,7 @@ def fig16_beliefs():
         sigma = 0.3
         for p in periods:
             theta_star = p["theta_star"]
-            for a in p["agents"]:
+            for a in p.get("agents", []):
                 if a.get("belief") is None or a.get("api_error"):
                     continue
                 signal = a["signal"]
@@ -1303,9 +1327,12 @@ def fig16_beliefs():
             counts.append(n)
         return np.array(centers), np.array(means), np.array(ses), np.array(counts)
 
-    pure = _load_belief_agents(BACKUP / "experiment_pure_beliefs_log.json")
-    comm = _load_belief_agents(COMM_DIR / "experiment_comm_log.json")
-    surv = _load_belief_agents(BACKUP / "experiment_surveillance_beliefs_log.json")
+    # Load v2 belief data from main experiment logs (matching verify_paper_stats.py)
+    pure = _load_belief_v2_agents(MISTRAL / "experiment_pure_log.json")
+    comm = _load_belief_v2_agents(MISTRAL / "experiment_comm_log.json",
+                                  slice_range=slice(None, -200))
+    surv = _load_belief_v2_agents(MISTRAL / "experiment_comm_log.json",
+                                  slice_range=slice(-200, None))
     prop_path = PROP_DIR / "experiment_comm_log.json"
     prop = _load_belief_agents(prop_path) if prop_path.exists() else []
     has_prop = len(prop) > 50
