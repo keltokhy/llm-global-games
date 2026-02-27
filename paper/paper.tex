@@ -194,6 +194,10 @@ I test nine architecturally distinct models spanning six architecture families (
 
 For the information design experiments, I fix $B = C = 1$ (so $\theta^* = 0.50$) and a grid of 9 values of $\theta$ spanning $[\theta^* - 0.30, \theta^* + 0.30] = [0.20, 0.80]$, running repeated country--periods per $(\text{design}, \theta)$ cell with 25 agents each. Baseline, stability, censorship, scramble, and flip use 30 repetitions per cell (270 observations per design). Instability and public signal use 60 repetitions per cell (540 observations). Single-channel decomposition uses 10 repetitions per cell (90 observations) for each channel. The primary model is Mistral Small Creative. Cross-model replication uses six additional models.
 
+Table~\ref{tab:treatment_map} maps each treatment to the theoretical channel it tests, the directional prediction, and the observed result.
+
+\input{tables/tab_treatment_map.tex}
+
 
 %% ============================================================
 %% 5. RESULTS: PURE GLOBAL GAME
@@ -817,6 +821,10 @@ The main experiments calibrate a single parameter (cutoff center) per model to c
 
 \input{tables/tab_uncalibrated.tex}
 
+Table~\ref{tab:calibration_robustness} reports calibration quality metrics across all nine models. The raw correlation $r_\theta$ between regime strength and join fraction ranges from $-0.70$ to $-0.87$, confirming stable monotone response across architectures.
+
+\input{tables/tab_calibration_robustness.tex}
+
 \begin{figure*}[t]
   \centering
   \includegraphics[width=0.85\textwidth]{figures/figA4_calibration.pdf}
@@ -894,6 +902,35 @@ In the \textit{placebo} variant, agents are told ``Your communications are being
 \input{tables/tab_surveillance_variants.tex}
 
 Neither variant produces a significant change in join rates relative to the communication baseline (Table~\ref{tab:surveillance_variants}). The placebo produces a mean join rate of 43.7\% ($+2.6$~pp vs.\ communication, $p = 0.42$) and the anonymous variant 45.2\% ($+4.1$~pp, $p = 0.20$). Both maintain a strong negative $\theta$--join relationship ($r = -0.87$), indicating that the signal-processing channel remains intact. By contrast, the full surveillance treatment reduces join rates by 13.4~pp ($p < 0.001$). The chilling effect is therefore specific to the surveillance \textit{warning's strategic content}---the implication that subversive messages will have consequences---rather than to the mere mention of monitoring.
+
+\subsection{Finite-$N$ Benchmark}
+
+The theoretical model assumes a continuum of agents, but the experiments use $N = 25$. Table~\ref{tab:finite_n} tests whether the global game predictions hold at this finite scale by comparing predicted regime fall rates---computed from the binomial model $\Pr(\text{Binom}(25, \hat{p}(\theta)) > 25\theta)$ where $\hat{p}(\theta)$ is the fitted logistic join probability---against empirical fall rates. The pooled correlation is $r = 0.998$ ($p < 0.001$), indicating near-perfect agreement between theory and data at $N = 25$.
+
+\input{tables/tab_finite_n.tex}
+
+\subsection{Agent-Level Regressions}
+
+Table~\ref{tab:regressions} reports agent-level logit regressions with clustered standard errors (model--country--period). Column~(1) regresses the join decision on $\theta$, treatment dummies, and their interactions, with model fixed effects ($N = 281{,}186$). All treatment effects are significant and in the predicted direction: surveillance and propaganda suppress joining, the flip treatment reverses the $\theta$ slope, and scramble eliminates it. Column~(2) validates the briefing mechanism by regressing coordination on the latent slider values (direction, coordination, and their interaction). Column~(3) shows that elicited beliefs predict actions beyond what the signal alone predicts: the belief coefficient is strongly significant while the $z$-score coefficient is not.
+
+\input{tables/tab_regressions.tex}
+
+\subsection{Construct Validity}
+
+A natural concern is whether LLMs are merely performing text classification rather than strategic reasoning. Figure~\ref{fig:construct_validity} tests this. Panel~(A) compares a three-feature model (direction, clarity, and coordination sliders) against a one-feature baseline (direction only) in predicting join decisions. If agents respond to strategic structure beyond sentiment, the three-feature model should outperform. Panel~(B) tests whether a model trained on pure-treatment data generalizes to communication and surveillance treatments, assessing whether the same briefing features drive behavior across treatments.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=0.85\textwidth]{figures/fig_construct_validity.pdf}
+  \caption{Construct validity tests. (A) Three-feature vs.\ one-feature prediction accuracy across models. (B) Cross-treatment generalization of briefing feature predictions.}
+  \label{fig:construct_validity}
+\end{figure*}
+
+\subsection{Belief Elicitation Summary}
+
+Table~\ref{tab:beliefs} summarizes the belief elicitation results. Stated beliefs track the Bayesian posterior closely ($r_{\text{post}} = 0.78$ for pure treatment) and predict actions strongly ($r_{\text{b,d}} = 0.96$). The partial correlation controlling for the private signal remains high ($r_{\text{partial}} = 0.93$), indicating that beliefs carry information beyond the signal itself. Under surveillance, beliefs shift only modestly ($-3.1$~pp) while actions shift by $-11.8$~pp, consistent with preference falsification: agents maintain private assessments but alter expressed behavior.
+
+\input{tables/tab_beliefs.tex}
 
 
 %% ============================================================
