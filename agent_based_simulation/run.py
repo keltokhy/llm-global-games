@@ -24,7 +24,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from .runtime import model_slug, parse_float_list, resolve_model_output_dir, add_common_args, OUTPUT_DIR
+from .runtime import model_slug, parse_float_list, resolve_model_output_dir, add_common_args, OUTPUT_DIR, deterministic_hash
 
 
 def _save_calibrated_params(output_dir: Path, model_name: str, params: dict):
@@ -44,8 +44,12 @@ def _save_calibrated_params(output_dir: Path, model_name: str, params: dict):
         with open(index_path) as f:
             index = json.load(f)
     index[model_name] = params
-    with open(index_path, "w") as f:
+    
+    # Atomic write to shared index
+    tmp_path = index_path.with_suffix('.json.tmp')
+    with open(tmp_path, "w") as f:
         json.dump(index, f, indent=2)
+    os.replace(tmp_path, index_path)
 
     return per_model_path, index_path
 
@@ -340,7 +344,7 @@ def run_experiment(args, treatment, signal_mode="normal"):
 
             for spec in tasks_spec:
                 period_rng = np.random.default_rng(
-                    hash((spec["c"], spec["t"], "signals")) % 2**32
+                    deterministic_hash((spec["c"], spec["t"], "signals")) % 2**32
                 )
                 for i in range(args.n_agents):
                     signal = spec["theta"] + period_rng.normal(0, args.sigma)

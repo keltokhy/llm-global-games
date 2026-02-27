@@ -42,7 +42,7 @@ from .infodesign import (
     base_params_from_calibrated,
 )
 from .run import _load_calibrated_params
-from .runtime import parse_float_list, resolve_model_output_dir, add_common_args, join_fraction_column
+from .runtime import parse_float_list, resolve_model_output_dir, add_common_args, join_fraction_column, deterministic_hash
 
 
 def run_infodesign(args):
@@ -132,7 +132,7 @@ def run_infodesign(args):
         for ti, theta in enumerate(theta_grid):
             for rep in range(args.reps):
                 cell_rng = np.random.default_rng(
-                    hash((rep, 0, "signals")) % 2**32
+                    deterministic_hash((rep, 0, "signals")) % 2**32
                 )
                 for agent_id in range(args.n_agents):
                     signal = theta + cell_rng.normal(0, args.sigma)
@@ -220,11 +220,12 @@ def run_infodesign(args):
                 )
                 public_text = pub.generate(
                     theta, z=z_center, sigma=args.sigma, period=rep,
+                    bulletin_seed=deterministic_hash((args.seed, rep, design_name)) % (2**31),
                 )
 
                 # Pre-generate briefings and stamp the public suffix on each
                 rng = np.random.default_rng(
-                    hash((rep, 0, "signals")) % 2**32
+                    deterministic_hash((rep, 0, "signals")) % 2**32
                 )
                 briefing_overrides = []
                 for agent in agents:
@@ -237,10 +238,10 @@ def run_infodesign(args):
             # Within-briefing observation shuffle
             elif config is not None and getattr(config, 'shuffle_observations', False):
                 rng = np.random.default_rng(
-                    hash((rep, 0, "signals")) % 2**32
+                    deterministic_hash((rep, 0, "signals")) % 2**32
                 )
                 shuffle_rng = np.random.default_rng(
-                    hash((rep, 0, "shuffle_obs")) % 2**32
+                    deterministic_hash((rep, 0, "shuffle_obs")) % 2**32
                 )
                 briefing_overrides = []
                 for agent in agents:
@@ -255,10 +256,10 @@ def run_infodesign(args):
             # Domain-group scramble: scramble specific domain observations across agents
             elif config is not None and getattr(config, 'scramble_domain_indices', None):
                 rng = np.random.default_rng(
-                    hash((rep, 0, "signals")) % 2**32
+                    deterministic_hash((rep, 0, "signals")) % 2**32
                 )
                 scramble_rng = np.random.default_rng(
-                    hash((rep, 0, "domain_scramble")) % 2**32
+                    deterministic_hash((rep, 0, "domain_scramble")) % 2**32
                 )
                 # Generate all briefings normally
                 temp_briefings = []
@@ -294,6 +295,7 @@ def run_infodesign(args):
                 result = await run_communication_game(
                     **game_kwargs,
                     surveillance=getattr(args, 'surveillance', False),
+                    surveillance_mode=getattr(args, 'surveillance_mode', 'full'),
                 )
             else:
                 result = await run_pure_global_game(**game_kwargs)
@@ -440,6 +442,8 @@ def main():
                         help="Number of propaganda (regime plant) agents in comm games")
     parser.add_argument("--surveillance", action="store_true",
                         help="Tell agents their messages are monitored by regime security")
+    parser.add_argument("--surveillance-mode", choices=["full", "placebo", "anonymous"], default="full",
+                        help="Type of surveillance applied (if --surveillance is active).")
     parser.add_argument("--z-center", type=float, default=None,
                         help="z-score centering point (default: θ*, use 0.0 for legacy behavior)")
     parser.add_argument("--group-size-info", action="store_true",

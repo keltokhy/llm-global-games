@@ -19,6 +19,8 @@ Each briefing has a fixed schema:
 
 import numpy as np
 from dataclasses import dataclass
+from .runtime import deterministic_hash
+from .runtime import deterministic_hash
 
 DEFAULT_BOTTOMLINE_CUTS = (0.15, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 0.85)
 DEFAULT_UNCLEAR_CUTS = (0.18, 0.33, 0.48, 0.62, 0.77)
@@ -861,7 +863,7 @@ def _sample_evidence_item(domain, direction, clarity, rng,
 
 def _seed_for_agent_period(base_seed, agent_id: int, period: int) -> int:
     """Stable per-agent-period seed to keep briefings reproducible but distinct."""
-    return abs(hash((base_seed or 0, agent_id, period))) % (2**31)
+    return abs(deterministic_hash((base_seed or 0, agent_id, period))) % (2**31)
 
 
 def _validate_cutpoints(name: str, cuts, expected_len: int, min_gap: float = 1e-6) -> tuple[float, ...]:

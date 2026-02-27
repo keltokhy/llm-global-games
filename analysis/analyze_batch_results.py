@@ -141,8 +141,12 @@ def save(fig, name):
 def load_model(slug):
     p = OUT / slug / "experiment_infodesign_all_summary.csv"
     if not p.exists():
+        print(f"⚠️  WARNING: Missing data for model {slug} at {p}")
         return pd.DataFrame()
-    return pd.read_csv(p)
+    df = pd.read_csv(p)
+    if df.empty:
+        print(f"⚠️  WARNING: Empty data for model {slug} at {p}")
+    return df
 
 print("Loading data...")
 llama = load_model("meta-llama--llama-3.3-70b-instruct")
@@ -300,10 +304,15 @@ models_data = {
     "allenai--olmo-3-7b-instruct": olmo,
     "mistralai--ministral-3b-2512": ministral,
 }
-
+models_data = {k: v for k, v in models_data.items() if not v.empty}
 n_models = len(models_data)
-fig, axes = plt.subplots(1, n_models, figsize=(TEXT_W, 2.5), sharey=True)
-for i, (slug, mdf) in enumerate(models_data.items()):
+if n_models == 0:
+    print("❌ ERROR: No model data loaded for Fig 5. Skipping.")
+else:
+    fig, axes = plt.subplots(1, n_models, figsize=(TEXT_W, 2.5), sharey=True)
+    if n_models == 1:
+        axes = [axes]
+    for i, (slug, mdf) in enumerate(models_data.items()):
     ax = axes[i]
     for d in ["baseline", "censor_upper", "censor_lower"]:
         dd = mdf[mdf["design"] == d]

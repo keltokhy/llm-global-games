@@ -290,12 +290,12 @@ class ThetaAdaptiveBriefingGenerator:
         params = dict(self.base_params)
 
         # Multiplicative modifiers: param = base * lerp(1.0, factor, w)
-        params["clarity_width"] = params.get("clarity_width", 1.0) * (
+        params["clarity_width"] = max(1e-8, params.get("clarity_width", 1.0) * (
             1.0 + w * (self.config.clarity_width_factor - 1.0)
-        )
-        params["direction_slope"] = params.get("direction_slope", 0.8) * (
+        ))
+        params["direction_slope"] = max(1e-8, params.get("direction_slope", 0.8) * (
             1.0 + w * (self.config.direction_slope_factor - 1.0)
-        )
+        ))
 
         # Absolute target blending: param = base*(1-w) + target*w
         if self.config.dissent_floor_target is not None:
@@ -345,13 +345,13 @@ class PublicSignal:
         params["seed"] = seed
         self._gen = BriefingGenerator(**params)
 
-    def generate(self, theta: float, z: float, sigma: float, period: int = 0) -> str:
+    def generate(self, theta: float, z: float, sigma: float, period: int = 0, bulletin_seed: int = 9999) -> str:
         """Generate a public news bulletin text from the true state.
 
         Returns rendered briefing text suitable for appending to private briefings.
         """
         z_score = (theta - z) / sigma
-        briefing = self._gen.generate(z_score, agent_id=9999, period=period)
+        briefing = self._gen.generate(z_score, agent_id=bulletin_seed, period=period)
         rendered = briefing.render()
         return (
             "\n\n--- PUBLIC NEWS BULLETIN ---\n"

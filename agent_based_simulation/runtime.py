@@ -21,6 +21,23 @@ def model_slug(model_name: str) -> str:
     return model_name.replace("/", "--").replace(":", "_").replace(" ", "_")
 
 
+import hashlib
+
+def deterministic_hash(obj) -> int:
+    """Returns a deterministic integer hash for a given object using MD5."""
+    import json
+    def _to_json_safe(o):
+        if isinstance(o, tuple):
+            return list(_to_json_safe(item) for item in o)
+        if isinstance(o, dict):
+            return {k: _to_json_safe(v) for k, v in o.items()}
+        if isinstance(o, list):
+            return [_to_json_safe(item) for item in o]
+        return o
+    
+    encoded = json.dumps(_to_json_safe(obj), sort_keys=True).encode("utf-8")
+    return int(hashlib.md5(encoded).hexdigest(), 16)
+
 def parse_float_list(value):
     """Parse comma-separated float strings or pass through iterables."""
     if value is None:
@@ -201,16 +218,18 @@ def attack_mass(theta_star, theta, sigma):
 # ── Network generation (was network.py) ─────────────────────────────
 
 
-def build_network(n_agents, n_neighbors=3, rewire_prob=0.3, seed=None):
+def build_network(n_agents, n_neighbors=4, rewire_prob=0.3, seed=None):
     """Build a Watts-Strogatz small-world graph.
 
     Returns (adjacency dict, networkx Graph).
     """
     import networkx as nx
 
-    k = max(n_neighbors, 2)
+    k = n_neighbors
     if k % 2 != 0:
-        k += 1  # networkx requires even k
+        raise ValueError(f"n_neighbors must be an even integer (got {k})")
+    if k >= n_agents:
+        raise ValueError(f"n_neighbors ({k}) must be less than n_agents ({n_agents})")
 
     G = nx.watts_strogatz_graph(n_agents, k, rewire_prob, seed=seed)
     adjacency = {node: list(G.neighbors(node)) for node in G.nodes()}

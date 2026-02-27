@@ -14,7 +14,10 @@ import numpy as np
 from dataclasses import dataclass, field
 
 from .briefing import Briefing
-from .runtime import theta_star_baseline, attack_mass as _am
+from .runtime import theta_star_baseline, attack_mass as _am, deterministic_hash
+
+_IN_FLIGHT_REQUESTS = {}
+
 
 
 @dataclass
@@ -226,47 +229,85 @@ async def _call_llm(
         if cached is not None:
             return cached
 
-    async with semaphore:
-        api_attempts = 0
-        empty_attempts = 0
-        timeout_attempts = 0
-        max_timeout_retries = 3
+        if cache_key in _IN_FLIGHT_REQUESTS:
+            try:
+                return await _IN_FLIGHT_REQUESTS[cache_key]
+            except Exception:
+                pass
+        
+        future = asyncio.Future()
+        _IN_FLIGHT_REQUESTS[cache_key] = future
+
+    api_attempts = 0
+    empty_attempts = 0
+    timeout_attempts = 0
+    max_timeout_retries = 3
+    
+    try:
         while True:
             try:
-                response = await asyncio.wait_for(
-                    client.chat.completions.create(
-                        model=model_name,
-                        messages=messages,
-                        max_tokens=512,
-                        temperature=temperature,
-                    ),
-                    timeout=request_timeout,
-                )
+                async with semaphore:
+                    response = await asyncio.wait_for(
+                        client.chat.completions.create(
+                            model=model_name,
+                            messages=messages,
+                            max_tokens=512,
+                            temperature=temperature,
+                        ),
+                        timeout=request_timeout,
+                    )
                 content = _extract_response_text(response)
                 if _is_retryable_empty(content, min_content_chars=min_content_chars):
                     empty_attempts += 1
                     if empty_attempts >= max_empty_retries:
-                        return "[Empty response after retries]"
+                        result = "[Empty response after retries]"
+                        if cache is not None and cache_key is not None:
+                            _IN_FLIGHT_REQUESTS.pop(cache_key, None)
+                            future.set_result(result)
+                        return result
                     # Fast backoff for empty payloads.
                     await asyncio.sleep(min(6.0, 0.5 * (2 ** (empty_attempts - 1))))
                     continue
                 if cache is not None and cache_key is not None and cache_req is not None:
                     cache.set(cache_key, cache_req, content)
+                
+                if cache is not None and cache_key is not None:
+                    _IN_FLIGHT_REQUESTS.pop(cache_key, None)
+                    future.set_result(content)
                 return content
             except (asyncio.TimeoutError, TimeoutError):
                 timeout_attempts += 1
                 if timeout_attempts >= max_timeout_retries:
-                    return f"[API Error: request timed out after {max_timeout_retries} retries]"
+                    result = f"[API Error: request timed out after {max_timeout_retries} retries]"
+                    if cache is not None and cache_key is not None:
+                        _IN_FLIGHT_REQUESTS.pop(cache_key, None)
+                        future.set_exception(TimeoutError(result))
+                    return result
                 await asyncio.sleep(min(5.0, 2.0 * timeout_attempts))
             except Exception as e:
                 api_attempts += 1
                 err = str(e)
                 if "429" in err or "rate" in err.lower():
                     if api_attempts >= max_retries:
-                        return f"[API Error: {e}]"
+                        result = f"[API Error: {e}]"
+                        if cache is not None and cache_key is not None:
+                            _IN_FLIGHT_REQUESTS.pop(cache_key, None)
+                            future.set_exception(e)
+                        return result
                     await asyncio.sleep(min(10.0, 2 ** (api_attempts - 1)))
                     continue
                 if api_attempts >= max_retries:
+                    result = f"[API Error: {e}]"
+                    if cache is not None and cache_key is not None:
+                        _IN_FLIGHT_REQUESTS.pop(cache_key, None)
+                        future.set_exception(e)
+                    return result
+                await asyncio.sleep(min(10.0, 2 ** (api_attempts - 1)))
+    except Exception as e:
+        if cache is not None and cache_key is not None and not future.done():
+            _IN_FLIGHT_REQUESTS.pop(cache_key, None)
+            future.set_exception(e)
+        raise
                     return f"[API Error: {e}]"
                 await asyncio.sleep(min(3.0, 0.75 * api_attempts))
 
@@ -546,7 +587,7 @@ async def run_pure_global_game(agents, theta, z, sigma, benefit, briefing_gen,
     signal_mode: "normal", "scramble" (permute briefings), or "flip" (negate z-score).
     briefing_overrides: if provided, replaces generated briefings (cross-period scramble).
     """
-    rng = np.random.default_rng(hash((country, period, "signals")) % 2**32)
+    rng = np.random.default_rng(deterministic_hash((country, period, "signals")) % 2**32)
 
     theta_star = theta_star_baseline(max(benefit, 1e-6)) if benefit > 0 else 1.0
 
@@ -628,7 +669,7 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
         message-generation LLM call and uses these pre-recorded messages instead.
     belief_order: "post" (after decision), "pre" (before decision), or "both".
     """
-    rng = np.random.default_rng(hash((country, period, "signals")) % 2**32)
+    rng = np.random.default_rng(deterministic_hash((country, period, "signals")) % 2**32)
 
     theta_star = theta_star_baseline(max(benefit, 1e-6)) if benefit > 0 else 1.0
 
@@ -644,7 +685,7 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
         _scramble_briefings(agents, rng)
 
     call_kwargs = {**_retry_kwargs(llm_max_retries, llm_empty_retries), "temperature": temperature}
-    prop_rng = np.random.default_rng(hash((country, period, "propaganda")) % 2**32)
+    prop_rng = np.random.default_rng(deterministic_hash((country, period, "propaganda")) % 2**32)
 
     # Communication round — use fixed messages if provided, else generate via LLM
     if fixed_messages is not None:
