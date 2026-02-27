@@ -3,21 +3,21 @@
     {
       "model_slug": "mistralai--mistral-small-creative",
       "model_name": "Mistral-Small",
-      "n_obs": 15000,
-      "acc_3feat": 0.8862,
-      "acc_3feat_std": 0.011188486145239785,
-      "r2_3feat": 0.5572688034228472,
-      "coef_direction": -8.215342833840879,
-      "coef_clarity": 0.2492147360393184,
-      "coef_coordination": -0.10556825844050477,
-      "intercept_3feat": 2.465488303331996,
-      "acc_1feat": 0.8863999999999999,
-      "acc_1feat_std": 0.011398635395909854,
-      "r2_1feat": 0.5580844447298896,
-      "coef_direction_only": -8.422495949694195,
-      "intercept_1feat": 2.6232364817301734,
-      "acc_gain": -0.00019999999999986695,
-      "r2_gain": -0.0008156413070423696
+      "n_obs": 20000,
+      "acc_3feat": 0.885,
+      "acc_3feat_std": 0.008892412496055303,
+      "r2_3feat": 0.5616096541892214,
+      "coef_direction": -9.03785218080922,
+      "coef_clarity": -0.10168983746249724,
+      "coef_coordination": -0.7084815364103286,
+      "intercept_3feat": 3.484505774067034,
+      "acc_1feat": 0.8846999999999999,
+      "acc_1feat_std": 0.00843860177991593,
+      "r2_1feat": 0.5625108058544308,
+      "coef_direction_only": -8.332348036754675,
+      "intercept_1feat": 2.7344157255835277,
+      "acc_gain": 0.000300000000000078,
+      "r2_gain": -0.000901151665209432
     },
     {
       "model_slug": "meta-llama--llama-3.3-70b-instruct",
@@ -37,25 +37,6 @@
       "intercept_1feat": 5.37542580556149,
       "acc_gain": 0.014799999999999924,
       "r2_gain": 0.04029669812700387
-    },
-    {
-      "model_slug": "allenai--olmo-3-7b-instruct",
-      "model_name": "OLMo-7B",
-      "n_obs": 2328,
-      "acc_3feat": 0.7186423000599935,
-      "acc_3feat_std": 0.00029616794157976404,
-      "r2_3feat": 0.07435972154620563,
-      "coef_direction": -1.9162032481313827,
-      "coef_clarity": -0.08179476963603877,
-      "coef_coordination": 0.13090020673175437,
-      "intercept_3feat": 2.243304097636693,
-      "acc_1feat": 0.7186423000599935,
-      "acc_1feat_std": 0.00029616794157976404,
-      "r2_1feat": 0.0761209313081107,
-      "coef_direction_only": -2.0597276088424903,
-      "intercept_1feat": 2.318249064654114,
-      "acc_gain": 0.0,
-      "r2_gain": -0.0017612097619050804
     },
     {
       "model_slug": "mistralai--ministral-3b-2512",
@@ -177,31 +158,31 @@
       "model_slug": "mistralai--mistral-small-creative",
       "model_name": "Mistral-Small",
       "treatment": "pure",
-      "mean_residual": 1.2585902952956e-05,
-      "std_residual": 0.29630837386659886,
-      "n_obs": 15000,
-      "mean_actual": 0.3692666666666667,
-      "mean_predicted": 0.36925408076371374
+      "mean_residual": 1.0474373599630126e-05,
+      "std_residual": 0.29791322510808727,
+      "n_obs": 20000,
+      "mean_actual": 0.38185,
+      "mean_predicted": 0.3818395256264004
     },
     {
       "model_slug": "mistralai--mistral-small-creative",
       "model_name": "Mistral-Small",
       "treatment": "comm",
-      "mean_residual": 0.08292361780930155,
-      "std_residual": 0.2822836345139202,
-      "n_obs": 14998,
-      "mean_actual": 0.4521936258167756,
-      "mean_predicted": 0.369270008007474
+      "mean_residual": 0.030098122666293588,
+      "std_residual": 0.2912106879961512,
+      "n_obs": 24998,
+      "mean_actual": 0.4111128890311225,
+      "mean_predicted": 0.38101476636482895
     },
     {
       "model_slug": "mistralai--mistral-small-creative",
       "model_name": "Mistral-Small",
       "treatment": "surveillance",
-      "mean_residual": -0.12221239681462845,
-      "std_residual": 0.3356555921446519,
+      "mean_residual": -0.13377742197212616,
+      "std_residual": 0.3387424899856155,
       "n_obs": 25000,
       "mean_actual": 0.2772,
-      "mean_predicted": 0.3994123968146284
+      "mean_predicted": 0.41097742197212617
     },
     {
       "model_slug": "meta-llama--llama-3.3-70b-instruct",
@@ -232,26 +213,6 @@
       "n_obs": 24996,
       "mean_actual": 0.3268122899663946,
       "mean_predicted": 0.47674880654998053
-    },
-    {
-      "model_slug": "allenai--olmo-3-7b-instruct",
-      "model_name": "OLMo-7B",
-      "treatment": "pure",
-      "mean_residual": 3.985011624675575e-05,
-      "std_residual": 0.4303452032360134,
-      "n_obs": 2328,
-      "mean_actual": 0.7186426116838488,
-      "mean_predicted": 0.7186027615676019
-    },
-    {
-      "model_slug": "allenai--olmo-3-7b-instruct",
-      "model_name": "OLMo-7B",
-      "treatment": "comm",
-      "mean_residual": 0.07743196726148889,
-      "std_residual": 0.3622166044038102,
-      "n_obs": 2238,
-      "mean_actual": 0.7971403038427167,
-      "mean_predicted": 0.7197083365812279
     },
     {
       "model_slug": "mistralai--ministral-3b-2512",

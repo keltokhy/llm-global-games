@@ -1,8 +1,9 @@
-\begin{table*}[t]
+\begin{table*}[htbp]
 \centering
-\caption{Treatment map. Each row describes a treatment, the channel it tests, the theoretical prediction, and the observed result. Part~I treatments test whether LLM agents play the global game; Part~II treatments take the behavioral foundation as given and study information design. $r$ denotes Pearson correlation; $\Delta$ is the change in mean join rate relative to the relevant baseline (percentage points).}
+\caption{Treatment map. Each row describes a treatment, the channel it tests, the theoretical prediction, and the observed result. Part~I tests whether LLM agents play the global game; Part~II studies information design; Part~III tests authoritarian exploitation of the communication channel. $r$ denotes Pearson correlation; $\Delta$ is the change in mean join rate relative to the relevant baseline (percentage points).}
 \label{tab:treatment_map}
-\small
+\footnotesize
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{llllr}
 \toprule
 Treatment & Part & Channel tested & Prediction & Observed \\
@@ -21,9 +22,9 @@ Public signal         & II & Common knowledge channel     & $\downarrow$ join (d
 Censor (upper)        & II & Pooling weak states          & Plateau below $\theta^*$ & $\InfodesignCensorUpperDeltaPP$~pp \\
 Censor (lower)        & II & Pooling strong states        & Plateau above $\theta^*$ & $\InfodesignCensorLowerDeltaPP$~pp \\
 \addlinespace
-\multicolumn{5}{l}{\textit{Authoritarian instruments}} \\
-Surveillance          & II & Preference falsification     & $\downarrow$ join       & $-13.4$~pp \\
-Propaganda ($k{=}10$) & II & Information contamination    & $\downarrow$ join, saturating & $-2.3$~pp (behavioral) \\
+\multicolumn{5}{l}{\textit{Authoritarian instruments (Part~III)}} \\
+Surveillance          & III & Preference falsification     & $\downarrow$ join       & $-13.4$~pp \\
+Propaganda ($k{=}10$) & III & Information contamination    & $\downarrow$ join, saturating & $-2.3$~pp (behavioral) \\
 \addlinespace
 \multicolumn{5}{l}{\textit{Within-briefing falsification}} \\
 Observation shuffle   & I  & Bullet ordering vs.\ content & $r$ unchanged          & $r = \WithinScrambleRTheta$ \\

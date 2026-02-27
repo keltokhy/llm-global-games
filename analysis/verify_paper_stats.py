@@ -23,7 +23,6 @@ OUT = Path(__file__).resolve().parent / "verified_stats.json"
 PART1_MODELS = [
     "mistralai--mistral-small-creative",
     "meta-llama--llama-3.3-70b-instruct",
-    "allenai--olmo-3-7b-instruct",
     "mistralai--ministral-3b-2512",
     "qwen--qwen3-30b-a3b-instruct-2507",
     "openai--gpt-oss-120b",
@@ -35,7 +34,6 @@ PART1_MODELS = [
 SHORT = {
     "mistralai--mistral-small-creative": "Mistral Small Creative",
     "meta-llama--llama-3.3-70b-instruct": "Llama 3.3 70B",
-    "allenai--olmo-3-7b-instruct": "OLMo 3 7B",
     "mistralai--ministral-3b-2512": "Ministral 3B",
     "qwen--qwen3-30b-a3b-instruct-2507": "Qwen3 30B",
     "openai--gpt-oss-120b": "GPT-OSS 120B",
@@ -675,6 +673,41 @@ def compute_regime_control():
             }
         results.setdefault("surveillance_x_censorship", {})[SHORT.get(model_slug, model_slug)] = out
 
+    # Propaganda saturation test: k=5 vs k=10 real-citizen join rates
+    prop = results.get("propaganda", {})
+    k5_data = prop.get("k=5", {}).get("Mistral Small Creative", {})
+    k10_data = prop.get("k=10", {}).get("Mistral Small Creative", {})
+    if k5_data.get("mean_join_real") is not None and k10_data.get("mean_join_real") is not None:
+        # Load agent-level data for proper test
+        k5_log = _load_experiment_log(
+            ROOT / "propaganda-k5" / "mistralai--mistral-small-creative" / "experiment_comm_log.json"
+        )
+        k10_log = _load_experiment_log(
+            ROOT / "propaganda-k10" / "mistralai--mistral-small-creative" / "experiment_comm_log.json"
+        )
+        k5_decisions, k10_decisions = [], []
+        for log in (k5_log or []):
+            for a in log.get("agents", []):
+                if not a.get("is_propaganda", False) and not a.get("api_error"):
+                    k5_decisions.append(1 if a.get("decision") == "JOIN" else 0)
+        for log in (k10_log or []):
+            for a in log.get("agents", []):
+                if not a.get("is_propaganda", False) and not a.get("api_error"):
+                    k10_decisions.append(1 if a.get("decision") == "JOIN" else 0)
+        if k5_decisions and k10_decisions:
+            k5_arr = np.array(k5_decisions)
+            k10_arr = np.array(k10_decisions)
+            t_stat, t_p = stats.ttest_ind(k5_arr, k10_arr)
+            results["_propaganda_saturation_k5_k10"] = {
+                "k5_mean_real": round(float(k5_arr.mean()), 4),
+                "k10_mean_real": round(float(k10_arr.mean()), 4),
+                "delta_pp": round(float((k10_arr.mean() - k5_arr.mean()) * 100), 2),
+                "t_stat": round(float(t_stat), 4),
+                "p_value": round(float(t_p), 6),
+                "n_k5": len(k5_decisions),
+                "n_k10": len(k10_decisions),
+            }
+
     return results
 
 
@@ -1217,6 +1250,35 @@ def compute_beliefs_v2():
             "delta_pp": round(float((surv_sobs.mean() - comm_sobs.mean()) * 100), 2),
             "t_stat": round(float(t_stat), 4),
             "p_value": round(float(t_p), 6),
+        }
+
+    # Preference falsification test: belief shift vs action shift (pure → surveillance)
+    pure_rows = _load_belief_v2_agents("pure")
+    surv_all_rows = _load_belief_v2_agents("surveillance")
+    if pure_rows and surv_all_rows:
+        pure_beliefs = np.array([r["belief"] for r in pure_rows])
+        surv_beliefs = np.array([r["belief"] for r in surv_all_rows])
+        pure_decisions = np.array([r["decision"] for r in pure_rows])
+        surv_decisions = np.array([r["decision"] for r in surv_all_rows])
+
+        # Test 1: first-order belief shift (should be NS)
+        t_belief, p_belief = stats.ttest_ind(pure_beliefs, surv_beliefs)
+        # Test 2: action shift (should be highly significant)
+        t_action, p_action = stats.ttest_ind(pure_decisions, surv_decisions)
+
+        results["_pref_falsification"] = {
+            "pure_mean_belief": round(float(pure_beliefs.mean()), 4),
+            "surv_mean_belief": round(float(surv_beliefs.mean()), 4),
+            "belief_delta_pp": round(float((surv_beliefs.mean() - pure_beliefs.mean()) * 100), 2),
+            "belief_t_stat": round(float(t_belief), 4),
+            "belief_p_value": round(float(p_belief), 6),
+            "pure_mean_join": round(float(pure_decisions.mean()), 4),
+            "surv_mean_join": round(float(surv_decisions.mean()), 4),
+            "action_delta_pp": round(float((surv_decisions.mean() - pure_decisions.mean()) * 100), 2),
+            "action_t_stat": round(float(t_action), 4),
+            "action_p_value": round(float(p_action), 6),
+            "n_pure": len(pure_rows),
+            "n_surv": len(surv_all_rows),
         }
 
     return results

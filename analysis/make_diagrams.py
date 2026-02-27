@@ -181,67 +181,102 @@ def diagram_game_structure():
 # DIAGRAM 2: Signal-to-Text-to-Decision Pipeline
 # ======================================================================
 def diagram_pipeline():
-    fig, ax = plt.subplots(figsize=(13, 5))
-    ax.set_xlim(-0.5, 13)
-    ax.set_ylim(-1.5, 4.5)
+    """Publication-quality pipeline diagram: θ → signal → z → briefing → LLM → decision."""
+    _border  = "#4A4A4A"
+    _fill    = "#F0F0F0"
+    _fill2   = "#E4E4E4"
+    _accent  = "#2C5F8A"
+    _arrow_c = "#555555"
+    _text    = "#1A1A1A"
+    _muted   = "#666666"
+
+    fig, ax = plt.subplots(figsize=(7, 3.2))
+    ax.set_xlim(-0.1, 7.1)
+    ax.set_ylim(-0.2, 3.2)
     ax.axis("off")
     fig.patch.set_facecolor("white")
 
-    ax.text(6.25, 4.1, "Signal $\\rightarrow$ Text $\\rightarrow$ Decision Pipeline",
-            ha="center", va="center", fontsize=15, fontweight="bold", color=C["dark"])
+    bh = 0.95   # box height
 
-    # Pipeline boxes
-    stages = [
-        (0.0,  1.8, 1.6, 1.0, "$\\theta$\nRegime\nstrength", "#FADBD8", C["accent"]),
-        (2.2,  1.8, 2.0, 1.0, "$x_i = \\theta + \\varepsilon_i$\nPrivate\nsignal", "#D5F5E3", C["accent2"]),
-        (4.8,  1.8, 1.6, 1.0, "$z_i$\nz-score\nnormalized", "#D6EAF8", C["blue"]),
-        (7.0,  1.55, 2.3, 1.5, "Briefing\nGenerator\n(8 domains,\n3 sliders)", "#F9E79F", C["accent3"]),
-        (9.9,  1.8, 1.6, 1.0, "LLM\nAgent\n$i$", "#E8DAEF", C["accent4"]),
-        (12.0, 1.8, 0.9, 1.0, "JOIN\nor\nSTAY", "#FADBD8", C["accent"]),
-    ]
+    # ── Row 1 (top): θ → x_i → z_i ──
+    y1 = 1.95
+    # θ
+    _box(ax, (0.0, y1), 1.3, bh, "", fc=_fill, ec=_border, lw=1.5)
+    ax.text(0.65, y1 + bh/2 + 0.15, r"$\theta$", ha="center", va="center",
+            fontsize=14, fontweight="bold", color=_text)
+    ax.text(0.65, y1 + bh/2 - 0.18, "Regime strength", ha="center", va="center",
+            fontsize=8, color=_muted)
+    # x_i
+    _box(ax, (2.2, y1), 2.2, bh, "", fc=_fill, ec=_border, lw=1.5)
+    ax.text(3.3, y1 + bh/2 + 0.15, r"$x_i = \theta + \varepsilon_i$",
+            ha="center", va="center", fontsize=12, fontweight="bold", color=_text)
+    ax.text(3.3, y1 + bh/2 - 0.18, "Private signal", ha="center", va="center",
+            fontsize=8, color=_muted)
+    # z_i
+    _box(ax, (5.5, y1), 1.5, bh, "", fc=_fill, ec=_border, lw=1.5)
+    ax.text(6.25, y1 + bh/2 + 0.15, r"$z_i$", ha="center", va="center",
+            fontsize=14, fontweight="bold", color=_text)
+    ax.text(6.25, y1 + bh/2 - 0.18, "Standardized", ha="center", va="center",
+            fontsize=8, color=_muted)
 
-    for x, y, w, h, txt, fc, ec in stages:
-        _box(ax, (x, y), w, h, txt, fc=fc, ec=ec, fontsize=9, bold=True)
+    # Row 1 arrows
+    _arrow(ax, (1.3, y1 + bh/2), (2.2, y1 + bh/2), color=_arrow_c, lw=2.0)
+    ax.text(1.75, y1 + bh/2 + 0.15, r"$+\varepsilon_i$", ha="center", va="bottom",
+            fontsize=9, color=_muted, style="italic")
+    _arrow(ax, (4.4, y1 + bh/2), (5.5, y1 + bh/2), color=_arrow_c, lw=2.0)
+    ax.text(4.95, y1 + bh/2 + 0.15, "normalize", ha="center", va="bottom",
+            fontsize=8, color=_muted, style="italic")
 
-    # Arrows between boxes
-    arrow_pairs = [
-        ((1.6, 2.3), (2.2, 2.3)),
-        ((4.2, 2.3), (4.8, 2.3)),
-        ((6.4, 2.3), (7.0, 2.3)),
-        ((9.3, 2.3), (9.9, 2.3)),
-        ((11.5, 2.3), (12.0, 2.3)),
-    ]
-    for fr, to in arrow_pairs:
-        _arrow(ax, fr, to, color=C["arrow"], lw=2.0)
+    # ── Row 2 (bottom): Briefing Gen → LLM → Decision ──
+    y2 = 0.1
+    # Briefing Generator
+    _box(ax, (0.0, y2), 2.8, bh + 0.15, "", fc=_fill2, ec=_accent, lw=1.5)
+    ax.text(1.4, y2 + (bh + 0.15)/2 + 0.15, "Briefing Generator",
+            ha="center", va="center", fontsize=11, fontweight="bold", color=_accent)
+    ax.text(1.4, y2 + (bh + 0.15)/2 - 0.2,
+            "3 sliders $\\times$ 8 domains $\\times$ 4 phrase ladders",
+            ha="center", va="center", fontsize=7.5, color=_text)
+    # LLM
+    _box(ax, (3.7, y2 + 0.08), 1.5, bh, "", fc=_fill, ec=_border, lw=1.5)
+    ax.text(4.45, y2 + 0.08 + bh/2 + 0.15, "LLM", ha="center", va="center",
+            fontsize=13, fontweight="bold", color=_text)
+    ax.text(4.45, y2 + 0.08 + bh/2 - 0.18, "Agent $i$", ha="center", va="center",
+            fontsize=8, color=_muted)
+    # Decision
+    _box(ax, (5.9, y2 + 0.08), 1.1, bh, "", fc=_fill, ec=_border, lw=1.5)
+    ax.text(6.45, y2 + 0.08 + bh/2, "JOIN\nor\nSTAY", ha="center", va="center",
+            fontsize=11, fontweight="bold", color=_text, linespacing=0.85)
 
-    # Labels on arrows
-    arrow_labels = [
-        (1.9, 2.65, "$+\\varepsilon_i$", 8),
-        (4.5, 2.65, "standardize", 7.5),
-        (6.55, 2.65, "map to text", 7.5),
-        (9.55, 2.65, "natural\nlanguage", 7),
-        (11.7, 2.65, "binary\nchoice", 7),
-    ]
-    for x, y, txt, fs in arrow_labels:
-        ax.text(x, y, txt, ha="center", va="bottom", fontsize=fs,
-                color=C["grey"], style="italic")
+    # Row 2 arrows
+    _arrow(ax, (2.8, y2 + (bh + 0.15)/2), (3.7, y2 + 0.08 + bh/2),
+           color=_arrow_c, lw=2.0)
+    ax.text(3.25, y2 + (bh + 0.15)/2 + 0.15, "narrative", ha="center",
+            va="bottom", fontsize=8, color=_muted, style="italic")
+    _arrow(ax, (5.2, y2 + 0.08 + bh/2), (5.9, y2 + 0.08 + bh/2),
+           color=_arrow_c, lw=2.0)
+    ax.text(5.55, y2 + 0.08 + bh/2 + 0.15, "binary", ha="center",
+            va="bottom", fontsize=8, color=_muted, style="italic")
 
-    # Briefing detail annotation below
-    detail_text = (
-        "Briefing Generator internals:\n"
-        "  z-score  --[logistic]-->  Direction slider (weak <-> strong)\n"
-        "  z-score  --[Gaussian]-->  Clarity slider (ambiguous <-> clear)\n"
-        "  z-score  --[logistic]-->  Coordination slider (quiet <-> open)\n\n"
-        "  -> 8 evidence domains x 4 phrase ladders\n"
-        "  -> Many small word choices (\"dithering\") recover continuity"
-    )
-    ax.text(6.25, -0.15, detail_text,
-            ha="center", va="top", fontsize=8.5, color=C["dark"],
-            fontfamily="monospace",
-            bbox=dict(boxstyle="round,pad=0.4", fc=C["light_grey"],
-                      ec=C["grey"], alpha=0.6))
+    # ── Elbow connector: z_i → Briefing Generator ──
+    # Go straight down from z_i, then left along the gap, then into BG top
+    z_bot = y1                              # bottom of z_i box
+    bg_top = y2 + bh + 0.15                 # top of BG box
+    mid_y = (z_bot + bg_top) / 2            # midpoint in the gap
+    z_cx = 6.25                             # z_i center x
+    bg_cx = 1.4                             # BG center x
 
-    fig.tight_layout(pad=0.5)
+    # Vertical segment down from z_i
+    ax.plot([z_cx, z_cx], [z_bot, mid_y], color=_arrow_c, lw=2.0, solid_capstyle="butt")
+    # Horizontal segment left
+    ax.plot([z_cx, bg_cx], [mid_y, mid_y], color=_arrow_c, lw=2.0, solid_capstyle="butt")
+    # Arrow down into BG
+    _arrow(ax, (bg_cx, mid_y), (bg_cx, bg_top + 0.02), color=_arrow_c, lw=2.0)
+    # Label on horizontal segment
+    ax.text((z_cx + bg_cx) / 2, mid_y + 0.1, "map to text",
+            ha="center", va="bottom", fontsize=9, color=_muted, style="italic",
+            bbox=dict(boxstyle="round,pad=0.08", fc="white", ec="none"))
+
+    fig.tight_layout(pad=0.2)
     fig.savefig(OUT / "diagram_pipeline.pdf", bbox_inches="tight", dpi=300)
     fig.savefig(OUT / "diagram_pipeline.png", bbox_inches="tight", dpi=300)
     plt.close(fig)
@@ -373,96 +408,118 @@ def diagram_experimental_design():
 # DIAGRAM 4: Authoritarian Information Control
 # ======================================================================
 def diagram_authoritarian_control():
-    fig, ax = plt.subplots(figsize=(12, 8))
-    ax.set_xlim(-0.5, 12)
-    ax.set_ylim(-1, 9)
+    """Publication-quality diagram: how regime instruments attack the coordination chain."""
+    _bg      = "white"
+    _border  = "#4A4A4A"
+    _fill    = "#F0F0F0"
+    _red     = "#B03030"
+    _red_bg  = "#F5E0E0"
+    _arrow_c = "#555555"
+    _text    = "#1A1A1A"
+    _muted   = "#666666"
+
+    fig, ax = plt.subplots(figsize=(7, 7.5))
+    ax.set_xlim(-0.2, 7.2)
+    ax.set_ylim(-2.0, 8.0)
     ax.axis("off")
-    fig.patch.set_facecolor("white")
+    fig.patch.set_facecolor(_bg)
 
-    ax.text(6.0, 8.6, "The Information Channel as a Vulnerability",
-            ha="center", va="center", fontsize=15, fontweight="bold", color=C["dark"])
-    ax.text(6.0, 8.1,
-            "The same channel that enables coordination is exploitable by the regime",
-            ha="center", va="center", fontsize=10, color=C["grey"], style="italic")
+    # ── Title ──
+    ax.text(3.5, 7.7, "The Information Channel\nas a Vulnerability",
+            ha="center", va="center", fontsize=14, fontweight="bold",
+            color=_text, linespacing=1.3)
 
-    # ── Central channel: Private Info → Communication → Coordination ──
-    channel_boxes = [
-        (0.5,  5.5, 2.4, 1.0, "Private\nInformation\n($x_i = \\theta + \\varepsilon_i$)",
-         "#D5F5E3", C["accent2"]),
-        (4.3,  5.5, 2.4, 1.0, "Communication\nChannel\n(network messages)",
-         "#D6EAF8", C["blue"]),
-        (8.2,  5.5, 2.8, 1.0, "Coordination\nOutcome\n($A > \\theta$ ?)",
-         "#F9E79F", C["accent3"]),
+    # ── Coordination chain (top) ──
+    chain = [
+        (0.0, 5.6, 2.0, 1.2, "Private\nInformation",
+         "$x_i = \\theta + \\varepsilon_i$"),
+        (2.7, 5.6, 2.0, 1.2, "Communication\nChannel",
+         "network messages"),
+        (5.2, 5.6, 1.8, 1.2, "Coordination\nOutcome",
+         "$A > \\theta$ ?"),
     ]
-    for x, y, w, h, txt, fc, ec in channel_boxes:
-        _box(ax, (x, y), w, h, txt, fc=fc, ec=ec, fontsize=9.5, bold=True)
+    for x, y, w, h, main, sub in chain:
+        _box(ax, (x, y), w, h, "", fc=_fill, ec=_border, lw=1.5,
+             text_color=_text)
+        cx, cy = x + w/2, y + h/2
+        ax.text(cx, cy + 0.2, main, ha="center", va="center",
+                fontsize=11, fontweight="bold", color=_text)
+        ax.text(cx, cy - 0.28, sub, ha="center", va="center",
+                fontsize=9, color=_muted)
 
-    # Arrows along channel
-    _arrow(ax, (2.9, 6.0), (4.3, 6.0), color=C["accent2"], lw=2.5)
-    _arrow(ax, (6.7, 6.0), (8.2, 6.0), color=C["blue"], lw=2.5)
+    # Chain arrows
+    _arrow(ax, (2.0, 6.2), (2.7, 6.2), color=_arrow_c, lw=2.2)
+    _arrow(ax, (4.7, 6.2), (5.2, 6.2), color=_arrow_c, lw=2.2)
 
-    # ── Regime instruments attacking from below ──
-    # Censorship attacks private info
-    _box(ax, (0.0, 2.5), 2.8, 1.1,
-         "CENSORSHIP\nPools signals $\\to$ removes\nprivate information",
-         fc="#FADBD8", ec=C["accent"], fontsize=8.5, bold=True)
-    ax.annotate("", xy=(1.4, 5.5), xytext=(1.4, 3.6),
-                arrowprops=dict(arrowstyle="-|>", color=C["accent"],
-                                lw=2.2, connectionstyle="arc3,rad=0"))
-    ax.text(1.7, 4.55, "BLOCKS", ha="left", va="center",
-            fontsize=9, fontweight="bold", color=C["accent"], rotation=90)
+    ax.text(2.35, 6.5, "informs", ha="center", va="bottom",
+            fontsize=9, color=_muted, style="italic")
+    ax.text(4.95, 6.5, "aggregates", ha="center", va="bottom",
+            fontsize=9, color=_muted, style="italic")
 
-    # Surveillance attacks communication
-    _box(ax, (3.7, 2.5), 3.0, 1.1,
-         "SURVEILLANCE\nPoisons channel via\npreference falsification",
-         fc="#FADBD8", ec=C["accent"], fontsize=8.5, bold=True)
-    ax.annotate("", xy=(5.2, 5.5), xytext=(5.2, 3.6),
-                arrowprops=dict(arrowstyle="-|>", color=C["accent"],
-                                lw=2.2, connectionstyle="arc3,rad=0"))
-    ax.text(5.5, 4.55, "POISONS", ha="left", va="center",
-            fontsize=9, fontweight="bold", color=C["accent"], rotation=90)
+    # ── Regime instruments (below chain) ──
+    instruments = [
+        (0.0,  3.0, 2.0, 1.6,
+         "Censorship",
+         "Pools signals\nnear $\\theta^*$;\nremoves private\ninformation",
+         "degrades"),
+        (2.7,  3.0, 2.0, 1.6,
+         "Surveillance",
+         "Preference\nfalsification;\nself-censored\nmessages",
+         "poisons"),
+        (5.2,  3.0, 1.8, 1.6,
+         "Propaganda",
+         "$k$ regime plants\nsend pro-regime\nmessages;\ndilutes signal",
+         "dilutes"),
+    ]
 
-    # Propaganda attacks communication
-    _box(ax, (7.8, 2.5), 3.5, 1.1,
-         "PROPAGANDA\nDilutes channel with\npro-regime messages ($k$ plants)",
-         fc="#FADBD8", ec=C["accent"], fontsize=8.5, bold=True)
-    ax.annotate("", xy=(9.0, 5.5), xytext=(9.0, 3.6),
-                arrowprops=dict(arrowstyle="-|>", color=C["accent"],
-                                lw=2.2, connectionstyle="arc3,rad=0"))
-    ax.text(9.3, 4.55, "DILUTES", ha="left", va="center",
-            fontsize=9, fontweight="bold", color=C["accent"], rotation=90)
+    for x, y, w, h, title, desc, verb in instruments:
+        _box(ax, (x, y), w, h, "", fc=_red_bg, ec=_red, lw=1.5,
+             text_color=_text)
+        ax.text(x + w/2, y + h - 0.25, title, ha="center", va="center",
+                fontsize=12, fontweight="bold", color=_red)
+        ax.text(x + w/2, y + 0.55, desc, ha="center", va="center",
+                fontsize=9, color=_text)
+        # Attack arrow (upward)
+        ax.annotate("", xy=(x + w/2, 5.6), xytext=(x + w/2, 4.6),
+                    arrowprops=dict(arrowstyle="-|>", color=_red,
+                                    lw=2.2, connectionstyle="arc3,rad=0"))
+        ax.text(x + w/2 + 0.2, 5.1, verb, ha="left", va="center",
+                fontsize=10, fontweight="bold", color=_red, rotation=90)
 
-    # ── Interaction box at bottom ──
-    _box(ax, (1.5, 0.2), 9.0, 1.5, "", fc="white", ec=C["dark"], lw=2.0)
-    ax.text(6.0, 1.45, "Instrument Interactions", ha="center", va="center",
-            fontsize=11, fontweight="bold", color=C["dark"])
+    # ── Interaction summary (bottom) ──
+    ax.plot([0.0, 7.0], [2.5, 2.5], color="#CCCCCC", lw=0.5)
 
-    # Within-design comparison: surveillance marginal effect at baseline vs under censorship
     sxc_mistral = STATS["regime_control"]["surveillance_x_censorship"]["Mistral Small Creative"]
     idc = STATS["infodesign_comm"]
     surv_delta_base = (sxc_mistral["baseline"] - idc["baseline"]["mean_join"]) * 100
     surv_delta_censor = (sxc_mistral["censor_upper"] - idc["censor_upper"]["mean_join"]) * 100
-    interactions = [
-        ("Surv + Propaganda:", "Approximately additive (both attack same channel)", 1.05),
-        ("Surv + Censor:", f"Super-additive: surv effect ${surv_delta_censor:.1f}$ pp "
-         f"under censor vs ${surv_delta_base:.1f}$ pp at baseline", 0.55),
-    ]
-    for label, desc, y in interactions:
-        ax.text(2.0, y, label, ha="left", va="center",
-                fontsize=9, fontweight="bold", color=C["dark"])
-        ax.text(5.0, y, desc, ha="left", va="center",
-                fontsize=9, color=C["dark"])
 
-    # ── Key insight callout ──
-    ax.text(6.0, -0.7,
-            '"The regime does not need to change what citizens believe; '
-            'it needs only to make them uncertain about each other."',
-            ha="center", va="center", fontsize=9.5, style="italic",
-            color=C["accent"],
-            bbox=dict(boxstyle="round,pad=0.3", fc="#FEF9E7",
-                      ec=C["accent3"], alpha=0.8))
+    ax.text(0.0, 2.0, "Instrument Interactions",
+            ha="left", va="center", fontsize=12, fontweight="bold", color=_text)
 
-    fig.tight_layout(pad=0.5)
+    ax.text(0.1, 1.3, "Surv. + Propaganda:",
+            ha="left", va="center", fontsize=10, fontweight="bold", color=_text)
+    ax.text(0.1, 0.85, "Approximately additive",
+            ha="left", va="center", fontsize=10, color=_text)
+
+    ax.text(0.1, 0.2, "Surv. + Censorship:",
+            ha="left", va="center", fontsize=10, fontweight="bold", color=_text)
+    ax.text(0.1, -0.25,
+            f"Super-additive: ${surv_delta_censor:.1f}$ pp "
+            f"under censorship vs ${surv_delta_base:.1f}$ pp at baseline",
+            ha="left", va="center", fontsize=10, color=_text)
+
+    # ── Key insight ──
+    ax.text(3.5, -1.3,
+            "The regime does not need to change\n"
+            "what citizens believe; it needs only to make\n"
+            "them uncertain about each other.",
+            ha="center", va="center", fontsize=10.5, style="italic",
+            color=_red, linespacing=1.3,
+            bbox=dict(boxstyle="round,pad=0.4", fc="#FAFAFA",
+                      ec="#CCCCCC", lw=0.8))
+
+    fig.tight_layout(pad=0.3)
     fig.savefig(OUT / "diagram_authoritarian_control.pdf", bbox_inches="tight", dpi=300)
     fig.savefig(OUT / "diagram_authoritarian_control.png", bbox_inches="tight", dpi=300)
     plt.close(fig)

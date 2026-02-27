@@ -62,7 +62,6 @@ MODEL_LABELS = {
     "meta-llama--llama-3.3-70b-instruct": "Llama 70B",
     "mistralai--mistral-small-creative": "Mistral Small",
     "qwen--qwen3-30b-a3b-instruct-2507": "Qwen3 30B",
-    "allenai--olmo-3-7b-instruct": "OLMo 7B",
     "mistralai--ministral-3b-2512": "Ministral 3B",
 }
 
@@ -70,7 +69,6 @@ MODEL_COLORS = {
     "meta-llama--llama-3.3-70b-instruct": "#2c7bb6",
     "mistralai--mistral-small-creative": "#1a9641",
     "qwen--qwen3-30b-a3b-instruct-2507": "#7b3294",
-    "allenai--olmo-3-7b-instruct": "#d7191c",
     "mistralai--ministral-3b-2512": "#fdae61",
 }
 
@@ -152,7 +150,6 @@ print("Loading data...")
 llama = load_model("meta-llama--llama-3.3-70b-instruct")
 mistral = load_model("mistralai--mistral-small-creative")
 qwen = load_model("qwen--qwen3-30b-a3b-instruct-2507")
-olmo = load_model("allenai--olmo-3-7b-instruct")
 ministral = load_model("mistralai--ministral-3b-2512")
 
 zc_path = OUT / "z-centered" / "meta-llama--llama-3.3-70b-instruct" / "experiment_infodesign_all_summary.csv"
@@ -162,7 +159,6 @@ print(f"  Llama 70B: {len(llama)} rows, designs: {sorted(llama['design'].unique(
 print(f"  Llama 70B z-centered: {len(llama_zc)} rows")
 print(f"  Mistral: {len(mistral)} rows")
 print(f"  Qwen: {len(qwen)} rows")
-print(f"  OLMo: {len(olmo)} rows")
 print(f"  Ministral: {len(ministral)} rows")
 
 
@@ -301,7 +297,6 @@ print("\nFig 5: Censorship across models...")
 models_data = {
     "meta-llama--llama-3.3-70b-instruct": llama,
     "qwen--qwen3-30b-a3b-instruct-2507": qwen,
-    "allenai--olmo-3-7b-instruct": olmo,
     "mistralai--ministral-3b-2512": ministral,
 }
 models_data = {k: v for k, v in models_data.items() if not v.empty}
@@ -466,7 +461,6 @@ fig, ax = plt.subplots(figsize=(COL_W, 2.8))
 for slug, mdf in [("meta-llama--llama-3.3-70b-instruct", llama),
                    ("mistralai--mistral-small-creative", mistral),
                    ("qwen--qwen3-30b-a3b-instruct-2507", qwen),
-                   ("allenai--olmo-3-7b-instruct", olmo),
                    ("mistralai--ministral-3b-2512", ministral)]:
     dd = mdf[mdf["design"] == "baseline"]
     if dd.empty:
@@ -492,7 +486,6 @@ print("  Baseline r-values by model:")
 for slug, mdf in [("meta-llama--llama-3.3-70b-instruct", llama),
                    ("mistralai--mistral-small-creative", mistral),
                    ("qwen--qwen3-30b-a3b-instruct-2507", qwen),
-                   ("allenai--olmo-3-7b-instruct", olmo),
                    ("mistralai--ministral-3b-2512", ministral)]:
     dd = mdf[mdf["design"] == "baseline"]
     if dd.empty:
@@ -526,7 +519,6 @@ print("="*70)
 for slug, mdf in [("meta-llama--llama-3.3-70b-instruct", llama),
                    ("mistralai--mistral-small-creative", mistral),
                    ("qwen--qwen3-30b-a3b-instruct-2507", qwen),
-                   ("allenai--olmo-3-7b-instruct", olmo),
                    ("mistralai--ministral-3b-2512", ministral)]:
     dd = mdf[mdf["design"] == "baseline"]
     if dd.empty:

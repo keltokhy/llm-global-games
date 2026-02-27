@@ -122,7 +122,6 @@ DESIGN_LABELS = {
 # Model colors and short names
 MODEL_COLORS = {
     "mistralai--mistral-small-creative": "#2c7bb6",
-    "allenai--olmo-3-7b-instruct": "#d7191c",
     "arcee-ai--trinity-large-preview_free": "#fdae61",
     "meta-llama--llama-3.3-70b-instruct": "#abdda4",
     "minimax--minimax-m2-her": "#7b3294",
@@ -134,7 +133,6 @@ MODEL_COLORS = {
 
 SHORT_NAMES = {
     "mistralai--mistral-small-creative": "Mistral-Small",
-    "allenai--olmo-3-7b-instruct": "OLMo-7B",
     "arcee-ai--trinity-large-preview_free": "Trinity",
     "meta-llama--llama-3.3-70b-instruct": "Llama-3.3-70B",
     "minimax--minimax-m2-her": "MiniMax-M2",

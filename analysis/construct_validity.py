@@ -41,7 +41,6 @@ RESULTS_PATH = Path(__file__).resolve().parent / "construct_validity_results.jso
 PART1_MODELS = [
     "mistralai--mistral-small-creative",
     "meta-llama--llama-3.3-70b-instruct",
-    "allenai--olmo-3-7b-instruct",
     "mistralai--ministral-3b-2512",
     "qwen--qwen3-30b-a3b-instruct-2507",
     "openai--gpt-oss-120b",
@@ -53,7 +52,6 @@ PART1_MODELS = [
 SHORT_NAMES = {
     "mistralai--mistral-small-creative": "Mistral-Small",
     "meta-llama--llama-3.3-70b-instruct": "Llama-3.3-70B",
-    "allenai--olmo-3-7b-instruct": "OLMo-7B",
     "mistralai--ministral-3b-2512": "Ministral-3B",
     "qwen--qwen3-30b-a3b-instruct-2507": "Qwen3-30B",
     "openai--gpt-oss-120b": "GPT-OSS-120B",
