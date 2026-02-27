@@ -61,7 +61,6 @@ def render_tab_models(stats: dict) -> str:
     models = [
         "Mistral Small Creative",
         "Llama 3.3 70B",
-        "OLMo 3 7B",
         "Ministral 3B",
         "Qwen3 30B",
         "GPT-OSS 120B",
@@ -72,7 +71,6 @@ def render_tab_models(stats: dict) -> str:
     arch = {
         "Mistral Small Creative": "Mistral",
         "Llama 3.3 70B": "Llama",
-        "OLMo 3 7B": "OLMo",
         "Ministral 3B": "Mistral",
         "Qwen3 30B": "Qwen (MoE)",
         "GPT-OSS 120B": "GPT",
@@ -131,7 +129,6 @@ def render_tab_main_results(stats: dict) -> str:
     models = [
         "Mistral Small Creative",
         "Llama 3.3 70B",
-        "OLMo 3 7B",
         "Ministral 3B",
         "Qwen3 30B",
         "GPT-OSS 120B",
@@ -151,6 +148,22 @@ def render_tab_main_results(stats: dict) -> str:
         if r is None:
             return r"$\text{---}$"
         return f"${_fmt_r(r, nd=2)}$"
+
+    def r_attack_ci(m: str, t: str) -> tuple[float | None, float | None]:
+        d = part1.get(m, {}).get(t, {})
+        if not isinstance(d, dict):
+            return None, None
+        ra = d.get("r_vs_attack") or {}
+        return ra.get("ci_lo"), ra.get("ci_hi")
+
+    def r_attack_with_ci(m: str, t: str) -> str:
+        r = r_attack_val(m, t)
+        if r is None:
+            return r"$\text{---}$"
+        ci_lo, ci_hi = r_attack_ci(m, t)
+        if ci_lo is not None and ci_hi is not None:
+            return f"${_fmt_r(r, 2)}$ {{\\scriptsize $[{ci_lo:.2f},{ci_hi:.2f}]$}}"
+        return f"${_fmt_r(r, 2)}$"
 
     def mean_r_attack(t: str) -> float | None:
         vals: list[float] = []
@@ -178,7 +191,7 @@ def render_tab_main_results(stats: dict) -> str:
     rows = []
     for m in models:
         rows.append(
-            f"{m} & {r_attack(m,'pure')} & {r_attack(m,'comm')} & {r_attack(m,'scramble')} & {r_attack(m,'flip')} & {n_pure(m)} & {mean_join(m)} \\\\"
+            f"{m} & {r_attack_with_ci(m,'pure')} & {r_attack_with_ci(m,'comm')} & {r_attack(m,'scramble')} & {r_attack(m,'flip')} & {n_pure(m)} & {mean_join(m)} \\\\"
         )
 
     pooled = part1.get("_pooled_pure", {}).get("r_vs_attack", {}).get("r")
@@ -188,6 +201,9 @@ def render_tab_main_results(stats: dict) -> str:
     pooled_n = part1.get("_pooled_pure", {}).get("n_obs")
     pooled_mean = part1.get("_pooled_pure", {}).get("mean_join")
 
+    pooled_pure_ci = part1.get("_pooled_pure", {}).get("r_vs_attack", {})
+    pooled_comm_ci = part1.get("_pooled_comm", {}).get("r_vs_attack", {})
+
     mean_pure = part1.get("_mean_r_pure_vs_attack")
     mean_comm = mean_r_attack("comm")
     mean_scr = mean_r_attack("scramble")
@@ -195,7 +211,7 @@ def render_tab_main_results(stats: dict) -> str:
 
     tex = r"""\begin{table*}[t]
 \centering
-\caption{Equilibrium alignment by model and treatment. Cells report Pearson $r$ between the empirical join fraction and the theoretical attack mass $A(\theta)$.}
+\caption{Equilibrium alignment by model and treatment. Cells report Pearson $r$ between the empirical join fraction and the theoretical attack mass $A(\theta)$; 95\% Fisher-$z$ confidence intervals in brackets for main treatments.}
 \label{tab:main_results}
 \small
 \begin{tabular}{lcccccc}
@@ -206,8 +222,19 @@ Model & Pure & Comm & Scramble & Flip & $n_{\text{pure}}$ & Mean join \\
 \midrule
 """
     tex += "\n".join(rows) + "\n"
+    # Build pooled cells with CIs for main treatments (Pure, Comm)
+    def _r_cell_with_ci(r_val, ci_dict):
+        cell = f"${_fmt_r(r_val, 2)}$"
+        ci_lo, ci_hi = ci_dict.get("ci_lo"), ci_dict.get("ci_hi")
+        if ci_lo is not None and ci_hi is not None:
+            cell += f" {{\\scriptsize $[{ci_lo:.2f},{ci_hi:.2f}]$}}"
+        return cell
+
+    pooled_pure_cell = _r_cell_with_ci(pooled, pooled_pure_ci)
+    pooled_comm_cell = _r_cell_with_ci(pooled_comm, pooled_comm_ci)
+
     tex += r"""\midrule
-\textbf{Pooled} & $""" + _fmt_r(pooled, 2) + r"""$ & $""" + _fmt_r(pooled_comm, 2) + r"""$ & $""" + _fmt_r(pooled_scr, 2) + r"""$ & $""" + _fmt_r(pooled_flip, 2) + r"""$ & """ + f"{pooled_n}" + r""" & """ + _fmt_mean(pooled_mean, 2) + r""" \\
+\textbf{Pooled} & """ + pooled_pure_cell + r""" & """ + pooled_comm_cell + r""" & $""" + _fmt_r(pooled_scr, 2) + r"""$ & $""" + _fmt_r(pooled_flip, 2) + r"""$ & """ + f"{pooled_n}" + r""" & """ + _fmt_mean(pooled_mean, 2) + r""" \\
 \textbf{Mean across models} & """ + r_cell(mean_pure, 2) + r""" & """ + r_cell(mean_comm, 2) + r""" & """ + r_cell(mean_scr, 2) + r""" & """ + r_cell(mean_flip, 2) + r""" & --- & --- \\
 \bottomrule
 \end{tabular}
@@ -412,7 +439,6 @@ def render_tab_crossmodel(stats: dict) -> str:
         "Ministral 3B",
         "Qwen3 30B",
         "Qwen3 235B",
-        "OLMo 3 7B",
     ]
 
     def cell(model: str, design: str, field: str):
@@ -598,7 +624,6 @@ def render_tab_logistic_params(stats: dict) -> str:
     MODEL_ORDER = [
         "Mistral Small Creative",
         "Llama 3.3 70B",
-        "OLMo 3 7B",
         "Ministral 3B",
         "Qwen3 30B",
         "GPT-OSS 120B",

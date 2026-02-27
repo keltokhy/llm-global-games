@@ -1,6 +1,6 @@
 \begin{table*}[t]
 \centering
-\caption{Equilibrium alignment by model and treatment. Cells report Pearson $r$ between the empirical join fraction and the theoretical attack mass $A(\theta)$.}
+\caption{Equilibrium alignment by model and treatment. Cells report Pearson $r$ between the empirical join fraction and the theoretical attack mass $A(\theta)$; 95\% Fisher-$z$ confidence intervals in brackets for main treatments.}
 \label{tab:main_results}
 \small
 \begin{tabular}{lcccccc}
@@ -9,18 +9,17 @@
 \cmidrule(lr){2-3} \cmidrule(lr){4-5}
 Model & Pure & Comm & Scramble & Flip & $n_{\text{pure}}$ & Mean join \\
 \midrule
-Mistral Small Creative & $+0.68$ & $+0.65$ & $+0.42$ & $-0.62$ & 800 & 0.38 \\
-Llama 3.3 70B & $+0.79$ & $+0.78$ & $+0.33$ & $-0.73$ & 100 & 0.44 \\
-OLMo 3 7B & $+0.65$ & $+0.71$ & $+0.14$ & $-0.56$ & 100 & 0.72 \\
-Ministral 3B & $+0.79$ & $+0.74$ & $+0.30$ & $-0.74$ & 100 & 0.45 \\
-Qwen3 30B & $+0.78$ & $+0.79$ & $+0.32$ & $-0.71$ & 100 & 0.50 \\
-GPT-OSS 120B & $+0.70$ & $+0.69$ & $-0.13$ & $-0.64$ & 200 & 0.41 \\
-Qwen3 235B & $+0.70$ & $+0.66$ & $\text{---}$ & $\text{---}$ & 200 & 0.42 \\
-Trinity Large & $+0.84$ & $+0.81$ & $+0.32$ & $-0.70$ & 100 & 0.46 \\
-MiniMax M2-Her & $+0.66$ & $+0.69$ & $+0.14$ & $-0.69$ & 100 & 0.44 \\
+Mistral Small Creative & $+0.68$ {\scriptsize $[0.64,0.72]$} & $+0.65$ {\scriptsize $[0.61,0.68]$} & $+0.42$ & $-0.62$ & 800 & 0.38 \\
+Llama 3.3 70B & $+0.79$ {\scriptsize $[0.70,0.85]$} & $+0.78$ {\scriptsize $[0.69,0.84]$} & $+0.33$ & $-0.73$ & 100 & 0.44 \\
+Ministral 3B & $+0.79$ {\scriptsize $[0.70,0.85]$} & $+0.74$ {\scriptsize $[0.64,0.82]$} & $+0.30$ & $-0.74$ & 100 & 0.45 \\
+Qwen3 30B & $+0.78$ {\scriptsize $[0.69,0.85]$} & $+0.79$ {\scriptsize $[0.71,0.86]$} & $+0.32$ & $-0.71$ & 100 & 0.50 \\
+GPT-OSS 120B & $+0.70$ {\scriptsize $[0.62,0.76]$} & $+0.69$ {\scriptsize $[0.61,0.75]$} & $-0.13$ & $-0.64$ & 200 & 0.41 \\
+Qwen3 235B & $+0.70$ {\scriptsize $[0.62,0.77]$} & $+0.66$ {\scriptsize $[0.57,0.73]$} & $\text{---}$ & $\text{---}$ & 200 & 0.42 \\
+Trinity Large & $+0.84$ {\scriptsize $[0.77,0.89]$} & $+0.81$ {\scriptsize $[0.73,0.87]$} & $+0.32$ & $-0.70$ & 100 & 0.46 \\
+MiniMax M2-Her & $+0.66$ {\scriptsize $[0.53,0.76]$} & $+0.69$ {\scriptsize $[0.57,0.78]$} & $+0.14$ & $-0.69$ & 100 & 0.44 \\
 \midrule
-\textbf{Pooled} & $+0.67$ & $+0.65$ & $+0.10$ & $-0.63$ & 1800 & 0.43 \\
-\textbf{Mean across models} & $+0.73$ & $+0.72$ & $+0.23$ & $-0.67$ & --- & --- \\
+\textbf{Pooled} & $+0.70$ {\scriptsize $[0.67,0.72]$} & $+0.67$ {\scriptsize $[0.65,0.70]$} & $+0.12$ & $-0.66$ & 1700 & 0.41 \\
+\textbf{Mean across models} & $+0.74$ & $+0.73$ & $+0.24$ & $-0.69$ & --- & --- \\
 \bottomrule
 \end{tabular}
 \end{table*}
