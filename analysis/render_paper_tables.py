@@ -252,6 +252,8 @@ Design & Mean & $r$ & $\Delta$ & $N$ \\
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
 \end{tabular}
+\vspace{0.25em}
+\footnotesize\emph{Notes:} Data from \texttt{output/mistralai--mistral-small-creative/experiment\_infodesign\_\{design\}\_summary.csv} (pure treatment; $\theta \in [0.20, 0.80]$ on a 9-point grid; $N{=}25$ agents per period). Mean join uses \texttt{join\_fraction\_valid}; $r$ is Pearson $r(\theta,\text{join})$ across rep-level periods.
 \end{table}
 """
     return tex
@@ -317,11 +319,17 @@ Treatment & All & Real & $r$ & $\Delta$ \\
 
 
 def render_tab_surv_censor(stats: dict) -> str:
-    info = stats["infodesign"]
+    info_comm = stats.get("infodesign_comm") or {}
     sxc = stats["regime_control"]["surveillance_x_censorship"]["Mistral Small Creative"]
 
     def m(key: str) -> float:
-        return float(info[key]["mean_join"])
+        d = info_comm.get(key, {})
+        if not d:
+            raise KeyError(
+                f"Missing infodesign_comm['{key}'] in verified_stats.json. "
+                "Re-run: uv run python analysis/verify_paper_stats.py"
+            )
+        return float(d["mean_join"])
 
     baseline = m("baseline")
     up = m("censor_upper")
@@ -336,7 +344,7 @@ def render_tab_surv_censor(stats: dict) -> str:
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{Surveillance $\times$ censorship interaction (primary model: Mistral Small Creative).}
+\caption{Surveillance $\times$ censorship interaction in the communication game (primary model: Mistral Small Creative).}
 \label{tab:surv_censor}
 \small
 \begin{tabular}{lccc}
@@ -347,6 +355,8 @@ Design & No Surv. & Surv. & $\Delta$ \\
     tex += "\n".join(lines) + "\n"
     tex += r"""\bottomrule
 \end{tabular}
+\vspace{0.25em}
+\footnotesize\emph{Notes:} ``No Surv.'' uses the communication infodesign grid (\texttt{output/mistralai--mistral-small-creative-infodesign-comm/}.) ``Surv.'' uses the same grid with surveillance active during messaging (\texttt{output/surveillance-x-censorship/}.) All entries are means of \texttt{join\_fraction\_valid}.
 \end{table}
 """
     return tex
@@ -480,6 +490,8 @@ Channel & Mean & $r$ & $\Delta$ \\
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
 \end{tabular}
+\vspace{0.25em}
+\footnotesize\emph{Notes:} Each row is a separate infodesign run for Mistral Small Creative on the same $\theta$ grid as Table~\ref{tab:infodesign_summary}. $\Delta$ reports the mean difference vs.\ the baseline infodesign mean (Table~\ref{tab:infodesign_summary}).
 \end{table}
 """
     return tex
@@ -578,6 +590,368 @@ Model & Baseline & Upper cens. & Lower cens. & $\Delta$ upper & $\Delta$ lower \
     return tex
 
 
+def render_tab_logistic_params(stats: dict) -> str:
+    fits = stats.get("logistic_fits", {})
+    if not fits:
+        return "% No logistic fit data available.\n"
+
+    MODEL_ORDER = [
+        "Mistral Small Creative",
+        "Llama 3.3 70B",
+        "OLMo 3 7B",
+        "Ministral 3B",
+        "Qwen3 30B",
+        "GPT-OSS 120B",
+        "Qwen3 235B",
+        "Trinity Large",
+        "MiniMax M2-Her",
+    ]
+
+    def _cell(fit: dict | None, key: str, se_key: str) -> str:
+        if fit is None:
+            return "---"
+        val = fit.get(key)
+        se = fit.get(se_key)
+        if val is None or (isinstance(val, float) and (val != val or abs(val) > 50)):
+            return "---"
+        sign = "+" if val >= 0 else ""
+        if se is not None and isinstance(se, float) and se == se and se < 50:
+            return f"${sign}{val:.2f}$ ({se:.2f})"
+        return f"${sign}{val:.2f}$"
+
+    rows = []
+    for m in MODEL_ORDER:
+        if m not in fits:
+            continue
+        p = fits[m].get("pure")
+        c = fits[m].get("comm")
+        rows.append(
+            f"{m} & {_cell(p, 'cutoff', 'se_cutoff')} & {_cell(p, 'b1', 'se_b1')}"
+            f" & {_cell(c, 'cutoff', 'se_cutoff')} & {_cell(c, 'b1', 'se_b1')} \\\\"
+        )
+
+    tex = r"""\begin{table*}[t]
+\centering
+\caption{Logistic fit parameters by model and treatment. $\hat{\theta}^*$ is the estimated cutoff ($-b_0/b_1$); $\beta$ is the logistic slope. Standard errors from the covariance matrix of the nonlinear fit; cutoff SE by delta method.}
+\label{tab:logistic_params}
+\small
+\begin{tabular}{lcccc}
+\toprule
+& \multicolumn{2}{c}{Pure} & \multicolumn{2}{c}{Communication} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+Model & $\hat{\theta}^*$ (SE) & $\beta$ (SE) & $\hat{\theta}^*$ (SE) & $\beta$ (SE) \\
+\midrule
+"""
+    tex += "\n".join(rows) + "\n"
+    tex += r"""\bottomrule
+\end{tabular}
+\end{table*}
+"""
+    return tex
+
+
+def render_tab_surveillance_variants(stats: dict) -> str:
+    sv = stats.get("surveillance_variants", {})
+    if not sv:
+        return "% No surveillance variant data available.\n"
+
+    rows = []
+    for variant in ["placebo", "anonymous"]:
+        d = sv.get(variant, {})
+        if "mean_join" not in d:
+            continue
+        mean_j = _fmt_num(d["mean_join"], 3)
+        r_val = _fmt_r(d["r_vs_theta"]["r"], 2) if "r_vs_theta" in d else "---"
+        delta = _fmt_r(d.get("delta_vs_comm_pp", 0) / 100, 3) if d.get("delta_vs_comm_pp") is not None else "---"
+        t_test = d.get("t_test_vs_comm", {})
+        p_val = _fmt_num(t_test.get("p_value"), 3) if t_test else "---"
+        label = "Placebo" if variant == "placebo" else "Anonymous"
+        rows.append(f"{label} & {d['n_obs']} & {mean_j} & {r_val} & {delta} & {p_val} \\\\")
+
+    tex = r"""\begin{table}[t]
+\centering
+\caption{Surveillance isolation checks. Placebo: monitored for research, no consequences. Anonymous: messages aggregated anonymously. Neither deviates significantly from the communication baseline.}
+\label{tab:surveillance_variants}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lccccc}
+\toprule
+Variant & $N$ & Mean join & $r(\theta, J)$ & $\Delta$ & $p$ \\
+\midrule
+"""
+    tex += "\n".join(rows) + "\n"
+    tex += r"""\bottomrule
+\end{tabular}
+\end{table}
+"""
+    return tex
+
+
+def render_tab_bc_statics(stats: dict) -> str:
+    """B/C comparative statics: cutoff shifts under cost/benefit narratives."""
+    info = stats.get("infodesign", {})
+    designs = ["baseline", "bc_high_cost", "bc_low_cost"]
+    labels = {"baseline": "Baseline", "bc_high_cost": "High cost", "bc_low_cost": "Low cost"}
+
+    rows = []
+    for d in designs:
+        di = info.get(d, {})
+        if not di:
+            continue
+        mean_j = _fmt_num(di["mean_join"], 3)
+        r_val = _fmt_r(di["r_vs_theta"]["r"], 2) if "r_vs_theta" in di else "---"
+        fit = di.get("logistic_fit") or {}
+        cutoff = fit.get("cutoff")
+        se_cutoff = fit.get("se_cutoff")
+        cutoff_cell = "---"
+        if cutoff is not None and se_cutoff is not None:
+            cutoff_cell = f"{cutoff:.2f} ({se_cutoff:.3f})"
+        n = di.get("n_obs", "---")
+        delta = ""
+        if "delta_vs_baseline" in di:
+            delta = _fmt_r(di["delta_vs_baseline"], 3)
+        elif d == "baseline":
+            delta = "---"
+        rows.append(f"{labels[d]} & {n} & {mean_j} & {r_val} & {cutoff_cell} & {delta} \\\\")
+
+    tex = r"""\begin{table}[t]
+\centering
+\caption{Cost/benefit narrative comparative statics. High cost: narrative emphasizes severe reprisals for failed action. Low cost: narrative emphasizes minimal consequences. Theory predicts higher perceived cost lowers the cutoff (less joining).}
+\label{tab:bc_statics}
+\small
+\begin{tabular}{lccccc}
+\toprule
+Design & $N$ & Mean join & $r(\theta, J)$ & Cutoff $\hat{\theta}^*$ (SE) & $\Delta$ vs baseline \\
+\midrule
+"""
+    tex += "\n".join(rows) + "\n"
+    tex += r"""\bottomrule
+\end{tabular}
+\end{table}
+"""
+    return tex
+
+
+def render_tab_censor_ck(stats: dict) -> str:
+    """Censorship with common knowledge comparison."""
+    info = stats.get("infodesign", {})
+    designs = ["baseline", "censor_upper", "censor_upper_known"]
+    labels = {
+        "baseline": "Baseline (no censorship)",
+        "censor_upper": "Upper censorship (na\\\"ive)",
+        "censor_upper_known": "Upper censorship (known)",
+    }
+
+    rows = []
+    for d in designs:
+        di = info.get(d, {})
+        if not di:
+            continue
+        mean_j = _fmt_num(di["mean_join"], 3)
+        r_val = _fmt_r(di["r_vs_theta"]["r"], 2) if "r_vs_theta" in di else "---"
+        n = di.get("n_obs", "---")
+        delta = ""
+        if "delta_vs_baseline" in di:
+            delta = _fmt_r(di["delta_vs_baseline"], 3)
+        elif d == "baseline":
+            delta = "---"
+        rows.append(f"{labels[d]} & {n} & {mean_j} & {r_val} & {delta} \\\\")
+
+    tex = r"""\begin{table}[t]
+\centering
+\caption{Censorship with and without common knowledge. Na\"ive: agents do not know censorship is active. Known: agents are told that regime censors suppress unfavorable intelligence above a severity threshold.}
+\label{tab:censor_ck}
+\small
+\begin{tabular}{lcccc}
+\toprule
+Design & $N$ & Mean join & $r(\theta, J)$ & $\Delta$ vs baseline \\
+\midrule
+"""
+    tex += "\n".join(rows) + "\n"
+    tex += r"""\bottomrule
+\end{tabular}
+\end{table}
+"""
+    return tex
+
+
+def render_tab_temperature(stats: dict) -> str:
+    """Temperature robustness table."""
+    temp = stats.get("temperature_robustness", {})
+    if not temp:
+        return "% No temperature robustness data available.\n"
+
+    rows = []
+    for key in ["T=0.3", "T=0.7", "T=1.0"]:
+        d = temp.get(key, {})
+        if not d:
+            continue
+        mean_j = _fmt_num(d["mean_join"], 3)
+        r_val = _fmt_r(d["r_vs_theta"]["r"], 2) if "r_vs_theta" in d else "---"
+        n = d.get("n_obs", "---")
+        fit = d.get("logistic_fit", {})
+        cutoff = _fmt_num(fit.get("cutoff"), 3) if fit.get("cutoff") is not None else "---"
+        slope = _fmt_num(fit.get("b1"), 2) if fit.get("b1") is not None else "---"
+        rows.append(f"{key} & {n} & {mean_j} & {r_val} & {cutoff} & {slope} \\\\")
+
+    tex = r"""\begin{table}[t]
+\centering
+\caption{Temperature robustness. The pure global game is run at three LLM decoding temperatures using Mistral Small Creative with calibrated parameters. The correlation $r(\theta, J)$ and logistic parameters are stable across temperatures.}
+\label{tab:temperature}
+\small
+\begin{tabular}{lccccc}
+\toprule
+Temperature & $N$ & Mean join & $r(\theta, J)$ & Cutoff $\hat{\theta}^*$ & Slope $\hat{\beta}$ \\
+\midrule
+"""
+    tex += "\n".join(rows) + "\n"
+    tex += r"""\bottomrule
+\end{tabular}
+\end{table}
+"""
+    return tex
+
+
+def _fmt_pct(x: float, nd: int = 1) -> str:
+    """Format a fraction as a percent string for LaTeX."""
+    if x is None:
+        return "---"
+    try:
+        if x != x:  # nan
+            return "---"
+    except Exception:
+        return "---"
+    return f"{x * 100:.{nd}f}\\%"
+
+
+def _fmt_pp(x: float, nd: int = 1) -> str:
+    """Format a fraction difference as signed percentage points for LaTeX."""
+    if x is None:
+        return "---"
+    try:
+        if x != x:  # nan
+            return "---"
+    except Exception:
+        return "---"
+    val = x * 100
+    sign = "+" if val >= 0 else ""
+    return f"{sign}{val:.{nd}f}"
+
+
+def render_stats_macros(stats: dict) -> str:
+    """Render LaTeX macros for key stats used in the paper text.
+
+    Motivation: avoid copy/paste inconsistencies between text, tables, and figures.
+    This file is meant to be `\\input{tables/stats_macros.tex}` near the top of
+    each TeX document.
+    """
+    info = stats.get("infodesign", {})
+    part1 = stats.get("part1", {})
+    regime = stats.get("regime_control", {})
+
+    def ig(design: str, field: str, default=None):
+        return (info.get(design) or {}).get(field, default)
+
+    # Communication: mean across models (equal-weight) + pooled unpaired.
+    model_entries = [
+        v for k, v in part1.items()
+        if isinstance(k, str) and not k.startswith("_") and isinstance(v, dict)
+    ]
+    pure_means = [((m.get("pure") or {}).get("mean_join")) for m in model_entries]
+    comm_means = [((m.get("comm") or {}).get("mean_join")) for m in model_entries]
+    pure_means = [x for x in pure_means if x is not None]
+    comm_means = [x for x in comm_means if x is not None]
+    mean_pure_models = sum(pure_means) / len(pure_means) if pure_means else None
+    mean_comm_models = sum(comm_means) / len(comm_means) if comm_means else None
+    delta_models = (mean_comm_models - mean_pure_models) if (mean_pure_models is not None and mean_comm_models is not None) else None
+
+    pooled_pure = (part1.get("_pooled_pure") or {}).get("mean_join")
+    pooled_comm = (part1.get("_pooled_comm") or {}).get("mean_join")
+    pooled_delta_pp = ((part1.get("_pooled_comm_effect") or {}).get("unpaired") or {}).get("delta_pp")
+    pooled_pval = ((part1.get("_pooled_comm_effect") or {}).get("unpaired") or {}).get("p_value")
+
+    # Surveillance × censorship: primary model (Mistral) join levels.
+    sxc = ((regime.get("surveillance_x_censorship") or {}).get("Mistral Small Creative") or {})
+
+    lines = []
+    lines.append("% Auto-generated from analysis/verified_stats.json. Do not edit by hand.")
+    lines.append("% Generated by: uv run python analysis/render_paper_tables.py")
+    lines.append("")
+
+    # Communication summary
+    lines.append(r"\providecommand{\CommPureMeanModelAvg}{" + _fmt_num(mean_pure_models, 3) + "}")
+    lines.append(r"\providecommand{\CommCommMeanModelAvg}{" + _fmt_num(mean_comm_models, 3) + "}")
+    lines.append(r"\providecommand{\CommDeltaPPModelAvg}{" + _fmt_pp(delta_models, 1) + "}")
+    lines.append(r"\providecommand{\CommPureMeanPooled}{" + _fmt_num(pooled_pure, 3) + "}")
+    lines.append(r"\providecommand{\CommCommMeanPooled}{" + _fmt_num(pooled_comm, 3) + "}")
+    if pooled_delta_pp is None:
+        lines.append(r"\providecommand{\CommDeltaPPPooled}{---}")
+    else:
+        sign = "+" if pooled_delta_pp >= 0 else ""
+        lines.append(r"\providecommand{\CommDeltaPPPooled}{" + f"{sign}{pooled_delta_pp:.2f}" + "}")
+    lines.append(r"\providecommand{\CommPValueUnpaired}{" + _fmt_num(pooled_pval, 3) + "}")
+    lines.append("")
+
+    # Infodesign summary (primary model)
+    for key, macro in [
+        ("baseline", "InfodesignBaseline"),
+        ("stability", "InfodesignStability"),
+        ("instability", "InfodesignInstability"),
+        ("public_signal", "InfodesignPublicSignal"),
+        ("scramble", "InfodesignScramble"),
+        ("flip", "InfodesignFlip"),
+        ("censor_upper", "InfodesignCensorUpper"),
+        ("censor_lower", "InfodesignCensorLower"),
+        ("stability_clarity", "DecompClarityOnly"),
+        ("stability_direction", "DecompDirectionOnly"),
+        ("stability_dissent", "DecompDissentOnly"),
+    ]:
+        mean = ig(key, "mean_join")
+        r = ((info.get(key) or {}).get("r_vs_theta") or {}).get("r")
+        delta = ig(key, "delta_vs_baseline")
+        lines.append(f"\\providecommand{{\\{macro}Mean}}{{{_fmt_num(mean, 3)}}}")
+        lines.append(f"\\providecommand{{\\{macro}MeanPct}}{{{_fmt_pct(mean, 1)}}}")
+        lines.append(f"\\providecommand{{\\{macro}RTheta}}{{{_fmt_r(r, 3)}}}")
+        lines.append(f"\\providecommand{{\\{macro}DeltaPP}}{{{_fmt_pp(delta, 1)}}}")
+        lines.append("")
+
+    # Decomposition summary: sum of single-channel deltas vs full bundled delta
+    decomp_keys = ["stability_clarity", "stability_direction", "stability_dissent"]
+    sum_delta = 0.0
+    for k in decomp_keys:
+        d = ig(k, "delta_vs_baseline")
+        if d is not None:
+            sum_delta += float(d)
+    full_delta = ig("stability", "delta_vs_baseline")
+    lines.append(r"\providecommand{\DecompSumChannelsDeltaPP}{" + _fmt_pp(sum_delta, 1) + "}")
+    lines.append(r"\providecommand{\DecompFullDeltaPP}{" + _fmt_pp(full_delta, 1) + "}")
+    lines.append("")
+
+    # Within-briefing falsification (observation shuffle, domain scrambles)
+    for key, macro in [
+        ("within_scramble", "WithinScramble"),
+        ("domain_scramble_coord", "DomainScrambleCoord"),
+        ("domain_scramble_state", "DomainScrambleState"),
+    ]:
+        mean = ig(key, "mean_join")
+        r = ((info.get(key) or {}).get("r_vs_theta") or {}).get("r")
+        delta = ig(key, "delta_vs_baseline")
+        lines.append(f"\\providecommand{{\\{macro}Mean}}{{{_fmt_num(mean, 3)}}}")
+        lines.append(f"\\providecommand{{\\{macro}MeanPct}}{{{_fmt_pct(mean, 1)}}}")
+        lines.append(f"\\providecommand{{\\{macro}RTheta}}{{{_fmt_r(r, 3)}}}")
+        lines.append(f"\\providecommand{{\\{macro}DeltaPP}}{{{_fmt_pp(delta, 1)}}}")
+    lines.append("")
+
+    # Surveillance × censorship levels (primary model)
+    for dname, macro in [("baseline", "SXCBase"), ("censor_upper", "SXCUpper"), ("censor_lower", "SXCLower")]:
+        surv_mean = sxc.get(dname)
+        lines.append(f"\\providecommand{{\\{macro}SurvMean}}{{{_fmt_num(surv_mean, 3)}}}")
+        lines.append(f"\\providecommand{{\\{macro}SurvMeanPct}}{{{_fmt_pct(surv_mean, 1)}}}")
+    lines.append("")
+
+    return "\n".join(lines) + "\n"
+
+
 def main() -> None:
     stats = _load()
 
@@ -592,6 +966,12 @@ def main() -> None:
         "tab_decomposition.tex": render_tab_decomposition(stats),
         "tab_uncalibrated.tex": render_tab_uncalibrated(stats),
         "tab_surv_censor_crossmodel.tex": render_tab_surv_censor_crossmodel(stats),
+        "tab_logistic_params.tex": render_tab_logistic_params(stats),
+        "tab_surveillance_variants.tex": render_tab_surveillance_variants(stats),
+        "tab_bc_statics.tex": render_tab_bc_statics(stats),
+        "tab_censor_ck.tex": render_tab_censor_ck(stats),
+        "tab_temperature.tex": render_tab_temperature(stats),
+        "stats_macros.tex": render_stats_macros(stats),
     }
 
     for name, content in tables.items():

@@ -202,6 +202,7 @@ async def _call_llm(
     max_empty_retries=12,
     min_content_chars=3,
     request_timeout=60,
+    temperature=0.7,
 ):
     """Call LLM API with separate retry budgets for errors and empty payloads."""
     from .runtime import get_cache, build_cache_key_and_request
@@ -219,7 +220,7 @@ async def _call_llm(
             model=model_name,
             messages=messages,
             max_tokens=512,
-            temperature=0.7,
+            temperature=temperature,
         )
         cached = cache.get(cache_key)
         if cached is not None:
@@ -237,7 +238,7 @@ async def _call_llm(
                         model=model_name,
                         messages=messages,
                         max_tokens=512,
-                        temperature=0.7,
+                        temperature=temperature,
                     ),
                     timeout=request_timeout,
                 )
@@ -538,7 +539,8 @@ async def run_pure_global_game(agents, theta, z, sigma, benefit, briefing_gen,
                                 group_size_info=False,
                                 elicit_beliefs=False,
                                 elicit_second_order=False,
-                                belief_order="post"):
+                                belief_order="post",
+                                temperature=0.7):
     """Run one period of the pure global game (no communication).
 
     signal_mode: "normal", "scramble" (permute briefings), or "flip" (negate z-score).
@@ -559,7 +561,7 @@ async def run_pure_global_game(agents, theta, z, sigma, benefit, briefing_gen,
     elif signal_mode == "scramble":
         _scramble_briefings(agents, rng)
 
-    call_kwargs = _retry_kwargs(llm_max_retries, llm_empty_retries)
+    call_kwargs = {**_retry_kwargs(llm_max_retries, llm_empty_retries), "temperature": temperature}
 
     # Pre-decision belief elicitation
     if elicit_beliefs and belief_order in ("pre", "both"):
@@ -613,7 +615,8 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
                                   elicit_beliefs=False,
                                   elicit_second_order=False,
                                   fixed_messages=None,
-                                  belief_order="post"):
+                                  belief_order="post",
+                                  temperature=0.7):
     """Run one period with communication round before decision.
 
     signal_mode: "normal", "scramble" (permute briefings), or "flip" (negate z-score).
@@ -640,7 +643,7 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
     elif signal_mode == "scramble":
         _scramble_briefings(agents, rng)
 
-    call_kwargs = _retry_kwargs(llm_max_retries, llm_empty_retries)
+    call_kwargs = {**_retry_kwargs(llm_max_retries, llm_empty_retries), "temperature": temperature}
     prop_rng = np.random.default_rng(hash((country, period, "propaganda")) % 2**32)
 
     # Communication round — use fixed messages if provided, else generate via LLM

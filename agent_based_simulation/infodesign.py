@@ -76,6 +76,13 @@ class InfoDesignConfig:
     # Proximity bandwidth
     bandwidth: float = 0.15
 
+    # Within-briefing scramble: shuffle observation bullets within each briefing
+    shuffle_observations: bool = False
+
+    # Domain-group scramble: indices of observation domains to scramble across agents
+    # (e.g., (3, 5) for coordination-relevant domains street_mood + personal_observations)
+    scramble_domain_indices: Optional[tuple[int, ...]] = None
+
 
 # ── Pre-built designs ────────────────────────────────────────────────
 
@@ -167,6 +174,63 @@ RHETORIC_COLD = InfoDesignConfig(
     rhetoric_bias=-2.0,
 )
 
+# ── B/C comparative statics (cost/benefit narrative) ─────────────
+# Vary perceived cost of failure vs benefit of success in the narrative.
+# Theory predicts: higher cost → higher cutoff (less joining).
+
+BC_HIGH_COST = InfoDesignConfig(
+    name="bc_high_cost",
+    source_header=(
+        "CONTEXT: Failed uprisings in this country have historically resulted "
+        "in severe reprisals---imprisonment, asset seizure, and retaliation "
+        "against families. The personal cost of unsuccessful action is "
+        "extremely high."
+    ),
+)
+
+BC_LOW_COST = InfoDesignConfig(
+    name="bc_low_cost",
+    source_header=(
+        "CONTEXT: International observers are monitoring the situation closely. "
+        "Even in failed uprisings, participants have historically faced minimal "
+        "consequences---brief detentions at most. The personal risk of action "
+        "is low."
+    ),
+)
+
+# ── Censorship with common knowledge ──────────────────────────────
+# Agents know censorship is occurring, enabling Bayesian updating about
+# the censorship rule rather than just observing bland text.
+
+UPPER_CENSORSHIP_KNOWN = InfoDesignConfig(
+    name="censor_upper_known",
+    censorship_mode="upper",
+    bandwidth=0.15,
+    source_header=(
+        "NOTE: Independent analysts report that regime censors are suppressing "
+        "unfavorable intelligence above a certain severity threshold. The "
+        "information below may be filtered."
+    ),
+)
+
+# ── Within-briefing falsification ─────────────────────────────────
+# Tests whether bullet ordering or domain-specific content drives correlation.
+
+WITHIN_SCRAMBLE = InfoDesignConfig(
+    name="within_scramble",
+    shuffle_observations=True,
+)
+
+DOMAIN_SCRAMBLE_COORDINATION = InfoDesignConfig(
+    name="domain_scramble_coord",
+    scramble_domain_indices=(3, 5),  # street_mood, personal_observations
+)
+
+DOMAIN_SCRAMBLE_STATE = InfoDesignConfig(
+    name="domain_scramble_state",
+    scramble_domain_indices=(0, 1, 4, 7),  # elite, security, info_control, institutional
+)
+
 # Falsification designs: scramble and flip within each info design
 # These reuse the same config but are run with signal_mode="scramble"/"flip"
 # in the experiment runner.
@@ -186,6 +250,12 @@ ALL_DESIGNS = {
     "provenance_social": PROVENANCE_SOCIAL,
     "rhetoric_hot": RHETORIC_HOT,
     "rhetoric_cold": RHETORIC_COLD,
+    "bc_high_cost": BC_HIGH_COST,
+    "bc_low_cost": BC_LOW_COST,
+    "censor_upper_known": UPPER_CENSORSHIP_KNOWN,
+    "within_scramble": WITHIN_SCRAMBLE,
+    "domain_scramble_coord": DOMAIN_SCRAMBLE_COORDINATION,
+    "domain_scramble_state": DOMAIN_SCRAMBLE_STATE,
 }
 
 

@@ -90,6 +90,9 @@ def add_common_args(parser) -> None:
                         help="Blend probability in intermediate coordination bands")
     parser.add_argument("--language-variant", type=str, default="baseline",
                         help="Briefing text schema: legacy|baseline_min|baseline|baseline_assess|baseline_full")
+    # LLM decoding
+    parser.add_argument("--temperature", type=float, default=0.7,
+                        help="LLM sampling temperature (default: 0.7)")
     # Per-model calibration loading
     parser.add_argument("--load-calibrated", action="store_true",
                         help="Load calibrated briefing params for --model")

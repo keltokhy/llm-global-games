@@ -33,7 +33,6 @@ llm-global-games/
 │   └── verified_stats.json
 ├── paper/                            # LaTeX paper + generated assets
 │   ├── paper.tex
-│   ├── online_appendix.tex
 │   ├── tables/                       # Generated .tex table files
 │   └── figures/                      # Publication figures
 ├── scripts/                          # Experiment runner shell scripts

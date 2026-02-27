@@ -403,13 +403,58 @@ def compute_infodesign():
             "n_obs": len(sub),
         }
 
+    # Also load individual per-design CSVs not in all_summary
+    import glob
+    model_dir = ROOT / model
+    for csv_path in sorted(model_dir.glob("experiment_infodesign_*_summary.csv")):
+        fname = csv_path.name
+        # Extract design name: experiment_infodesign_{design}_summary.csv
+        prefix = "experiment_infodesign_"
+        suffix = "_summary.csv"
+        if not fname.startswith(prefix) or not fname.endswith(suffix):
+            continue
+        design = fname[len(prefix):-len(suffix)]
+        if design == "all" or design in results:
+            continue
+        df_d = pd.read_csv(csv_path)
+        if len(df_d) == 0:
+            continue
+        jc = "join_fraction_valid" if "join_fraction_valid" in df_d.columns else "join_fraction"
+        r_theta = pearson_with_ci(df_d["theta"], df_d[jc])
+        r_attack = pearson_with_ci(df_d["theoretical_attack"], df_d[jc]) \
+            if "theoretical_attack" in df_d.columns else {}
+        results[design] = {
+            "mean_join": round(df_d[jc].mean(), 4),
+            "r_vs_theta": r_theta,
+            "r_vs_attack": r_attack,
+            "n_obs": len(df_d),
+        }
+
     # Treatment effects relative to baseline
     if "baseline" in results:
         baseline_mean = results["baseline"]["mean_join"]
         for design in results:
-            if design != "baseline":
+            if design != "baseline" and not design.startswith("_"):
                 delta = results[design]["mean_join"] - baseline_mean
                 results[design]["delta_vs_baseline"] = round(delta, 4)
+
+    # B/C narrative comparative statics: include logistic cutoff estimates
+    # so the paper can report theory-predicted cutoff shifts without
+    # manual copy/paste.
+    model_dir = ROOT / model
+    for dname in ["baseline", "bc_high_cost", "bc_low_cost"]:
+        if dname not in results:
+            continue
+        p = model_dir / f"experiment_infodesign_{dname}_summary.csv"
+        if not p.exists():
+            continue
+        df = pd.read_csv(p)
+        if len(df) == 0:
+            continue
+        jc = _join_col(df)
+        fit = _fit_logistic(df["theta"].astype(float).values, df[jc].astype(float).values)
+        if fit is not None:
+            results[dname]["logistic_fit"] = fit
 
     # Cross-model infodesign replication
     cross = {}
@@ -428,6 +473,98 @@ def compute_infodesign():
                 "n_obs": len(sub),
             }
     results["_cross_model"] = cross
+
+    # Sanity: all primary-model designs should share the same θ grid.
+    model_dir = ROOT / model
+
+    def _theta_grid_for(design: str) -> list[float] | None:
+        p = model_dir / f"experiment_infodesign_{design}_summary.csv"
+        if not p.exists():
+            return None
+        df = pd.read_csv(p)
+        if "theta" not in df.columns:
+            return None
+        vals = df["theta"].astype(float).round(12).unique().tolist()
+        return sorted(float(v) for v in vals)
+
+    base_grid = _theta_grid_for("baseline")
+    if base_grid:
+        for design in sorted(k for k in results.keys() if isinstance(k, str) and not k.startswith("_")):
+            g = _theta_grid_for(design)
+            if g is not None and g != base_grid:
+                raise AssertionError(
+                    f"Infodesign θ-grid mismatch for '{design}': "
+                    f"{g} vs baseline {base_grid}"
+                )
+
+    return results
+
+
+# ═══════════════════════════════════════════════════════════════════
+# Information design WITH communication (primary-model robustness)
+# ═══════════════════════════════════════════════════════════════════
+
+def compute_infodesign_comm():
+    """Compute infodesign-grid stats under communication (no surveillance).
+
+    This is used for the surveillance×censorship interaction table so the
+    "No Surv." column is on the same (communication) treatment as the "Surv."
+    column, rather than mixing pure and comm samples.
+    """
+    results = {}
+
+    primary = "mistralai--mistral-small-creative"
+    base_dir = ROOT / f"{primary}-infodesign-comm" / primary
+    df_all = _load_summary(base_dir / "experiment_infodesign_all_summary.csv")
+    if len(df_all) == 0:
+        print("  WARNING: no infodesign-comm data for primary model")
+        return results
+
+    # Sanity: expect comm treatment
+    if "treatment" in df_all.columns:
+        treatments = sorted(set(df_all["treatment"].dropna().unique().tolist()))
+        if treatments and treatments != ["comm"]:
+            raise AssertionError(
+                f"Expected only treatment='comm' in {base_dir}, got: {treatments}"
+            )
+
+    jcol = _join_col(df_all)
+    for design in sorted(df_all["design"].dropna().unique().tolist()):
+        sub = df_all[df_all["design"] == design]
+        results[design] = {
+            "mean_join": round(_safe_mean(sub[jcol]), 4),
+            "r_vs_theta": pearson_with_ci(sub["theta"], sub[jcol]),
+            "n_obs": int(len(sub)),
+        }
+
+    # Deltas vs comm baseline
+    if "baseline" in results:
+        base_mean = results["baseline"]["mean_join"]
+        for design, d in results.items():
+            if design == "baseline":
+                continue
+            d["delta_vs_baseline"] = round(d["mean_join"] - base_mean, 4)
+
+    # Sanity: all comm designs should share the same θ grid.
+    def _theta_grid_for(design: str) -> list[float] | None:
+        p = base_dir / f"experiment_infodesign_{design}_summary.csv"
+        if not p.exists():
+            return None
+        df = pd.read_csv(p)
+        if "theta" not in df.columns:
+            return None
+        vals = df["theta"].astype(float).round(12).unique().tolist()
+        return sorted(float(v) for v in vals)
+
+    base_grid = _theta_grid_for("baseline")
+    if base_grid:
+        for design in sorted(results.keys()):
+            g = _theta_grid_for(design)
+            if g is not None and g != base_grid:
+                raise AssertionError(
+                    f"Infodesign-comm θ-grid mismatch for '{design}': "
+                    f"{g} vs baseline {base_grid}"
+                )
 
     return results
 
@@ -669,6 +806,236 @@ def pooled_ols(all_stats):
     }
 
 
+# ═══════════════════════════════════════════════════════════════════
+# LOGISTIC FITS: cutoff + slope per model × treatment
+# ═══════════════════════════════════════════════════════════════════
+
+def _logistic(x, b0, b1):
+    return 1.0 / (1.0 + np.exp(b0 + b1 * x))
+
+
+def _fit_logistic(x, y):
+    """Fit logistic and return params dict, or None on failure."""
+    from scipy.optimize import curve_fit
+    mask = np.isfinite(x) & np.isfinite(y)
+    x, y = x[mask], y[mask]
+    if len(x) < 10:
+        return None
+    try:
+        popt, pcov = curve_fit(_logistic, x, y, p0=[0, 2], maxfev=10000)
+        b0, b1 = popt
+        se_b0 = np.sqrt(pcov[0, 0]) if pcov[0, 0] >= 0 else float("nan")
+        se_b1 = np.sqrt(pcov[1, 1]) if pcov[1, 1] >= 0 else float("nan")
+        cutoff = -b0 / b1 if abs(b1) > 1e-8 else float("nan")
+        # Delta method SE for cutoff: Var(-b0/b1) ≈ (1/b1)^2 Var(b0) + (b0/b1^2)^2 Var(b1)
+        # - 2*(b0/b1^3) Cov(b0,b1)
+        if abs(b1) > 1e-8:
+            grad = np.array([-1.0 / b1, b0 / b1**2])
+            se_cutoff = float(np.sqrt(grad @ pcov @ grad))
+        else:
+            se_cutoff = float("nan")
+        return {
+            "b0": round(float(b0), 4),
+            "b1": round(float(b1), 4),
+            "se_b0": round(float(se_b0), 4),
+            "se_b1": round(float(se_b1), 4),
+            "cutoff": round(float(cutoff), 4),
+            "se_cutoff": round(float(se_cutoff), 4),
+            "n": int(len(x)),
+        }
+    except RuntimeError:
+        return None
+
+
+def compute_logistic_fits():
+    """Fit logistic per model × treatment, compute cutoff and slope."""
+    results = {}
+    for model in PART1_MODELS:
+        name = SHORT[model]
+        m = {}
+        for treatment in ["pure", "comm", "scramble", "flip"]:
+            df = load(model, treatment)
+            if len(df) == 0:
+                continue
+            jcol = _join_col(df)
+            x = df["theta"].astype(float).values
+            y = df[jcol].astype(float).values
+            fit = _fit_logistic(x, y)
+            if fit is not None:
+                m[treatment] = fit
+        if m:
+            results[name] = m
+    return results
+
+
+# ═══════════════════════════════════════════════════════════════════
+# CLUSTERED STANDARD ERRORS for pooled OLS
+# ═══════════════════════════════════════════════════════════════════
+
+def compute_clustered_ses():
+    """Clustered SEs for pooled OLS: join = b0 + b1 * A(theta), clustered by country and model."""
+    all_dfs = []
+    for model in PART1_MODELS:
+        df = load(model, "pure")
+        if len(df) > 0:
+            df = df.copy()
+            df["model"] = model
+            all_dfs.append(df)
+    if not all_dfs:
+        return {}
+    pooled = pd.concat(all_dfs, ignore_index=True)
+    jcol = "join_fraction_valid" if "join_fraction_valid" in pooled.columns else "join_fraction"
+    y = pooled[jcol].values
+    x_var = pooled["theoretical_attack"].values if "theoretical_attack" in pooled.columns else None
+    if x_var is None:
+        return {}
+
+    X = np.column_stack([np.ones_like(x_var), x_var])
+    n = len(y)
+    k = X.shape[1]
+    beta = np.linalg.lstsq(X, y, rcond=None)[0]
+    resid = y - X @ beta
+    # Bread: (X'X)^{-1}
+    XtX_inv = np.linalg.inv(X.T @ X)
+
+    results = {}
+
+    # Homoskedastic SE for reference
+    s2 = np.sum(resid**2) / (n - k)
+    se_homo = np.sqrt(np.diag(s2 * XtX_inv))
+    results["homoskedastic"] = {
+        "se_intercept": round(float(se_homo[0]), 6),
+        "se_slope": round(float(se_homo[1]), 6),
+    }
+
+    # HC1 (heteroskedasticity-robust)
+    meat_hc1 = sum(resid[i]**2 * np.outer(X[i], X[i]) for i in range(n))
+    V_hc1 = (n / (n - k)) * XtX_inv @ meat_hc1 @ XtX_inv
+    se_hc1 = np.sqrt(np.diag(V_hc1))
+    results["hc1"] = {
+        "se_intercept": round(float(se_hc1[0]), 6),
+        "se_slope": round(float(se_hc1[1]), 6),
+    }
+
+    # Cluster by country
+    if "country" in pooled.columns:
+        clusters = pooled.groupby("country").indices
+        G = len(clusters)
+        meat = np.zeros((k, k))
+        for _, idx in clusters.items():
+            u_g = X[idx].T @ resid[idx]
+            meat += np.outer(u_g, u_g)
+        V_cl = (G / (G - 1)) * ((n - 1) / (n - k)) * XtX_inv @ meat @ XtX_inv
+        se_cl = np.sqrt(np.diag(V_cl))
+        results["clustered_country"] = {
+            "se_intercept": round(float(se_cl[0]), 6),
+            "se_slope": round(float(se_cl[1]), 6),
+            "n_clusters": int(G),
+        }
+
+    # Cluster by model
+    clusters_m = pooled.groupby("model").indices
+    G_m = len(clusters_m)
+    meat_m = np.zeros((k, k))
+    for _, idx in clusters_m.items():
+        u_g = X[idx].T @ resid[idx]
+        meat_m += np.outer(u_g, u_g)
+    V_clm = (G_m / (G_m - 1)) * ((n - 1) / (n - k)) * XtX_inv @ meat_m @ XtX_inv
+    se_clm = np.sqrt(np.diag(V_clm))
+    results["clustered_model"] = {
+        "se_intercept": round(float(se_clm[0]), 6),
+        "se_slope": round(float(se_clm[1]), 6),
+        "n_clusters": int(G_m),
+    }
+
+    return results
+
+
+# ═══════════════════════════════════════════════════════════════════
+# PLACEBO / ANONYMOUS SURVEILLANCE
+# ═══════════════════════════════════════════════════════════════════
+
+def compute_temperature_robustness():
+    """Compute statistics for temperature robustness experiments."""
+    results = {}
+    primary = "mistralai--mistral-small-creative"
+
+    for temp in ["0.3", "0.7", "1.0"]:
+        temp_dir = ROOT.parent / f"output/temperature-robustness-T{temp}" / primary
+        csv_path = temp_dir / "experiment_pure_summary.csv"
+        if not csv_path.exists():
+            continue
+        df = pd.read_csv(csv_path)
+        if len(df) == 0:
+            continue
+        jcol = _join_col(df)
+        jf = df[jcol].astype(float).values
+        theta = df["theta"].astype(float).values
+        r_theta = pearson_with_ci(theta, jf)
+        attack = df["theoretical_attack"].astype(float).values if "theoretical_attack" in df.columns else None
+        r_attack = pearson_with_ci(attack, jf) if attack is not None else {}
+        fit = _fit_logistic(theta, jf)
+        results[f"T={temp}"] = {
+            "n_obs": len(df),
+            "mean_join": round(float(np.nanmean(jf)), 4),
+            "r_vs_theta": r_theta,
+            "r_vs_attack": r_attack,
+            "logistic_fit": fit,
+        }
+
+    return results
+
+
+def compute_surveillance_variants():
+    """Compute statistics for placebo and anonymous surveillance variants."""
+    results = {}
+    primary = "mistralai--mistral-small-creative"
+
+    variants = {
+        "placebo": ROOT / primary / "_surveillance_placebo_v2" / primary / "experiment_comm_summary.csv",
+        "anonymous": ROOT / primary / "_surveillance_anonymous_v2" / primary / "experiment_comm_summary.csv",
+    }
+
+    # Load comm baseline for comparison
+    comm_df = load(primary, "comm")
+    comm_jcol = _join_col(comm_df) if len(comm_df) > 0 else "join_fraction"
+    comm_mean = float(comm_df[comm_jcol].mean()) if len(comm_df) > 0 else float("nan")
+
+    for variant_name, path in variants.items():
+        if not path.exists():
+            results[variant_name] = {"status": "missing", "path": str(path)}
+            continue
+        df = pd.read_csv(path)
+        if len(df) == 0:
+            results[variant_name] = {"status": "empty"}
+            continue
+        jcol = _join_col(df)
+        jf = df[jcol].astype(float).values
+        theta = df["theta"].astype(float).values
+
+        r_theta = pearson_with_ci(theta, jf)
+        mean_join = round(float(np.nanmean(jf)), 4)
+        delta_vs_comm = round((mean_join - comm_mean) * 100, 2) if np.isfinite(comm_mean) else None
+
+        # t-test vs comm baseline
+        if len(comm_df) > 0:
+            comm_jf = comm_df[comm_jcol].astype(float).values
+            t_stat, t_p = stats.ttest_ind(jf, comm_jf)
+            t_test = {"t_stat": round(float(t_stat), 4), "p_value": round(float(t_p), 6)}
+        else:
+            t_test = None
+
+        results[variant_name] = {
+            "n_obs": len(df),
+            "mean_join": mean_join,
+            "r_vs_theta": r_theta,
+            "delta_vs_comm_pp": delta_vs_comm,
+            "t_test_vs_comm": t_test,
+        }
+
+    return results
+
+
 def compute_uncalibrated():
     """Statistics for uncalibrated robustness runs (Section D)."""
     results = {}
@@ -861,6 +1228,7 @@ def main():
 
     print("Computing information design statistics...")
     infodesign = compute_infodesign()
+    infodesign_comm = compute_infodesign_comm()
 
     print("Computing regime control statistics...")
     regime = compute_regime_control()
@@ -871,6 +1239,18 @@ def main():
     print("Running pooled OLS...")
     ols = pooled_ols(None)
 
+    print("Computing logistic fits (cutoffs + slopes)...")
+    logistic_fits = compute_logistic_fits()
+
+    print("Computing clustered standard errors...")
+    clustered_ses = compute_clustered_ses()
+
+    print("Computing temperature robustness statistics...")
+    temp_robust = compute_temperature_robustness()
+
+    print("Computing surveillance variant statistics...")
+    surv_variants = compute_surveillance_variants()
+
     print("Computing uncalibrated robustness statistics...")
     uncalibrated = compute_uncalibrated()
 
@@ -880,9 +1260,14 @@ def main():
     all_stats = {
         "part1": part1,
         "infodesign": infodesign,
+        "infodesign_comm": infodesign_comm,
         "regime_control": regime,
         "robustness": robust,
         "pooled_ols": ols,
+        "logistic_fits": logistic_fits,
+        "clustered_ses": clustered_ses,
+        "surveillance_variants": surv_variants,
+        "temperature_robustness": temp_robust,
         "uncalibrated": uncalibrated,
         "beliefs_v2": beliefs_v2,
     }

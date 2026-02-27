@@ -394,6 +394,7 @@ def run_experiment(args, treatment, signal_mode="normal"):
                     elicit_beliefs=getattr(args, 'elicit_beliefs', False),
                     elicit_second_order=getattr(args, 'elicit_second_order', False),
                     belief_order=getattr(args, 'belief_order', 'post'),
+                    temperature=getattr(args, 'temperature', 0.7),
                 )
             else:
                 # Resolve fixed messages for this (country, period) if available
@@ -414,6 +415,7 @@ def run_experiment(args, treatment, signal_mode="normal"):
                     elicit_second_order=getattr(args, 'elicit_second_order', False),
                     fixed_messages=period_fixed,
                     belief_order=getattr(args, 'belief_order', 'post'),
+                    temperature=getattr(args, 'temperature', 0.7),
                 )
 
             completed[0] += 1

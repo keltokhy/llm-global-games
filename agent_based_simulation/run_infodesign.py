@@ -234,6 +234,47 @@ def run_infodesign(args):
                     briefing._public_suffix = public_text
                     briefing_overrides.append(briefing)
 
+            # Within-briefing observation shuffle
+            elif config is not None and getattr(config, 'shuffle_observations', False):
+                rng = np.random.default_rng(
+                    hash((rep, 0, "signals")) % 2**32
+                )
+                shuffle_rng = np.random.default_rng(
+                    hash((rep, 0, "shuffle_obs")) % 2**32
+                )
+                briefing_overrides = []
+                for agent in agents:
+                    agent.signal = theta + rng.normal(0, args.sigma)
+                    agent.z_score = (agent.signal - z_center) / args.sigma
+                    briefing = gen.generate(agent.z_score, agent.agent_id, 0)
+                    obs_copy = list(briefing.observations)
+                    shuffle_rng.shuffle(obs_copy)
+                    briefing.observations = obs_copy
+                    briefing_overrides.append(briefing)
+
+            # Domain-group scramble: scramble specific domain observations across agents
+            elif config is not None and getattr(config, 'scramble_domain_indices', None):
+                rng = np.random.default_rng(
+                    hash((rep, 0, "signals")) % 2**32
+                )
+                scramble_rng = np.random.default_rng(
+                    hash((rep, 0, "domain_scramble")) % 2**32
+                )
+                # Generate all briefings normally
+                temp_briefings = []
+                for agent in agents:
+                    agent.signal = theta + rng.normal(0, args.sigma)
+                    agent.z_score = (agent.signal - z_center) / args.sigma
+                    briefing = gen.generate(agent.z_score, agent.agent_id, 0)
+                    temp_briefings.append(briefing)
+                # Scramble specified domain observations across agents
+                for idx in config.scramble_domain_indices:
+                    domain_obs = [b.observations[idx] for b in temp_briefings]
+                    scramble_rng.shuffle(domain_obs)
+                    for b, obs in zip(temp_briefings, domain_obs):
+                        b.observations[idx] = obs
+                briefing_overrides = temp_briefings
+
             # Run the game — scramble uses "normal" mode since
             # we handle it via briefing_overrides, not experiment.py's shuffle.
             effective_signal_mode = "normal" if design_name == "scramble" else signal_mode
@@ -247,6 +288,7 @@ def run_infodesign(args):
                 briefing_overrides=briefing_overrides,
                 group_size_info=getattr(args, 'group_size_info', False),
                 elicit_beliefs=getattr(args, 'elicit_beliefs', False),
+                temperature=getattr(args, 'temperature', 0.7),
             )
             if is_comm:
                 result = await run_communication_game(

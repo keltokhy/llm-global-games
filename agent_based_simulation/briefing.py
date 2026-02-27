@@ -34,6 +34,22 @@ SUPPORTED_LANGUAGE_VARIANTS = (
 )
 
 # ---------------------------------------------------------------------------
+# Domain indices: the 8 observation domains in generation order
+# ---------------------------------------------------------------------------
+DOMAIN_NAMES = [
+    "elite_cohesion",           # 0
+    "security_forces",          # 1
+    "money_and_logistics",      # 2
+    "street_mood",              # 3
+    "information_control",      # 4
+    "personal_observations",    # 5
+    "diplomatic_signals",       # 6
+    "institutional_functioning",# 7
+]
+COORDINATION_DOMAINS = {3, 5}       # street_mood, personal_observations
+STATE_CAPACITY_DOMAINS = {0, 1, 4, 7}  # elite, security, info_control, institutional
+
+# ---------------------------------------------------------------------------
 # Phrase ladders: ordered sequences from weak → strong expression
 # ---------------------------------------------------------------------------
 
