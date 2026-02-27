@@ -439,10 +439,13 @@ def diagram_authoritarian_control():
     ax.text(6.0, 1.45, "Instrument Interactions", ha="center", va="center",
             fontsize=11, fontweight="bold", color=C["dark"])
 
+    sxc_start = STATS["part1"]["Mistral Small Creative"]["comm"]["mean_join"] * 100
+    sxc_end = (STATS["regime_control"]["surveillance_x_censorship"]
+               ["Mistral Small Creative"]["censor_upper"] * 100)
     interactions = [
-        ("Surv + Propaganda:", "Sub-additive (both attack same channel)", 1.05),
+        ("Surv + Propaganda:", "Approximately additive (both attack same channel)", 1.05),
         ("Surv + Censorship:", "Super-additive (attack different channels)", 0.65),
-        ("All three:", "30.9% $\\to$ 3.7%  (coordination collapse)", 0.25),
+        ("All three:", f"{sxc_start:.1f}% $\\to$ {sxc_end:.1f}%  (coordination collapse)", 0.25),
     ]
     for label, desc, y in interactions:
         ax.text(2.0, y, label, ha="left", va="center",
@@ -545,9 +548,16 @@ def diagram_communication():
     ax.text(5.3, 5.55, "then", ha="center", va="center",
             fontsize=9, color=C["grey"])
 
-    # Key finding
+    # Key finding (from verified_stats.json)
+    _p1 = STATS["part1"]
+    _models = [k for k in _p1 if not k.startswith("_")]
+    _cd = [_p1[m]["comm_effect"]["unpaired"]["delta_pp"]
+           for m in _models if isinstance(_p1[m], dict) and "comm_effect" in _p1[m]]
+    comm_delta = sum(_cd) / len(_cd)
+    comm_p = _p1["_pooled_comm_effect"]["unpaired"]["p_value"]
     ax.text(5.25, 0.2,
-            "Finding: Communication raises beliefs ($+2.4$ pp) but not actions ($-0.9$ pp, $p = 0.34$).\n"
+            f"Finding: Communication raises the mean join rate by ${comm_delta:+.1f}$ pp "
+            f"(not significant, $p = {comm_p:.3f}$).\n"
             "The channel transmits strategic uncertainty about others' willingness to act.",
             ha="center", va="center", fontsize=9, color=C["dark"],
             bbox=dict(boxstyle="round,pad=0.35", fc="#FEF9E7",
