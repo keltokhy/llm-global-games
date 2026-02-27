@@ -8,6 +8,7 @@ Produces:
   4. Authoritarian information control (how instruments attack the channel)
 """
 
+import json
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -22,6 +23,8 @@ import numpy as np
 
 OUT = Path(__file__).resolve().parent.parent / "paper" / "figures"
 OUT.mkdir(parents=True, exist_ok=True)
+
+STATS = json.loads((Path(__file__).resolve().parent / "verified_stats.json").read_text())
 
 # ── Shared palette ───────────────────────────────────────────────────
 C = {
@@ -317,26 +320,44 @@ def diagram_experimental_design():
          "temp $= 0.7$  |  narrative briefings, no payoff tables",
          fc=C["light_grey"], ec=C["grey"], fontsize=9.5, bold=False)
 
-    # Key results annotations
+    # ── Part I key results (from verified_stats.json) ──
+    r_pure = STATS["part1"]["_mean_r_pure_vs_attack"]
+    _p1_models = [k for k in STATS["part1"] if not k.startswith("_")]
+    _comm_deltas = [STATS["part1"][m]["comm_effect"]["unpaired"]["delta_pp"]
+                    for m in _p1_models
+                    if isinstance(STATS["part1"][m], dict)
+                    and "comm_effect" in STATS["part1"][m]]
+    comm_pp = sum(_comm_deltas) / len(_comm_deltas)
+
     results_text = (
         "Key findings:\n"
-        "$\\bullet$ Pure: mean $r = +0.73$\n"
+        f"$\\bullet$ Pure: mean $r = +{r_pure:.2f}$\n"
         "$\\bullet$ Scramble: $r \\to +0.23$\n"
         "$\\bullet$ Flip: $r \\to -0.67$\n"
-        "$\\bullet$ Comm: $+3.7$ pp"
+        f"$\\bullet$ Comm: ${comm_pp:+.1f}$ pp"
     )
     ax.text(0.3, 2.9, results_text, ha="left", va="top",
             fontsize=8, color=C["dark"],
             bbox=dict(boxstyle="round,pad=0.3", fc="#D5F5E3",
                       ec=C["accent2"], alpha=0.6))
 
+    # ── Part II key results (from verified_stats.json) ──
+    stab_pp = STATS["infodesign"]["stability"]["delta_vs_baseline"] * 100
+    pub_pp = STATS["infodesign"]["public_signal"]["delta_vs_baseline"] * 100
+    cens_pp = STATS["infodesign"]["censor_upper"]["delta_vs_baseline"] * 100
+    _surv = STATS["regime_control"]["surveillance"]
+    surv_pp = sum(v["delta_vs_baseline_pp"] for v in _surv.values()) / len(_surv)
+    sxc_start = STATS["part1"]["Mistral Small Creative"]["comm"]["mean_join"] * 100
+    sxc_end = (STATS["regime_control"]["surveillance_x_censorship"]
+               ["Mistral Small Creative"]["censor_upper"] * 100)
+
     results_text2 = (
         "Key findings:\n"
-        "$\\bullet$ Stability: $+19.5$ pp\n"
-        "$\\bullet$ Public signal: $-10.7$ pp\n"
-        "$\\bullet$ Censorship: $+18.5$ pp\n"
-        "$\\bullet$ Surveillance: $-17.5$ pp\n"
-        "$\\bullet$ Surv $+$ censor: 30.9% $\\to$ 3.7%"
+        f"$\\bullet$ Stability: ${stab_pp:+.1f}$ pp\n"
+        f"$\\bullet$ Public signal: ${pub_pp:+.1f}$ pp\n"
+        f"$\\bullet$ Censorship: ${cens_pp:+.1f}$ pp\n"
+        f"$\\bullet$ Surveillance: ${surv_pp:+.1f}$ pp\n"
+        f"$\\bullet$ Surv $+$ censor: {sxc_start:.1f}% $\\to$ {sxc_end:.1f}%"
     )
     ax.text(6.8, 1.5, results_text2, ha="left", va="top",
             fontsize=8, color=C["dark"],
