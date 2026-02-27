@@ -6,6 +6,7 @@ Produces:
   2. Signal-to-text pipeline (θ → briefing → LLM → decision)
   3. Experimental design overview (all treatments)
   4. Authoritarian information control (how instruments attack the channel)
+  5. Communication treatment detail (two-phase protocol)
 """
 
 import json
@@ -347,9 +348,6 @@ def diagram_experimental_design():
     cens_pp = STATS["infodesign"]["censor_upper"]["delta_vs_baseline"] * 100
     _surv = STATS["regime_control"]["surveillance"]
     surv_pp = sum(v["delta_vs_baseline_pp"] for v in _surv.values()) / len(_surv)
-    sxc_start = STATS["part1"]["Mistral Small Creative"]["comm"]["mean_join"] * 100
-    sxc_end = (STATS["regime_control"]["surveillance_x_censorship"]
-               ["Mistral Small Creative"]["censor_upper"] * 100)
 
     results_text2 = (
         "Key findings:\n"
@@ -357,7 +355,7 @@ def diagram_experimental_design():
         f"$\\bullet$ Public signal: ${pub_pp:+.1f}$ pp\n"
         f"$\\bullet$ Censorship: ${cens_pp:+.1f}$ pp\n"
         f"$\\bullet$ Surveillance: ${surv_pp:+.1f}$ pp\n"
-        f"$\\bullet$ Surv $+$ censor: {sxc_start:.1f}% $\\to$ {sxc_end:.1f}%"
+        "$\\bullet$ Surv $+$ censor: super-additive"
     )
     ax.text(6.8, 1.5, results_text2, ha="left", va="top",
             fontsize=8, color=C["dark"],
@@ -439,13 +437,15 @@ def diagram_authoritarian_control():
     ax.text(6.0, 1.45, "Instrument Interactions", ha="center", va="center",
             fontsize=11, fontweight="bold", color=C["dark"])
 
-    sxc_start = STATS["part1"]["Mistral Small Creative"]["comm"]["mean_join"] * 100
-    sxc_end = (STATS["regime_control"]["surveillance_x_censorship"]
-               ["Mistral Small Creative"]["censor_upper"] * 100)
+    # Within-design comparison: surveillance marginal effect at baseline vs under censorship
+    sxc_mistral = STATS["regime_control"]["surveillance_x_censorship"]["Mistral Small Creative"]
+    idc = STATS["infodesign_comm"]
+    surv_delta_base = (sxc_mistral["baseline"] - idc["baseline"]["mean_join"]) * 100
+    surv_delta_censor = (sxc_mistral["censor_upper"] - idc["censor_upper"]["mean_join"]) * 100
     interactions = [
         ("Surv + Propaganda:", "Approximately additive (both attack same channel)", 1.05),
-        ("Surv + Censorship:", "Super-additive (attack different channels)", 0.65),
-        ("All three:", f"{sxc_start:.1f}% $\\to$ {sxc_end:.1f}%  (coordination collapse)", 0.25),
+        ("Surv + Censor:", f"Super-additive: surv effect ${surv_delta_censor:.1f}$ pp "
+         f"under censor vs ${surv_delta_base:.1f}$ pp at baseline", 0.55),
     ]
     for label, desc, y in interactions:
         ax.text(2.0, y, label, ha="left", va="center",
