@@ -20,7 +20,6 @@ Each briefing has a fixed schema:
 import numpy as np
 from dataclasses import dataclass
 from .runtime import deterministic_hash
-from .runtime import deterministic_hash
 
 DEFAULT_BOTTOMLINE_CUTS = (0.15, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 0.85)
 DEFAULT_UNCLEAR_CUTS = (0.18, 0.33, 0.48, 0.62, 0.77)

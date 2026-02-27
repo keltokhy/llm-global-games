@@ -308,8 +308,6 @@ async def _call_llm(
             _IN_FLIGHT_REQUESTS.pop(cache_key, None)
             future.set_exception(e)
         raise
-                    return f"[API Error: {e}]"
-                await asyncio.sleep(min(3.0, 0.75 * api_attempts))
 
 
 def _is_api_error_response(response: str) -> bool:
