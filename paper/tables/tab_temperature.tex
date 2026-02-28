@@ -2,10 +2,11 @@
 \centering
 \caption{Temperature robustness. The pure global game is run at three LLM decoding temperatures using Mistral Small Creative with calibrated parameters. The correlation $r(\theta, J)$ and logistic parameters are stable across temperatures.}
 \label{tab:temperature}
-\small
-\begin{tabular}{lccccc}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lrrrrr}
 \toprule
-Temperature & $N$ & Mean join & $r(\theta, J)$ & Cutoff $\hat{\theta}^*$ & Slope $\hat{\beta}$ \\
+$T$ & $N$ & Mean join & $r(\theta,J)$ & $\hat{\theta}^*$ & Slope $\hat{\beta}$ \\
 \midrule
 T=0.3 & 100 & 0.412 & -0.87 & -0.049 & 2.36 \\
 T=0.7 & 100 & 0.406 & -0.87 & -0.079 & 2.28 \\
