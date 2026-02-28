@@ -12,6 +12,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from models import DISPLAY_ORDER
+
 
 ANALYSIS_DIR = Path(__file__).resolve().parent
 STATS_PATH = ANALYSIS_DIR / "verified_stats.json"
@@ -57,21 +59,10 @@ def _load() -> dict:
 
 def render_tab_models(stats: dict) -> str:
     part1 = stats["part1"]
-    # Preserve paper order.
-    models = [
-        "Mistral Small Creative",
-        "Llama 3.3 70B",
-        "Ministral 3B",
-        "Qwen3 30B",
-        "GPT-OSS 120B",
-        "Qwen3 235B",
-        "Trinity Large",
-        "MiniMax M2-Her",
-    ]
+    models = DISPLAY_ORDER
     arch = {
         "Mistral Small Creative": "Mistral",
         "Llama 3.3 70B": "Llama",
-        "Ministral 3B": "Mistral",
         "Qwen3 30B": "Qwen (MoE)",
         "GPT-OSS 120B": "GPT",
         "Qwen3 235B": "Qwen (MoE)",
@@ -126,16 +117,7 @@ Model & Arch. & Pure & Comm & Falsif. \\
 
 def render_tab_main_results(stats: dict) -> str:
     part1 = stats["part1"]
-    models = [
-        "Mistral Small Creative",
-        "Llama 3.3 70B",
-        "Ministral 3B",
-        "Qwen3 30B",
-        "GPT-OSS 120B",
-        "Qwen3 235B",
-        "Trinity Large",
-        "MiniMax M2-Her",
-    ]
+    models = DISPLAY_ORDER
 
     def r_attack_val(m: str, t: str) -> float | None:
         d = part1.get(m, {}).get(t, {})
@@ -280,7 +262,7 @@ Design & Mean & $r$ & $\Delta$ & $N$ \\
     tex += r"""\bottomrule
 \end{tabular}
 \vspace{0.25em}
-\footnotesize\emph{Notes:} Data from \texttt{output/mistralai--mistral-small-creative/experiment\_infodesign\_\{design\}\_summary.csv} (pure treatment; $\theta \in [0.20, 0.80]$ on a 9-point grid; $N{=}25$ agents per period). Mean join uses \texttt{join\_fraction\_valid}; $r$ is Pearson $r(\theta,\text{join})$ across rep-level periods.
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Data from the primary model (pure treatment; $\theta \in [0.20, 0.80]$ on a 9-point grid; $N{=}25$ agents per period). Mean join uses valid decisions; $r$ is Pearson $r(\theta,\text{join})$ across rep-level periods.}
 \end{table}
 """
     return tex
@@ -374,6 +356,7 @@ def render_tab_surv_censor(stats: dict) -> str:
 \caption{Surveillance $\times$ censorship interaction in the communication game (primary model: Mistral Small Creative).}
 \label{tab:surv_censor}
 \small
+\resizebox{\columnwidth}{!}{%
 \begin{tabular}{lccc}
 \toprule
 Design & No Surv. & Surv. & $\Delta$ \\
@@ -381,9 +364,9 @@ Design & No Surv. & Surv. & $\Delta$ \\
 """
     tex += "\n".join(lines) + "\n"
     tex += r"""\bottomrule
-\end{tabular}
-\vspace{0.25em}
-\footnotesize\emph{Notes:} ``No Surv.'' uses the communication infodesign grid (\texttt{output/mistralai--mistral-small-creative-infodesign-comm/}.) ``Surv.'' uses the same grid with surveillance active during messaging (\texttt{output/surveillance-x-censorship/}.) All entries are means of \texttt{join\_fraction\_valid}.
+\end{tabular}}
+\par\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} ``No Surv.'' uses the communication infodesign grid. ``Surv.'' uses the same grid with surveillance active during messaging. All entries are means of \texttt{join\_fraction\_valid}.}
 \end{table}
 """
     return tex
@@ -436,7 +419,6 @@ def render_tab_crossmodel(stats: dict) -> str:
         "Mistral Small Creative",
         "GPT-OSS 120B",
         "Llama 3.3 70B",
-        "Ministral 3B",
         "Qwen3 30B",
         "Qwen3 235B",
     ]
@@ -553,6 +535,7 @@ def render_tab_uncalibrated(stats: dict) -> str:
 \caption{Uncalibrated robustness: models run without calibration adjustment. $r$ is the Pearson correlation between $\theta$ and join fraction.}
 \label{tab:uncalibrated}
 \small
+\resizebox{\columnwidth}{!}{%
 \begin{tabular}{lcccc}
 \toprule
 Model & $N$ & Mean join & $r(\theta, J)$ & $p$ \\
@@ -560,7 +543,7 @@ Model & $N$ & Mean join & $r(\theta, J)$ & $p$ \\
 """
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 """
     return tex
@@ -601,6 +584,7 @@ def render_tab_surv_censor_crossmodel(stats: dict) -> str:
 \caption{Cross-model surveillance $\times$ censorship interaction. All conditions run under surveillance with communication. $\Delta$ columns show the change relative to the surveilled baseline.}
 \label{tab:surv_censor_crossmodel}
 \small
+\resizebox{\columnwidth}{!}{%
 \begin{tabular}{lccccc}
 \toprule
 & \multicolumn{3}{c}{Mean join (surv.)} & \multicolumn{2}{c}{$\Delta$ vs baseline} \\
@@ -610,7 +594,7 @@ Model & Baseline & Upper cens. & Lower cens. & $\Delta$ upper & $\Delta$ lower \
 """
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 """
     return tex
@@ -624,7 +608,6 @@ def render_tab_logistic_params(stats: dict) -> str:
     MODEL_ORDER = [
         "Mistral Small Creative",
         "Llama 3.3 70B",
-        "Ministral 3B",
         "Qwen3 30B",
         "GPT-OSS 120B",
         "Qwen3 235B",
@@ -744,6 +727,7 @@ def render_tab_bc_statics(stats: dict) -> str:
 \caption{Cost/benefit narrative comparative statics. High cost: narrative emphasizes severe reprisals for failed action. Low cost: narrative emphasizes minimal consequences. Theory predicts higher perceived cost lowers the cutoff (less joining).}
 \label{tab:bc_statics}
 \small
+\resizebox{\columnwidth}{!}{%
 \begin{tabular}{lccccc}
 \toprule
 Design & $N$ & Mean join & $r(\theta, J)$ & Cutoff $\hat{\theta}^*$ (SE) & $\Delta$ vs baseline \\
@@ -751,7 +735,7 @@ Design & $N$ & Mean join & $r(\theta, J)$ & Cutoff $\hat{\theta}^*$ (SE) & $\Del
 """
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 """
     return tex
@@ -787,6 +771,7 @@ def render_tab_censor_ck(stats: dict) -> str:
 \caption{Censorship with and without common knowledge. Na\"ive: agents do not know censorship is active. Known: agents are told that regime censors suppress unfavorable intelligence above a severity threshold.}
 \label{tab:censor_ck}
 \small
+\resizebox{\columnwidth}{!}{%
 \begin{tabular}{lcccc}
 \toprule
 Design & $N$ & Mean join & $r(\theta, J)$ & $\Delta$ vs baseline \\
@@ -794,7 +779,7 @@ Design & $N$ & Mean join & $r(\theta, J)$ & $\Delta$ vs baseline \\
 """
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 """
     return tex
@@ -824,6 +809,7 @@ def render_tab_temperature(stats: dict) -> str:
 \caption{Temperature robustness. The pure global game is run at three LLM decoding temperatures using Mistral Small Creative with calibrated parameters. The correlation $r(\theta, J)$ and logistic parameters are stable across temperatures.}
 \label{tab:temperature}
 \small
+\resizebox{\columnwidth}{!}{%
 \begin{tabular}{lccccc}
 \toprule
 Temperature & $N$ & Mean join & $r(\theta, J)$ & Cutoff $\hat{\theta}^*$ & Slope $\hat{\beta}$ \\
@@ -831,7 +817,7 @@ Temperature & $N$ & Mean join & $r(\theta, J)$ & Cutoff $\hat{\theta}^*$ & Slope
 """
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 """
     return tex
@@ -861,6 +847,119 @@ def _fmt_pp(x: float, nd: int = 1) -> str:
     val = x * 100
     sign = "+" if val >= 0 else ""
     return f"{sign}{val:.{nd}f}"
+
+
+def render_tab_ck_2x2(stats: dict) -> str:
+    """CK framing x coordination intensity 2x2 table."""
+    ck = stats.get("ck_interaction", {})
+    if not ck or ck.get("status") == "incomplete":
+        return "% No CK interaction data available.\n"
+
+    cm = ck.get("cell_means", {})
+    priv_low = cm.get("priv_low_coord")
+    priv_high = cm.get("priv_high_coord")
+    ck_low = cm.get("ck_low_coord")
+    ck_high = cm.get("ck_high_coord")
+
+    def pct(v):
+        return f"{v*100:.1f}\\%" if v is not None else "---"
+
+    def pp(a, b):
+        if a is None or b is None:
+            return "---"
+        d = (a - b) * 100
+        sign = "+" if d >= 0 else ""
+        return f"{sign}{d:.1f}"
+
+    interaction = ck.get("interaction", {})
+    inter_beta = interaction.get("beta")
+    inter_p = interaction.get("p")
+
+    ck_main = ck.get("ck", {})
+    coord_main = ck.get("high_coord", {})
+
+    tex = r"""\begin{table}[t]
+\centering
+\caption{Common knowledge $\times$ coordination intensity. Each cell reports mean join rate (270 country--periods). The CK main effect is """ + f"{pp(ck_main.get('beta'), 0) if ck_main.get('beta') is not None else '---'}" + r"""~pp ($p = """ + f"{ck_main.get('p', '---'):.4f}" + r"""$); the interaction is """ + f"{pp(inter_beta, 0) if inter_beta is not None else '---'}" + r"""~pp ($p = """ + f"{inter_p:.2f}" + r"""$).}
+\label{tab:ck_2x2}
+\small
+\begin{tabular}{lccc}
+\toprule
+& Low coord & High coord & $\Delta$ (coord) \\
+\midrule
+Private framing & """ + pct(priv_low) + " & " + pct(priv_high) + " & " + pp(priv_high, priv_low) + r"""~pp \\
+CK framing      & """ + pct(ck_low) + " & " + pct(ck_high) + " & " + pp(ck_high, ck_low) + r"""~pp \\
+\midrule
+$\Delta$ (CK) & """ + pp(ck_low, priv_low) + "~pp & " + pp(ck_high, priv_high) + r"""~pp & \\
+\bottomrule
+\end{tabular}
+\end{table}
+"""
+    return tex
+
+
+def render_tab_classifiers(stats: dict) -> str:
+    """Classifier baselines table."""
+    cb = stats.get("classifier_baselines", {})
+    if not cb or cb.get("status") == "missing":
+        return "% No classifier baseline data available.\n"
+
+    def _acc(clf, key="cv_pure"):
+        d = cb.get(clf, {}).get(key, {})
+        v = d.get("accuracy_mean") if key == "cv_pure" else d.get("accuracy")
+        return f"{v*100:.1f}\\%" if v is not None else "---"
+
+    def _auc(clf, key="cv_pure"):
+        d = cb.get(clf, {}).get(key, {})
+        v = d.get("auc_mean") if key == "cv_pure" else d.get("auc")
+        return f"{v:.3f}" if v is not None else "---"
+
+    def _pred(clf):
+        d = cb.get(clf, {}).get("cross_pure_to_surv", {})
+        v = d.get("predicted_join_rate")
+        return f"{v*100:.1f}\\%" if v is not None else "---"
+
+    def _actual(clf):
+        d = cb.get(clf, {}).get("cross_pure_to_surv", {})
+        v = d.get("actual_join_rate")
+        return f"{v*100:.1f}\\%" if v is not None else "---"
+
+    def _gap(clf):
+        d = cb.get(clf, {}).get("cross_pure_to_surv", {})
+        pred = d.get("predicted_join_rate")
+        actual = d.get("actual_join_rate")
+        if pred is not None and actual is not None:
+            g = (pred - actual) * 100
+            return f"{g:.1f}"
+        return "---"
+
+    rows = []
+    for clf, label in [
+        ("bow_tfidf", "BoW TF-IDF"),
+        ("slider_logistic", "Slider logistic"),
+        ("keyphrase_sentiment", "Keyphrase"),
+    ]:
+        rows.append(
+            f"{label} & {_acc(clf)} & {_auc(clf)} & {_pred(clf)} & {_actual(clf)} & {_gap(clf)}~pp \\\\"
+        )
+
+    tex = r"""\begin{table}[t]
+\centering
+\caption{Classifier baselines. Accuracy and AUC are 5-fold CV on pure-treatment data. ``Pred.\ join (surv.)'' is the classifier's predicted join rate when applied to surveillance-treatment briefings; ``Actual'' is the LLM's observed rate. The gap measures the surveillance wedge invisible to text classifiers.}
+\label{tab:classifiers}
+\small
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lccccc}
+\toprule
+Classifier & Acc. & AUC & Pred.\ join (surv.) & Actual (surv.) & Gap \\
+\midrule
+"""
+    tex += "\n".join(rows) + "\n"
+    tex += r"""\bottomrule
+\end{tabular}}
+\end{table}
+"""
+    return tex
 
 
 def render_stats_macros(stats: dict) -> str:
@@ -974,7 +1073,83 @@ def render_stats_macros(stats: dict) -> str:
         lines.append(f"\\providecommand{{\\{macro}SurvMeanPct}}{{{_fmt_pct(surv_mean, 1)}}}")
     lines.append("")
 
+    # CK interaction macros
+    ck = stats.get("ck_interaction", {})
+    ck_main = ck.get("ck", {})
+    ck_inter = ck.get("interaction", {})
+    lines.append("% CK interaction test")
+    ck_main_beta = ck_main.get("beta")
+    ck_main_p = ck_main.get("p")
+    ck_inter_beta = ck_inter.get("beta")
+    ck_inter_p = ck_inter.get("p")
+    lines.append(r"\providecommand{\CKMainEffectBeta}{" + (_fmt_pp(ck_main_beta, 1) if ck_main_beta is not None else "---") + "}")
+    lines.append(r"\providecommand{\CKMainEffectPValue}{" + (_fmt_num(ck_main_p, 4) if ck_main_p is not None else "---") + "}")
+    lines.append(r"\providecommand{\CKInteractionBeta}{" + (_fmt_pp(ck_inter_beta, 1) if ck_inter_beta is not None else "---") + "}")
+    lines.append(r"\providecommand{\CKInteractionPValue}{" + (_fmt_num(ck_inter_p, 2) if ck_inter_p is not None else "---") + "}")
+    lines.append("")
+
     return "\n".join(lines) + "\n"
+
+
+def render_tab_hypotheses(stats: dict) -> str:
+    """Render hypothesis summary table (H1-H8) from verified stats."""
+    hyp = stats.get("hypothesis_table")
+    if not hyp:
+        return "% No hypothesis table data available.\n"
+
+    def _fmt_p(p) -> str:
+        if p is None:
+            return "---"
+        try:
+            if p != p:  # nan
+                return "---"
+        except Exception:
+            return "---"
+        if p < 0.001:
+            return "$<$0.001"
+        return f"{p:.3f}"
+
+    def _fmt_stat(s) -> str:
+        if s is None:
+            return "---"
+        try:
+            if s != s:
+                return "---"
+        except Exception:
+            return "---"
+        return f"{s:.3f}"
+
+    rows = []
+    for h in hyp:
+        hid = h["id"]
+        label = h["hypothesis"]
+        estimand = h.get("estimand", "---")
+        null = h.get("null", "---")
+        test = h.get("test", "---")
+        stat = _fmt_stat(h.get("stat"))
+        p = _fmt_p(h.get("p"))
+        supported = h.get("supported", "---")
+        rows.append(
+            f"{hid} & {label} & {estimand} & {null} & {test} & {stat} & {p} & {supported} \\\\"
+        )
+
+    tex = r"""\begin{table*}[t]
+\centering
+\caption{Pre-registered hypotheses and test results. H1--H4 use pooled Part~I data across all seven models; H5--H8 use the primary model (Mistral Small Creative). ``Supported'' indicates whether the data pattern matches the hypothesis at $\alpha = 0.05$.}
+\label{tab:hypotheses}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llllllcl}
+\toprule
+H & Hypothesis & Estimand & Null & Test & Stat & $p$ & Supported? \\
+\midrule
+"""
+    tex += "\n".join(rows) + "\n"
+    tex += r"""\bottomrule
+\end{tabular}
+\end{table*}
+"""
+    return tex
 
 
 def main() -> None:
@@ -996,6 +1171,9 @@ def main() -> None:
         "tab_bc_statics.tex": render_tab_bc_statics(stats),
         "tab_censor_ck.tex": render_tab_censor_ck(stats),
         "tab_temperature.tex": render_tab_temperature(stats),
+        "tab_hypotheses.tex": render_tab_hypotheses(stats),
+        "tab_ck_2x2.tex": render_tab_ck_2x2(stats),
+        "tab_classifiers.tex": render_tab_classifiers(stats),
         "stats_macros.tex": render_stats_macros(stats),
     }
 

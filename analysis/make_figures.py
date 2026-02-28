@@ -23,6 +23,8 @@ Main figures:
   15. Surveillance mechanism tests (belief-behavior gap)
   16. First-order beliefs (calibration + treatment divergence)
   17. Second-order beliefs
+  18. B/C sweep — fitted vs theoretical cutoff
+  19. Nonparametric monotonicity — E[belief | z-score bin] vs theory
 
 Appendix:
   A1. Agent count robustness
@@ -43,6 +45,12 @@ from matplotlib.lines import Line2D
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+
+from models import (
+    MODEL_COLORS as _MODEL_COLORS,
+    SHORT_NAMES as _SHORT_NAMES,
+    EXCLUDE_MODELS as _EXCLUDE_MODELS,
+)
 
 # ── Paths ─────────────────────────────────────────────────────────
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -119,31 +127,10 @@ DESIGN_LABELS = {
     "stability_dissent": "Dissent only",
 }
 
-# Model colors and short names
-# Models to exclude from all figures
-EXCLUDE_MODELS = {"allenai--olmo-3-7b-instruct"}
-
-MODEL_COLORS = {
-    "mistralai--mistral-small-creative": "#2c7bb6",
-    "arcee-ai--trinity-large-preview_free": "#fdae61",
-    "meta-llama--llama-3.3-70b-instruct": "#abdda4",
-    "minimax--minimax-m2-her": "#7b3294",
-    "mistralai--ministral-3b-2512": "#e66101",
-    "openai--gpt-oss-120b": "#1a9641",
-    "qwen--qwen3-235b-a22b-2507": "#5e4fa2",
-    "qwen--qwen3-30b-a3b-instruct-2507": "#f46d43",
-}
-
-SHORT_NAMES = {
-    "mistralai--mistral-small-creative": "Mistral-Small",
-    "arcee-ai--trinity-large-preview_free": "Trinity",
-    "meta-llama--llama-3.3-70b-instruct": "Llama-3.3-70B",
-    "minimax--minimax-m2-her": "MiniMax-M2",
-    "mistralai--ministral-3b-2512": "Ministral-3B",
-    "openai--gpt-oss-120b": "GPT-OSS-120B",
-    "qwen--qwen3-235b-a22b-2507": "Qwen3-235B",
-    "qwen--qwen3-30b-a3b-instruct-2507": "Qwen3-30B",
-}
+# Model colors, short names, and exclusions — imported from models.py
+MODEL_COLORS = _MODEL_COLORS
+SHORT_NAMES = _SHORT_NAMES
+EXCLUDE_MODELS = _EXCLUDE_MODELS
 
 
 # ── Helpers ───────────────────────────────────────────────────────
@@ -448,47 +435,6 @@ def fig03_falsification():
 
 
 # ═══════════════════════════════════════════════════════════════════
-# FIGURE 04: Cross-model r-value bar chart
-# ═══════════════════════════════════════════════════════════════════
-
-def fig04_r_summary():
-    if len(comp) == 0:
-        print("  SKIPPED fig04 — no comparison data")
-        return
-
-    df = comp.copy()
-    if "model" not in df.columns:
-        if df.index.name == "model":
-            df = df.reset_index()
-        else:
-            return
-
-    df = df.sort_values("r_pure", ascending=False)
-    short_names = [SHORT_NAMES.get(m, m[:20]) for m in df["model"]]
-
-    fig, ax = plt.subplots(figsize=(TEXT_W, 2.8))
-    x = np.arange(len(df))
-    w = 0.35
-
-    ax.bar(x - w/2, df["r_pure"].abs(), w, color=C_PURE, label="Pure", edgecolor="none")
-    ax.bar(x + w/2, df["r_comm"].abs(), w, color=C_COMM, label="Comm", edgecolor="none")
-
-    if "r_scramble" in df.columns:
-        r_scram = df["r_scramble"].abs().fillna(0)
-        ax.scatter(x, r_scram, color=C_SCRAMBLE, marker="D", s=12,
-                   zorder=4, label="Scramble $|r|$", edgecolors="none")
-
-    ax.set_xticks(x)
-    ax.set_xticklabels(short_names, rotation=45, ha="right")
-    ax.set_ylabel(r"$|r(\theta, \mathrm{join\ fraction})|$")
-    ax.legend(fontsize=7)
-    ax.set_ylim(0, 1.0)
-
-    plt.tight_layout()
-    save(fig, "fig04_r_summary")
-
-
-# ═══════════════════════════════════════════════════════════════════
 # FIGURE 05: Communication effect — dumbbell + sigmoid
 # ═══════════════════════════════════════════════════════════════════
 
@@ -544,55 +490,6 @@ def fig05_communication():
 
     plt.tight_layout()
     save(fig, "fig05_communication")
-
-
-# ═══════════════════════════════════════════════════════════════════
-# FIGURE 06: Agent-level threshold
-# ═══════════════════════════════════════════════════════════════════
-
-def fig06_agent_threshold():
-    pure = primary_data["pure"]
-    if "z" not in pure.columns or len(pure) == 0:
-        print("  SKIPPED fig06 — no z column in pure data")
-        return
-
-    fig, ax = plt.subplots(figsize=(COL_W, 2.5))
-    d = pure.dropna(subset=["theta", "join_fraction"]).copy()
-
-    d["theta_bin"] = pd.qcut(d["theta"], 20, duplicates="drop")
-    g = d.groupby("theta_bin", observed=True).agg(
-        theta_mean=("theta", "mean"),
-        join_mean=("join_fraction", "mean"),
-        join_se=("join_fraction", "sem"),
-        n=("join_fraction", "count"),
-        attack_mean=("theoretical_attack", "mean"),
-    ).reset_index().sort_values("theta_mean")
-
-    (b0, b1), _ = fit_logistic(pure)
-    theta_star = -b0 / b1
-
-    ax.scatter(g["theta_mean"], g["join_mean"], color=C_PURE, s=15,
-               zorder=3, edgecolors="none")
-    ax.errorbar(g["theta_mean"], g["join_mean"], yerr=g["join_se"] * 1.96,
-                fmt="none", ecolor=C_PURE, alpha=0.3, linewidth=0.5, zorder=1)
-
-    ax.plot(g["theta_mean"], g["attack_mean"], color="#d62728",
-            linestyle="--", linewidth=1.0, label="Theoretical attack mass", zorder=2)
-
-    theta_grid = np.linspace(d["theta"].min(), d["theta"].max(), 200)
-    ax.plot(theta_grid, logistic(theta_grid, b0, b1), color=C_PURE,
-            linewidth=1.0, label="Fitted logistic", zorder=2)
-
-    ax.axvline(theta_star, color="#333", linestyle=":", linewidth=0.5, alpha=0.6)
-    ax.text(theta_star + 0.1, 0.52, f"$\\theta^*$ = {theta_star:.2f}",
-            fontsize=6, color="#333")
-
-    ax.legend(loc="upper right", fontsize=6)
-    ax.set_xlabel(r"$\theta$ (regime strength)")
-    ax.set_ylabel("Join fraction")
-    ax.set_ylim(-0.03, 1.03)
-
-    save(fig, "fig06_agent_threshold")
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -1551,96 +1448,6 @@ def figA4_calibration():
 
 
 # ═══════════════════════════════════════════════════════════════════
-# FIGURE 15: Surveillance belief-behavior gap
-# ═══════════════════════════════════════════════════════════════════
-
-def fig15_surveillance_beliefs():
-    """Surveillance belief-behavior gap figure."""
-    import json as _json
-
-    MISTRAL_DIR = ROOT / "mistralai--mistral-small-creative"
-
-    # Try loading pre-treatment beliefs
-    pre_path = MISTRAL_DIR / "_beliefs_pre" / "mistralai--mistral-small-creative" / "experiment_comm_log.json"
-    pre_v2_path = MISTRAL_DIR / "_beliefs_pre_v2" / "mistralai--mistral-small-creative" / "experiment_comm_log.json"
-
-    surv_anon_path = MISTRAL_DIR / "_surveillance_anonymous" / "mistralai--mistral-small-creative" / "experiment_comm_log.json"
-    surv_anon_v2_path = MISTRAL_DIR / "_surveillance_anonymous_v2" / "mistralai--mistral-small-creative" / "experiment_comm_log.json"
-
-    surv_placebo_path = MISTRAL_DIR / "_surveillance_placebo" / "mistralai--mistral-small-creative" / "experiment_comm_log.json"
-    surv_placebo_v2_path = MISTRAL_DIR / "_surveillance_placebo_v2" / "mistralai--mistral-small-creative" / "experiment_comm_log.json"
-
-    def _load_periods(path):
-        if not path.exists():
-            return []
-        with open(path) as f:
-            return _json.load(f)
-
-    def _extract_join_rates(periods):
-        if not periods:
-            return []
-        rates = []
-        for p in periods:
-            n_join = sum(1 for a in p["agents"] if a["decision"] == "JOIN" and not a.get("is_propaganda"))
-            n_total = sum(1 for a in p["agents"] if not a.get("is_propaganda"))
-            if n_total > 0:
-                rates.append(n_join / n_total)
-        return rates
-
-    # Load all conditions
-    pre_rates = _extract_join_rates(_load_periods(pre_path)) + _extract_join_rates(_load_periods(pre_v2_path))
-    anon_rates = _extract_join_rates(_load_periods(surv_anon_path)) + _extract_join_rates(_load_periods(surv_anon_v2_path))
-    placebo_rates = _extract_join_rates(_load_periods(surv_placebo_path)) + _extract_join_rates(_load_periods(surv_placebo_v2_path))
-
-    if not pre_rates and not anon_rates and not placebo_rates:
-        print("  SKIPPED fig15 — no surveillance belief data")
-        return
-
-    fig, ax = plt.subplots(figsize=(TEXT_W * 0.5, 2.6))
-
-    conditions = []
-    means = []
-    ses = []
-    colors_list = []
-
-    if pre_rates:
-        conditions.append("Pre-treatment\nbeliefs")
-        means.append(np.mean(pre_rates))
-        ses.append(np.std(pre_rates) / np.sqrt(len(pre_rates)))
-        colors_list.append("#636363")
-
-    if anon_rates:
-        conditions.append("Anonymous\nchannel")
-        means.append(np.mean(anon_rates))
-        ses.append(np.std(anon_rates) / np.sqrt(len(anon_rates)))
-        colors_list.append("#2166ac")
-
-    if placebo_rates:
-        conditions.append("Placebo\nsurveillance")
-        means.append(np.mean(placebo_rates))
-        ses.append(np.std(placebo_rates) / np.sqrt(len(placebo_rates)))
-        colors_list.append("#7b3294")
-
-    if not conditions:
-        print("  SKIPPED fig15 — no data to plot")
-        return
-
-    x = np.arange(len(conditions))
-    bars = ax.bar(x, means, color=colors_list, alpha=0.85, edgecolor="white", linewidth=0.3)
-    ax.errorbar(x, means, yerr=1.96 * np.array(ses), fmt="none",
-                ecolor="#333", elinewidth=0.6, capsize=3)
-
-    ax.set_xticks(x)
-    ax.set_xticklabels(conditions, fontsize=7)
-    ax.set_ylabel("Mean join rate")
-    ax.set_ylim(0, max(means) * 1.3 if means else 1)
-    ax.set_title("Surveillance mechanism tests", fontsize=8, loc="left")
-
-    plt.tight_layout()
-    save(fig, "fig15_surveillance_beliefs")
-
-
-# ═══════════════════════════════════════════════════════════════════
 # FIGURE 17: Second-order beliefs
 # ═══════════════════════════════════════════════════════════════════
 
@@ -1854,6 +1661,130 @@ def fig18_bc_sweep():
 
 
 # ═══════════════════════════════════════════════════════════════════
+# FIGURE 19: Nonparametric signal monotonicity
+# ═══════════════════════════════════════════════════════════════════
+
+def fig19_nonparametric_beliefs():
+    """Binned-mean plot: E[stated belief | z-score bin] with theoretical overlay."""
+    import json as _json
+
+    MISTRAL = ROOT / "mistralai--mistral-small-creative"
+    log_path = MISTRAL / "experiment_pure_log.json"
+    if not log_path.exists():
+        print("  SKIP fig19_nonparametric_beliefs: no data")
+        return
+
+    with open(log_path) as f:
+        periods = _json.load(f)
+
+    sigma = 0.3
+    n_bins = 10
+
+    # Extract agent-level z_score, belief_pre, and per-period theoretical posterior
+    z_scores = []
+    beliefs = []
+    posteriors = []
+
+    for p in periods:
+        theta_star = p["theta_star"]
+        z_center = p["z"]
+        for a in p.get("agents", []):
+            if a.get("api_error"):
+                continue
+            # Prefer belief_pre (pre-decision belief); fall back to belief
+            b = a.get("belief_pre") if a.get("belief_pre") is not None else a.get("belief")
+            if b is None:
+                continue
+            z = a["z_score"]
+            signal = a["signal"]
+            # Theoretical Bayesian posterior: P(success | x_i) = Phi((theta* - x_i) / sigma)
+            posterior = stats.norm.cdf((theta_star - signal) / sigma)
+
+            z_scores.append(z)
+            beliefs.append(b / 100.0)  # Convert from percentage to [0,1]
+            posteriors.append(posterior)
+
+    if len(z_scores) < 50:
+        print("  SKIP fig19_nonparametric_beliefs: insufficient belief data")
+        return
+
+    z_scores = np.array(z_scores)
+    beliefs = np.array(beliefs)
+    posteriors = np.array(posteriors)
+
+    # Bin by z-score
+    # Use percentile-based bins to ensure roughly equal counts
+    bin_edges = np.percentile(z_scores, np.linspace(0, 100, n_bins + 1))
+    bin_edges[0] -= 0.01  # include minimum
+    bin_edges[-1] += 0.01  # include maximum
+
+    bin_centers_b = []
+    bin_means_b = []
+    bin_sems_b = []
+    bin_centers_t = []
+    bin_means_t = []
+
+    for i in range(n_bins):
+        mask = (z_scores >= bin_edges[i]) & (z_scores < bin_edges[i + 1])
+        n = mask.sum()
+        if n < 5:
+            continue
+        c = z_scores[mask].mean()
+        bin_centers_b.append(c)
+        bin_means_b.append(beliefs[mask].mean())
+        bin_sems_b.append(beliefs[mask].std() / np.sqrt(n))
+        bin_centers_t.append(c)
+        bin_means_t.append(posteriors[mask].mean())
+
+    bin_centers_b = np.array(bin_centers_b)
+    bin_means_b = np.array(bin_means_b)
+    bin_sems_b = np.array(bin_sems_b)
+    bin_centers_t = np.array(bin_centers_t)
+    bin_means_t = np.array(bin_means_t)
+
+    # ── Plot ──
+    fig, ax = plt.subplots(figsize=(COL_W, 2.5))
+
+    # Theoretical curve (smooth, using median theta_star and z_center)
+    med_theta_star = np.median([p["theta_star"] for p in periods
+                                if "belief_pre" in p["agents"][0] or "belief" in p["agents"][0]])
+    med_z_center = np.median([p["z"] for p in periods
+                              if "belief_pre" in p["agents"][0] or "belief" in p["agents"][0]])
+    z_grid = np.linspace(z_scores.min(), z_scores.max(), 200)
+    signal_grid = z_grid * sigma + med_z_center
+    theory_curve = stats.norm.cdf((med_theta_star - signal_grid) / sigma)
+    ax.plot(z_grid, theory_curve, color="#d62728", linewidth=1.0, linestyle="--",
+            alpha=0.7, zorder=2,
+            label=r"Theoretical $P(\mathrm{success} \mid z)$")
+
+    # Binned theoretical posterior means (accounts for varying theta* and z across periods)
+    ax.plot(bin_centers_t, bin_means_t, color="#d62728", marker="D", markersize=3,
+            linewidth=0, alpha=0.5, zorder=2)
+
+    # Empirical stated beliefs
+    ax.errorbar(bin_centers_b, bin_means_b, yerr=1.96 * bin_sems_b,
+                fmt="o", color=C_PURE, markersize=4, elinewidth=0.6,
+                capsize=2, zorder=3, label="Mean stated belief")
+
+    # Correlation annotation
+    r_val, p_val = stats.pearsonr(z_scores, beliefs)
+    ax.text(0.97, 0.97,
+            f"$r = {r_val:+.2f}$\n$N = {len(z_scores):,}$",
+            transform=ax.transAxes, fontsize=6, va="top", ha="right",
+            bbox=dict(boxstyle="round,pad=0.2", facecolor="white",
+                      alpha=0.8, edgecolor="#ccc", linewidth=0.4))
+
+    ax.set_xlabel("$z$-score (calibrated signal)")
+    ax.set_ylabel("Belief / P(success)")
+    ax.set_ylim(-0.05, 1.05)
+    ax.set_title("Nonparametric monotonicity", fontsize=9, loc="left")
+    ax.legend(loc="center left", fontsize=6, framealpha=0.9, edgecolor="#ccc")
+
+    plt.tight_layout()
+    save(fig, "fig19_nonparametric_beliefs")
+
+
+# ═══════════════════════════════════════════════════════════════════
 # MAIN
 # ═══════════════════════════════════════════════════════════════════
 
@@ -1865,9 +1796,7 @@ if __name__ == "__main__":
     fig01_sigmoid()
     fig02_cross_model()
     fig03_falsification()
-    fig04_r_summary()
     fig05_communication()
-    fig06_agent_threshold()
     fig07_all_designs()
     fig08_treatment_effect()
     fig09_censorship()
@@ -1879,10 +1808,10 @@ if __name__ == "__main__":
     figA1_agent_count()
     figA2_network()
     figA3_bandwidth()
-    fig15_surveillance_beliefs()
     fig16_beliefs()
     figA4_calibration()
     fig17_second_order_beliefs()
     fig18_bc_sweep()
+    fig19_nonparametric_beliefs()
 
     print(f"\nAll figures saved to {FIG_DIR}")

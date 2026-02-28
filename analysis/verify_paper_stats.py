@@ -14,33 +14,17 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
+from models import PART1_SLUGS, DISPLAY_NAMES
+
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 ROOT = PROJECT_ROOT / "output"
 OUT = Path(__file__).resolve().parent / "verified_stats.json"
 
 # ── Models with full Part I data ──────────────────────────────────────
 
-PART1_MODELS = [
-    "mistralai--mistral-small-creative",
-    "meta-llama--llama-3.3-70b-instruct",
-    "mistralai--ministral-3b-2512",
-    "qwen--qwen3-30b-a3b-instruct-2507",
-    "openai--gpt-oss-120b",
-    "qwen--qwen3-235b-a22b-2507",
-    "arcee-ai--trinity-large-preview_free",
-    "minimax--minimax-m2-her",
-]
+PART1_MODELS = PART1_SLUGS
 
-SHORT = {
-    "mistralai--mistral-small-creative": "Mistral Small Creative",
-    "meta-llama--llama-3.3-70b-instruct": "Llama 3.3 70B",
-    "mistralai--ministral-3b-2512": "Ministral 3B",
-    "qwen--qwen3-30b-a3b-instruct-2507": "Qwen3 30B",
-    "openai--gpt-oss-120b": "GPT-OSS 120B",
-    "qwen--qwen3-235b-a22b-2507": "Qwen3 235B",
-    "arcee-ai--trinity-large-preview_free": "Trinity Large",
-    "minimax--minimax-m2-her": "MiniMax M2-Her",
-}
+SHORT = DISPLAY_NAMES
 
 
 def load(model: str, treatment: str) -> pd.DataFrame:
@@ -447,6 +431,7 @@ def compute_infodesign():
 
     # Primary model: Mistral
     model = "mistralai--mistral-small-creative"
+    model_dir = ROOT / model
     df_all = load_infodesign(model, "all")
     if len(df_all) == 0:
         print("  WARNING: no infodesign data for primary model")
@@ -460,16 +445,51 @@ def compute_infodesign():
         r_theta = pearson_with_ci(sub["theta"], sub[jcol])
         r_attack = pearson_with_ci(sub["theoretical_attack"], sub[jcol]) \
             if "theoretical_attack" in sub.columns else {}
-        results[design] = {
+        entry = {
             "mean_join": round(sub[jcol].mean(), 4),
             "r_vs_theta": r_theta,
             "r_vs_attack": r_attack,
             "n_obs": len(sub),
         }
 
+        # For scramble designs: demean by rep to remove ecological confound,
+        # mirroring the within-country demeaning used for Part I scramble.
+        if "scramble" in design and "rep" in sub.columns:
+            entry["r_vs_theta_raw"] = r_theta
+            entry["r_vs_theta"] = within_country_pearson(
+                sub, "theta", jcol, group_col="rep"
+            )
+            if "theoretical_attack" in sub.columns:
+                entry["r_vs_attack_raw"] = r_attack
+                entry["r_vs_attack"] = within_country_pearson(
+                    sub, "theoretical_attack", jcol, group_col="rep"
+                )
+
+        results[design] = entry
+
+    # ── Baseline source of truth (prevents accidental overwrite) ─────
+    # The B/C sweep runner repeatedly writes `experiment_infodesign_baseline_summary.csv`
+    # as it iterates over θ* targets, so the on-disk "baseline" file may end up
+    # corresponding to the *last* θ* in the sweep (typically 0.75), not the
+    # primary infodesign baseline (θ* = 0.50 on θ ∈ [0.20, 0.80]).
+    #
+    # When available, prefer the θ*=0.50 slice from `experiment_bc_sweep_summary.csv`
+    # to compute baseline stats and logistic cutoffs reported in Part II and the
+    # B/C narrative table.
+    bc_sweep_baseline = None
+    bc_sweep_path = model_dir / "experiment_bc_sweep_summary.csv"
+    if bc_sweep_path.exists():
+        try:
+            bc = pd.read_csv(bc_sweep_path)
+            if "theta_star_target" in bc.columns:
+                bc_sweep_baseline = bc[np.isclose(bc["theta_star_target"].astype(float), 0.50)]
+                if len(bc_sweep_baseline) == 0:
+                    bc_sweep_baseline = None
+        except Exception:
+            bc_sweep_baseline = None
+
     # Also load individual per-design CSVs not in all_summary
     import glob
-    model_dir = ROOT / model
     for csv_path in sorted(model_dir.glob("experiment_infodesign_*_summary.csv")):
         fname = csv_path.name
         # Extract design name: experiment_infodesign_{design}_summary.csv
@@ -487,11 +507,39 @@ def compute_infodesign():
         r_theta = pearson_with_ci(df_d["theta"], df_d[jc])
         r_attack = pearson_with_ci(df_d["theoretical_attack"], df_d[jc]) \
             if "theoretical_attack" in df_d.columns else {}
-        results[design] = {
+        entry = {
             "mean_join": round(df_d[jc].mean(), 4),
             "r_vs_theta": r_theta,
             "r_vs_attack": r_attack,
             "n_obs": len(df_d),
+        }
+
+        # Scramble demeaning for individual per-design CSVs
+        if "scramble" in design and "rep" in df_d.columns:
+            entry["r_vs_theta_raw"] = r_theta
+            entry["r_vs_theta"] = within_country_pearson(
+                df_d, "theta", jc, group_col="rep"
+            )
+            if "theoretical_attack" in df_d.columns:
+                entry["r_vs_attack_raw"] = r_attack
+                entry["r_vs_attack"] = within_country_pearson(
+                    df_d, "theoretical_attack", jc, group_col="rep"
+                )
+
+        results[design] = entry
+
+    # Override baseline stats if we have the canonical θ*=0.50 slice from the sweep.
+    if bc_sweep_baseline is not None:
+        jc = _join_col(bc_sweep_baseline)
+        r_theta = pearson_with_ci(bc_sweep_baseline["theta"], bc_sweep_baseline[jc])
+        r_attack = pearson_with_ci(bc_sweep_baseline["theoretical_attack"], bc_sweep_baseline[jc]) \
+            if "theoretical_attack" in bc_sweep_baseline.columns else {}
+        results["baseline"] = {
+            "mean_join": round(bc_sweep_baseline[jc].mean(), 4),
+            "r_vs_theta": r_theta,
+            "r_vs_attack": r_attack,
+            "n_obs": int(len(bc_sweep_baseline)),
+            "_source": "experiment_bc_sweep_summary.csv[theta_star_target=0.50]",
         }
 
     # Treatment effects relative to baseline
@@ -505,14 +553,18 @@ def compute_infodesign():
     # B/C narrative comparative statics: include logistic cutoff estimates
     # so the paper can report theory-predicted cutoff shifts without
     # manual copy/paste.
-    model_dir = ROOT / model
     for dname in ["baseline", "bc_high_cost", "bc_low_cost"]:
         if dname not in results:
             continue
         p = model_dir / f"experiment_infodesign_{dname}_summary.csv"
-        if not p.exists():
+        if dname != "baseline" and not p.exists():
             continue
-        df = pd.read_csv(p)
+        if dname == "baseline" and bc_sweep_baseline is not None:
+            df = bc_sweep_baseline
+        else:
+            if not p.exists():
+                continue
+            df = pd.read_csv(p)
         if len(df) == 0:
             continue
         jc = _join_col(df)
@@ -523,25 +575,81 @@ def compute_infodesign():
     # Cross-model infodesign replication
     cross = {}
     for m in PART1_MODELS:
-        df = load_infodesign(m, "all")
-        if len(df) == 0:
-            continue
         name = SHORT[m]
         cross[name] = {}
-        for design in df["design"].unique():
-            sub = df[df["design"] == design]
-            r_t = pearson_with_ci(sub["theta"], sub[jcol])
+        for design in ["baseline", "scramble", "flip"]:
+            # Primary-model baseline is sourced from the canonical θ*=0.50 sweep slice when available.
+            if m == model and design == "baseline" and bc_sweep_baseline is not None:
+                df_d = bc_sweep_baseline
+            else:
+                df_d = load_infodesign(m, design)
+            if len(df_d) == 0:
+                continue
+            jc = _join_col(df_d)
+            r_t = pearson_with_ci(df_d["theta"], df_d[jc])
             cross[name][design] = {
-                "mean_join": round(sub[jcol].mean(), 4),
+                "mean_join": round(df_d[jc].mean(), 4),
                 "r_vs_theta": r_t,
-                "n_obs": len(sub),
+                "n_obs": len(df_d),
             }
     results["_cross_model"] = cross
+
+    # Diagnostics: scramble should collapse r(θ, join) under correct cross-θ permutation.
+    # Flag models where it does not, so stale/buggy runs are caught during verification.
+    scramble_fail = []
+    for model_name, dct in cross.items():
+        scr = dct.get("scramble")
+        r_scr = ((scr or {}).get("r_vs_theta") or {}).get("r") if isinstance(scr, dict) else None
+        if r_scr is not None and not np.isnan(r_scr) and abs(float(r_scr)) > 0.30:
+            scramble_fail.append(model_name)
+    results["_infodesign_scramble_not_collapsed_models"] = scramble_fail
+
+    # Slider-independence diagnostic for scramble designs: verify that θ is
+    # uncorrelated with each slider (direction, clarity, coordination) under
+    # scramble, confirming that the permutation severs the θ→slider link.
+    for design_key in sorted(k for k in results if isinstance(k, str) and "scramble" in k and not k.startswith("_")):
+        log_path = model_dir / f"experiment_infodesign_{design_key}_log.json"
+        if not log_path.exists():
+            # Fall back to the combined log if individual log is missing
+            log_path = model_dir / "experiment_infodesign_all_log.json"
+        if not log_path.exists():
+            continue
+        log_data = _load_experiment_log(log_path)
+        if not log_data:
+            continue
+        # Filter to scramble design entries
+        scramble_periods = [p for p in log_data if p.get("design") == design_key]
+        if not scramble_periods:
+            continue
+        slider_rows = []
+        for p in scramble_periods:
+            theta_val = p["theta"]
+            for a in p.get("agents", []):
+                if a.get("api_error"):
+                    continue
+                row = {"theta": theta_val}
+                for slider in ["direction", "clarity", "coordination"]:
+                    if slider in a:
+                        row[slider] = a[slider]
+                if len(row) > 1:
+                    slider_rows.append(row)
+        if slider_rows:
+            sdf = pd.DataFrame(slider_rows)
+            slider_indep = {}
+            for slider in ["direction", "clarity", "coordination"]:
+                if slider in sdf.columns:
+                    r_info = pearson_with_ci(sdf["theta"].values, sdf[slider].values)
+                    slider_indep[slider] = r_info
+            if slider_indep:
+                results[design_key]["slider_independence"] = slider_indep
 
     # Sanity: all primary-model designs should share the same θ grid.
     model_dir = ROOT / model
 
     def _theta_grid_for(design: str) -> list[float] | None:
+        if design == "baseline" and bc_sweep_baseline is not None:
+            vals = bc_sweep_baseline["theta"].astype(float).round(12).unique().tolist()
+            return sorted(float(v) for v in vals)
         p = model_dir / f"experiment_infodesign_{design}_summary.csv"
         if not p.exists():
             return None
@@ -1361,6 +1469,331 @@ def compute_beliefs_v2():
     return results
 
 
+def compute_hypothesis_table(all_stats: dict) -> list[dict]:
+    """Build H1-H8 hypothesis table from already-computed stats.
+
+    Each entry: {id, hypothesis, estimand, null, test, stat, p, supported}.
+    H1-H4 use pooled Part I data; H5-H8 use primary-model infodesign/regime data.
+    """
+    part1 = all_stats.get("part1", {})
+    infodesign = all_stats.get("infodesign", {})
+    regime = all_stats.get("regime_control", {})
+    table = []
+
+    # ── H1: Alignment ─ r(J, A(θ)) ≠ 0 ──────────────────────────────
+    pooled_pure = part1.get("_pooled_pure", {})
+    r_attack = (pooled_pure.get("r_vs_attack") or {})
+    table.append({
+        "id": "H1",
+        "hypothesis": "Alignment",
+        "estimand": r"$r(J, A(\theta))$",
+        "null": "$r = 0$",
+        "test": "Pearson",
+        "stat": r_attack.get("r"),
+        "p": r_attack.get("p"),
+        "n": r_attack.get("n"),
+        "supported": _hypothesis_supported(r_attack.get("p"), alpha=0.05, reject_null=True),
+    })
+
+    # ── H2: Scramble ─ r should collapse to ~0 ───────────────────────
+    pooled_scr = part1.get("_pooled_scramble", {})
+    r_scr = (pooled_scr.get("r_vs_attack") or pooled_scr.get("r_vs_theta") or {})
+    table.append({
+        "id": "H2",
+        "hypothesis": "Scramble",
+        "estimand": r"$r(\text{scramble})$",
+        "null": r"$r \neq 0$",
+        "test": "Pearson",
+        "stat": r_scr.get("r"),
+        "p": r_scr.get("p"),
+        "n": r_scr.get("n"),
+        "supported": _hypothesis_supported(r_scr.get("p"), alpha=0.05, reject_null=False),
+    })
+
+    # ── H3: Flip ─ r should be negative ──────────────────────────────
+    pooled_flip = part1.get("_pooled_flip", {})
+    r_flip = (pooled_flip.get("r_vs_attack") or pooled_flip.get("r_vs_theta") or {})
+    # One-sided p: test r < 0
+    r_flip_val = r_flip.get("r")
+    p_flip_two = r_flip.get("p")
+    n_flip = r_flip.get("n")
+    if r_flip_val is not None and p_flip_two is not None and not np.isnan(r_flip_val):
+        p_flip_one = p_flip_two / 2.0 if r_flip_val < 0 else 1.0 - p_flip_two / 2.0
+    else:
+        p_flip_one = float("nan")
+    table.append({
+        "id": "H3",
+        "hypothesis": "Flip",
+        "estimand": r"$r(\text{flip})$",
+        "null": r"$r \geq 0$",
+        "test": "Pearson (1-sided)",
+        "stat": r_flip_val,
+        "p": round(p_flip_one, 6) if np.isfinite(p_flip_one) else None,
+        "n": n_flip,
+        "supported": _hypothesis_supported(p_flip_one, alpha=0.05, reject_null=True),
+    })
+
+    # ── H4: Communication ─ delta_pp ≠ 0 ─────────────────────────────
+    comm_eff = part1.get("_pooled_comm_effect", {}).get("unpaired", {})
+    table.append({
+        "id": "H4",
+        "hypothesis": "Communication",
+        "estimand": r"$\Delta_{\text{pp}}$",
+        "null": "$= 0$",
+        "test": "$t$-test",
+        "stat": comm_eff.get("t_stat"),
+        "p": comm_eff.get("p_value"),
+        "n": None,
+        "supported": _hypothesis_supported(comm_eff.get("p_value"), alpha=0.05, reject_null=True),
+    })
+
+    # ── H5-H8: Infodesign / regime treatments (primary model) ────────
+    # H5: Stability ─ infodesign stability vs baseline
+    h5 = _hypothesis_from_infodesign(infodesign, "stability", "Stability")
+    table.append(h5)
+
+    # H6: Censorship ─ infodesign censor_upper vs baseline
+    h6 = _hypothesis_from_infodesign(infodesign, "censor_upper", "Censorship")
+    table.append(h6)
+
+    # H7: Surveillance ─ regime surveillance effect
+    surv = (regime.get("surveillance") or {}).get("Mistral Small Creative", {})
+    # t-test: surveilled comm vs baseline comm (load raw data)
+    surv_p = None
+    surv_t = None
+    surv_delta = surv.get("delta_vs_baseline_pp")
+    primary = "mistralai--mistral-small-creative"
+    surv_df = _load_summary(ROOT / "surveillance" / primary / "experiment_comm_summary.csv")
+    base_comm_df = _load_summary(ROOT / primary / "experiment_comm_summary.csv")
+    if len(surv_df) > 0 and len(base_comm_df) > 0:
+        sjcol = _join_col(surv_df)
+        bjcol = _join_col(base_comm_df)
+        t_s, p_s = stats.ttest_ind(
+            surv_df[sjcol].astype(float).dropna(),
+            base_comm_df[bjcol].astype(float).dropna(),
+        )
+        surv_t = round(float(t_s), 4)
+        surv_p = round(float(p_s), 6)
+    table.append({
+        "id": "H7",
+        "hypothesis": "Surveillance",
+        "estimand": r"$\Delta_{\text{pp}}$",
+        "null": "$= 0$",
+        "test": "$t$-test",
+        "stat": surv_t,
+        "p": surv_p,
+        "n": None,
+        "supported": _hypothesis_supported(surv_p, alpha=0.05, reject_null=True),
+    })
+
+    # H8: Propaganda ─ regime propaganda k=5 effect (real agents vs baseline)
+    prop = (regime.get("propaganda") or {}).get("k=5", {}).get("Mistral Small Creative", {})
+    prop_delta = prop.get("delta_real_vs_baseline_pp")
+    # t-test on period-level join fractions (propaganda real vs baseline comm)
+    prop_t = None
+    prop_p = None
+    prop_log = _load_experiment_log(
+        ROOT / "propaganda-k5" / primary / "experiment_comm_log.json"
+    )
+    if prop_log and len(base_comm_df) > 0:
+        prop_real_jf = _real_join_from_comm_log(prop_log)
+        bjcol = _join_col(base_comm_df)
+        base_jf = base_comm_df[bjcol].astype(float).dropna()
+        prop_real_jf = prop_real_jf.dropna()
+        if len(prop_real_jf) > 0 and len(base_jf) > 0:
+            t_p_stat, p_p_val = stats.ttest_ind(prop_real_jf, base_jf)
+            prop_t = round(float(t_p_stat), 4)
+            prop_p = round(float(p_p_val), 6)
+    table.append({
+        "id": "H8",
+        "hypothesis": "Propaganda",
+        "estimand": r"$\Delta_{\text{pp}}$",
+        "null": "$= 0$",
+        "test": "$t$-test",
+        "stat": prop_t,
+        "p": prop_p,
+        "n": None,
+        "supported": _hypothesis_supported(prop_p, alpha=0.05, reject_null=True),
+    })
+
+    return table
+
+
+def _hypothesis_supported(p, alpha: float = 0.05, reject_null: bool = True) -> str:
+    """Return 'Yes', 'No', or 'No (ambiguous)' based on p-value and direction."""
+    if p is None or (isinstance(p, float) and np.isnan(p)):
+        return "---"
+    if reject_null:
+        # Hypothesis is supported when we reject the null
+        return "Yes" if p < alpha else "No (ambiguous)"
+    else:
+        # Hypothesis is supported when we fail to reject the null
+        return "Yes" if p >= alpha else "No"
+
+
+def _hypothesis_from_infodesign(infodesign: dict, design_key: str, label: str) -> dict:
+    """Build a hypothesis table row from infodesign data (t-test vs baseline)."""
+    primary = "mistralai--mistral-small-creative"
+    model_dir = ROOT / primary
+    # Load design and baseline data to run a t-test
+    df_design = _load_summary(model_dir / f"experiment_infodesign_{design_key}_summary.csv")
+    # For baseline, prefer the bc_sweep canonical source
+    bc_sweep_path = model_dir / "experiment_bc_sweep_summary.csv"
+    df_baseline = pd.DataFrame()
+    if bc_sweep_path.exists():
+        try:
+            bc = pd.read_csv(bc_sweep_path)
+            if "theta_star_target" in bc.columns:
+                df_baseline = bc[np.isclose(bc["theta_star_target"].astype(float), 0.50)]
+        except Exception:
+            pass
+    if len(df_baseline) == 0:
+        df_baseline = _load_summary(model_dir / "experiment_infodesign_baseline_summary.csv")
+    # Also try the all summary
+    if len(df_baseline) == 0:
+        df_all = _load_summary(model_dir / "experiment_infodesign_all_summary.csv")
+        if len(df_all) > 0 and "design" in df_all.columns:
+            df_baseline = df_all[df_all["design"] == "baseline"]
+
+    t_stat = None
+    p_val = None
+    if len(df_design) > 0 and len(df_baseline) > 0:
+        jc_d = _join_col(df_design)
+        jc_b = _join_col(df_baseline)
+        t_s, p_v = stats.ttest_ind(
+            df_design[jc_d].astype(float).dropna(),
+            df_baseline[jc_b].astype(float).dropna(),
+        )
+        t_stat = round(float(t_s), 4)
+        p_val = round(float(p_v), 6)
+
+    h_id = {"Stability": "H5", "Censorship": "H6"}.get(label, "H?")
+    return {
+        "id": h_id,
+        "hypothesis": label,
+        "estimand": r"$\Delta_{\text{pp}}$",
+        "null": "$= 0$",
+        "test": "$t$-test",
+        "stat": t_stat,
+        "p": p_val,
+        "n": None,
+        "supported": _hypothesis_supported(p_val, alpha=0.05, reject_null=True),
+    }
+
+
+def compute_ck_interaction():
+    """2x2 interaction test: CK framing x coordination intensity."""
+    primary = "mistralai--mistral-small-creative"
+    model_dir = ROOT / primary
+
+    designs = {
+        "ck_high_coord": (1, 1),    # (ck, high_coord)
+        "ck_low_coord": (1, 0),
+        "priv_high_coord": (0, 1),
+        "priv_low_coord": (0, 0),
+    }
+
+    dfs = []
+    cell_means = {}
+    for dname, (ck, high) in designs.items():
+        p = model_dir / f"experiment_infodesign_{dname}_summary.csv"
+        if not p.exists():
+            print(f"  WARNING: missing {p}")
+            continue
+        df = pd.read_csv(p)
+        jcol = _join_col(df)
+        df = df.copy()
+        df["ck"] = ck
+        df["high_coord"] = high
+        df["_jf"] = df[jcol].astype(float)
+        dfs.append(df)
+        cell_means[dname] = round(float(df["_jf"].mean()), 4)
+
+    if len(dfs) < 4:
+        return {"status": "incomplete", "cell_means": cell_means}
+
+    pooled = pd.concat(dfs, ignore_index=True)
+
+    # OLS: join ~ ck + high_coord + ck*high_coord
+    y = pooled["_jf"].values
+    ck = pooled["ck"].values.astype(float)
+    high = pooled["high_coord"].values.astype(float)
+    interact = ck * high
+    X = np.column_stack([np.ones_like(y), ck, high, interact])
+
+    beta, _, _, _ = np.linalg.lstsq(X, y, rcond=None)
+    y_hat = X @ beta
+    resid = y - y_hat
+    n, k = X.shape
+    s2 = np.sum(resid**2) / (n - k)
+    XtX_inv = np.linalg.inv(X.T @ X)
+    se = np.sqrt(np.diag(s2 * XtX_inv))
+    t_stats = beta / se
+    p_values = 2 * (1 - stats.norm.cdf(np.abs(t_stats)))
+
+    labels = ["intercept", "ck", "high_coord", "interaction"]
+    result = {
+        "cell_means": cell_means,
+        "n_obs": int(n),
+    }
+    for i, lbl in enumerate(labels):
+        result[lbl] = {
+            "beta": round(float(beta[i]), 4),
+            "se": round(float(se[i]), 4),
+            "t": round(float(t_stats[i]), 4),
+            "p": round(float(p_values[i]), 6),
+        }
+
+    return result
+
+
+def compute_fixed_messages_test():
+    """Compare baseline comm vs fixed-messages surveillance test."""
+    primary = "mistralai--mistral-small-creative"
+    baseline_path = ROOT / primary / "experiment_comm_summary.csv"
+    surv_path = ROOT / "fixed-messages-surv" / primary / "experiment_comm_summary.csv"
+
+    if not baseline_path.exists() or not surv_path.exists():
+        return {"status": "missing"}
+
+    df_base = pd.read_csv(baseline_path)
+    df_surv = pd.read_csv(surv_path)
+
+    base_mean = df_base["join_fraction_valid"].mean()
+    surv_mean = df_surv["join_fraction_valid"].mean()
+    delta_pp = (surv_mean - base_mean) * 100
+
+    # Correlation with theta
+    base_r, base_p = stats.pearsonr(df_base["theta"], df_base["join_fraction_valid"])
+    surv_r, surv_p = stats.pearsonr(df_surv["theta"], df_surv["join_fraction_valid"])
+
+    # Two-sample t-test
+    t_stat, t_pval = stats.ttest_ind(
+        df_surv["join_fraction_valid"], df_base["join_fraction_valid"]
+    )
+
+    return {
+        "baseline_mean_join": round(base_mean, 4),
+        "surv_mean_join": round(surv_mean, 4),
+        "delta_pp": round(delta_pp, 1),
+        "baseline_r_theta": round(base_r, 4),
+        "surv_r_theta": round(surv_r, 4),
+        "baseline_n": len(df_base),
+        "surv_n": len(df_surv),
+        "ttest_t": round(t_stat, 3),
+        "ttest_p": round(t_pval, 4),
+    }
+
+
+def compute_classifier_baselines():
+    """Load classifier baseline results from classifier_results.json."""
+    path = Path(__file__).resolve().parent / "classifier_results.json"
+    if not path.exists():
+        return {"status": "missing"}
+    with open(path) as f:
+        return json.load(f)
+
+
 def main():
     print("Computing Part I statistics...")
     part1 = compute_part1()
@@ -1396,6 +1829,15 @@ def main():
     print("Computing beliefs v2 statistics...")
     beliefs_v2 = compute_beliefs_v2()
 
+    print("Computing CK interaction test...")
+    ck_interaction = compute_ck_interaction()
+
+    print("Computing classifier baselines...")
+    classifier_baselines = compute_classifier_baselines()
+
+    print("Computing fixed-messages test...")
+    fixed_messages_test = compute_fixed_messages_test()
+
     all_stats = {
         "part1": part1,
         "infodesign": infodesign,
@@ -1409,7 +1851,14 @@ def main():
         "temperature_robustness": temp_robust,
         "uncalibrated": uncalibrated,
         "beliefs_v2": beliefs_v2,
+        "ck_interaction": ck_interaction,
+        "classifier_baselines": classifier_baselines,
+        "fixed_messages_test": fixed_messages_test,
     }
+
+    print("Computing hypothesis table...")
+    hypothesis_table = compute_hypothesis_table(all_stats)
+    all_stats["hypothesis_table"] = hypothesis_table
 
     print("\nRunning discrepancy analysis...")
     discrepancies = discrepancy_report(all_stats)

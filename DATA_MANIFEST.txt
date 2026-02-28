@@ -29,15 +29,17 @@ Core experiments (per model directory):
   experiment_flip_summary.csv     — Falsification: signal direction reversed
 
 Models with full experiment suite:
-  allenai--olmo-3-7b-instruct/
   arcee-ai--trinity-large-preview_free/
   meta-llama--llama-3.3-70b-instruct/
   minimax--minimax-m2-her/
-  mistralai--ministral-3b-2512/
   mistralai--mistral-small-creative/       (primary model, 600 obs)
   openai--gpt-oss-120b/                    (200 obs, no scramble/flip)
   qwen--qwen3-235b-a22b-2507/             (200 obs, no scramble/flip)
   qwen--qwen3-30b-a3b-instruct-2507/
+
+Models excluded from main analysis (data present, not in paper tables):
+  allenai--olmo-3-7b-instruct/            (excluded — poor calibration)
+  mistralai--ministral-3b-2512/            (excluded — 3B too small)
 
 Robustness — agent count (n):
   mistralai--mistral-small-creative-n5/    → experiment_pure_summary.csv
@@ -61,6 +63,14 @@ Mixed-model experiments:
 Critique response:
   holdout-validation/                      → autocalibrate_history.csv (holdout RMSE)
   group-size-info/                         → pure + comm with --group-size-info
+
+Temperature robustness:
+  temperature-robustness-T0.3/             → pure/comm at T=0.3
+  temperature-robustness-T0.7/             → pure/comm at T=0.7
+  temperature-robustness-T1.0/             → pure/comm at T=1.0
+
+Uncalibrated robustness:
+  uncalibrated-robustness/                 → pure without calibration adjustment
 
 
 PAPER 2: "Information Design in LLM Coordination Games"
@@ -103,6 +113,9 @@ Bandwidth robustness:
 
 z-centered robustness:
   z-centered/                               → infodesign baseline/stability/instability
+
+Fixed-message surveillance:
+  fixed-messages-surv/                      → surveillance with fixed message content
 
 
 CSV COLUMN REFERENCE

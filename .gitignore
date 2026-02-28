@@ -21,9 +21,10 @@ paper/*.synctex.gz
 output/**/*_raw.csv
 output/**/*_history.csv
 
-# Prevent loose figures at output/ root (use paper/figures/ instead)
+# Prevent loose files at output/ root
 output/*.png
 output/*.pdf
+output/*.txt
 
 # OS
 .DS_Store

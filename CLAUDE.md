@@ -13,6 +13,7 @@ The paper has two main components: (1) establishing that LLM join rates follow t
 ```
 llm-global-games/
 ├── pyproject.toml                    # Package config
+├── Makefile                          # Pipeline: make → stats → tables → figures → paper
 ├── CLAUDE.md                         # This file
 ├── DATA_MANIFEST.txt                 # Output data inventory
 ├── agent_based_simulation/           # Simulation package (code only)
@@ -26,25 +27,43 @@ llm-global-games/
 │   ├── run_infodesign.py
 │   └── runtime.py
 ├── analysis/                         # Post-simulation analysis scripts
-│   ├── make_figures.py
-│   ├── render_paper_tables.py
-│   ├── analyze_batch_results.py
+│   ├── models.py                    # Canonical model roster (single source of truth)
 │   ├── verify_paper_stats.py
-│   └── verified_stats.json
+│   ├── render_paper_tables.py
+│   ├── make_figures.py
+│   ├── agent_regressions.py
+│   ├── classifier_baselines.py
+│   ├── construct_validity.py
+│   ├── make_diagrams.py
+│   ├── generate_example_briefings.py
+│   ├── verified_stats.json
+│   └── _archive/                    # Retired analysis scripts
 ├── paper/                            # LaTeX paper + generated assets
 │   ├── paper.tex
 │   ├── tables/                       # Generated .tex table files
 │   └── figures/                      # Publication figures
 ├── scripts/                          # Experiment runner shell scripts
-│   ├── run_replication.sh
-│   ├── run_remaining.sh
-│   ├── run_paper2_all.sh
-│   └── run_critique_response.sh
+│   ├── run_overnight.sh
+│   ├── run_referee_response.sh
+│   ├── make_data.py
+│   └── _archive/                    # Retired experiment scripts
 └── output/                           # All experiment results
     └── <model-slug>/                 # Per-model directories
 ```
 
-## Running Things
+## Rebuilding the Paper
+
+One command regenerates all paper assets from raw experiment data:
+
+```bash
+make          # Full rebuild: stats → tables → figures → pdflatex (×2)
+make stats    # Just recompute verified_stats.json
+make tables   # Regenerate LaTeX tables (depends on stats)
+make figures  # Regenerate all figures (depends on stats)
+make paper    # Compile LaTeX only
+```
+
+## Running Experiments
 
 All commands use `uv run` from the repo root:
 
@@ -62,11 +81,6 @@ uv run python -m agent_based_simulation.run_infodesign --model mistralai/mistral
 # Calibration
 uv run python -m agent_based_simulation.run autocalibrate --model mistralai/mistral-small-creative
 uv run python -m agent_based_simulation.run calibrate --model mistralai/mistral-small-creative
-
-# Analysis (reads from output/, writes to paper/)
-uv run python analysis/make_figures.py
-uv run python analysis/verify_paper_stats.py
-uv run python analysis/render_paper_tables.py
 ```
 
 Key flags: `--n-agents 25`, `--n-countries 5`, `--n-periods 20`, `--sigma 0.3`, `--benefit 1.0`, `--load-calibrated`, `--append`, `--mixed-models`, `--n-propaganda N`, `--surveillance`, `--personas`, `--group-size-info`, `--holdout-fraction 0.3`.

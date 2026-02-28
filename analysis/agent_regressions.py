@@ -29,6 +29,8 @@ from scipy.special import expit
 import statsmodels.api as sm
 from statsmodels.discrete.discrete_model import Logit
 
+from models import PART1_SLUGS, REGRESSION_NAMES
+
 # ── Paths ────────────────────────────────────────────────────────────────
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -36,29 +38,10 @@ OUTPUT_DIR = PROJECT_ROOT / "output"
 RESULTS_PATH = Path(__file__).resolve().parent / "regression_results.json"
 TABLES_DIR = PROJECT_ROOT / "paper" / "tables"
 
-# ── Model roster (same order as verify_paper_stats.py) ───────────────────
+# ── Model roster ─────────────────────────────────────────────────────────
 
-PART1_MODELS = [
-    "mistralai--mistral-small-creative",
-    "meta-llama--llama-3.3-70b-instruct",
-    "mistralai--ministral-3b-2512",
-    "qwen--qwen3-30b-a3b-instruct-2507",
-    "openai--gpt-oss-120b",
-    "qwen--qwen3-235b-a22b-2507",
-    "arcee-ai--trinity-large-preview_free",
-    "minimax--minimax-m2-her",
-]
-
-SHORT_NAMES = {
-    "mistralai--mistral-small-creative": "Mistral",
-    "meta-llama--llama-3.3-70b-instruct": "Llama 70B",
-    "mistralai--ministral-3b-2512": "Ministral 3B",
-    "qwen--qwen3-30b-a3b-instruct-2507": "Qwen 30B",
-    "openai--gpt-oss-120b": "GPT-OSS 120B",
-    "qwen--qwen3-235b-a22b-2507": "Qwen 235B",
-    "arcee-ai--trinity-large-preview_free": "Trinity",
-    "minimax--minimax-m2-her": "MiniMax",
-}
+PART1_MODELS = PART1_SLUGS
+SHORT_NAMES = REGRESSION_NAMES
 
 # ── Mapping of (subdir, model_slug, treatment_label) for all experiments ─
 
@@ -1000,7 +983,7 @@ def generate_regression_table(results: dict) -> str:
         return "% No regression results available\n"
 
     lines: list[str] = []
-    lines.append(r"\begin{table}[htbp]")
+    lines.append(r"\begin{table*}[htbp]")
     lines.append(r"\centering")
     lines.append(r"\small")
 
@@ -1130,7 +1113,7 @@ def generate_regression_table(results: dict) -> str:
     # Notes
     lines.append(r"\begin{tablenotes}")
     lines.append(r"\small")
-    lines.append(r"\item \textit{Notes:} Logit coefficients reported with clustered standard errors")
+    lines.append(r"\textit{Notes:} Logit coefficients reported with clustered standard errors")
     lines.append(r"(model--country--period) in parentheses.")
     lines.append(r"Column (1): agent-level join decision on $\theta$, treatment dummies, and interactions,")
     lines.append(r"with model fixed effects. Base category: pure treatment.")
@@ -1140,7 +1123,7 @@ def generate_regression_table(results: dict) -> str:
     lines.append(r"\end{tablenotes}")
 
 
-    lines.append(r"\end{table}")
+    lines.append(r"\end{table*}")
 
     return "\n".join(lines)
 
@@ -1158,6 +1141,7 @@ def generate_finite_n_table(results: dict) -> str:
 
     lines.append(r"\caption{Finite-$N$ Benchmark: Predicted vs.\ Empirical Regime Fall Rates}")
     lines.append(r"\label{tab:finite_n}")
+    lines.append(r"\resizebox{\columnwidth}{!}{%")
     lines.append(r"\begin{tabular}{lccccc}")
     lines.append(r"\toprule")
     lines.append(r"Model & $N$ periods & Logistic $x_0$ & Pearson $r$ & RMSE & MAE \\")
@@ -1196,10 +1180,10 @@ def generate_finite_n_table(results: dict) -> str:
         )
 
     lines.append(r"\bottomrule")
-    lines.append(r"\end{tabular}")
+    lines.append(r"\end{tabular}}")
     lines.append(r"\begin{tablenotes}")
     lines.append(r"\small")
-    lines.append(r"\item \textit{Notes:} For each $\theta$ bin, the predicted fall rate is")
+    lines.append(r"\textit{Notes:} For each $\theta$ bin, the predicted fall rate is")
     lines.append(r"$\Pr(\text{Binom}(25, \hat{p}(\theta)) > 25\theta)$ where $\hat{p}(\theta)$")
     lines.append(r"is the fitted logistic join probability. Pearson $r$ measures correlation")
     lines.append(r"between predicted and empirical fall rates across $\theta$ bins.")
