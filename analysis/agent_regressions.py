@@ -939,6 +939,7 @@ def generate_regression_table(results: dict) -> str:
     lines.append(r"\begin{table}[htbp]")
     lines.append(r"\centering")
     lines.append(r"\small")
+
     lines.append(r"\caption{Agent-Level Regressions}")
     lines.append(r"\label{tab:regressions}")
 
@@ -1074,6 +1075,7 @@ def generate_regression_table(results: dict) -> str:
     lines.append(r"${}^{*}p<0.10$, ${}^{**}p<0.05$, ${}^{***}p<0.01$.")
     lines.append(r"\end{tablenotes}")
 
+
     lines.append(r"\end{table}")
 
     return "\n".join(lines)
@@ -1089,6 +1091,7 @@ def generate_finite_n_table(results: dict) -> str:
     lines.append(r"\begin{table}[htbp]")
     lines.append(r"\centering")
     lines.append(r"\small")
+
     lines.append(r"\caption{Finite-$N$ Benchmark: Predicted vs.\ Empirical Regime Fall Rates}")
     lines.append(r"\label{tab:finite_n}")
     lines.append(r"\begin{tabular}{lccccc}")
@@ -1138,6 +1141,7 @@ def generate_finite_n_table(results: dict) -> str:
     lines.append(r"between predicted and empirical fall rates across $\theta$ bins.")
     lines.append(r"${}^{*}p<0.10$, ${}^{**}p<0.05$, ${}^{***}p<0.01$.")
     lines.append(r"\end{tablenotes}")
+
     lines.append(r"\end{table}")
 
     return "\n".join(lines)

@@ -79,6 +79,26 @@ def pearson_with_ci(x, y, alpha=0.05):
             "ci_hi": round(ci_hi, 4), "n": int(n)}
 
 
+def within_country_pearson(df: pd.DataFrame, xcol: str, ycol: str,
+                           group_col: str = "country", alpha: float = 0.05):
+    """Pearson r on country-demeaned values (removes between-country variation).
+
+    For the scramble treatment the cross-period permutation creates an
+    ecological confound: countries with systematically different theta
+    distributions produce spurious pooled correlations.  Demeaning by
+    country removes this confound and isolates the within-country
+    signal-to-outcome link that the falsification test is meant to assess.
+    """
+    tmp = df[[group_col, xcol, ycol]].dropna().copy()
+    if len(tmp) < 3:
+        return {"r": float("nan"), "p": float("nan"), "ci_lo": float("nan"),
+                "ci_hi": float("nan"), "n": len(tmp)}
+    # Demean within each country
+    for col in [xcol, ycol]:
+        tmp[col] = tmp.groupby(group_col)[col].transform(lambda s: s - s.mean())
+    return pearson_with_ci(tmp[xcol].values, tmp[ycol].values, alpha=alpha)
+
+
 def fisher_z_test(r1, n1, r2, n2):
     """Fisher z-test for difference between two independent correlations."""
     z1, z2 = np.arctanh(r1), np.arctanh(r2)
@@ -202,7 +222,7 @@ def compute_part1():
                 rmse = float("nan")
                 mae = float("nan")
 
-            m[treatment] = {
+            entry = {
                 "r_vs_theta": r_theta,
                 "r_vs_attack": r_attack,
                 "n_obs": len(df),
@@ -212,6 +232,20 @@ def compute_part1():
                 "rmse_vs_attack": round(rmse, 4) if np.isfinite(rmse) else None,
                 "mae_vs_attack": round(mae, 4) if np.isfinite(mae) else None,
             }
+
+            # For scramble: use within-country (country-demeaned) correlation
+            # as the primary r, to remove the ecological confound created by
+            # cross-period permutation within countries.
+            if treatment == "scramble" and "country" in df.columns:
+                entry["r_vs_theta_raw"] = r_theta
+                entry["r_vs_attack_raw"] = r_attack
+                entry["r_vs_theta"] = within_country_pearson(df, "theta", jcol)
+                if "theoretical_attack" in df.columns:
+                    entry["r_vs_attack"] = within_country_pearson(
+                        df, "theoretical_attack", jcol
+                    )
+
+            m[treatment] = entry
 
             if treatment == "pure":
                 all_pure.append(df)
@@ -289,8 +323,40 @@ def compute_part1():
 
     results["_pooled_pure"] = _pooled_entry(all_pure) if all_pure else {}
     results["_pooled_comm"] = _pooled_entry(all_comm) if all_comm else {}
-    results["_pooled_scramble"] = _pooled_entry(all_scramble) if all_scramble else {}
     results["_pooled_flip"] = _pooled_entry(all_flip) if all_flip else {}
+
+    # Pooled scramble: use within-country demeaned correlation
+    if all_scramble:
+        pooled_scr = pd.concat(all_scramble, ignore_index=True)
+        jcol_scr = _join_col(pooled_scr)
+        raw_entry = _pooled_entry(all_scramble)
+
+        # Create a model-country group key for demeaning across pooled data
+        # (each model's country indices are independent)
+        if "country" in pooled_scr.columns:
+            # Build a unique group id per (source model, country) combination.
+            # Each df in all_scramble came from a different model; tag rows.
+            parts = []
+            for i, sdf in enumerate(all_scramble):
+                tmp = sdf.copy()
+                tmp["_model_idx"] = i
+                parts.append(tmp)
+            tagged = pd.concat(parts, ignore_index=True)
+            tagged["_group"] = tagged["_model_idx"].astype(str) + "_" + tagged["country"].astype(str)
+
+            raw_entry["r_vs_theta_raw"] = raw_entry["r_vs_theta"]
+            raw_entry["r_vs_attack_raw"] = raw_entry.get("r_vs_attack")
+            raw_entry["r_vs_theta"] = within_country_pearson(
+                tagged, "theta", jcol_scr, group_col="_group"
+            )
+            if "theoretical_attack" in tagged.columns:
+                raw_entry["r_vs_attack"] = within_country_pearson(
+                    tagged, "theoretical_attack", jcol_scr, group_col="_group"
+                )
+
+        results["_pooled_scramble"] = raw_entry
+    else:
+        results["_pooled_scramble"] = {}
 
     # Pooled communication effect (unpaired + paired-on-task-key with model included)
     if all_pure and all_comm:

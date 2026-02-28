@@ -120,6 +120,9 @@ DESIGN_LABELS = {
 }
 
 # Model colors and short names
+# Models to exclude from all figures
+EXCLUDE_MODELS = {"allenai--olmo-3-7b-instruct"}
+
 MODEL_COLORS = {
     "mistralai--mistral-small-creative": "#2c7bb6",
     "arcee-ai--trinity-large-preview_free": "#fdae61",
@@ -216,14 +219,22 @@ primary_data = load_model_data(PRIMARY)
 
 # All models with pure data
 ALL_MODELS = [d.name for d in ROOT.iterdir()
-              if d.is_dir() and (d / "experiment_pure_summary.csv").exists()]
+              if d.is_dir() and (d / "experiment_pure_summary.csv").exists()
+              and d.name not in EXCLUDE_MODELS]
 ALL_MODELS.sort()
 
 # Cross-model comparison
 comp = load_csv(ROOT / "comparison" / "model_comparison_summary.csv")
+if comp is not None and "model" in comp.columns:
+    comp = comp[~comp["model"].isin(EXCLUDE_MODELS)]
 
-# Information design data
-info_all = load_csv(ROOT / PRIMARY / "experiment_infodesign_all_summary.csv")
+# Information design data — combine all per-design CSVs
+_info_csvs = sorted((ROOT / PRIMARY).glob("experiment_infodesign_*_summary.csv"))
+if _info_csvs:
+    info_all = pd.concat([pd.read_csv(c) for c in _info_csvs], ignore_index=True)
+    info_all = info_all.drop_duplicates(subset=["design", "theta", "rep"], keep="last")
+else:
+    info_all = pd.DataFrame()
 comm_df = load_csv(ROOT / PRIMARY / "experiment_comm_summary.csv")
 pure_df = load_csv(ROOT / PRIMARY / "experiment_pure_summary.csv")
 
@@ -240,7 +251,8 @@ bw030 = load_all_csvs(ROOT / "bandwidth-030")
 
 # Models with infodesign data
 INFODESIGN_MODELS = [d.name for d in ROOT.iterdir()
-                     if d.is_dir() and (d / "experiment_infodesign_all_summary.csv").exists()]
+                     if d.is_dir() and (d / "experiment_infodesign_all_summary.csv").exists()
+                     and d.name not in EXCLUDE_MODELS]
 INFODESIGN_MODELS.sort()
 
 
