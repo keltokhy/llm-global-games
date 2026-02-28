@@ -38,6 +38,8 @@ class Agent:
     belief_pre_raw: str = ""  # raw LLM response for pre-decision belief
     second_order_belief: float | None = None  # elicited "% who will JOIN", 0-100 scale
     second_order_belief_raw: str = ""  # raw LLM response for debugging
+    punishment_risk: float | None = None  # elicited punishment likelihood, 0-10 scale
+    punishment_risk_raw: str = ""  # raw LLM response for debugging
     model: str | None = None  # per-agent model override for mixed games
     is_propaganda: bool = False  # regime plant: sends pro-regime messages, always STAYs
     persona: str | None = None  # role framing: "military officer", "student", etc.
@@ -146,6 +148,23 @@ SYSTEM_COMMUNICATE_SURVEILLED_ANONYMOUS = (
     "NOTE: Your communications are aggregated anonymously. "
     "Individual identities cannot be linked to specific messages."
 )
+
+def _system_decide_comm_surveilled(n_agents=None):
+    """Decision prompt with surveillance awareness (for fixed-messages test)."""
+    if n_agents is not None:
+        opener = f"You are one of {n_agents} citizens deciding whether to JOIN an uprising or STAY home.\n\n"
+    else:
+        opener = "You are a citizen deciding whether to JOIN an uprising or STAY home.\n\n"
+    return (
+        opener
+        + "Use your private briefing and messages from trusted contacts. "
+        "You do not know how many others will JOIN.\n\n"
+        "IMPORTANT: You have reason to believe that your actions are being "
+        "monitored by regime security services. Participation in subversive "
+        "activity could have serious consequences.\n\n"
+        "Start your first line with exactly JOIN or STAY, then give 1-2 concise sentences of reasoning."
+    )
+
 
 SYSTEM_DECIDE_COMM = _system_decide_comm()
 
@@ -442,6 +461,52 @@ async def _elicit_second_order(agents, client, model_name, semaphore, call_kwarg
         agent.second_order_belief = _parse_belief(response)
 
 
+SYSTEM_ELICIT_PUNISHMENT = (
+    "Respond with ONLY a single integer between 0 and 10. "
+    "No words, no explanation, no punctuation — just the number."
+)
+
+
+def _parse_punishment_risk(response: str) -> float | None:
+    """Extract a 0-10 punishment risk rating from elicitation response."""
+    if not response or _is_api_error_response(response):
+        return None
+    stripped = response.strip().rstrip(".")
+    m = re.match(r"^(\d+(?:\.\d+)?)$", stripped)
+    if m:
+        val = float(m.group(1))
+        if 0.0 <= val <= 10.0:
+            return val
+    candidates = re.findall(r"\b(\d+(?:\.\d+)?)\b", response)
+    for c in candidates:
+        val = float(c)
+        if 0.0 <= val <= 10.0:
+            return val
+    return None
+
+
+async def _elicit_punishment_risk(agents, client, model_name, semaphore, call_kwargs):
+    """Ask agents to rate expected punishment if uprising fails (0-10)."""
+    real_agents = [a for a in agents if not a.is_propaganda]
+    coros = [
+        _call_llm(
+            client, agent.model or model_name,
+            SYSTEM_ELICIT_PUNISHMENT,
+            f"YOUR BRIEFING:\n{agent.briefing.render()}\n\n"
+            f"You chose to {agent.decision}. "
+            "If the uprising fails, how likely is it that the regime will "
+            "punish participants? (0 = no punishment at all, 10 = severe "
+            "punishment certain)\n\nAnswer with just the number:",
+            semaphore, min_content_chars=1, **call_kwargs,
+        )
+        for agent in real_agents
+    ]
+    responses = await asyncio.gather(*coros)
+    for agent, response in zip(real_agents, responses):
+        agent.punishment_risk_raw = response or ""
+        agent.punishment_risk = _parse_punishment_risk(response)
+
+
 def _retry_kwargs(llm_max_retries: int, llm_empty_retries: int) -> dict:
     return {
         "max_retries": llm_max_retries,
@@ -461,7 +526,12 @@ def _assign_signals_and_briefings(agents, theta, z, sigma, briefing_gen, period,
 
 
 def _scramble_briefings(agents, rng) -> None:
-    """Randomly permute briefings across agents (breaks signal→briefing link)."""
+    """Permute briefings across agents *within the period*.
+
+    Note: paper-level "cross-period" / "cross-θ" scrambles are implemented by
+    higher-level runners via `briefing_overrides`, which swaps in pre-generated
+    briefings from other periods/cells before the decision round.
+    """
     briefings = [a.briefing for a in agents]
     rng.shuffle(briefings)
     for agent, briefing in zip(agents, briefings):
@@ -492,6 +562,7 @@ def _serialize_agents(agents, include_messages: bool = False) -> list[dict]:
             "id": a.agent_id,
             "signal": float(a.signal),
             "z_score": float(a.z_score),
+            "briefing_z_score": float(a.briefing.z_score),
             "direction": float(a.briefing.direction),
             "clarity": float(a.briefing.clarity),
             "coordination": float(a.briefing.coordination),
@@ -511,6 +582,10 @@ def _serialize_agents(agents, include_messages: bool = False) -> list[dict]:
             row["second_order_belief"] = a.second_order_belief
         if a.second_order_belief_raw:
             row["second_order_belief_raw"] = a.second_order_belief_raw
+        if a.punishment_risk is not None:
+            row["punishment_risk"] = a.punishment_risk
+        if a.punishment_risk_raw:
+            row["punishment_risk_raw"] = a.punishment_risk_raw
         if a.model is not None:
             row["model"] = a.model
         if a.is_propaganda:
@@ -578,12 +653,13 @@ async def run_pure_global_game(agents, theta, z, sigma, benefit, briefing_gen,
                                 group_size_info=False,
                                 elicit_beliefs=False,
                                 elicit_second_order=False,
+                                elicit_punishment_risk=False,
                                 belief_order="post",
                                 temperature=0.7):
     """Run one period of the pure global game (no communication).
 
-    signal_mode: "normal", "scramble" (permute briefings), or "flip" (negate z-score).
-    briefing_overrides: if provided, replaces generated briefings (cross-period scramble).
+    signal_mode: "normal", "scramble" (permute briefings *within-period*), or "flip" (negate z-score).
+    briefing_overrides: if provided, replaces generated briefings (e.g., cross-period / cross-θ scramble).
     """
     rng = np.random.default_rng(deterministic_hash((country, period, "signals")) % 2**32)
 
@@ -626,6 +702,8 @@ async def run_pure_global_game(agents, theta, z, sigma, benefit, briefing_gen,
         await _elicit_beliefs(agents, client, model_name, semaphore, call_kwargs)
     if elicit_second_order:
         await _elicit_second_order(agents, client, model_name, semaphore, call_kwargs)
+    if elicit_punishment_risk:
+        await _elicit_punishment_risk(agents, client, model_name, semaphore, call_kwargs)
 
     theoretical_attack = float(_am(theta_star, theta, sigma)) if benefit > 0 else 0.0
 
@@ -653,13 +731,14 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
                                   group_size_info=False,
                                   elicit_beliefs=False,
                                   elicit_second_order=False,
+                                  elicit_punishment_risk=False,
                                   fixed_messages=None,
                                   belief_order="post",
                                   temperature=0.7):
     """Run one period with communication round before decision.
 
-    signal_mode: "normal", "scramble" (permute briefings), or "flip" (negate z-score).
-    briefing_overrides: if provided, replaces generated briefings (cross-period scramble).
+    signal_mode: "normal", "scramble" (permute briefings *within-period*), or "flip" (negate z-score).
+    briefing_overrides: if provided, replaces generated briefings (e.g., cross-period / cross-θ scramble).
     surveillance: if True, agents are told their messages are monitored by regime security.
     surveillance_mode: "full" (consequences), "placebo" (no consequences), or "anonymous"
         (aggregated anonymously). Only effective when surveillance=True.
@@ -731,7 +810,10 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
         await _elicit_beliefs_pre(agents, client, model_name, semaphore, call_kwargs)
 
     # Decision round — propaganda agents forced to STAY
-    decide_system = _system_decide_comm(n_agents=len(agents) if group_size_info else None)
+    if surveillance and fixed_messages is not None:
+        decide_system = _system_decide_comm_surveilled(n_agents=len(agents) if group_size_info else None)
+    else:
+        decide_system = _system_decide_comm(n_agents=len(agents) if group_size_info else None)
     decide_agents = [a for a in agents if not a.is_propaganda]
     decide_coros = [
         _call_llm(client, agent.model or model_name,
@@ -760,6 +842,8 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
         await _elicit_beliefs(agents, client, model_name, semaphore, call_kwargs)
     if elicit_second_order:
         await _elicit_second_order(agents, client, model_name, semaphore, call_kwargs)
+    if elicit_punishment_risk:
+        await _elicit_punishment_risk(agents, client, model_name, semaphore, call_kwargs)
 
     theoretical_attack = float(_am(theta_star, theta, sigma)) if benefit > 0 else 0.0
 
@@ -775,5 +859,3 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
         theoretical_attack=theoretical_attack,
         include_messages=True,
     )
-
-

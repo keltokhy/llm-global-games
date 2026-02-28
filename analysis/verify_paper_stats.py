@@ -26,6 +26,22 @@ PART1_MODELS = PART1_SLUGS
 
 SHORT = DISPLAY_NAMES
 
+# Part I benchmark for A(theta): canonical Morris-Shin parameters used in plots/tables.
+# We compute A(theta) directly from theta rather than relying on the logged
+# `theoretical_attack` column, since Part I payoffs are not shown to agents.
+PART1_BENCHMARK_THETA_STAR = 0.50  # B=C=1
+PART1_BENCHMARK_SIGMA = 0.30
+
+
+def _attack_mass_benchmark(theta: np.ndarray) -> np.ndarray:
+    """Benchmark attack mass A(theta) with fixed (theta*, sigma)."""
+    theta = np.asarray(theta, dtype=float)
+    ts = float(PART1_BENCHMARK_THETA_STAR)
+    sigma = float(PART1_BENCHMARK_SIGMA)
+    ts = float(np.clip(ts, 1e-8, 1 - 1e-8))
+    x_star = ts + sigma * stats.norm.ppf(ts)
+    return stats.norm.cdf((x_star - theta) / sigma)
+
 
 def load(model: str, treatment: str) -> pd.DataFrame:
     """Load a summary CSV, return empty DataFrame if missing."""
@@ -120,7 +136,12 @@ def _find_summaries(base_dir: Path, pattern: str = "experiment_*_summary.csv") -
 
 
 def _model_slug_from_summary_path(path: Path, base_dir: Path) -> str | None:
-    """Infer model slug as the parent folder under base_dir."""
+    """Infer model slug from the CSV's parent directory.
+
+    For flat layouts (base/slug/file.csv) and nested layouts created by
+    bash slug issues (base/vendor/model/slug/file.csv), the actual slug
+    is always the immediate parent of the CSV.
+    """
     try:
         rel = path.relative_to(base_dir)
     except ValueError:
@@ -128,6 +149,12 @@ def _model_slug_from_summary_path(path: Path, base_dir: Path) -> str | None:
     parts = rel.parts
     if len(parts) < 2:
         return None
+    # The CSV's immediate parent is the slug (works for both flat and nested)
+    slug = parts[-2]
+    # Validate: slugs always contain '--' (vendor--model)
+    if "--" in slug:
+        return slug
+    # Fallback for flat layouts where parts[0] is the slug
     return parts[0]
 
 
@@ -194,17 +221,12 @@ def compute_part1():
             # Correlation with theta (what the code actually computes)
             r_theta = pearson_with_ci(theta, jf)
 
-            # Correlation with theoretical attack mass (what the paper claims)
-            if "theoretical_attack" in df.columns:
-                attack = df["theoretical_attack"].astype(float).values
-                r_attack = pearson_with_ci(attack, jf)
-                mask = np.isfinite(attack) & np.isfinite(jf)
-                rmse = float(np.sqrt(np.mean((jf[mask] - attack[mask]) ** 2))) if mask.any() else float("nan")
-                mae = float(np.mean(np.abs(jf[mask] - attack[mask]))) if mask.any() else float("nan")
-            else:
-                r_attack = {"r": float("nan"), "note": "theoretical_attack column missing"}
-                rmse = float("nan")
-                mae = float("nan")
+            # Correlation with benchmark attack mass A(theta) under fixed (theta*, sigma).
+            attack = _attack_mass_benchmark(theta)
+            r_attack = pearson_with_ci(attack, jf)
+            mask = np.isfinite(attack) & np.isfinite(jf)
+            rmse = float(np.sqrt(np.mean((jf[mask] - attack[mask]) ** 2))) if mask.any() else float("nan")
+            mae = float(np.mean(np.abs(jf[mask] - attack[mask]))) if mask.any() else float("nan")
 
             entry = {
                 "r_vs_theta": r_theta,
@@ -224,10 +246,9 @@ def compute_part1():
                 entry["r_vs_theta_raw"] = r_theta
                 entry["r_vs_attack_raw"] = r_attack
                 entry["r_vs_theta"] = within_country_pearson(df, "theta", jcol)
-                if "theoretical_attack" in df.columns:
-                    entry["r_vs_attack"] = within_country_pearson(
-                        df, "theoretical_attack", jcol
-                    )
+                tmp = df.copy()
+                tmp["_attack_benchmark"] = _attack_mass_benchmark(tmp["theta"].astype(float).values)
+                entry["r_vs_attack"] = within_country_pearson(tmp, "_attack_benchmark", jcol)
 
             m[treatment] = entry
 
@@ -288,19 +309,19 @@ def compute_part1():
         pooled = pd.concat(dfs, ignore_index=True)
         jcol = _join_col(pooled)
         n_agents = _infer_n_agents(pooled)
+        theta = pooled["theta"].astype(float).values
+        attack = _attack_mass_benchmark(theta)
+        jf = pooled[jcol].astype(float).values
         out = {
-            "r_vs_theta": pearson_with_ci(pooled["theta"], pooled[jcol]),
+            "r_vs_theta": pearson_with_ci(theta, jf),
+            "r_vs_attack": pearson_with_ci(attack, jf),
             "n_obs": int(len(pooled)),
-            "mean_join": round(_safe_mean(pooled[jcol]), 4),
+            "mean_join": round(_safe_mean(jf), 4),
         }
-        if "theoretical_attack" in pooled.columns:
-            out["r_vs_attack"] = pearson_with_ci(pooled["theoretical_attack"], pooled[jcol])
-            attack = pooled["theoretical_attack"].astype(float).values
-            jf = pooled[jcol].astype(float).values
-            mask = np.isfinite(attack) & np.isfinite(jf)
-            if mask.any():
-                out["rmse_vs_attack"] = round(float(np.sqrt(np.mean((jf[mask] - attack[mask]) ** 2))), 4)
-                out["mae_vs_attack"] = round(float(np.mean(np.abs(jf[mask] - attack[mask]))), 4)
+        mask = np.isfinite(attack) & np.isfinite(jf)
+        if mask.any():
+            out["rmse_vs_attack"] = round(float(np.sqrt(np.mean((jf[mask] - attack[mask]) ** 2))), 4)
+            out["mae_vs_attack"] = round(float(np.mean(np.abs(jf[mask] - attack[mask]))), 4)
         if n_agents is not None:
             out["n_agents"] = int(n_agents)
         return out
@@ -333,10 +354,12 @@ def compute_part1():
             raw_entry["r_vs_theta"] = within_country_pearson(
                 tagged, "theta", jcol_scr, group_col="_group"
             )
-            if "theoretical_attack" in tagged.columns:
-                raw_entry["r_vs_attack"] = within_country_pearson(
-                    tagged, "theoretical_attack", jcol_scr, group_col="_group"
-                )
+            tagged["_attack_benchmark"] = _attack_mass_benchmark(
+                tagged["theta"].astype(float).values
+            )
+            raw_entry["r_vs_attack"] = within_country_pearson(
+                tagged, "_attack_benchmark", jcol_scr, group_col="_group"
+            )
 
         results["_pooled_scramble"] = raw_entry
     else:
@@ -1485,7 +1508,7 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
     r_attack = (pooled_pure.get("r_vs_attack") or {})
     table.append({
         "id": "H1",
-        "hypothesis": "Alignment",
+        "hypothesis": "Sigmoid Response",
         "estimand": r"$r(J, A(\theta))$",
         "null": "$r = 0$",
         "test": "Pearson",
@@ -1500,7 +1523,7 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
     r_scr = (pooled_scr.get("r_vs_attack") or pooled_scr.get("r_vs_theta") or {})
     table.append({
         "id": "H2",
-        "hypothesis": "Scramble",
+        "hypothesis": "Scramble Falsification",
         "estimand": r"$r(\text{scramble})$",
         "null": r"$r \neq 0$",
         "test": "Pearson",
@@ -1523,7 +1546,7 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
         p_flip_one = float("nan")
     table.append({
         "id": "H3",
-        "hypothesis": "Flip",
+        "hypothesis": "Directional Sensitivity",
         "estimand": r"$r(\text{flip})$",
         "null": r"$r \geq 0$",
         "test": "Pearson (1-sided)",
@@ -1537,7 +1560,7 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
     comm_eff = part1.get("_pooled_comm_effect", {}).get("unpaired", {})
     table.append({
         "id": "H4",
-        "hypothesis": "Communication",
+        "hypothesis": "Communication Channel",
         "estimand": r"$\Delta_{\text{pp}}$",
         "null": "$= 0$",
         "test": "$t$-test",
@@ -1549,11 +1572,11 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
 
     # ── H5-H8: Infodesign / regime treatments (primary model) ────────
     # H5: Stability ─ infodesign stability vs baseline
-    h5 = _hypothesis_from_infodesign(infodesign, "stability", "Stability")
+    h5 = _hypothesis_from_infodesign(infodesign, "stability", "Ambiguity Pooling")
     table.append(h5)
 
     # H6: Censorship ─ infodesign censor_upper vs baseline
-    h6 = _hypothesis_from_infodesign(infodesign, "censor_upper", "Censorship")
+    h6 = _hypothesis_from_infodesign(infodesign, "censor_upper", "Censorship Distortion")
     table.append(h6)
 
     # H7: Surveillance ─ regime surveillance effect
@@ -1576,7 +1599,7 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
         surv_p = round(float(p_s), 6)
     table.append({
         "id": "H7",
-        "hypothesis": "Surveillance",
+        "hypothesis": "Surveillance Chilling",
         "estimand": r"$\Delta_{\text{pp}}$",
         "null": "$= 0$",
         "test": "$t$-test",
@@ -1606,7 +1629,7 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
             prop_p = round(float(p_p_val), 6)
     table.append({
         "id": "H8",
-        "hypothesis": "Propaganda",
+        "hypothesis": "Propaganda Dose-Response",
         "estimand": r"$\Delta_{\text{pp}}$",
         "null": "$= 0$",
         "test": "$t$-test",
@@ -1667,7 +1690,7 @@ def _hypothesis_from_infodesign(infodesign: dict, design_key: str, label: str) -
         t_stat = round(float(t_s), 4)
         p_val = round(float(p_v), 6)
 
-    h_id = {"Stability": "H5", "Censorship": "H6"}.get(label, "H?")
+    h_id = {"Ambiguity Pooling": "H5", "Censorship Distortion": "H6"}.get(label, "H?")
     return {
         "id": h_id,
         "hypothesis": label,
@@ -1794,6 +1817,318 @@ def compute_classifier_baselines():
         return json.load(f)
 
 
+# ═══════════════════════════════════════════════════════════════════
+# CROSS-GENERATOR robustness (cable, journalistic variants)
+# ═══════════════════════════════════════════════════════════════════
+
+def compute_cross_generator():
+    """Compute r-values for cross-generator language variants."""
+    results = {}
+    cross_gen_base = ROOT / "cross-generator"
+    if not cross_gen_base.exists():
+        return results
+
+    # Map of (model_display_name, variant) → csv path
+    variant_map = {
+        ("Mistral Small Creative", "baseline"): "mistralai/mistral-small-creative_baseline",
+        ("Mistral Small Creative", "cable"): "mistralai/mistral-small-creative_cable",
+        ("Mistral Small Creative", "journalistic"): "mistralai/mistral-small-creative_journalistic",
+        ("Llama 3.3 70B", "baseline"): "meta-llama/llama-3.3-70b-instruct_baseline",
+        ("Llama 3.3 70B", "cable"): "meta-llama/llama-3.3-70b-instruct_cable",
+        ("Llama 3.3 70B", "journalistic"): "meta-llama/llama-3.3-70b-instruct_journalistic",
+    }
+
+    for (model_name, variant), rel_path in variant_map.items():
+        # Find the CSV (nested slug dir due to bash slug issue)
+        csvs = list((cross_gen_base / rel_path).rglob("experiment_pure_summary.csv"))
+        if not csvs:
+            continue
+        df = pd.read_csv(csvs[0])
+        if len(df) == 0:
+            continue
+        jcol = _join_col(df)
+        jf = df[jcol].astype(float).values
+        theta = df["theta"].astype(float).values
+        r_theta = pearson_with_ci(theta, jf)
+        fit = _fit_logistic(theta, jf)
+        entry = {
+            "n_obs": int(len(df)),
+            "mean_join": round(_safe_mean(jf), 4),
+            "r_vs_theta": r_theta,
+        }
+        if fit is not None:
+            entry["logistic_fit"] = fit
+        if "theoretical_attack" in df.columns:
+            entry["r_vs_attack"] = pearson_with_ci(
+                df["theoretical_attack"].astype(float).values, jf
+            )
+        results.setdefault(model_name, {})[variant] = entry
+
+    return results
+
+
+# ═══════════════════════════════════════════════════════════════════
+# PLACEBO CALIBRATION (wrong center ±0.3)
+# ═══════════════════════════════════════════════════════════════════
+
+def compute_placebo_calibration():
+    """Compute r-values for placebo calibration experiments."""
+    results = {}
+    placebo_base = ROOT / "placebo-calibration"
+    if not placebo_base.exists():
+        return results
+
+    variant_map = {
+        ("Mistral Small Creative", "+0.3"): "mistralai/mistral-small-creative_shift_0p3",
+        ("Mistral Small Creative", "-0.3"): "mistralai/mistral-small-creative_shift_neg0p3",
+        ("Llama 3.3 70B", "+0.3"): "meta-llama/llama-3.3-70b-instruct_shift_0p3",
+        ("Llama 3.3 70B", "-0.3"): "meta-llama/llama-3.3-70b-instruct_shift_neg0p3",
+    }
+
+    for (model_name, shift), rel_path in variant_map.items():
+        csvs = list((placebo_base / rel_path).rglob("experiment_pure_summary.csv"))
+        if not csvs:
+            continue
+        df = pd.read_csv(csvs[0])
+        if len(df) == 0:
+            continue
+        jcol = _join_col(df)
+        jf = df[jcol].astype(float).values
+        theta = df["theta"].astype(float).values
+        r_theta = pearson_with_ci(theta, jf)
+        fit = _fit_logistic(theta, jf)
+        entry = {
+            "n_obs": int(len(df)),
+            "mean_join": round(_safe_mean(jf), 4),
+            "r_vs_theta": r_theta,
+        }
+        if fit is not None:
+            entry["logistic_fit"] = fit
+        if "theoretical_attack" in df.columns:
+            entry["r_vs_attack"] = pearson_with_ci(
+                df["theoretical_attack"].astype(float).values, jf
+            )
+        results.setdefault(model_name, {})[shift] = entry
+
+    return results
+
+
+# ═══════════════════════════════════════════════════════════════════
+# EXPANDED TEMPERATURE robustness (multi-model)
+# ═══════════════════════════════════════════════════════════════════
+
+def compute_temperature_expanded():
+    """Temperature robustness for Llama 3.3 70B and Qwen3 235B."""
+    results = {}
+    temp_base = ROOT / "temperature-robustness"
+    if not temp_base.exists():
+        return results
+
+    variant_map = {
+        ("Llama 3.3 70B", "0.3"): "meta-llama/llama-3.3-70b-instruct_t03",
+        ("Llama 3.3 70B", "0.5"): "meta-llama/llama-3.3-70b-instruct_t05",
+        ("Llama 3.3 70B", "0.7"): "meta-llama/llama-3.3-70b-instruct_t07",
+        ("Llama 3.3 70B", "1.0"): "meta-llama/llama-3.3-70b-instruct_t10",
+        ("Llama 3.3 70B", "1.2"): "meta-llama/llama-3.3-70b-instruct_t12",
+        ("Qwen3 235B", "0.3"): "qwen/qwen3-235b-a22b-2507_t03",
+        ("Qwen3 235B", "0.5"): "qwen/qwen3-235b-a22b-2507_t05",
+        ("Qwen3 235B", "0.7"): "qwen/qwen3-235b-a22b-2507_t07",
+        ("Qwen3 235B", "1.0"): "qwen/qwen3-235b-a22b-2507_t10",
+        ("Qwen3 235B", "1.2"): "qwen/qwen3-235b-a22b-2507_t12",
+    }
+
+    for (model_name, temp), rel_path in variant_map.items():
+        csvs = list((temp_base / rel_path).rglob("experiment_pure_summary.csv"))
+        if not csvs:
+            continue
+        df = pd.read_csv(csvs[0])
+        if len(df) == 0:
+            continue
+        jcol = _join_col(df)
+        jf = df[jcol].astype(float).values
+        theta = df["theta"].astype(float).values
+        r_theta = pearson_with_ci(theta, jf)
+        fit = _fit_logistic(theta, jf)
+        entry = {
+            "n_obs": int(len(df)),
+            "mean_join": round(_safe_mean(jf), 4),
+            "r_vs_theta": r_theta,
+        }
+        if fit is not None:
+            entry["logistic_fit"] = fit
+        results.setdefault(model_name, {})[f"T={temp}"] = entry
+
+    return results
+
+
+# ═══════════════════════════════════════════════════════════════════
+# EXPANDED UNCALIBRATED robustness (all 7 models)
+# ═══════════════════════════════════════════════════════════════════
+
+def compute_uncalibrated_expanded():
+    """Uncalibrated robustness for all models with data."""
+    results = {}
+    uncal_base = ROOT / "uncalibrated-robustness"
+    if not uncal_base.exists():
+        return results
+
+    # Direct slug dirs (older runs)
+    direct_slugs = [
+        "mistralai--mistral-small-creative",
+        "meta-llama--llama-3.3-70b-instruct",
+        "qwen--qwen3-235b-a22b-2507",
+        "minimax--minimax-m2-her",
+    ]
+    for slug in direct_slugs:
+        p = uncal_base / slug / "experiment_pure_summary.csv"
+        if not p.exists():
+            continue
+        df = pd.read_csv(p)
+        jcol = _join_col(df)
+        jf = df[jcol].astype(float).values
+        theta = df["theta"].astype(float).values
+        # Skip if all NaN (e.g. Trinity with 100% API errors)
+        if np.all(np.isnan(jf)):
+            continue
+        r_theta = pearson_with_ci(theta, jf)
+        name = SHORT.get(slug, slug)
+        results[name] = {
+            "n_obs": int(len(df)),
+            "mean_join": round(_safe_mean(jf), 4),
+            "r_vs_theta": r_theta,
+        }
+
+    # Nested slug dirs (newer runs with bash slug issue)
+    nested_map = {
+        "qwen/qwen3-30b-a3b-instruct-2507": "Qwen3 30B",
+        "openai/gpt-oss-120b": "GPT-OSS 120B",
+        "arcee-ai/trinity-large-preview_free": "Trinity Large",
+    }
+    for rel_path, name in nested_map.items():
+        csvs = list((uncal_base / rel_path).rglob("experiment_pure_summary.csv"))
+        if not csvs:
+            continue
+        df = pd.read_csv(csvs[0])
+        jcol = _join_col(df)
+        jf = df[jcol].astype(float).values
+        theta = df["theta"].astype(float).values
+        if np.all(np.isnan(jf)):
+            continue
+        r_theta = pearson_with_ci(theta, jf)
+        results[name] = {
+            "n_obs": int(len(df)),
+            "mean_join": round(_safe_mean(jf), 4),
+            "r_vs_theta": r_theta,
+        }
+
+    return results
+
+
+# ═══════════════════════════════════════════════════════════════════
+# PUNISHMENT RISK ELICITATION
+# ═══════════════════════════════════════════════════════════════════
+
+def compute_punishment_risk():
+    """Compute punishment risk elicitation statistics."""
+    results = {}
+    pr_base = ROOT / "punishment-risk"
+    if not pr_base.exists():
+        return results
+
+    conditions = {
+        ("Mistral Small Creative", "pure"): "mistralai/mistral-small-creative",
+        ("Mistral Small Creative", "comm"): "mistralai/mistral-small-creative",
+        ("Mistral Small Creative", "surveillance"): "mistralai/mistral-small-creative_surv",
+        ("Llama 3.3 70B", "pure"): "meta-llama/llama-3.3-70b-instruct",
+        ("Llama 3.3 70B", "comm"): "meta-llama/llama-3.3-70b-instruct",
+        ("Llama 3.3 70B", "surveillance"): "meta-llama/llama-3.3-70b-instruct_surv",
+    }
+
+    for (model_name, condition), rel_path in conditions.items():
+        if condition == "surveillance":
+            treatment_file = "experiment_comm_summary.csv"
+        elif condition == "comm":
+            treatment_file = "experiment_comm_summary.csv"
+        else:
+            treatment_file = "experiment_pure_summary.csv"
+
+        csvs = list((pr_base / rel_path).rglob(treatment_file))
+        if not csvs:
+            continue
+        df = pd.read_csv(csvs[0])
+        if len(df) == 0 or "punishment_risk" not in df.columns:
+            # Try loading from log JSON if summary doesn't have the column
+            continue
+        pr = df["punishment_risk"].dropna()
+        if len(pr) == 0:
+            continue
+        jcol = _join_col(df)
+        jf = df[jcol].astype(float).values
+
+        entry = {
+            "n_obs": int(len(df)),
+            "n_pr_valid": int(len(pr)),
+            "mean_pr": round(float(pr.mean()), 2),
+            "std_pr": round(float(pr.std()), 2),
+            "mean_join": round(_safe_mean(jf), 4),
+        }
+
+        # Correlation between punishment risk and join rate
+        if len(pr) > 3:
+            # Align: only rows with both valid
+            valid = df[[jcol, "punishment_risk"]].dropna()
+            if len(valid) > 3:
+                r_pr_join = pearson_with_ci(
+                    valid["punishment_risk"].values, valid[jcol].values
+                )
+                entry["r_pr_join"] = r_pr_join
+
+        results.setdefault(model_name, {})[condition] = entry
+
+    # Check log files for agent-level punishment risk data
+    for (model_name, condition), rel_path in conditions.items():
+        if condition == "surveillance":
+            log_file = "experiment_comm_log.json"
+        elif condition == "comm":
+            log_file = "experiment_comm_log.json"
+        else:
+            log_file = "experiment_pure_log.json"
+
+        log_csvs = list((pr_base / rel_path).rglob(log_file))
+        if not log_csvs:
+            continue
+        log_data = _load_experiment_log(log_csvs[0])
+        if not log_data:
+            continue
+
+        pr_values = []
+        join_decisions = []
+        for period in log_data:
+            for a in period.get("agents", []):
+                if a.get("api_error") or a.get("is_propaganda", False):
+                    continue
+                pr_val = a.get("punishment_risk")
+                if pr_val is not None:
+                    pr_values.append(pr_val)
+                    join_decisions.append(1 if a.get("decision") == "JOIN" else 0)
+
+        if pr_values:
+            pr_arr = np.array(pr_values)
+            dec_arr = np.array(join_decisions)
+            agent_entry = {
+                "n_agents": len(pr_arr),
+                "mean_pr": round(float(pr_arr.mean()), 2),
+                "std_pr": round(float(pr_arr.std()), 2),
+                "mean_pr_join": round(float(pr_arr[dec_arr == 1].mean()), 2) if (dec_arr == 1).any() else None,
+                "mean_pr_stay": round(float(pr_arr[dec_arr == 0].mean()), 2) if (dec_arr == 0).any() else None,
+            }
+            if len(pr_arr) > 3:
+                agent_entry["r_pr_decision"] = pearson_with_ci(pr_arr, dec_arr)
+            results.setdefault(model_name, {}).setdefault(condition, {})["agent_level"] = agent_entry
+
+    return results
+
+
 def main():
     print("Computing Part I statistics...")
     part1 = compute_part1()
@@ -1838,6 +2173,21 @@ def main():
     print("Computing fixed-messages test...")
     fixed_messages_test = compute_fixed_messages_test()
 
+    print("Computing cross-generator robustness...")
+    cross_generator = compute_cross_generator()
+
+    print("Computing placebo calibration...")
+    placebo_calibration = compute_placebo_calibration()
+
+    print("Computing expanded temperature robustness...")
+    temperature_expanded = compute_temperature_expanded()
+
+    print("Computing expanded uncalibrated robustness...")
+    uncalibrated_expanded = compute_uncalibrated_expanded()
+
+    print("Computing punishment risk elicitation...")
+    punishment_risk = compute_punishment_risk()
+
     all_stats = {
         "part1": part1,
         "infodesign": infodesign,
@@ -1854,6 +2204,11 @@ def main():
         "ck_interaction": ck_interaction,
         "classifier_baselines": classifier_baselines,
         "fixed_messages_test": fixed_messages_test,
+        "cross_generator": cross_generator,
+        "placebo_calibration": placebo_calibration,
+        "temperature_expanded": temperature_expanded,
+        "uncalibrated_expanded": uncalibrated_expanded,
+        "punishment_risk": punishment_risk,
     }
 
     print("Computing hypothesis table...")

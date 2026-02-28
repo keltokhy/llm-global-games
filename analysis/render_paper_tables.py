@@ -193,7 +193,7 @@ def render_tab_main_results(stats: dict) -> str:
 
     tex = r"""\begin{table*}[t]
 \centering
-\caption{Equilibrium alignment by model and treatment. Cells report Pearson $r$ between the empirical join fraction and the theoretical attack mass $A(\theta)$; 95\% Fisher-$z$ confidence intervals in brackets for main treatments.}
+\caption{Threshold-policy alignment by model and treatment. Cells report Pearson $r$ between the empirical join fraction and the benchmark attack mass $A(\theta)$ under $B=C=1$ (so $\theta^* = 0.50$); 95\% Fisher-$z$ confidence intervals in brackets for main treatments.}
 \label{tab:main_results}
 \small
 \begin{tabular}{lcccccc}
@@ -1152,6 +1152,255 @@ H & Hypothesis & Estimand & Null & Test & Stat & $p$ & Supported? \\
     return tex
 
 
+def render_tab_cross_generator(stats: dict) -> str:
+    """Cross-generator language variant robustness table."""
+    cg = stats.get("cross_generator", {})
+    if not cg:
+        return "% No cross-generator data available.\n"
+
+    models = ["Mistral Small Creative", "Llama 3.3 70B"]
+    variants = ["baseline", "cable", "journalistic"]
+
+    rows = []
+    for m in models:
+        m_data = cg.get(m, {})
+        for v in variants:
+            d = m_data.get(v, {})
+            if not d:
+                rows.append(f"{m} & {v.capitalize()} & --- & --- & --- \\\\")
+                continue
+            n = d.get("n_obs", "---")
+            mean_j = _fmt_num(d.get("mean_join"), 3)
+            r = (d.get("r_vs_theta") or {}).get("r")
+            r_cell = f"${_fmt_r(r, 3)}$" if r is not None else "---"
+            fit = d.get("logistic_fit", {})
+            cutoff = _fmt_num(fit.get("cutoff"), 3) if fit else "---"
+            rows.append(f"{m} & {v.capitalize()} & {n} & {mean_j} & {r_cell} & {cutoff} \\\\")
+        rows.append(r"\midrule")
+    # Remove trailing midrule
+    if rows and rows[-1] == r"\midrule":
+        rows.pop()
+
+    tex = r"""\begin{table}[t]
+\centering
+\caption{Cross-generator robustness. Three text rendering styles (baseline, diplomatic cable, journalistic wire) use identical slider functions and evidence items; only prose formatting differs. The Pearson $r(\theta, J)$ and logistic cutoff are virtually identical across generators.}
+\label{tab:cross_generator}
+\small
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{llcccc}
+\toprule
+Model & Generator & $N$ & Mean join & $r(\theta, J)$ & Cutoff $\hat{\theta}^*$ \\
+\midrule
+"""
+    tex += "\n".join(rows) + "\n"
+    tex += r"""\bottomrule
+\end{tabular}}
+\end{table}
+"""
+    return tex
+
+
+def render_tab_placebo_calibration(stats: dict) -> str:
+    """Placebo calibration table."""
+    pc = stats.get("placebo_calibration", {})
+    if not pc:
+        return "% No placebo calibration data available.\n"
+
+    models = ["Mistral Small Creative", "Llama 3.3 70B"]
+
+    rows = []
+    for m in models:
+        m_data = pc.get(m, {})
+        # Also get the calibrated baseline r from part1
+        part1 = stats.get("part1", {})
+        baseline_r = (part1.get(m, {}).get("pure", {}).get("r_vs_theta") or {}).get("r")
+        baseline_mean = part1.get(m, {}).get("pure", {}).get("mean_join")
+
+        rows.append(f"{m} & Calibrated & --- & {_fmt_num(baseline_mean, 3)} & ${_fmt_r(baseline_r, 3)}$ \\\\")
+
+        for shift in ["+0.3", "-0.3"]:
+            d = m_data.get(shift, {})
+            if not d:
+                rows.append(f" & $\\Delta c = {shift}$ & --- & --- & --- \\\\")
+                continue
+            n = d.get("n_obs", "---")
+            mean_j = _fmt_num(d.get("mean_join"), 3)
+            r = (d.get("r_vs_theta") or {}).get("r")
+            r_cell = f"${_fmt_r(r, 3)}$" if r is not None else "---"
+            rows.append(f" & $\\Delta c = {shift}$ & {n} & {mean_j} & {r_cell} \\\\")
+        rows.append(r"\midrule")
+    if rows and rows[-1] == r"\midrule":
+        rows.pop()
+
+    tex = r"""\begin{table}[t]
+\centering
+\caption{Placebo calibration. The cutoff center is deliberately shifted by $\pm 0.3$ from its calibrated value. The correlation $r(\theta, J)$ is unchanged; only the mean join rate shifts, confirming that calibration does not create the sigmoid.}
+\label{tab:placebo_calibration}
+\small
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{llccc}
+\toprule
+Model & Condition & $N$ & Mean join & $r(\theta, J)$ \\
+\midrule
+"""
+    tex += "\n".join(rows) + "\n"
+    tex += r"""\bottomrule
+\end{tabular}}
+\end{table}
+"""
+    return tex
+
+
+def render_tab_temperature_expanded(stats: dict) -> str:
+    """Expanded temperature robustness table (3 models)."""
+    # Combine old Mistral data with new Llama + Qwen data
+    temp_old = stats.get("temperature_robustness", {})
+    temp_new = stats.get("temperature_expanded", {})
+    if not temp_old and not temp_new:
+        return "% No temperature data available.\n"
+
+    rows = []
+
+    # Mistral (from old)
+    if temp_old:
+        for key in ["T=0.3", "T=0.7", "T=1.0"]:
+            d = temp_old.get(key, {})
+            if not d:
+                continue
+            mean_j = _fmt_num(d["mean_join"], 3)
+            r_val = _fmt_r((d.get("r_vs_theta") or {}).get("r"), 3)
+            fit = d.get("logistic_fit", {})
+            cutoff = _fmt_num(fit.get("cutoff"), 3) if fit else "---"
+            rows.append(f"Mistral Small & {key} & {d.get('n_obs','---')} & {mean_j} & ${r_val}$ & {cutoff} \\\\")
+        rows.append(r"\midrule")
+
+    # Llama and Qwen (from new)
+    for model in ["Llama 3.3 70B", "Qwen3 235B"]:
+        m_data = temp_new.get(model, {})
+        for temp in ["T=0.3", "T=0.5", "T=0.7", "T=1.0", "T=1.2"]:
+            d = m_data.get(temp, {})
+            if not d:
+                continue
+            mean_j = _fmt_num(d["mean_join"], 3)
+            r_val = _fmt_r((d.get("r_vs_theta") or {}).get("r"), 3)
+            fit = d.get("logistic_fit", {})
+            cutoff = _fmt_num(fit.get("cutoff"), 3) if fit else "---"
+            short_name = "Llama 70B" if model == "Llama 3.3 70B" else "Qwen 235B"
+            rows.append(f"{short_name} & {temp} & {d.get('n_obs','---')} & {mean_j} & ${r_val}$ & {cutoff} \\\\")
+        rows.append(r"\midrule")
+
+    if rows and rows[-1] == r"\midrule":
+        rows.pop()
+
+    tex = r"""\begin{table}[t]
+\centering
+\caption{Temperature robustness across three models. The pure global game is run at varying LLM decoding temperatures. The correlation $r(\theta, J)$ is stable across all temperatures and models.}
+\label{tab:temperature_expanded}
+\small
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{llcccc}
+\toprule
+Model & $T$ & $N$ & Mean join & $r(\theta, J)$ & Cutoff $\hat{\theta}^*$ \\
+\midrule
+"""
+    tex += "\n".join(rows) + "\n"
+    tex += r"""\bottomrule
+\end{tabular}}
+\end{table}
+"""
+    return tex
+
+
+def render_tab_uncalibrated_expanded(stats: dict) -> str:
+    """Expanded uncalibrated table with all available models."""
+    uncal = stats.get("uncalibrated_expanded", {})
+    if not uncal:
+        return "% No expanded uncalibrated data available.\n"
+
+    model_order = [
+        "Mistral Small Creative", "Llama 3.3 70B", "Qwen3 30B",
+        "GPT-OSS 120B", "Qwen3 235B", "MiniMax M2-Her",
+    ]
+
+    rows = []
+    for m in model_order:
+        d = uncal.get(m, {})
+        if not d:
+            continue
+        n = d.get("n_obs", "---")
+        mean_j = _fmt_num(d.get("mean_join"), 3)
+        r = (d.get("r_vs_theta") or {}).get("r")
+        p = (d.get("r_vs_theta") or {}).get("p")
+        r_cell = f"${_fmt_r(r, 3)}$" if r is not None else "---"
+        p_cell = _fmt_num(p, 4) if p is not None else "---"
+        rows.append(f"{m} & {n} & {mean_j} & {r_cell} & {p_cell} \\\\")
+
+    tex = r"""\begin{table}[t]
+\centering
+\caption{Uncalibrated robustness: models run without any calibration adjustment. Even without calibration, six of seven models show strong $r(\theta, J)$, confirming that the sigmoid is not an artifact of the calibration procedure.}
+\label{tab:uncalibrated_expanded}
+\small
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+Model & $N$ & Mean join & $r(\theta, J)$ & $p$ \\
+\midrule
+"""
+    tex += "\n".join(rows) + "\n"
+    tex += r"""\bottomrule
+\end{tabular}}
+\end{table}
+"""
+    return tex
+
+
+def render_tab_punishment_risk(stats: dict) -> str:
+    """Punishment risk elicitation table."""
+    pr = stats.get("punishment_risk", {})
+    if not pr:
+        return "% No punishment risk data available.\n"
+
+    models = ["Mistral Small Creative", "Llama 3.3 70B"]
+    conditions = ["pure", "comm", "surveillance"]
+
+    rows = []
+    for m in models:
+        m_data = pr.get(m, {})
+        for cond in conditions:
+            d = m_data.get(cond, {})
+            agent = d.get("agent_level", {}) if isinstance(d, dict) else {}
+            if not agent:
+                continue
+            n = agent.get("n_agents", "---")
+            mean_pr = _fmt_num(agent.get("mean_pr"), 1)
+            pr_join = _fmt_num(agent.get("mean_pr_join"), 1)
+            pr_stay = _fmt_num(agent.get("mean_pr_stay"), 1)
+            short_m = "Mistral" if "Mistral" in m else "Llama 70B"
+            cond_label = cond.capitalize()
+            rows.append(f"{short_m} & {cond_label} & {n} & {mean_pr} & {pr_join} & {pr_stay} \\\\")
+        rows.append(r"\midrule")
+    if rows and rows[-1] == r"\midrule":
+        rows.pop()
+
+    tex = r"""\begin{table}[t]
+\centering
+\caption{Elicited punishment risk (0--10 scale). Agents rate expected regime punishment after their JOIN/STAY decision. ``JOIN'' and ``STAY'' columns show the mean rating conditional on the agent's own decision.}
+\label{tab:punishment_risk}
+\small
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{llcccc}
+\toprule
+Model & Condition & $N$ & Mean risk & Risk $|$ JOIN & Risk $|$ STAY \\
+\midrule
+"""
+    tex += "\n".join(rows) + "\n"
+    tex += r"""\bottomrule
+\end{tabular}}
+\end{table}
+"""
+    return tex
+
+
 def main() -> None:
     stats = _load()
 
@@ -1174,6 +1423,11 @@ def main() -> None:
         "tab_hypotheses.tex": render_tab_hypotheses(stats),
         "tab_ck_2x2.tex": render_tab_ck_2x2(stats),
         "tab_classifiers.tex": render_tab_classifiers(stats),
+        "tab_cross_generator.tex": render_tab_cross_generator(stats),
+        "tab_placebo_calibration.tex": render_tab_placebo_calibration(stats),
+        "tab_temperature_expanded.tex": render_tab_temperature_expanded(stats),
+        "tab_uncalibrated_expanded.tex": render_tab_uncalibrated_expanded(stats),
+        "tab_punishment_risk.tex": render_tab_punishment_risk(stats),
         "stats_macros.tex": render_stats_macros(stats),
     }
 

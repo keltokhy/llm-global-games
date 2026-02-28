@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering
+\caption{Placebo calibration. The cutoff center is deliberately shifted by $\pm 0.3$ from its calibrated value. The correlation $r(\theta, J)$ is unchanged; only the mean join rate shifts, confirming that calibration does not create the sigmoid.}
+\label{tab:placebo_calibration}
+\small
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{llccc}
+\toprule
+Model & Condition & $N$ & Mean join & $r(\theta, J)$ \\
+\midrule
+Mistral Small Creative & Calibrated & --- & 0.387 & $-0.829$ \\
+ & $\Delta c = +0.3$ & 100 & 0.424 & $-0.860$ \\
+ & $\Delta c = -0.3$ & 100 & 0.362 & $-0.859$ \\
+\midrule
+Llama 3.3 70B & Calibrated & --- & 0.439 & $-0.854$ \\
+ & $\Delta c = +0.3$ & 100 & 0.385 & $-0.857$ \\
+ & $\Delta c = -0.3$ & 100 & 0.340 & $-0.848$ \\
+\bottomrule
+\end{tabular}}
+\end{table}

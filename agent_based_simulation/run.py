@@ -251,15 +251,21 @@ def _apply_calibrated_params(args):
           f"direction_slope={args.direction_slope:.3f}")
 
 
-def _load_fixed_messages(path: str) -> dict[tuple[int, int], dict[int, str]]:
+def _load_fixed_messages(path: str) -> tuple[
+    dict[tuple[int, int], dict[int, str]],
+    dict[tuple[int, int], dict],
+]:
     """Load pre-recorded messages from a communication experiment log JSON.
 
-    Returns dict mapping (country, period) -> {agent_id: message_sent}.
+    Returns:
+        messages_by_period: dict mapping (country, period) -> {agent_id: message_sent}
+        metadata_by_period: dict mapping (country, period) -> {theta, z, benefit}
     """
     with open(path) as f:
         log_entries = json.load(f)
 
     messages_by_period = {}
+    metadata_by_period = {}
     for entry in log_entries:
         key = (entry["country"], entry["period"])
         agent_msgs = {}
@@ -270,7 +276,12 @@ def _load_fixed_messages(path: str) -> dict[tuple[int, int], dict[int, str]]:
                 agent_msgs[aid] = msg
         if agent_msgs:
             messages_by_period[key] = agent_msgs
-    return messages_by_period
+        metadata_by_period[key] = {
+            "theta": entry["theta"],
+            "z": entry["z"],
+            "benefit": entry.get("benefit", 1.0),
+        }
+    return messages_by_period, metadata_by_period
 
 
 def run_experiment(args, treatment, signal_mode="normal"):
@@ -286,10 +297,18 @@ def run_experiment(args, treatment, signal_mode="normal"):
     # Load calibrated params if requested
     _apply_calibrated_params(args)
 
+    # Apply placebo miscalibration if requested
+    if getattr(args, 'wrong_center', None) is not None:
+        original = args.cutoff_center
+        args.cutoff_center += args.wrong_center
+        print(f"  Placebo calibration: shifted cutoff_center by {args.wrong_center:+.3f} "
+              f"({original:.3f} → {args.cutoff_center:.3f})")
+
     # Load fixed messages if provided (for fixed-message surveillance test)
     fixed_messages_map = None
+    fixed_metadata_map = None
     if getattr(args, 'fixed_messages', None):
-        fixed_messages_map = _load_fixed_messages(args.fixed_messages)
+        fixed_messages_map, fixed_metadata_map = _load_fixed_messages(args.fixed_messages)
         print(f"  Loaded fixed messages from: {args.fixed_messages}")
         print(f"  Periods with messages: {len(fixed_messages_map)}")
 
@@ -330,6 +349,20 @@ def run_experiment(args, treatment, signal_mode="normal"):
                 benefit = b_mean + rng.normal(0, 0.15)
                 theta = rng.normal(z, 1.0)  # tau = 1
                 tasks_spec.append({"c": c, "t": t, "z": z, "benefit": benefit, "theta": theta})
+
+        # Override theta/z from fixed-messages metadata so briefings match
+        if fixed_metadata_map is not None:
+            matched = 0
+            for spec in tasks_spec:
+                key = (spec["c"], spec["t"])
+                if key in fixed_metadata_map:
+                    spec["theta"] = fixed_metadata_map[key]["theta"]
+                    spec["z"] = fixed_metadata_map[key]["z"]
+                    spec["benefit"] = fixed_metadata_map[key]["benefit"]
+                    matched += 1
+            # Filter to only periods with fixed-message data
+            tasks_spec = [s for s in tasks_spec if (s["c"], s["t"]) in fixed_metadata_map]
+            print(f"  Overrode theta/z for {matched} periods from fixed-messages log")
 
         n_total = len(tasks_spec)
         completed = [0]  # mutable counter for progress
@@ -397,6 +430,7 @@ def run_experiment(args, treatment, signal_mode="normal"):
                     group_size_info=getattr(args, 'group_size_info', False),
                     elicit_beliefs=getattr(args, 'elicit_beliefs', False),
                     elicit_second_order=getattr(args, 'elicit_second_order', False),
+                    elicit_punishment_risk=getattr(args, 'elicit_punishment_risk', False),
                     belief_order=getattr(args, 'belief_order', 'post'),
                     temperature=getattr(args, 'temperature', 0.7),
                 )
@@ -417,6 +451,7 @@ def run_experiment(args, treatment, signal_mode="normal"):
                     group_size_info=getattr(args, 'group_size_info', False),
                     elicit_beliefs=getattr(args, 'elicit_beliefs', False),
                     elicit_second_order=getattr(args, 'elicit_second_order', False),
+                    elicit_punishment_risk=getattr(args, 'elicit_punishment_risk', False),
                     fixed_messages=period_fixed,
                     belief_order=getattr(args, 'belief_order', 'post'),
                     temperature=getattr(args, 'temperature', 0.7),
@@ -576,6 +611,8 @@ def main():
                         help="After each decision, ask agents for P(uprising succeeds) on 0-100 scale")
     parser.add_argument("--elicit-second-order", action="store_true",
                         help="After each decision, ask agents what %% of citizens will JOIN (0-100 scale)")
+    parser.add_argument("--elicit-punishment-risk", action="store_true",
+                        help="After each decision, ask agents to rate expected punishment (0-10 scale)")
     parser.add_argument("--fixed-messages", type=str, default=None,
                         help="Path to a communication experiment log JSON. Replaces live message "
                              "generation with pre-recorded messages (for fixed-message surveillance test)")
@@ -587,6 +624,9 @@ def main():
                         help="Surveillance framing: 'full' (consequences, default), "
                              "'placebo' (monitored, no consequences), 'anonymous' (aggregated anonymously). "
                              "Only effective with --surveillance.")
+    parser.add_argument("--wrong-center", type=float, default=None,
+                        help="Placebo calibration: shift cutoff_center by this amount after loading "
+                             "calibrated params. E.g. --wrong-center 0.3 adds 0.3 to the calibrated center.")
 
     args = parser.parse_args()
     from .briefing import normalize_language_variant

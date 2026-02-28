@@ -1,0 +1,16 @@
+\begin{table}[t]
+\centering
+\caption{Classifier baselines. Accuracy and AUC are 5-fold CV on pure-treatment data. ``Pred.\ join (surv.)'' is the classifier's predicted join rate when applied to surveillance-treatment briefings; ``Actual'' is the LLM's observed rate. The gap measures the surveillance wedge invisible to text classifiers.}
+\label{tab:classifiers}
+\small
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lccccc}
+\toprule
+Classifier & Acc. & AUC & Pred.\ join (surv.) & Actual (surv.) & Gap \\
+\midrule
+BoW TF-IDF & 88.4\% & 0.947 & 40.5\% & 27.6\% & 13.0~pp \\
+Slider logistic & 88.4\% & 0.941 & 40.4\% & 27.6\% & 12.8~pp \\
+Keyphrase & 60.2\% & 0.594 & 8.4\% & 27.6\% & -19.2~pp \\
+\bottomrule
+\end{tabular}}
+\end{table}

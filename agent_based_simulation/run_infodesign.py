@@ -97,6 +97,8 @@ def run_infodesign(args):
     for name in design_names:
         if name == "scramble":
             run_specs.append(("scramble", None, "scramble"))
+        elif name == "scramble_hard":
+            run_specs.append(("scramble_hard", None, "scramble_hard"))
         elif name == "flip":
             run_specs.append(("flip", None, "flip"))
         elif name in ALL_DESIGNS:
@@ -108,7 +110,7 @@ def run_infodesign(args):
             run_specs.append((name, config, "normal"))
         else:
             raise ValueError(f"Unknown design: {name}. "
-                             f"Available: {list(ALL_DESIGNS) + ['scramble', 'flip']}")
+                             f"Available: {list(ALL_DESIGNS) + ['scramble', 'scramble_hard', 'hard_scramble', 'flip']}")
 
     n_cells = len(run_specs) * len(theta_grid) * args.reps
     n_calls = n_cells * args.n_agents
@@ -121,37 +123,73 @@ def run_infodesign(args):
     # Paper 1's scramble shuffles briefings across periods (different θ).
     # In infodesign, the equivalent: pre-generate briefings for all (θ, rep)
     # cells, shuffle across θ-cells, then redistribute.
-    scramble_overrides = {}  # (theta_idx, rep) -> list[Briefing]
-    has_scramble = any(name == "scramble" for name, _, _ in run_specs)
-    if has_scramble:
+    scramble_overrides = {}        # (theta_idx, rep) -> list[Briefing] (soft, mixes briefings across cells)
+    scramble_hard_overrides = {}   # (theta_idx, rep) -> list[Briefing] (hard, swaps whole cell blocks)
+    has_scramble_soft = any(name == "scramble" for name, _, _ in run_specs)
+    has_scramble_hard = any(name == "scramble_hard" for name, _, _ in run_specs)
+    if has_scramble_soft or has_scramble_hard:
         from .briefing import BriefingGenerator as _BG
         _scramble_gen = _BG(**base_params)
-        _all_briefings = []  # flat list of all briefings
-        _cell_keys = []      # parallel list of (theta_idx, rep) keys
+        _cell_keys = []      # list of (theta_idx, rep) keys
+        _cell_blocks = []    # list of list[Briefing] blocks, one per cell
 
         for ti, theta in enumerate(theta_grid):
             for rep in range(args.reps):
                 cell_rng = np.random.default_rng(
                     deterministic_hash((rep, 0, "signals")) % 2**32
                 )
+                block = []
                 for agent_id in range(args.n_agents):
                     signal = theta + cell_rng.normal(0, args.sigma)
                     z_score = (signal - z_center) / args.sigma
-                    briefing = _scramble_gen.generate(z_score, agent_id, 0)
-                    _all_briefings.append(briefing)
+                    block.append(_scramble_gen.generate(z_score, agent_id, 0))
                 _cell_keys.append((ti, rep))
+                _cell_blocks.append(block)
 
-        # Shuffle all briefings across all θ-cells (breaks θ→briefing link)
-        shuffle_rng = np.random.default_rng(args.seed + 999)
-        shuffle_rng.shuffle(_all_briefings)
+        if has_scramble_soft:
+            _all_briefings = [b for block in _cell_blocks for b in block]
+            shuffle_rng = np.random.default_rng(args.seed + 999)
+            shuffle_rng.shuffle(_all_briefings)
+            for idx, key in enumerate(_cell_keys):
+                start = idx * args.n_agents
+                scramble_overrides[key] = _all_briefings[start:start + args.n_agents]
+            print(f"  Cross-θ scramble: {len(_all_briefings)} briefings shuffled "
+                  f"across {len(_cell_keys)} cells")
 
-        # Redistribute to cells
-        for idx, key in enumerate(_cell_keys):
-            start = idx * args.n_agents
-            scramble_overrides[key] = _all_briefings[start:start + args.n_agents]
+        if has_scramble_hard:
+            blocks = list(_cell_blocks)
+            shuffle_rng = np.random.default_rng(args.seed + 1001)
+            shuffle_rng.shuffle(blocks)
+            for key, block in zip(_cell_keys, blocks):
+                scramble_hard_overrides[key] = block
+            print(f"  Cross-θ HARD scramble: {len(blocks)} cell blocks permuted "
+                  f"across {len(_cell_keys)} cells")
 
-        print(f"  Cross-θ scramble: {len(_all_briefings)} briefings shuffled "
-              f"across {len(_cell_keys)} cells")
+    # ── Pre-generate hard scramble overrides ────────────────────
+    # All briefings generated from theta=0.5, ensuring zero
+    # theta-to-briefing correlation (stronger than cross-theta permutation).
+    hard_scramble_overrides = {}
+    has_hard_scramble = any(name == "hard_scramble" for name, _, _ in run_specs)
+    if has_hard_scramble:
+        from .briefing import BriefingGenerator as _BG
+        _hs_gen = _BG(**base_params)
+        fixed_theta = 0.5  # midpoint
+
+        for ti, theta in enumerate(theta_grid):
+            for rep in range(args.reps):
+                cell_rng = np.random.default_rng(
+                    deterministic_hash((rep, ti, "hard_scramble")) % 2**32
+                )
+                cell_briefings = []
+                for agent_id in range(args.n_agents):
+                    signal = fixed_theta + cell_rng.normal(0, args.sigma)
+                    z_score = (signal - z_center) / args.sigma
+                    briefing = _hs_gen.generate(z_score, agent_id, 0)
+                    cell_briefings.append(briefing)
+                hard_scramble_overrides[(ti, rep)] = cell_briefings
+
+        print(f"  Hard scramble: all briefings from θ={fixed_theta}, "
+              f"{len(hard_scramble_overrides)} cells")
 
     # ── Network (for communication treatment) ───────────────────────
     adjacency = {}
@@ -210,6 +248,10 @@ def run_infodesign(args):
             briefing_overrides = None
             if design_name == "scramble":
                 briefing_overrides = scramble_overrides.get((theta_idx, rep))
+            elif design_name == "scramble_hard":
+                briefing_overrides = scramble_hard_overrides.get((theta_idx, rep))
+            elif design_name == "hard_scramble":
+                briefing_overrides = hard_scramble_overrides.get((theta_idx, rep))
 
             # Public signal injection: pre-generate briefings with public suffix
             elif config is not None and config.inject_public_signal:
@@ -278,7 +320,7 @@ def run_infodesign(args):
 
             # Run the game — scramble uses "normal" mode since
             # we handle it via briefing_overrides, not experiment.py's shuffle.
-            effective_signal_mode = "normal" if design_name == "scramble" else signal_mode
+            effective_signal_mode = "normal" if design_name in ("scramble", "scramble_hard", "hard_scramble") else signal_mode
             game_kwargs = dict(
                 agents=agents, theta=theta, z=z_center, sigma=args.sigma,
                 benefit=args.benefit, briefing_gen=gen, client=client,
@@ -300,6 +342,17 @@ def run_infodesign(args):
             else:
                 result = await run_pure_global_game(**game_kwargs)
 
+            # Briefing diagnostics: mean sliders actually shown to agents.
+            # Useful for verifying scramble independence of θ without rehydrating full briefings.
+            def _mean_agent_field(field: str) -> float:
+                vals = [a.get(field) for a in result.agents if a.get(field) is not None]
+                return float(np.mean(vals)) if vals else float("nan")
+
+            briefing_mean_direction = _mean_agent_field("direction")
+            briefing_mean_clarity = _mean_agent_field("clarity")
+            briefing_mean_coordination = _mean_agent_field("coordination")
+            briefing_mean_z = _mean_agent_field("briefing_z_score")
+
             return {
                 "design": design_name,
                 "treatment": "comm" if is_comm else "pure",
@@ -319,6 +372,10 @@ def run_infodesign(args):
                 "unparseable_rate": getattr(result, "unparseable_rate", 0.0),
                 "coup_success": result.coup_success,
                 "theoretical_attack": result.theoretical_attack,
+                "briefing_mean_direction": briefing_mean_direction,
+                "briefing_mean_clarity": briefing_mean_clarity,
+                "briefing_mean_coordination": briefing_mean_coordination,
+                "briefing_mean_z_score": briefing_mean_z,
                 "benefit": args.benefit,
                 "cost": args.cost,
                 "model": args.model,

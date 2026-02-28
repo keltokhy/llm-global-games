@@ -1,0 +1,19 @@
+\begin{table}[t]
+\centering
+\caption{Uncalibrated robustness: models run without any calibration adjustment. Even without calibration, six of seven models show strong $r(\theta, J)$, confirming that the sigmoid is not an artifact of the calibration procedure.}
+\label{tab:uncalibrated_expanded}
+\small
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+Model & $N$ & Mean join & $r(\theta, J)$ & $p$ \\
+\midrule
+Mistral Small Creative & 100 & 0.382 & $-0.865$ & 0.0000 \\
+Llama 3.3 70B & 100 & 0.422 & $-0.875$ & 0.0000 \\
+Qwen3 30B & 100 & 0.585 & $-0.876$ & 0.0000 \\
+GPT-OSS 120B & 100 & 0.336 & $-0.859$ & 0.0000 \\
+Qwen3 235B & 100 & 0.445 & $-0.857$ & 0.0000 \\
+MiniMax M2-Her & 100 & 0.425 & $-0.693$ & 0.0000 \\
+\bottomrule
+\end{tabular}}
+\end{table}

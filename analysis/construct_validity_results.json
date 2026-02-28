@@ -3,21 +3,21 @@
     {
       "model_slug": "mistralai--mistral-small-creative",
       "model_name": "Mistral-Small",
-      "n_obs": 20000,
-      "acc_3feat": 0.885,
-      "acc_3feat_std": 0.008892412496055303,
-      "r2_3feat": 0.5616096541892214,
-      "coef_direction": -9.03785218080922,
-      "coef_clarity": -0.10168983746249724,
-      "coef_coordination": -0.7084815364103286,
-      "intercept_3feat": 3.484505774067034,
-      "acc_1feat": 0.8846999999999999,
-      "acc_1feat_std": 0.00843860177991593,
-      "r2_1feat": 0.5625108058544308,
-      "coef_direction_only": -8.332348036754675,
-      "intercept_1feat": 2.7344157255835277,
-      "acc_gain": 0.000300000000000078,
-      "r2_gain": -0.000901151665209432
+      "n_obs": 25000,
+      "acc_3feat": 0.88364,
+      "acc_3feat_std": 0.004825598408487773,
+      "r2_3feat": 0.5654653172948761,
+      "coef_direction": -9.893441490544346,
+      "coef_clarity": -0.24941459997297785,
+      "coef_coordination": -1.5355277521493855,
+      "intercept_3feat": 4.4580035621499965,
+      "acc_1feat": 0.884,
+      "acc_1feat_std": 0.005051732376126014,
+      "r2_1feat": 0.5653641826496973,
+      "coef_direction_only": -8.303356397306342,
+      "intercept_1feat": 2.795650032378514,
+      "acc_gain": -0.00036000000000002697,
+      "r2_gain": 0.000101134645178802
     },
     {
       "model_slug": "meta-llama--llama-3.3-70b-instruct",
@@ -158,31 +158,31 @@
       "model_slug": "mistralai--mistral-small-creative",
       "model_name": "Mistral-Small",
       "treatment": "pure",
-      "mean_residual": 1.0474373599630126e-05,
-      "std_residual": 0.29791322510808727,
-      "n_obs": 20000,
-      "mean_actual": 0.38185,
-      "mean_predicted": 0.3818395256264004
+      "mean_residual": 9.422870623487256e-05,
+      "std_residual": 0.2974177657036181,
+      "n_obs": 25000,
+      "mean_actual": 0.38736,
+      "mean_predicted": 0.38726577129376516
     },
     {
       "model_slug": "mistralai--mistral-small-creative",
       "model_name": "Mistral-Small",
       "treatment": "comm",
-      "mean_residual": 0.030098122666293588,
-      "std_residual": 0.2912106879961512,
+      "mean_residual": 0.024009031902035464,
+      "std_residual": 0.29010185338368494,
       "n_obs": 24998,
       "mean_actual": 0.4111128890311225,
-      "mean_predicted": 0.38101476636482895
+      "mean_predicted": 0.387103857129087
     },
     {
       "model_slug": "mistralai--mistral-small-creative",
       "model_name": "Mistral-Small",
       "treatment": "surveillance",
-      "mean_residual": -0.13377742197212616,
-      "std_residual": 0.3387424899856155,
+      "mean_residual": -0.11624577606150403,
+      "std_residual": 0.322947414349248,
       "n_obs": 25000,
-      "mean_actual": 0.2772,
-      "mean_predicted": 0.41097742197212617
+      "mean_actual": 0.27568,
+      "mean_predicted": 0.391925776061504
     },
     {
       "model_slug": "meta-llama--llama-3.3-70b-instruct",
@@ -283,6 +283,16 @@
       "n_obs": 4987,
       "mean_actual": 0.44154802486464806,
       "mean_predicted": 0.4029777493266605
+    },
+    {
+      "model_slug": "openai--gpt-oss-120b",
+      "model_name": "GPT-OSS-120B",
+      "treatment": "surveillance",
+      "mean_residual": -0.10050373183233763,
+      "std_residual": 0.3617771200006619,
+      "n_obs": 4836,
+      "mean_actual": 0.31927212572373864,
+      "mean_predicted": 0.41977585755607627
     },
     {
       "model_slug": "qwen--qwen3-235b-a22b-2507",

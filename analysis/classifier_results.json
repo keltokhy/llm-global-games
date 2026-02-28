@@ -1,0 +1,62 @@
+{
+  "bow_tfidf": {
+    "cv_pure": {
+      "accuracy_mean": 0.88444,
+      "accuracy_std": 0.002166656410232133,
+      "auc_mean": 0.94746727786614,
+      "auc_std": 0.0023665145513743287
+    },
+    "cross_pure_to_comm": {
+      "accuracy": 0.8798303864309145,
+      "auc": 0.9492180121932834,
+      "predicted_join_rate": 0.4021521721737739,
+      "actual_join_rate": 0.4111128890311225
+    },
+    "cross_pure_to_surv": {
+      "accuracy": 0.84464,
+      "auc": 0.9377747188116544,
+      "predicted_join_rate": 0.40528,
+      "actual_join_rate": 0.27568
+    }
+  },
+  "slider_logistic": {
+    "cv_pure": {
+      "accuracy_mean": 0.8842800000000001,
+      "accuracy_std": 0.0024935115800813847,
+      "auc_mean": 0.9405975963624543,
+      "auc_std": 0.0034589647446392337
+    },
+    "cross_pure_to_comm": {
+      "accuracy": 0.8786702936234899,
+      "auc": 0.9513185264075337,
+      "predicted_join_rate": 0.39867189375150014,
+      "actual_join_rate": 0.4111128890311225
+    },
+    "cross_pure_to_surv": {
+      "accuracy": 0.84096,
+      "auc": 0.9247898338991652,
+      "predicted_join_rate": 0.40368,
+      "actual_join_rate": 0.27568
+    }
+  },
+  "keyphrase_sentiment": {
+    "cv_pure": {
+      "accuracy_mean": 0.60236,
+      "accuracy_std": 0.0029377542443165534,
+      "auc_mean": 0.5941721466259549,
+      "auc_std": 0.004424329380004841
+    },
+    "cross_pure_to_comm": {
+      "accuracy": 0.5846067685414833,
+      "auc": 0.6048282227697308,
+      "predicted_join_rate": 0.08468677494199536,
+      "actual_join_rate": 0.4111128890311225
+    },
+    "cross_pure_to_surv": {
+      "accuracy": 0.68624,
+      "auc": 0.5301378996287318,
+      "predicted_join_rate": 0.08384,
+      "actual_join_rate": 0.27568
+    }
+  }
+}

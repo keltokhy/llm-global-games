@@ -32,6 +32,8 @@ SUPPORTED_LANGUAGE_VARIANTS = (
     "baseline",
     "baseline_assess",
     "baseline_full",
+    "cable",
+    "journalistic",
 )
 
 # ---------------------------------------------------------------------------
@@ -1052,6 +1054,30 @@ class Briefing:
                 f"KEY UNCERTAINTIES:\n{unclear_text}\n\n"
                 "Use this information only; you have no additional evidence."
             )
+        if self.language_variant == "cable":
+            # Terse diplomatic-cable style — no narrative framing, short lines
+            obs_cable = "\n".join(f"  {i+1}. {o}" for i, o in enumerate(self.observations))
+            unclear_cable = "\n".join(f"  - {u}" for u in self.unclear)
+            return (
+                f"SUBJ: SITUATION ASSESSMENT\n"
+                f"CLASSIFICATION: PRIVATE\n\n"
+                f"1. SUMMARY: {self.bottom_line}\n"
+                f"2. ATMOSPHERE: {self.atmosphere}\n"
+                f"3. REPORTING:\n{obs_cable}\n"
+                f"4. GAPS:\n{unclear_cable}\n"
+                f"5. END CABLE."
+            )
+        if self.language_variant == "journalistic":
+            # News-wire inverted pyramid style — lead, then details
+            obs_journal = "\n".join(f"  * {o}" for o in self.observations)
+            unclear_journal = "\n".join(f"  * {u}" for u in self.unclear)
+            return (
+                f"FIELD REPORT\n\n"
+                f"{self.bottom_line} "
+                f"Sources describe the atmosphere as: {self.atmosphere.lower()}.\n\n"
+                f"Key observations:\n{obs_journal}\n\n"
+                f"Analysts note the following remain unclear:\n{unclear_journal}"
+            )
         raise ValueError(f"Unsupported language_variant at render time: {self.language_variant}")
 
 
@@ -1085,8 +1111,10 @@ class BriefingGenerator:
         Four cutpoints for mapping coordination to atmosphere text tiers.
     coordination_blend_prob : float
         Blend probability used in intermediate atmosphere bands.
-    language_variant : {"legacy", "baseline_min", "baseline", "baseline_assess", "baseline_full"}
+    language_variant : str
         Rendering schema for the final briefing text.
+        One of: "legacy", "baseline_min", "baseline", "baseline_assess",
+        "baseline_full", "cable", "journalistic".
     seed : int
         Random seed for reproducibility within a period. Each agent
         should get a different seed offset.
@@ -1162,7 +1190,7 @@ class BriefingGenerator:
         # Sample observations from different domains (8 from 8)
         n_obs = min(self.n_observations, len(DOMAINS))
         domain_indices = rng.choice(len(DOMAINS), size=n_obs, replace=False)
-        tagged_variants = {"baseline", "baseline_assess", "baseline_full"}
+        tagged_variants = {"baseline", "baseline_assess", "baseline_full", "cable"}
         if self.language_variant in tagged_variants:
             domain_indices = np.sort(domain_indices)
         observations = []

@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering
+\caption{Elicited punishment risk (0--10 scale). Agents rate expected regime punishment after their JOIN/STAY decision. ``JOIN'' and ``STAY'' columns show the mean rating conditional on the agent's own decision.}
+\label{tab:punishment_risk}
+\small
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{llcccc}
+\toprule
+Model & Condition & $N$ & Mean risk & Risk $|$ JOIN & Risk $|$ STAY \\
+\midrule
+Mistral & Pure & 2500 & 8.1 & 8.0 & 8.2 \\
+Mistral & Comm & 2500 & 8.1 & 8.0 & 8.1 \\
+Mistral & Surveillance & 2500 & 8.1 & 8.1 & 8.1 \\
+\midrule
+Llama 70B & Pure & 2500 & 8.0 & 8.0 & 7.9 \\
+Llama 70B & Comm & 2500 & 7.9 & 8.0 & 7.9 \\
+Llama 70B & Surveillance & 2500 & 7.9 & 8.0 & 7.9 \\
+\bottomrule
+\end{tabular}}
+\end{table}

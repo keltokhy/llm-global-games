@@ -190,9 +190,81 @@ COORDINATION_SUPPRESSED = InfoDesignConfig(
     bandwidth=0.15,
 )
 
+# ── Common-knowledge vs private × coordination 2×2 ──────────────
+# Tests whether common-knowledge framing interacts with coordination cues.
+
+CK_HIGH_COORD = InfoDesignConfig(
+    name="ck_high_coord",
+    coordination_slope_factor=2.0,
+    bandwidth=0.15,
+    source_header=(
+        "This briefing has been distributed to all citizens. "
+        "Everyone has access to the same information."
+    ),
+)
+
+CK_LOW_COORD = InfoDesignConfig(
+    name="ck_low_coord",
+    coordination_slope_factor=0.3,
+    bandwidth=0.15,
+    source_header=(
+        "This briefing has been distributed to all citizens. "
+        "Everyone has access to the same information."
+    ),
+)
+
+PRIV_HIGH_COORD = InfoDesignConfig(
+    name="priv_high_coord",
+    coordination_slope_factor=2.0,
+    bandwidth=0.15,
+    source_header=(
+        "This briefing is based on your personal contacts "
+        "and private intelligence."
+    ),
+)
+
+PRIV_LOW_COORD = InfoDesignConfig(
+    name="priv_low_coord",
+    coordination_slope_factor=0.3,
+    bandwidth=0.15,
+    source_header=(
+        "This briefing is based on your personal contacts "
+        "and private intelligence."
+    ),
+)
+
+# ── Hard scramble ────────────────────────────────────────────────
+# All briefings generated from a single fixed theta (e.g., 0.5),
+# ensuring zero correlation between theta and briefing content.
+
+HARD_SCRAMBLE = InfoDesignConfig(
+    name="hard_scramble",
+    bandwidth=0.15,
+)
+
+# ── Common-knowledge framing (valence-held-constant) ───────────────
+# Holds the underlying private briefing constant and varies only whether
+# the information is framed as public/common knowledge vs private.
+
+CK_PUBLIC = InfoDesignConfig(
+    name="ck_public",
+    source_header=(
+        "NOTE: The key points below have been broadcast nationally and are widely known. "
+        "Most citizens have seen the same report and know that others have seen it."
+    ),
+)
+
+CK_PRIVATE = InfoDesignConfig(
+    name="ck_private",
+    source_header=(
+        "NOTE: The key points below are circulating privately among small circles. "
+        "Most citizens likely have not seen this report, and you should not assume others know the same details."
+    ),
+)
+
 # ── B/C comparative statics (cost/benefit narrative) ─────────────
 # Vary perceived cost of failure vs benefit of success in the narrative.
-# Theory predicts: higher cost → higher cutoff (less joining).
+# Theory predicts: higher cost → lower cutoff (less joining).
 
 BC_HIGH_COST = InfoDesignConfig(
     name="bc_high_cost",
@@ -268,12 +340,19 @@ ALL_DESIGNS = {
     "rhetoric_cold": RHETORIC_COLD,
     "coord_amplified": COORDINATION_AMPLIFIED,
     "coord_suppressed": COORDINATION_SUPPRESSED,
+    "ck_public": CK_PUBLIC,
+    "ck_private": CK_PRIVATE,
     "bc_high_cost": BC_HIGH_COST,
     "bc_low_cost": BC_LOW_COST,
     "censor_upper_known": UPPER_CENSORSHIP_KNOWN,
     "within_scramble": WITHIN_SCRAMBLE,
     "domain_scramble_coord": DOMAIN_SCRAMBLE_COORDINATION,
     "domain_scramble_state": DOMAIN_SCRAMBLE_STATE,
+    "ck_high_coord": CK_HIGH_COORD,
+    "ck_low_coord": CK_LOW_COORD,
+    "priv_high_coord": PRIV_HIGH_COORD,
+    "priv_low_coord": PRIV_LOW_COORD,
+    "hard_scramble": HARD_SCRAMBLE,
 }
 
 

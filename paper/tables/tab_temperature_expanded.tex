@@ -1,0 +1,28 @@
+\begin{table}[t]
+\centering
+\caption{Temperature robustness across three models. The pure global game is run at varying LLM decoding temperatures. The correlation $r(\theta, J)$ is stable across all temperatures and models.}
+\label{tab:temperature_expanded}
+\small
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{llcccc}
+\toprule
+Model & $T$ & $N$ & Mean join & $r(\theta, J)$ & Cutoff $\hat{\theta}^*$ \\
+\midrule
+Mistral Small & T=0.3 & 100 & 0.412 & $-0.873$ & -0.049 \\
+Mistral Small & T=0.7 & 100 & 0.406 & $-0.869$ & -0.079 \\
+Mistral Small & T=1.0 & 100 & 0.410 & $-0.884$ & -0.039 \\
+\midrule
+Llama 70B & T=0.3 & 100 & 0.364 & $-0.851$ & -0.210 \\
+Llama 70B & T=0.5 & 100 & 0.360 & $-0.849$ & -0.219 \\
+Llama 70B & T=0.7 & 100 & 0.361 & $-0.850$ & -0.220 \\
+Llama 70B & T=1.0 & 100 & 0.360 & $-0.851$ & -0.215 \\
+Llama 70B & T=1.2 & 100 & 0.358 & $-0.853$ & -0.227 \\
+\midrule
+Qwen 235B & T=0.3 & 100 & 0.392 & $-0.855$ & -0.117 \\
+Qwen 235B & T=0.5 & 100 & 0.392 & $-0.846$ & -0.112 \\
+Qwen 235B & T=0.7 & 100 & 0.392 & $-0.860$ & -0.110 \\
+Qwen 235B & T=1.0 & 100 & 0.398 & $-0.858$ & -0.105 \\
+Qwen 235B & T=1.2 & 100 & 0.397 & $-0.858$ & -0.121 \\
+\bottomrule
+\end{tabular}}
+\end{table}

@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering
+\caption{Cross-generator robustness. Three text rendering styles (baseline, diplomatic cable, journalistic wire) use identical slider functions and evidence items; only prose formatting differs. The Pearson $r(\theta, J)$ and logistic cutoff are virtually identical across generators.}
+\label{tab:cross_generator}
+\small
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{llcccc}
+\toprule
+Model & Generator & $N$ & Mean join & $r(\theta, J)$ & Cutoff $\hat{\theta}^*$ \\
+\midrule
+Mistral Small Creative & Baseline & 100 & 0.402 & $-0.865$ & -0.070 \\
+Mistral Small Creative & Cable & 100 & 0.406 & $-0.858$ & -0.057 \\
+Mistral Small Creative & Journalistic & 100 & 0.403 & $-0.857$ & -0.065 \\
+\midrule
+Llama 3.3 70B & Baseline & 100 & 0.354 & $-0.850$ & -0.249 \\
+Llama 3.3 70B & Cable & 100 & 0.362 & $-0.851$ & -0.226 \\
+Llama 3.3 70B & Journalistic & 100 & 0.360 & $-0.854$ & -0.233 \\
+\bottomrule
+\end{tabular}}
+\end{table}

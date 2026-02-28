@@ -222,6 +222,20 @@ if _info_csvs:
     info_all = info_all.drop_duplicates(subset=["design", "theta", "rep"], keep="last")
 else:
     info_all = pd.DataFrame()
+
+# The B/C sweep overwrites experiment_infodesign_baseline_summary.csv with
+# the last theta_star target (0.75), shifting the baseline theta grid to
+# [0.45, 1.05].  Replace with the canonical theta_star=0.50 slice from the
+# sweep so the baseline grid matches all other designs ([0.20, 0.80]).
+_bc_sweep_path = ROOT / PRIMARY / "experiment_bc_sweep_summary.csv"
+if _bc_sweep_path.exists() and len(info_all) > 0:
+    _bc = pd.read_csv(_bc_sweep_path)
+    if "theta_star_target" in _bc.columns:
+        _bc_baseline = _bc[np.isclose(_bc["theta_star_target"].astype(float), 0.50)].copy()
+        if len(_bc_baseline) > 0:
+            _bc_baseline["design"] = "baseline"
+            info_all = info_all[info_all["design"] != "baseline"]
+            info_all = pd.concat([info_all, _bc_baseline], ignore_index=True)
 comm_df = load_csv(ROOT / PRIMARY / "experiment_comm_summary.csv")
 pure_df = load_csv(ROOT / PRIMARY / "experiment_pure_summary.csv")
 
@@ -264,20 +278,20 @@ def fig01_sigmoid():
     ax.errorbar(cp, mp, yerr=sep * 1.96, fmt="none", ecolor=C_PURE,
                 alpha=0.3, linewidth=0.5, zorder=1)
 
-    # Theoretical attack mass A(θ) = Φ((x* - θ)/σ) where x* = θ* + σΦ⁻¹(θ*)
+    # Benchmark attack mass A(θ) = Φ((x* - θ)/σ) where x* = θ* + σΦ⁻¹(θ*)
     sigma = 0.3
     theta_star = 1.0 / (1.0 + 1.0)  # B/(1+B) with B=1
     x_star = theta_star + sigma * stats.norm.ppf(np.clip(theta_star, 1e-6, 1 - 1e-6))
     am_vals = stats.norm.cdf((x_star - theta_grid) / sigma)
     ax.plot(theta_grid, am_vals, color="#d62728", linewidth=1.0, linestyle="--",
-            zorder=1, alpha=0.7, label="Theoretical $A(\\theta)$")
+            zorder=1, alpha=0.7, label="Benchmark $A(\\theta)$ (B=C=1)")
 
     ts_p = -b0_p / b1_p
     ax.axvline(ts_p, color=C_PURE, linestyle=":", linewidth=0.5, alpha=0.5)
 
     r_p = stats.pearsonr(pure["theta"], pure["join_fraction"])[0]
     ax.text(0.03, 0.03,
-            f"$r$ = {r_p:.2f}, $\\theta^*$ = {ts_p:.2f}",
+            f"$r(\\theta,J)$ = {r_p:.2f}, $\\hat{{\\theta}}^*$ = {ts_p:.2f}",
             transform=ax.transAxes, fontsize=6, va="bottom",
             bbox=dict(boxstyle="round,pad=0.2", facecolor="white",
                       alpha=0.8, edgecolor="#ccc", linewidth=0.4))
@@ -746,20 +760,26 @@ def fig12_surveillance():
         return
 
     surv_dir = ROOT / "surveillance"
-    surv_models = [d.name for d in surv_dir.iterdir()
-                   if d.is_dir() and (d / "experiment_comm_summary.csv").exists()]
-    surv_models.sort()
+    # Discover surveillance CSVs recursively (handles nested slug dirs)
+    surv_csvs = sorted(surv_dir.rglob("experiment_comm_summary.csv"))
+    surv_model_paths = {}  # slug → path to surveillance CSV
+    for csv_path in surv_csvs:
+        slug = csv_path.parent.name
+        if "--" not in slug:
+            continue
+        surv_model_paths[slug] = csv_path
+    surv_models = sorted(surv_model_paths.keys())
 
     fig, axes = plt.subplots(1, 2, figsize=(TEXT_W, 3.0),
                               gridspec_kw={"width_ratios": [1.3, 1]})
     theta_grid = np.linspace(-3.5, 3.5, 200)
 
     ax = axes[0]
-    model_colors_surv = ["#2c7bb6", "#d7191c", "#1a9641"]
+    _fallback_colors = ["#2c7bb6", "#d7191c", "#1a9641", "#5e4fa2", "#fdae61"]
     deltas = []
 
     for i, model in enumerate(surv_models):
-        color = model_colors_surv[i % len(model_colors_surv)]
+        color = MODEL_COLORS.get(model, _fallback_colors[i % len(_fallback_colors)])
         name = SHORT_NAMES.get(model, model[:15])
 
         comm_f = ROOT / model / "experiment_comm_summary.csv"
@@ -767,8 +787,7 @@ def fig12_surveillance():
             continue
         comm = pd.read_csv(comm_f)
 
-        surv_f = surv_dir / model / "experiment_comm_summary.csv"
-        surv_m = pd.read_csv(surv_f)
+        surv_m = pd.read_csv(surv_model_paths[model])
 
         delta = surv_m["join_fraction"].mean() - comm["join_fraction"].mean()
         deltas.append({"model": name, "delta": delta})
@@ -809,7 +828,7 @@ def fig12_surveillance():
     if deltas:
         ddf = pd.DataFrame(deltas).sort_values("delta")
         y = np.arange(len(ddf))
-        colors = model_colors_surv[:len(ddf)]
+        colors = _fallback_colors[:len(ddf)]
         ax.barh(y, ddf["delta"] * 100, color=colors, edgecolor="none", height=0.5)
         ax.set_yticks(y)
         ax.set_yticklabels(ddf["model"])
@@ -1785,6 +1804,161 @@ def fig19_nonparametric_beliefs():
 
 
 # ═══════════════════════════════════════════════════════════════════
+# FIGURE 20: Cross-generator sigmoid overlay
+# ═══════════════════════════════════════════════════════════════════
+
+def fig20_cross_generator():
+    """Sigmoid overlay for 3 language generators × 2 models."""
+    cross_gen_base = ROOT / "cross-generator"
+    if not cross_gen_base.exists():
+        print("  Skipping fig20 (no cross-generator data)")
+        return
+
+    variant_map = {
+        "Mistral Small Creative": {
+            "baseline": "mistralai/mistral-small-creative_baseline",
+            "cable": "mistralai/mistral-small-creative_cable",
+            "journalistic": "mistralai/mistral-small-creative_journalistic",
+        },
+        "Llama 3.3 70B": {
+            "baseline": "meta-llama/llama-3.3-70b-instruct_baseline",
+            "cable": "meta-llama/llama-3.3-70b-instruct_cable",
+            "journalistic": "meta-llama/llama-3.3-70b-instruct_journalistic",
+        },
+    }
+
+    variant_colors = {"baseline": C_PURE, "cable": "#2c7bb6", "journalistic": "#d7191c"}
+    variant_styles = {"baseline": "-", "cable": "--", "journalistic": ":"}
+
+    fig, axes = plt.subplots(1, 2, figsize=(TEXT_W, 2.8), sharey=True)
+
+    for ax, (model, variants) in zip(axes, variant_map.items()):
+        for variant_name, rel_path in variants.items():
+            csvs = list((cross_gen_base / rel_path).rglob("experiment_pure_summary.csv"))
+            if not csvs:
+                continue
+            df = pd.read_csv(csvs[0])
+            jcol = "join_fraction_valid" if "join_fraction_valid" in df.columns else "join_fraction"
+            if len(df) == 0:
+                continue
+
+            # Binned data
+            centers, means, ses = binned(df, join_col=jcol)
+
+            # Fitted logistic
+            popt, _ = fit_logistic(df, join_col=jcol)
+
+            # Plot binned points
+            ax.errorbar(centers, means, yerr=1.96 * ses,
+                        fmt="o", markersize=3, elinewidth=0.5, capsize=1.5,
+                        color=variant_colors[variant_name], alpha=0.7)
+
+            # Plot fitted curve
+            theta_grid = np.linspace(df["theta"].min(), df["theta"].max(), 200)
+            ax.plot(theta_grid, logistic(theta_grid, *popt),
+                    color=variant_colors[variant_name],
+                    linestyle=variant_styles[variant_name],
+                    linewidth=1.2,
+                    label=f"{variant_name.capitalize()}")
+
+            # Annotate r
+            r_val = np.corrcoef(df["theta"].values, df[jcol].values)[0, 1]
+            # Put r values in legend label
+            ax.plot([], [], " ", label=f"  $r = {r_val:.3f}$")
+
+        ax.set_xlabel(r"$\theta$ (regime strength)")
+        ax.set_title(model, fontsize=9, loc="left")
+        ax.set_ylim(-0.05, 1.05)
+        ax.legend(fontsize=6, loc="upper right", framealpha=0.9, edgecolor="#ccc")
+
+    axes[0].set_ylabel("Join fraction")
+
+    plt.tight_layout()
+    save(fig, "fig20_cross_generator")
+
+
+# ═══════════════════════════════════════════════════════════════════
+# FIGURE 21: Placebo calibration
+# ═══════════════════════════════════════════════════════════════════
+
+def fig21_placebo_calibration():
+    """Show that r is unchanged under placebo calibration shifts."""
+    placebo_base = ROOT / "placebo-calibration"
+    if not placebo_base.exists():
+        print("  Skipping fig21 (no placebo-calibration data)")
+        return
+
+    # Collect r-values for each condition
+    conditions = []
+
+    for model_slug, model_name in [
+        ("mistralai--mistral-small-creative", "Mistral"),
+        ("meta-llama--llama-3.3-70b-instruct", "Llama 70B"),
+    ]:
+        # Calibrated baseline from main output
+        base_csv = ROOT / model_slug / "experiment_pure_summary.csv"
+        if base_csv.exists():
+            df = pd.read_csv(base_csv)
+            jcol = "join_fraction_valid" if "join_fraction_valid" in df.columns else "join_fraction"
+            r_val = np.corrcoef(df["theta"].values, df[jcol].dropna().values[:len(df["theta"])])[0, 1]
+            conditions.append((model_name, "Calibrated", r_val, df[jcol].mean()))
+
+        # Placebo shifts
+        for shift, label in [("0p3", "+0.3"), ("neg0p3", "-0.3")]:
+            short = model_slug.split("--")[1]
+            rel = f"{model_slug.split('--')[0]}/{short}_shift_{shift}"
+            csvs = list((placebo_base / rel).rglob("experiment_pure_summary.csv"))
+            if not csvs:
+                continue
+            df = pd.read_csv(csvs[0])
+            jcol = "join_fraction_valid" if "join_fraction_valid" in df.columns else "join_fraction"
+            valid = df.dropna(subset=[jcol])
+            if len(valid) < 3:
+                continue
+            r_val = np.corrcoef(valid["theta"].values, valid[jcol].values)[0, 1]
+            conditions.append((model_name, f"$\\Delta c = {label}$", r_val, valid[jcol].mean()))
+
+    if not conditions:
+        print("  Skipping fig21 (no data loaded)")
+        return
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(TEXT_W, 2.5))
+
+    # Panel A: r-values
+    labels = [f"{m}\n{c}" for m, c, _, _ in conditions]
+    r_vals = [r for _, _, r, _ in conditions]
+    colors = []
+    for _, cond, _, _ in conditions:
+        if "Calibrated" in cond:
+            colors.append(C_PURE)
+        elif "+0.3" in cond:
+            colors.append("#d7191c")
+        else:
+            colors.append("#2c7bb6")
+
+    ax1.barh(range(len(conditions)), r_vals, color=colors, height=0.6, alpha=0.8)
+    ax1.set_yticks(range(len(conditions)))
+    ax1.set_yticklabels(labels, fontsize=6)
+    ax1.set_xlabel("$r(\\theta, J)$")
+    ax1.set_title("(a) Correlation unchanged", fontsize=9, loc="left")
+    ax1.set_xlim(-1, 0)
+    ax1.invert_yaxis()
+
+    # Panel B: mean join shifts
+    means = [mj for _, _, _, mj in conditions]
+    ax2.barh(range(len(conditions)), means, color=colors, height=0.6, alpha=0.8)
+    ax2.set_yticks(range(len(conditions)))
+    ax2.set_yticklabels(labels, fontsize=6)
+    ax2.set_xlabel("Mean join fraction")
+    ax2.set_title("(b) Mean join shifts with center", fontsize=9, loc="left")
+    ax2.set_xlim(0, 1)
+    ax2.invert_yaxis()
+
+    plt.tight_layout()
+    save(fig, "fig21_placebo_calibration")
+
+
+# ═══════════════════════════════════════════════════════════════════
 # MAIN
 # ═══════════════════════════════════════════════════════════════════
 
@@ -1813,5 +1987,7 @@ if __name__ == "__main__":
     fig17_second_order_beliefs()
     fig18_bc_sweep()
     fig19_nonparametric_beliefs()
+    fig20_cross_generator()
+    fig21_placebo_calibration()
 
     print(f"\nAll figures saved to {FIG_DIR}")

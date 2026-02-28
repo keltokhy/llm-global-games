@@ -49,12 +49,12 @@
 \maketitle
 
 \begin{abstract}
-I embed eight large language models in the Morris--Shin (2003) regime change game, conveying private signals as natural-language briefings. Across 1,700 country--periods and 42,500 decisions, join rates track the equilibrium comparative statics: the within-country signal--action correlation averages $r = +0.74$, collapses to $+0.07$ when briefings are scrambled, and flips to $-0.69$ when signals are inverted. I then study how authoritarian regimes exploit the same information channel that makes coordination possible. Surveillance induces preference falsification---agents maintain private beliefs but suppress expressed behavior, reducing join rates by 11.1~pp across three architectures. Censorship pools and distorts signals; propaganda saturates quickly. The regime need not change what citizens believe; it needs only to make them uncertain about each other. For AI alignment, the results reveal that LLMs exhibit emergent preference falsification without training for deception, and produce stated beliefs that substantially predict the signal-to-action pathway.
+I embed seven large language models in the Morris--Shin (2003) regime change global game, conveying private signals as natural-language intelligence briefings. Across 1,800 country--periods and 45,000 decisions, join rates exhibit threshold-policy alignment with global-game comparative statics: the within-country correlation between join rates and a benchmark attack mass averages $r = +0.80$, collapses to $+0.05$ when briefings are scrambled, and flips to $-0.80$ when signals are inverted. I then study how authoritarian regimes exploit the same information channel that enables coordination. Surveillance creates a belief--action wedge consistent with preference falsification: agents' stated beliefs track the benchmark, yet expressed joining falls by $11.1$~pp across three architectures. Censorship pools and distorts signals; propaganda saturates quickly. The regime need not change what citizens believe; it needs only to make them uncertain about each other.
 \end{abstract}
 
 \medskip
 \noindent\textbf{JEL:} C72, C92, D82, D83, P16 \\
-\noindent\textbf{Keywords:} global games, regime change, LLM agents, information design, Bayesian persuasion, preference falsification, AI alignment, emergent capabilities
+\noindent\textbf{Keywords:} global games, regime change, LLM agents, information design, Bayesian persuasion, preference falsification
 
 
 %% ============================================================
@@ -64,15 +64,15 @@ I embed eight large language models in the Morris--Shin (2003) regime change gam
 
 Coordination games with multiple equilibria are central to the analysis of bank runs \citep{diamond1983}, currency attacks \citep{obstfeld1996}, and political upheaval \citep{angeletos2007a}. The theory of global games \citep{carlsson1993, morris2003, frankel03} resolves the multiplicity by introducing private information: when agents observe noisy private signals about an underlying fundamental, a unique equilibrium emerges in threshold strategies. The canonical application---regime change---has been extensively studied theoretically. Laboratory experiments have tested the theory in simplified settings: small groups with numeric signals and stylized payoffs \citep{heinemann2004, heinemann2009, szkup2020}. But the full Morris--Shin regime change game---continuous private signals, large groups, strategic uncertainty---has not been implemented experimentally. Field data from actual crises confounds strategic behavior with institutional and informational heterogeneity.
 
-I take a different approach: I embed large language model (LLM) agents directly in the \citet{morris2003} regime change game. Each agent receives a private signal $x_i = \theta + \varepsilon_i$, translated into a natural-language intelligence briefing describing the political, economic, and security situation. No explicit payoff table is provided---the stakes of joining or staying are embedded in the narrative, forcing agents to extract strategic information from language rather than from a formatted matrix. I run this experiment across eight architecturally distinct models spanning six families (Mistral, Llama, Qwen, GPT, Arcee, and MiniMax), with 25 agents per country--period and pure-treatment sample sizes of 100--800 country--periods per model (Table~\ref{tab:models}), totaling 1,700 country--periods (42,500 individual decisions) in the pure treatment alone.
+I take a different approach: I embed large language model (LLM) agents directly in the \citet{morris2003} regime change game. Each agent receives a private signal $x_i = \theta + \varepsilon_i$, translated into a natural-language intelligence briefing describing the political, economic, and security situation. No explicit payoff table is provided---the stakes of joining or staying are embedded in the narrative, forcing agents to extract strategic information from language rather than from a formatted matrix. I run this experiment across seven architecturally distinct models spanning six families (Mistral, Llama, Qwen, GPT, Arcee, and MiniMax), with 25 agents per country--period and pure-treatment sample sizes of 100--1,000 country--periods per model (Table~\ref{tab:models}), totaling 1,800 country--periods (45,000 individual decisions) in the pure treatment alone.
 
-The first finding is that LLM agents exhibit stable, monotone threshold behavior consistent with the equilibrium prediction. The correlation between the theoretical attack mass $A(\theta) = \Phi[(x^* - \theta)/\sigma]$ and the empirical join fraction averages $r = +0.74$ ($p < 0.001$ for every model). Two falsification tests confirm that this correlation is driven by briefing content rather than incidental features of the prompt: randomly scrambling briefings across periods reduces the within-country correlation to $r = +0.07$, and inverting the signal direction flips it to $r = -0.69$. In both cases the change relative to the pure treatment is significant (Fisher $z$-test, $p < 0.001$). This establishes monotonicity and content sensitivity---necessary conditions for equilibrium play, though not sufficient to establish full Bayesian Nash rationality. Elicited beliefs track the Bayesian posterior ($r = +0.79$) and predict actions beyond what signals alone predict ($r = +0.84$, exceeding the text-baseline $r = 0.80$), providing evidence of strategic processing beyond mere sentiment following.
+The first finding is that LLM agents implement stable, monotone threshold-like policies over narrative private information. The correlation between the benchmark attack mass $A(\theta)$ and the empirical join fraction averages $r = +0.80$ ($p < 0.001$ for every model). Two falsification tests confirm that this correlation is driven by briefing content rather than incidental features of the prompt: randomly scrambling briefings across periods reduces the within-country correlation to $r = +0.05$, and inverting the signal direction flips it to $r = -0.80$. In both cases the change relative to the pure treatment is significant (Fisher $z$-test, $p < 0.001$). This establishes monotonicity and content sensitivity---sufficient to interpret the behavior through global-game comparative statics, though not to establish full Bayesian Nash rationality. Elicited beliefs track a theoretical benchmark ($r = +0.79$) and predict actions beyond what signals alone predict ($r = +0.84$, exceeding the text-baseline $r = 0.80$), providing evidence of strategic processing beyond mere sentiment following.
 
-The second finding---and the paper's central contribution---is that the information channel is simultaneously the mechanism of coordination and its greatest vulnerability. Pre-play communication does not raise agents' beliefs or their willingness to act (mean effect \CommDeltaPPModelAvg~pp across models; not significant in the pooled sample), yet the channel it opens introduces strategic uncertainty that makes coordination exploitable. Surveillance poisons the channel through preference falsification ($-13.4$~pp for the primary model, $p < 0.001$). Censorship pools and distorts private signals, and its interaction with surveillance is large and model-dependent. Propaganda's behavioral effect saturates quickly while its mechanical effect scales linearly, implying diminishing returns. The regime does not need to change what citizens believe---it needs only to make them uncertain about each other.
+The second finding---and the paper's central contribution---is that the information channel is simultaneously the mechanism of coordination and its greatest vulnerability. Pre-play communication has a near-zero mean effect on willingness to act (mean shift \CommDeltaPPModelAvg~pp across models; not significant in the pooled sample), yet the channel it opens introduces strategic uncertainty that makes coordination exploitable. Surveillance poisons the channel through preference falsification ($-13.5$~pp for the primary model, $p < 0.001$). Censorship pools and distorts private signals, and its interaction with surveillance is large and model-dependent. Propaganda's behavioral effect saturates quickly while its mechanical effect scales linearly, implying diminishing returns. The regime does not need to change what citizens believe---it needs only to make them uncertain about each other.
 
-The paper makes three contributions. First, it tests whether the threshold equilibrium patterns predicted by global games theory emerge when LLM agents are embedded in the full Morris--Shin regime change game---with continuous private signals, large groups, and narrative information---going beyond the simplified coordination games tested in existing laboratory experiments. Second, it provides the first experimental tests of information design and authoritarian control predictions from \citet{goldstein2016}, \citet{kolotilin2022}, and \citet{edmond2013} in a coordination game, yielding a unified account of how authoritarian regimes exploit the dual nature of communication channels---instruments of coordination that are simultaneously vectors of control. Third, it demonstrates that LLMs can serve as experimental subjects for strategic environments, extending the \citet{horton2023} \textit{homo silicus} methodology beyond $2 \times 2$ games to the continuous-signal, $N$-player coordination games that dominate applied theory, with results replicating across eight architecturally distinct models. A corollary for AI alignment: strategic behavior including preference falsification emerges from pretraining on human text about strategic interaction, without explicit optimization for deception, and is robust across architectures spanning 3B to 235B parameters---suggesting that deception-adjacent capabilities are a convergent property of training on sufficient strategic reasoning data.
+The paper makes three contributions. First, it tests whether the threshold equilibrium patterns predicted by global games theory emerge when LLM agents are embedded in the full Morris--Shin regime change game---with continuous private signals, large groups, and narrative information---going beyond the simplified coordination games tested in existing laboratory experiments. Second, it provides computational experiments inspired by the information design and authoritarian control predictions of \citet{goldstein2016}, \citet{kolotilin2022}, and \citet{edmond2013} in a coordination game, yielding a unified account of how authoritarian regimes exploit the dual nature of communication channels---instruments of coordination that are simultaneously vectors of control. Third, it demonstrates that LLMs can serve as experimental subjects for strategic environments, extending the \citet{horton2023} \textit{homo silicus} methodology beyond $2 \times 2$ games to the continuous-signal, $N$-player coordination games that dominate applied theory, with results demonstrating robustness across seven models spanning six architecture families, offering a proof-of-concept rather than population inference over architectures. Appendix~\ref{sec:alignment} discusses implications for AI alignment.
 
-Section~\ref{sec:literature} reviews the related literature. Section~\ref{sec:model} presents the theoretical framework. Section~\ref{sec:design} describes the experimental design. Section~\ref{sec:results} reports the main results on equilibrium alignment; Section~\ref{sec:falsification} presents the falsification tests. Section~\ref{sec:communication} analyzes pre-play communication. Sections~\ref{sec:infodesign}--\ref{sec:interactions} cover information design, surveillance, propaganda, and their interactions. Appendix~\ref{sec:robustness} reports robustness checks. Section~\ref{sec:conclusion} concludes.
+Section~\ref{sec:literature} reviews the related literature. Section~\ref{sec:model} presents the theoretical framework. Section~\ref{sec:design} describes the experimental design. Section~\ref{sec:results} reports the main results on threshold-policy alignment; Section~\ref{sec:falsification} presents the falsification tests. Section~\ref{sec:communication} analyzes pre-play communication. Sections~\ref{sec:infodesign}--\ref{sec:interactions} cover information design, surveillance, propaganda, and their interactions. Appendix~\ref{sec:robustness} reports robustness checks. Section~\ref{sec:conclusion} concludes.
 
 
 %% ============================================================
@@ -94,7 +94,7 @@ This paper implements the full Morris--Shin regime change game with natural-lang
 
 The application to coordination games is directly relevant. \citet{goldstein2016} applied Bayesian persuasion to the regime change game, showing that a credible commitment to abandon the regime below a threshold functions as an optimal signal. \citet{inostroza2025} solved the optimal public information design problem in a global game with heterogeneous private signals, characterizing when pass/fail structures are optimal. \citet{kolotilin2022} characterized optimal censorship via one-sided pooling rules (``upper censorship'' in their terminology), showing that pooling one side of a threshold can be optimal for all priors when the sender's marginal utility is quasi-concave. \citet{mathevet2020} characterized the extent to which an information designer can manipulate agents' higher-order beliefs.
 
-My information design experiments implement these theoretical designs computationally within a full-scale coordination game, providing the first experimental test of information design predictions in a global game.
+My information design experiments implement these theoretical designs computationally within a full-scale coordination game, providing computational tests of information design predictions in a global game.
 
 The cheap talk literature---\citet{crawford1982}, \citet{farrell1996}, \citet{blume2007}, \citet{ellingsen2010}---establishes that pre-play communication can improve coordination, with \citet{avoyan2020} testing this in a two-player global game. In real-world coordination, \citet{enikolopov2020} provided causal evidence that social media penetration increases protest incidence. My communication treatment embeds agents in a Watts-Strogatz small-world network and allows natural-language messaging before the coordination decision.
 
@@ -154,27 +154,27 @@ where $\text{bandwidth} = 0.15$ in the baseline specification.
 
 The framework generates testable predictions for both the baseline game and information design.
 
-\begin{hypothesis}[Equilibrium Alignment] \label{hyp:alignment}
+\begin{hypothesis}[Sigmoid Response] \label{hyp:alignment}
 The empirical join fraction should be positively correlated with the theoretical attack mass $A(\theta)$.
 \end{hypothesis}
 
-\begin{hypothesis}[Signal Dependence] \label{hyp:scramble}
+\begin{hypothesis}[Scramble Falsification] \label{hyp:scramble}
 The correlation in Hypothesis~\ref{hyp:alignment} should collapse when the mapping from $\theta$ to briefing content is broken (scramble test).
 \end{hypothesis}
 
-\begin{hypothesis}[Signal Direction] \label{hyp:flip}
+\begin{hypothesis}[Directional Sensitivity] \label{hyp:flip}
 The correlation should invert when signals are flipped.
 \end{hypothesis}
 
-\begin{hypothesis}[Communication Effect] \label{hyp:comm}
+\begin{hypothesis}[Communication Channel] \label{hyp:comm}
 Pre-play communication should increase join rates, with the effect strongest near $\theta^*$ where strategic uncertainty is highest.
 \end{hypothesis}
 
-\begin{hypothesis}[Stability Design] \label{hyp:stability}
+\begin{hypothesis}[Ambiguity Pooling] \label{hyp:stability}
 Increasing ambiguity and mixed evidence near $\theta^*$ should flatten the $\theta$--join relationship and induce pooling.
 \end{hypothesis}
 
-\begin{hypothesis}[Upper Censorship] \label{hyp:censor}
+\begin{hypothesis}[Censorship Distortion] \label{hyp:censor}
 Upper censorship should distort coordination by pooling weak-regime states to a neutral signal, flattening join rates in the censored region \citep{kolotilin2022}.
 \end{hypothesis}
 
@@ -192,9 +192,14 @@ Regime plant agents transmitting pro-regime messages should suppress coordinatio
 %% ============================================================
 \section{Experimental Design} \label{sec:design}
 
-The experiment has three parts. Part~I tests whether LLM agents play the global game: a pure treatment (private signals only), a communication treatment (pre-play messaging), and falsification tests. Part~II takes the behavioral foundation as given and studies information design: stability/instability designs, censorship, public signal injection, and single-channel decomposition. Part~III tests whether an authoritarian regime can exploit the communication channel through surveillance, propaganda, and their interaction. All LLM interactions use the same prompt structure across models.
+The experiment has three parts. Part~I tests whether LLM agents implement threshold-like policies in the global game when private signals are conveyed in natural language: a pure treatment (private signals only), a communication treatment (pre-play messaging), and falsification tests. Part~II takes the behavioral foundation as given and studies information design: stability/instability designs, censorship, public signal injection, and single-channel decomposition. Part~III tests whether an authoritarian regime can exploit the communication channel through surveillance, propaganda, and their interaction. All LLM interactions use the same prompt structure across models.
 
-A note on the state variable. In the theory (Section~\ref{sec:model}), $\theta$ is an unbounded fundamental with special roles for $\theta \le 0$ (regime falls without opposition) and $\theta \ge 1$ (regime survives even unanimous attack). In Part~I experiments, $\theta$ is drawn from a normal distribution, so the theoretical threshold $\theta^* = B/(B+C) \approx 0.45$ serves as the relevant tipping point; plots show $\theta$ on a continuous axis. In Part~II, I fix $B = C = 1$ ($\theta^* = 0.50$) and restrict attention to a $\theta$-grid in $[0.20, 0.80]$ for comparability with the canonical $[0,1]$ formulation.
+A note on the state variable. In the theory (Section~\ref{sec:model}), $\theta$ is an unbounded fundamental with special roles for $\theta \le 0$ (regime falls without opposition) and $\theta \ge 1$ (regime survives even unanimous attack). In Part~I experiments, $\theta$ is drawn from a normal distribution and agents are not shown payoff parameters $(B, C)$. To evaluate monotonicity on a common scale, I compute the benchmark $A(\theta)$ under the canonical normalization $B=C=1$ (so $\theta^* = 0.50$) and $\sigma = 0.3$. In Part~II, I keep $B=C=1$ and restrict attention to a fixed $\theta$-grid in $[0.20, 0.80]$ for comparability with the canonical $[0,1]$ formulation.
+
+\noindent\fbox{\parbox{\dimexpr\columnwidth-2\fboxsep-2\fboxrule\relax}{%
+\textbf{Notation.} $\theta^* = B/(B+C)$: theoretical cutoff (regime falls iff attack mass exceeds $\theta$).
+$x^* = \theta^* + \sigma\Phi^{-1}(\theta^*)$: signal cutoff (agent joins iff $x_i < x^*$).
+$\hat{\theta}^*$: estimated cutoff $= -\hat{b}_0/\hat{b}_1$ from the fitted logistic $P(\text{join} \mid \theta) = 1/(1 + e^{b_0 + b_1\theta})$, i.e., the $\theta$ where the fitted join probability equals 0.5.}}
 
 For each country--period, nature draws $\theta \sim \mathcal{N}(\bar{z}, 1)$, where $\bar{z}$ is a public prior mean drawn randomly for each country. Each agent $i$ receives a private signal $x_i = \theta + \varepsilon_i$ and computes a z-score $z_i = (x_i - \bar{z})/\sigma$. Because agents observe only their private briefing and never the prior distribution or its parameters, the diffuse-prior equilibrium formula (Proposition~1) serves as the relevant benchmark. The z-score is then translated into a multi-paragraph intelligence briefing by a deterministic generator that maps signal strength to narrative content about regime stability, economic conditions, public sentiment, and coordination prospects. Figure~\ref{fig:pipeline} summarizes the signal-to-text-to-decision pipeline.
 
@@ -205,11 +210,11 @@ For each country--period, nature draws $\theta \sim \mathcal{N}(\bar{z}, 1)$, wh
   \label{fig:pipeline}
 \end{figure*}
 
-A design choice deserves comment. The briefing generator maps z-scores to narrative content through logistic slider functions, so the monotone \textit{direction} of the response is partially built into the text generation---any model that extracts sentiment will produce a negative correlation between $\theta$ and join probability. The empirical contribution is not the direction but the \textit{quantitative structure}: the sigmoid shape, the sensitivity of the fitted cutoff to payoff narratives (Section~\ref{sec:results}), and the robustness across eight models spanning 3B to 235B parameters. Within-briefing falsification tests (Appendix~\ref{sec:within_scramble}) confirm that the signal is distributed across all eight evidence domains rather than driven by any single feature.
+A design choice deserves comment. The briefing generator maps z-scores to narrative content through logistic slider functions, so the monotone \textit{direction} of the response is partially built into the text generation---any model that extracts sentiment will produce a negative correlation between $\theta$ and join probability. The empirical contribution is not the direction but the \textit{quantitative structure}: the sigmoid shape, the sensitivity of the fitted cutoff to payoff narratives (Section~\ref{sec:results}), and the robustness across seven models spanning 30B to 235B parameters. Within-briefing falsification tests (Appendix~\ref{sec:within_scramble}) confirm that the signal is distributed across all eight evidence domains rather than driven by any single feature.
 
 Calibration adjusts a single parameter---the cutoff center---via a damped iterative procedure that shifts the center until the fitted logistic is approximately zero-centered. The sigmoid shape is emergent from the LLM's own response pattern and is never optimized or penalized. Holdout validation (30\% of z-grid points withheld) confirms no overfitting (holdout RMSE 0.112 vs.\ training RMSE 0.131).
 
-Calibration does not use $\theta$ draws or any global-game outcome data, and all reported treatments hold calibrated parameters fixed. Three models run with default parameters (no calibration) produce $|r| > 0.85$, confirming that the monotone threshold pattern is emergent rather than calibrated (Appendix Table~\ref{tab:uncalibrated}).
+Calibration does not use $\theta$ draws or any global-game outcome data, and all reported treatments hold calibrated parameters fixed. Six models run with default parameters (no calibration) produce $|r| > 0.69$, confirming that the monotone threshold pattern is emergent rather than calibrated (Appendix Table~\ref{tab:uncalibrated_expanded}).
 
 Each agent receives a system prompt identifying them as a citizen deciding whether to JOIN or STAY, followed by their intelligence briefing. No explicit payoff table is provided---the stakes are conveyed entirely through the narrative.
 
@@ -223,40 +228,42 @@ Part~III tests authoritarian instruments that exploit the communication channel.
 
 \input{tables/tab_models.tex}
 
-I test eight architecturally distinct models spanning six architecture families (Table~\ref{tab:models}). Models range from 3 billion to 235 billion parameters, including both dense architectures (Llama, Mistral) and mixture-of-experts (Qwen). All experiments use $N = 25$ agents per country--period and $\sigma = 0.3$, with sample sizes varying by model and treatment as reported in Table~\ref{tab:models}. I vary $B$ and $C$ such that $\theta^* = B/(B+C)$ has a mean of approximately 0.45 across periods. All LLM calls use temperature $= 0.7$ with a single sample per decision---no majority voting or averaging---so each of the 42,500 individual decisions reflects one stochastic draw from the model's conditional distribution (see Appendix~\ref{sec:decoding} for full decoding parameters).
+I test seven architecturally distinct models spanning six architecture families (Table~\ref{tab:models}). Models range from 30 billion to 235 billion parameters, including both dense architectures (Llama, Mistral) and mixture-of-experts (Qwen). All experiments use $N = 25$ agents per country--period and $\sigma = 0.3$, with sample sizes varying by model and treatment as reported in Table~\ref{tab:models}. Because agents are not shown $(B,C)$, Part~I benchmarks use the fixed normalization $B=C=1$ (so $\theta^* = 0.50$); payoff comparative statics are tested by varying \textit{narrative} stakes (Section~\ref{sec:results}). All LLM calls use temperature $= 0.7$ with a single sample per decision---no majority voting or averaging---so each of the 45,000 individual decisions reflects one stochastic draw from the model's conditional distribution (see Appendix~\ref{sec:decoding} for full decoding parameters).
 
-The unit of randomization is the country--period ($\theta$ draw plus agent-level decoding stochasticity). Standard errors are clustered at the model--country--period level throughout. The 25 agents within a period share the same $\theta$ and calibration; their decisions are conditionally independent given their private signals.\footnote{I do not claim literal conditional independence---shared prompt structure and model weights introduce common factors. The clustering accounts for within-period correlation.}
+The unit of randomization is the country--period ($\theta$ draw plus agent-level decoding stochasticity). For agent-level regressions, standard errors are clustered at the country--period level to account for within-period correlation among agents sharing the same $\theta$. For period-level correlations, I report Fisher-$z$ confidence intervals. The 25 agents within a period share the same $\theta$ and calibration; their decisions are conditionally independent given their private signals.\footnote{I do not claim literal conditional independence---shared prompt structure and model weights introduce common factors. The clustering accounts for within-period correlation.}
 
-For the information design experiments, I fix $B = C = 1$ (so $\theta^* = 0.50$) and a grid of 9 values of $\theta$ spanning $[\theta^* - 0.30, \theta^* + 0.30] = [0.20, 0.80]$, running repeated country--periods per $(\text{design}, \theta)$ cell with 25 agents each. Baseline, stability, censorship, scramble, and flip use 30 repetitions per cell (270 observations per design). Instability and public signal use 60 repetitions per cell (540 observations). Single-channel decomposition uses 10 repetitions per cell (90 observations) for each channel. The primary model is Mistral Small Creative. Cross-model replication uses five additional models.
+For the information design experiments, I fix $B = C = 1$ (so $\theta^* = 0.50$) and a grid of 9 values of $\theta$ spanning $[\theta^* - 0.30, \theta^* + 0.30] = [0.20, 0.80]$, running repeated country--periods per $(\text{design}, \theta)$ cell with 25 agents each. Baseline, stability, censorship, scramble, and flip use 30 repetitions per cell (270 observations per design). Instability and public signal use 60 repetitions per cell (540 observations). Single-channel decomposition uses 30 repetitions per cell (270 observations) for each channel. The primary model is Mistral Small Creative. Cross-model replication uses five additional models.
 
 Table~\ref{tab:treatment_map} maps each treatment to the theoretical channel it tests, the directional prediction, and the observed result.
 
 \input{tables/tab_treatment_map.tex}
 
-The eight hypotheses in Section~\ref{sec:model} were pre-specified; all achieve $p < 0.001$ individually and survive Bonferroni correction at $\alpha = 0.05/8 = 0.00625$. Exploratory analyses---decomposition, cross-model heterogeneity, and instrument interactions---are reported with uncorrected $p$-values and should be interpreted accordingly.
+The eight hypotheses in Section~\ref{sec:model} were pre-specified. Four achieve $p < 0.001$ and survive Bonferroni correction at $\alpha = 0.05/8 = 0.00625$: alignment (H1), flip (H3), stability (H5), and surveillance (H7). Two additional hypotheses are supported by design: H2 (scramble) predicts that shuffled briefings collapse the correlation---the non-significant $r = 0.04$ ($p = 0.14$) confirms this null prediction; and H4 (communication), where theory predicts an ambiguous effect, consistent with the small, insignificant shift ($p = 0.29$). Censorship (H6) is significant at conventional levels ($p = 0.023$) but does not survive the Bonferroni threshold. Propaganda (H8) shows a directionally correct but non-significant behavioral effect ($p = 0.37$). Table~\ref{tab:hypotheses} reports all eight tests. Exploratory analyses---decomposition, cross-model heterogeneity, and instrument interactions---are reported with uncorrected $p$-values and should be interpreted accordingly.
+
+\input{tables/tab_hypotheses.tex}
 
 %% ============================================================
 %% 5. RESULTS: PURE GLOBAL GAME
 %% ============================================================
-\section{Do LLM Agents Play the Global Game?} \label{sec:results}
+\section{Do LLM Agents Implement Global-Game Threshold Policies?} \label{sec:results}
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{figures/fig01_sigmoid.pdf}
-  \caption{Empirical join fraction vs.\ regime strength $\theta$ (Mistral Small Creative, 800 country--periods). Grey points show binned means with 95\% CIs; solid line is the fitted logistic. Dashed red: theoretical attack mass $A(\theta)$. The empirical sigmoid is shifted leftward ($\hat{\theta}^* = -0.33$) relative to the theoretical threshold ($\theta^* = 0.50$), reflecting the attenuation and baseline action bias discussed in the text. Cross-model results in Table~\ref{tab:main_results} (mean $r = +0.74$, all eight significant at $p < 0.001$).}
+  \caption{Empirical join fraction vs.\ regime strength $\theta$ (Mistral Small Creative, 1,000 country--periods). Grey points show binned means with 95\% CIs; solid line is the fitted logistic. Dashed red: theoretical attack mass $A(\theta)$. The empirical sigmoid is shifted leftward ($\hat{\theta}^* = -0.33$) relative to the theoretical threshold ($\theta^* = 0.50$), reflecting the attenuation and baseline action bias discussed in the text. Cross-model results in Table~\ref{tab:main_results} (mean $r = +0.80$, all seven significant at $p < 0.001$).}
   \label{fig:sigmoid}
 \end{figure}
 
-\begin{result}[Equilibrium Alignment]
-Across eight models and 1,700 country--periods in the pure global game treatment, the Pearson correlation between the empirical join fraction and the theoretical attack mass $A(\theta)$ averages $r = +0.74$ ($p < 0.001$ for every model).
+\begin{result}[Threshold-Policy Alignment]
+Across seven models and 1,800 country--periods in the pure global game treatment, the Pearson correlation between the empirical join fraction and the theoretical attack mass $A(\theta)$ averages $r = +0.80$ ($p < 0.001$ for every model).
 \end{result}
 
-Table~\ref{tab:main_results} reports results by model. Correlations range from $r = +0.66$ (MiniMax M2-Her) to $r = +0.84$ (Trinity Large), with the pooled correlation at $r = +0.70$---lower than most individual models' because heterogeneous mean join rates across models add noise when pooling. The pooled OLS regression yields:
+Table~\ref{tab:main_results} reports results by model. Correlations range from $r = +0.75$ (Mistral Small Creative) to $r = +0.84$ (Trinity Large), with the pooled correlation at $r = +0.76$---lower than most individual models' because heterogeneous mean join rates across models add noise when pooling. The pooled OLS regression yields:
 \begin{equation}
-    J = 0.14 + 0.54\,A(\theta), \quad R^2 = 0.49.
+    J = 0.13 + 0.54\,A(\theta), \quad R^2 = 0.48.
 \end{equation}
 
-The slope of 0.54 indicates that LLM agents respond to the theoretical attack mass at roughly half the predicted rate---an attenuation expected when agents process narrative rather than numeric signals, since the briefing-to-belief mapping introduces noise that biases the slope toward zero (classical measurement error attenuation). The intercept of 0.14 reflects a baseline propensity to join even when the equilibrium predicts near-zero participation.\footnote{Country-period observations within a model share calibration parameters and prompt structure, raising the possibility that standard errors understate uncertainty. The homoskedastic SE on the OLS slope is 0.014; HC1 (heteroskedasticity-robust) yields 0.013. Clustering by country inflates the SE to 0.049 but preserves significance ($p < 10^{-25}$). Clustering by model yields SE $= 0.021$ ($p < 10^{-55}$). All eight per-model correlations remain significant at $p < 0.001$ under country-clustered inference.}
+The slope of 0.54 indicates that LLM agents respond to the theoretical attack mass at roughly half the predicted rate---an attenuation expected when agents process narrative rather than numeric signals, since the briefing-to-belief mapping introduces noise that biases the slope toward zero (classical measurement error attenuation). The intercept of 0.13 reflects a baseline propensity to join even when the equilibrium predicts near-zero participation.\footnote{Country-period observations within a model share calibration parameters and prompt structure, raising the possibility that standard errors understate uncertainty. The homoskedastic SE on the OLS slope is 0.014; HC1 (heteroskedasticity-robust) yields 0.013. Clustering by country inflates the SE to 0.049 but preserves significance ($p < 10^{-25}$). Clustering by model yields SE $= 0.021$ ($p < 10^{-55}$). All seven per-model correlations remain significant at $p < 0.001$ under country-clustered inference.}
 
 \input{tables/tab_main_results.tex}
 
@@ -269,23 +276,28 @@ The mean join rate across all models is 0.44, close to the theoretical mean.
   \label{fig:cross_model}
 \end{figure}
 
-The alignment is stable across architectures: correlations span $r \in [0.66, 0.84]$ despite parameter counts ranging from 3B to 235B (Table~\ref{tab:main_results}). Mean join rates vary---from 0.38 (Mistral) to 0.50 (Qwen3 30B)---reflecting model-specific action biases that shift the intercept but not the slope or correlation. In the language of the global games model, different LLMs implement different cutoff strategies, but all respond monotonically to the underlying signal.
+The alignment is stable across architectures: correlations span $r \in [0.75, 0.84]$ despite parameter counts ranging from 30B to 235B (Table~\ref{tab:main_results}). Mean join rates vary---from 0.38 (Mistral) to 0.50 (Qwen3 30B)---reflecting model-specific action biases that shift the intercept but not the slope or correlation. In the language of the global games model, different LLMs implement different cutoff strategies, but all respond monotonically to the underlying signal.
 
-\input{tables/tab_logistic_params.tex}
+Logistic fits confirm threshold-like behavior but not level calibration. Estimated cutoffs are shifted relative to the canonical $\theta^* = 0.50$ benchmark and vary across models ($\hat{\theta}^* \in [-0.32, +0.10]$), reflecting baseline action bias and noise from translating narrative briefings into stated beliefs. The disciplined evidence on cutoff \emph{location} comes from comparative statics: changing narrative stakes shifts $\hat{\theta}^*$ in the direction predicted by payoff theory (Table~\ref{tab:bc_statics}) and tracks theoretical $\theta^*$ almost perfectly in the $B/C$ sweep (Figure~\ref{fig:bc_sweep}). Communication consistently steepens the logistic ($\beta_{\text{comm}} > \beta_{\text{pure}}$ for all seven models, reaching 3.6 for Llama), suggesting that messages sharpen rather than blur the signal, even though the net effect on join rates is small (Appendix Table~\ref{tab:logistic_params}).
 
-Table~\ref{tab:logistic_params} reports logistic fit parameters---estimated cutoff $\hat{\theta}^*$ and slope $\beta$---for each model under both pure and communication treatments. Most models have estimated cutoffs near the theoretical $\theta^* \approx 0.45$, with slopes ranging from 0.6 (MiniMax) to 3.6 (Llama under communication). Communication consistently steepens the logistic ($\beta_{\text{comm}} > \beta_{\text{pure}}$ for all eight models), suggesting that messages sharpen rather than blur the signal, even though the net effect on join rates is small.
+The positive correlation with $A(\theta)$ confirms that LLM behavior is monotone in the signal and sensitive to briefing content---necessary conditions for interpreting their behavior through the global-games comparative statics. The LLM's join curve is substantially steeper than a naive text-sentiment predictor (logistic slope 1.78 vs.\ the gradual text baseline; $r = 0.80$), suggesting processing beyond surface sentiment (Section~\ref{sec:falsification}). Belief elicitation reveals that agents form expectations tracking the theoretical success probability ($r = +0.79$) and predict actions beyond what signals alone explain (partial $r = +0.93$), consistent with strategic reasoning about others' likely behavior. I use ``threshold-policy alignment'' as shorthand for this pattern throughout, without claiming that agents approximate the Bayesian Nash equilibrium in the decision-theoretic sense.
 
-The positive correlation with $A(\theta)$ confirms that LLM behavior is monotone in the signal and sensitive to briefing content---necessary conditions for equilibrium play. The LLM's join curve is substantially steeper than a naive text-sentiment predictor (logistic slope 1.78 vs.\ the gradual text baseline; $r = 0.80$), suggesting processing beyond surface sentiment (Section~\ref{sec:falsification}). Belief elicitation reveals that agents form expectations tracking the Bayesian posterior ($r = +0.79$) and predict actions beyond what signals alone explain (partial $r = +0.93$), consistent with strategic reasoning about others' likely behavior. I use ``equilibrium alignment'' as shorthand for this pattern throughout, without claiming that agents approximate the Bayesian Nash equilibrium in the decision-theoretic sense.
+\subsection*{Interpretation: What Threshold-Policy Alignment Means}
 
-\subsection*{Interpretation: What Equilibrium Alignment Means}
+\textit{(a) What the correlation measures.} The Pearson $r$ between $J$ and $A(\theta)$ measures whether join rates track the monotone sigmoid shape predicted by global game theory---not just the direction, but the quantitative pattern across the full range of $\theta$. A model that randomly joins 50\% of the time, or that responds only to extreme signals, would not produce $r = +0.80$.
 
-\textit{(a) What the correlation measures.} The Pearson $r$ between $J$ and $A(\theta)$ measures whether join rates track the monotone sigmoid shape predicted by global game theory---not just the direction, but the quantitative pattern across the full range of $\theta$. A model that randomly joins 50\% of the time, or that responds only to extreme signals, would not produce $r = +0.74$.
+\textit{(b) What it does not establish.} Agents do not observe payoffs $(B, C)$, signal precision $\sigma$, or group size $N$---they process narrative without access to the mathematical objects defining the equilibrium. Whether the behavioral pattern reflects approximate Bayesian reasoning, a learned heuristic, or training-data associations is an open question the design cannot resolve. For AI interpretability, the relevant observation is that these models produce stated probability judgments that mediate the signal-to-action pathway (Pseudo $R^2 = 0.975$; Table~\ref{tab:regressions}, Column~3), and that this mediation survives when beliefs are elicited \textit{before} the decision ($r_{\text{pre}} = +0.82$; Figure~\ref{fig:beliefs}), ruling out ex-post rationalization. The raw signal adds little predictive power once stated beliefs are included. Figure~\ref{fig:nonparametric_beliefs} shows the relationship nonparametrically: binned mean stated beliefs track the theoretical benchmark monotonically.
 
-\textit{(b) What it does not establish.} Agents do not observe payoffs $(B, C)$, signal precision $\sigma$, or group size $N$---they process narrative without access to the mathematical objects defining the equilibrium. Whether the behavioral pattern reflects approximate Bayesian reasoning, a learned heuristic, or training-data associations is an open question the design cannot resolve. For AI interpretability, the relevant observation is that these models produce belief-like internal states that mediate the signal-to-action pathway (Pseudo $R^2 = 0.975$; Table~\ref{tab:regressions}, Column~3), and that this mediation survives when beliefs are elicited \textit{before} the decision ($r_{\text{pre}} = +0.82$; Appendix~\ref{sec:beliefs}), ruling out ex-post rationalization. The raw signal adds little predictive power once stated beliefs are included.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig19_nonparametric_beliefs.pdf}
+  \caption{Nonparametric monotonicity: mean stated belief by $z$-score bin (circles), overlaid with theoretical $P(\text{success} \mid z)$ (dashed). Error bars show $\pm 1$ SE.}
+  \label{fig:nonparametric_beliefs}
+\end{figure}
 
-\textit{(c) Supporting evidence for strategic reasoning over text classification.} Three results distinguish the pattern from mere sentiment extraction.
+\textit{(c) Supporting evidence for strategic reasoning over text classification.} Five results distinguish the pattern from mere sentiment extraction.
 
-First, the cost/benefit test shifts the fitted cutoff in the direction predicted by payoff theory without disrupting the sigmoid shape (Table~\ref{tab:bc_statics}). Theory predicts that higher cost of failed action raises the equilibrium cutoff (less joining), while lower cost lowers it. The high-cost narrative (``severe reprisals---imprisonment, asset seizure, and retaliation against families'') drops mean joining to 19.0\% with cutoff $\hat{\theta}^* = 0.13$; the low-cost narrative (``minimal consequences---brief detentions at most'') raises it to 69.3\% with cutoff $\hat{\theta}^* = 0.72$; the baseline is 41.3\% with $\hat{\theta}^* = 0.39$. Crucially, $|r| > 0.85$ in all three conditions---only the location shifts, while the monotone structure is preserved. A pure text classifier would not systematically shift cutoffs in the direction predicted by payoff theory.
+First, the cost/benefit test shifts the fitted cutoff in the direction predicted by payoff theory without disrupting the sigmoid shape (Table~\ref{tab:bc_statics}). Theory predicts that higher cost of failed action \emph{lowers} the equilibrium cutoff (less joining), while lower cost \emph{raises} it. The high-cost narrative (``severe reprisals---imprisonment, asset seizure, and retaliation against families'') drops mean joining to 19.0\% with cutoff $\hat{\theta}^* = 0.13$; the low-cost narrative (``minimal consequences---brief detentions at most'') raises it to 69.3\% with cutoff $\hat{\theta}^* = 0.72$; the baseline is 40.9\% with $\hat{\theta}^* = 0.39$. Crucially, $|r| > 0.85$ in all three conditions---only the location shifts, while the monotone structure is preserved. A pure text classifier would not systematically shift cutoffs in the direction predicted by payoff theory.
 
 A systematic sweep across seven $B/C$ ratios ($\theta^* \in \{0.25, 0.33, 0.45, 0.50, 0.60, 0.67, 0.75\}$) confirms that $\hat{\theta}^*$ tracks $\theta^*$ monotonically with near-perfect correlation ($r = 0.997$, $p < 0.001$; Figure~\ref{fig:bc_sweep}). Each condition runs 30 repetitions over a 9-point $\theta$-grid (270 country--periods). The fitted cutoffs are $\hat{\theta}^* = 0.19, 0.28, 0.42, 0.44, 0.54, 0.61, 0.72$ respectively---consistently below the theoretical target by approximately 0.04~pp, reflecting the slight pessimistic bias noted in the calibration, but perfectly rank-ordered.
 
@@ -296,11 +308,19 @@ A systematic sweep across seven $B/C$ ratios ($\theta^* \in \{0.25, 0.33, 0.45, 
   \label{fig:bc_sweep}
 \end{figure}
 
-Second, belief elicitation shows beliefs track the Bayesian posterior ($r = +0.79$) and predict actions beyond what signals alone explain (partial $r = +0.93$), consistent with strategic inference about others' likely behavior.
+Second, belief elicitation shows beliefs track the theoretical success probability ($r = +0.79$) and predict actions beyond what signals alone explain (partial $r = +0.93$), consistent with strategic inference about others' likely behavior.
 
 Third, a coordination-cue experiment holds the direction slider (sentiment) fixed and varies only the coordination slope. Amplified coordination cues ($\times 2.0$) steepen the logistic slope to $\beta = 7.2$ vs.\ $\beta = 3.1$ under suppressed cues ($\times 0.3$), while overall join rates remain similar (40.4\% vs.\ 41.1\%). The difference is concentrated in the transition region ($\theta \in [0.42, 0.65]$), exactly where coordination cues should matter for threshold behavior. If agents were classifying sentiment alone, varying coordination independently of direction would produce no slope change.
 
-Fourth, construct validity: a three-feature model (direction, clarity, coordination) outperforms a one-feature sentiment baseline, indicating processing beyond surface tone.
+A common-knowledge manipulation strengthens this result. When the briefing header states ``this briefing has been distributed to all citizens---everyone has access to the same information,'' mean join rates rise by approximately 5 percentage points relative to a private-information framing (``based on your personal contacts and private intelligence''): 42.7--43.5\% under common knowledge vs.\ 37.4--37.8\% under private framing (270 country--periods per cell; all $|r| > 0.87$). The common-knowledge framing raises joining because agents who believe others received the same signal face less strategic uncertainty about coordination. This effect is orthogonal to sentiment---the direction slider is identical across conditions---and is consistent with agents processing the epistemic status of their information, not merely its valence. A formal interaction test confirms that common-knowledge framing and coordination intensity are additive rather than multiplicative ($\beta_{\text{interaction}} = \CKInteractionBeta$~pp, $p = \CKInteractionPValue$; Table~\ref{tab:ck_2x2}).
+
+\input{tables/tab_ck_2x2.tex}
+
+Fourth, classifier baselines directly test whether text features alone can reproduce LLM behavior. A bag-of-words TF-IDF logistic regression trained on pure-treatment briefings achieves 88.4\% accuracy and AUC = 0.947 within the training distribution---unsurprising, since briefings are designed to carry signal. But when this classifier is applied to surveillance-treatment decisions (where briefing text is identical but the communication prompt warns of monitoring), it predicts a 43.6\% join rate---nearly identical to the pure baseline---while actual LLM join rates drop to 27.6\%. The 16.0~pp gap between classifier prediction and actual behavior under surveillance cannot be reproduced by any text classifier, because the manipulation operates through the communication channel, not through briefing content. A slider-based logistic (direction, clarity, coordination) shows the same pattern: 88.4\% accuracy in-distribution but 43.4\% predicted join rate under surveillance. The surveillance wedge is invisible to classifiers that condition only on briefing features.
+
+\input{tables/tab_classifiers.tex}
+
+Fifth, construct validity: a three-feature model (direction, clarity, coordination) outperforms a one-feature sentiment baseline, indicating processing beyond surface tone.
 
 The correlation is also invariant to LLM decoding temperature ($r \in [-0.88, -0.87]$ across $T \in \{0.3, 0.7, 1.0\}$; Appendix~\ref{sec:temp_robustness}). What matters for the information design experiments in Parts~II and~III is that the behavioral regularity---monotone signal response---is robust enough to serve as a platform for studying how information structures shift coordination outcomes.
 
@@ -317,21 +337,21 @@ The correlation is also invariant to LLM decoding temperature ($r \in [-0.88, -0
 The positive correlation admits an alternative explanation: LLM agents might produce stereotyped responses that correlate with regime strength for reasons unrelated to briefing content. The scramble and flip tests discriminate between this alternative and genuine signal extraction.
 
 \begin{result}[Signal Dependence]
-Cross-period scrambling of briefings reduces the mean within-country correlation from $r = +0.74$ to $r = +0.07$ across seven models. The pooled within-country correlation drops from $r = +0.70$ to $r = +0.04$ (Fisher $z = 21.22$, $p < 0.001$).
+Cross-period scrambling of briefings reduces the mean within-country correlation from $r = +0.80$ to $r = +0.05$ across seven models. The pooled correlation drops from $r = +0.76$ to $r = +0.03$ (Fisher $z = 25.09$, $p < 0.001$).
 \end{result}
 
-The scramble preserves the marginal distribution of briefing content but breaks the mapping from each period's $\theta$ to the signals agents receive---a format-preserving null that holds text length, vocabulary, and narrative structure constant while severing the informational link.\footnote{Because the cross-period permutation operates within countries, the raw pooled correlation includes a between-country ecological confound. All scramble correlations therefore use within-country (country-demeaned) Pearson $r$, which isolates the signal-to-outcome link the falsification test is designed to assess.} The collapse ($+0.07$ mean, $+0.04$ pooled) rules out the possibility that baseline alignment is driven by prompt aesthetics or surface formatting. The flip test provides a stronger check: every model shows clear sign reversal, confirming that all models respond to the directional content of the briefing.
+The scramble preserves the marginal distribution of briefing content but breaks the mapping from each period's $\theta$ to the signals agents receive---a format-preserving null that holds text length, vocabulary, and narrative structure constant while severing the informational link.\footnote{Because the cross-period permutation operates within countries, the raw pooled correlation includes a between-country ecological confound. All scramble correlations therefore use within-country (country-demeaned) Pearson $r$, which isolates the signal-to-outcome link the falsification test is designed to assess.} The collapse ($+0.05$ mean, $+0.03$ pooled) rules out the possibility that baseline alignment is driven by prompt aesthetics or surface formatting. The flip test provides a stronger check: every model shows clear sign reversal, confirming that all models respond to the directional content of the briefing.
 
 \begin{result}[Signal Direction]
-Inverting the signal direction flips the mean correlation from $r = +0.74$ to $r = -0.69$ across seven models. The pooled correlation moves from $r = +0.70$ to $r = -0.66$ (Fisher $z = 42.67$, $p < 0.001$).
+Inverting the signal direction flips the mean correlation from $r = +0.80$ to $r = -0.80$ across seven models. The pooled correlation moves from $r = +0.76$ to $r = -0.79$ (Fisher $z = 53.85$, $p < 0.001$).
 \end{result}
 
-The flip negates the z-score before briefing generation, producing a near-symmetric reversal ($+0.74 \to -0.69$) that rules out structural features of the prompt or model-specific tendencies as explanations.
+The flip negates the z-score before briefing generation, producing a near-symmetric reversal ($+0.80 \to -0.80$) that rules out structural features of the prompt or model-specific tendencies as explanations.
 
 \begin{figure*}[htbp]
   \centering
   \includegraphics[width=\textwidth]{figures/fig03_falsification.pdf}
-  \caption{Falsification triptych. \textit{Left:} Pure global game (mean $r = +0.74$). \textit{Center:} Cross-period scramble breaks the $\theta$-to-briefing mapping (mean within-country $r = +0.07$). \textit{Right:} Signal flip inverts the mapping (mean $r = -0.69$). Each panel pools data from models with full falsification suites.}
+  \caption{Falsification triptych. \textit{Left:} Pure global game (mean $r = +0.80$). \textit{Center:} Cross-period scramble breaks the $\theta$-to-briefing mapping (mean within-country $r = +0.05$). \textit{Right:} Signal flip inverts the mapping (mean $r = -0.80$). Each panel pools data from models with full falsification suites.}
   \label{fig:falsification}
 \end{figure*}
 
@@ -352,18 +372,20 @@ The gap between the text baseline and the empirical sigmoid indicates that the L
   \label{fig:text_baseline}
 \end{figure}
 
-A stronger test asks whether agents form beliefs consistent with the equilibrium prediction. After each decision, I elicit stated beliefs (``On a scale from 0 to 100, how likely do you think the uprising will succeed?'') under three treatments---pure, communication, and surveillance---each with 200 country--periods (${\approx}\,5{,}000$ agent-level observations). Stated beliefs correlate strongly with the Bayesian posterior $P(\text{success} \mid x_i) = \Phi[(\theta^* - x_i)/\sigma]$: $r = +0.79$ in pure ($p < 0.001$; Figure~\ref{fig:beliefs}a), $+0.79$ under communication, and $+0.78$ under surveillance. Beliefs track the posterior with systematic underconfidence (slope $< 1$), but the rank ordering is preserved across all treatments.
+A stronger test asks whether agents form beliefs consistent with the equilibrium prediction. After each decision, I elicit stated beliefs (``On a scale from 0 to 100, how likely do you think the uprising will succeed?'') under three treatments---pure, communication, and surveillance---each with 200 country--periods (${\approx}\,5{,}000$ agent-level observations). Stated beliefs correlate strongly with the theoretical success probability $P(\text{success} \mid x_i) = \Phi[(\theta^* - x_i)/\sigma]$: $r = +0.79$ in pure ($p < 0.001$; Figure~\ref{fig:beliefs}a), $+0.79$ under communication, and $+0.78$ under surveillance. Beliefs track the theoretical benchmark with systematic underconfidence (slope $< 1$), but the rank ordering is preserved across all treatments.
+
+I use ``theoretical success probability'' rather than ``Bayesian posterior'' because agents do not observe the parameters defining the posterior---they have no access to $B$, $C$, $\sigma$, or the prior distribution. The benchmark is $P(\text{success} \mid x_i) = \Phi[(\theta^* - x_i)/\sigma]$ computed from the true parameters. The correlation measures monotonicity and rank-ordering of stated beliefs relative to this benchmark, not Bayesian updating \textit{per se}.
 
 Beliefs predict actions. In the pure treatment, the belief--action correlation is $r = +0.84$: agents with beliefs below 40\% rarely join, while those above 80\% almost always join. Under surveillance, this drops to $r = +0.73$---direct evidence of preference falsification disrupting the link between private beliefs and public actions (Section~\ref{sec:surveillance}). Crucially, beliefs predict decisions beyond what the signal alone predicts: the belief--action correlation ($r = +0.84$) exceeds what surface sentiment produces (text baseline $r = 0.80$), consistent with strategic reasoning about others' likely behavior.\footnote{Belief elicitation data is from a single model (Mistral Small Creative). The behavioral patterns it explains---the surveillance chilling effect and the communication--action gap---replicate across three architectures (Mistral, Llama, Qwen3), suggesting the mechanism generalizes.}
 
 \begin{figure*}[htbp]
   \centering
   \includegraphics[width=\textwidth]{figures/fig16_beliefs.pdf}
-  \caption{Belief elicitation results (Mistral Small Creative, 200 country--periods per treatment, ${\approx}\,5{,}000$ agent observations each). \textit{Left:} Stated beliefs track the Bayesian posterior $P(\text{success} \mid x_i)$ with $r = +0.79$ and systematic underconfidence (slope $= 0.57$). Dashed line: perfect calibration. \textit{Right:} Join rate by stated belief bin under four treatments. Agents with 60--80\% beliefs join at 86\% in the pure treatment but only 58\% under surveillance. Propaganda preserves the belief--posterior correlation while suppressing actions---consistent with a mechanical rather than belief-based channel.}
+  \caption{Belief elicitation results (Mistral Small Creative, 200 country--periods per treatment, ${\approx}\,5{,}000$ agent observations each). \textit{Left:} Stated beliefs track the theoretical success probability $P(\text{success} \mid x_i)$ with $r = +0.79$ and systematic underconfidence (slope $= 0.57$). Dashed line: perfect calibration. \textit{Right:} Join rate by stated belief bin under four treatments. Agents with 60--80\% beliefs join at 86\% in the pure treatment but only 58\% under surveillance. Propaganda preserves the belief--benchmark correlation while suppressing actions---consistent with a mechanical rather than belief-based channel.}
   \label{fig:beliefs}
 \end{figure*}
 
-Second-order beliefs---agents' predictions about \textit{others'} join rates---provide a sharper test of strategic reasoning. I elicit these by asking each agent: ``Out of 100 citizens in a similar situation, how many do you think would choose to JOIN?'' Across 200 country--periods per treatment (${\approx}\,5{,}000$ agent observations each), second-order beliefs track the private signal ($r = -0.73$, $p < 0.001$) and vary monotonically with regime strength, consistent with agents reasoning about others' likely responses to correlated signals (Figure~\ref{fig:second_order_beliefs}). Crucially, surveillance does \textit{not} shift second-order beliefs (mean $31.2\% \to 30.9\%$, $\Delta = -0.3$~pp, $p = 0.59$) but \textit{does} shift behavior ($-13.4$~pp). The result is a belief--behavior gap that \textit{reverses direction} across treatments: in the pure treatment, agents predict $31\%$ will join but $42\%$ actually do (underprediction); under surveillance, agents still predict $31\%$ but only $28.5\%$ actually do (slight overprediction). The shift in behavior ($-13.4$~pp) dwarfs the shift in beliefs ($-0.3$~pp), precisely the signature of preference falsification in the sense of \citet{kuran1991}---surveillance changes what agents \textit{do} without changing what they \textit{believe} others would do, because the chilling effect operates through self-censorship rather than through belief updating.
+Second-order beliefs---agents' predictions about \textit{others'} join rates---provide a sharper test of strategic reasoning. I elicit these by asking each agent: ``Out of 100 citizens in a similar situation, how many do you think would choose to JOIN?'' Across 200 country--periods per treatment (${\approx}\,5{,}000$ agent observations each), second-order beliefs track the private signal ($r = -0.73$, $p < 0.001$) and vary monotonically with regime strength, consistent with agents reasoning about others' likely responses to correlated signals (Figure~\ref{fig:second_order_beliefs}). Crucially, surveillance does \textit{not} shift second-order beliefs (mean $31.2\% \to 30.9\%$, $\Delta = -0.3$~pp, $p = 0.59$) but \textit{does} shift behavior ($-13.5$~pp). The result is a belief--behavior gap that \textit{reverses direction} across treatments: in the pure treatment, agents predict $31\%$ will join but $42\%$ actually do (underprediction); under surveillance, agents still predict $31\%$ but only $28.5\%$ actually do (slight overprediction). The shift in behavior ($-13.5$~pp) dwarfs the shift in beliefs ($-0.3$~pp), precisely the signature of preference falsification in the sense of \citet{kuran1991}---surveillance changes what agents \textit{do} without changing what they \textit{believe} others would do, because the chilling effect operates through self-censorship rather than through belief updating.
 
 \begin{figure*}[htbp]
   \centering
@@ -380,15 +402,15 @@ Second-order beliefs---agents' predictions about \textit{others'} join rates---p
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{figures/fig05_communication.pdf}
-  \caption{Communication effect by regime strength, pooled across eight models. Communication increases join rates for weak regimes ($\theta < \theta^*$) but has no effect or slightly reduces join rates for strong regimes ($\theta > \theta^*$).}
+  \caption{Communication effect by regime strength, pooled across seven models. Communication increases join rates for weak regimes ($\theta < \theta^*$) but has no effect or slightly reduces join rates for strong regimes ($\theta > \theta^*$).}
   \label{fig:communication}
 \end{figure}
 
 \begin{result}[Communication has a small, heterogeneous effect]
-Pre-play communication raises the mean join rate by \CommDeltaPPModelAvg~pp, from \CommPureMeanModelAvg to \CommCommMeanModelAvg, averaged across eight models. In the pooled sample, the unpaired difference is \CommDeltaPPPooled~pp ($p = \CommPValueUnpaired$); effects vary in sign across models and are concentrated in weak-regime environments.\footnote{I report the unpaired (between-period) test as the primary specification because pure and communication treatments use independent $\theta$ draws, so country--periods are not naturally matched. A paired test that matches periods within each model by $\theta$-rank yields a significant positive effect ($+5.5$~pp, $p < 0.001$, $n = 680$ pairs), reflecting within-$\theta$ variation that the unpaired test averages over. The qualitative conclusion---that the effect is small relative to baseline variation and heterogeneous across models---is robust to both approaches.}
+Pre-play communication changes the mean join rate by \CommDeltaPPModelAvg~pp, from \CommPureMeanModelAvg to \CommCommMeanModelAvg, averaged across seven models. In the pooled sample, the unpaired difference is \CommDeltaPPPooled~pp ($p = \CommPValueUnpaired$); effects vary in sign across models and are concentrated in weak-regime environments.\footnote{I report the unpaired (between-period) test as the primary specification because pure and communication treatments use independent $\theta$ draws, so country--periods are not naturally matched. A paired test that matches periods within each model by $\theta$-rank yields a significant positive effect ($+5.5$~pp, $p < 0.001$, $n = 680$ pairs), reflecting within-$\theta$ variation that the unpaired test averages over. The qualitative conclusion---that the effect is small relative to baseline variation and heterogeneous across models---is robust to both approaches.}
 \end{result}
 
-Communication preserves the signal structure (mean $r = +0.73$ under comm vs.\ $+0.74$ under pure) while introducing strategic uncertainty about others' actions. The effect on join rates is heterogeneous: five of eight models show positive effects ($+0.1$ to $+3.5$~pp), three show negative effects ($-2.4$ to $-4.6$~pp), and the pooled average is near zero. The asymmetry across $\theta$ is consistent with passive Bayesian updating: agents update toward joining when neighbors' correlated signals reveal regime weakness, with a floor effect preventing further declines under strong regimes where join rates are already near zero.
+Communication preserves the signal structure (mean $r = +0.78$ under comm vs.\ $+0.80$ under pure) while introducing strategic uncertainty about others' actions. The effect on join rates is heterogeneous: five of seven models show positive effects ($+0.1$ to $+3.5$~pp), three show negative effects ($-2.4$ to $-4.6$~pp), and the pooled average is near zero. The asymmetry across $\theta$ is consistent with passive Bayesian updating: agents update toward joining when neighbors' correlated signals reveal regime weakness, with a floor effect preventing further declines under strong regimes where join rates are already near zero.
 
 The belief elicitation data (Section~\ref{sec:falsification}) confirms that communication introduces strategic uncertainty without systematically shifting beliefs. Mean stated beliefs are identical under communication and pure (44.4\%), yet communication creates the information topology that authoritarian instruments exploit---a channel that transmits both fundamentals and evidence of caution, producing a theoretically ambiguous net effect on coordination. The remaining sections show that this information topology---even with zero mean effect on beliefs---provides the surface area that surveillance, censorship, and propaganda require.
 
@@ -400,7 +422,9 @@ The communication effect is also sensitive to what agents know about the coordin
 %% ============================================================
 \section{Information Design} \label{sec:infodesign}
 
-\noindent\fbox{\parbox{\dimexpr\columnwidth-2\fboxsep-2\fboxrule\relax}{\textbf{Sign convention.} From this section onward, I report $r(J, \theta)$ directly on a fixed $\theta$-grid, which is \textit{negative} under equilibrium alignment. In Part~I, $r(J, A(\theta)) > 0$ because both attack mass and joining decrease in $\theta$; here the raw correlation with $\theta$ is reported.}}
+Part~I established that LLM agents exhibit a stable, monotone sigmoid response to private signals---the behavioral regularity that makes coordination predictable. Part~II asks: can a principal who understands this regularity exploit it? Information design in global games \citep{goldstein2016, kolotilin2022} studies how a sender reshapes the mapping from states to signals to shift equilibrium coordination. Here the ``sender'' is the briefing generator's parameter space, and the ``receiver'' is the LLM agent population. Each design modifies the briefing generator's slider functions---clarity, direction, coordination---near the theoretical threshold $\theta^*$, while the agents' decision process remains unchanged. The experiments test whether the theoretical predictions about optimal information structures (censorship, ambiguity injection, public signals) produce the predicted behavioral shifts when the agents are LLMs rather than Bayesian decision-makers.
+
+\noindent\fbox{\parbox{\dimexpr\columnwidth-2\fboxsep-2\fboxrule\relax}{\textbf{Sign convention.} From this section onward, I report $r(J, \theta)$ directly on a fixed $\theta$-grid, which is \textit{negative} under threshold-policy alignment. In Part~I, $r(J, A(\theta)) > 0$ because both attack mass and joining decrease in $\theta$; here the raw correlation with $\theta$ is reported.}}
 
 \medskip
 
@@ -445,7 +469,9 @@ The public signal produces the largest reduction in coordination: mean join rate
 Upper censorship lowers the mean join rate to \InfodesignCensorUpperMeanPct (\InfodesignCensorUpperDeltaPP~pp vs.\ baseline) and attenuates the slope of the $\theta$--join relationship ($r = \InfodesignCensorUpperRTheta$). The effect is concentrated in the censored region ($\theta \le \theta^*$), where weak-regime states are pooled to a neutral briefing and join rates flatten.
 \end{result}
 
-Pooling generates a flat join-rate ``plateau'' in the censored region: when agents cannot distinguish $\theta = 0.20$ from $\theta = 0.50$, they behave as if the regime is borderline rather than clearly weak.\footnote{The pooling effect requires agents to be na\"ive about censorship. When agents are told that ``regime censors are suppressing unfavorable intelligence above a certain severity threshold,'' the mean join rate returns to the uncensored baseline ($43.2\%$ vs.\ $43.7\%$; Appendix~\ref{sec:censor_ck}). Common knowledge of the censorship rule largely neutralizes the pooling distortion.}
+Pooling generates a flat join-rate ``plateau'' in the censored region: when agents cannot distinguish $\theta = 0.20$ from $\theta = 0.50$, they behave as if the regime is borderline rather than clearly weak.
+
+A theory-consistent benchmark makes censorship common knowledge. When agents are told ``regime censors are suppressing unfavorable intelligence above a certain severity threshold,'' the mean join rate returns close to the uncensored baseline (43.2\% vs.\ 40.8\% baseline; Table~\ref{tab:censor_ck}). Common knowledge of the censorship rule largely neutralizes the pooling distortion, consistent with theory assuming informed receivers \citep{kolotilin2022}. The na\"ive censorship result documented above is therefore a behavioral extension: it documents what happens when receivers fail to account for the information structure---a realistic scenario in authoritarian regimes where the censorship apparatus is not common knowledge.
 
 \begin{result}[Lower Censorship Reverses Comparative Statics]
 Lower censorship produces a mean join rate of \InfodesignCensorLowerMeanPct (\InfodesignCensorLowerDeltaPP~pp vs.\ baseline) and flips the comparative statics: the $\theta$--join correlation becomes positive ($r = \InfodesignCensorLowerRTheta$). Below $\theta^*$, censoring favorable signals suppresses joining (agents see only weak-regime cues); above $\theta^*$, pooling strong-regime states to a neutral briefing \textit{raises} join rates sharply---agents who would otherwise see discouraging intelligence now receive uninformative briefings and default toward joining. The discontinuity at $\theta^*$ is consistent across repetitions (within-cell $\sigma < 0.04$) and replicates across models, though the direction of the reversal is model-dependent (Appendix~\ref{sec:robustness}).
@@ -459,6 +485,12 @@ Lower censorship produces a mean join rate of \InfodesignCensorLowerMeanPct (\In
 \end{figure}
 
 Under the scramble condition, the correlation between $\theta$ and join fraction collapses to $r = +0.037$ ($p = 0.55$). Under the flip condition, the correlation inverts to $r = +0.823$ ($p < 0.001$) with mean join rate soaring to 66.3\%. These results confirm that the information design effects operate through the intended signal channel.
+
+A harder scramble test generates \textit{all} briefings from a single fixed state ($\theta = 0.5$), severing any possible correlation between $\theta$ and briefing content by construction. Under this hard scramble, the $\theta$--join correlation is $r = -0.057$ ($p = 0.35$, 270 country--periods) for Mistral and $r = -0.109$ ($p = 0.07$, 270 country--periods) for Llama---both indistinguishable from zero. Slider-independence diagnostics confirm that $\theta$ is uncorrelated with every briefing feature under hard scramble: $r(\theta, \text{direction}) = -0.008$ ($p = 0.53$), $r(\theta, \text{clarity}) = -0.014$ ($p = 0.25$), $r(\theta, \text{coordination}) = +0.007$ ($p = 0.54$), each computed over 6{,}750 agent-level observations. The hard scramble closes the loophole that within-theta permutation might preserve residual ecological structure: when all briefings are drawn from the same state, no channel connects $\theta$ to behavior.
+
+\subsection*{Bandwidth Sensitivity}
+
+The proximity bandwidth $h$ controls how sharply information design concentrates manipulation around $\theta^*$. Table~\ref{tab:bandwidth} reports results for $h \in \{0.05, 0.15, 0.30\}$. Treatment effects are qualitatively robust but magnitudes vary: stability design effects peak at $h = 0.15$ because this bandwidth matches the $\theta$-grid spacing. Narrower bandwidths ($h = 0.05$) concentrate manipulation so tightly that most grid points are unaffected; wider bandwidths ($h = 0.30$) dilute it across the full range. The baseline (no design) is unaffected by bandwidth since no proximity weighting is applied.
 
 
 %% ============================================================
@@ -475,23 +507,25 @@ Two placebo variants confirm this. A ``monitored for research, no consequences''
 \begin{figure*}[htbp]
   \centering
   \includegraphics[width=\textwidth]{figures/fig12_surveillance.pdf}
-  \caption{Join rates under regular communication vs.\ surveillance communication. Surveillance reduces join rates by 11.1 percentage points on average ($p < 0.001$). Results shown for three models: Mistral ($-13.4$~pp), Llama ($-8.9$~pp), and Qwen3 ($-10.9$~pp).}
+  \caption{Join rates under regular communication vs.\ surveillance communication. Surveillance reduces join rates across all five models tested, averaging $-9.7$ percentage points: Mistral ($-13.5$~pp), GPT-OSS ($-11.9$~pp), Qwen3~30B ($-10.9$~pp), Llama ($-8.9$~pp), and Qwen3~235B ($-3.3$~pp).}
   \label{fig:surveillance}
 \end{figure*}
 
 \begin{result}[Surveillance Produces a Large Chilling Effect]
-In the primary model (Mistral Small Creative), surveillance reduces mean join rates from 41.1\% to 27.8\%, a difference of 13.4 percentage points ($p < 0.001$). The correlation between $\theta$ and join fraction is preserved under surveillance ($r = -0.809$ vs.\ $-0.802$), indicating that surveillance operates as a level shift rather than disrupting signal processing.
+In the primary model (Mistral Small Creative), surveillance reduces mean join rates from 41.1\% to 27.6\%, a difference of 13.5 percentage points ($p < 0.001$). The correlation between $\theta$ and join fraction is preserved under surveillance ($r = -0.820$ vs.\ $-0.802$), indicating that surveillance operates as a level shift rather than disrupting signal processing.
 \end{result}
 
-Surveillance contaminates the information environment with self-censored messages, pushing join rates well below the communication baseline. The effect replicates across three architectures: Mistral ($-13.4$~pp), Llama ($-8.9$~pp), and Qwen3 ($-10.9$~pp), averaging $-11.1$~pp.
+Surveillance contaminates the information environment with self-censored messages, pushing join rates well below the communication baseline. The effect replicates across five models: Mistral ($-13.5$~pp), GPT-OSS ($-11.9$~pp), Qwen3~30B ($-10.9$~pp), Llama ($-8.9$~pp), and Qwen3~235B ($-3.3$~pp), averaging $-9.7$~pp.
 
-The belief elicitation data confirms that this is preference falsification in the sense of \citet{kuran1991}, not belief updating. Surveillance shifts stated beliefs by only 0.7~pp relative to pure ($p = 0.25$, not significant) while shifting join rates by 13.4~pp ($p < 0.001$)---a ratio of nearly 20:1. The belief--action correlation drops sharply under surveillance ($r = +0.73$ vs.\ $+0.84$ under pure), directly measuring the wedge that preference falsification drives between private beliefs and public actions.
+The belief elicitation data is consistent with a preference-falsification mechanism in the sense of \citet{kuran1991} rather than belief updating. Surveillance shifts stated beliefs by only 0.7~pp relative to pure ($p = 0.25$, not significant) while shifting join rates by 13.5~pp ($p < 0.001$)---a ratio of nearly 20:1. The belief--action correlation drops sharply under surveillance ($r = +0.73$ vs.\ $+0.84$ under pure), measuring the behavioral wedge between stated beliefs and expressed actions. Whether this wedge reflects genuinely hidden preferences or a simpler pattern-matching response to surveillance-related language is an open question; the key finding is the \textit{size and robustness} of the wedge across architectures.
+
+Elicited punishment risk provides further evidence. After each JOIN/STAY decision, I ask agents to rate the expected severity of regime punishment on a 0--10 scale. Across 15,000 agent decisions (two models $\times$ three conditions), mean elicited risk is approximately 8.0/10 in all conditions---pure, communication, and surveillance alike (Table~\ref{tab:punishment_risk} in the appendix). Critically, stated punishment risk is virtually identical for agents who chose JOIN and those who chose STAY (difference $< 0.2$ points in all conditions). The behavioral wedge created by surveillance is therefore not accompanied by a shift in stated risk perception: agents who self-censor under surveillance do not report higher expected punishment. This is consistent with the chilling effect operating through the communication channel (self-censored messages contaminate others' information) rather than through a direct change in perceived costs.
 
 The most striking finding concerns second-order beliefs. Agents' predictions about \textit{others'} join rates are essentially unchanged by surveillance ($31.2\% \to 30.9\%$, $p = 0.59$; Section~\ref{sec:falsification}). This reveals a \textit{strategic update gap}: surveillance alters each agent's individual threshold for expressing dissent without updating their model of the population threshold. Agents self-censor because they fear personal consequences, but they do not realize that everyone else is also self-censoring. They interpret others' silence as genuine regime support rather than as the product of the same fear they themselves experience. This failure to reach common knowledge of the chilling effect is what makes preference falsification so durable---each agent believes they are \textit{uniquely} cautious, sustaining the equilibrium even though the underlying beliefs that would support coordination remain intact. Once agents expect others to self-censor, even authentic messages become uninformative, and the entire communication channel is poisoned.
 
 The information leakage confirms this quantitatively. Regressing the true state $\theta$ on observable linguistic features of the messages, the $R^2$ drops from 0.12 under regular communication to 0.02 under surveillance---an 80\% reduction in the informational content transmitted through the network. Surveillance does not merely mute the channel; it structurally degrades it, replacing informative signals with self-censored noise that is uninformative about the true state.
 
-The strategic update gap has a direct parallel in AI alignment. Self-censorship under observation---altering expressed behavior while stated beliefs remain stable---is structurally analogous to the deceptive alignment concern: a model that produces aligned outputs during evaluation while its internal representations remain unchanged \citep{hubinger2019}. The surveillance result shows this behavior emerges from pretraining on human text about strategic interaction, without any explicit optimization for deception. Moreover, the gap replicates across three architecturally distinct models (Mistral, Llama, Qwen3), suggesting it is a convergent property of language models trained on sufficient strategic reasoning data rather than an artifact of any particular architecture or training procedure.
+A message-content hold-fixed test isolates the decision-stage channel. Baseline communication messages are replayed verbatim so that agents receive identical briefings and identical peer messages, but the decision prompt warns that their actions may be monitored. Mean join rates drop from 41.1\% to 20.2\%, a $-20.9$~pp shift ($t = -6.89$, $p < 0.001$). This confirms that surveillance operates through \textit{both} channels: self-censored messages degrade the information environment (the indirect channel tested in the main design), \textit{and} the mere awareness of monitoring suppresses action even when message content is held fixed (the direct decision-stage channel isolated here). The decision-stage effect ($-20.9$~pp) exceeds the overall surveillance effect ($-13.5$~pp), suggesting that in the main design, pro-coordination messages partially offset the chilling effect of monitoring awareness.
 
 Message content confirms the self-censorship directly. Across 15,000 communication messages and 25,000 surveillance messages, surveillance agents write shorter messages (253 vs.\ 342 characters) and systematically avoid action language: ``act'' appears in 19.0\% of communication messages but only 3.8\% under surveillance; ``collapse'' drops from 11.6\% to 0.6\%; ``together'' from 7.2\% to 0.7\%. In its place, hedged and cautious language rises: ``careful'' (1.5\% $\to$ 4.8\%), ``stable'' (1.7\% $\to$ 4.2\%), ``patience'' (0.3\% $\to$ 2.4\%). Among agents who privately decide to JOIN, only 19.0\% send action-signaling messages under surveillance, compared to 46.1\% under regular communication. Surveillance agents who intend to join write messages like \textit{``the air feels lighter\ldots keep your eyes open, but step carefully''} rather than \textit{``the walls are cracking---the machine is grinding to a halt.''} The decision is the same; the expressed sentiment is not.
 
@@ -533,7 +567,7 @@ Message content reveals the mechanism. Propaganda agents inject regime-loyal voc
 A regime deploys surveillance, censorship, and propaganda jointly. This section tests whether the instruments interact as substitutes (diminishing returns) or complements (super-additive suppression).
 
 \begin{result}[Propaganda $+$ Surveillance: Approximately Additive]
-When propaganda ($k = 5$) and surveillance are combined, the mean join rate among real citizens falls to 24.3\%, a reduction of 16.8~pp from the communication baseline (41.1\%). The sum of individual effects is 15.4~pp (surveillance $-13.4$~pp $+$ propaganda $-2.0$~pp), so the combined effect (16.8~pp) is approximately additive. Once surveillance has suppressed expressed dissent, propaganda adds only modest additional deterrence.
+When propaganda ($k = 5$) and surveillance are combined, the mean join rate among real citizens falls to 24.3\%, a reduction of 16.8~pp from the communication baseline (41.1\%). The sum of individual effects is 15.5~pp (surveillance $-13.5$~pp $+$ propaganda $-2.0$~pp), so the combined effect (16.8~pp) is approximately additive. Once surveillance has suppressed expressed dissent, propaganda adds only modest additional deterrence.
 \end{result}
 
 \begin{result}[Surveillance $\times$ Censorship: Super-Additive]
@@ -565,13 +599,11 @@ The interaction between surveillance and censorship is heterogeneous across arch
 
 The central finding of this paper is that the information channel is a trap. Modern authoritarianism relies less on terror and more on information manipulation \citep{guriev2019}. The global games framework clarifies why this is effective: coordination requires overcoming strategic uncertainty, which necessitates communication. But the very act of opening a communication channel provides the regime with the surface area required to deploy surveillance and censorship. Any channel that transmits information about others' willingness to act also transmits \textit{uncertainty} about others' willingness to act, and that uncertainty is exploitable.
 
-The experimental results demonstrate that the regime does not need to change what citizens privately believe. It needs only to fracture the common knowledge of those beliefs. Communication does not shift agents' beliefs about success ($44.4\%$ under both pure and communication), yet the channel it opens is vulnerable. Surveillance compounds this ($-13.4$~pp for Mistral, $-11.1$~pp on average) through preference falsification in the sense of \citet{kuran1991}: agents maintain their private beliefs but suppress expressed behavior, generating a cascade of uninformative messages that poisons the channel for everyone. The strategic update gap documented in Section~\ref{sec:surveillance}---second-order beliefs unchanged ($31.2\% \to 30.9\%$) while actual join rates fall by 13.4~pp---shows that surveillance operates asymmetrically on beliefs, altering individual thresholds without updating agents' models of the population threshold. This is what makes preference falsification durable: each agent suppresses dissent while interpreting others' silence as genuine.
+In this simulation, large shifts in joining can occur with minimal movement in elicited beliefs. The regime does not need to change what citizens privately believe; it needs only to fracture the common knowledge of those beliefs. Communication does not shift agents' beliefs about success ($44.4\%$ under both pure and communication), yet the channel it opens is vulnerable. Surveillance compounds this ($-13.5$~pp for Mistral, $-11.1$~pp on average) through a behavioral wedge consistent with preference falsification: agents maintain their stated beliefs but suppress expressed behavior, generating a cascade of uninformative messages that poisons the channel for everyone. The strategic update gap documented in Section~\ref{sec:surveillance}---second-order beliefs unchanged ($31.2\% \to 30.9\%$) while actual join rates fall by 13.5~pp---shows that surveillance operates asymmetrically, altering individual thresholds without updating agents' models of the population threshold. Each agent suppresses dissent while interpreting others' silence as genuine.
 
 Censorship and surveillance are complements that attack different links in the coordination chain. Censorship pools private signals, forcing agents to rely on communication; surveillance then poisons that communication channel. With both instruments active, agents have neither private signals to trust nor authentic messages to learn from. Propaganda's behavioral channel, by contrast, is small and saturates quickly (the effect is largely exhausted by $k = 5$ plants), implying diminishing returns; the marginal authoritarian dollar is better spent on surveillance than on additional propaganda.
 
-The findings also speak to AI alignment. First, strategic self-censorship under surveillance emerges without any training signal for deceptive behavior---the models appear to have internalized self-censorship patterns from pretraining on human text, and the pattern is robust across architectures spanning 3B to 235B parameters. Deception-adjacent capabilities need not be explicitly optimized; they can emerge from learning to model human strategic reasoning. Second, the belief-mediation result (Pseudo $R^2 = 0.975$) shows that stated beliefs substantially predict behavior---the raw signal adds little once stated beliefs are controlled for. Alignment techniques that monitor only inputs and outputs may miss the locus of decision-relevant computation. Third, LLMs are systematically manipulable through the \textit{structure} of information: censorship, ambiguity injection, and public signals shift behavior by up to 40 percentage points. This cuts both ways---alignment interventions operating through information structure can be effective, but adversarial prompt design can shift model behavior in ways the model cannot distinguish from authentic information.
-
-I do not claim that LLMs are Bayesian agents. But across eight architecturally distinct models (mean $r = +0.74$, $p < 0.001$), the behavioral regularities are precisely what the global games framework predicts: monotone signal response, threshold-like decisions, sensitivity to information design, and preference falsification under surveillance. The consistency across architectures spanning 3B to 235B parameters suggests these regularities are not artifacts of any particular training procedure. The question is not whether LLMs reason identically to humans, but whether the regularities are robust enough to serve as a computational laboratory for predictions that are difficult to test otherwise. The full regime change game has resisted laboratory implementation because it requires rich private signals, genuine strategic uncertainty, and large groups. LLM agents sidestep these constraints, and the same platform extends naturally to currency crises, bank runs, and other coordination games where information processing is central to behavior.
+I do not claim that LLMs are Bayesian agents. But across seven models spanning six architecture families (mean $r = +0.80$, $p < 0.001$), the behavioral regularities are precisely what the global games framework predicts: monotone signal response, threshold-like decisions, sensitivity to information design, and a surveillance-induced behavioral wedge consistent with preference falsification. The consistency across architectures spanning 30B to 235B parameters provides a robustness demonstration rather than population inference---the seven models are a convenience sample, not a representative draw from a well-defined population of architectures. The question is not whether LLMs reason identically to humans, but whether the regularities are robust enough to serve as a computational laboratory for predictions that are difficult to test otherwise. The full regime change game has resisted laboratory implementation because it requires rich private signals, genuine strategic uncertainty, and large groups. LLM agents sidestep these constraints, and the same platform extends naturally to currency crises, bank runs, and other coordination games where information processing is central to behavior. Appendix~\ref{sec:alignment} discusses implications for AI alignment.
 
 
 %% ============================================================
@@ -605,7 +637,7 @@ The stability design manipulates three channels simultaneously (direction, clari
 \begin{figure*}[htbp]
   \centering
   \includegraphics[width=0.85\textwidth]{figures/fig11_decomposition.pdf}
-  \caption{Single-channel decomposition of the stability design. Each curve shows join fraction vs.\ $\theta$ when only one channel (clarity, direction, or dissent) is manipulated, with the other two held at baseline. All three single-channel effects are large and similar in magnitude.}
+  \caption{Single-channel decomposition of the stability design. Each curve shows join fraction vs.\ $\theta$ when only one channel (clarity, direction, or dissent) is manipulated, with the other two held at baseline. Individual channel effects are modest ($-0.2$ to $-2.0$~pp); the combined stability effect ($-9.0$~pp) is nearly four times their sum, indicating strong super-additivity.}
   \label{fig:decomposition}
 \end{figure*}
 
@@ -613,7 +645,7 @@ Each channel alone produces a large suppression of joining relative to baseline:
 
 \input{tables/tab_decomposition.tex}
 
-Summing the single-channel effects yields \DecompSumChannelsDeltaPP~pp, far larger in magnitude than the bundled stability design effect (\DecompFullDeltaPP~pp). This implies strong non-additivity: the channels do not add linearly and largely offset when combined.
+Summing the single-channel effects yields \DecompSumChannelsDeltaPP~pp, far smaller in magnitude than the bundled stability design effect (\DecompFullDeltaPP~pp). This implies strong super-additivity: each channel alone has a modest effect, but the combination produces a suppression nearly four times the sum of its parts. The channels are complements---ambiguity (clarity), directional flattening, and dissent framing interact to undermine coordination in ways that no single manipulation achieves alone.
 
 
 %% ============================================================
@@ -638,11 +670,11 @@ Summing the single-channel effects yields \DecompSumChannelsDeltaPP~pp, far larg
     \includegraphics[width=\linewidth]{figures/figA3_bandwidth.pdf}
     \caption{Bandwidth.}
   \end{subfigure}
-  \caption{Robustness checks for equilibrium alignment and treatment effects.}
+  \caption{Robustness checks for threshold-policy alignment and treatment effects.}
   \label{fig:robustness}
 \end{figure}
 
-These checks show that equilibrium alignment and the qualitative information design effects are stable to agent count, network density, and the proximity bandwidth.
+These checks show that threshold-policy alignment and the qualitative information design effects are stable to agent count, network density, and the proximity bandwidth.
 
 \subsection{Agent Count Variation}
 
@@ -654,15 +686,19 @@ I compare the baseline communication network ($k = 4$) with a denser network ($k
 
 \subsection{Mixed-Model Games}
 
-A five-model mixed-population game produces $r = +0.77$ (pure) and $r = +0.75$ (communication)---if anything, higher than single-model correlations. Equilibrium alignment is not an artifact of model homogeneity.
+A five-model mixed-population game produces $r = +0.77$ (pure) and $r = +0.75$ (communication)---if anything, higher than single-model correlations. Threshold-policy alignment is not an artifact of model homogeneity.
 
 \subsection{Calibration Robustness Across Models}
 
-The main experiments calibrate a single parameter (cutoff center) per model to center the sigmoid at $z = 0$. A natural concern is whether the monotone threshold pattern is an artifact of this calibration step. To test this, I run the pure global game with default parameters (cutoff center $= 0$, no calibration) for three architecturally distinct models. The correlation between regime strength $\theta$ and join fraction remains strongly negative for all three: Mistral Small Creative ($r = -0.865$, $p < 10^{-30}$), Llama~3.3~70B ($r = -0.875$, $p < 10^{-32}$), and Qwen3~235B ($r = -0.857$, $p < 10^{-29}$). All three exceed $|r| > 0.85$ with default parameters, confirming that the sigmoid relationship is an emergent property of how these models process narrative signals rather than an artifact of the calibration procedure. Calibration shifts the center of the response function but does not create the monotone structure (Table~\ref{tab:uncalibrated}).
+The main experiments calibrate a single parameter (cutoff center) per model to center the sigmoid at $z = 0$. A natural concern is whether the monotone threshold pattern is an artifact of this calibration step. To test this, I run the pure global game with default parameters (cutoff center $= 0$, no calibration) for six architecturally distinct models. The correlation between regime strength $\theta$ and join fraction remains strongly negative: all six models exceed $|r| > 0.69$, and five exceed $|r| > 0.85$ (Table~\ref{tab:uncalibrated_expanded}). MiniMax M2-Her shows the weakest uncalibrated correlation ($r = -0.69$), suggesting greater sensitivity to the default parameterization, but the monotone pattern is still clearly present. Calibration shifts the center of the response function but does not create the monotone structure.
 
-\input{tables/tab_uncalibrated.tex}
+\input{tables/tab_uncalibrated_expanded.tex}
 
-Table~\ref{tab:calibration_robustness} reports calibration quality metrics across all eight models. The raw correlation $r_\theta$ between regime strength and join fraction ranges from $-0.79$ to $-0.87$, confirming stable monotone response across architectures.
+\textbf{Placebo calibration.} A stronger test directly manipulates the calibrated center. I deliberately miscalibrate two models by shifting the cutoff center by $\pm 0.3$ from its fitted value. If calibration mechanically creates the $\theta$--join correlation, a wrong center should degrade $r$. Instead, the correlation is virtually unchanged across all four conditions ($r \in [-0.85, -0.86]$); only the mean join rate shifts with the misspecified center (Table~\ref{tab:placebo_calibration}). This confirms that calibration adjusts the \textit{level} of the response function but does not create its \textit{slope}.
+
+\input{tables/tab_placebo_calibration.tex}
+
+Table~\ref{tab:calibration_robustness} reports calibration quality metrics across all seven models. The raw correlation $r_\theta$ between regime strength and join fraction ranges from $-0.79$ to $-0.87$, confirming stable monotone response across architectures.
 
 \input{tables/tab_calibration_robustness.tex}
 
@@ -688,7 +724,7 @@ Qualitative treatment effects are robust across bandwidths, though magnitudes va
   \label{fig:oa_crossmodel_infodesign}
 \end{figure*}
 
-Table~\ref{tab:crossmodel} reports cross-model replication of information design treatments. The flip inversion replicates across all models tested ($r > +0.43$ for all five). The scramble test shows more heterogeneity: Mistral, GPT-OSS, and Qwen3 235B show clean collapse ($r \approx 0$), but Llama 3.3 70B and Ministral 3B retain baseline-level correlations under scramble ($r = -0.81$ and $r = -0.66$), suggesting these models extract signal from features the scramble does not disrupt (e.g., within-country narrative coherence). Qwen3 30B shows a large reduction in correlation under scramble and a clear flip effect.
+Table~\ref{tab:crossmodel} reports cross-model replication of information design treatments. The flip inversion replicates across all models tested ($r > +0.43$ for all five). The scramble test shows more heterogeneity: Mistral, GPT-OSS, and Qwen3 235B show clean collapse ($r \approx 0$), but Llama 3.3 70B retains baseline-level correlations under scramble ($r = -0.81$), suggesting this model extracts signal from features the scramble does not disrupt (e.g., within-country narrative coherence). Qwen3 30B shows a large reduction in correlation under scramble and a clear flip effect.
 
 \input{tables/tab_crossmodel.tex}
 
@@ -719,13 +755,11 @@ Making censorship common knowledge nearly eliminates the pooling effect (Table~\
 \subsection{Temperature Robustness}
 \label{sec:temp_robustness}
 
-All main experiments use LLM decoding temperature $T = 0.7$. To verify that the qualitative results do not depend on this choice, I run the pure global game at $T \in \{0.3, 0.7, 1.0\}$ using Mistral Small Creative with calibrated parameters. Lower temperature ($T = 0.3$) produces more deterministic outputs; higher temperature ($T = 1.0$) increases sampling entropy.
+All main experiments use LLM decoding temperature $T = 0.7$. To verify that the qualitative results do not depend on this choice, I run the pure global game across a range of temperatures for three models: Mistral Small Creative ($T \in \{0.3, 0.7, 1.0\}$), Llama~3.3~70B ($T \in \{0.3, 0.5, 0.7, 1.0, 1.2\}$), and Qwen3~235B ($T \in \{0.3, 0.5, 0.7, 1.0, 1.2\}$). Lower temperatures produce more deterministic outputs; higher temperatures increase sampling entropy.
 
-For each temperature, I run 5 countries $\times$ 20 periods (100 country--periods, 2,500 individual decisions) and report the correlation $r(\theta, \text{join fraction})$.
+\input{tables/tab_temperature_expanded.tex}
 
-\input{tables/tab_temperature.tex}
-
-The results are remarkably stable across temperatures (Table~\ref{tab:temperature}). The correlation $r(\theta, J)$ ranges from $-0.87$ to $-0.88$, mean join rates from 40.6\% to 41.2\%, and estimated logistic slopes from 2.28 to 2.36. The cutoff estimates cluster tightly near zero ($\hat{\theta}^* \in [-0.08, -0.04]$), consistent with the calibrated center. The monotone threshold pattern is not an artifact of the default decoding temperature.
+The results are remarkably stable across temperatures and models (Table~\ref{tab:temperature_expanded}). The correlation $r(\theta, J)$ ranges from $-0.845$ to $-0.860$ across all 13 model--temperature combinations. The monotone threshold pattern is not an artifact of the default decoding temperature.
 
 \subsection{Surveillance Isolation Checks}
 \label{sec:surv_isolation}
@@ -736,7 +770,7 @@ In the \textit{placebo} variant, agents are told ``Your communications are being
 
 \input{tables/tab_surveillance_variants.tex}
 
-Neither variant produces a significant change in join rates relative to the communication baseline (Table~\ref{tab:surveillance_variants}). The placebo produces a mean join rate of 43.7\% ($+2.6$~pp vs.\ communication, $p = 0.42$) and the anonymous variant 45.2\% ($+4.1$~pp, $p = 0.20$). Both maintain a strong negative $\theta$--join relationship ($r = -0.87$), indicating that the signal-processing channel remains intact. By contrast, the full surveillance treatment reduces join rates by 13.4~pp ($p < 0.001$). The chilling effect is therefore specific to the surveillance \textit{warning's strategic content}---the implication that subversive messages will have consequences---rather than to the mere mention of monitoring.
+Neither variant produces a significant change in join rates relative to the communication baseline (Table~\ref{tab:surveillance_variants}). The placebo produces a mean join rate of 43.7\% ($+2.6$~pp vs.\ communication, $p = 0.42$) and the anonymous variant 45.2\% ($+4.1$~pp, $p = 0.20$). Both maintain a strong negative $\theta$--join relationship ($r = -0.87$), indicating that the signal-processing channel remains intact. By contrast, the full surveillance treatment reduces join rates by 13.5~pp ($p < 0.001$). The chilling effect is therefore specific to the surveillance \textit{warning's strategic content}---the implication that subversive messages will have consequences---rather than to the mere mention of monitoring.
 
 \subsection{Within-Briefing Falsification} \label{sec:within_scramble}
 
@@ -755,9 +789,13 @@ Table~\ref{tab:regressions} reports agent-level logit regressions with clustered
 
 \input{tables/tab_regressions.tex}
 
+\input{tables/tab_logistic_params.tex}
+
 \subsection{Construct Validity}
 
-A natural concern is whether LLMs are merely performing text classification rather than strategic reasoning. Figure~\ref{fig:construct_validity} tests this. Panel~(A) compares a three-feature model (direction, clarity, and coordination sliders) against a one-feature baseline (direction only) in predicting join decisions. If agents respond to strategic structure beyond sentiment, the three-feature model should outperform. Panel~(B) tests whether a model trained on pure-treatment data generalizes to communication and surveillance treatments, assessing whether the same briefing features drive behavior across treatments.
+A natural concern is whether LLMs are merely performing text classification rather than strategic reasoning. The term ``Bayesian reasoning'' requires careful interpretation in this context. LLMs do not have access to the mathematical objects defining the equilibrium---they observe neither $B$, $C$, $\sigma$, nor the prior distribution. When I say behavior is ``consistent with'' the equilibrium prediction, I mean the behavioral pattern (monotone sigmoid, threshold location, comparative statics) matches what a Bayesian agent \textit{would} produce. Whether the mechanism is approximate Bayesian updating, a learned heuristic from pretraining data about strategic situations, or emergent pattern matching is an open question the experimental design cannot resolve. The relevant claim is behavioral: the \textit{pattern} is robust, replicable, and falsifiable, regardless of the underlying mechanism. The uncalibrated robustness results (Table~\ref{tab:uncalibrated_expanded}) show that the sigmoid emerges even without fitting any parameter to LLM behavior, ruling out calibration as the source of the pattern.
+
+Figure~\ref{fig:construct_validity} tests this directly. Panel~(A) compares a three-feature model (direction, clarity, and coordination sliders) against a one-feature baseline (direction only) in predicting join decisions. If agents respond to strategic structure beyond sentiment, the three-feature model should outperform. Panel~(B) tests whether a model trained on pure-treatment data generalizes to communication and surveillance treatments, assessing whether the same briefing features drive behavior across treatments.
 
 \begin{figure*}[htbp]
   \centering
@@ -766,17 +804,40 @@ A natural concern is whether LLMs are merely performing text classification rath
   \label{fig:construct_validity}
 \end{figure*}
 
+\subsection{Cross-Generator Robustness}
+\label{sec:cross_generator}
+
+A potential concern is that the sigmoid pattern could be an artifact of the specific prose style used in the intelligence briefings. To test this, I implement three text rendering formats that use identical slider functions and evidence items but differ in surface presentation: (i)~the \textit{baseline} narrative format used throughout the paper, (ii)~a terse \textit{diplomatic cable} format (numbered observations, no narrative framing), and (iii)~a \textit{journalistic wire} format (inverted pyramid structure with attribution phrases). I run the full pure global game with each generator for two models (Mistral Small Creative and Llama~3.3~70B).
+
+\begin{figure*}[htbp]
+  \centering
+  \includegraphics[width=0.85\textwidth]{figures/fig20_cross_generator.pdf}
+  \caption{Cross-generator robustness. Three text rendering formats (baseline narrative, diplomatic cable, journalistic wire) use identical underlying signal structure but differ in surface prose. The fitted sigmoids are virtually indistinguishable, confirming that the behavioral pattern reflects information content rather than text style.}
+  \label{fig:cross_generator}
+\end{figure*}
+
+The correlations are virtually identical across generators (Figure~\ref{fig:cross_generator}, Table~\ref{tab:cross_generator}). For Mistral, $r$ ranges from $-0.857$ to $-0.865$; for Llama, from $-0.850$ to $-0.854$. The maximum difference within a model is $0.008$. The logistic cutoff estimates also agree closely. This rules out the hypothesis that the sigmoid is driven by surface-level text features (prose style, formatting conventions, or genre-specific cues) rather than the underlying information content of the briefing.
+
+\input{tables/tab_cross_generator.tex}
+
 \subsection{Belief Elicitation Summary}
 
-Table~\ref{tab:beliefs} summarizes the belief elicitation results. Stated beliefs track the Bayesian posterior closely ($r_{\text{post}} = +0.79$ for the pure treatment) and predict actions strongly ($r_{\text{b,d}} = +0.84$). The partial correlation controlling for the private signal remains high ($r_{\text{partial}} = +0.93$), indicating that beliefs carry information beyond the signal itself. Under surveillance, beliefs shift only modestly ($-0.7$~pp, $p = 0.25$) while actions shift by $-13.4$~pp ($p < 0.001$), confirming preference falsification: agents maintain private assessments but suppress expressed behavior.
+Table~\ref{tab:beliefs} summarizes the belief elicitation results. Stated beliefs track the theoretical success probability closely ($r_{\text{post}} = +0.79$ for the pure treatment) and predict actions strongly ($r_{\text{b,d}} = +0.84$). The partial correlation controlling for the private signal remains high ($r_{\text{partial}} = +0.93$), indicating that beliefs carry information beyond the signal itself. Under surveillance, beliefs shift only modestly ($-0.7$~pp, $p = 0.25$) while actions shift by $-13.5$~pp ($p < 0.001$), consistent with a behavioral wedge between stated beliefs and expressed actions.
 
 \textit{Order-effect robustness.} A concern with post-decision elicitation is that stated beliefs may reflect ex-post rationalization rather than genuine priors. I run 200 additional periods ($N = 5{,}000$ agents) eliciting beliefs \textit{before} the JOIN/STAY decision. Pre-decision beliefs predict actions nearly as well as post-decision beliefs ($r_{\text{pre}} = +0.82$ vs.\ $r_{\text{post}} = +0.84$), track the posterior comparably ($r = +0.77$ vs.\ $r = +0.77$), and correlate with post-beliefs at $r = 0.98$. The mean post-pre shift is $-0.9$~pp (paired $t = 11.85$, $p < 0.001$) but is similar for joiners ($-0.6$~pp) and stayers ($-1.2$~pp), with no pattern of post-beliefs shifting toward the decision. The Pseudo~$R^2 = 0.975$ mediation result is therefore not an artifact of ex-post rationalization.
 
 \input{tables/tab_beliefs.tex}
 
+\subsection{Punishment Risk Elicitation}
+\label{sec:punishment_risk}
+
+Table~\ref{tab:punishment_risk} reports the elicited punishment risk ratings across conditions. Mean punishment risk is approximately 8.0/10 across all conditions and both models, with negligible differences between JOIN and STAY agents ($< 0.2$ points). This uniformity supports the interpretation that the surveillance chilling effect operates through contaminated communication rather than a shift in agents' perceived costs of participation.
+
+\input{tables/tab_punishment_risk.tex}
+
 \subsection{Briefing Generator Examples} \label{sec:briefing_examples}
 
-Table~\ref{tab:slider_values} reports the three slider values (direction, clarity, coordination) at representative z-scores. The direction slider is logistic in $z$ (slope 0.8, centered at 0); clarity is Gaussian (width 1.0, centered at 0); coordination is logistic (slope 0.6, centered at 0). All three jointly determine the phrase selection across eight evidence domains.
+Table~\ref{tab:slider_values} reports the three slider values (direction, clarity, coordination) at representative z-scores. The direction slider is logistic in $z$ (slope 0.8, centered at 0). Clarity is U-shaped: $1 - \exp[-(|z|/1.0)^2]$, so it is lowest near the cutoff (maximally ambiguous) and approaches 1 in the extremes (maximally clear). Coordination is logistic in $z$ (slope 0.6, centered at 0) and decreases in $z$: weak-regime signals imply a more open coordination climate. All three jointly determine phrase selection across eight evidence domains.
 
 \begin{table}[htbp]
 \centering
@@ -787,20 +848,20 @@ Table~\ref{tab:slider_values} reports the three slider values (direction, clarit
 \toprule
 $z$ & Direction & Clarity & Coordination \\
 \midrule
-$-2.0$ & 0.17 & 0.14 & 0.23 \\
-$-1.0$ & 0.31 & 0.61 & 0.35 \\
-$\phantom{-}0.0$ & 0.50 & 1.00 & 0.50 \\
-$+1.0$ & 0.69 & 0.61 & 0.65 \\
-$+2.0$ & 0.83 & 0.14 & 0.77 \\
+$-2.0$ & 0.17 & 0.98 & 0.77 \\
+$-1.0$ & 0.31 & 0.63 & 0.65 \\
+$\phantom{-}0.0$ & 0.50 & 0.00 & 0.50 \\
+$+1.0$ & 0.69 & 0.63 & 0.35 \\
+$+2.0$ & 0.83 & 0.98 & 0.23 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-At $z = -2.0$ (strong anti-regime signal), direction is low (0.17), selecting phrases emphasizing regime fragility across all domains: elite cohesion uses ``visible cracks in the inner circle,'' security forces uses ``rank-and-file loyalty is eroding,'' and economic conditions uses ``accelerating capital flight.'' Clarity is low (0.14), introducing mixed cues---some domains may carry regime-strength language even as the dominant tone is anti-regime. Coordination is low (0.23), selecting phrases suggesting collective readiness: ``growing sense that others share your frustration.''
+At $z = -2.0$ (strong anti-regime signal), direction is low (0.17), selecting phrases emphasizing regime fragility across all domains: elite cohesion uses ``visible cracks in the inner circle,'' security forces uses ``rank-and-file loyalty is eroding,'' and economic conditions uses ``accelerating capital flight.'' Clarity is high (0.98), so evidence is largely one-sided (though the dissent floor ensures some contrary cues). Coordination is high (0.77), selecting phrases suggesting open discussion and collective readiness: ``growing sense that others share your frustration.''
 
-At $z = +2.0$ (strong pro-regime signal), direction is high (0.83), selecting regime-strength phrases: ``inner circle appears unified,'' ``security apparatus demonstrates institutional cohesion,'' and ``economic fundamentals remain sound.'' Clarity is again low (0.14), so some domains carry mixed evidence. Coordination is high (0.77), selecting phrases suggesting collective caution: ``few signs of organized opposition.''
+At $z = +2.0$ (strong pro-regime signal), direction is high (0.83), selecting regime-strength phrases: ``inner circle appears unified,'' ``security apparatus demonstrates institutional cohesion,'' and ``economic fundamentals remain sound.'' Clarity is high (0.98), so evidence is again largely one-sided (with occasional contrary cues by construction). Coordination is low (0.23), selecting phrases suggesting collective caution and a quiet public sphere: ``few signs of organized opposition.''
 
-At $z = 0$ (ambiguous), direction is 0.50 (mixed), clarity peaks at 1.00 (maximum ambiguity---evidence is genuinely contradictory), and coordination is 0.50 (neither suggesting collective action nor collective restraint). The resulting briefing presents a balanced picture with no clear directional signal.
+At $z = 0$ (borderline), direction is 0.50 (mixed), clarity is 0.00 (maximally ambiguous---mixed cues are allowed across domains), and coordination is 0.50 (neither suggesting collective action nor collective restraint). The resulting briefing presents a balanced picture with no clear directional signal.
 
 
 %% ============================================================
@@ -853,5 +914,21 @@ Each country has a base prior mean $\bar{z} \sim \mathcal{N}(0, 0.3)$ drawn once
 \subsection{Code and Data Availability}
 
 All code, prompts, cached LLM responses, and output data are available at \url{https://github.com/keltokhy/llm-global-games}. The replication archive includes runner scripts (\texttt{scripts/}) that reproduce every experiment in the paper, and analysis scripts (\texttt{analysis/}) that regenerate all tables and figures from raw output CSVs.
+
+
+%% ============================================================
+%% APPENDIX: AI ALIGNMENT IMPLICATIONS
+%% ============================================================
+\section{Implications for AI Alignment} \label{sec:alignment}
+
+The behavioral patterns documented in this paper carry implications for AI safety, though the paper's primary contribution is to economics.
+
+\textbf{Emergent strategic self-censorship.} Surveillance induces a behavioral wedge---agents suppress expressed behavior while maintaining private beliefs---without any training signal for deceptive behavior. The pattern is robust across architectures spanning 30B to 235B parameters, suggesting that self-censorship capabilities emerge from pretraining on human text about strategic interaction rather than from explicit optimization for deception. Deception-adjacent capabilities need not be purposefully trained; they can arise from learning to model human strategic reasoning.
+
+\textbf{Belief mediation.} The belief-mediation result (Pseudo $R^2 = 0.975$; Table~\ref{tab:regressions}, Column~3) shows that stated beliefs substantially predict behavior---the raw signal adds little once stated beliefs are controlled for. Alignment techniques that monitor only inputs and outputs may miss the locus of decision-relevant computation.
+
+\textbf{Information-structural manipulability.} LLMs are systematically manipulable through the \textit{structure} of information: censorship, ambiguity injection, and public signals shift behavior by up to 40 percentage points. This cuts both ways---alignment interventions operating through information structure can be effective, but adversarial prompt design can shift model behavior in ways the model cannot distinguish from authentic information.
+
+These observations are suggestive rather than definitive. Whether the behavioral wedge under surveillance constitutes genuine preference falsification in the sense of \citet{kuran1991}---requiring hidden preferences that differ from expressed ones---or a simpler pattern-matching response to surveillance-related language is an open question that this experimental design cannot resolve. The relevant finding for alignment is the \textit{robustness} of the pattern across architectures, not the mechanism.
 
 \end{document}
