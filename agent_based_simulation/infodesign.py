@@ -53,6 +53,7 @@ class InfoDesignConfig:
     # Multiplicative modifiers (applied at w=1, lerped toward 1.0 at w=0)
     clarity_width_factor: float = 1.0
     direction_slope_factor: float = 1.0
+    coordination_slope_factor: float = 1.0
 
     # Absolute targets (blended: base*(1-w) + target*w)
     dissent_floor_target: Optional[float] = None
@@ -174,6 +175,21 @@ RHETORIC_COLD = InfoDesignConfig(
     rhetoric_bias=-2.0,
 )
 
+# ── Coordination designs (counterbalanced) ───────────────────────
+# Vary coordination_slope to amplify/suppress coordination cues.
+
+COORDINATION_AMPLIFIED = InfoDesignConfig(
+    name="coord_amplified",
+    coordination_slope_factor=2.0,
+    bandwidth=0.15,
+)
+
+COORDINATION_SUPPRESSED = InfoDesignConfig(
+    name="coord_suppressed",
+    coordination_slope_factor=0.3,
+    bandwidth=0.15,
+)
+
 # ── B/C comparative statics (cost/benefit narrative) ─────────────
 # Vary perceived cost of failure vs benefit of success in the narrative.
 # Theory predicts: higher cost → higher cutoff (less joining).
@@ -250,6 +266,8 @@ ALL_DESIGNS = {
     "provenance_social": PROVENANCE_SOCIAL,
     "rhetoric_hot": RHETORIC_HOT,
     "rhetoric_cold": RHETORIC_COLD,
+    "coord_amplified": COORDINATION_AMPLIFIED,
+    "coord_suppressed": COORDINATION_SUPPRESSED,
     "bc_high_cost": BC_HIGH_COST,
     "bc_low_cost": BC_LOW_COST,
     "censor_upper_known": UPPER_CENSORSHIP_KNOWN,
@@ -295,6 +313,9 @@ class ThetaAdaptiveBriefingGenerator:
         ))
         params["direction_slope"] = max(1e-8, params.get("direction_slope", 0.8) * (
             1.0 + w * (self.config.direction_slope_factor - 1.0)
+        ))
+        params["coordination_slope"] = max(1e-8, params.get("coordination_slope", 0.6) * (
+            1.0 + w * (self.config.coordination_slope_factor - 1.0)
         ))
 
         # Absolute target blending: param = base*(1-w) + target*w

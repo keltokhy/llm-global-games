@@ -1798,6 +1798,62 @@ def fig17_second_order_beliefs():
 
 
 # ═══════════════════════════════════════════════════════════════════
+# FIG 18: B/C SWEEP — θ̂* vs θ*
+# ═══════════════════════════════════════════════════════════════════
+
+def fig18_bc_sweep():
+    """Scatter of fitted cutoff θ̂* vs theoretical θ* across 7 B/C ratios."""
+    bc_path = ROOT / PRIMARY / "experiment_bc_sweep_summary.csv"
+    if not bc_path.exists():
+        print("  SKIP fig18_bc_sweep: no data")
+        return
+
+    df = pd.read_csv(bc_path)
+
+    def _logistic4(x, L, k, x0, b):
+        return L / (1 + np.exp(-k * (x - x0))) + b
+
+    targets, fitted = [], []
+    for ts in sorted(df["theta_star_target"].unique()):
+        sub = df[df["theta_star_target"] == ts]
+        grouped = sub.groupby("theta")["join_fraction_valid"].mean()
+        try:
+            popt, _ = curve_fit(
+                _logistic4, grouped.index.values, grouped.values,
+                p0=[1.0, -10.0, 0.5, 0.0], maxfev=5000,
+            )
+            targets.append(ts)
+            fitted.append(popt[2])
+        except Exception:
+            pass
+
+    if len(targets) < 3:
+        print("  SKIP fig18_bc_sweep: too few fits")
+        return
+
+    r_val, p_val = stats.pearsonr(targets, fitted)
+
+    fig, ax = plt.subplots(figsize=(COL_W, COL_W))
+    ax.plot([0, 1], [0, 1], ls="--", color="#bbb", lw=0.8, zorder=1)
+    ax.scatter(targets, fitted, s=40, color=C_PURE, edgecolors="k",
+               linewidths=0.5, zorder=3)
+
+    # Label each point
+    for t, f in zip(targets, fitted):
+        ax.annotate(f"{t:.2f}", (t, f), textcoords="offset points",
+                    xytext=(5, -10), fontsize=6, color="#444")
+
+    ax.set_xlabel(r"Theoretical $\theta^* = B/(B+C)$")
+    ax.set_ylabel(r"Fitted cutoff $\hat{\theta}^*$")
+    ax.set_title(f"$r = {r_val:.3f}$", fontsize=8, loc="right", style="italic")
+    ax.set_xlim(0.15, 0.85)
+    ax.set_ylim(0.15, 0.85)
+    ax.set_aspect("equal")
+    plt.tight_layout()
+    save(fig, "fig18_bc_sweep")
+
+
+# ═══════════════════════════════════════════════════════════════════
 # MAIN
 # ═══════════════════════════════════════════════════════════════════
 
@@ -1827,5 +1883,6 @@ if __name__ == "__main__":
     fig16_beliefs()
     figA4_calibration()
     fig17_second_order_beliefs()
+    fig18_bc_sweep()
 
     print(f"\nAll figures saved to {FIG_DIR}")

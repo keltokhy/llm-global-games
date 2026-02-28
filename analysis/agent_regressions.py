@@ -795,7 +795,19 @@ def _finite_n_for_subset(df: pd.DataFrame, label: str) -> dict[str, Any] | None:
         print(f"  {label}: too few periods ({len(period_groups)})")
         return None
 
-    # Bin theta into ~15 bins
+    # ── Train/test split for out-of-sample validation ──
+    rng_split = np.random.default_rng(42)
+    n_total = len(period_groups)
+    split_idx = int(0.7 * n_total)
+    shuffled_idx = rng_split.permutation(n_total)
+    train_mask = np.zeros(n_total, dtype=bool)
+    train_mask[shuffled_idx[:split_idx]] = True
+    test_mask = ~train_mask
+
+    train_groups = period_groups[train_mask].copy()
+    test_groups = period_groups[test_mask].copy()
+
+    # Bin theta into ~15 bins (using ALL data for in-sample, as before)
     theta_vals = period_groups["theta"].values
     n_bins = min(15, max(5, len(period_groups) // 10))
     bins = np.linspace(theta_vals.min(), theta_vals.max(), n_bins + 1)
@@ -813,13 +825,21 @@ def _finite_n_for_subset(df: pd.DataFrame, label: str) -> dict[str, Any] | None:
         print(f"  {label}: too few non-empty bins ({len(binned)})")
         return None
 
-    # Fit logistic to empirical join rate
-    theta_mid = binned["theta_mid"].values
-    emp_join = binned["empirical_join_rate"].values
+    # ── Fit logistic on TRAINING data only ──
+    train_groups["theta_bin"] = pd.cut(train_groups["theta"], bins=bins, labels=False)
+    train_groups = train_groups.dropna(subset=["theta_bin"])
+
+    train_binned = train_groups.groupby("theta_bin").agg(
+        theta_mid=("theta", "mean"),
+        empirical_join_rate=("join_rate", "mean"),
+    ).reset_index()
+
+    train_theta_mid = train_binned["theta_mid"].values
+    train_emp_join = train_binned["empirical_join_rate"].values
 
     try:
         popt, _ = curve_fit(
-            _logistic, theta_mid, emp_join,
+            _logistic, train_theta_mid, train_emp_join,
             p0=[1.0, -3.0, 0.5], bounds=([0.5, -20, -3], [1.0, -0.1, 3]),
             maxfev=5000,
         )
@@ -828,9 +848,9 @@ def _finite_n_for_subset(df: pd.DataFrame, label: str) -> dict[str, Any] | None:
         print(f"  {label}: logistic fit failed: {e}")
         return None
 
-    print(f"  Fitted logistic: L={L_fit:.3f}, k={k_fit:.3f}, x0={x0_fit:.3f}")
+    print(f"  Fitted logistic (on train): L={L_fit:.3f}, k={k_fit:.3f}, x0={x0_fit:.3f}")
 
-    # For each theta bin, compute Pr(Binom(N, p_hat) > N*theta)
+    # For each theta bin (all data), compute Pr(Binom(N, p_hat) > N*theta)
     # Regime falls when fraction joining > theta (normalized)
     N = 25
     predicted_fall_rates = []
@@ -856,7 +876,7 @@ def _finite_n_for_subset(df: pd.DataFrame, label: str) -> dict[str, Any] | None:
 
     binned["predicted_fall_rate"] = predicted_fall_rates
 
-    # Correlation
+    # In-sample correlation (all data)
     emp_fall = binned["empirical_fall_rate"].values
     pred_fall = np.array(predicted_fall_rates)
 
@@ -864,8 +884,45 @@ def _finite_n_for_subset(df: pd.DataFrame, label: str) -> dict[str, Any] | None:
     rmse = np.sqrt(np.mean((pred_fall - emp_fall) ** 2))
     mae = np.mean(np.abs(pred_fall - emp_fall))
 
-    print(f"  Pearson r(predicted, empirical fall rate): {r:.4f} (p={p_val:.6f})")
-    print(f"  RMSE: {rmse:.4f}, MAE: {mae:.4f}")
+    print(f"  In-sample: r={r:.4f} (p={p_val:.6f}), RMSE={rmse:.4f}, MAE={mae:.4f}")
+
+    # ── Out-of-sample evaluation ──
+    test_groups["theta_bin"] = pd.cut(test_groups["theta"], bins=bins, labels=False)
+    test_groups = test_groups.dropna(subset=["theta_bin"])
+
+    test_binned = test_groups.groupby("theta_bin").agg(
+        theta_mid=("theta", "mean"),
+        empirical_join_rate=("join_rate", "mean"),
+        empirical_fall_rate=("coup_success", "mean"),
+        n_periods=("theta", "count"),
+    ).reset_index()
+
+    oos_predicted_fall_rates = []
+    for _, row in test_binned.iterrows():
+        theta_val = row["theta_mid"]
+        p_hat = _logistic(theta_val, L_fit, k_fit, x0_fit)
+        p_hat = np.clip(p_hat, 1e-10, 1 - 1e-10)
+        threshold = N * theta_val
+        if threshold < 0:
+            pred_fall = 1.0 - stats.binom.pmf(0, N, p_hat)
+        elif threshold >= N:
+            pred_fall = 0.0
+        else:
+            pred_fall = 1.0 - stats.binom.cdf(int(np.floor(threshold)), N, p_hat)
+        oos_predicted_fall_rates.append(pred_fall)
+
+    test_binned["predicted_fall_rate"] = oos_predicted_fall_rates
+
+    oos_r = oos_p = oos_rmse = oos_mae = None
+    if len(test_binned) >= 3:
+        oos_r, oos_p = stats.pearsonr(
+            np.array(oos_predicted_fall_rates),
+            test_binned["empirical_fall_rate"].values,
+        )
+        oos_rmse = np.sqrt(np.mean((np.array(oos_predicted_fall_rates) - test_binned["empirical_fall_rate"].values) ** 2))
+        oos_mae = np.mean(np.abs(np.array(oos_predicted_fall_rates) - test_binned["empirical_fall_rate"].values))
+        print(f"  Out-of-sample: r={oos_r:.4f} (p={oos_p:.6f}), RMSE={oos_rmse:.4f}, MAE={oos_mae:.4f}")
+        print(f"  Train periods: {len(train_groups)}, Test periods: {len(test_groups)}")
 
     result = {
         "logistic_params": {"L": round(L_fit, 4), "k": round(k_fit, 4), "x0": round(x0_fit, 4)},
@@ -875,8 +932,15 @@ def _finite_n_for_subset(df: pd.DataFrame, label: str) -> dict[str, Any] | None:
         "pearson_p": round(float(p_val), 6),
         "rmse": round(float(rmse), 4),
         "mae": round(float(mae), 4),
+        "train_n_periods": int(len(train_groups)),
+        "test_n_periods": int(len(test_groups)),
         "bins": [],
     }
+    if oos_r is not None:
+        result["oos_pearson_r"] = round(float(oos_r), 4)
+        result["oos_pearson_p"] = round(float(oos_p), 6)
+        result["oos_rmse"] = round(float(oos_rmse), 4)
+        result["oos_mae"] = round(float(oos_mae), 4)
     for _, row in binned.iterrows():
         result["bins"].append({
             "theta_mid": round(float(row["theta_mid"]), 4),

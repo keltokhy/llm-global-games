@@ -411,6 +411,54 @@ def run_infodesign(args):
     return df
 
 
+def run_benefit_grid(args):
+    """Run a systematic B/C sweep across θ* values.
+
+    For each θ* in the grid, sets B = θ* and C = 1 - θ* (so B/(B+C) = θ*),
+    then runs the baseline design over the standard θ-grid with reps.
+    """
+    from .runtime import resolve_model_output_dir
+
+    grid_values = args.benefit_grid_values
+    print(f"B/C sweep: {len(grid_values)} conditions, θ* ∈ {grid_values}")
+
+    all_dfs = []
+    original_designs = args.designs
+
+    for theta_star_target in grid_values:
+        # theta_star_baseline(b) = b/(1+b) assumes cost=1.
+        # To get θ* = target, set b = θ*/(1-θ*) with cost=1.
+        benefit = theta_star_target / (1.0 - theta_star_target)
+        cost = 1.0
+        print(f"\n{'='*60}")
+        print(f"  B/C condition: θ* = {theta_star_target:.4f} "
+              f"(B={benefit:.4f}, C={cost:.4f}, B/(B+C)={benefit/(benefit+cost):.4f})")
+        print(f"{'='*60}")
+
+        args.benefit = benefit
+        args.cost = cost
+        args.designs = ["baseline"]
+
+        df = run_infodesign(args)
+        df["theta_star_target"] = theta_star_target
+        all_dfs.append(df)
+
+    # Restore original designs
+    args.designs = original_designs
+
+    # Combine and save
+    combined = pd.concat(all_dfs, ignore_index=True)
+    output_dir = Path(args.output_dir)
+    output_dir = resolve_model_output_dir(output_dir, args.model)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    sweep_path = output_dir / "experiment_bc_sweep_summary.csv"
+    combined.to_csv(sweep_path, index=False)
+    print(f"\n  B/C sweep saved: {sweep_path} ({len(combined)} rows)")
+
+    return combined
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Paper 2: Information Design in LLM Global Games"
@@ -450,13 +498,21 @@ def main():
                         help="Tell agents how many citizens are in the group")
     parser.add_argument("--elicit-beliefs", action="store_true",
                         help="After each decision, ask agents for P(uprising succeeds) on 0-100 scale")
+    parser.add_argument("--benefit-grid", action="store_true",
+                        help="Run systematic B/C sweep: θ* ∈ {0.25, 0.33, 0.45, 0.50, 0.60, 0.67, 0.75}")
+    parser.add_argument("--benefit-grid-values", type=float, nargs="+",
+                        default=[0.25, 0.33, 0.45, 0.50, 0.60, 0.67, 0.75],
+                        help="Custom θ* values for the B/C grid (default: 7 values from 0.25 to 0.75)")
 
     args = parser.parse_args()
 
     # Auto-create model-specific output subfolder
     args.output_dir = str(resolve_model_output_dir(args.output_dir, args.model))
 
-    run_infodesign(args)
+    if args.benefit_grid:
+        run_benefit_grid(args)
+    else:
+        run_infodesign(args)
 
 
 if __name__ == "__main__":
