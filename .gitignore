@@ -26,6 +26,9 @@ output/*.png
 output/*.pdf
 output/*.txt
 
+# Archives
+*.zip
+
 # OS
 .DS_Store
 
