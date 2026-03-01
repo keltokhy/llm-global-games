@@ -14,7 +14,7 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
-from models import PART1_SLUGS, DISPLAY_NAMES
+from models import PART1_SLUGS, DISPLAY_NAMES, PRIMARY_SLUG
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 ROOT = PROJECT_ROOT / "output"
@@ -25,6 +25,8 @@ OUT = Path(__file__).resolve().parent / "verified_stats.json"
 PART1_MODELS = PART1_SLUGS
 
 SHORT = DISPLAY_NAMES
+
+PRIMARY = PRIMARY_SLUG
 
 # Part I benchmark for A(theta): canonical Morris-Shin parameters used in plots/tables.
 # We compute A(theta) directly from theta rather than relying on the logged
@@ -453,7 +455,7 @@ def compute_infodesign():
     results = {}
 
     # Primary model: Mistral
-    model = "mistralai--mistral-small-creative"
+    model = PRIMARY
     model_dir = ROOT / model
     df_all = load_infodesign(model, "all")
     if len(df_all) == 0:
@@ -719,7 +721,7 @@ def compute_infodesign_comm():
     """
     results = {}
 
-    primary = "mistralai--mistral-small-creative"
+    primary = PRIMARY
     base_dir = ROOT / f"{primary}-infodesign-comm" / primary
     df_all = _load_summary(base_dir / "experiment_infodesign_all_summary.csv")
     if len(df_all) == 0:
@@ -888,10 +890,10 @@ def compute_regime_control():
     if k5_data.get("mean_join_real") is not None and k10_data.get("mean_join_real") is not None:
         # Load agent-level data for proper test
         k5_log = _load_experiment_log(
-            ROOT / "propaganda-k5" / "mistralai--mistral-small-creative" / "experiment_comm_log.json"
+            ROOT / "propaganda-k5" / PRIMARY / "experiment_comm_log.json"
         )
         k10_log = _load_experiment_log(
-            ROOT / "propaganda-k10" / "mistralai--mistral-small-creative" / "experiment_comm_log.json"
+            ROOT / "propaganda-k10" / PRIMARY / "experiment_comm_log.json"
         )
         k5_decisions, k10_decisions = [], []
         for log in (k5_log or []):
@@ -929,7 +931,7 @@ def compute_robustness():
 
     # Agent count variations
     for n in [5, 10, 50, 100]:
-        d = ROOT / f"mistralai--mistral-small-creative-n{n}"
+        d = ROOT / f"{PRIMARY}-n{n}"
         for f in _find_summaries(d, "experiment_pure_summary.csv"):
             model_slug = _model_slug_from_summary_path(f, d)
             if model_slug is None:
@@ -1199,7 +1201,7 @@ def compute_clustered_ses():
 def compute_temperature_robustness():
     """Compute statistics for temperature robustness experiments."""
     results = {}
-    primary = "mistralai--mistral-small-creative"
+    primary = PRIMARY
 
     for temp in ["0.3", "0.7", "1.0"]:
         temp_dir = ROOT.parent / f"output/temperature-robustness-T{temp}" / primary
@@ -1230,7 +1232,7 @@ def compute_temperature_robustness():
 def compute_surveillance_variants():
     """Compute statistics for placebo and anonymous surveillance variants."""
     results = {}
-    primary = "mistralai--mistral-small-creative"
+    primary = PRIMARY
 
     variants = {
         "placebo": ROOT / primary / "_surveillance_placebo_v2" / primary / "experiment_comm_summary.csv",
@@ -1282,7 +1284,7 @@ def compute_uncalibrated():
     results = {}
     uncal_base = ROOT / "uncalibrated-robustness"
     uncal_models = [
-        "mistralai--mistral-small-creative",
+        PRIMARY,
         "meta-llama--llama-3.3-70b-instruct",
         "qwen--qwen3-235b-a22b-2507",
     ]
@@ -1317,7 +1319,7 @@ def compute_uncalibrated():
 # BELIEFS V2 (second-order beliefs with fixed prompts)
 # ═══════════════════════════════════════════════════════════════════
 
-_MISTRAL_DIR = ROOT / "mistralai--mistral-small-creative"
+_MISTRAL_DIR = ROOT / PRIMARY
 
 _BELIEF_V2_SOURCES = {
     "pure": _MISTRAL_DIR / "experiment_pure_log.json",
@@ -1585,7 +1587,7 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
     surv_p = None
     surv_t = None
     surv_delta = surv.get("delta_vs_baseline_pp")
-    primary = "mistralai--mistral-small-creative"
+    primary = PRIMARY
     surv_df = _load_summary(ROOT / "surveillance" / primary / "experiment_comm_summary.csv")
     base_comm_df = _load_summary(ROOT / primary / "experiment_comm_summary.csv")
     if len(surv_df) > 0 and len(base_comm_df) > 0:
@@ -1656,7 +1658,7 @@ def _hypothesis_supported(p, alpha: float = 0.05, reject_null: bool = True) -> s
 
 def _hypothesis_from_infodesign(infodesign: dict, design_key: str, label: str) -> dict:
     """Build a hypothesis table row from infodesign data (t-test vs baseline)."""
-    primary = "mistralai--mistral-small-creative"
+    primary = PRIMARY
     model_dir = ROOT / primary
     # Load design and baseline data to run a t-test
     df_design = _load_summary(model_dir / f"experiment_infodesign_{design_key}_summary.csv")
@@ -1706,7 +1708,7 @@ def _hypothesis_from_infodesign(infodesign: dict, design_key: str, label: str) -
 
 def compute_ck_interaction():
     """2x2 interaction test: CK framing x coordination intensity."""
-    primary = "mistralai--mistral-small-creative"
+    primary = PRIMARY
     model_dir = ROOT / primary
 
     designs = {
@@ -1772,7 +1774,7 @@ def compute_ck_interaction():
 
 def compute_fixed_messages_test():
     """Compare baseline comm vs fixed-messages surveillance test."""
-    primary = "mistralai--mistral-small-creative"
+    primary = PRIMARY
     baseline_path = ROOT / primary / "experiment_comm_summary.csv"
     surv_path = ROOT / "fixed-messages-surv" / primary / "experiment_comm_summary.csv"
 
@@ -1974,7 +1976,7 @@ def compute_uncalibrated_expanded():
 
     # Direct slug dirs (older runs)
     direct_slugs = [
-        "mistralai--mistral-small-creative",
+        PRIMARY,
         "meta-llama--llama-3.3-70b-instruct",
         "qwen--qwen3-235b-a22b-2507",
         "minimax--minimax-m2-her",
@@ -2129,6 +2131,58 @@ def compute_punishment_risk():
     return results
 
 
+# ═══════════════════════════════════════════════════════════════════
+# PARSE ERROR / REFUSAL RATES
+# ═══════════════════════════════════════════════════════════════════
+
+def compute_parse_error_rates():
+    """Aggregate api_error_rate and unparseable_rate by treatment × model."""
+    results = {}
+    treatments = ["pure", "comm", "scramble", "flip"]
+    for model in PART1_MODELS:
+        name = SHORT[model]
+        model_results = {}
+        for treatment in treatments:
+            df = load(model, treatment)
+            if len(df) == 0:
+                continue
+            entry = {"n_periods": int(len(df))}
+            if "api_error_rate" in df.columns:
+                entry["mean_api_error_rate"] = round(float(df["api_error_rate"].mean()), 4)
+            if "unparseable_rate" in df.columns:
+                entry["mean_unparseable_rate"] = round(float(df["unparseable_rate"].mean()), 4)
+            if "n_api_error" in df.columns:
+                entry["total_api_errors"] = int(df["n_api_error"].sum())
+            if "n_unparseable" in df.columns:
+                entry["total_unparseable"] = int(df["n_unparseable"].sum())
+            if "n_valid" in df.columns and "n_join" in df.columns:
+                n_agents_total = df["n_valid"].sum() + df.get("n_api_error", pd.Series([0]*len(df))).sum() + df.get("n_unparseable", pd.Series([0]*len(df))).sum()
+                entry["total_decisions"] = int(n_agents_total)
+            model_results[treatment] = entry
+        if model_results:
+            results[name] = model_results
+
+    # Also check infodesign treatments for primary model
+    primary = PRIMARY
+    primary_dir = ROOT / primary
+    info_csv = primary_dir / "experiment_infodesign_all_summary.csv"
+    if info_csv.exists():
+        df = pd.read_csv(info_csv)
+        if len(df) > 0 and "design" in df.columns:
+            info_results = {}
+            for design in sorted(df["design"].unique()):
+                sub = df[df["design"] == design]
+                entry = {"n_periods": int(len(sub))}
+                if "api_error_rate" in sub.columns:
+                    entry["mean_api_error_rate"] = round(float(sub["api_error_rate"].mean()), 4)
+                if "unparseable_rate" in sub.columns:
+                    entry["mean_unparseable_rate"] = round(float(sub["unparseable_rate"].mean()), 4)
+                info_results[design] = entry
+            results["_infodesign"] = info_results
+
+    return results
+
+
 def main():
     print("Computing Part I statistics...")
     part1 = compute_part1()
@@ -2188,6 +2242,9 @@ def main():
     print("Computing punishment risk elicitation...")
     punishment_risk = compute_punishment_risk()
 
+    print("Computing parse error rates...")
+    parse_errors = compute_parse_error_rates()
+
     all_stats = {
         "part1": part1,
         "infodesign": infodesign,
@@ -2209,6 +2266,7 @@ def main():
         "temperature_expanded": temperature_expanded,
         "uncalibrated_expanded": uncalibrated_expanded,
         "punishment_risk": punishment_risk,
+        "parse_errors": parse_errors,
     }
 
     print("Computing hypothesis table...")
