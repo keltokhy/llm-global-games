@@ -342,7 +342,7 @@ Together, these five tests form an identification strategy that no text classifi
 
 \input{tables/tab_bc_classifier.tex}
 
-The correlation is also invariant to LLM decoding temperature ($r \in [-0.88, -0.87]$ across $T \in \{0.3, 0.7, 1.0\}$; Appendix~\ref{sec:temp_robustness}). What matters for the information design experiments in Parts~II and~III is that the behavioral regularity---monotone signal response---is robust enough to serve as a platform for studying how information structures shift coordination outcomes.
+The correlation is also invariant to LLM decoding temperature ($r(J, A(\theta)) \in [+0.76, +0.79]$ across $T \in \{0.3, 0.7, 1.0\}$; Appendix~\ref{sec:temp_robustness}). What matters for the information design experiments in Parts~II and~III is that the behavioral regularity---monotone signal response---is robust enough to serve as a platform for studying how information structures shift coordination outcomes.
 
 \input{tables/tab_bc_statics.tex}
 
@@ -496,11 +496,11 @@ Lower censorship produces a mean join rate of \InfodesignCensorLowerMeanPct (\In
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{figures/fig10_infodesign_falsification.pdf}
-  \caption{Falsification within information design. Scrambling collapses the $\theta$-join correlation to $r = +0.037$; flipping inverts it to $r = +0.823$.}
+  \caption{Falsification within information design. Scrambling collapses the action--attack-mass correlation to $r = \InfodesignScrambleRAttack$; flipping inverts it to $r = \InfodesignFlipRAttack$.}
   \label{fig:infodesign_falsification}
 \end{figure}
 
-Under the scramble condition, the correlation between $\theta$ and join fraction collapses to $r = +0.037$ ($p = 0.55$). Under the flip condition, the correlation inverts to $r = +0.823$ ($p < 0.001$) with mean join rate soaring to 66.3\%. These results confirm that the information design effects operate through the intended signal channel.
+Under the scramble condition, the action--attack-mass correlation collapses to $r = \InfodesignScrambleRAttack$ ($p = 0.55$). Under the flip condition, the correlation inverts to $r = \InfodesignFlipRAttack$ ($p < 0.001$) with mean join rate soaring to 66.3\%. These results confirm that the information design effects operate through the intended signal channel.
 
 A harder scramble test generates \textit{all} briefings from a single fixed state ($\theta = 0.5$), severing any possible correlation between $\theta$ and briefing content by construction. Under this hard scramble, the $\theta$--join correlation is $r = -0.057$ ($p = 0.35$, 270 country--periods) for Mistral and $r = -0.109$ ($p = 0.07$, 270 country--periods) for Llama---both indistinguishable from zero. Slider-independence diagnostics confirm that $\theta$ is uncorrelated with every briefing feature under hard scramble: $r(\theta, \text{direction}) = -0.008$ ($p = 0.53$), $r(\theta, \text{clarity}) = -0.014$ ($p = 0.25$), $r(\theta, \text{coordination}) = +0.007$ ($p = 0.54$), each computed over 6{,}750 agent-level observations. The hard scramble closes the loophole that within-theta permutation might preserve residual ecological structure: when all briefings are drawn from the same state, no channel connects $\theta$ to behavior.
 
@@ -528,7 +528,7 @@ Two placebo variants confirm this. A ``monitored for research, no consequences''
 \end{figure*}
 
 \begin{result}[Surveillance Produces a Large Chilling Effect]
-In the primary model (Mistral Small Creative), surveillance reduces mean join rates from 41.1\% to 27.6\%, a difference of 13.5 percentage points ($p < 0.001$). The correlation between $\theta$ and join fraction is preserved under surveillance ($r = -0.820$ vs.\ $-0.802$), indicating that surveillance operates as a level shift rather than disrupting signal processing.
+In the primary model (Mistral Small Creative), surveillance reduces mean join rates from 41.1\% to 27.6\%, a difference of 13.5 percentage points ($p < 0.001$). The action--attack-mass correlation is preserved under surveillance ($r = +0.681$ vs.\ $+0.737$ baseline), indicating that surveillance operates as a level shift rather than disrupting signal processing.
 \end{result}
 
 Surveillance contaminates the information environment with self-censored messages, pushing join rates well below the communication baseline. The effect replicates across five models: Mistral ($-13.5$~pp), GPT-OSS ($-11.9$~pp), Qwen3~30B ($-10.9$~pp), Llama ($-8.9$~pp), and Qwen3~235B ($-3.3$~pp), averaging $-9.7$~pp.
@@ -781,7 +781,7 @@ All main experiments use LLM decoding temperature $T = 0.7$. To verify that the 
 
 \input{tables/tab_temperature_expanded.tex}
 
-The results are remarkably stable across temperatures and models (Table~\ref{tab:temperature_expanded}). The correlation $r(\theta, J)$ ranges from $-0.845$ to $-0.860$ across all 13 model--temperature combinations. The monotone threshold pattern is not an artifact of the default decoding temperature.
+The results are remarkably stable across temperatures and models (Table~\ref{tab:temperature_expanded}). The correlation $r(J, A(\theta))$ ranges from $+0.76$ to $+0.84$ across all 13 model--temperature combinations. The monotone threshold pattern is not an artifact of the default decoding temperature.
 
 \subsection{Surveillance Isolation Checks}
 \label{sec:surv_isolation}

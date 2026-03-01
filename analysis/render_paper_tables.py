@@ -802,7 +802,7 @@ def render_tab_temperature(stats: dict) -> str:
         if not d:
             continue
         mean_j = _fmt_num(d["mean_join"], 3)
-        r_val = _fmt_r(d["r_vs_theta"]["r"], 2) if "r_vs_theta" in d else "---"
+        r_val = _fmt_r((d.get("r_vs_attack") or d.get("r_vs_theta", {})).get("r") if isinstance(d.get("r_vs_attack") or d.get("r_vs_theta"), dict) else None, 2)
         n = d.get("n_obs", "---")
         fit = d.get("logistic_fit", {})
         cutoff = _fmt_num(fit.get("cutoff"), 3) if fit.get("cutoff") is not None else "---"
@@ -811,13 +811,13 @@ def render_tab_temperature(stats: dict) -> str:
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{Temperature robustness. The pure global game is run at three LLM decoding temperatures using Mistral Small Creative with calibrated parameters. The correlation $r(\theta, J)$ and logistic parameters are stable across temperatures.}
+\caption{Temperature robustness. The pure global game is run at three LLM decoding temperatures using Mistral Small Creative with calibrated parameters. The correlation $r(J, A(\theta))$ and logistic parameters are stable across temperatures.}
 \label{tab:temperature}
 \small
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{lccccc}
 \toprule
-Temperature & $N$ & Mean join & $r(\theta, J)$ & Cutoff $\hat{\theta}^*$ & Slope $\hat{\beta}$ \\
+Temperature & $N$ & Mean join & $r(J, A(\theta))$ & Cutoff $\hat{\theta}^*$ & Slope $\hat{\beta}$ \\
 \midrule
 """
     tex += "\n".join(rows) + "\n"
@@ -1352,6 +1352,8 @@ def render_stats_macros(stats: dict) -> str:
     for t, macro in [("T=0.3", "TempThree"), ("T=0.7", "TempSeven"), ("T=1.0", "TempOne")]:
         td = temp.get(t, {})
         lines.append(_mc_r(f"{macro}RTheta", (td.get("r_vs_theta") or {}).get("r") if isinstance(td.get("r_vs_theta"), dict) else td.get("r_vs_theta")))
+        r_attack = (td.get("r_vs_attack") or {}).get("r") if isinstance(td.get("r_vs_attack"), dict) else None
+        lines.append(_mc_r(f"{macro}RAttack", r_attack))
         lines.append(_mc(f"{macro}MeanJoin", td.get("mean_join")))
     lines.append("")
 
@@ -1610,7 +1612,7 @@ def render_tab_temperature_expanded(stats: dict) -> str:
             if not d:
                 continue
             mean_j = _fmt_num(d["mean_join"], 3)
-            r_val = _fmt_r((d.get("r_vs_theta") or {}).get("r"), 3)
+            r_val = _fmt_r((d.get("r_vs_attack") or d.get("r_vs_theta") or {}).get("r"), 3)
             fit = d.get("logistic_fit", {})
             cutoff = _fmt_num(fit.get("cutoff"), 3) if fit else "---"
             rows.append(f"Mistral Small & {key} & {d.get('n_obs','---')} & {mean_j} & ${r_val}$ & {cutoff} \\\\")
@@ -1624,7 +1626,7 @@ def render_tab_temperature_expanded(stats: dict) -> str:
             if not d:
                 continue
             mean_j = _fmt_num(d["mean_join"], 3)
-            r_val = _fmt_r((d.get("r_vs_theta") or {}).get("r"), 3)
+            r_val = _fmt_r((d.get("r_vs_attack") or d.get("r_vs_theta") or {}).get("r"), 3)
             fit = d.get("logistic_fit", {})
             cutoff = _fmt_num(fit.get("cutoff"), 3) if fit else "---"
             short_name = "Llama 70B" if model == "Llama 3.3 70B" else "Qwen 235B"
@@ -1636,13 +1638,13 @@ def render_tab_temperature_expanded(stats: dict) -> str:
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{Temperature robustness across three models. The pure global game is run at varying LLM decoding temperatures. The correlation $r(\theta, J)$ is stable across all temperatures and models.}
+\caption{Temperature robustness across three models. The pure global game is run at varying LLM decoding temperatures. The correlation $r(J, A(\theta))$ is stable across all temperatures and models.}
 \label{tab:temperature_expanded}
 \small
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{llcccc}
 \toprule
-Model & $T$ & $N$ & Mean join & $r(\theta, J)$ & Cutoff $\hat{\theta}^*$ \\
+Model & $T$ & $N$ & Mean join & $r(J, A(\theta))$ & Cutoff $\hat{\theta}^*$ \\
 \midrule
 """
     tex += "\n".join(rows) + "\n"

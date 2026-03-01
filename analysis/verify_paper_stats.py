@@ -1975,12 +1975,15 @@ def compute_temperature_expanded():
         jcol = _join_col(df)
         jf = df[jcol].astype(float).values
         theta = df["theta"].astype(float).values
+        attack = _attack_mass_benchmark(theta)
         r_theta = pearson_with_ci(theta, jf)
+        r_attack = pearson_with_ci(attack, jf)
         fit = _fit_logistic(theta, jf)
         entry = {
             "n_obs": int(len(df)),
             "mean_join": round(_safe_mean(jf), 4),
             "r_vs_theta": r_theta,
+            "r_vs_attack": r_attack,
         }
         if fit is not None:
             entry["logistic_fit"] = fit
