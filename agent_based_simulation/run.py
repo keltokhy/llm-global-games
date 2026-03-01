@@ -512,7 +512,7 @@ def run_experiment(args, treatment, signal_mode="normal"):
         {
             "country": r.country, "period": r.period, "treatment": r.treatment,
             "theta": r.theta, "theta_star": r.theta_star, "z": r.z,
-            "benefit": r.benefit, "n_join": r.n_join,
+            "benefit": r.benefit, "n_agents": r.n_agents, "n_join": r.n_join,
             "join_fraction": r.join_fraction,
             "n_valid": r.n_valid, "n_api_error": r.n_api_error,
             "n_unparseable": r.n_unparseable,

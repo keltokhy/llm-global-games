@@ -873,7 +873,8 @@ def fig13_propaganda():
 
     for _, df, k, *_ in prop_specs:
         if len(df) > 0:
-            df["join_fraction_real"] = df["n_join"] / (25 - k)
+            n_total = int(df["n_agents"].iloc[0]) if "n_agents" in df.columns else 25
+            df["join_fraction_real"] = df["n_join"] / (n_total - k)
 
     for panel_idx, (ax, col, title) in enumerate(zip(
         axes[:2],
@@ -923,7 +924,8 @@ def fig13_propaganda():
     behavioral_deltas = []
     for model in prop5_models:
         p5 = pd.read_csv(prop5_dir / model / "experiment_comm_summary.csv")
-        p5["join_fraction_real"] = p5["n_join"] / (25 - 5)
+        n_total = int(p5["n_agents"].iloc[0]) if "n_agents" in p5.columns else 25
+        p5["join_fraction_real"] = p5["n_join"] / (n_total - 5)
         comm_f = ROOT / model / "experiment_comm_summary.csv"
         if not comm_f.exists():
             continue
