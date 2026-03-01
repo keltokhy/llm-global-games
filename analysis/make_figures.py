@@ -47,6 +47,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 from models import (
+    PRIMARY_SLUG,
     MODEL_COLORS as _MODEL_COLORS,
     SHORT_NAMES as _SHORT_NAMES,
     EXCLUDE_MODELS as _EXCLUDE_MODELS,
@@ -201,7 +202,7 @@ def load_model_data(model_dir):
     return data
 
 
-PRIMARY = "mistralai--mistral-small-creative"
+PRIMARY = PRIMARY_SLUG
 primary_data = load_model_data(PRIMARY)
 
 # All models with pure data
