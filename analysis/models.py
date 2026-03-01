@@ -66,3 +66,9 @@ EXCLUDE_MODELS = {"allenai--olmo-3-7b-instruct"}
 
 # Display names in paper order (for table renderers)
 DISPLAY_ORDER = [DISPLAY_NAMES[s] for s in PART1_SLUGS]
+
+# Primary model slug (first in PART1_SLUGS)
+PRIMARY_SLUG = PART1_SLUGS[0]  # "mistralai--mistral-small-creative"
+
+# construct_validity.py includes Ministral-3B (run for that analysis only)
+CONSTRUCT_VALIDITY_SLUGS = PART1_SLUGS + ["mistralai--ministral-3b-2512"]
