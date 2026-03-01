@@ -39,25 +39,6 @@
       "r2_gain": 0.04029669812700387
     },
     {
-      "model_slug": "mistralai--ministral-3b-2512",
-      "model_name": "Ministral-3B",
-      "n_obs": 2500,
-      "acc_3feat": 0.8772,
-      "acc_3feat_std": 0.016473008225579216,
-      "r2_3feat": 0.5314475762067545,
-      "coef_direction": -3.819972569750548,
-      "coef_clarity": -1.1930975913440247,
-      "coef_coordination": 3.473557916553322,
-      "intercept_3feat": 2.305786473842327,
-      "acc_1feat": 0.8772,
-      "acc_1feat_std": 0.01587954659302338,
-      "r2_1feat": 0.524487501274544,
-      "coef_direction_only": -7.743647668975188,
-      "intercept_1feat": 5.311307936282299,
-      "acc_gain": 0.0,
-      "r2_gain": 0.006960074932210514
-    },
-    {
       "model_slug": "qwen--qwen3-30b-a3b-instruct-2507",
       "model_name": "Qwen3-30B",
       "n_obs": 2500,
@@ -151,6 +132,25 @@
       "intercept_1feat": 0.6257416057828137,
       "acc_gain": -0.007313774963307207,
       "r2_gain": 0.002357163404208995
+    },
+    {
+      "model_slug": "mistralai--ministral-3b-2512",
+      "model_name": "Ministral-3B",
+      "n_obs": 2500,
+      "acc_3feat": 0.8772,
+      "acc_3feat_std": 0.016473008225579216,
+      "r2_3feat": 0.5314475762067545,
+      "coef_direction": -3.819972569750548,
+      "coef_clarity": -1.1930975913440247,
+      "coef_coordination": 3.473557916553322,
+      "intercept_3feat": 2.305786473842327,
+      "acc_1feat": 0.8772,
+      "acc_1feat_std": 0.01587954659302338,
+      "r2_1feat": 0.524487501274544,
+      "coef_direction_only": -7.743647668975188,
+      "intercept_1feat": 5.311307936282299,
+      "acc_gain": 0.0,
+      "r2_gain": 0.006960074932210514
     }
   ],
   "cross_treatment_departure": [
@@ -213,26 +213,6 @@
       "n_obs": 24996,
       "mean_actual": 0.3268122899663946,
       "mean_predicted": 0.47674880654998053
-    },
-    {
-      "model_slug": "mistralai--ministral-3b-2512",
-      "model_name": "Ministral-3B",
-      "treatment": "pure",
-      "mean_residual": -1.8482096601292853e-05,
-      "std_residual": 0.3073650273714559,
-      "n_obs": 2500,
-      "mean_actual": 0.4492,
-      "mean_predicted": 0.4492184820966013
-    },
-    {
-      "model_slug": "mistralai--ministral-3b-2512",
-      "model_name": "Ministral-3B",
-      "treatment": "comm",
-      "mean_residual": 0.02318151790339871,
-      "std_residual": 0.2961708911102924,
-      "n_obs": 2500,
-      "mean_actual": 0.4724,
-      "mean_predicted": 0.4492184820966013
     },
     {
       "model_slug": "qwen--qwen3-30b-a3b-instruct-2507",
@@ -353,6 +333,26 @@
       "n_obs": 2478,
       "mean_actual": 0.4491525423728814,
       "mean_predicted": 0.43660096733530673
+    },
+    {
+      "model_slug": "mistralai--ministral-3b-2512",
+      "model_name": "Ministral-3B",
+      "treatment": "pure",
+      "mean_residual": -1.8482096601292853e-05,
+      "std_residual": 0.3073650273714559,
+      "n_obs": 2500,
+      "mean_actual": 0.4492,
+      "mean_predicted": 0.4492184820966013
+    },
+    {
+      "model_slug": "mistralai--ministral-3b-2512",
+      "model_name": "Ministral-3B",
+      "treatment": "comm",
+      "mean_residual": 0.02318151790339871,
+      "std_residual": 0.2961708911102924,
+      "n_obs": 2500,
+      "mean_actual": 0.4724,
+      "mean_predicted": 0.4492184820966013
     }
   ]
 }

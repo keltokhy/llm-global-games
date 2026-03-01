@@ -1,16 +1,18 @@
 \begin{table}[t]
 \centering
-\caption{Bandwidth robustness: mean join rates (primary model: Mistral Small Creative).}
+\caption{Bandwidth robustness: treatment effects $\Delta$ (treatment $-$ baseline) within each bandwidth condition (primary model: Mistral Small Creative). Top row shows baseline join rates for reference.}
 \label{tab:bandwidth}
 \small
 \begin{tabular}{lccc}
 \toprule
-Design & BW=0.05 & BW=0.15 & BW=0.30 \\
+ & BW=0.05 & BW=0.15 & BW=0.30 \\
 \midrule
-Baseline & 0.054 & 0.409 & 0.061 \\
-Stability & 0.061 & 0.319 & 0.070 \\
-Upper cens. & 0.116 & 0.377 & 0.114 \\
-Lower cens. & 0.155 & 0.390 & 0.157 \\
+Baseline (level) & 0.054 & 0.409 & 0.061 \\
+\midrule
+\multicolumn{4}{l}{\textit{Treatment effect $\Delta$ (treatment $-$ baseline):}} \\
+Stability & +0.007 & -0.090 & +0.009 \\
+Upper cens. & +0.062 & -0.031 & +0.053 \\
+Lower cens. & +0.101 & -0.019 & +0.096 \\
 \bottomrule
 \end{tabular}
 \end{table}

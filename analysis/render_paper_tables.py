@@ -1057,6 +1057,18 @@ def render_stats_macros(stats: dict) -> str:
     lines.append(_mc("PooledCommMeanJoin", pooled_comm.get("mean_join")))
     lines.append(_mc_r("MeanModelRPureTheta", part1.get("_mean_r_pure_vs_theta")))
     lines.append(_mc_r("MeanModelRPureAttack", part1.get("_mean_r_pure_vs_attack")))
+    # Mean-of-models flip r_attack
+    flip_rs = [
+        (v.get("flip", {}).get("r_vs_attack") or {}).get("r")
+        for k, v in part1.items()
+        if isinstance(k, str) and not k.startswith("_") and isinstance(v, dict) and "flip" in v
+    ]
+    flip_rs = [x for x in flip_rs if x is not None]
+    mean_flip_r = sum(flip_rs) / len(flip_rs) if flip_rs else None
+    lines.append(_mc_r("MeanModelRFlipAttack", mean_flip_r))
+    # Pooled flip
+    pooled_flip = part1.get("_pooled_flip", {})
+    lines.append(_mc_r("PooledFlipRAttack", (pooled_flip.get("r_vs_attack") or {}).get("r")))
     lines.append("")
 
     # ── Pooled OLS ────────────────────────────────────────────────
@@ -1066,6 +1078,10 @@ def render_stats_macros(stats: dict) -> str:
     lines.append(_mc("PooledOLSSlope", ols.get("slope"), 4))
     lines.append(_mc("PooledOLSRSq", ols.get("r_squared"), 4))
     lines.append(_mc_raw("PooledOLSNObs", str(ols.get("n_obs", "---"))))
+    # Display-format OLS (2dp for inline equation)
+    lines.append(_mc("PooledOLSInterceptDisp", ols.get("intercept"), 2))
+    lines.append(_mc("PooledOLSSlopeDisp", ols.get("slope"), 2))
+    lines.append(_mc("PooledOLSRSqDisp", ols.get("r_squared"), 2))
     lines.append("")
 
     # ── Clustered standard errors ─────────────────────────────────
@@ -1339,8 +1355,8 @@ def render_stats_macros(stats: dict) -> str:
     for display, entry in cg.items():
         if not isinstance(entry, dict):
             continue
-        # Find macro-safe name
-        mname = display.replace(" ", "").replace("-", "")[:10]
+        # Find macro-safe name (LaTeX commands can only contain letters)
+        mname = "".join(c for c in display if c.isalpha())[:12]
         for variant in ["baseline", "cable", "journalistic"]:
             vd = entry.get(variant, {})
             if not vd:
@@ -1356,6 +1372,29 @@ def render_stats_macros(stats: dict) -> str:
     lines.append(_mc("PropSatKTenMeanJoin", prop_sat.get("k10_mean_join_real")))
     lines.append(_mc_pp("PropSatDeltaPP", prop_sat.get("delta_pp")))
     lines.append(_mc("PropSatPValue", prop_sat.get("p_value"), 4))
+    lines.append("")
+
+    # ── Llama propaganda replication ──────────────────────────────
+    prop_data = regime.get("propaganda", {})
+    llama_k5 = (prop_data.get("k=5") or {}).get("Llama 3.3 70B", {})
+    lines.append("% Llama propaganda k=5 replication")
+    # delta_real_vs_baseline_pp is already in pp, don't multiply by 100
+    llama_delta = llama_k5.get("delta_real_vs_baseline_pp")
+    if llama_delta is not None:
+        sign = "+" if llama_delta >= 0 else ""
+        lines.append(_mc_raw("LlamaPropKFiveDeltaRealPP", f"{sign}{llama_delta:.1f}"))
+    lines.append("")
+
+    # ── Mixed-model robustness ─────────────────────────────────
+    rob = stats.get("robustness", {})
+    lines.append("% Mixed-model robustness")
+    mixed_pure = rob.get("mixed-5model-pure", {})
+    mixed_comm = rob.get("mixed-5model-comm", {})
+    # These experiments report a single entry (Mistral) representing the pooled mixed-model run
+    mp_entry = list(mixed_pure.values())[0] if mixed_pure else {}
+    mc_entry = list(mixed_comm.values())[0] if mixed_comm else {}
+    lines.append(_mc_r("MixedPureRAttack", (mp_entry.get("r_vs_attack") or {}).get("r")))
+    lines.append(_mc_r("MixedCommRAttack", (mc_entry.get("r_vs_attack") or {}).get("r")))
     lines.append("")
 
     # ── Parse errors ──────────────────────────────────────────────

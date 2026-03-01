@@ -58,5 +58,27 @@
       "predicted_join_rate": 0.08384,
       "actual_join_rate": 0.27568
     }
+  },
+  "bc_comparative_statics": {
+    "baseline": {
+      "actual_join": 0.4087,
+      "classifier_predicted_join": 0.4089,
+      "gap_pp": 0.0,
+      "n_obs": 270,
+      "logistic_b0": -1.5448,
+      "logistic_b1": 3.9289
+    },
+    "bc_high_cost": {
+      "actual_join": 0.1902,
+      "classifier_predicted_join": 0.4089,
+      "gap_pp": 21.9,
+      "n_obs": 270
+    },
+    "bc_low_cost": {
+      "actual_join": 0.693,
+      "classifier_predicted_join": 0.4089,
+      "gap_pp": -28.4,
+      "n_obs": 270
+    }
   }
 }

@@ -2834,6 +2834,28 @@
         "predicted_join_rate": 0.08384,
         "actual_join_rate": 0.27568
       }
+    },
+    "bc_comparative_statics": {
+      "baseline": {
+        "actual_join": 0.4087,
+        "classifier_predicted_join": 0.4089,
+        "gap_pp": 0.0,
+        "n_obs": 270,
+        "logistic_b0": -1.5448,
+        "logistic_b1": 3.9289
+      },
+      "bc_high_cost": {
+        "actual_join": 0.1902,
+        "classifier_predicted_join": 0.4089,
+        "gap_pp": 21.9,
+        "n_obs": 270
+      },
+      "bc_low_cost": {
+        "actual_join": 0.693,
+        "classifier_predicted_join": 0.4089,
+        "gap_pp": -28.4,
+        "n_obs": 270
+      }
     }
   },
   "fixed_messages_test": {
@@ -3513,6 +3535,298 @@
             "n": 2500
           }
         }
+      }
+    }
+  },
+  "parse_errors": {
+    "Mistral Small Creative": {
+      "pure": {
+        "n_periods": 1000,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0,
+        "total_api_errors": 0,
+        "total_unparseable": 0,
+        "total_decisions": 25000
+      },
+      "comm": {
+        "n_periods": 1000,
+        "mean_api_error_rate": 0.0001,
+        "mean_unparseable_rate": 0.0,
+        "total_api_errors": 2,
+        "total_unparseable": 0,
+        "total_decisions": 25000
+      },
+      "scramble": {
+        "n_periods": 100,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0,
+        "total_api_errors": 0,
+        "total_unparseable": 0,
+        "total_decisions": 2500
+      },
+      "flip": {
+        "n_periods": 100,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0,
+        "total_api_errors": 0,
+        "total_unparseable": 0,
+        "total_decisions": 2500
+      }
+    },
+    "Llama 3.3 70B": {
+      "pure": {
+        "n_periods": 100,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0,
+        "total_api_errors": 0,
+        "total_unparseable": 0,
+        "total_decisions": 2500
+      },
+      "comm": {
+        "n_periods": 100,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0,
+        "total_api_errors": 0,
+        "total_unparseable": 0,
+        "total_decisions": 2500
+      },
+      "scramble": {
+        "n_periods": 100,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0004,
+        "total_api_errors": 0,
+        "total_unparseable": 1,
+        "total_decisions": 2500
+      },
+      "flip": {
+        "n_periods": 100,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0,
+        "total_api_errors": 0,
+        "total_unparseable": 0,
+        "total_decisions": 2500
+      }
+    },
+    "Qwen3 30B": {
+      "pure": {
+        "n_periods": 100,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0,
+        "total_api_errors": 0,
+        "total_unparseable": 0,
+        "total_decisions": 2500
+      },
+      "comm": {
+        "n_periods": 100,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0,
+        "total_api_errors": 0,
+        "total_unparseable": 0,
+        "total_decisions": 2500
+      },
+      "scramble": {
+        "n_periods": 100,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0,
+        "total_api_errors": 0,
+        "total_unparseable": 0,
+        "total_decisions": 2500
+      },
+      "flip": {
+        "n_periods": 100,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0,
+        "total_api_errors": 0,
+        "total_unparseable": 0,
+        "total_decisions": 2500
+      }
+    },
+    "GPT-OSS 120B": {
+      "pure": {
+        "n_periods": 200,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.015,
+        "total_api_errors": 0,
+        "total_unparseable": 75,
+        "total_decisions": 5000
+      },
+      "comm": {
+        "n_periods": 200,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0026,
+        "total_api_errors": 0,
+        "total_unparseable": 13,
+        "total_decisions": 5000
+      },
+      "scramble": {
+        "n_periods": 500,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0308,
+        "total_api_errors": 0,
+        "total_unparseable": 385,
+        "total_decisions": 12500
+      },
+      "flip": {
+        "n_periods": 500,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0326,
+        "total_api_errors": 0,
+        "total_unparseable": 408,
+        "total_decisions": 12500
+      }
+    },
+    "Qwen3 235B": {
+      "pure": {
+        "n_periods": 200,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0,
+        "total_api_errors": 0,
+        "total_unparseable": 0,
+        "total_decisions": 5000
+      },
+      "comm": {
+        "n_periods": 200,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0,
+        "total_api_errors": 0,
+        "total_unparseable": 0,
+        "total_decisions": 5000
+      },
+      "scramble": {
+        "n_periods": 100,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0,
+        "total_api_errors": 0,
+        "total_unparseable": 0,
+        "total_decisions": 2500
+      },
+      "flip": {
+        "n_periods": 100,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0,
+        "total_api_errors": 0,
+        "total_unparseable": 0,
+        "total_decisions": 2500
+      }
+    },
+    "Trinity Large": {
+      "pure": {
+        "n_periods": 100,
+        "mean_api_error_rate": 0.09,
+        "mean_unparseable_rate": 0.0,
+        "total_api_errors": 225,
+        "total_unparseable": 0,
+        "total_decisions": 2500
+      },
+      "comm": {
+        "n_periods": 100,
+        "mean_api_error_rate": 0.1,
+        "mean_unparseable_rate": 0.0,
+        "total_api_errors": 250,
+        "total_unparseable": 0,
+        "total_decisions": 2500
+      },
+      "scramble": {
+        "n_periods": 100,
+        "mean_api_error_rate": 0.08,
+        "mean_unparseable_rate": 0.0,
+        "total_api_errors": 200,
+        "total_unparseable": 0,
+        "total_decisions": 2500
+      },
+      "flip": {
+        "n_periods": 100,
+        "mean_api_error_rate": 0.0992,
+        "mean_unparseable_rate": 0.0,
+        "total_api_errors": 248,
+        "total_unparseable": 0,
+        "total_decisions": 2500
+      }
+    },
+    "MiniMax M2-Her": {
+      "pure": {
+        "n_periods": 100,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0152,
+        "total_api_errors": 0,
+        "total_unparseable": 38,
+        "total_decisions": 2500
+      },
+      "comm": {
+        "n_periods": 100,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0088,
+        "total_api_errors": 0,
+        "total_unparseable": 22,
+        "total_decisions": 2500
+      },
+      "scramble": {
+        "n_periods": 100,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.018,
+        "total_api_errors": 0,
+        "total_unparseable": 45,
+        "total_decisions": 2500
+      },
+      "flip": {
+        "n_periods": 100,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0104,
+        "total_api_errors": 0,
+        "total_unparseable": 26,
+        "total_decisions": 2500
+      }
+    },
+    "_infodesign": {
+      "ck_high_coord": {
+        "n_periods": 270,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0
+      },
+      "ck_low_coord": {
+        "n_periods": 270,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0
+      },
+      "coord_amplified": {
+        "n_periods": 270,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0
+      },
+      "coord_suppressed": {
+        "n_periods": 270,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0
+      },
+      "hard_scramble": {
+        "n_periods": 270,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0
+      },
+      "priv_high_coord": {
+        "n_periods": 270,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0
+      },
+      "priv_low_coord": {
+        "n_periods": 270,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0
+      },
+      "stability_clarity": {
+        "n_periods": 270,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0
+      },
+      "stability_direction": {
+        "n_periods": 270,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0
+      },
+      "stability_dissent": {
+        "n_periods": 270,
+        "mean_api_error_rate": 0.0,
+        "mean_unparseable_rate": 0.0
       }
     }
   },

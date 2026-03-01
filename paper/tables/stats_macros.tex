@@ -19,12 +19,17 @@
 \providecommand{\PooledCommMeanJoin}{0.421}
 \providecommand{\MeanModelRPureTheta}{-0.84}
 \providecommand{\MeanModelRPureAttack}{+0.80}
+\providecommand{\MeanModelRFlipAttack}{-0.80}
+\providecommand{\PooledFlipRAttack}{-0.79}
 
 % Pooled OLS (join_fraction ~ theta)
 \providecommand{\PooledOLSIntercept}{0.132}
 \providecommand{\PooledOLSSlope}{0.5416}
 \providecommand{\PooledOLSRSq}{0.4783}
 \providecommand{\PooledOLSNObs}{1800}
+\providecommand{\PooledOLSInterceptDisp}{0.13}
+\providecommand{\PooledOLSSlopeDisp}{0.54}
+\providecommand{\PooledOLSRSqDisp}{0.48}
 
 % Clustered standard errors on slope
 \providecommand{\ClusteredSEHomoSlope}{0.0133}
@@ -266,18 +271,25 @@
 \providecommand{\UncalQwenLMeanJoin}{0.445}
 
 % Cross-generator robustness
-\providecommand{\CrossGenMistralSmaBaselineR}{-0.86}
-\providecommand{\CrossGenMistralSmaCableR}{-0.86}
-\providecommand{\CrossGenMistralSmaJournalisticR}{-0.86}
-\providecommand{\CrossGenLlama3.370BaselineR}{-0.85}
-\providecommand{\CrossGenLlama3.370CableR}{-0.85}
-\providecommand{\CrossGenLlama3.370JournalisticR}{-0.85}
+\providecommand{\CrossGenMistralSmallBaselineR}{-0.86}
+\providecommand{\CrossGenMistralSmallCableR}{-0.86}
+\providecommand{\CrossGenMistralSmallJournalisticR}{-0.86}
+\providecommand{\CrossGenLlamaBBaselineR}{-0.85}
+\providecommand{\CrossGenLlamaBCableR}{-0.85}
+\providecommand{\CrossGenLlamaBJournalisticR}{-0.85}
 
 % Propaganda saturation test
 \providecommand{\PropSatKFiveMeanJoin}{---}
 \providecommand{\PropSatKTenMeanJoin}{---}
 \providecommand{\PropSatDeltaPP}{-32.0}
 \providecommand{\PropSatPValue}{0.6676}
+
+% Llama propaganda k=5 replication
+\providecommand{\LlamaPropKFiveDeltaRealPP}{-2.7}
+
+% Mixed-model robustness
+\providecommand{\MixedPureRAttack}{+0.77}
+\providecommand{\MixedCommRAttack}{+0.75}
 
 % Parse error rates
 \providecommand{\ParseErrMistral}{---}
