@@ -136,11 +136,20 @@ EXCLUDE_MODELS = _EXCLUDE_MODELS
 
 # ── Helpers ───────────────────────────────────────────────────────
 
+
+def _join_col(df):
+    """Prefer join_fraction_valid when available, fall back to join_fraction."""
+    if "join_fraction_valid" in df.columns and df["join_fraction_valid"].notna().any():
+        return "join_fraction_valid"
+    return "join_fraction"
+
+
 def logistic(x, b0, b1):
     return 1.0 / (1.0 + np.exp(b0 + b1 * x))
 
 
-def fit_logistic(df, theta_col="theta", join_col="join_fraction"):
+def fit_logistic(df, theta_col="theta", join_col=None):
+    join_col = join_col or _join_col(df)
     d = df.dropna(subset=[theta_col, join_col])
     x, y = d[theta_col].values, d[join_col].values
     try:
@@ -150,7 +159,8 @@ def fit_logistic(df, theta_col="theta", join_col="join_fraction"):
         return np.array([0.0, 0.0]), np.zeros((2, 2))
 
 
-def binned(df, theta_col="theta", join_col="join_fraction", n_bins=15):
+def binned(df, theta_col="theta", join_col=None, n_bins=15):
+    join_col = join_col or _join_col(df)
     d = df.dropna(subset=[theta_col, join_col]).copy()
     d["bin"] = pd.qcut(d[theta_col], n_bins, duplicates="drop")
     g = d.groupby("bin", observed=True)
@@ -161,8 +171,9 @@ def binned(df, theta_col="theta", join_col="join_fraction", n_bins=15):
     return centers[order], means[order], ses[order]
 
 
-def design_curve(df, design, theta_col="theta", join_col="join_fraction"):
+def design_curve(df, design, theta_col="theta", join_col=None):
     """Get mean join by theta for a specific design."""
+    join_col = join_col or _join_col(df)
     sub = df[df["design"] == design].dropna(subset=[theta_col, join_col])
     if len(sub) == 0:
         return np.array([]), np.array([]), np.array([])
@@ -290,7 +301,7 @@ def fig01_sigmoid():
     ts_p = -b0_p / b1_p
     ax.axvline(ts_p, color=C_PURE, linestyle=":", linewidth=0.5, alpha=0.5)
 
-    r_p = stats.pearsonr(pure["theta"], pure["join_fraction"])[0]
+    r_p = stats.pearsonr(pure["theta"], pure[_join_col(pure)])[0]
     ax.text(0.03, 0.03,
             f"$r(\\theta,J)$ = {r_p:.2f}, $\\hat{{\\theta}}^*$ = {ts_p:.2f}",
             transform=ax.transAxes, fontsize=6, va="bottom",
@@ -413,9 +424,10 @@ def fig03_falsification():
         c, m, se = binned(df, n_bins=8)
         color = MODEL_COLORS.get(model, "#999")
         ax.scatter(c, m, color=color, s=8, alpha=0.7, edgecolors="none")
-        mean_j = df["join_fraction"].mean()
+        jc = _join_col(df)
+        mean_j = df[jc].mean()
         ax.axhline(mean_j, color=color, linestyle="--", linewidth=0.6, alpha=0.5)
-        r_val = stats.pearsonr(df["theta"], df["join_fraction"])[0]
+        r_val = stats.pearsonr(df["theta"], df[jc])[0]
         ax.text(0.97, 0.97 - models_with_flip[:4].index(model) * 0.09,
                 f"r = {r_val:.2f}", transform=ax.transAxes, fontsize=5.5,
                 ha="right", va="top", color=color)
@@ -437,7 +449,7 @@ def fig03_falsification():
                     color=color, linewidth=0.8, alpha=0.7)
         except Exception:
             pass
-        r_val = stats.pearsonr(df["theta"], df["join_fraction"])[0]
+        r_val = stats.pearsonr(df["theta"], df[_join_col(df)])[0]
         ax.text(0.03, 0.97 - models_with_flip[:4].index(model) * 0.09,
                 f"r = +{r_val:.2f}", transform=ax.transAxes, fontsize=5.5,
                 ha="left", va="top", color=color)
@@ -467,8 +479,10 @@ def fig05_communication():
     pure_binned["tbin"] = pd.cut(pure_binned["theta"], bins=bin_edges, include_lowest=True)
     comm_binned["tbin"] = pd.cut(comm_binned["theta"], bins=bin_edges, include_lowest=True)
 
-    gp = pure_binned.groupby("tbin", observed=True)["join_fraction"].agg(["mean", "sem"])
-    gc = comm_binned.groupby("tbin", observed=True)["join_fraction"].agg(["mean", "sem"])
+    _jc_pure = _join_col(pure_binned)
+    _jc_comm = _join_col(comm_binned)
+    gp = pure_binned.groupby("tbin", observed=True)[_jc_pure].agg(["mean", "sem"])
+    gc = comm_binned.groupby("tbin", observed=True)[_jc_comm].agg(["mean", "sem"])
 
     shared = gp.index.intersection(gc.index)
     gp, gc = gp.loc[shared], gc.loc[shared]
@@ -635,10 +649,10 @@ def fig09_censorship():
     for design in ["baseline", "censor_upper", "censor_lower",
                     "stability", "instability", "public_signal"]:
         sub = info_all[info_all["design"] == design].dropna(
-            subset=["theta", "join_fraction"])
+            subset=["theta", _join_col(info_all)])
         if len(sub) < 5:
             continue
-        slope = np.polyfit(sub["theta"], sub["join_fraction"], 1)[0]
+        slope = np.polyfit(sub["theta"], sub[_join_col(sub)], 1)[0]
         slope_data.append({"design": design, "slope": slope})
 
     if slope_data:
@@ -790,13 +804,15 @@ def fig12_surveillance():
 
         surv_m = pd.read_csv(surv_model_paths[model])
 
-        delta = surv_m["join_fraction"].mean() - comm["join_fraction"].mean()
+        jc_s = _join_col(surv_m)
+        jc_c = _join_col(comm)
+        delta = surv_m[jc_s].mean() - comm[jc_c].mean()
         deltas.append({"model": name, "delta": delta})
 
         # Comm baseline (dashed)
         try:
             popt, _ = curve_fit(logistic, comm["theta"].values,
-                                comm["join_fraction"].values, p0=[0, 2], maxfev=10000)
+                                comm[jc_c].values, p0=[0, 2], maxfev=10000)
             ax.plot(theta_grid, logistic(theta_grid, *popt),
                     color=color, linewidth=0.8, linestyle="--", alpha=0.5, zorder=2)
         except RuntimeError:
@@ -807,7 +823,7 @@ def fig12_surveillance():
         ax.scatter(c, m, color=color, s=8, alpha=0.6, zorder=3, edgecolors="none")
         try:
             popt, _ = curve_fit(logistic, surv_m["theta"].values,
-                                surv_m["join_fraction"].values, p0=[0, 2], maxfev=10000)
+                                surv_m[jc_s].values, p0=[0, 2], maxfev=10000)
             ax.plot(theta_grid, logistic(theta_grid, *popt),
                     color=color, linewidth=1.0, zorder=2, label=name)
         except RuntimeError:
@@ -930,7 +946,7 @@ def fig13_propaganda():
         if not comm_f.exists():
             continue
         comm_base = pd.read_csv(comm_f)
-        delta = p5["join_fraction_real"].mean() - comm_base["join_fraction"].mean()
+        delta = p5["join_fraction_real"].mean() - comm_base[_join_col(comm_base)].mean()
         behavioral_deltas.append({
             "model": SHORT_NAMES.get(model, model[:15]),
             "delta": delta,
@@ -971,11 +987,12 @@ def fig14_cross_model_infodesign():
         if len(df) == 0:
             continue
         for design in ["baseline", "stability"]:
-            sub = df[df["design"] == design].dropna(subset=["theta", "join_fraction"])
+            jc = _join_col(df)
+            sub = df[df["design"] == design].dropna(subset=["theta", jc])
             if len(sub) < 3:
                 continue
-            slope = np.polyfit(sub["theta"], sub["join_fraction"], 1)[0]
-            mean_j = sub["join_fraction"].mean()
+            slope = np.polyfit(sub["theta"], sub[jc], 1)[0]
+            mean_j = sub[jc].mean()
             results.append({
                 "model": model_dir, "design": design,
                 "slope": slope, "mean_join": mean_j, "n_obs": len(sub),
@@ -1072,7 +1089,7 @@ def figA1_agent_count():
         ax.plot(theta_grid, logistic(theta_grid, b0, b1),
                 color=color, linewidth=0.9, label=f"n = {n}")
 
-        r_val = stats.pearsonr(df["theta"], df["join_fraction"])[0]
+        r_val = stats.pearsonr(df["theta"], df[_join_col(df)])[0]
         r_values[n] = r_val
 
     r_text = "\n".join([f"n={n}: r = {r:.2f}" for n, r in sorted(r_values.items())])
@@ -1172,7 +1189,7 @@ def figA3_bandwidth():
 
         theta, mean, sem = design_curve(sub.assign(design="stability"), "stability")
         if len(theta) == 0:
-            g = sub.groupby("theta")["join_fraction"].agg(
+            g = sub.groupby("theta")[_join_col(sub)].agg(
                 ["mean", "sem"]).reset_index().sort_values("theta")
             theta, mean, sem = g["theta"].values, g["mean"].values, g["sem"].values
 
@@ -1841,7 +1858,7 @@ def fig20_cross_generator():
             if not csvs:
                 continue
             df = pd.read_csv(csvs[0])
-            jcol = "join_fraction_valid" if "join_fraction_valid" in df.columns else "join_fraction"
+            jcol = _join_col(df)
             if len(df) == 0:
                 continue
 
@@ -1902,7 +1919,7 @@ def fig21_placebo_calibration():
         base_csv = ROOT / model_slug / "experiment_pure_summary.csv"
         if base_csv.exists():
             df = pd.read_csv(base_csv)
-            jcol = "join_fraction_valid" if "join_fraction_valid" in df.columns else "join_fraction"
+            jcol = _join_col(df)
             r_val = np.corrcoef(df["theta"].values, df[jcol].dropna().values[:len(df["theta"])])[0, 1]
             conditions.append((model_name, "Calibrated", r_val, df[jcol].mean()))
 
@@ -1914,7 +1931,7 @@ def fig21_placebo_calibration():
             if not csvs:
                 continue
             df = pd.read_csv(csvs[0])
-            jcol = "join_fraction_valid" if "join_fraction_valid" in df.columns else "join_fraction"
+            jcol = _join_col(df)
             valid = df.dropna(subset=[jcol])
             if len(valid) < 3:
                 continue
