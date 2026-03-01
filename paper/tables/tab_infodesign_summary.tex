@@ -1,20 +1,20 @@
 \begin{table}[t]
 \centering
-\caption{Information design treatment summary (primary model: Mistral Small Creative). $r$ is the Pearson correlation between $\theta$ and join fraction.}
+\caption{Information design treatment summary (primary model: Mistral Small Creative). $r$ is the Pearson correlation $r(J, A(\theta))$ between join fraction and theoretical attack mass.}
 \label{tab:infodesign_summary}
 \small
 \begin{tabular}{lcccc}
 \toprule
 Design & Mean & $r$ & $\Delta$ & $N$ \\
 \midrule
-Baseline & 0.409 & $-0.884$ & --- & 270 \\
-Stability & 0.319 & $-0.626$ & -0.090 & 270 \\
-Instability & 0.067 & $-0.740$ & -0.342 & 540 \\
-Public signal & 0.017 & $-0.537$ & -0.392 & 540 \\
-Scramble & 0.121 & $+0.037$ & -0.288 & 270 \\
-Flip & 0.663 & $+0.823$ & +0.255 & 270 \\
+Baseline & 0.409 & $+0.885$ & --- & 270 \\
+Stability & 0.319 & $+0.624$ & -0.090 & 270 \\
+Instability & 0.067 & $+0.742$ & -0.342 & 540 \\
+Public signal & 0.017 & $+0.532$ & -0.392 & 540 \\
+Scramble & 0.121 & $-0.033$ & -0.288 & 270 \\
+Flip & 0.663 & $-0.820$ & +0.255 & 270 \\
 \bottomrule
 \end{tabular}
 \vspace{0.25em}
-\parbox{\columnwidth}{\footnotesize\emph{Notes:} Data from the primary model (pure treatment; $\theta \in [0.20, 0.80]$ on a 9-point grid; $N{=}25$ agents per period). Mean join uses valid decisions; $r$ is Pearson $r(\theta,\text{join})$ across rep-level periods.}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Data from the primary model (pure treatment; $\theta \in [0.20, 0.80]$ on a 9-point grid; $N{=}25$ agents per period). Mean join uses valid decisions; $r$ is Pearson $r(J, A(\theta))$ across rep-level periods.}
 \end{table}

@@ -804,9 +804,11 @@ def compute_regime_control():
             continue
         df = _load_summary(f)
         jcol = _join_col(df)
+        attack = _attack_mass_benchmark(df["theta"].astype(float).values)
         out = {
             "mean_join": round(_safe_mean(df[jcol]), 4),
             "r_vs_theta": pearson_with_ci(df["theta"], df[jcol]),
+            "r_vs_attack": pearson_with_ci(attack, df[jcol].astype(float).values),
             "n_obs": int(len(df)),
         }
         # Delta vs baseline comm (main output dir)
@@ -826,9 +828,11 @@ def compute_regime_control():
                 continue
             df = _load_summary(f)
             jcol = _join_col(df)
+            attack = _attack_mass_benchmark(df["theta"].astype(float).values)
             out = {
                 "mean_join_all": round(_safe_mean(df[jcol]), 4),
                 "r_vs_theta_all": pearson_with_ci(df["theta"], df[jcol]),
+                "r_vs_attack_all": pearson_with_ci(attack, df[jcol].astype(float).values),
                 "n_obs": int(len(df)),
             }
             # Real-citizen join fraction from comm log
@@ -860,9 +864,11 @@ def compute_regime_control():
             continue
         df = _load_summary(f)
         jcol = _join_col(df)
+        attack = _attack_mass_benchmark(df["theta"].astype(float).values)
         out = {
             "mean_join_all": round(_safe_mean(df[jcol]), 4),
             "r_vs_theta_all": pearson_with_ci(df["theta"], df[jcol]),
+            "r_vs_attack_all": pearson_with_ci(attack, df[jcol].astype(float).values),
             "n_obs": int(len(df)),
         }
         log_path = f.parent / "experiment_comm_log.json"

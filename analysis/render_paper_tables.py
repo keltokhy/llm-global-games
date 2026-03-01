@@ -240,7 +240,7 @@ def render_tab_infodesign(stats: dict) -> str:
     for key, label in designs:
         d = info.get(key, {})
         mean = d.get("mean_join")
-        r = (d.get("r_vs_theta") or {}).get("r")
+        r = (d.get("r_vs_attack") or {}).get("r")
         delta = d.get("delta_vs_baseline")
         n = d.get("n_obs")
         delta_cell = "---" if delta is None else _fmt_r(delta, nd=3).replace("+", "+")
@@ -250,7 +250,7 @@ def render_tab_infodesign(stats: dict) -> str:
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{Information design treatment summary (primary model: Mistral Small Creative). $r$ is the Pearson correlation between $\theta$ and join fraction.}
+\caption{Information design treatment summary (primary model: Mistral Small Creative). $r$ is the Pearson correlation $r(J, A(\theta))$ between join fraction and theoretical attack mass.}
 \label{tab:infodesign_summary}
 \small
 \begin{tabular}{lcccc}
@@ -262,7 +262,7 @@ Design & Mean & $r$ & $\Delta$ & $N$ \\
     tex += r"""\bottomrule
 \end{tabular}
 \vspace{0.25em}
-\parbox{\columnwidth}{\footnotesize\emph{Notes:} Data from the primary model (pure treatment; $\theta \in [0.20, 0.80]$ on a 9-point grid; $N{=}25$ agents per period). Mean join uses valid decisions; $r$ is Pearson $r(\theta,\text{join})$ across rep-level periods.}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Data from the primary model (pure treatment; $\theta \in [0.20, 0.80]$ on a 9-point grid; $N{=}25$ agents per period). Mean join uses valid decisions; $r$ is Pearson $r(J, A(\theta))$ across rep-level periods.}
 \end{table}
 """
     return tex
@@ -275,11 +275,11 @@ def render_tab_surveillance_propaganda(stats: dict) -> str:
     # Baseline comm (Mistral) from Part I
     base = part1["Mistral Small Creative"]["comm"]
     base_mean = base["mean_join"]
-    base_r = base["r_vs_theta"]["r"]
+    base_r = (base.get("r_vs_attack") or base["r_vs_theta"])["r"]
 
     def row_prop(k: int) -> tuple[str, dict]:
         d = regime["propaganda"][f"k={k}"]["Mistral Small Creative"]
-        return f"Prop $k={k}$", d
+        return f"Prop $m={k}$", d
 
     prop_rows = [row_prop(2), row_prop(5), row_prop(10)]
     surv = regime["surveillance"]["Mistral Small Creative"]
@@ -292,7 +292,7 @@ def render_tab_surveillance_propaganda(stats: dict) -> str:
     for label, d in prop_rows:
         mean_all = d["mean_join_all"]
         mean_real = d.get("mean_join_real")
-        r = d["r_vs_theta_all"]["r"]
+        r = (d.get("r_vs_attack_all") or d["r_vs_theta_all"])["r"]
         delta_real = d.get("delta_real_vs_baseline_pp")
         delta_cell = "---" if delta_real is None else f"{_fmt_r(delta_real/100,3)}"
         lines.append(
@@ -300,11 +300,13 @@ def render_tab_surveillance_propaganda(stats: dict) -> str:
         )
 
     lines.append(r"\midrule")
+    surv_r = (surv.get("r_vs_attack") or surv["r_vs_theta"])["r"]
     lines.append(
-        f"Surveillance & {_fmt_num(surv['mean_join'],3).lstrip('0')} & {_fmt_num(surv['mean_join'],3).lstrip('0')} & ${_fmt_r(surv['r_vs_theta']['r'],3)}$ & {_fmt_r(surv['delta_vs_baseline_pp']/100,3)} \\\\"
+        f"Surveillance & {_fmt_num(surv['mean_join'],3).lstrip('0')} & {_fmt_num(surv['mean_join'],3).lstrip('0')} & ${_fmt_r(surv_r,3)}$ & {_fmt_r(surv['delta_vs_baseline_pp']/100,3)} \\\\"
     )
+    ps_r = (ps.get("r_vs_attack_all") or ps["r_vs_theta_all"])["r"]
     lines.append(
-        f"Prop+Surv & {_fmt_num(ps['mean_join_all'],3).lstrip('0')} & --- & ${_fmt_r(ps['r_vs_theta_all']['r'],3)}$ & --- \\\\"
+        f"Prop+Surv & {_fmt_num(ps['mean_join_all'],3).lstrip('0')} & --- & ${_fmt_r(ps_r,3)}$ & --- \\\\"
     )
 
     tex = r"""\begin{table}[t]
@@ -1139,10 +1141,12 @@ def render_stats_macros(stats: dict) -> str:
     ]:
         mean = ig(key, "mean_join")
         r = ((info.get(key) or {}).get("r_vs_theta") or {}).get("r")
+        r_attack = ((info.get(key) or {}).get("r_vs_attack") or {}).get("r")
         delta = ig(key, "delta_vs_baseline")
         lines.append(f"\\providecommand{{\\{macro}Mean}}{{{_fmt_num(mean, 3)}}}")
         lines.append(f"\\providecommand{{\\{macro}MeanPct}}{{{_fmt_pct(mean, 1)}}}")
         lines.append(f"\\providecommand{{\\{macro}RTheta}}{{{_fmt_r(r, 3)}}}")
+        lines.append(f"\\providecommand{{\\{macro}RAttack}}{{{_fmt_r(r_attack, 3)}}}")
         lines.append(f"\\providecommand{{\\{macro}DeltaPP}}{{{_fmt_pp(delta, 1)}}}")
         lines.append("")
 
@@ -1184,6 +1188,8 @@ def render_stats_macros(stats: dict) -> str:
         lines.append(f"\\providecommand{{\\{macro}Mean}}{{{_fmt_num(mean, 3)}}}")
         lines.append(f"\\providecommand{{\\{macro}MeanPct}}{{{_fmt_pct(mean, 1)}}}")
         lines.append(f"\\providecommand{{\\{macro}RTheta}}{{{_fmt_r(r, 3)}}}")
+        r_attack = ((info.get(key) or {}).get("r_vs_attack") or {}).get("r")
+        lines.append(f"\\providecommand{{\\{macro}RAttack}}{{{_fmt_r(r_attack, 3)}}}")
         lines.append(f"\\providecommand{{\\{macro}DeltaPP}}{{{_fmt_pp(delta, 1)}}}")
     lines.append("")
 
