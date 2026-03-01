@@ -1331,6 +1331,17 @@ _BELIEF_V2_SOURCES = {
 }
 
 
+def _split_belief_log(periods, n_surv_tail=200):
+    """Split a combined comm+surveillance log by convention.
+
+    The belief elicitation log appends surveillance periods after comm periods.
+    Convention: last n_surv_tail entries are surveillance, rest are comm.
+    """
+    surv = periods[-n_surv_tail:]
+    comm = periods[:-n_surv_tail] if len(periods) > n_surv_tail else periods
+    return comm, surv
+
+
 def _load_belief_v2_agents(treatment: str) -> list[dict]:
     """Load agent rows from v2 belief data (identified by second_order_belief_raw field).
 
@@ -1350,11 +1361,9 @@ def _load_belief_v2_agents(treatment: str) -> list[dict]:
 
     # Filter to entries with second_order_belief_raw
     if treatment == "surveillance":
-        # Last 200 entries that have second_order_belief_raw
-        candidates = periods[-200:]
+        _, candidates = _split_belief_log(periods)
     elif treatment == "comm":
-        # Entries with second_order_belief_raw that are NOT in the last 200
-        candidates = periods[:-200] if len(periods) > 200 else periods
+        candidates, _ = _split_belief_log(periods)
     else:
         # pure: all entries with second_order_belief_raw
         candidates = periods

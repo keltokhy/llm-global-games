@@ -1513,6 +1513,7 @@ def fig17_second_order_beliefs():
         if not periods:
             return []
 
+        # Convention: last 200 entries = surveillance v2 (see verify_paper_stats._split_belief_log)
         if treatment == "surveillance":
             candidates = periods[-200:]
         elif treatment == "comm":
