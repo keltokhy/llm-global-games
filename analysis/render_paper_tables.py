@@ -1146,6 +1146,20 @@ def render_stats_macros(stats: dict) -> str:
         lines.append(f"\\providecommand{{\\{macro}DeltaPP}}{{{_fmt_pp(delta, 1)}}}")
         lines.append("")
 
+    # ── Regime fall rates (per design) ─────────────────────────────
+    lines.append("% Regime fall rates (fraction of periods where join > theta)")
+    for key, macro in [
+        ("baseline", "InfodesignBaseline"),
+        ("stability", "InfodesignStability"),
+        ("instability", "InfodesignInstability"),
+        ("public_signal", "InfodesignPublicSignal"),
+        ("censor_upper", "InfodesignCensorUpper"),
+        ("censor_lower", "InfodesignCensorLower"),
+    ]:
+        fall_rate = ig(key, "regime_fall_rate")
+        lines.append(f"\\providecommand{{\\{macro}FallRate}}{{{_fmt_pct(fall_rate, 1)}}}")
+    lines.append("")
+
     # Decomposition summary: sum of single-channel deltas vs full bundled delta
     decomp_keys = ["stability_clarity", "stability_direction", "stability_dissent"]
     sum_delta = 0.0

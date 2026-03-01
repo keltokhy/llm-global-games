@@ -976,6 +976,7 @@
         "n": 270
       },
       "n_obs": 270,
+      "regime_fall_rate": 0.4444,
       "delta_vs_baseline": -0.0048
     },
     "coord_suppressed": {
@@ -995,6 +996,7 @@
         "n": 270
       },
       "n_obs": 270,
+      "regime_fall_rate": 0.4222,
       "delta_vs_baseline": 0.0026
     },
     "ck_high_coord": {
@@ -1014,6 +1016,7 @@
         "n": 270
       },
       "n_obs": 270,
+      "regime_fall_rate": 0.463,
       "delta_vs_baseline": 0.0184
     },
     "ck_low_coord": {
@@ -1033,6 +1036,7 @@
         "n": 270
       },
       "n_obs": 270,
+      "regime_fall_rate": 0.4444,
       "delta_vs_baseline": 0.0266
     },
     "priv_high_coord": {
@@ -1052,6 +1056,7 @@
         "n": 270
       },
       "n_obs": 270,
+      "regime_fall_rate": 0.4,
       "delta_vs_baseline": -0.0308
     },
     "priv_low_coord": {
@@ -1071,6 +1076,7 @@
         "n": 270
       },
       "n_obs": 270,
+      "regime_fall_rate": 0.3815,
       "delta_vs_baseline": -0.0345
     },
     "hard_scramble": {
@@ -1090,6 +1096,7 @@
         "n": 270
       },
       "n_obs": 270,
+      "regime_fall_rate": 0.3481,
       "r_vs_theta_raw": {
         "r": -0.0544,
         "p": 0.373377,
@@ -1146,6 +1153,7 @@
         "n": 270
       },
       "n_obs": 270,
+      "regime_fall_rate": 0.4259,
       "delta_vs_baseline": -0.0038
     },
     "stability_direction": {
@@ -1165,6 +1173,7 @@
         "n": 270
       },
       "n_obs": 270,
+      "regime_fall_rate": 0.3778,
       "delta_vs_baseline": -0.0201
     },
     "stability_dissent": {
@@ -1184,6 +1193,7 @@
         "n": 270
       },
       "n_obs": 270,
+      "regime_fall_rate": 0.4296,
       "delta_vs_baseline": -0.0023
     },
     "baseline": {
@@ -1204,6 +1214,7 @@
       },
       "n_obs": 270,
       "_source": "experiment_bc_sweep_summary.csv[theta_star_target=0.50]",
+      "regime_fall_rate": 0.4333,
       "logistic_fit": {
         "b0": -1.5448,
         "b1": 3.9289,
@@ -1231,6 +1242,7 @@
         "n": 270
       },
       "n_obs": 270,
+      "regime_fall_rate": 0.2333,
       "delta_vs_baseline": -0.2185,
       "logistic_fit": {
         "b0": -0.5967,
@@ -1259,6 +1271,7 @@
         "n": 270
       },
       "n_obs": 270,
+      "regime_fall_rate": 0.663,
       "delta_vs_baseline": 0.2843,
       "logistic_fit": {
         "b0": -3.1872,
@@ -1287,6 +1300,7 @@
         "n": 270
       },
       "n_obs": 270,
+      "regime_fall_rate": 0.2148,
       "delta_vs_baseline": -0.0188
     },
     "censor_upper_known": {
@@ -1306,6 +1320,7 @@
         "n": 270
       },
       "n_obs": 270,
+      "regime_fall_rate": 0.5222,
       "delta_vs_baseline": 0.0237
     },
     "censor_upper": {
@@ -1325,6 +1340,7 @@
         "n": 270
       },
       "n_obs": 270,
+      "regime_fall_rate": 0.4185,
       "delta_vs_baseline": -0.0314
     },
     "domain_scramble_coord": {
@@ -1344,6 +1360,7 @@
         "n": 270
       },
       "n_obs": 270,
+      "regime_fall_rate": 0.4556,
       "r_vs_theta_raw": {
         "r": -0.8726,
         "p": 0.0,
@@ -1377,6 +1394,7 @@
         "n": 270
       },
       "n_obs": 270,
+      "regime_fall_rate": 0.4296,
       "r_vs_theta_raw": {
         "r": -0.8895,
         "p": 0.0,
@@ -1410,6 +1428,7 @@
         "n": 270
       },
       "n_obs": 270,
+      "regime_fall_rate": 0.9037,
       "delta_vs_baseline": 0.2547
     },
     "instability": {
@@ -1429,6 +1448,7 @@
         "n": 540
       },
       "n_obs": 540,
+      "regime_fall_rate": 0.0278,
       "delta_vs_baseline": -0.3417
     },
     "public_signal": {
@@ -1448,6 +1468,7 @@
         "n": 540
       },
       "n_obs": 540,
+      "regime_fall_rate": 0.0,
       "delta_vs_baseline": -0.3919
     },
     "scramble": {
@@ -1467,6 +1488,7 @@
         "n": 270
       },
       "n_obs": 270,
+      "regime_fall_rate": 0.0,
       "r_vs_theta_raw": {
         "r": 0.0364,
         "p": 0.551972,
@@ -1500,6 +1522,7 @@
         "n": 270
       },
       "n_obs": 270,
+      "regime_fall_rate": 0.3407,
       "delta_vs_baseline": -0.0897
     },
     "within_scramble": {
@@ -1519,6 +1542,7 @@
         "n": 270
       },
       "n_obs": 270,
+      "regime_fall_rate": 0.4222,
       "r_vs_theta_raw": {
         "r": -0.8549,
         "p": 0.0,

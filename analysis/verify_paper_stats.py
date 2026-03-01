@@ -479,6 +479,9 @@ def compute_infodesign():
             "r_vs_attack": r_attack,
             "n_obs": len(sub),
         }
+        # Regime fall rate: fraction of periods where join_fraction > theta
+        if "coup_success" in sub.columns:
+            entry["regime_fall_rate"] = round(float(sub["coup_success"].mean()), 4)
 
         # For scramble designs: demean by rep to remove ecological confound,
         # mirroring the within-country demeaning used for Part I scramble.
@@ -541,6 +544,8 @@ def compute_infodesign():
             "r_vs_attack": r_attack,
             "n_obs": len(df_d),
         }
+        if "coup_success" in df_d.columns:
+            entry["regime_fall_rate"] = round(float(df_d["coup_success"].mean()), 4)
 
         # Scramble demeaning for individual per-design CSVs
         if "scramble" in design and "rep" in df_d.columns:
@@ -562,13 +567,16 @@ def compute_infodesign():
         r_theta = pearson_with_ci(bc_sweep_baseline["theta"], bc_sweep_baseline[jc])
         r_attack = pearson_with_ci(bc_sweep_baseline["theoretical_attack"], bc_sweep_baseline[jc]) \
             if "theoretical_attack" in bc_sweep_baseline.columns else {}
-        results["baseline"] = {
+        baseline_entry = {
             "mean_join": round(bc_sweep_baseline[jc].mean(), 4),
             "r_vs_theta": r_theta,
             "r_vs_attack": r_attack,
             "n_obs": int(len(bc_sweep_baseline)),
             "_source": "experiment_bc_sweep_summary.csv[theta_star_target=0.50]",
         }
+        if "coup_success" in bc_sweep_baseline.columns:
+            baseline_entry["regime_fall_rate"] = round(float(bc_sweep_baseline["coup_success"].mean()), 4)
+        results["baseline"] = baseline_entry
 
     # Treatment effects relative to baseline
     if "baseline" in results:
