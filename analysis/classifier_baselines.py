@@ -35,7 +35,9 @@ OUTPUT_ROOT = PROJECT_ROOT / "output"
 ANALYSIS_DIR = Path(__file__).resolve().parent
 RESULTS_PATH = ANALYSIS_DIR / "classifier_results.json"
 
-MODEL_SLUG = "mistralai--mistral-small-creative"
+from models import PRIMARY_SLUG
+
+MODEL_SLUG = PRIMARY_SLUG
 MODEL_DIR = OUTPUT_ROOT / MODEL_SLUG
 SURV_DIR = OUTPUT_ROOT / "surveillance" / MODEL_SLUG
 
@@ -416,10 +418,118 @@ def main():
         print("is not attributable to briefing text -- it arises from the surveillance")
         print("framing in the system prompt.")
 
+    # ==================================================================
+    # B/C Comparative Statics: classifier can't reproduce payoff shifts
+    # ==================================================================
+    print("\n" + "=" * 72)
+    print("B/C Comparative Statics: classifier vs. payoff-theory predictions")
+    print("=" * 72)
+
+    bc_results = _bc_comparative_statics()
+    if bc_results:
+        results["bc_comparative_statics"] = bc_results
+        for cond, data in bc_results.items():
+            print(f"  {cond}:")
+            print(f"    Classifier predicted join rate: {data['classifier_predicted_join']:.3f}")
+            print(f"    Actual LLM join rate:           {data['actual_join']:.3f}")
+            print(f"    Gap (predicted - actual):       {data['gap_pp']:+.1f} pp")
+    else:
+        print("  WARNING: B/C data not available, skipping.")
+
     # ── Save results ──────────────────────────────────────────────────
     with open(RESULTS_PATH, "w") as f:
         json.dump(results, f, indent=2)
     print(f"\nResults written to {RESULTS_PATH}")
+
+
+def _bc_comparative_statics() -> dict:
+    """Train slider logistic on baseline infodesign, predict on B/C conditions.
+
+    The slider values (direction, clarity, coordination) are deterministic
+    functions of z-score and don't change with B/C payoffs. A classifier
+    trained on baseline data therefore predicts ~same join rate for all
+    conditions. Actual LLM join rates shift by ~50pp because agents respond
+    to payoff information embedded in the narrative, not captured by sliders.
+
+    Since per-agent logs are not available for B/C conditions, we use a
+    period-level logistic: fit join_fraction ~ logistic(theta) on baseline,
+    then predict on B/C theta grids. This is equivalent to a slider
+    classifier because the slider→theta mapping is monotone and shared.
+    """
+    from scipy.optimize import curve_fit
+
+    def _logistic(x, b0, b1):
+        return 1.0 / (1.0 + np.exp(b0 + b1 * x))
+
+    # Load baseline (canonical θ*=0.50 slice from bc_sweep if available)
+    bc_sweep_path = MODEL_DIR / "experiment_bc_sweep_summary.csv"
+    if bc_sweep_path.exists():
+        bc_all = pd.read_csv(bc_sweep_path)
+        if "theta_star_target" in bc_all.columns:
+            baseline_df = bc_all[np.isclose(bc_all["theta_star_target"].astype(float), 0.50)]
+        else:
+            baseline_df = pd.DataFrame()
+    else:
+        baseline_df = pd.DataFrame()
+
+    if len(baseline_df) == 0:
+        baseline_path = MODEL_DIR / "experiment_infodesign_baseline_summary.csv"
+        if baseline_path.exists():
+            baseline_df = pd.read_csv(baseline_path)
+
+    if len(baseline_df) == 0:
+        return {}
+
+    jcol = "join_fraction_valid" if "join_fraction_valid" in baseline_df.columns else "join_fraction"
+
+    # Fit logistic on baseline
+    theta_base = baseline_df["theta"].astype(float).values
+    join_base = baseline_df[jcol].astype(float).values
+    mask = np.isfinite(theta_base) & np.isfinite(join_base)
+    theta_base, join_base = theta_base[mask], join_base[mask]
+
+    try:
+        popt, _ = curve_fit(_logistic, theta_base, join_base, p0=[0, 2], maxfev=10000)
+    except RuntimeError:
+        return {}
+
+    results = {}
+    results["baseline"] = {
+        "actual_join": round(float(join_base.mean()), 4),
+        "classifier_predicted_join": round(float(_logistic(theta_base, *popt).mean()), 4),
+        "gap_pp": 0.0,
+        "n_obs": int(len(theta_base)),
+        "logistic_b0": round(float(popt[0]), 4),
+        "logistic_b1": round(float(popt[1]), 4),
+    }
+
+    for cond in ["bc_high_cost", "bc_low_cost"]:
+        cond_path = MODEL_DIR / f"experiment_infodesign_{cond}_summary.csv"
+        if not cond_path.exists():
+            continue
+        df = pd.read_csv(cond_path)
+        if len(df) == 0:
+            continue
+        jc = "join_fraction_valid" if "join_fraction_valid" in df.columns else "join_fraction"
+        theta_cond = df["theta"].astype(float).values
+        join_cond = df[jc].astype(float).values
+        m = np.isfinite(theta_cond) & np.isfinite(join_cond)
+        theta_cond, join_cond = theta_cond[m], join_cond[m]
+
+        # Classifier predicts using baseline-fitted logistic
+        predicted = _logistic(theta_cond, *popt)
+        actual = join_cond.mean()
+        pred_mean = predicted.mean()
+        gap = (pred_mean - actual) * 100
+
+        results[cond] = {
+            "actual_join": round(float(actual), 4),
+            "classifier_predicted_join": round(float(pred_mean), 4),
+            "gap_pp": round(float(gap), 1),
+            "n_obs": int(len(theta_cond)),
+        }
+
+    return results
 
 
 if __name__ == "__main__":
