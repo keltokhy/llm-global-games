@@ -38,27 +38,7 @@ FIG_DIR.mkdir(exist_ok=True)
 RESULTS_PATH = Path(__file__).resolve().parent / "construct_validity_results.json"
 
 # ── Models ────────────────────────────────────────────────────────
-PART1_MODELS = [
-    "mistralai--mistral-small-creative",
-    "meta-llama--llama-3.3-70b-instruct",
-    "mistralai--ministral-3b-2512",
-    "qwen--qwen3-30b-a3b-instruct-2507",
-    "openai--gpt-oss-120b",
-    "qwen--qwen3-235b-a22b-2507",
-    "arcee-ai--trinity-large-preview_free",
-    "minimax--minimax-m2-her",
-]
-
-SHORT_NAMES = {
-    "mistralai--mistral-small-creative": "Mistral-Small",
-    "meta-llama--llama-3.3-70b-instruct": "Llama-3.3-70B",
-    "mistralai--ministral-3b-2512": "Ministral-3B",
-    "qwen--qwen3-30b-a3b-instruct-2507": "Qwen3-30B",
-    "openai--gpt-oss-120b": "GPT-OSS-120B",
-    "qwen--qwen3-235b-a22b-2507": "Qwen3-235B",
-    "arcee-ai--trinity-large-preview_free": "Trinity",
-    "minimax--minimax-m2-her": "MiniMax-M2",
-}
+from models import CONSTRUCT_VALIDITY_SLUGS as PART1_MODELS, SHORT_NAMES
 
 # ── Figure styling (matches make_figures.py) ──────────────────────
 COL_W = 3.4
