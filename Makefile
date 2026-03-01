@@ -8,7 +8,7 @@
 #   make paper    Compile LaTeX (×2 for references)
 #   make clean    Remove generated paper assets
 
-.PHONY: all stats tables figures paper clean
+.PHONY: all stats tables figures paper lint clean
 
 all: stats tables figures paper
 
@@ -32,6 +32,10 @@ figures: stats
 paper: tables figures
 	cd paper && pdflatex -interaction=nonstopmode paper.tex
 	cd paper && pdflatex -interaction=nonstopmode paper.tex
+
+# ── Lint (not in all chain) ────────────────────────────────────────
+lint:
+	uv run python analysis/check_paper_numbers.py
 
 # ── Clean ───────────────────────────────────────────────────────────
 clean:
