@@ -49,7 +49,10 @@ def load(model: str, treatment: str) -> pd.DataFrame:
     """Load a summary CSV, return empty DataFrame if missing."""
     p = ROOT / model / f"experiment_{treatment}_summary.csv"
     if p.exists():
-        return pd.read_csv(p)
+        df = pd.read_csv(p)
+        if "treatment" in df.columns:
+            df["treatment"] = df["treatment"].replace("communication", "comm")
+        return df
     return pd.DataFrame()
 
 
