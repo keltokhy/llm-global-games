@@ -383,26 +383,34 @@ def render_tab_bandwidth(stats: dict) -> str:
     b005 = bw["bandwidth-005"]["Mistral Small Creative"]
     b030 = bw["bandwidth-030"]["Mistral Small Creative"]
 
+    # Compute baselines for each bandwidth
+    base_005 = float(b005["baseline"])
+    base_015 = main_mean("baseline")
+    base_030 = float(b030["baseline"])
+
     rows = []
+    # First row: baseline levels for reference
+    rows.append(f"Baseline (level) & {_fmt_num(base_005,3)} & {_fmt_num(base_015,3)} & {_fmt_num(base_030,3)} \\\\")
+    rows.append(r"\midrule")
+    rows.append(r"\multicolumn{4}{l}{\textit{Treatment effect $\Delta$ (treatment $-$ baseline):}} \\")
     for design, label in [
-        ("baseline", "Baseline"),
         ("stability", "Stability"),
         ("censor_upper", "Upper cens."),
         ("censor_lower", "Lower cens."),
     ]:
-        v005 = float(b005[design])
-        v015 = main_mean(design)
-        v030 = float(b030[design])
-        rows.append(f"{label} & {_fmt_num(v005,3)} & {_fmt_num(v015,3)} & {_fmt_num(v030,3)} \\\\")
+        d005 = float(b005[design]) - base_005
+        d015 = main_mean(design) - base_015
+        d030 = float(b030[design]) - base_030
+        rows.append(f"{label} & {_fmt_r(d005,3)} & {_fmt_r(d015,3)} & {_fmt_r(d030,3)} \\\\")
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{Bandwidth robustness: mean join rates (primary model: Mistral Small Creative).}
+\caption{Bandwidth robustness: treatment effects $\Delta$ (treatment $-$ baseline) within each bandwidth condition (primary model: Mistral Small Creative). Top row shows baseline join rates for reference.}
 \label{tab:bandwidth}
 \small
 \begin{tabular}{lccc}
 \toprule
-Design & BW=0.05 & BW=0.15 & BW=0.30 \\
+ & BW=0.05 & BW=0.15 & BW=0.30 \\
 \midrule
 """
     tex += "\n".join(rows) + "\n"
@@ -415,6 +423,7 @@ Design & BW=0.05 & BW=0.15 & BW=0.30 \\
 
 def render_tab_crossmodel(stats: dict) -> str:
     cross = stats["infodesign"].get("_cross_model", {})
+    # Subset: only models with cross-model infodesign data
     order = [
         "Mistral Small Creative",
         "GPT-OSS 120B",
@@ -510,6 +519,7 @@ def render_tab_uncalibrated(stats: dict) -> str:
     if not uncal:
         return "% No uncalibrated robustness data available.\n"
 
+    # Subset: only models with uncalibrated robustness data
     models = [
         "Mistral Small Creative",
         "Llama 3.3 70B",
@@ -554,6 +564,7 @@ def render_tab_surv_censor_crossmodel(stats: dict) -> str:
     if not sxc:
         return "% No cross-model surveillance x censorship data available.\n"
 
+    # Subset: only models with surveillance x censorship data
     models = [
         "Mistral Small Creative",
         "Llama 3.3 70B",
@@ -605,15 +616,7 @@ def render_tab_logistic_params(stats: dict) -> str:
     if not fits:
         return "% No logistic fit data available.\n"
 
-    MODEL_ORDER = [
-        "Mistral Small Creative",
-        "Llama 3.3 70B",
-        "Qwen3 30B",
-        "GPT-OSS 120B",
-        "Qwen3 235B",
-        "Trinity Large",
-        "MiniMax M2-Her",
-    ]
+    MODEL_ORDER = DISPLAY_ORDER
 
     def _cell(fit: dict | None, key: str, se_key: str) -> str:
         if fit is None:
@@ -1135,7 +1138,7 @@ def render_tab_hypotheses(stats: dict) -> str:
 
     tex = r"""\begin{table*}[t]
 \centering
-\caption{Pre-registered hypotheses and test results. H1--H4 use pooled Part~I data across all seven models; H5--H8 use the primary model (Mistral Small Creative). ``Supported'' indicates whether the data pattern matches the hypothesis at $\alpha = 0.05$.}
+\caption{Pre-specified hypotheses and test results. H1--H4 use pooled Part~I data across all seven models; H5--H8 use the primary model (Mistral Small Creative). ``Supported'' indicates whether the data pattern matches the hypothesis at $\alpha = 0.05$.}
 \label{tab:hypotheses}
 \small
 \setlength{\tabcolsep}{4pt}
@@ -1317,6 +1320,7 @@ def render_tab_uncalibrated_expanded(stats: dict) -> str:
     if not uncal:
         return "% No expanded uncalibrated data available.\n"
 
+    # Subset: only models with expanded uncalibrated data (excludes Trinity)
     model_order = [
         "Mistral Small Creative", "Llama 3.3 70B", "Qwen3 30B",
         "GPT-OSS 120B", "Qwen3 235B", "MiniMax M2-Her",
@@ -1401,6 +1405,104 @@ Model & Condition & $N$ & Mean risk & Risk $|$ JOIN & Risk $|$ STAY \\
     return tex
 
 
+def render_tab_bc_classifier(stats: dict) -> str:
+    """Render B/C classifier comparative statics table."""
+    cb = stats.get("classifier_baselines", {})
+    bc = cb.get("bc_comparative_statics", {})
+    if not bc:
+        return "% No B/C classifier data available.\n"
+
+    cond_labels = {
+        "baseline": "Baseline ($\\theta^* = 0.50$)",
+        "bc_high_cost": "High cost ($\\theta^* = 0.25$)",
+        "bc_low_cost": "Low cost ($\\theta^* = 0.75$)",
+    }
+
+    rows = []
+    for cond in ["baseline", "bc_high_cost", "bc_low_cost"]:
+        d = bc.get(cond)
+        if d is None:
+            continue
+        label = cond_labels.get(cond, cond)
+        pred = d["classifier_predicted_join"]
+        actual = d["actual_join"]
+        gap = d["gap_pp"]
+        n = d["n_obs"]
+        rows.append(
+            f"{label} & {n} & {pred*100:.1f}\\% & {actual*100:.1f}\\% & {gap:+.1f} \\\\"
+        )
+
+    tex = r"""\begin{table}[t]
+\centering
+\caption{B/C comparative statics: classifier vs.\ actual LLM behavior. A logistic trained on baseline join rates (which captures the same information as slider features) predicts similar join rates across all payoff conditions. Actual LLM behavior shifts by ${\approx}\,50$~pp, demonstrating that agents respond to payoff information not captured by text features.}
+\label{tab:bc_classifier}
+\small
+\begin{tabular}{lcccc}
+\toprule
+Condition & $N$ & Classifier pred. & Actual & Gap (pp) \\
+\midrule
+"""
+    tex += "\n".join(rows) + "\n"
+    tex += r"""\bottomrule
+\end{tabular}
+\end{table}
+"""
+    return tex
+
+
+def render_tab_parse_errors(stats: dict) -> str:
+    pe = stats.get("parse_errors", {})
+    if not pe:
+        return "% No parse error data available.\n"
+
+    models = DISPLAY_ORDER
+    treatments = ["pure", "comm", "scramble", "flip"]
+    treat_labels = {"pure": "Pure", "comm": "Comm", "scramble": "Scramble", "flip": "Flip"}
+
+    rows = []
+    for model in models:
+        m_data = pe.get(model, {})
+        if not m_data:
+            continue
+        first = True
+        for t in treatments:
+            t_data = m_data.get(t)
+            if t_data is None:
+                continue
+            api_err = t_data.get("mean_api_error_rate", 0.0)
+            unparse = t_data.get("mean_unparseable_rate", 0.0)
+            combined = api_err + unparse
+            n = t_data.get("n_periods", "---")
+            model_col = model if first else ""
+            first = False
+            rows.append(
+                f"{model_col} & {treat_labels[t]} & {n} & "
+                f"{api_err*100:.1f}\\% & {unparse*100:.1f}\\% & {combined*100:.1f}\\% \\\\"
+            )
+        rows.append(r"\addlinespace")
+
+    # Remove trailing \addlinespace
+    if rows and rows[-1] == r"\addlinespace":
+        rows.pop()
+
+    tex = r"""\begin{table}[t]
+\centering
+\caption{Parse error and API failure rates by model and treatment. API error = provider-side failure; unparseable = valid response that could not be classified as JOIN or STAY. Combined rates are below 2\% for five of seven models; Trinity Large has elevated API errors (${\approx}\,9$\%) due to provider-side content filtering.}
+\label{tab:parse_errors}
+\small
+\begin{tabular}{llcccc}
+\toprule
+Model & Treatment & $N$ & API err & Unparseable & Combined \\
+\midrule
+"""
+    tex += "\n".join(rows) + "\n"
+    tex += r"""\bottomrule
+\end{tabular}
+\end{table}
+"""
+    return tex
+
+
 def main() -> None:
     stats = _load()
 
@@ -1428,6 +1530,8 @@ def main() -> None:
         "tab_temperature_expanded.tex": render_tab_temperature_expanded(stats),
         "tab_uncalibrated_expanded.tex": render_tab_uncalibrated_expanded(stats),
         "tab_punishment_risk.tex": render_tab_punishment_risk(stats),
+        "tab_parse_errors.tex": render_tab_parse_errors(stats),
+        "tab_bc_classifier.tex": render_tab_bc_classifier(stats),
         "stats_macros.tex": render_stats_macros(stats),
     }
 
