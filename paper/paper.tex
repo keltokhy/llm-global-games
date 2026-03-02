@@ -302,7 +302,7 @@ Figure~\ref{fig:all_designs} displays the design effects; Table~\ref{tab:infodes
 All information design families produce measurable shifts in coordination relative to baseline.
 \end{result}
 
-The stability design suppresses coordination: mean join falls from \InfodesignBaselineMeanPct to \InfodesignStabilityMeanPct (\InfodesignStabilityDeltaPP~pp), and the regime-fall rate drops from \InfodesignBaselineFallRate{} to \InfodesignStabilityFallRate. The instability design paradoxically reduces mean joining to \InfodesignInstabilityMeanPct (\InfodesignInstabilityDeltaPP~pp) because sharper signals suppress joining in strong states more than they boost it in weak states, given the left-shifted baseline sigmoid. The public signal produces the largest reduction (\InfodesignPublicSignalMeanPct, \InfodesignPublicSignalDeltaPP~pp) via the strategic complementarity of \citet{morris2002}: agents overweight public signals because such signals predict others' beliefs, crowding out private information. Treatment effects by $\theta$ are shown in Figure~\ref{fig:treatment_effect} (Appendix~\ref{sec:infodesign_appendix}).
+Consistent with Proposition~\ref{prop:stability}, the stability design suppresses coordination: mean join falls from \InfodesignBaselineMeanPct to \InfodesignStabilityMeanPct (\InfodesignStabilityDeltaPP~pp), and the regime-fall rate drops from \InfodesignBaselineFallRate{} to \InfodesignStabilityFallRate. The instability design paradoxically reduces mean joining to \InfodesignInstabilityMeanPct (\InfodesignInstabilityDeltaPP~pp) because sharper signals suppress joining in strong states more than they boost it in weak states, given the left-shifted baseline sigmoid. The public signal produces the largest reduction (\InfodesignPublicSignalMeanPct, \InfodesignPublicSignalDeltaPP~pp) via the strategic complementarity of \citet{morris2002}: agents overweight public signals because such signals predict others' beliefs, crowding out private information. Treatment effects by $\theta$ are shown in Figure~\ref{fig:treatment_effect} (Appendix~\ref{sec:infodesign_appendix}).
 
 \input{tables/tab_infodesign_summary.tex}
 
@@ -313,7 +313,7 @@ The stability design suppresses coordination: mean join falls from \InfodesignBa
 \end{figure*}
 
 \begin{result}[Upper Censorship Suppresses Joining in Weak States]
-Upper censorship lowers the mean join rate to \InfodesignCensorUpperMeanPct (\InfodesignCensorUpperDeltaPP~pp vs.\ baseline) and attenuates the action--attack-mass correlation ($r = \InfodesignCensorUpperRAttack$). The effect is concentrated in the censored region ($\theta \le \theta^*$), where weak-regime states are pooled to a neutral briefing and join rates flatten.
+As predicted by Proposition~\ref{prop:censorship}, upper censorship lowers the mean join rate to \InfodesignCensorUpperMeanPct (\InfodesignCensorUpperDeltaPP~pp vs.\ baseline) and attenuates the action--attack-mass correlation ($r = \InfodesignCensorUpperRAttack$). The effect is concentrated in the censored region ($\theta \le \theta^*$), where weak-regime states are pooled to a neutral briefing and join rates flatten.
 \end{result}
 
 Pooling generates a flat join-rate ``plateau'' in the censored region (Figure~\ref{fig:censorship}): when agents cannot distinguish $\theta = 0.20$ from $\theta = 0.50$, they behave as if the regime is borderline rather than clearly weak.
@@ -341,7 +341,7 @@ Two placebo variants---monitored for research (no consequences) and aggregated a
 \end{figure*}
 
 \begin{result}[Surveillance Produces a Large Chilling Effect]
-In the primary model (Mistral Small Creative), surveillance reduces mean join rates from \SurvMistralBaselineMeanPct\ to \SurvMistralMeanJoinPct, a difference of \SurvMistralDeltaPP\ percentage points ($p < 0.001$). The action--attack-mass correlation is preserved under surveillance ($r = \SurvMistralRAttack$ vs.\ $\MistralCommRAttack$ baseline), indicating that surveillance operates as a level shift rather than disrupting signal processing.
+Consistent with Proposition~\ref{prop:surveillance}, surveillance reduces mean join rates in the primary model (Mistral Small Creative) from \SurvMistralBaselineMeanPct\ to \SurvMistralMeanJoinPct, a difference of \SurvMistralDeltaPP\ percentage points ($p < 0.001$). The action--attack-mass correlation is preserved under surveillance ($r = \SurvMistralRAttack$ vs.\ $\MistralCommRAttack$ baseline), indicating that surveillance operates as a level shift rather than disrupting signal processing.
 \end{result}
 
 Surveillance contaminates the information environment with self-censored messages, pushing join rates well below the communication baseline (Figure~\ref{fig:surveillance}). The effect replicates across five models: Mistral ($\SurvMistralDeltaPP$~pp), GPT-OSS ($\SurvGptOssDeltaPP$~pp), Qwen3~30B ($\SurvQwenSDeltaPP$~pp), Llama ($\SurvLlamaDeltaPP$~pp), and Qwen3~235B ($\SurvQwenLDeltaPP$~pp), averaging $\SurvMeanDeltaPP$~pp.
