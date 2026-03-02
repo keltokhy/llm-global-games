@@ -185,7 +185,7 @@ Table~\ref{tab:treatment_map} maps each treatment to the theoretical channel it 
 
 \input{tables/tab_treatment_map.tex}
 
-Of the eight pre-specified hypotheses, four survive Bonferroni correction at $\alpha = 0.05/8$: alignment (H1), flip (H3), stability (H5), and surveillance (H7). H2 (scramble) and H4 (communication) confirm null predictions by design. H6 (censorship) is significant at conventional levels ($p = 0.023$) but not after correction; H8 (propaganda) is directionally correct but non-significant. Exploratory analyses are reported with uncorrected $p$-values.
+Of the eight pre-specified hypotheses, five survive Bonferroni correction at $\alpha = 0.05/8$: alignment (H1), flip (H3), communication (H4, paired $t = \CommTStatPaired$), stability (H5), and surveillance (H7). H2 (scramble) confirms a null prediction by design. H6 (censorship) is significant at conventional levels ($p = 0.023$) but not after correction. H8 (propaganda) is directionally correct but non-significant ($d = \PropPowerCohensD$; post-hoc power $= \PropPowerPostHoc$, MDE at 80\% power $= \PropPowerMDEPP$~pp). Exploratory analyses are reported with uncorrected $p$-values.
 
 %% 4. RESULTS
 \section{Results} \label{sec:results}
@@ -260,7 +260,8 @@ A text-only baseline ($\hat{p}_{\text{join}} = 1 - d$, where $d$ is the briefing
 \end{figure}
 
 \begin{result}[Communication opens a channel without shifting coordination]
-Pre-play communication changes the mean join rate by \CommDeltaPPModelAvg~pp, from \CommPureMeanModelAvg to \CommCommMeanModelAvg, averaged across seven models. In the pooled sample, the unpaired difference is \CommDeltaPPPooled~pp ($p = \CommPValueUnpaired$); effects vary in sign across models and are concentrated in weak-regime environments.\footnote{I report the unpaired (between-period) test as the primary specification because pure and communication treatments use independent $\theta$ draws, so country--periods are not naturally matched. A paired test that matches periods within each model by $\theta$-rank yields a significant positive effect ($+5.5$~pp, $p < 0.001$, $n = 680$ pairs), reflecting within-$\theta$ variation that the unpaired test averages over. The qualitative conclusion---that the effect is small relative to baseline variation and heterogeneous across models---is robust to both approaches.}
+Pre-play communication changes the mean join rate by \CommDeltaPPModelAvg~pp averaged across seven models.
+A paired $t$-test matching on (model, country, $\theta$) yields $\Delta = \CommDeltaPPPaired$~pp ($t = \CommTStatPaired$, $p < 0.001$, $n = \CommNPairs$ pairs), showing that communication has a small but reliably positive effect within matched conditions. The unpaired pooled difference is \CommDeltaPPPooled~pp ($p = \CommPValueUnpaired$), consistent with the effect being small relative to cross-$\theta$ variation and heterogeneous across models.
 \end{result}
 
 Communication preserves the signal structure ($r = \MeanModelRCommAttack$ vs.\ $\MeanModelRPureAttack$ under pure; Figure~\ref{fig:communication}). The effect on join rates is heterogeneous across models and near zero on average, consistent with passive Bayesian updating concentrated in weak-regime environments.
@@ -410,7 +411,7 @@ Despite these limitations, the framework offers something neither laboratory exp
 
 \section{Experimental Design Details} \label{sec:design_appendix}
 
-Table~\ref{tab:hypotheses} reports the eight pre-specified hypotheses, their estimands, test statistics, and outcomes. H1--H4 are tested on pooled data across all seven models; H5--H8 use the primary model (Mistral Small Creative). Bonferroni-corrected threshold: $\alpha = 0.00625$.
+Table~\ref{tab:hypotheses} reports the eight pre-specified hypotheses, their estimands, test statistics, and outcomes. H1--H4 are tested on pooled data across all seven models (H4 uses a paired $t$-test matched on model/country/$\theta$); H5--H8 use the primary model (Mistral Small Creative). Bonferroni-corrected threshold: $\alpha = 0.00625$. H8 (propaganda dose-response) is directionally correct but underpowered: Cohen's $d = \PropPowerCohensD$, post-hoc power $= \PropPowerPostHoc$, and the minimum detectable effect at 80\% power is $\PropPowerMDEPP$~pp---the real-citizen effect ($-2.0$~pp) falls below this threshold.
 
 \input{tables/tab_hypotheses.tex}
 

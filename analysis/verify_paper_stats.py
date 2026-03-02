@@ -1663,17 +1663,30 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
     })
 
     # ── H4: Communication ─ delta_pp ≠ 0 ─────────────────────────────
-    comm_eff = part1.get("_pooled_comm_effect", {}).get("unpaired", {})
+    # Use paired test (matched on model/country/theta) — correct since same
+    # experimental units are run across pure vs communication treatments.
+    comm_paired = part1.get("_pooled_comm_effect", {}).get("paired", {})
+    if comm_paired and comm_paired.get("t_stat") is not None:
+        comm_stat = comm_paired.get("t_stat")
+        comm_p = comm_paired.get("p_value")
+        comm_n = comm_paired.get("n_pairs")
+        comm_test = "Paired $t$"
+    else:
+        comm_eff = part1.get("_pooled_comm_effect", {}).get("unpaired", {})
+        comm_stat = comm_eff.get("t_stat")
+        comm_p = comm_eff.get("p_value")
+        comm_n = None
+        comm_test = "$t$-test"
     table.append({
         "id": "H4",
         "hypothesis": "Communication Channel",
         "estimand": r"$\Delta_{\text{pp}}$",
         "null": "$= 0$",
-        "test": "$t$-test",
-        "stat": comm_eff.get("t_stat"),
-        "p": comm_eff.get("p_value"),
-        "n": None,
-        "supported": _hypothesis_supported(comm_eff.get("p_value"), alpha=0.05, reject_null=True),
+        "test": comm_test,
+        "stat": comm_stat,
+        "p": comm_p,
+        "n": comm_n,
+        "supported": _hypothesis_supported(comm_p, alpha=0.05, reject_null=True),
     })
 
     # ── H5-H8: Infodesign / regime treatments (primary model) ────────
@@ -1721,6 +1734,7 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
     # t-test on period-level join fractions (propaganda real vs baseline comm)
     prop_t = None
     prop_p = None
+    prop_real_jf = None
     prop_log = _load_experiment_log(
         ROOT / "propaganda-k5" / primary / "experiment_comm_log.json"
     )
@@ -1744,6 +1758,76 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
         "n": None,
         "supported": _hypothesis_supported(prop_p, alpha=0.05, reject_null=True),
     })
+
+    # ── Power analysis for non-significant results ─────────────────────
+    # Compute post-hoc power, Cohen's d, and MDE for H8 (and H4 unpaired)
+    power_analysis = {}
+    z_crit = stats.norm.ppf(0.975)
+    z_beta = stats.norm.ppf(0.80)
+
+    # H4 unpaired (kept for reference even though we now use paired)
+    comm_unpaired = part1.get("_pooled_comm_effect", {}).get("unpaired", {})
+    pp_pure = part1.get("_pooled_pure", {})
+    pp_comm = part1.get("_pooled_comm", {})
+    if pp_pure.get("n_obs") and pp_comm.get("n_obs"):
+        n1_h4 = pp_pure["n_obs"]
+        n2_h4 = pp_comm["n_obs"]
+        delta_h4 = (comm_unpaired.get("delta_pp") or 0) / 100
+        # Estimate pooled SD from raw data
+        _pp = pd.concat([_load_summary(ROOT / s / "experiment_pure_summary.csv") for s in PART1_MODELS if (ROOT / s / "experiment_pure_summary.csv").exists()], ignore_index=True)
+        _pc = pd.concat([_load_summary(ROOT / s / "experiment_comm_summary.csv") for s in PART1_MODELS if (ROOT / s / "experiment_comm_summary.csv").exists()], ignore_index=True)
+        _jp = _join_col(_pp)
+        _jc = _join_col(_pc)
+        s1 = _pp[_jp].astype(float).dropna().std()
+        s2 = _pc[_jc].astype(float).dropna().std()
+        pooled_sd = float(np.sqrt(((n1_h4-1)*s1**2 + (n2_h4-1)*s2**2) / (n1_h4+n2_h4-2)))
+        d_h4 = delta_h4 / pooled_sd if pooled_sd > 0 else 0
+        neff = (n1_h4 * n2_h4) / (n1_h4 + n2_h4)
+        ncp = abs(d_h4) * np.sqrt(neff)
+        power_h4 = float(1 - stats.norm.cdf(z_crit - ncp) + stats.norm.cdf(-z_crit - ncp))
+        mde_d = (z_crit + z_beta) / np.sqrt(neff)
+        mde_pp = mde_d * pooled_sd * 100
+        power_analysis["H4_unpaired"] = {
+            "cohens_d": round(d_h4, 4),
+            "power": round(power_h4, 4),
+            "mde_d": round(mde_d, 4),
+            "mde_pp": round(mde_pp, 2),
+            "n1": n1_h4, "n2": n2_h4,
+            "note": "Unpaired test; paper uses paired test (H4 is significant)",
+        }
+
+    # H8: Propaganda k=5 real agents vs baseline comm
+    if prop_real_jf is not None and len(prop_real_jf) > 0 and len(base_comm_df) > 0:
+        bjcol_h8 = _join_col(base_comm_df)
+        base_h8 = base_comm_df[bjcol_h8].astype(float).dropna()
+        n1_h8 = int(len(base_h8))
+        n2_h8 = int(len(prop_real_jf))
+        delta_h8 = float(prop_real_jf.mean() - base_h8.mean())
+        sd1 = float(base_h8.std())
+        sd2 = float(prop_real_jf.std())
+        pooled_sd_h8 = float(np.sqrt(((n1_h8-1)*sd1**2 + (n2_h8-1)*sd2**2) / (n1_h8+n2_h8-2)))
+        d_h8 = delta_h8 / pooled_sd_h8 if pooled_sd_h8 > 0 else 0
+        neff_h8 = (n1_h8 * n2_h8) / (n1_h8 + n2_h8)
+        ncp_h8 = abs(d_h8) * np.sqrt(neff_h8)
+        power_h8 = float(1 - stats.norm.cdf(z_crit - ncp_h8) + stats.norm.cdf(-z_crit - ncp_h8))
+        mde_d_h8 = (z_crit + z_beta) / np.sqrt(neff_h8)
+        mde_pp_h8 = mde_d_h8 * pooled_sd_h8 * 100
+        power_analysis["H8"] = {
+            "cohens_d": round(d_h8, 4),
+            "power": round(power_h8, 4),
+            "mde_d": round(mde_d_h8, 4),
+            "mde_pp": round(mde_pp_h8, 2),
+            "n_baseline": n1_h8, "n_propaganda": n2_h8,
+            "delta_pp": round(delta_h8 * 100, 2),
+        }
+
+    # Attach power analysis to each hypothesis row
+    for row in table:
+        hid = row["id"]
+        if hid in power_analysis:
+            row["power_analysis"] = power_analysis[hid]
+        elif f"{hid}_unpaired" in power_analysis:
+            row["power_analysis_unpaired"] = power_analysis[f"{hid}_unpaired"]
 
     return table
 

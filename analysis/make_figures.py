@@ -277,7 +277,8 @@ def fig02_cross_model():
     ax.set_yticks(y)
     ax.set_yticklabels(short_names, fontsize=6.5)
     ax.set_xlabel(r"$|r(\theta, \mathrm{join\ fraction})|$")
-    ax.set_xlim(0.3, 1.0)
+    ax.set_xlim(0.7, 1.0)
+    add_hgrid(ax)
 
     handles = [
         Line2D([0], [0], marker="o", color="w", markerfacecolor=C_PURE,
@@ -578,6 +579,7 @@ def fig09_censorship():
         ax.axvline(0, color="#333", linewidth=0.6)
         ax.set_xlabel(r"OLS slope ($\Delta$join / $\Delta\theta$)")
         ax.set_title("B. Slope decomposition")
+        add_vgrid(ax)
 
         for i, (_, row) in enumerate(sd.iterrows()):
             if row["slope"] >= 0:
@@ -763,6 +765,7 @@ def fig12_surveillance():
         ax.axvline(0, color="#333", linewidth=0.6)
         ax.set_xlabel("Chilling effect (pp)")
         ax.set_title("B. $\\Delta$ join fraction (surveillance $-$ comm)")
+        add_vgrid(ax)
 
         for i, (_, row) in enumerate(ddf.iterrows()):
             ax.text(row["delta"] * 100 - 0.8, i,
@@ -793,9 +796,9 @@ def fig13_propaganda():
 
     prop_specs = [
         ("k=0 (baseline)", comm_df, 0, C_COMM, 1.0, "o"),
-        ("k=2 bots", prop2, 2, C_PROP, 0.9, "s"),
-        ("k=5 bots", prop5, 5, C_PROP, 0.6, "^"),
-        ("k=10 bots", prop10, 10, C_PROP, 0.3, "D"),
+        ("k=2 bots", prop2, 2, "#CC79A7", 1.0, "s"),
+        ("k=5 bots", prop5, 5, "#E69F00", 1.0, "^"),
+        ("k=10 bots", prop10, 10, "#D55E00", 1.0, "D"),
     ]
 
     for _, df, k, *_ in prop_specs:
@@ -1707,10 +1710,6 @@ def fig19_nonparametric_beliefs():
     ax.plot(z_grid, theory_curve, color="#d62728", linewidth=1.0, linestyle="--",
             alpha=0.7, zorder=2,
             label=r"Theoretical $P(\mathrm{success} \mid z)$")
-
-    # Binned theoretical posterior means (accounts for varying theta* and z across periods)
-    ax.plot(bin_centers_t, bin_means_t, color="#d62728", marker="D", markersize=3,
-            linewidth=0, alpha=0.5, zorder=2)
 
     # Empirical stated beliefs
     ax.errorbar(bin_centers_b, bin_means_b, yerr=1.96 * bin_sems_b,

@@ -110,6 +110,8 @@ Model & Arch. & Pure & Comm & Falsif. \\
 \textbf{Total} & & \textbf{""" + f"{total_pure}" + r"""} & \textbf{""" + f"{total_comm}" + r"""} & \textbf{""" + f"{total_falsif}" + r"""} \\
 \bottomrule
 \end{tabular}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} 7 models spanning 6 architecture families. $N$ = country-periods with 25 agents each. All runs use $\sigma = 0.3$ and temperature $= 0.7$ unless otherwise stated.}
 \end{table}
 """
     return tex
@@ -164,7 +166,7 @@ def render_tab_main_results(stats: dict) -> str:
 
     def mean_join(m: str) -> str:
         d = part1.get(m, {}).get("pure", {})
-        return _fmt_mean(d.get("mean_join"), nd=2)
+        return _fmt_mean(d.get("mean_join"), nd=3)
 
     def n_pure(m: str) -> str:
         d = part1.get(m, {}).get("pure", {})
@@ -216,10 +218,12 @@ Model & Pure & Comm & Scramble & Flip & $n_{\text{pure}}$ & Mean join \\
     pooled_comm_cell = _r_cell_with_ci(pooled_comm, pooled_comm_ci)
 
     tex += r"""\midrule
-\textbf{Pooled} & """ + pooled_pure_cell + r""" & """ + pooled_comm_cell + r""" & $""" + _fmt_r(pooled_scr, 2) + r"""$ & $""" + _fmt_r(pooled_flip, 2) + r"""$ & """ + f"{pooled_n}" + r""" & """ + _fmt_mean(pooled_mean, 2) + r""" \\
+\textbf{Pooled} & """ + pooled_pure_cell + r""" & """ + pooled_comm_cell + r""" & $""" + _fmt_r(pooled_scr, 2) + r"""$ & $""" + _fmt_r(pooled_flip, 2) + r"""$ & """ + f"{pooled_n}" + r""" & """ + _fmt_mean(pooled_mean, 3) + r""" \\
 \textbf{Mean across models} & """ + r_cell(mean_pure, 2) + r""" & """ + r_cell(mean_comm, 2) + r""" & """ + r_cell(mean_scr, 2) + r""" & """ + r_cell(mean_flip, 2) + r""" & --- & --- \\
 \bottomrule
 \end{tabular}
+\vspace{0.25em}
+\parbox{\textwidth}{\footnotesize\emph{Notes:} $r = r(J, A(\theta))$: Pearson correlation between empirical join fraction and theoretical attack mass under $B = C = 1$. 95\% Fisher-$z$ confidence intervals in brackets. Join fraction uses valid decisions only (excluding parse errors). Pooled: all country-periods concatenated; Mean: equal-weighted average across models.}
 \end{table*}
 """
     return tex
@@ -245,7 +249,7 @@ def render_tab_infodesign(stats: dict) -> str:
         n = d.get("n_obs")
         delta_cell = "---" if delta is None else _fmt_pp(delta, 1)
         rows.append(
-            f"{label} & {_fmt_num(mean,3)} & ${_fmt_r(r,3)}$ & {delta_cell} & {n} \\\\"
+            f"{label} & {_fmt_num(mean,3)} & ${_fmt_r(r,2)}$ & {delta_cell} & {n} \\\\"
         )
 
     tex = r"""\begin{table}[t]
@@ -286,7 +290,7 @@ def render_tab_surveillance_propaganda(stats: dict) -> str:
     ps = regime["propaganda_surveillance"]["Mistral Small Creative"]
 
     lines = []
-    lines.append(f"Comm (baseline) & {_fmt_num(base_mean,3).lstrip('0')} & {_fmt_num(base_mean,3).lstrip('0')} & ${_fmt_r(base_r,3)}$ & --- \\\\")
+    lines.append(f"Comm (baseline) & {_fmt_num(base_mean,3)} & {_fmt_num(base_mean,3)} & ${_fmt_r(base_r,2)}$ & --- \\\\")
     lines.append(r"\midrule")
 
     for label, d in prop_rows:
@@ -296,18 +300,18 @@ def render_tab_surveillance_propaganda(stats: dict) -> str:
         delta_real = d.get("delta_real_vs_baseline_pp")
         delta_cell = "---" if delta_real is None else _fmt_pp(delta_real / 100, 1)
         lines.append(
-            f"{label} & {_fmt_num(mean_all,3).lstrip('0')} & {_fmt_num(mean_real,3).lstrip('0')} & ${_fmt_r(r,3)}$ & {delta_cell} \\\\"
+            f"{label} & {_fmt_num(mean_all,3)} & {_fmt_num(mean_real,3)} & ${_fmt_r(r,2)}$ & {delta_cell} \\\\"
         )
 
     lines.append(r"\midrule")
     surv_r = surv["r_vs_attack"]["r"]
     surv_delta_pp = surv['delta_vs_baseline_pp']
     lines.append(
-        f"Surveillance & {_fmt_num(surv['mean_join'],3).lstrip('0')} & {_fmt_num(surv['mean_join'],3).lstrip('0')} & ${_fmt_r(surv_r,3)}$ & {_fmt_pp(surv_delta_pp / 100, 1)} \\\\"
+        f"Surveillance & {_fmt_num(surv['mean_join'],3)} & {_fmt_num(surv['mean_join'],3)} & ${_fmt_r(surv_r,2)}$ & {_fmt_pp(surv_delta_pp / 100, 1)} \\\\"
     )
     ps_r = ps["r_vs_attack_all"]["r"]
     lines.append(
-        f"Prop+Surv & {_fmt_num(ps['mean_join_all'],3).lstrip('0')} & --- & ${_fmt_r(ps_r,3)}$ & --- \\\\"
+        f"Prop+Surv & {_fmt_num(ps['mean_join_all'],3)} & --- & ${_fmt_r(ps_r,2)}$ & --- \\\\"
     )
 
     tex = r"""\begin{table}[t]
@@ -325,6 +329,8 @@ Treatment & All & Real & $r$ & $\Delta$ (pp) \\
     tex += "\n".join(lines) + "\n"
     tex += r"""\bottomrule
 \end{tabular}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model (Mistral Small Creative), communication treatment. ``All'' includes propaganda plant agents; ``Real'' excludes them. $\Delta$: change in real-agent mean join vs.\ baseline communication (pp).}
 \end{table}
 """
     return tex
@@ -359,7 +365,6 @@ def render_tab_surv_censor(stats: dict) -> str:
 \caption{Surveillance $\times$ censorship interaction in the communication game (primary model: Mistral Small Creative).}
 \label{tab:surv_censor}
 \small
-\resizebox{\columnwidth}{!}{%
 \begin{tabular}{lccc}
 \toprule
 Design & No Surv. & Surv. & $\Delta$ (pp) \\
@@ -367,7 +372,7 @@ Design & No Surv. & Surv. & $\Delta$ (pp) \\
 """
     tex += "\n".join(lines) + "\n"
     tex += r"""\bottomrule
-\end{tabular}}
+\end{tabular}
 \par\vspace{0.25em}
 \parbox{\columnwidth}{\footnotesize\emph{Notes:} ``No Surv.'' uses the communication infodesign grid. ``Surv.'' uses the same grid with surveillance active during messaging. All entries are means of \texttt{join\_fraction\_valid}.}
 \end{table}
@@ -419,6 +424,8 @@ def render_tab_bandwidth(stats: dict) -> str:
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
 \end{tabular}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model, information design $\theta$-grid $[0.20, 0.80]$. $h$ = Gaussian proximity bandwidth controlling how broadly manipulation spreads around $\theta^*$. $\Delta$: change in mean join vs.\ bandwidth-specific baseline (pp).}
 \end{table}
 """
     return tex
@@ -442,7 +449,7 @@ def render_tab_crossmodel(stats: dict) -> str:
         if field == "mean":
             return _fmt_num(d.get("mean_join"), 3)
         if field == "r":
-            return f"${_fmt_r(d['r_vs_attack']['r'], 3)}$"
+            return f"${_fmt_r(d['r_vs_attack']['r'], 2)}$"
         return "---"
 
     rows = []
@@ -468,6 +475,8 @@ Model & Mean & $r$ & Mean & $r$ & Mean & $r$ \\
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
 \end{tabular}
+\vspace{0.25em}
+\parbox{\textwidth}{\footnotesize\emph{Notes:} Information design $\theta$-grid $[0.20, 0.80]$. $r = r(J, A(\theta))$: Pearson correlation between join fraction and theoretical attack mass. $N = 25$ agents per period.}
 \end{table*}
 """
     return tex
@@ -486,7 +495,7 @@ def render_tab_decomposition(stats: dict) -> str:
         mean = d.get("mean_join")
         r = d["r_vs_attack"]["r"]
         delta = d.get("delta_vs_baseline")
-        rows.append(f"{label} & {_fmt_num(mean,3)} & ${_fmt_r(r,3)}$ & {_fmt_pp(delta,1)} \\\\")
+        rows.append(f"{label} & {_fmt_num(mean,3)} & ${_fmt_r(r,2)}$ & {_fmt_pp(delta,1)} \\\\")
 
     # Sum of single-channel deltas vs full delta
     deltas = [info.get(k, {}).get("delta_vs_baseline") for k in ["stability_clarity", "stability_direction", "stability_dissent"]]
@@ -511,7 +520,7 @@ Channel & Mean & $r$ & $\Delta$ (pp) \\
     tex += r"""\bottomrule
 \end{tabular}
 \vspace{0.25em}
-\footnotesize\emph{Notes:} Each row is a separate infodesign run for Mistral Small Creative on the same $\theta$ grid as Table~\ref{tab:infodesign_summary}. $\Delta$ reports the mean difference vs.\ the baseline infodesign mean (Table~\ref{tab:infodesign_summary}).
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Each row is a separate infodesign run for Mistral Small Creative on the same $\theta$ grid as Table~\ref{tab:infodesign_summary}. $\Delta$ reports the mean difference vs.\ the baseline infodesign mean (Table~\ref{tab:infodesign_summary}).}
 \end{table}
 """
     return tex
@@ -540,7 +549,7 @@ def render_tab_uncalibrated(stats: dict) -> str:
         r_src = d["r_vs_attack"]
         r = r_src["r"]
         p = r_src.get("p")
-        r_cell = f"${_fmt_r(r, 3)}$"
+        r_cell = f"${_fmt_r(r, 2)}$"
         p_cell = _fmt_num(p, 4) if p is not None else "---"
         rows.append(f"{m} & {n} & {mean_j} & {r_cell} & {p_cell} \\\\")
 
@@ -558,6 +567,8 @@ Model & $N$ & Mean join & $r(J, A(\theta))$ & $p$ \\
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
 \end{tabular}}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Pure treatment, no calibration adjustment (cutoff center $= 0$). $r = r(J, A(\theta))$.}
 \end{table}
 """
     return tex
@@ -598,8 +609,7 @@ def render_tab_surv_censor_crossmodel(stats: dict) -> str:
 \centering
 \caption{Cross-model surveillance $\times$ censorship interaction. All conditions run under surveillance with communication. $\Delta$ columns show the change relative to the surveilled baseline.}
 \label{tab:surv_censor_crossmodel}
-\small
-\resizebox{\columnwidth}{!}{%
+\footnotesize
 \begin{tabular}{lccccc}
 \toprule
 & \multicolumn{3}{c}{Mean join (surv.)} & \multicolumn{2}{c}{$\Delta$ (pp)} \\
@@ -609,7 +619,9 @@ Model & Baseline & Upper cens. & Lower cens. & $\Delta$ upper & $\Delta$ lower \
 """
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
-\end{tabular}}
+\end{tabular}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Communication treatment, information design $\theta$-grid, surveillance active during messaging. $\Delta$: change vs.\ surveilled baseline (pp). $N = 25$ agents per period.}
 \end{table}
 """
     return tex
@@ -660,6 +672,8 @@ Model & $\hat{\theta}^*$ (SE) & $\beta$ (SE) & $\hat{\theta}^*$ (SE) & $\beta$ (
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
 \end{tabular}
+\vspace{0.25em}
+\parbox{\textwidth}{\footnotesize\emph{Notes:} $\hat{\theta}^* = -b_0/b_1$: estimated cutoff. $\beta \equiv b_1$: logistic slope coefficient. Standard errors from the covariance matrix of the logistic fit; cutoff SE by delta method.}
 \end{table*}
 """
     return tex
@@ -697,6 +711,8 @@ Variant & $N$ & Mean join & $r(J, A(\theta))$ & $\Delta$ (pp) & $p$ \\
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
 \end{tabular}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model (Mistral Small Creative). Placebo: agents told monitoring is for research purposes only (no consequences). Anonymous: messages aggregated before delivery. $\Delta$: change vs.\ communication baseline (pp). $p$-value from two-sample $t$-test.}
 \end{table}
 """
     return tex
@@ -743,6 +759,8 @@ Design & $N$ & Mean join & $r(J, A(\theta))$ & Cutoff $\hat{\theta}^*$ (SE) & $\
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
 \end{tabular}}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model, information design $\theta$-grid. Identical briefings across conditions; only the benefit/cost narrative framing varies. $\Delta$: change vs.\ baseline mean join (pp).}
 \end{table}
 """
     return tex
@@ -787,6 +805,8 @@ Design & $N$ & Mean join & $r(J, A(\theta))$ & $\Delta$ (pp) \\
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
 \end{tabular}}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model, information design $\theta$-grid. ``Known'': agents are told that the regime censors intelligence above a severity threshold. $\Delta$: change vs.\ baseline (pp).}
 \end{table}
 """
     return tex
@@ -825,6 +845,8 @@ Temperature & $N$ & Mean join & $r(J, A(\theta))$ & Cutoff $\hat{\theta}^*$ & Sl
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
 \end{tabular}}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model (Mistral Small Creative), pure treatment, calibrated parameters, varying LLM decoding temperature.}
 \end{table}
 """
     return tex
@@ -900,6 +922,8 @@ CK framing      & """ + pct(ck_low) + " & " + pct(ck_high) + " & " + pp(ck_high,
 $\Delta$ (CK) & """ + pp(ck_low, priv_low) + "~pp & " + pp(ck_high, priv_high) + r"""~pp & \\
 \bottomrule
 \end{tabular}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model, information design $\theta$-grid. 270 country-periods per cell. CK framing: agents told their briefing is ``widely shared.'' High-coord: coordination-cue intensity amplified.}
 \end{table}
 """
     return tex
@@ -964,6 +988,8 @@ Classifier & Acc. & AUC & Pred.\ join (surv.) & Actual (surv.) & Gap \\
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
 \end{tabular}}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model (Mistral Small Creative). Accuracy and AUC from 5-fold cross-validation on pure-treatment data. Gap = classifier-predicted join rate $-$ actual LLM join rate under surveillance (pp).}
 \end{table}
 """
     return tex
@@ -1062,7 +1088,33 @@ def render_stats_macros(stats: dict) -> str:
         sign = "+" if pooled_delta_pp >= 0 else ""
         lines.append(_mc_raw("CommDeltaPPPooled", f"{sign}{pooled_delta_pp:.2f}"))
     lines.append(_mc("CommPValueUnpaired", pooled_pval))
+    # Paired test (matched on model/country/theta)
+    paired = ((part1.get("_pooled_comm_effect") or {}).get("paired") or {})
+    paired_delta = paired.get("delta_pp")
+    paired_t = paired.get("t_stat")
+    paired_p = paired.get("p_value")
+    paired_n = paired.get("n_pairs")
+    if paired_delta is not None:
+        sign = "+" if paired_delta >= 0 else ""
+        lines.append(_mc_raw("CommDeltaPPPaired", f"{sign}{paired_delta:.2f}"))
+    else:
+        lines.append(_mc_raw("CommDeltaPPPaired", "---"))
+    lines.append(_mc("CommTStatPaired", paired_t))
+    lines.append(_mc("CommPValuePaired", paired_p))
+    if paired_n is not None:
+        lines.append(_mc_raw("CommNPairs", str(paired_n)))
     lines.append("")
+
+    # ── H8 power analysis ────────────────────────────────────────
+    hyp_table = stats.get("hypothesis_table", [])
+    h8 = next((h for h in hyp_table if h.get("id") == "H8"), None)
+    if h8 and "power_analysis" in h8:
+        pa = h8["power_analysis"]
+        lines.append("% H8 power analysis")
+        lines.append(_mc("PropPowerCohensD", pa.get("cohens_d")))
+        lines.append(_mc("PropPowerPostHoc", pa.get("power")))
+        lines.append(_mc("PropPowerMDEPP", pa.get("mde_pp"), nd=1))
+        lines.append("")
 
     # ── Pooled pure/comm aggregate statistics ─────────────────────
     lines.append("% Pooled pure/comm aggregates")
@@ -1784,6 +1836,15 @@ H & Hypothesis & Estimand & Null & Test & Stat & $p$ & Supported? \\
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
 \end{tabular}
+\vspace{0.25em}
+\parbox{\textwidth}{\footnotesize\emph{Notes:} H1--H4: pooled across all seven models (H4 uses paired $t$-test matched on model/country/$\theta$). H5--H8: primary model (Mistral Small Creative). """
+
+    # Add power analysis note for H8
+    h8 = next((h for h in hyp if h["id"] == "H8"), None)
+    if h8 and "power_analysis" in h8:
+        pa = h8["power_analysis"]
+        tex += f"H8 post-hoc power: {pa['power']:.2f} (Cohen's $d = {pa['cohens_d']:.3f}$; MDE at 80\\% power $= {pa['mde_pp']:.1f}$~pp)."
+    tex += r"""}
 \end{table*}
 """
     return tex
@@ -1809,7 +1870,7 @@ def render_tab_cross_generator(stats: dict) -> str:
             n = d.get("n_obs", "---")
             mean_j = _fmt_num(d.get("mean_join"), 3)
             r = d["r_vs_attack"]["r"]
-            r_cell = f"${_fmt_r(r, 3)}$"
+            r_cell = f"${_fmt_r(r, 2)}$"
             fit = d.get("logistic_fit", {})
             cutoff = _fmt_num(fit.get("cutoff"), 3) if fit else "---"
             rows.append(f"{m} & {v.capitalize()} & {n} & {mean_j} & {r_cell} & {cutoff} \\\\")
@@ -1832,6 +1893,8 @@ Model & Generator & $N$ & Mean join & $r(J, A(\theta))$ & Cutoff $\hat{\theta}^*
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
 \end{tabular}}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Information design $\theta$-grid. Three text renderers (baseline intelligence briefing, diplomatic cable, journalistic wire) use identical slider functions and evidence items; only prose formatting differs.}
 \end{table}
 """
     return tex
@@ -1853,7 +1916,7 @@ def render_tab_placebo_calibration(stats: dict) -> str:
         baseline_r = part1.get(m, {}).get("pure", {}).get("r_vs_attack", {}).get("r")
         baseline_mean = part1.get(m, {}).get("pure", {}).get("mean_join")
 
-        rows.append(f"{m} & Calibrated & --- & {_fmt_num(baseline_mean, 3)} & ${_fmt_r(baseline_r, 3)}$ \\\\")
+        rows.append(f"{m} & Calibrated & --- & {_fmt_num(baseline_mean, 3)} & ${_fmt_r(baseline_r, 2)}$ \\\\")
 
         for shift in ["+0.3", "-0.3"]:
             d = m_data.get(shift, {})
@@ -1863,7 +1926,7 @@ def render_tab_placebo_calibration(stats: dict) -> str:
             n = d.get("n_obs", "---")
             mean_j = _fmt_num(d.get("mean_join"), 3)
             r = d["r_vs_attack"]["r"]
-            r_cell = f"${_fmt_r(r, 3)}$"
+            r_cell = f"${_fmt_r(r, 2)}$"
             rows.append(f" & $\\Delta c = {shift}$ & {n} & {mean_j} & {r_cell} \\\\")
         rows.append(r"\midrule")
     if rows and rows[-1] == r"\midrule":
@@ -1883,6 +1946,8 @@ Model & Condition & $N$ & Mean join & $r(J, A(\theta))$ \\
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
 \end{tabular}}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Pure treatment. $\Delta c = \pm 0.3$: deliberate shift from calibrated cutoff center. Correlation $r(J, A(\theta))$ is unchanged; only the mean join rate shifts.}
 \end{table}
 """
     return tex
@@ -1905,7 +1970,7 @@ def render_tab_temperature_expanded(stats: dict) -> str:
             if not d:
                 continue
             mean_j = _fmt_num(d["mean_join"], 3)
-            r_val = _fmt_r(d["r_vs_attack"]["r"], 3)
+            r_val = _fmt_r(d["r_vs_attack"]["r"], 2)
             fit = d.get("logistic_fit", {})
             cutoff = _fmt_num(fit.get("cutoff"), 3) if fit else "---"
             rows.append(f"Mistral Small & {key} & {d.get('n_obs','---')} & {mean_j} & ${r_val}$ & {cutoff} \\\\")
@@ -1919,7 +1984,7 @@ def render_tab_temperature_expanded(stats: dict) -> str:
             if not d:
                 continue
             mean_j = _fmt_num(d["mean_join"], 3)
-            r_val = _fmt_r(d["r_vs_attack"]["r"], 3)
+            r_val = _fmt_r(d["r_vs_attack"]["r"], 2)
             fit = d.get("logistic_fit", {})
             cutoff = _fmt_num(fit.get("cutoff"), 3) if fit else "---"
             short_name = "Llama 70B" if model == "Llama 3.3 70B" else "Qwen 235B"
@@ -1943,6 +2008,8 @@ Model & $T$ & $N$ & Mean join & $r(J, A(\theta))$ & Cutoff $\hat{\theta}^*$ \\
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
 \end{tabular}}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Pure treatment, calibrated parameters, varying LLM decoding temperature across three models.}
 \end{table}
 """
     return tex
@@ -1970,7 +2037,7 @@ def render_tab_uncalibrated_expanded(stats: dict) -> str:
         r_src = d["r_vs_attack"]
         r = r_src["r"]
         p = r_src.get("p")
-        r_cell = f"${_fmt_r(r, 3)}$"
+        r_cell = f"${_fmt_r(r, 2)}$"
         p_cell = _fmt_num(p, 4) if p is not None else "---"
         rows.append(f"{m} & {n} & {mean_j} & {r_cell} & {p_cell} \\\\")
 
@@ -1988,6 +2055,8 @@ Model & $N$ & Mean join & $r(J, A(\theta))$ & $p$ \\
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
 \end{tabular}}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Pure treatment, no calibration adjustment (cutoff center $= 0$). Trinity Large excluded due to elevated API error rates. $r = r(J, A(\theta))$.}
 \end{table}
 """
     return tex
@@ -2035,6 +2104,8 @@ Model & Condition & $N$ & Mean risk & Risk $|$ JOIN & Risk $|$ STAY \\
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
 \end{tabular}}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Agent-level elicitation on a 0--10 scale. Reported risk is the mean rating conditional on the agent's own JOIN or STAY decision.}
 \end{table}
 """
     return tex
@@ -2080,6 +2151,8 @@ Condition & $N$ & Classifier pred. & Actual & Gap (pp) \\
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
 \end{tabular}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model (Mistral Small Creative). Logistic classifier trained on baseline slider features. Gap = classifier-predicted join rate $-$ actual LLM join rate (pp).}
 \end{table}
 """
     return tex
@@ -2133,6 +2206,8 @@ Model & Treatment & $N$ & API err & Unparseable & Combined \\
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
 \end{tabular}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Per-period averages. API error = provider-side failure (timeout, rate limit, content filter). Unparseable = valid LLM response that could not be classified as JOIN or STAY.}
 \end{table}
 """
     return tex
