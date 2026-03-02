@@ -2717,6 +2717,48 @@ def compute_paper_misc_stats(all_stats: dict) -> dict:
     baseline_survival = float(np.mean(a_grid < theta_grid))
     misc["baseline_regime_survival_pct"] = round(baseline_survival * 100)
 
+    # ── Text baseline (direction score → decision correlation) ────
+    primary_df = load(PRIMARY, "pure")
+    if not primary_df.empty:
+        thetas = primary_df["theta"].values
+        z_scores = (thetas - x_star) / sigma
+        import sys as _sys
+        _sys.path.insert(0, str(PROJECT_ROOT))
+        from agent_based_simulation.briefing import _compute_sliders
+        cal_path = ROOT / PRIMARY / "calibrated_index.json"
+        cc = 0.0
+        if cal_path.exists():
+            with open(cal_path) as f:
+                cal_data = json.load(f)
+            model_name = PRIMARY.replace("--", "/")
+            cc = cal_data.get(model_name, {}).get("cutoff_center", 0.0)
+        directions = np.array([_compute_sliders(z, cutoff_center=cc)[0]
+                               for z in z_scores])
+        p_join_hat = 1.0 - directions
+        jcol = _join_col(primary_df)
+        actual = primary_df[jcol].values
+        r_txt, _ = stats.pearsonr(p_join_hat, actual)
+        misc["text_baseline_r"] = round(abs(r_txt), 2)
+
+    # ── Group-size awareness ─────────────────────────────────────
+    gs_root = ROOT / "group-size-info" / PRIMARY
+    gs_pure_path = gs_root / "experiment_pure_summary.csv"
+    gs_comm_path = gs_root / "experiment_comm_summary.csv"
+    if gs_pure_path.exists() and gs_comm_path.exists():
+        gs_pure_df = pd.read_csv(gs_pure_path)
+        gs_comm_df = pd.read_csv(gs_comm_path)
+        gs_jcol = _join_col(gs_pure_df)
+        gs_pure_mean = float(gs_pure_df[gs_jcol].mean())
+        gs_comm_mean = float(gs_comm_df[gs_jcol].mean())
+        misc["gs_pure_join"] = round(gs_pure_mean, 3)
+        misc["gs_comm_join"] = round(gs_comm_mean, 3)
+        misc["gs_comm_premium_pp"] = round((gs_comm_mean - gs_pure_mean) * 100, 1)
+        # Baseline for comparison
+        bl_df = load(PRIMARY, "pure")
+        if not bl_df.empty:
+            bl_jcol = _join_col(bl_df)
+            misc["gs_baseline_pure_join"] = round(float(bl_df[bl_jcol].mean()), 3)
+
     return misc
 
 

@@ -263,7 +263,7 @@ The pure $\to$ scramble $\to$ flip pattern replicates across all seven models (F
 \caption{Falsification triptych. \textit{Left:} Pure (mean $r = \MeanModelRPureAttack$). \textit{Center:} Scramble ($r = \MeanModelRScrambleAttack$). \textit{Right:} Flip ($r = \MeanModelRFlipAttack$).}\label{fig:falsification}
 \end{figure*}
 
-A text-only baseline ($\hat{p}_{\text{join}} = 1 - d$, where $d$ is the briefing's internal direction score) correlates with LLM decisions at $r = 0.80$, but the LLM's join curve is substantially steeper (Figure~\ref{fig:text_baseline}), producing threshold-like behavior rather than linearly tracking tone.
+A text-only baseline ($\hat{p}_{\text{join}} = 1 - d$, where $d$ is the briefing's internal direction score) correlates with LLM decisions at $r = \TextBaselineR$, but the LLM's join curve is substantially steeper (Figure~\ref{fig:text_baseline}), producing threshold-like behavior rather than linearly tracking tone.
 
 \begin{figure}[htbp]\centering\includegraphics[width=\columnwidth]{figures/fig15_text_baseline.pdf}
 \caption{Text baseline test. The LLM join curve is steeper than the na\"ive text predictor ($1 - d$), indicating processing beyond surface sentiment.}\label{fig:text_baseline}
@@ -545,7 +545,7 @@ The flip inversion replicates across all five models (flip $r < \FlipRMax$; Figu
 In a communication version of the information-design grid, upper censorship yields \IDCommCensorUpperPct\% joining and lower censorship \IDCommCensorLowerPct\% (baseline \IDCommBaselinePct\%), consistent with censorship making the social-information channel relatively more important.
 
 \subsection{Group-Size Awareness}
-With group-size knowledge (``You are one of 25 citizens''), the pure join rate rises to 0.507 (vs.\ 0.369 baseline) and the communication premium reverses ($-3.4$~pp). Monotone signal response is preserved.
+With group-size knowledge (``You are one of 25 citizens''), the pure join rate rises to \GSPureJoin\ (vs.\ \GSBaselinePureJoin\ baseline) and the communication premium reverses ($\GSCommPremiumPP$~pp). Monotone signal response is preserved.
 
 \subsection{Censorship with Common Knowledge} \label{sec:censor_ck}
 \input{tables/tab_censor_ck.tex}

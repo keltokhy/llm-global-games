@@ -4618,7 +4618,12 @@
     "finite_n_min_r": 0.95,
     "finite_n_primary_r": 0.9968,
     "finite_n_pooled_r": 0.9993,
-    "baseline_regime_survival_pct": 50
+    "baseline_regime_survival_pct": 50,
+    "text_baseline_r": 0.79,
+    "gs_pure_join": 0.507,
+    "gs_comm_join": 0.473,
+    "gs_comm_premium_pp": -3.4,
+    "gs_baseline_pure_join": 0.387
   },
   "discrepancy_report": []
 }

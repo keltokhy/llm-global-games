@@ -1858,6 +1858,13 @@ def render_stats_macros(stats: dict) -> str:
         # Regime survival
         lines.append(_mc_raw("BaselineRegimeSurvPct",
                              f"{misc.get('baseline_regime_survival_pct', 50)}\\%"))
+        # Text baseline r
+        lines.append(_mc("TextBaselineR", misc.get("text_baseline_r"), 2))
+        # Group-size awareness
+        lines.append(_mc("GSPureJoin", misc.get("gs_pure_join"), 3))
+        lines.append(_mc("GSBaselinePureJoin", misc.get("gs_baseline_pure_join"), 3))
+        lines.append(_mc_raw("GSCommPremiumPP",
+                             f"{misc.get('gs_comm_premium_pp', 0):+.1f}"))
         lines.append("")
 
     return "\n".join(lines) + "\n"
