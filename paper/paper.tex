@@ -227,7 +227,7 @@ The slope reflects classical measurement error attenuation from narrative-to-bel
 
 Alignment is stable across architectures (Figure~\ref{fig:cross_model}): correlations span $r \in [\MinModelPureRAttack, \MaxModelPureRAttack]$ despite parameter counts ranging from 30B to 235B. Mean join rates vary, reflecting model-specific action biases that shift the intercept but not the correlation. Estimated cutoffs vary ($\hat{\theta}^* \in [-0.32, +0.10]$); the disciplined evidence on cutoff location comes from comparative statics, where changing narrative stakes shifts $\hat{\theta}^*$ in lockstep with payoff theory (Table~\ref{tab:bc_statics}, Figure~\ref{fig:bc_sweep}). A structural estimation against cognitive hierarchy benchmarks confirms these threshold policies are remarkably sophisticated: LLM behavior closely fits the unique Bayesian Nash equilibrium (BNE), rejecting the level-$k$ behavior typically observed in human laboratory subjects.
 
-Human subjects in coordination game experiments consistently exhibit level-$k$ cognitive hierarchy behavior rather than full equilibrium reasoning \citep{szkup2020}. To test whether LLM agents play the BNE or a level-$k$ heuristic, I evaluate theoretical attack masses under BNE, $L_1$ (agents best-respond believing others randomize uniformly), and $L_2$ (agents best-respond believing others play $L_1$). While the thresholds are identical when $\theta^* = 0.50$, the cost/benefit sweep uniquely separates them. Across the seven cost/benefit conditions, the empirical join fraction overwhelmingly selects BNE (RMSE = 0.199, $r = +0.737$) over $L_1$ (RMSE = 0.307, $r = +0.445$) and $L_2$ (RMSE = 0.348, $r = +0.354$). The agents' threshold policies approximate the full Bayesian Nash equilibrium.
+Human subjects in coordination game experiments consistently exhibit level-$k$ cognitive hierarchy behavior rather than full equilibrium reasoning \citep{szkup2020}. To test whether LLM agents play the BNE or a level-$k$ heuristic, I evaluate theoretical attack masses under BNE, $L_1$ (agents best-respond believing others randomize uniformly), and $L_2$ (agents best-respond believing others play $L_1$). While the thresholds are identical when $\theta^* = 0.50$, the cost/benefit sweep uniquely separates them. Across the seven cost/benefit conditions, the empirical join fraction overwhelmingly selects BNE (RMSE = \LevelKBNERMSE, $r = \LevelKBNER$) over $L_1$ (RMSE = \LevelKLOneRMSE, $r = \LevelKLOneR$) and $L_2$ (RMSE = \LevelKLTwoRMSE, $r = \LevelKLTwoR$). The agents' threshold policies approximate the full Bayesian Nash equilibrium.
 
 The claim is behavioral: agents do not observe $(B, C)$, $\sigma$, or $N$, yet the \textit{pattern} of responses---monotone sigmoid, payoff-sensitive cutoff, belief-mediated decisions---is robust across architectures and falsifiable. Three identification strategies establish that the regularity reflects more than text classification.
 
@@ -283,7 +283,7 @@ A paired $t$-test matching on (model, country, $\theta$) yields $\Delta = \CommD
 
 Communication preserves the signal structure ($r = \MeanModelRCommAttack$ vs.\ $\MeanModelRPureAttack$ under pure; Figure~\ref{fig:communication}). The effect on join rates is heterogeneous across models and near zero on average, consistent with passive Bayesian updating concentrated in weak-regime environments.
 
-How informative are the messages? Regressing $\theta$ on message features yields $R^2 = 0.12$---messages carry real information, noisily. This informativeness is what makes the channel exploitable: surveillance degrades $R^2$ to $0.02$ (Section~\ref{sec:surveillance}), an 80\% reduction. Communication creates the information topology that authoritarian instruments exploit. With group-size knowledge, the communication premium reverses ($-3.4$~pp; Appendix~\ref{sec:robustness}).
+How informative are the messages? Regressing $\theta$ on message features yields $R^2 = \MsgRSqComm$---messages carry real information, noisily. This informativeness is what makes the channel exploitable: surveillance degrades $R^2$ to $\MsgRSqSurv$ (Section~\ref{sec:surveillance}), an \MsgRSqDropPct\ reduction. Communication creates the information topology that authoritarian instruments exploit. With group-size knowledge, the communication premium reverses ($-3.4$~pp; Appendix~\ref{sec:robustness}).
 
 
 %% 6. INFORMATION DESIGN
@@ -355,7 +355,7 @@ Surveillance shifts stated beliefs by only $\PrefFalsBeliefDeltaPP$~pp ($p = \Pr
 \end{equation}
 Virtually the entire effect passes through the belief--action wedge---agents change what they \textit{do} without changing what they \textit{believe}. Elicited punishment risk is approximately 8.0/10 across all conditions with negligible differences between JOIN and STAY agents (Table~\ref{tab:punishment_risk}).
 
-Second-order beliefs are unchanged by surveillance ($\SOBPureMeanPct \to \SOBSurvMeanPct$, $p = \SOBPValue$), revealing the \textit{strategic update gap}: each agent self-censors while interpreting others' silence as genuine, sustaining the suppressed equilibrium because common knowledge of the chilling effect never forms. The $R^2$ of message content on true $\theta$ drops from 0.12 to 0.02---an 80\% reduction in informational content.
+Second-order beliefs are unchanged by surveillance ($\SOBPureMeanPct \to \SOBSurvMeanPct$, $p = \SOBPValue$), revealing the \textit{strategic update gap}: each agent self-censors while interpreting others' silence as genuine, sustaining the suppressed equilibrium because common knowledge of the chilling effect never forms. The $R^2$ of message content on true $\theta$ drops from \MsgRSqComm\ to \MsgRSqSurv---an \MsgRSqDropPct\ reduction in informational content.
 
 \paragraph{Direct channel: decision-stage suppression.}
 
@@ -564,7 +564,7 @@ Two placebo variants---monitoring ``for research purposes'' (no consequences) an
 Predicted regime fall rates (binomial model with out-of-sample logistic fits) correlate with empirical rates at $r \geq 0.88$ for every model (Mistral: $r = 0.9995$; Table~\ref{tab:finite_n}).
 \input{tables/tab_finite_n.tex}
 \subsection{Agent-Level Analysis}
-Table~\ref{tab:regressions} reports agent-level logit regressions ($N = 287{,}055$, clustered SEs). All treatment effects are significant and correctly signed. Marginal effects at the mean: a one-unit increase in $\theta$ reduces $P(\text{join})$ by 41~pp; surveillance reduces it by 36~pp. Elicited beliefs predict actions beyond what the signal alone predicts (Column~3).
+Table~\ref{tab:regressions} reports agent-level logit regressions ($N = 287{,}055$, clustered SEs). All treatment effects are significant and correctly signed. Marginal effects at the mean: a one-unit increase in $\theta$ reduces $P(\text{join})$ by \MEMThetaPP~pp; surveillance reduces it by \MEMSurvPP~pp. Elicited beliefs predict actions beyond what the signal alone predicts (Column~3).
 \input{tables/tab_regressions.tex}
 \input{tables/tab_logistic_params.tex}
 

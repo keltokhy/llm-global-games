@@ -1426,6 +1426,37 @@ def render_stats_macros(stats: dict) -> str:
         main_logit = reg.get("agent_logit", {}).get("main_logit", {})
         lines.append(_mc("MainLogitPseudoRSq", main_logit.get("pseudo_r2"), 4))
         lines.append(_mc_raw("MainLogitNObs", f"{main_logit.get('n_obs', '---'):,}" if main_logit.get('n_obs') else "---"))
+        # Marginal effects at the mean
+        mem = main_logit.get("marginal_effects_at_mean", {})
+        if mem:
+            lines.append(_mc_raw("MEMThetaPP", f"{abs(mem.get('theta', 0)) * 100:.0f}"))
+            lines.append(_mc_raw("MEMSurvPP", f"{abs(mem.get('treat_surveillance', 0)) * 100:.0f}"))
+        lines.append("")
+
+    # ── Message informativeness ─────────────────────────────────────
+    mi_path = Path(__file__).resolve().parent / "_archive" / "message_informativeness_results.json"
+    if mi_path.exists():
+        import json as _json2
+        with open(mi_path) as f:
+            mi = _json2.load(f)
+        lines.append("% Message informativeness")
+        comm_r2 = mi.get("comm", {}).get("R2_text_to_theta")
+        surv_r2 = mi.get("surveillance", {}).get("R2_text_to_theta")
+        lines.append(_mc("MsgRSqComm", comm_r2, 2))
+        lines.append(_mc("MsgRSqSurv", surv_r2, 2))
+        if comm_r2 and surv_r2 and comm_r2 > 0:
+            pct_drop = round((1.0 - surv_r2 / comm_r2) * 100)
+            lines.append(_mc_raw("MsgRSqDropPct", f"{pct_drop}\\%"))
+        lines.append("")
+
+    # ── Level-k benchmark ─────────────────────────────────────────
+    level_k = stats.get("level_k", {})
+    if level_k:
+        lines.append("% Level-k benchmark (BNE vs L1 vs L2)")
+        for model_key, macro_prefix in [("bne", "LevelKBNE"), ("l1", "LevelKLOne"), ("l2", "LevelKLTwo")]:
+            mk = level_k.get(model_key, {})
+            lines.append(_mc(f"{macro_prefix}RMSE", mk.get("rmse"), 3))
+            lines.append(_mc_r(f"{macro_prefix}R", mk.get("r")))
         lines.append("")
 
     # ── B/C sweep (infodesign) ────────────────────────────────────

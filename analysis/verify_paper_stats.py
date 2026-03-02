@@ -2449,6 +2449,54 @@ def compute_parse_error_rates():
     return results
 
 
+def compute_level_k_benchmark():
+    """Compare BNE, L1, L2 predictions against empirical bc_sweep data."""
+    from scipy.stats import norm
+    from scipy.optimize import root_scalar
+
+    bc_path = ROOT / PRIMARY / "experiment_bc_sweep_summary.csv"
+    if not bc_path.exists():
+        return {}
+
+    df = pd.read_csv(bc_path)
+    jcol = _join_col(df)
+    sigma = 0.3
+    y_emp = df[jcol].values
+    theta_star = df["theta_star_target"].values
+    theta = df["theta"].values
+
+    # BNE
+    x_bne = theta_star + sigma * norm.ppf(theta_star)
+    a_bne = norm.cdf((x_bne - theta) / sigma)
+
+    # L1: best-respond to uniform
+    x_l1 = 0.5 - sigma * norm.ppf(theta_star)
+    a_l1 = norm.cdf((x_l1 - theta) / sigma)
+
+    # L2: best-respond to L1
+    a_l2 = np.zeros_like(theta)
+    for i, ts in enumerate(theta_star):
+        xl1_val = 0.5 - sigma * norm.ppf(ts)
+        def obj(t, _xl1=xl1_val):
+            return norm.cdf((_xl1 - t) / sigma) - t
+        try:
+            res = root_scalar(obj, bracket=[-2, 2])
+            theta_L1 = res.root
+        except ValueError:
+            theta_L1 = 0.5
+        xl2_val = theta_L1 - sigma * norm.ppf(ts)
+        a_l2[i] = norm.cdf((xl2_val - theta[i]) / sigma)
+
+    results = {}
+    for name, a_pred in [("bne", a_bne), ("l1", a_l1), ("l2", a_l2)]:
+        mse = float(np.mean((y_emp - a_pred) ** 2))
+        rmse = float(np.sqrt(mse))
+        r, p = stats.pearsonr(a_pred, y_emp)
+        results[name] = {"rmse": round(rmse, 4), "r": round(float(r), 4), "p": float(p)}
+
+    return results
+
+
 def main():
     print("Computing Part I statistics...")
     part1 = compute_part1()
@@ -2511,6 +2559,9 @@ def main():
     print("Computing parse error rates...")
     parse_errors = compute_parse_error_rates()
 
+    print("Computing level-k benchmark...")
+    level_k = compute_level_k_benchmark()
+
     all_stats = {
         "part1": part1,
         "infodesign": infodesign,
@@ -2533,6 +2584,7 @@ def main():
         "uncalibrated_expanded": uncalibrated_expanded,
         "punishment_risk": punishment_risk,
         "parse_errors": parse_errors,
+        "level_k": level_k,
     }
 
     print("Computing hypothesis table...")
