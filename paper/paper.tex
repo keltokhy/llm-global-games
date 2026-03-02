@@ -135,8 +135,24 @@ The designer concentrates manipulation near $\theta^*$ using a Gaussian proximit
 \end{equation}
 where $h = 0.15$ is the baseline bandwidth parameter.
 
-The framework generates testable predictions for both the baseline game and information design. Table~\ref{tab:hypotheses} in Appendix~\ref{sec:design_appendix} reports the eight pre-specified hypotheses and their test results.
+The framework generates testable predictions for both the baseline game and information design.
 
+\begin{proposition}[Stability design suppresses coordination]\label{prop:stability}
+Let the designer widen the clarity kernel by $\delta > 0$ near $\theta^*$, so that briefings near the equilibrium cutoff become less informative. If agents are Bayesian and the baseline join rate exceeds $\tfrac{1}{2}$ for $\theta < \theta^*$, then the average join fraction falls: $\mathbb{E}[J_{\textit{stability}}(\theta)] < \mathbb{E}[J_{\textit{baseline}}(\theta)]$.
+\end{proposition}
+\noindent\textit{Intuition.} Ambiguity near $\theta^*$ pools weak- and strong-regime signals. Because the baseline sigmoid is left-shifted ($\hat\theta^* < \theta^*$), pooling pulls down join rates in the already-high-joining region ($\theta < \theta^*$) more than it boosts them in the low-joining region, yielding a net decrease.
+
+\begin{proposition}[Upper censorship suppresses joining in weak states]\label{prop:censorship}
+If the designer pools all $\theta \le \theta^*$ to a neutral signal, the join rate in the pooled region converges to the prior mean $\bar{J} = \mathbb{E}[J(\theta) \mid \theta \le \theta^*]$, which lies below the uncensored join rate for low $\theta$. For $\theta > \theta^*$, signals are unchanged. Hence (i) the action--$A(\theta)$ correlation is attenuated, and (ii) the average join fraction falls.
+\end{proposition}
+\noindent\textit{Intuition.} An agent who would join with probability 0.90 at $\theta = 0.20$ under the baseline now receives a pooled signal indistinguishable from $\theta = 0.45$ and joins with probability $\approx 0.50$. The ``plateau'' in Figure~\ref{fig:censorship} is this pooling at work.
+
+\begin{proposition}[Surveillance induces a belief--action wedge]\label{prop:surveillance}
+Suppose agents self-censor their communications when monitored. If messages carry information about private signals ($R^2_{\text{msg}} > 0$ under baseline), then surveillance degrades message quality ($R^2_{\text{msg}} \to 0$) and downstream join rates fall by $\Delta_{\text{surv}} < 0$, even though the decision prompt contains no reference to surveillance.
+\end{proposition}
+\noindent\textit{Intuition.} Self-censored messages remove the informational content that communication added. Other agents update on uninformative messages as if they were uninformative, producing the same directional shift as an ambiguity increase---but through the endogenous channel of strategic communication rather than exogenous signal manipulation.
+
+Table~\ref{tab:hypotheses} in Appendix~\ref{sec:design_appendix} reports the eight pre-specified hypotheses and their test results.
 
 %% 3. EXPERIMENTAL DESIGN
 \section{Experimental Design} \label{sec:design}
@@ -384,6 +400,8 @@ Message content reveals the mechanism (Table~\ref{tab:surveillance_propaganda}).
 \section{Conclusion} \label{sec:conclusion}
 
 The information channel is a trap, and this paper has documented the trap's mechanism. LLM agents implement threshold policies closely consistent with the unique Bayes-Nash Equilibrium, and this behavioral regularity converts the experiment into a testbed for information design. The key finding is that the communication channel enabling coordination is the same channel through which regimes suppress it: surveillance induces a belief--action wedge where agents self-censor while interpreting others' silence as genuine, preventing common knowledge of shared discontent from forming. Censorship and surveillance are complements---degrading private signals makes the communication channel more important, and surveillance poisons that channel.
+
+A rough welfare accounting illustrates the stakes. Under uniform $\theta$, the BNE yields per-citizen expected payoff of 0.27 (on a $[-1, 1]$ scale), roughly half the first-best payoff of 0.50 achievable with perfect coordination. Surveillance reduces citizen welfare by a further 14\%---regime survival rises from 50\% to 54\%---while the stability design produces a comparable 13\% welfare loss. These calculations are stylized (they treat the observed level shifts as if they were uniform across $\theta$), but they quantify the core asymmetry: the regime's instruments improve its survival at citizens' expense, and the welfare cost of each instrument exceeds its effect on average join rates because the chilling effect concentrates in states where coordination is most valuable.
 
 Three limitations warrant discussion. First, whether the underlying mechanism is approximate Bayesian reasoning or a learned heuristic that happens to match BNE remains open. The behavioral claim---that the pattern is robust, replicable, and falsifiable---does not require resolving this question, but interpreting the welfare implications requires it. Second, the experiments are static; real coordination problems are dynamic \citep{angeletos2007a, chassang2010}, and the dynamics of belief updating under persistent surveillance may differ from the one-shot effects documented here. Third, external validity remains the fundamental challenge for ``homo silicus'' \citep{horton2023}: what LLM agents do in a coordination game is evidence about the structure of the game, not necessarily about how humans would play it.
 
