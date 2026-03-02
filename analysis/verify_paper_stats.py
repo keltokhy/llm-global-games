@@ -1858,7 +1858,7 @@ def compute_ck_interaction():
     XtX_inv = np.linalg.inv(X.T @ X)
     se = np.sqrt(np.diag(s2 * XtX_inv))
     t_stats = beta / se
-    p_values = 2 * (1 - stats.norm.cdf(np.abs(t_stats)))
+    p_values = 2 * (1 - stats.t.cdf(np.abs(t_stats), df=n - k))
 
     labels = ["intercept", "ck", "high_coord", "interaction"]
     result = {
