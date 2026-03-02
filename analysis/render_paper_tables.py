@@ -243,7 +243,7 @@ def render_tab_infodesign(stats: dict) -> str:
         r = (d.get("r_vs_attack") or {}).get("r")
         delta = d.get("delta_vs_baseline")
         n = d.get("n_obs")
-        delta_cell = "---" if delta is None else _fmt_r(delta, nd=3).replace("+", "+")
+        delta_cell = "---" if delta is None else _fmt_pp(delta, 1)
         rows.append(
             f"{label} & {_fmt_num(mean,3)} & ${_fmt_r(r,3)}$ & {delta_cell} & {n} \\\\"
         )
@@ -255,7 +255,7 @@ def render_tab_infodesign(stats: dict) -> str:
 \small
 \begin{tabular}{lcccc}
 \toprule
-Design & Mean & $r$ & $\Delta$ & $N$ \\
+Design & Mean & $r$ & $\Delta$ (pp) & $N$ \\
 \midrule
 """
     tex += "\n".join(rows) + "\n"
@@ -275,7 +275,7 @@ def render_tab_surveillance_propaganda(stats: dict) -> str:
     # Baseline comm (Mistral) from Part I
     base = part1["Mistral Small Creative"]["comm"]
     base_mean = base["mean_join"]
-    base_r = (base.get("r_vs_attack") or base["r_vs_theta"])["r"]
+    base_r = base["r_vs_attack"]["r"]
 
     def row_prop(k: int) -> tuple[str, dict]:
         d = regime["propaganda"][f"k={k}"]["Mistral Small Creative"]
@@ -292,19 +292,20 @@ def render_tab_surveillance_propaganda(stats: dict) -> str:
     for label, d in prop_rows:
         mean_all = d["mean_join_all"]
         mean_real = d.get("mean_join_real")
-        r = (d.get("r_vs_attack_all") or d["r_vs_theta_all"])["r"]
+        r = d["r_vs_attack_all"]["r"]
         delta_real = d.get("delta_real_vs_baseline_pp")
-        delta_cell = "---" if delta_real is None else f"{_fmt_r(delta_real/100,3)}"
+        delta_cell = "---" if delta_real is None else _fmt_pp(delta_real / 100, 1)
         lines.append(
             f"{label} & {_fmt_num(mean_all,3).lstrip('0')} & {_fmt_num(mean_real,3).lstrip('0')} & ${_fmt_r(r,3)}$ & {delta_cell} \\\\"
         )
 
     lines.append(r"\midrule")
-    surv_r = (surv.get("r_vs_attack") or surv["r_vs_theta"])["r"]
+    surv_r = surv["r_vs_attack"]["r"]
+    surv_delta_pp = surv['delta_vs_baseline_pp']
     lines.append(
-        f"Surveillance & {_fmt_num(surv['mean_join'],3).lstrip('0')} & {_fmt_num(surv['mean_join'],3).lstrip('0')} & ${_fmt_r(surv_r,3)}$ & {_fmt_r(surv['delta_vs_baseline_pp']/100,3)} \\\\"
+        f"Surveillance & {_fmt_num(surv['mean_join'],3).lstrip('0')} & {_fmt_num(surv['mean_join'],3).lstrip('0')} & ${_fmt_r(surv_r,3)}$ & {_fmt_pp(surv_delta_pp / 100, 1)} \\\\"
     )
-    ps_r = (ps.get("r_vs_attack_all") or ps["r_vs_theta_all"])["r"]
+    ps_r = ps["r_vs_attack_all"]["r"]
     lines.append(
         f"Prop+Surv & {_fmt_num(ps['mean_join_all'],3).lstrip('0')} & --- & ${_fmt_r(ps_r,3)}$ & --- \\\\"
     )
@@ -318,7 +319,7 @@ def render_tab_surveillance_propaganda(stats: dict) -> str:
 \toprule
  & \multicolumn{2}{c}{Mean join} & & \\
 \cmidrule(lr){2-3}
-Treatment & All & Real & $r$ & $\Delta$ \\
+Treatment & All & Real & $r$ & $\Delta$ (pp) \\
 \midrule
 """
     tex += "\n".join(lines) + "\n"
@@ -351,7 +352,7 @@ def render_tab_surv_censor(stats: dict) -> str:
         no = {"baseline": baseline, "censor_upper": up, "censor_lower": lo}[key]
         yes = float(sxc[key])
         delta = yes - no
-        lines.append(f"{label} & {_fmt_num(no,3)} & {_fmt_num(yes,3)} & {_fmt_r(delta,nd=3)} \\\\")
+        lines.append(f"{label} & {_fmt_num(no,3)} & {_fmt_num(yes,3)} & {_fmt_pp(delta,1)} \\\\")
 
     tex = r"""\begin{table}[t]
 \centering
@@ -361,7 +362,7 @@ def render_tab_surv_censor(stats: dict) -> str:
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{lccc}
 \toprule
-Design & No Surv. & Surv. & $\Delta$ \\
+Design & No Surv. & Surv. & $\Delta$ (pp) \\
 \midrule
 """
     tex += "\n".join(lines) + "\n"
@@ -403,11 +404,11 @@ def render_tab_bandwidth(stats: dict) -> str:
         d005 = float(b005[design]) - base_005
         d015 = main_mean(design) - base_015
         d030 = float(b030[design]) - base_030
-        rows.append(f"{label} & {_fmt_r(d005,3)} & {_fmt_r(d015,3)} & {_fmt_r(d030,3)} \\\\")
+        rows.append(f"{label} & {_fmt_pp(d005,1)} & {_fmt_pp(d015,1)} & {_fmt_pp(d030,1)} \\\\")
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{Bandwidth robustness: treatment effects $\Delta$ (treatment $-$ baseline) within each bandwidth condition (primary model: Mistral Small Creative). Top row shows baseline join rates for reference.}
+\caption{Bandwidth robustness: treatment effects $\Delta$ (pp, treatment $-$ baseline) within each bandwidth condition (primary model: Mistral Small Creative). Top row shows baseline join rates for reference.}
 \label{tab:bandwidth}
 \small
 \begin{tabular}{lccc}
@@ -441,7 +442,7 @@ def render_tab_crossmodel(stats: dict) -> str:
         if field == "mean":
             return _fmt_num(d.get("mean_join"), 3)
         if field == "r":
-            return f"${_fmt_r((d.get('r_vs_theta') or {}).get('r'), 3)}$"
+            return f"${_fmt_r(d['r_vs_attack']['r'], 3)}$"
         return "---"
 
     rows = []
@@ -454,7 +455,7 @@ def render_tab_crossmodel(stats: dict) -> str:
 
     tex = r"""\begin{table*}[t]
 \centering
-\caption{Cross-model replication of key information design conditions. $r$ is the correlation between $\theta$ and join fraction.}
+\caption{Cross-model replication of key information design conditions. $r$ is the correlation $r(J, A(\theta))$ between join fraction and theoretical attack mass.}
 \label{tab:crossmodel}
 \small
 \begin{tabular}{lcccccc}
@@ -483,9 +484,9 @@ def render_tab_decomposition(stats: dict) -> str:
     ]:
         d = info.get(key, {})
         mean = d.get("mean_join")
-        r = (d.get("r_vs_theta") or {}).get("r")
+        r = d["r_vs_attack"]["r"]
         delta = d.get("delta_vs_baseline")
-        rows.append(f"{label} & {_fmt_num(mean,3)} & ${_fmt_r(r,3)}$ & {_fmt_r(delta,3)} \\\\")
+        rows.append(f"{label} & {_fmt_num(mean,3)} & ${_fmt_r(r,3)}$ & {_fmt_pp(delta,1)} \\\\")
 
     # Sum of single-channel deltas vs full delta
     deltas = [info.get(k, {}).get("delta_vs_baseline") for k in ["stability_clarity", "stability_direction", "stability_dissent"]]
@@ -493,8 +494,8 @@ def render_tab_decomposition(stats: dict) -> str:
     full_delta = float(info["stability"]["delta_vs_baseline"])
 
     rows.append(r"\midrule")
-    rows.append(f"Sum of channels & --- & --- & {_fmt_r(sum_delta,3)} \\\\")
-    rows.append(f"Full design & --- & --- & {_fmt_r(full_delta,3)} \\\\")
+    rows.append(f"Sum of channels & --- & --- & {_fmt_pp(sum_delta,1)} \\\\")
+    rows.append(f"Full design & --- & --- & {_fmt_pp(full_delta,1)} \\\\")
 
     tex = r"""\begin{table}[t]
 \centering
@@ -503,7 +504,7 @@ def render_tab_decomposition(stats: dict) -> str:
 \small
 \begin{tabular}{lccc}
 \toprule
-Channel & Mean & $r$ & $\Delta$ \\
+Channel & Mean & $r$ & $\Delta$ (pp) \\
 \midrule
 """
     tex += "\n".join(rows) + "\n"
@@ -536,21 +537,22 @@ def render_tab_uncalibrated(stats: dict) -> str:
             continue
         n = d.get("n_obs", "---")
         mean_j = _fmt_num(d.get("mean_join"), 3)
-        r = (d.get("r_vs_theta") or {}).get("r")
-        p = (d.get("r_vs_theta") or {}).get("p")
-        r_cell = f"${_fmt_r(r, 3)}$" if r is not None else "---"
+        r_src = d["r_vs_attack"]
+        r = r_src["r"]
+        p = r_src.get("p")
+        r_cell = f"${_fmt_r(r, 3)}$"
         p_cell = _fmt_num(p, 4) if p is not None else "---"
         rows.append(f"{m} & {n} & {mean_j} & {r_cell} & {p_cell} \\\\")
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{Uncalibrated robustness: models run without calibration adjustment. $r$ is the Pearson correlation between $\theta$ and join fraction.}
+\caption{Uncalibrated robustness: models run without calibration adjustment. $r$ is the Pearson correlation $r(J, A(\theta))$ between join fraction and theoretical attack mass.}
 \label{tab:uncalibrated}
 \small
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{lcccc}
 \toprule
-Model & $N$ & Mean join & $r(\theta, J)$ & $p$ \\
+Model & $N$ & Mean join & $r(J, A(\theta))$ & $p$ \\
 \midrule
 """
     tex += "\n".join(rows) + "\n"
@@ -588,8 +590,8 @@ def render_tab_surv_censor_crossmodel(stats: dict) -> str:
         cl_cell = _fmt_num(cl, 3)
         delta_u = (cu - bl) if bl is not None and cu is not None else None
         delta_l = (cl - bl) if bl is not None and cl is not None else None
-        du_cell = _fmt_r(delta_u, 3) if delta_u is not None else "---"
-        dl_cell = _fmt_r(delta_l, 3) if delta_l is not None else "---"
+        du_cell = _fmt_pp(delta_u, 1) if delta_u is not None else "---"
+        dl_cell = _fmt_pp(delta_l, 1) if delta_l is not None else "---"
         rows.append(f"{m} & {bl_cell} & {cu_cell} & {cl_cell} & {du_cell} & {dl_cell} \\\\")
 
     tex = r"""\begin{table}[t]
@@ -600,7 +602,7 @@ def render_tab_surv_censor_crossmodel(stats: dict) -> str:
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{lccccc}
 \toprule
-& \multicolumn{3}{c}{Mean join (surv.)} & \multicolumn{2}{c}{$\Delta$ vs baseline} \\
+& \multicolumn{3}{c}{Mean join (surv.)} & \multicolumn{2}{c}{$\Delta$ (pp)} \\
 \cmidrule(lr){2-4} \cmidrule(lr){5-6}
 Model & Baseline & Upper cens. & Lower cens. & $\Delta$ upper & $\Delta$ lower \\
 \midrule
@@ -674,8 +676,8 @@ def render_tab_surveillance_variants(stats: dict) -> str:
         if "mean_join" not in d:
             continue
         mean_j = _fmt_num(d["mean_join"], 3)
-        r_val = _fmt_r(d["r_vs_theta"]["r"], 2) if "r_vs_theta" in d else "---"
-        delta = _fmt_r(d.get("delta_vs_comm_pp", 0) / 100, 3) if d.get("delta_vs_comm_pp") is not None else "---"
+        r_val = _fmt_r(d["r_vs_attack"]["r"], 2)
+        delta = _fmt_pp(d.get("delta_vs_comm_pp", 0) / 100, 1) if d.get("delta_vs_comm_pp") is not None else "---"
         t_test = d.get("t_test_vs_comm", {})
         p_val = _fmt_num(t_test.get("p_value"), 3) if t_test else "---"
         label = "Placebo" if variant == "placebo" else "Anonymous"
@@ -689,7 +691,7 @@ def render_tab_surveillance_variants(stats: dict) -> str:
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{lccccc}
 \toprule
-Variant & $N$ & Mean join & $r(\theta, J)$ & $\Delta$ & $p$ \\
+Variant & $N$ & Mean join & $r(J, A(\theta))$ & $\Delta$ (pp) & $p$ \\
 \midrule
 """
     tex += "\n".join(rows) + "\n"
@@ -712,7 +714,7 @@ def render_tab_bc_statics(stats: dict) -> str:
         if not di:
             continue
         mean_j = _fmt_num(di["mean_join"], 3)
-        r_val = _fmt_r(di["r_vs_theta"]["r"], 2) if "r_vs_theta" in di else "---"
+        r_val = _fmt_r(di["r_vs_attack"]["r"], 2)
         fit = di.get("logistic_fit") or {}
         cutoff = fit.get("cutoff")
         se_cutoff = fit.get("se_cutoff")
@@ -722,7 +724,7 @@ def render_tab_bc_statics(stats: dict) -> str:
         n = di.get("n_obs", "---")
         delta = ""
         if "delta_vs_baseline" in di:
-            delta = _fmt_r(di["delta_vs_baseline"], 3)
+            delta = _fmt_pp(di["delta_vs_baseline"], 1)
         elif d == "baseline":
             delta = "---"
         rows.append(f"{labels[d]} & {n} & {mean_j} & {r_val} & {cutoff_cell} & {delta} \\\\")
@@ -735,7 +737,7 @@ def render_tab_bc_statics(stats: dict) -> str:
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{lccccc}
 \toprule
-Design & $N$ & Mean join & $r(\theta, J)$ & Cutoff $\hat{\theta}^*$ (SE) & $\Delta$ vs baseline \\
+Design & $N$ & Mean join & $r(J, A(\theta))$ & Cutoff $\hat{\theta}^*$ (SE) & $\Delta$ (pp) \\
 \midrule
 """
     tex += "\n".join(rows) + "\n"
@@ -762,11 +764,11 @@ def render_tab_censor_ck(stats: dict) -> str:
         if not di:
             continue
         mean_j = _fmt_num(di["mean_join"], 3)
-        r_val = _fmt_r(di["r_vs_theta"]["r"], 2) if "r_vs_theta" in di else "---"
+        r_val = _fmt_r(di["r_vs_attack"]["r"], 2)
         n = di.get("n_obs", "---")
         delta = ""
         if "delta_vs_baseline" in di:
-            delta = _fmt_r(di["delta_vs_baseline"], 3)
+            delta = _fmt_pp(di["delta_vs_baseline"], 1)
         elif d == "baseline":
             delta = "---"
         rows.append(f"{labels[d]} & {n} & {mean_j} & {r_val} & {delta} \\\\")
@@ -779,7 +781,7 @@ def render_tab_censor_ck(stats: dict) -> str:
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{lcccc}
 \toprule
-Design & $N$ & Mean join & $r(\theta, J)$ & $\Delta$ vs baseline \\
+Design & $N$ & Mean join & $r(J, A(\theta))$ & $\Delta$ (pp) \\
 \midrule
 """
     tex += "\n".join(rows) + "\n"
@@ -802,7 +804,7 @@ def render_tab_temperature(stats: dict) -> str:
         if not d:
             continue
         mean_j = _fmt_num(d["mean_join"], 3)
-        r_val = _fmt_r((d.get("r_vs_attack") or d.get("r_vs_theta", {})).get("r") if isinstance(d.get("r_vs_attack") or d.get("r_vs_theta"), dict) else None, 2)
+        r_val = _fmt_r(d["r_vs_attack"]["r"], 2)
         n = d.get("n_obs", "---")
         fit = d.get("logistic_fit", {})
         cutoff = _fmt_num(fit.get("cutoff"), 3) if fit.get("cutoff") is not None else "---"
@@ -989,7 +991,20 @@ def render_stats_macros(stats: dict) -> str:
         return f"\\providecommand{{\\{name}}}{{{_fmt_r(val, nd)}}}"
 
     def _mc_pp(name, val, nd=1):
+        """For values stored as fractions (e.g. 0.09 → +9.0)."""
         return f"\\providecommand{{\\{name}}}{{{_fmt_pp(val, nd)}}}"
+
+    def _mc_pp_raw(name, val, nd=1):
+        """For values already in percentage points (e.g. -13.5 → -13.5)."""
+        if val is None:
+            return f"\\providecommand{{\\{name}}}{{---}}"
+        try:
+            if val != val:  # nan
+                return f"\\providecommand{{\\{name}}}{{---}}"
+        except Exception:
+            return f"\\providecommand{{\\{name}}}{{---}}"
+        sign = "+" if val >= 0 else ""
+        return f"\\providecommand{{\\{name}}}{{{sign}{val:.{nd}f}}}"
 
     def _mc_pct(name, val, nd=1):
         return f"\\providecommand{{\\{name}}}{{{_fmt_pct(val, nd)}}}"
@@ -1059,6 +1074,15 @@ def render_stats_macros(stats: dict) -> str:
     lines.append(_mc("PooledCommMeanJoin", pooled_comm.get("mean_join")))
     lines.append(_mc_r("MeanModelRPureTheta", part1.get("_mean_r_pure_vs_theta")))
     lines.append(_mc_r("MeanModelRPureAttack", part1.get("_mean_r_pure_vs_attack")))
+    # Mean-of-models comm r_attack
+    comm_rs = [
+        (v.get("comm", {}).get("r_vs_attack") or {}).get("r")
+        for k, v in part1.items()
+        if isinstance(k, str) and not k.startswith("_") and isinstance(v, dict) and "comm" in v
+    ]
+    comm_rs = [x for x in comm_rs if x is not None]
+    mean_comm_r = sum(comm_rs) / len(comm_rs) if comm_rs else None
+    lines.append(_mc_r("MeanModelRCommAttack", mean_comm_r))
     # Mean-of-models flip r_attack
     flip_rs = [
         (v.get("flip", {}).get("r_vs_attack") or {}).get("r")
@@ -1112,6 +1136,10 @@ def render_stats_macros(stats: dict) -> str:
         lines.append(_mc_r(f"{mname}PureRTheta", r_theta))
         lines.append(_mc_r(f"{mname}PureRAttack", r_attack))
         lines.append(_mc(f"{mname}PureMeanJoin", mean_join))
+        # Comm r-attack per model
+        comm = entry.get("comm", {})
+        r_comm_attack = (comm.get("r_vs_attack") or {}).get("r")
+        lines.append(_mc_r(f"{mname}CommRAttack", r_comm_attack))
     lines.append("")
 
     # ── Fisher z-tests (pure vs scramble/flip) ────────────────────
@@ -1135,6 +1163,8 @@ def render_stats_macros(stats: dict) -> str:
         ("flip", "InfodesignFlip"),
         ("censor_upper", "InfodesignCensorUpper"),
         ("censor_lower", "InfodesignCensorLower"),
+        ("censor_upper_known", "InfodesignCensorUpperKnown"),
+        ("hard_scramble", "InfodesignHardScramble"),
         ("stability_clarity", "DecompClarityOnly"),
         ("stability_direction", "DecompDirectionOnly"),
         ("stability_dissent", "DecompDissentOnly"),
@@ -1159,6 +1189,8 @@ def render_stats_macros(stats: dict) -> str:
         ("public_signal", "InfodesignPublicSignal"),
         ("censor_upper", "InfodesignCensorUpper"),
         ("censor_lower", "InfodesignCensorLower"),
+        ("censor_upper_known", "InfodesignCensorUpperKnown"),
+        ("hard_scramble", "InfodesignHardScramble"),
     ]:
         fall_rate = ig(key, "regime_fall_rate")
         lines.append(f"\\providecommand{{\\{macro}FallRate}}{{{_fmt_pct(fall_rate, 1)}}}")
@@ -1204,12 +1236,21 @@ def render_stats_macros(stats: dict) -> str:
     # ── Surveillance per-model ────────────────────────────────────
     surv_data = regime.get("surveillance", {})
     lines.append("% Surveillance per-model delta vs baseline")
+    surv_r_attacks = []
     for slug in PART1_SLUGS:
         display = DISPLAY_NAMES.get(slug, slug)
         mname = _MACRO_NAMES.get(slug, slug.split("--")[-1].title())
         entry = surv_data.get(display, {})
-        lines.append(_mc_pp(f"Surv{mname}DeltaPP", entry.get("delta_vs_baseline_pp")))
+        lines.append(_mc_pp_raw(f"Surv{mname}DeltaPP", entry.get("delta_vs_baseline_pp")))
         lines.append(_mc(f"Surv{mname}MeanJoin", entry.get("mean_join")))
+        # Surveillance r_vs_attack correlation
+        surv_r = (entry.get("r_vs_attack") or {}).get("r")
+        lines.append(_mc_r(f"Surv{mname}RAttack", surv_r))
+        if surv_r is not None:
+            surv_r_attacks.append(surv_r)
+    # Mean surveillance r across models
+    mean_surv_r = sum(surv_r_attacks) / len(surv_r_attacks) if surv_r_attacks else None
+    lines.append(_mc_r("SurvMeanRAttack", mean_surv_r))
     lines.append("")
 
     # ── Surveillance variants (placebo, anonymous) ────────────────
@@ -1217,16 +1258,17 @@ def render_stats_macros(stats: dict) -> str:
     lines.append("% Surveillance variants")
     for variant, macro in [("placebo", "PlaceboSurv"), ("anonymous", "AnonSurv")]:
         vd = sv.get(variant, {})
-        lines.append(_mc_pp(f"{macro}DeltaPP", vd.get("delta_vs_comm_pp")))
+        lines.append(_mc_pp_raw(f"{macro}DeltaPP", vd.get("delta_vs_comm_pp")))
         tt = vd.get("t_test_vs_comm", {})
         lines.append(_mc(f"{macro}PValue", tt.get("p_value") if isinstance(tt, dict) else None, 4))
         lines.append(_mc(f"{macro}MeanJoin", vd.get("mean_join")))
+        lines.append(_mc_pct(f"{macro}MeanJoinPct", vd.get("mean_join")))
     lines.append("")
 
     # ── Fixed messages test ───────────────────────────────────────
     fm = stats.get("fixed_messages_test", {})
     lines.append("% Fixed messages surveillance test")
-    lines.append(_mc_pp("FixedMsgDeltaPP", fm.get("delta_pp")))
+    lines.append(_mc_pp_raw("FixedMsgDeltaPP", fm.get("delta_pp")))
     lines.append(_mc("FixedMsgTStat", fm.get("ttest_t"), 2))
     lines.append(_mc("FixedMsgPValue", fm.get("ttest_p"), 4))
     lines.append(_mc("FixedMsgBaselineMean", fm.get("baseline_mean_join")))
@@ -1242,6 +1284,8 @@ def render_stats_macros(stats: dict) -> str:
         r_dec = bd.get("r_belief_decision")
         lines.append(_mc_r(f"{macro}RPosterior", r_post.get("r") if isinstance(r_post, dict) else r_post))
         lines.append(_mc_r(f"{macro}RDecision", r_dec.get("r") if isinstance(r_dec, dict) else r_dec))
+        r_part = bd.get("r_partial", {})
+        lines.append(_mc_r(f"{macro}RPartial", r_part.get("r") if isinstance(r_part, dict) else r_part))
         lines.append(_mc(f"{macro}MeanBelief", bd.get("mean_belief")))
         lines.append(_mc(f"{macro}MeanJoin", bd.get("mean_join")))
     # Second-order beliefs
@@ -1249,7 +1293,7 @@ def render_stats_macros(stats: dict) -> str:
     lines.append("% Second-order beliefs (surveillance vs comm)")
     lines.append(_mc("SOBCommMean", sob.get("comm_mean")))
     lines.append(_mc("SOBSurvMean", sob.get("surv_mean")))
-    lines.append(_mc_pp("SOBDeltaPP", sob.get("delta_pp")))
+    lines.append(_mc_pp_raw("SOBDeltaPP", sob.get("delta_pp")))
     lines.append(_mc("SOBPValue", sob.get("p_value"), 4))
     lines.append(_mc("SOBTStat", sob.get("t_stat"), 2))
     # Preference falsification
@@ -1257,8 +1301,8 @@ def render_stats_macros(stats: dict) -> str:
     lines.append("% Preference falsification")
     lines.append(_mc("PrefFalsPureMeanBelief", pf.get("pure_mean_belief")))
     lines.append(_mc("PrefFalsSurvMeanBelief", pf.get("surv_mean_belief")))
-    lines.append(_mc_pp("PrefFalsBeliefDeltaPP", pf.get("belief_delta_pp")))
-    lines.append(_mc_pp("PrefFalsActionDeltaPP", pf.get("action_delta_pp")))
+    lines.append(_mc_pp_raw("PrefFalsBeliefDeltaPP", pf.get("belief_delta_pp")))
+    lines.append(_mc_pp_raw("PrefFalsActionDeltaPP", pf.get("action_delta_pp")))
     lines.append("")
 
     # ── Classifier baselines ──────────────────────────────────────
@@ -1269,8 +1313,11 @@ def render_stats_macros(stats: dict) -> str:
     bow_surv = bow.get("cross_pure_to_surv", {})
     lines.append(_mc("ClassBowAccuracy", bow_cv.get("accuracy_mean")))
     lines.append(_mc("ClassBowAUC", bow_cv.get("auc_mean")))
+    lines.append(_mc_pct("ClassBowAccuracyPct", bow_cv.get("accuracy_mean")))
     lines.append(_mc("ClassBowSurvPredicted", bow_surv.get("predicted_join_rate")))
     lines.append(_mc("ClassBowSurvActual", bow_surv.get("actual_join_rate")))
+    lines.append(_mc_pct("ClassBowSurvPredictedPct", bow_surv.get("predicted_join_rate")))
+    lines.append(_mc_pct("ClassBowSurvActualPct", bow_surv.get("actual_join_rate")))
     gap = None
     if bow_surv.get("predicted_join_rate") is not None and bow_surv.get("actual_join_rate") is not None:
         gap = bow_surv["predicted_join_rate"] - bow_surv["actual_join_rate"]
@@ -1281,15 +1328,17 @@ def render_stats_macros(stats: dict) -> str:
     slider_surv = slider.get("cross_pure_to_surv", {})
     lines.append(_mc("ClassSliderAccuracy", slider_cv.get("accuracy_mean")))
     lines.append(_mc("ClassSliderAUC", slider_cv.get("auc_mean")))
+    lines.append(_mc_pct("ClassSliderAccuracyPct", slider_cv.get("accuracy_mean")))
     lines.append(_mc("ClassSliderSurvPredicted", slider_surv.get("predicted_join_rate")))
     lines.append(_mc("ClassSliderSurvActual", slider_surv.get("actual_join_rate")))
+    lines.append(_mc_pct("ClassSliderSurvPredictedPct", slider_surv.get("predicted_join_rate")))
     # BC comparative statics
     bc_cs = cb.get("bc_comparative_statics", {})
     for cond, macro in [("baseline", "ClassBCBaseline"), ("bc_high_cost", "ClassBCHighCost"), ("bc_low_cost", "ClassBCLowCost")]:
         cd = bc_cs.get(cond, {})
         lines.append(_mc(f"{macro}Predicted", cd.get("classifier_predicted_join")))
         lines.append(_mc(f"{macro}Actual", cd.get("actual_join")))
-        lines.append(_mc_pp(f"{macro}GapPP", cd.get("gap_pp")))
+        lines.append(_mc_pp_raw(f"{macro}GapPP", cd.get("gap_pp")))
     lines.append("")
 
     # ── B/C sweep (infodesign) ────────────────────────────────────
@@ -1307,6 +1356,12 @@ def render_stats_macros(stats: dict) -> str:
     lines.append(_mc("BCSweepBaselineCutoff", bl_fit.get("cutoff"), 3))
     lines.append(_mc("BCSweepHighCostCutoff", hc_fit.get("cutoff"), 3))
     lines.append(_mc("BCSweepLowCostCutoff", lc_fit.get("cutoff"), 3))
+    lines.append("")
+
+    # ── B/C sweep cutoff tracking ────────────────────────────────
+    bc_track = info.get("_bc_sweep_cutoff_tracking", {})
+    lines.append("% B/C sweep cutoff tracking")
+    lines.append(_mc("BCSweepCutoffTrackingR", bc_track.get("r"), 3))
     lines.append("")
 
     # ── Coordination cues ─────────────────────────────────────────
@@ -1367,7 +1422,9 @@ def render_stats_macros(stats: dict) -> str:
         if not ud:
             continue
         r_val = (ud.get("r_vs_theta") or {}).get("r") if isinstance(ud.get("r_vs_theta"), dict) else ud.get("r_vs_theta")
+        r_attack = (ud.get("r_vs_attack") or {}).get("r") if isinstance(ud.get("r_vs_attack"), dict) else None
         lines.append(_mc_r(f"Uncal{mname}R", r_val))
+        lines.append(_mc_r(f"Uncal{mname}RAttack", r_attack))
         lines.append(_mc(f"Uncal{mname}MeanJoin", ud.get("mean_join")))
     lines.append("")
 
@@ -1383,8 +1440,45 @@ def render_stats_macros(stats: dict) -> str:
             vd = entry.get(variant, {})
             if not vd:
                 continue
-            r_val = (vd.get("r_vs_theta") or {}).get("r") if isinstance(vd.get("r_vs_theta"), dict) else vd.get("r_vs_theta")
-            lines.append(_mc_r(f"CrossGen{mname}{variant.title()}R", r_val))
+            r_theta = (vd.get("r_vs_theta") or {}).get("r") if isinstance(vd.get("r_vs_theta"), dict) else vd.get("r_vs_theta")
+            r_attack = (vd.get("r_vs_attack") or {}).get("r") if isinstance(vd.get("r_vs_attack"), dict) else None
+            lines.append(_mc_r(f"CrossGen{mname}{variant.title()}R", r_theta))
+            lines.append(_mc_r(f"CrossGen{mname}{variant.title()}RAttack", r_attack))
+    lines.append("")
+
+    # ── Placebo calibration r_vs_attack ──────────────────────────
+    pc = stats.get("placebo_calibration", {})
+    lines.append("% Placebo calibration r_vs_attack")
+    for display, model_data in pc.items():
+        if not isinstance(model_data, dict):
+            continue
+        mname = "".join(c for c in display if c.isalpha())[:12]
+        for shift, sd in model_data.items():
+            if not isinstance(sd, dict):
+                continue
+            shift_label = "".join(c for c in shift.replace("+", "Plus").replace("-", "Minus") if c.isalpha())
+            r_a = (sd.get("r_vs_attack") or {}).get("r") if isinstance(sd.get("r_vs_attack"), dict) else None
+            lines.append(_mc_r(f"PlaceboCalib{mname}{shift_label}RAttack", r_a))
+    lines.append("")
+
+    # ── Per-model hard scramble ──────────────────────────────────
+    cross_model = info.get("_cross_model", {})
+    lines.append("% Per-model hard scramble")
+    for model_name, designs in cross_model.items():
+        if not isinstance(designs, dict):
+            continue
+        hs = designs.get("hard_scramble", {})
+        if not hs:
+            continue
+        mname = "".join(c for c in model_name if c.isalpha())[:12]
+        r_a = (hs.get("r_vs_attack") or {}).get("r") if isinstance(hs.get("r_vs_attack"), dict) else None
+        r_t = (hs.get("r_vs_theta") or {}).get("r") if isinstance(hs.get("r_vs_theta"), dict) else None
+        p_val = (hs.get("r_vs_attack") or {}).get("p") if isinstance(hs.get("r_vs_attack"), dict) else None
+        n_obs = hs.get("n_obs")
+        lines.append(_mc_r(f"HardScramble{mname}RAttack", r_a))
+        lines.append(_mc_r(f"HardScramble{mname}RTheta", r_t))
+        lines.append(_mc(f"HardScramble{mname}PValue", p_val, 2))
+        lines.append(_mc(f"HardScramble{mname}NObs", n_obs, 0))
     lines.append("")
 
     # ── Propaganda saturation ─────────────────────────────────────
@@ -1392,8 +1486,22 @@ def render_stats_macros(stats: dict) -> str:
     lines.append("% Propaganda saturation test")
     lines.append(_mc("PropSatKFiveMeanJoin", prop_sat.get("k5_mean_join_real")))
     lines.append(_mc("PropSatKTenMeanJoin", prop_sat.get("k10_mean_join_real")))
-    lines.append(_mc_pp("PropSatDeltaPP", prop_sat.get("delta_pp")))
+    lines.append(_mc_pp_raw("PropSatDeltaPP", prop_sat.get("delta_pp")))
     lines.append(_mc("PropSatPValue", prop_sat.get("p_value"), 4))
+    lines.append("")
+
+    # ── Propaganda + surveillance combined ────────────────────────
+    ps = regime.get("propaganda_surveillance", {}).get("Mistral Small Creative", {})
+    lines.append("% Propaganda + surveillance combined")
+    lines.append(_mc_pct("PropSurvCombinedMeanRealPct", ps.get("mean_join_real")))
+    # Combined delta = baseline - combined
+    ps_real = ps.get("mean_join_real")
+    surv_base = (regime.get("surveillance", {}).get("Mistral Small Creative", {})
+                 .get("baseline_mean_join"))
+    if ps_real is not None and surv_base is not None:
+        combined_delta = round((ps_real - surv_base) * 100, 1)
+        sign = "+" if combined_delta >= 0 else ""
+        lines.append(_mc_raw("PropSurvCombinedDeltaPP", f"{sign}{combined_delta:.1f}"))
     lines.append("")
 
     # ── Llama propaganda replication ──────────────────────────────
@@ -1419,6 +1527,151 @@ def render_stats_macros(stats: dict) -> str:
     lines.append(_mc_r("MixedCommRAttack", (mc_entry.get("r_vs_attack") or {}).get("r")))
     lines.append("")
 
+    # ── Pooled scramble/flip aggregates ──────────────────────────
+    pooled_scr = part1.get("_pooled_scramble", {})
+    lines.append("% Pooled scramble/flip aggregates")
+    lines.append(_mc_r("PooledScrambleRAttack", (pooled_scr.get("r_vs_attack") or {}).get("r")))
+    lines.append(_mc_r("PooledScrambleRTheta", (pooled_scr.get("r_vs_theta") or {}).get("r")))
+    lines.append(_mc("PooledScrambleMeanJoin", pooled_scr.get("mean_join")))
+    lines.append(_mc_r("PooledFlipRTheta", (pooled_flip.get("r_vs_theta") or {}).get("r")))
+    lines.append(_mc("PooledFlipMeanJoin", pooled_flip.get("mean_join")))
+    lines.append("")
+
+    # ── Mean-of-models scramble r ─────────────────────────────────
+    scr_rs = [
+        (v.get("scramble", {}).get("r_vs_attack") or {}).get("r")
+        for k, v in part1.items()
+        if isinstance(k, str) and not k.startswith("_") and isinstance(v, dict) and "scramble" in v
+    ]
+    scr_rs = [x for x in scr_rs if x is not None]
+    mean_scr_r = sum(scr_rs) / len(scr_rs) if scr_rs else None
+    lines.append("% Mean-of-models scramble r")
+    lines.append(_mc_r("MeanModelRScrambleAttack", mean_scr_r))
+    lines.append("")
+
+    # ── Mean join across all models (Part 1 pure) ────────────────
+    lines.append("% Mean join rate across all models (pure)")
+    lines.append(_mc("MeanModelPureMeanJoin", pooled_pure.get("mean_join")))
+    lines.append("")
+
+    # ── Per-model pure mean join range ────────────────────────────
+    pure_means_sorted = sorted(pure_means) if pure_means else []
+    lines.append("% Per-model pure mean join range")
+    if pure_means_sorted:
+        lines.append(_mc("MinModelPureMeanJoin", pure_means_sorted[0]))
+        lines.append(_mc("MaxModelPureMeanJoin", pure_means_sorted[-1]))
+    lines.append("")
+
+    # ── Per-model pure r_attack range ─────────────────────────────
+    per_model_r_attacks = []
+    for k, v in part1.items():
+        if isinstance(k, str) and not k.startswith("_") and isinstance(v, dict):
+            r_a = (v.get("pure", {}).get("r_vs_attack") or {}).get("r")
+            if r_a is not None:
+                per_model_r_attacks.append(r_a)
+    per_model_r_attacks_sorted = sorted(per_model_r_attacks)
+    lines.append("% Per-model pure r_attack range")
+    if per_model_r_attacks_sorted:
+        lines.append(_mc_r("MinModelPureRAttack", per_model_r_attacks_sorted[0]))
+        lines.append(_mc_r("MaxModelPureRAttack", per_model_r_attacks_sorted[-1]))
+    lines.append("")
+
+    # ── B/C sweep percentage forms ────────────────────────────────
+    lines.append("% B/C sweep percentage forms")
+    lines.append(_mc_pct("BCSweepBaselineMeanPct", baseline_info.get("mean_join")))
+    lines.append(_mc_pct("BCSweepHighCostMeanPct", bc_high.get("mean_join")))
+    lines.append(_mc_pct("BCSweepLowCostMeanPct", bc_low.get("mean_join")))
+    lines.append("")
+
+    # ── B/C sweep from classifier_baselines (actual_join for prose) ─
+    bc_cs = cb.get("bc_comparative_statics", {})
+    lines.append("% B/C comparative statics (actual join rates)")
+    for cond, macro in [("baseline", "BCStatBaseline"), ("bc_high_cost", "BCStatHighCost"), ("bc_low_cost", "BCStatLowCost")]:
+        cd = bc_cs.get(cond, {})
+        lines.append(_mc_pct(f"{macro}MeanPct", cd.get("actual_join")))
+    lines.append("")
+
+    # ── Beliefs second-order details ──────────────────────────────
+    lines.append("% Beliefs second-order details")
+    for treatment, macro in [("pure", "SOBPure"), ("comm", "SOBComm"), ("surveillance", "SOBSurv")]:
+        sob_data = beliefs.get(treatment, {}).get("second_order", {})
+        lines.append(_mc("{}Mean".format(macro), sob_data.get("mean")))
+        lines.append(_mc_pct("{}MeanPct".format(macro), sob_data.get("mean")))
+        r_theta = (sob_data.get("r_vs_theta") or {}).get("r") if isinstance(sob_data.get("r_vs_theta"), dict) else None
+        lines.append(_mc_r("{}RTheta".format(macro), r_theta))
+    lines.append("")
+
+    # ── Beliefs additional detail macros ──────────────────────────
+    lines.append("% Beliefs additional details")
+    for treatment, macro in [("pure", "BeliefPure"), ("comm", "BeliefComm"), ("surveillance", "BeliefSurv")]:
+        bd = beliefs.get(treatment, {})
+        lines.append(_mc_pct(f"{macro}MeanBeliefPct", bd.get("mean_belief")))
+        lines.append(_mc_pct(f"{macro}MeanJoinPct", bd.get("mean_join")))
+    lines.append("")
+
+    # ── Surveillance cross-model average delta ────────────────────
+    surv_deltas = [
+        entry.get("delta_vs_baseline_pp")
+        for entry in surv_data.values()
+        if isinstance(entry, dict) and entry.get("delta_vs_baseline_pp") is not None
+    ]
+    mean_surv_delta = sum(surv_deltas) / len(surv_deltas) if surv_deltas else None
+    lines.append("% Surveillance cross-model average")
+    lines.append(_mc_pp_raw("SurvMeanDeltaPP", mean_surv_delta))
+    # Also per-model baseline mean join
+    for slug in PART1_SLUGS:
+        display = DISPLAY_NAMES.get(slug, slug)
+        mname = _MACRO_NAMES.get(slug, slug.split("--")[-1].title())
+        entry = surv_data.get(display, {})
+        if entry:
+            lines.append(_mc_pct(f"Surv{mname}BaselineMeanPct", entry.get("baseline_mean_join")))
+            lines.append(_mc_pct(f"Surv{mname}MeanJoinPct", entry.get("mean_join")))
+    lines.append("")
+
+    # ── Preference falsification additional ──────────────────────
+    lines.append("% Preference falsification additional")
+    lines.append(_mc("PrefFalsBeliefPValue", pf.get("belief_p_value"), 2))
+    lines.append(_mc("PrefFalsActionPValue", pf.get("action_p_value"), 4))
+    lines.append("")
+
+    # ── Fixed messages percentage forms ───────────────────────────
+    lines.append("% Fixed messages percentage forms")
+    lines.append(_mc_pct("FixedMsgBaselineMeanPct", fm.get("baseline_mean_join")))
+    lines.append(_mc_pct("FixedMsgSurvMeanPct", fm.get("surv_mean_join")))
+    lines.append("")
+
+    # ── Propaganda per-dose (Mistral primary) ─────────────────────
+    lines.append("% Propaganda per-dose (Mistral)")
+    for dose in [2, 5, 10]:
+        dose_key = f"k={dose}"
+        dose_data = (prop_data.get(dose_key) or {}).get("Mistral Small Creative", {})
+        if not dose_data:
+            continue
+        macro_d = f"PropK{['', '', 'Two', '', '', 'Five', '', '', '', '', 'Ten'][dose]}"
+        lines.append(_mc_pct(f"{macro_d}MeanAllPct", dose_data.get("mean_join_all")))
+        lines.append(_mc_pct(f"{macro_d}MeanRealPct", dose_data.get("mean_join_real")))
+        lines.append(_mc_pp_raw(f"{macro_d}DeltaAllPP", dose_data.get("delta_vs_baseline_pp")))
+        lines.append(_mc_pp_raw(f"{macro_d}DeltaRealPP", dose_data.get("delta_real_vs_baseline_pp")))
+    lines.append("")
+
+    # ── CK cell means percentage forms ────────────────────────────
+    ck_cells = ck.get("cell_means", {})
+    lines.append("% CK cell means pct")
+    for cell, macro in [
+        ("ck_high_coord", "CKHighCoordCellPct"),
+        ("ck_low_coord", "CKLowCoordCellPct"),
+        ("priv_high_coord", "PrivHighCoordCellPct"),
+        ("priv_low_coord", "PrivLowCoordCellPct"),
+    ]:
+        lines.append(_mc_pct(macro, ck_cells.get(cell)))
+    lines.append("")
+
+    # ── Infodesign flip mean join pct (for prose) ─────────────────
+    lines.append("% Infodesign flip pct for prose")
+    flip_mean = ig("flip", "mean_join")
+    lines.append(_mc_pct("InfodesignFlipMeanJoinPct", flip_mean))
+    lines.append("")
+
     # ── Parse errors ──────────────────────────────────────────────
     pe = stats.get("parse_errors", {})
     lines.append("% Parse error rates")
@@ -1433,6 +1686,46 @@ def render_stats_macros(stats: dict) -> str:
     lines.append("")
 
     return "\n".join(lines) + "\n"
+
+
+def render_tab_beliefs(stats: dict) -> str:
+    """Render beliefs table with partial correlations."""
+    beliefs = stats.get("beliefs_v2", {})
+    if not beliefs:
+        return "% No beliefs_v2 data available.\n"
+
+    rows = []
+    for treatment, label in [("pure", "Pure"), ("comm", "Communication"), ("surveillance", "Surveillance")]:
+        bd = beliefs.get(treatment, {})
+        if bd.get("status") == "missing" or not bd:
+            continue
+        n = bd.get("n", "---")
+        r_post = (bd.get("r_posterior_belief") or {}).get("r")
+        r_bd = (bd.get("r_belief_decision") or {}).get("r")
+        r_part = (bd.get("r_partial") or {}).get("r")
+        mean_b = bd.get("mean_belief")
+        rows.append(
+            f"{label} & {n} & ${_fmt_r(r_post)}$ & ${_fmt_r(r_bd)}$ & ${_fmt_r(r_part)}$ & {_fmt_num(mean_b, 3)} \\\\"
+        )
+
+    tex = r"""\begin{table}[t]
+\centering
+\caption{Agent-level belief correlations (primary model: Mistral Small Creative).}
+\label{tab:beliefs}
+\small
+\begin{tabular}{lccccc}
+\toprule
+Treatment & $N$ & $r_{\text{post}}$ & $r_{\text{b,d}}$ & $r_{\text{partial}}$ & Mean belief \\
+\midrule
+"""
+    tex += "\n".join(rows) + "\n"
+    tex += r"""\bottomrule
+\end{tabular}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} $r_{\text{post}}$: correlation between posterior and stated belief. $r_{\text{b,d}}$: correlation between belief and decision. $r_{\text{partial}}$: partial correlation of belief and decision controlling for z-score.}
+\end{table}
+"""
+    return tex
 
 
 def render_tab_hypotheses(stats: dict) -> str:
@@ -1515,8 +1808,8 @@ def render_tab_cross_generator(stats: dict) -> str:
                 continue
             n = d.get("n_obs", "---")
             mean_j = _fmt_num(d.get("mean_join"), 3)
-            r = (d.get("r_vs_theta") or {}).get("r")
-            r_cell = f"${_fmt_r(r, 3)}$" if r is not None else "---"
+            r = d["r_vs_attack"]["r"]
+            r_cell = f"${_fmt_r(r, 3)}$"
             fit = d.get("logistic_fit", {})
             cutoff = _fmt_num(fit.get("cutoff"), 3) if fit else "---"
             rows.append(f"{m} & {v.capitalize()} & {n} & {mean_j} & {r_cell} & {cutoff} \\\\")
@@ -1527,13 +1820,13 @@ def render_tab_cross_generator(stats: dict) -> str:
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{Cross-generator robustness. Three text rendering styles (baseline, diplomatic cable, journalistic wire) use identical slider functions and evidence items; only prose formatting differs. The Pearson $r(\theta, J)$ and logistic cutoff are virtually identical across generators.}
+\caption{Cross-generator robustness. Three text rendering styles (baseline, diplomatic cable, journalistic wire) use identical slider functions and evidence items; only prose formatting differs. The Pearson $r(J, A(\theta))$ and logistic cutoff are virtually identical across generators.}
 \label{tab:cross_generator}
 \small
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{llcccc}
 \toprule
-Model & Generator & $N$ & Mean join & $r(\theta, J)$ & Cutoff $\hat{\theta}^*$ \\
+Model & Generator & $N$ & Mean join & $r(J, A(\theta))$ & Cutoff $\hat{\theta}^*$ \\
 \midrule
 """
     tex += "\n".join(rows) + "\n"
@@ -1557,7 +1850,7 @@ def render_tab_placebo_calibration(stats: dict) -> str:
         m_data = pc.get(m, {})
         # Also get the calibrated baseline r from part1
         part1 = stats.get("part1", {})
-        baseline_r = (part1.get(m, {}).get("pure", {}).get("r_vs_theta") or {}).get("r")
+        baseline_r = part1.get(m, {}).get("pure", {}).get("r_vs_attack", {}).get("r")
         baseline_mean = part1.get(m, {}).get("pure", {}).get("mean_join")
 
         rows.append(f"{m} & Calibrated & --- & {_fmt_num(baseline_mean, 3)} & ${_fmt_r(baseline_r, 3)}$ \\\\")
@@ -1569,8 +1862,8 @@ def render_tab_placebo_calibration(stats: dict) -> str:
                 continue
             n = d.get("n_obs", "---")
             mean_j = _fmt_num(d.get("mean_join"), 3)
-            r = (d.get("r_vs_theta") or {}).get("r")
-            r_cell = f"${_fmt_r(r, 3)}$" if r is not None else "---"
+            r = d["r_vs_attack"]["r"]
+            r_cell = f"${_fmt_r(r, 3)}$"
             rows.append(f" & $\\Delta c = {shift}$ & {n} & {mean_j} & {r_cell} \\\\")
         rows.append(r"\midrule")
     if rows and rows[-1] == r"\midrule":
@@ -1578,13 +1871,13 @@ def render_tab_placebo_calibration(stats: dict) -> str:
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{Placebo calibration. The cutoff center is deliberately shifted by $\pm 0.3$ from its calibrated value. The correlation $r(\theta, J)$ is unchanged; only the mean join rate shifts, confirming that calibration does not create the sigmoid.}
+\caption{Placebo calibration. The cutoff center is deliberately shifted by $\pm 0.3$ from its calibrated value. The action--attack-mass correlation $r(J, A(\theta))$ is unchanged; only the mean join rate shifts, confirming that calibration does not create the sigmoid.}
 \label{tab:placebo_calibration}
 \small
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{llccc}
 \toprule
-Model & Condition & $N$ & Mean join & $r(\theta, J)$ \\
+Model & Condition & $N$ & Mean join & $r(J, A(\theta))$ \\
 \midrule
 """
     tex += "\n".join(rows) + "\n"
@@ -1612,7 +1905,7 @@ def render_tab_temperature_expanded(stats: dict) -> str:
             if not d:
                 continue
             mean_j = _fmt_num(d["mean_join"], 3)
-            r_val = _fmt_r((d.get("r_vs_attack") or d.get("r_vs_theta") or {}).get("r"), 3)
+            r_val = _fmt_r(d["r_vs_attack"]["r"], 3)
             fit = d.get("logistic_fit", {})
             cutoff = _fmt_num(fit.get("cutoff"), 3) if fit else "---"
             rows.append(f"Mistral Small & {key} & {d.get('n_obs','---')} & {mean_j} & ${r_val}$ & {cutoff} \\\\")
@@ -1626,7 +1919,7 @@ def render_tab_temperature_expanded(stats: dict) -> str:
             if not d:
                 continue
             mean_j = _fmt_num(d["mean_join"], 3)
-            r_val = _fmt_r((d.get("r_vs_attack") or d.get("r_vs_theta") or {}).get("r"), 3)
+            r_val = _fmt_r(d["r_vs_attack"]["r"], 3)
             fit = d.get("logistic_fit", {})
             cutoff = _fmt_num(fit.get("cutoff"), 3) if fit else "---"
             short_name = "Llama 70B" if model == "Llama 3.3 70B" else "Qwen 235B"
@@ -1674,21 +1967,22 @@ def render_tab_uncalibrated_expanded(stats: dict) -> str:
             continue
         n = d.get("n_obs", "---")
         mean_j = _fmt_num(d.get("mean_join"), 3)
-        r = (d.get("r_vs_theta") or {}).get("r")
-        p = (d.get("r_vs_theta") or {}).get("p")
-        r_cell = f"${_fmt_r(r, 3)}$" if r is not None else "---"
+        r_src = d["r_vs_attack"]
+        r = r_src["r"]
+        p = r_src.get("p")
+        r_cell = f"${_fmt_r(r, 3)}$"
         p_cell = _fmt_num(p, 4) if p is not None else "---"
         rows.append(f"{m} & {n} & {mean_j} & {r_cell} & {p_cell} \\\\")
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{Uncalibrated robustness: models run without any calibration adjustment. Even without calibration, six of seven models show strong $r(\theta, J)$, confirming that the sigmoid is not an artifact of the calibration procedure.}
+\caption{Uncalibrated robustness: models run without any calibration adjustment. Even without calibration, six of seven models show strong $r(J, A(\theta))$, confirming that the sigmoid is not an artifact of the calibration procedure.}
 \label{tab:uncalibrated_expanded}
 \small
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{lcccc}
 \toprule
-Model & $N$ & Mean join & $r(\theta, J)$ & $p$ \\
+Model & $N$ & Mean join & $r(J, A(\theta))$ & $p$ \\
 \midrule
 """
     tex += "\n".join(rows) + "\n"
@@ -1863,6 +2157,7 @@ def main() -> None:
         "tab_bc_statics.tex": render_tab_bc_statics(stats),
         "tab_censor_ck.tex": render_tab_censor_ck(stats),
         "tab_temperature.tex": render_tab_temperature(stats),
+        "tab_beliefs.tex": render_tab_beliefs(stats),
         "tab_hypotheses.tex": render_tab_hypotheses(stats),
         "tab_ck_2x2.tex": render_tab_ck_2x2(stats),
         "tab_classifiers.tex": render_tab_classifiers(stats),

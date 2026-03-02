@@ -608,12 +608,46 @@ def compute_infodesign():
         if fit is not None:
             results[dname]["logistic_fit"] = fit
 
+    # B/C sweep: cutoff tracking across all 7 theta_star targets
+    if bc_sweep_path.exists():
+        try:
+            bc_full = pd.read_csv(bc_sweep_path)
+            if "theta_star_target" in bc_full.columns:
+                from scipy.optimize import curve_fit as _curve_fit
+                def _logistic4(x, L, k, x0, b):
+                    return L / (1 + np.exp(-k * (x - x0))) + b
+                _targets, _fitted = [], []
+                for ts in sorted(bc_full["theta_star_target"].unique()):
+                    sub = bc_full[bc_full["theta_star_target"] == ts]
+                    jc = _join_col(sub)
+                    grouped = sub.groupby("theta")[jc].mean()
+                    try:
+                        popt, _ = _curve_fit(
+                            _logistic4, grouped.index.values, grouped.values,
+                            p0=[1.0, -10.0, 0.5, 0.0], maxfev=5000,
+                        )
+                        _targets.append(float(ts))
+                        _fitted.append(round(float(popt[2]), 4))
+                    except Exception:
+                        pass
+                if len(_targets) >= 3:
+                    r_ct, p_ct = stats.pearsonr(np.array(_targets), np.array(_fitted))
+                    results["_bc_sweep_cutoff_tracking"] = {
+                        "r": round(r_ct, 4),
+                        "p": round(p_ct, 6),
+                        "n_conditions": len(_targets),
+                        "targets": _targets,
+                        "fitted_cutoffs": _fitted,
+                    }
+        except Exception:
+            pass
+
     # Cross-model infodesign replication
     cross = {}
     for m in PART1_MODELS:
         name = SHORT[m]
         cross[name] = {}
-        for design in ["baseline", "scramble", "flip"]:
+        for design in ["baseline", "scramble", "flip", "hard_scramble"]:
             # Primary-model baseline is sourced from the canonical θ*=0.50 sweep slice when available.
             if m == model and design == "baseline" and bc_sweep_baseline is not None:
                 df_d = bc_sweep_baseline
@@ -623,9 +657,12 @@ def compute_infodesign():
                 continue
             jc = _join_col(df_d)
             r_t = pearson_with_ci(df_d["theta"], df_d[jc])
+            attack = _attack_mass_benchmark(df_d["theta"].astype(float).values)
+            r_a = pearson_with_ci(attack, df_d[jc].astype(float).values)
             cross[name][design] = {
                 "mean_join": round(df_d[jc].mean(), 4),
                 "r_vs_theta": r_t,
+                "r_vs_attack": r_a,
                 "n_obs": len(df_d),
             }
     results["_cross_model"] = cross
@@ -750,9 +787,13 @@ def compute_infodesign_comm():
     jcol = _join_col(df_all)
     for design in sorted(df_all["design"].dropna().unique().tolist()):
         sub = df_all[df_all["design"] == design]
+        theta_vals = sub["theta"].astype(float).values
+        jf_vals = sub[jcol].astype(float).values
+        attack = _attack_mass_benchmark(theta_vals)
         results[design] = {
-            "mean_join": round(_safe_mean(sub[jcol]), 4),
-            "r_vs_theta": pearson_with_ci(sub["theta"], sub[jcol]),
+            "mean_join": round(_safe_mean(jf_vals), 4),
+            "r_vs_theta": pearson_with_ci(theta_vals, jf_vals),
+            "r_vs_attack": pearson_with_ci(attack, jf_vals),
             "n_obs": int(len(sub)),
         }
 
@@ -1285,10 +1326,14 @@ def compute_surveillance_variants():
         else:
             t_test = None
 
+        attack = _attack_mass_benchmark(theta)
+        r_attack = pearson_with_ci(attack, jf)
+
         results[variant_name] = {
             "n_obs": len(df),
             "mean_join": mean_join,
             "r_vs_theta": r_theta,
+            "r_vs_attack": r_attack,
             "delta_vs_comm_pp": delta_vs_comm,
             "t_test_vs_comm": t_test,
         }
@@ -1321,12 +1366,15 @@ def compute_uncalibrated():
             fall_rate = round(float((df["theta"] < df["theta_star"]).mean()), 4)
         else:
             fall_rate = None
+        attack = _attack_mass_benchmark(theta)
+        r_attack = pearson_with_ci(attack, jf)
         name = SHORT.get(model_slug, model_slug)
         results[name] = {
             "n_obs": int(len(df)),
             "mean_join": round(_safe_mean(jf), 4),
             "std_join": round(_safe_std(jf), 4),
             "r_vs_theta": r_theta,
+            "r_vs_attack": r_attack,
             "regime_fall_rate": fall_rate,
         }
     return results
@@ -1445,6 +1493,33 @@ def compute_beliefs_v2():
         join_beliefs = beliefs[decisions == 1]
         stay_beliefs = beliefs[decisions == 0]
 
+        # Partial correlation: r_partial = (r_bd - r_bz * r_dz) / sqrt((1 - r_bz²)(1 - r_dz²))
+        z_scores = np.array([r["z_score"] for r in rows])
+        r_bz_info = pearson_with_ci(beliefs, z_scores)
+        r_dz_info = pearson_with_ci(decisions, z_scores)
+        r_bd_val = r_belief_decision["r"]
+        r_bz_val = r_bz_info["r"]
+        r_dz_val = r_dz_info["r"]
+        denom = (1 - r_bz_val**2) * (1 - r_dz_val**2)
+        if np.isfinite(denom) and denom > 0:
+            r_partial_val = (r_bd_val - r_bz_val * r_dz_val) / np.sqrt(denom)
+            # Approximate t-test for partial correlation
+            df_partial = len(rows) - 3
+            if df_partial > 0 and abs(r_partial_val) < 1.0:
+                t_partial = r_partial_val * np.sqrt(df_partial / (1 - r_partial_val**2))
+                p_partial = float(2 * stats.t.sf(abs(t_partial), df_partial))
+            else:
+                t_partial = float("nan")
+                p_partial = float("nan")
+            r_partial = {
+                "r": round(float(r_partial_val), 4),
+                "p": round(p_partial, 6),
+                "t": round(float(t_partial), 4),
+                "df": df_partial,
+            }
+        else:
+            r_partial = {"r": float("nan"), "p": float("nan"), "t": float("nan"), "df": 0}
+
         entry = {
             "n": len(rows),
             "mean_belief": round(float(beliefs.mean()), 4),
@@ -1453,6 +1528,9 @@ def compute_beliefs_v2():
             "r_posterior_belief": r_post,
             "r_theta_belief": r_theta,
             "r_belief_decision": r_belief_decision,
+            "r_belief_zscore": r_bz_info,
+            "r_decision_zscore": r_dz_info,
+            "r_partial": r_partial,
             "mean_belief_join": round(float(join_beliefs.mean()), 4) if len(join_beliefs) else None,
             "mean_belief_stay": round(float(stay_beliefs.mean()), 4) if len(stay_beliefs) else None,
         }
@@ -1553,7 +1631,7 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
         "id": "H2",
         "hypothesis": "Scramble Falsification",
         "estimand": r"$r(\text{scramble})$",
-        "null": r"$r \neq 0$",
+        "null": r"$r = 0$",
         "test": "Pearson",
         "stat": r_scr.get("r"),
         "p": r_scr.get("p"),
@@ -2022,11 +2100,14 @@ def compute_uncalibrated_expanded():
         if np.all(np.isnan(jf)):
             continue
         r_theta = pearson_with_ci(theta, jf)
+        attack = _attack_mass_benchmark(theta)
+        r_attack = pearson_with_ci(attack, jf)
         name = SHORT.get(slug, slug)
         results[name] = {
             "n_obs": int(len(df)),
             "mean_join": round(_safe_mean(jf), 4),
             "r_vs_theta": r_theta,
+            "r_vs_attack": r_attack,
         }
 
     # Nested slug dirs (newer runs with bash slug issue)
@@ -2046,10 +2127,13 @@ def compute_uncalibrated_expanded():
         if np.all(np.isnan(jf)):
             continue
         r_theta = pearson_with_ci(theta, jf)
+        attack = _attack_mass_benchmark(theta)
+        r_attack = pearson_with_ci(attack, jf)
         results[name] = {
             "n_obs": int(len(df)),
             "mean_join": round(_safe_mean(jf), 4),
             "r_vs_theta": r_theta,
+            "r_vs_attack": r_attack,
         }
 
     return results

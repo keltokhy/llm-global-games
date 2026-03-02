@@ -9,10 +9,10 @@
 Treatment & Part & Channel tested & Unit & Prediction & Observed \\
 \midrule
 \multicolumn{6}{l}{\textit{Core treatments}} \\
-Pure global game      & I  & Baseline monotonicity       & Period & $r(J, A(\theta)) > 0$   & $r = +0.73$ \\
+Pure global game      & I  & Baseline monotonicity       & Period & $r(J, A(\theta)) > 0$   & $r = \MeanModelRPureAttack$ \\
 Communication         & I  & Pre-play messaging          & Period & Ambiguous               & \CommDeltaPPPooled~pp ($p = \CommPValueUnpaired$) \\
-Scramble (cross-agent)& I  & Content vs.\ format         & Period & $r \to 0$               & $r = +0.07$ \\
-Flip                  & I  & Signal direction            & Period & Sign reversal           & $r = -0.67$ \\
+Scramble (cross-agent)& I  & Content vs.\ format         & Period & $r \to 0$               & $r = \MeanModelRScrambleAttack$ \\
+Flip                  & I  & Signal direction            & Period & Sign reversal           & $r = \MeanModelRFlipAttack$ \\
 B/C narratives        & I  & Payoff comparative statics  & Period & Cutoff shifts           & As predicted \\
 \addlinespace
 \multicolumn{6}{l}{\textit{Information design (Part~II, primary model)}} \\
@@ -23,8 +23,8 @@ Censor (upper)        & II & Pooling weak states          & Period & Plateau bel
 Censor (lower)        & II & Pooling strong states        & Period & Plateau above $\theta^*$ & $\InfodesignCensorLowerDeltaPP$~pp \\
 \addlinespace
 \multicolumn{6}{l}{\textit{Authoritarian instruments (Part~III)}} \\
-Surveillance          & III & Preference falsification     & Period & $\downarrow$ join       & $-13.5$~pp \\
-Propaganda ($m{=}10$) & III & Information contamination    & Period & $\downarrow$ join, saturating & $-2.3$~pp (behavioral) \\
+Surveillance          & III & Preference falsification     & Period & $\downarrow$ join       & $\SurvMistralDeltaPP$~pp \\
+Propaganda ($m{=}10$) & III & Information contamination    & Period & $\downarrow$ join, saturating & $\PropKTenDeltaRealPP$~pp (behavioral) \\
 \addlinespace
 \multicolumn{6}{l}{\textit{Within-briefing falsification}} \\
 Observation shuffle   & I  & Bullet ordering vs.\ content & Period & $r$ unchanged          & $r = \WithinScrambleRAttack$ \\
