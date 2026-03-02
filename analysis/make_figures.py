@@ -42,8 +42,16 @@ from scipy import stats
 from scipy.optimize import curve_fit
 from matplotlib.lines import Line2D
 
-import matplotlib
-matplotlib.use("Agg")
+from style import (
+    apply_style, COL_W, TEXT_W, OUTPUT_DIR, FIG_DIR,
+    C_PURE, C_COMM, C_FLIP, C_SCRAMBLE, C_NET, C_SURV, C_PROP,
+    C_BASELINE, C_STABILITY, C_INSTABILITY, C_CENS_UP, C_CENS_LO, C_PUBLIC,
+    DESIGN_COLORS, DESIGN_LABELS, DESIGN_MARKERS,
+    join_col as _join_col, logistic, fit_logistic, attack_mass,
+    save, add_hgrid, add_vgrid, panel_label,
+)
+
+apply_style()
 import matplotlib.pyplot as plt
 
 from models import (
@@ -55,78 +63,7 @@ from models import (
 
 # ── Paths ─────────────────────────────────────────────────────────
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-ROOT = PROJECT_ROOT / "output"
-FIG_DIR = PROJECT_ROOT / "paper" / "figures"
-FIG_DIR.mkdir(exist_ok=True)
-
-# ── Two-column arxiv layout dimensions ────────────────────────────
-COL_W = 3.4    # \columnwidth in inches (single-column figure)
-TEXT_W = 7.0   # \textwidth in inches (figure* spanning both columns)
-
-# ── Style (sized for 1:1 rendering in two-column layout) ─────────
-plt.rcParams.update({
-    "font.size": 8,
-    "axes.titlesize": 9,
-    "axes.labelsize": 8,
-    "xtick.labelsize": 7,
-    "ytick.labelsize": 7,
-    "legend.fontsize": 7,
-    "figure.dpi": 150,
-    "savefig.dpi": 300,
-    "axes.spines.top": False,
-    "axes.spines.right": False,
-    "axes.grid": False,
-    "font.family": "serif",
-    "lines.linewidth": 1.0,
-    "lines.markersize": 4,
-})
-
-# ── Colors ────────────────────────────────────────────────────────
-
-# Treatment colors
-C_PURE = "#636363"
-C_COMM = "#2c7bb6"
-C_FLIP = "#d7191c"
-C_SCRAMBLE = "#fdae61"
-C_NET = "#1a9641"
-C_SURV = "#7b3294"
-C_PROP = "#CC79A7"
-
-# Information design colors
-C_BASELINE = "#636363"
-C_STABILITY = "#2c7bb6"
-C_INSTABILITY = "#d7191c"
-C_CENS_UP = "#1a9641"
-C_CENS_LO = "#e66101"
-C_PUBLIC = "#7b3294"
-
-DESIGN_COLORS = {
-    "baseline": C_BASELINE,
-    "stability": C_STABILITY,
-    "instability": C_INSTABILITY,
-    "censor_upper": C_CENS_UP,
-    "censor_lower": C_CENS_LO,
-    "public_signal": C_PUBLIC,
-    "scramble": C_SCRAMBLE,
-    "flip": C_FLIP,
-    "stability_clarity": "#abd9e9",
-    "stability_direction": "#74add1",
-    "stability_dissent": "#4575b4",
-}
-
-DESIGN_LABELS = {
-    "baseline": "Baseline",
-    "stability": "Stability",
-    "instability": "Instability",
-    "censor_upper": "Censor upper",
-    "censor_lower": "Censor lower",
-    "public_signal": "Public signal",
-    "scramble": "Scramble",
-    "flip": "Flip",
-    "stability_clarity": "Clarity only",
-    "stability_direction": "Direction only",
-    "stability_dissent": "Dissent only",
-}
+ROOT = OUTPUT_DIR
 
 # Model colors, short names, and exclusions — imported from models.py
 MODEL_COLORS = _MODEL_COLORS
@@ -135,28 +72,6 @@ EXCLUDE_MODELS = _EXCLUDE_MODELS
 
 
 # ── Helpers ───────────────────────────────────────────────────────
-
-
-def _join_col(df):
-    """Prefer join_fraction_valid when available, fall back to join_fraction."""
-    if "join_fraction_valid" in df.columns and df["join_fraction_valid"].notna().any():
-        return "join_fraction_valid"
-    return "join_fraction"
-
-
-def logistic(x, b0, b1):
-    return 1.0 / (1.0 + np.exp(b0 + b1 * x))
-
-
-def fit_logistic(df, theta_col="theta", join_col=None):
-    join_col = join_col or _join_col(df)
-    d = df.dropna(subset=[theta_col, join_col])
-    x, y = d[theta_col].values, d[join_col].values
-    try:
-        popt, pcov = curve_fit(logistic, x, y, p0=[0, 2], maxfev=10000)
-        return popt, pcov
-    except RuntimeError:
-        return np.array([0.0, 0.0]), np.zeros((2, 2))
 
 
 def binned(df, theta_col="theta", join_col=None, n_bins=15):
@@ -195,11 +110,7 @@ def load_all_csvs(directory, pattern="*summary*.csv"):
     return pd.DataFrame()
 
 
-def save(fig, name):
-    fig.savefig(FIG_DIR / f"{name}.pdf", bbox_inches="tight")
-    fig.savefig(FIG_DIR / f"{name}.png", dpi=300, bbox_inches="tight")
-    plt.close(fig)
-    print(f"  Saved {name}")
+# save() is imported from style.py
 
 
 # ── Load data ─────────────────────────────────────────────────────
@@ -1867,7 +1778,7 @@ def fig20_cross_generator():
             centers, means, ses = binned(df, join_col=jcol)
 
             # Fitted logistic
-            popt, _ = fit_logistic(df, join_col=jcol)
+            popt, _ = fit_logistic(df, jcol=jcol)
 
             # Plot binned points
             ax.errorbar(centers, means, yerr=1.96 * ses,

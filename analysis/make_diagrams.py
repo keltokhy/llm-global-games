@@ -11,16 +11,14 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-import matplotlib
-matplotlib.use("Agg")
-from agent_based_simulation.runtime import apply_serif_paper_style
-apply_serif_paper_style()
+from style import apply_style, FIG_DIR
+
+apply_style()
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
 import numpy as np
 
-OUT = Path(__file__).resolve().parent.parent / "paper" / "figures"
-OUT.mkdir(parents=True, exist_ok=True)
+OUT = FIG_DIR
 
 STATS = json.loads((Path(__file__).resolve().parent / "verified_stats.json").read_text())
 

@@ -167,21 +167,30 @@ def model_label(model_dir: str | Path) -> str:
 
 
 def apply_serif_paper_style() -> None:
-    """Apply a consistent serif plot style for manuscript figures."""
-    import matplotlib
+    """Apply the paper's shared figure style.
 
-    matplotlib.rcParams.update({
-        "font.family": "serif",
-        "font.size": 11,
-        "axes.titlesize": 13,
-        "axes.labelsize": 12,
-        "xtick.labelsize": 10,
-        "ytick.labelsize": 10,
-        "legend.fontsize": 10,
-        "figure.dpi": 150,
-        "savefig.dpi": 300,
-        "savefig.bbox": "tight",
-    })
+    Delegates to analysis/style.py for consistency across all scripts.
+    Falls back to a basic serif config if the style module is not importable.
+    """
+    try:
+        import sys
+        sys.path.insert(0, str(PROJECT_ROOT / "analysis"))
+        from style import apply_style
+        apply_style()
+    except ImportError:
+        import matplotlib
+        matplotlib.rcParams.update({
+            "font.family": "serif",
+            "font.size": 8,
+            "axes.titlesize": 9,
+            "axes.labelsize": 8,
+            "xtick.labelsize": 7,
+            "ytick.labelsize": 7,
+            "legend.fontsize": 7,
+            "figure.dpi": 150,
+            "savefig.dpi": 300,
+            "savefig.bbox": "tight",
+        })
 
 
 # ── Game theory math (was core.py) ──────────────────────────────────

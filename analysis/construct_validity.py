@@ -26,58 +26,19 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score, cross_val_predict
 from sklearn.metrics import log_loss
 
-import matplotlib
-matplotlib.use("Agg")
+from style import (
+    apply_style, COL_W, TEXT_W, OUTPUT_DIR, FIG_DIR,
+    C_PURE, C_COMM, C_SURV, C_1FEAT, C_3FEAT,
+    save, add_hgrid, panel_label,
+)
+
+apply_style()
 import matplotlib.pyplot as plt
 
-# ── Paths ─────────────────────────────────────────────────────────
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-OUTPUT_DIR = PROJECT_ROOT / "output"
-FIG_DIR = PROJECT_ROOT / "paper" / "figures"
-FIG_DIR.mkdir(exist_ok=True)
 RESULTS_PATH = Path(__file__).resolve().parent / "construct_validity_results.json"
 
 # ── Models ────────────────────────────────────────────────────────
 from models import CONSTRUCT_VALIDITY_SLUGS as PART1_MODELS, SHORT_NAMES
-
-# ── Figure styling (matches make_figures.py) ──────────────────────
-COL_W = 3.4
-TEXT_W = 7.0
-
-plt.rcParams.update({
-    "font.family":          "serif",
-    "font.size":            8,
-    "axes.titlesize":       9,
-    "axes.labelsize":       8,
-    "xtick.labelsize":      7,
-    "ytick.labelsize":      7,
-    "legend.fontsize":      6.5,
-    "axes.spines.top":      False,
-    "axes.spines.right":    False,
-    "axes.linewidth":       0.6,
-    "axes.grid":            False,
-    "xtick.major.width":    0.6,
-    "ytick.major.width":    0.6,
-    "xtick.major.size":     3.0,
-    "ytick.major.size":     3.0,
-    "xtick.direction":      "out",
-    "ytick.direction":      "out",
-    "legend.frameon":       False,
-    "legend.handlelength":  1.5,
-    "legend.handletextpad": 0.4,
-    "legend.columnspacing": 1.0,
-    "lines.linewidth":      1.0,
-    "lines.markersize":     4,
-    "figure.dpi":           150,
-    "savefig.dpi":          300,
-})
-
-# Colors
-C_PURE     = "#636363"
-C_COMM     = "#2c7bb6"
-C_SURV     = "#7b3294"
-C_1FEAT    = "#fdae61"
-C_3FEAT    = "#1a9641"
 
 LW_REF = 0.6
 ANNOT_BOX = dict(boxstyle="round,pad=0.3", facecolor="white",
@@ -380,11 +341,7 @@ def make_figure(baseline_results: list[dict], departure_results: list[dict]):
     fig.align_labels()
     plt.tight_layout()
 
-    # Save
-    fig.savefig(FIG_DIR / "fig_construct_validity.pdf", bbox_inches="tight")
-    fig.savefig(FIG_DIR / "fig_construct_validity.png", dpi=300, bbox_inches="tight")
-    plt.close(fig)
-    print(f"\n  Saved fig_construct_validity to {FIG_DIR}")
+    save(fig, "fig_construct_validity")
 
 
 # ── Summary table ─────────────────────────────────────────────────
