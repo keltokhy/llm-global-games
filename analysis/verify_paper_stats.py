@@ -2873,6 +2873,41 @@ def compute_paper_misc_stats(all_stats: dict) -> dict:
             prop_val = float(prop_match.group(1))
             misc["surv_prop_sum_pp"] = round(surv_val + prop_val, 1)
 
+    # ── Deduplication robustness (Mistral footnote) ───────────────
+    primary_df = load(PRIMARY, "pure")
+    if not primary_df.empty:
+        from scipy.stats import norm as _norm
+        jcol_d = _join_col(primary_df)
+        A_vals = _norm.cdf((theta_star + sigma * _norm.ppf(theta_star) - primary_df["theta"].values) / sigma)
+        r_predeup, _ = stats.pearsonr(A_vals, primary_df[jcol_d].values)
+        misc["dedup_r_pre"] = round(r_predeup, 3)
+        dedup = primary_df.groupby(["country", "period", "theta"])[jcol_d].mean().reset_index()
+        A_dedup = _norm.cdf((theta_star + sigma * _norm.ppf(theta_star) - dedup["theta"].values) / sigma)
+        r_postdedup, _ = stats.pearsonr(A_dedup, dedup[jcol_d].values)
+        misc["dedup_r_post"] = round(r_postdedup, 3)
+        misc["dedup_n_unique"] = int(len(dedup))
+
+    # ── Infodesign scramble p-value ──────────────────────────────
+    id_scr = all_stats.get("infodesign", {}).get("scramble", {}).get("r_vs_attack", {})
+    if "p" in id_scr:
+        misc["infodesign_scramble_p"] = round(id_scr["p"], 2)
+
+    # ── Llama infodesign scramble r ──────────────────────────────
+    id_cm = all_stats.get("infodesign", {}).get("_cross_model", {})
+    for model, data in id_cm.items():
+        if "llama" in model.lower():
+            r_val = data.get("scramble", {}).get("r_vs_attack", {}).get("r")
+            if r_val is not None:
+                misc["llama_infodesign_scramble_r"] = round(r_val, 2)
+
+    # ── Trinity parse error rate ─────────────────────────────────
+    pe = all_stats.get("parse_errors", {})
+    for model, data in pe.items():
+        if "trinity" in model.lower():
+            pure_api = data.get("pure", {}).get("mean_api_error_rate")
+            if pure_api is not None:
+                misc["trinity_api_error_pct"] = round(pure_api * 100)
+
     return misc
 
 

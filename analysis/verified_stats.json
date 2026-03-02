@@ -4637,7 +4637,13 @@
     "wf_caution_stay_comm": 51.7,
     "wf_caution_stay_k10": 54.7,
     "wf_action_join_k10": 85.1,
-    "surv_prop_sum_pp": -15.5
+    "surv_prop_sum_pp": -15.5,
+    "dedup_r_pre": 0.753,
+    "dedup_r_post": 0.739,
+    "dedup_n_unique": 680,
+    "infodesign_scramble_p": 0.59,
+    "llama_infodesign_scramble_r": 0.81,
+    "trinity_api_error_pct": 9
   },
   "discrepancy_report": []
 }

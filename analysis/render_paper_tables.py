@@ -1886,6 +1886,21 @@ def render_stats_macros(stats: dict) -> str:
         sp_sum = misc.get("surv_prop_sum_pp")
         if sp_sum is not None:
             lines.append(_mc_raw("SurvPropSumPP", f"{sp_sum:+.1f}"))
+        # Deduplication robustness
+        lines.append("% Deduplication robustness (footnote)")
+        lines.append(_mc("DedupRPre", misc.get("dedup_r_pre"), 3))
+        lines.append(_mc("DedupRPost", misc.get("dedup_r_post"), 3))
+        dn = misc.get("dedup_n_unique")
+        if dn is not None:
+            lines.append(_mc_raw("DedupNUnique", f"{dn:,}".replace(",", "{,}")))
+        # Infodesign scramble p-value
+        lines.append(_mc("InfodesignScramblePValue", misc.get("infodesign_scramble_p"), 2))
+        # Llama infodesign scramble r
+        lines.append(_mc_r("LlamaInfodesignScrambleR", misc.get("llama_infodesign_scramble_r")))
+        # Trinity parse error rate
+        tp = misc.get("trinity_api_error_pct")
+        if tp is not None:
+            lines.append(_mc_raw("TrinityAPIErrorPct", str(tp)))
         lines.append("")
 
     return "\n".join(lines) + "\n"
