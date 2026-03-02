@@ -178,7 +178,7 @@ III (Regime) & Same as I & Comm.\ game & Mean over $\theta$ draws \\
 
 Throughout, $\theta^* = B/(B+C)$ is the theoretical cutoff, $x^* = \theta^* + \sigma\Phi^{-1}(\theta^*)$ the signal cutoff, and $\hat{\theta}^*$ the estimated cutoff from the fitted logistic $P(\text{join} \mid \theta) = 1/(1 + e^{-(\beta_0 + \beta_1\theta)})$. We write $\beta \equiv \beta_1$ for the logistic slope coefficient in tables.
 
-For each country--period, nature draws $\theta \sim \mathcal{N}(\bar{z}, 1)$, where $\bar{z}$ is a public prior mean drawn randomly for each country. Each agent $i$ receives a private signal $x_i = \theta + \varepsilon_i$ and computes a z-score $z_i = (x_i - \bar{z})/\sigma$. Because agents observe only their private briefing and never the prior distribution or its parameters, the diffuse-prior equilibrium formula (Proposition~1) serves as the theoretical benchmark. The z-score is then translated into a multi-paragraph intelligence briefing by a deterministic generator that maps signal strength to narrative content about regime stability, economic conditions, public sentiment, and coordination prospects. Figure~\ref{fig:pipeline} summarizes the signal-to-text-to-decision pipeline.
+For each country--period, nature draws $\theta \sim \mathcal{N}(\bar{z}, 1)$, where $\bar{z}$ is a public prior mean drawn randomly for each country. Each agent $i$ receives a private signal $x_i = \theta + \varepsilon_i$ and computes a z-score $z_i = (x_i - \bar{z})/\sigma$. Because agents observe only their private briefing and never the prior distribution or its parameters, the diffuse-prior equilibrium formula (Proposition~\ref{prop:ms}) serves as the theoretical benchmark. The z-score is then translated into a multi-paragraph intelligence briefing by a deterministic generator that maps signal strength to narrative content about regime stability, economic conditions, public sentiment, and coordination prospects. Figure~\ref{fig:pipeline} summarizes the signal-to-text-to-decision pipeline.
 
 \begin{figure*}[htbp]\centering\includegraphics[width=\textwidth]{figures/diagram_pipeline.pdf}
 \caption{Signal-to-text-to-decision pipeline. Regime strength $\theta$ generates private signals $x_i$, converted to z-scores and rendered into natural-language briefings via 8 evidence domains and 3 latent sliders. The briefing layer is deterministic; all stochasticity enters through LLM decoding.}\label{fig:pipeline}
@@ -237,7 +237,7 @@ The claim is behavioral: agents do not observe $(B, C)$, $\sigma$, or $N$, yet t
 \caption{Fitted cutoff $\hat{\theta}^*$ vs.\ theoretical $\theta^*$ across seven $B/C$ ratios ($r = \BCSweepCutoffTrackingR$).}\label{fig:bc_sweep}
 \end{figure}
 
-\textit{Belief mediation.} Stated probability judgments mediate the signal-to-action pathway (Pseudo $R^2 = 0.975$; Table~\ref{tab:regressions}). Beliefs track the theoretical success probability ($r = \BeliefPureRPosterior$) and predict actions beyond what signals alone explain (partial $r = \BeliefPureRPartial$). Pre-decision elicitation ($r_{\text{pre}} = +0.82$) rules out ex-post rationalization.
+\textit{Belief mediation.} Stated probability judgments mediate the signal-to-action pathway (Pseudo $R^2 = \ActionEqPseudoRSq$; Table~\ref{tab:regressions}). Beliefs track the theoretical success probability ($r = \BeliefPureRPosterior$) and predict actions beyond what signals alone explain (partial $r = \BeliefPureRPartial$). Pre-decision elicitation ($r_{\text{pre}} = +0.82$) rules out ex-post rationalization.
 
 \textit{Classifier baselines.} Text features alone cannot reproduce LLM behavior. A TF-IDF logistic classifier achieves \ClassBowAccuracyPct\ accuracy in-distribution---top features are regime-stability language (``trajectory,'' ``deterioration'' predicting JOIN; ``stability,'' ``absence'' predicting STAY)---but fails on the surveillance chilling effect ($\ClassBowSurvGapPP$~pp gap; Table~\ref{tab:classifiers} in Appendix~\ref{sec:identification_appendix}). Additional identification tests are reported in Appendix~\ref{sec:identification_appendix}.
 
@@ -609,7 +609,11 @@ $+2.0$ & 0.83 & 0.98 & 0.23 \\
 \end{tabular}
 \end{table}
 
-At the extremes ($|z| = 2$), clarity is high (0.98) and evidence is largely one-sided: $z = -2$ selects phrases emphasizing regime fragility (``visible cracks in the inner circle'') and collective readiness, while $z = +2$ selects regime-strength phrases (``inner circle appears unified'') and collective caution. At $z = 0$, clarity is 0.00 (maximally ambiguous) and the briefing presents a balanced picture.
+Figure~\ref{fig:example_briefings} shows complete briefings generated at $z \in \{-2, 0, +2\}$. At the extremes ($|z| = 2$), clarity is high (0.98) and evidence is largely one-sided: $z = -2$ selects phrases emphasizing regime fragility (``visible cracks in the inner circle'') and collective readiness, while $z = +2$ selects regime-strength phrases (``inner circle appears unified'') and collective caution. At $z = 0$, clarity is 0.00 (maximally ambiguous) and the briefing presents a balanced picture.
+
+\begin{figure*}[htbp]\centering\includegraphics[width=\textwidth]{figures/fig_example_briefings.pdf}
+\caption{Example briefings at three z-scores. \textit{Left:} $z = -2$ (strong join signal) --- evidence of elite fracturing, security friction, and capital flight. \textit{Center:} $z = 0$ (ambiguous) --- balanced mixed signals across all domains. \textit{Right:} $z = +2$ (strong stay signal) --- evidence of elite cohesion, military confidence, and economic stability.}\label{fig:example_briefings}
+\end{figure*}
 
 
 \section{Implementation Details} \label{sec:implementation}
@@ -631,6 +635,6 @@ All code, prompts, cached responses, and output data are available at \url{https
 
 \section{Implications for AI Alignment} \label{sec:alignment}
 
-Three patterns carry implications for AI safety. First, surveillance induces strategic self-censorship (belief--action wedge) without any training signal for deceptive behavior, suggesting that such capabilities emerge from pretraining on human strategic text rather than explicit optimization. Second, stated beliefs mediate behavior (Pseudo $R^2 = 0.975$), so alignment techniques monitoring only inputs and outputs may miss decision-relevant computation. Third, information-structural manipulation (censorship, ambiguity, public signals) shifts behavior by up to 40~pp, implying that adversarial prompt design can exploit the same channels as alignment interventions. Whether the belief--action wedge constitutes genuine preference falsification \citep{kuran1991} or pattern-matching remains open; the relevant finding is its \textit{robustness} across architectures.
+Three patterns carry implications for AI safety. First, surveillance induces strategic self-censorship (belief--action wedge) without any training signal for deceptive behavior, suggesting that such capabilities emerge from pretraining on human strategic text rather than explicit optimization. Second, stated beliefs mediate behavior (Pseudo $R^2 = \ActionEqPseudoRSq$), so alignment techniques monitoring only inputs and outputs may miss decision-relevant computation. Third, information-structural manipulation (censorship, ambiguity, public signals) shifts behavior by up to 40~pp, implying that adversarial prompt design can exploit the same channels as alignment interventions. Whether the belief--action wedge constitutes genuine preference falsification \citep{kuran1991} or pattern-matching remains open; the relevant finding is its \textit{robustness} across architectures.
 
 \end{document}

@@ -1411,6 +1411,23 @@ def render_stats_macros(stats: dict) -> str:
         lines.append(_mc_pp_raw(f"{macro}GapPP", cd.get("gap_pp")))
     lines.append("")
 
+    # ── Regression macros (from regression_results.json) ──────────
+    reg_path = Path(__file__).resolve().parent / "regression_results.json"
+    if reg_path.exists():
+        with open(reg_path) as f:
+            import json as _json
+            reg = _json.load(f)
+        lines.append("% Agent-level regression results")
+        # Belief-action equation pseudo R²
+        action_eq = reg.get("belief_regressions", {}).get("action_equation", {})
+        lines.append(_mc("ActionEqPseudoRSq", action_eq.get("pseudo_r2"), 3))
+        lines.append(_mc_raw("ActionEqNObs", f"{action_eq.get('n_obs', '---'):,}" if action_eq.get('n_obs') else "---"))
+        # Main logit
+        main_logit = reg.get("agent_logit", {}).get("main_logit", {})
+        lines.append(_mc("MainLogitPseudoRSq", main_logit.get("pseudo_r2"), 4))
+        lines.append(_mc_raw("MainLogitNObs", f"{main_logit.get('n_obs', '---'):,}" if main_logit.get('n_obs') else "---"))
+        lines.append("")
+
     # ── B/C sweep (infodesign) ────────────────────────────────────
     lines.append("% B/C sweep")
     baseline_info = info.get("baseline", {})
@@ -1665,7 +1682,10 @@ def render_stats_macros(stats: dict) -> str:
     lines.append("% Beliefs second-order details")
     for treatment, macro in [("pure", "SOBPure"), ("comm", "SOBComm"), ("surveillance", "SOBSurv")]:
         sob_data = beliefs.get(treatment, {}).get("second_order", {})
-        lines.append(_mc("{}Mean".format(macro), sob_data.get("mean")))
+        # SOBCommMean and SOBSurvMean already emitted above from _surv_vs_comm_sob;
+        # only emit SOBPureMean here to avoid duplicate \providecommand.
+        if macro == "SOBPure":
+            lines.append(_mc("{}Mean".format(macro), sob_data.get("mean")))
         lines.append(_mc_pct("{}MeanPct".format(macro), sob_data.get("mean")))
         r_theta = (sob_data.get("r_vs_theta") or {}).get("r") if isinstance(sob_data.get("r_vs_theta"), dict) else None
         lines.append(_mc_r("{}RTheta".format(macro), r_theta))

@@ -34,6 +34,13 @@ output/*.txt
 
 # uv
 uv.lock
+
+# LaTeX style files (vendored)
 paper/placeins.sty
 paper/multirow.sty
+
+# Paper website prototypes (separate deployment)
+paper/website/
+
+# Claude Code worktrees
 .claude/worktrees/

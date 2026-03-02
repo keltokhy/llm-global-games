@@ -1970,6 +1970,85 @@ def fig15_text_baseline():
 
 
 # ═══════════════════════════════════════════════════════════════════
+# FIGURE: Example briefings at z = {-2, 0, +2}
+# ═══════════════════════════════════════════════════════════════════
+
+def fig_example_briefings():
+    """Three side-by-side intelligence briefings showing signal-to-text mapping.
+
+    Displays full briefing text at z = -2 (weak regime / strong join signal),
+    z = 0 (ambiguous), and z = +2 (strong regime / strong stay signal).
+    """
+    import textwrap
+    import sys
+
+    sys.path.insert(0, str(PROJECT_ROOT))
+    from agent_based_simulation.briefing import BriefingGenerator
+
+    gen = BriefingGenerator(seed=42)
+
+    z_scores = [-2.0, 0.0, 2.0]
+    titles = [
+        "$z = -2$ (weak regime)",
+        "$z = \\,\\,0$ (ambiguous)",
+        "$z = +2$ (strong regime)",
+    ]
+    title_colors = ["#d7191c", "#636363", "#2c7bb6"]
+
+    briefings = []
+    for z in z_scores:
+        b = gen.generate(z_score=z, agent_id=0, period=0)
+        briefings.append(b.render())
+
+    # ── Layout: three equal panels, full text width ──
+    fig, axes = plt.subplots(1, 3, figsize=(TEXT_W, 7.5))
+
+    wrap_width = 52  # characters per line
+
+    for ax, text, title, color in zip(axes, briefings, titles, title_colors):
+        ax.set_xlim(0, 1)
+        ax.set_ylim(0, 1)
+        ax.axis("off")
+
+        # Panel title with colored background bar
+        ax.text(0.5, 0.995, title, transform=ax.transAxes,
+                fontsize=8, fontweight="bold", color=color,
+                ha="center", va="top")
+
+        # Wrap and render briefing text
+        lines = []
+        for raw_line in text.split("\n"):
+            if raw_line.strip() == "":
+                lines.append("")
+            elif raw_line.startswith("  - "):
+                # Bullet items: wrap with hanging indent
+                wrapped = textwrap.fill(
+                    raw_line.strip(), width=wrap_width,
+                    initial_indent="  \u2022 ", subsequent_indent="     ",
+                )
+                lines.append(wrapped)
+            else:
+                wrapped = textwrap.fill(raw_line.strip(), width=wrap_width)
+                lines.append(wrapped)
+
+        rendered = "\n".join(lines)
+
+        ax.text(0.03, 0.96, rendered, transform=ax.transAxes,
+                fontsize=5.0, fontfamily="monospace",
+                va="top", ha="left",
+                linespacing=1.2)
+
+        # Subtle border around each panel
+        for spine in ax.spines.values():
+            spine.set_visible(True)
+            spine.set_edgecolor("#cccccc")
+            spine.set_linewidth(0.5)
+
+    fig.subplots_adjust(left=0.01, right=0.99, top=0.97, bottom=0.01, wspace=0.08)
+    save(fig, "fig_example_briefings")
+
+
+# ═══════════════════════════════════════════════════════════════════
 # MAIN
 # ═══════════════════════════════════════════════════════════════════
 
@@ -2001,5 +2080,6 @@ if __name__ == "__main__":
     fig19_nonparametric_beliefs()
     fig20_cross_generator()
     fig21_placebo_calibration()
+    fig_example_briefings()
 
     print(f"\nAll figures saved to {FIG_DIR}")
