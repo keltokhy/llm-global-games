@@ -4333,6 +4333,7 @@
       "stat": 0.7574,
       "p": 0.0,
       "n": 1800,
+      "effect_size": 0.7574,
       "supported": "Yes"
     },
     {
@@ -4344,6 +4345,7 @@
       "stat": 0.0286,
       "p": 0.342536,
       "n": 1100,
+      "effect_size": 0.0286,
       "supported": "Yes"
     },
     {
@@ -4355,6 +4357,7 @@
       "stat": -0.7907,
       "p": 0.0,
       "n": 1100,
+      "effect_size": -0.7907,
       "supported": "Yes"
     },
     {
@@ -4366,6 +4369,7 @@
       "stat": 11.1999,
       "p": 0.0,
       "n": 680,
+      "effect_size": 0.4295,
       "supported": "Yes",
       "power_analysis_unpaired": {
         "cohens_d": 0.0327,
@@ -4384,6 +4388,7 @@
       "null": "$= 0$",
       "test": "$t$-test",
       "stat": -5.3222,
+      "effect_size": -0.4581,
       "p": 0.0,
       "n": null,
       "supported": "Yes"
@@ -4395,6 +4400,7 @@
       "null": "$= 0$",
       "test": "$t$-test",
       "stat": -2.2839,
+      "effect_size": -0.1966,
       "p": 0.022767,
       "n": null,
       "supported": "Yes"
@@ -4408,6 +4414,7 @@
       "stat": -8.2768,
       "p": 0.0,
       "n": null,
+      "effect_size": -0.3702,
       "supported": "Yes"
     },
     {
@@ -4419,6 +4426,7 @@
       "stat": -0.8924,
       "p": 0.372307,
       "n": null,
+      "effect_size": -0.0489,
       "supported": "No (ambiguous)",
       "power_analysis": {
         "cohens_d": -0.0489,

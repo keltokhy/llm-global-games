@@ -1621,6 +1621,7 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
         "stat": r_attack.get("r"),
         "p": r_attack.get("p"),
         "n": r_attack.get("n"),
+        "effect_size": r_attack.get("r"),  # r is the effect size for correlations
         "supported": _hypothesis_supported(r_attack.get("p"), alpha=0.05, reject_null=True),
     })
 
@@ -1636,6 +1637,7 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
         "stat": r_scr.get("r"),
         "p": r_scr.get("p"),
         "n": r_scr.get("n"),
+        "effect_size": r_scr.get("r"),
         "supported": _hypothesis_supported(r_scr.get("p"), alpha=0.05, reject_null=False),
     })
 
@@ -1659,6 +1661,7 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
         "stat": r_flip_val,
         "p": round(p_flip_one, 6) if np.isfinite(p_flip_one) else None,
         "n": n_flip,
+        "effect_size": r_flip_val,
         "supported": _hypothesis_supported(p_flip_one, alpha=0.05, reject_null=True),
     })
 
@@ -1677,6 +1680,10 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
         comm_p = comm_eff.get("p_value")
         comm_n = None
         comm_test = "$t$-test"
+    # Cohen's d_z for paired test: t / sqrt(n)
+    comm_d = None
+    if comm_stat is not None and comm_n is not None and comm_n > 0:
+        comm_d = round(comm_stat / np.sqrt(comm_n), 4)
     table.append({
         "id": "H4",
         "hypothesis": "Communication Channel",
@@ -1686,6 +1693,7 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
         "stat": comm_stat,
         "p": comm_p,
         "n": comm_n,
+        "effect_size": comm_d,
         "supported": _hypothesis_supported(comm_p, alpha=0.05, reject_null=True),
     })
 
@@ -1707,15 +1715,19 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
     primary = PRIMARY
     surv_df = _load_summary(ROOT / "surveillance" / primary / "experiment_comm_summary.csv")
     base_comm_df = _load_summary(ROOT / primary / "experiment_comm_summary.csv")
+    surv_d = None
     if len(surv_df) > 0 and len(base_comm_df) > 0:
         sjcol = _join_col(surv_df)
         bjcol = _join_col(base_comm_df)
-        t_s, p_s = stats.ttest_ind(
-            surv_df[sjcol].astype(float).dropna(),
-            base_comm_df[bjcol].astype(float).dropna(),
-        )
+        s_jf = surv_df[sjcol].astype(float).dropna()
+        b_jf = base_comm_df[bjcol].astype(float).dropna()
+        t_s, p_s = stats.ttest_ind(s_jf, b_jf)
         surv_t = round(float(t_s), 4)
         surv_p = round(float(p_s), 6)
+        # Cohen's d
+        n1, n2 = len(s_jf), len(b_jf)
+        sd_pool = float(np.sqrt(((n1-1)*s_jf.std()**2 + (n2-1)*b_jf.std()**2) / (n1+n2-2)))
+        surv_d = round(float((s_jf.mean() - b_jf.mean()) / sd_pool), 4) if sd_pool > 0 else None
     table.append({
         "id": "H7",
         "hypothesis": "Surveillance Chilling",
@@ -1725,6 +1737,7 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
         "stat": surv_t,
         "p": surv_p,
         "n": None,
+        "effect_size": surv_d,
         "supported": _hypothesis_supported(surv_p, alpha=0.05, reject_null=True),
     })
 
@@ -1734,6 +1747,7 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
     # t-test on period-level join fractions (propaganda real vs baseline comm)
     prop_t = None
     prop_p = None
+    prop_d = None
     prop_real_jf = None
     prop_log = _load_experiment_log(
         ROOT / "propaganda-k5" / primary / "experiment_comm_log.json"
@@ -1747,6 +1761,10 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
             t_p_stat, p_p_val = stats.ttest_ind(prop_real_jf, base_jf)
             prop_t = round(float(t_p_stat), 4)
             prop_p = round(float(p_p_val), 6)
+            # Cohen's d
+            n1_p, n2_p = len(base_jf), len(prop_real_jf)
+            sd_pool_p = float(np.sqrt(((n1_p-1)*base_jf.std()**2 + (n2_p-1)*prop_real_jf.std()**2) / (n1_p+n2_p-2)))
+            prop_d = round(float((prop_real_jf.mean() - base_jf.mean()) / sd_pool_p), 4) if sd_pool_p > 0 else None
     table.append({
         "id": "H8",
         "hypothesis": "Propaganda Dose-Response",
@@ -1756,6 +1774,7 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
         "stat": prop_t,
         "p": prop_p,
         "n": None,
+        "effect_size": prop_d,
         "supported": _hypothesis_supported(prop_p, alpha=0.05, reject_null=True),
     })
 
@@ -1870,15 +1889,19 @@ def _hypothesis_from_infodesign(infodesign: dict, design_key: str, label: str) -
 
     t_stat = None
     p_val = None
+    effect_d = None
     if len(df_design) > 0 and len(df_baseline) > 0:
         jc_d = _join_col(df_design)
         jc_b = _join_col(df_baseline)
-        t_s, p_v = stats.ttest_ind(
-            df_design[jc_d].astype(float).dropna(),
-            df_baseline[jc_b].astype(float).dropna(),
-        )
+        g_d = df_design[jc_d].astype(float).dropna()
+        g_b = df_baseline[jc_b].astype(float).dropna()
+        t_s, p_v = stats.ttest_ind(g_d, g_b)
         t_stat = round(float(t_s), 4)
         p_val = round(float(p_v), 6)
+        # Cohen's d
+        n1, n2 = len(g_d), len(g_b)
+        sd_pool = float(np.sqrt(((n1-1)*g_d.std()**2 + (n2-1)*g_b.std()**2) / (n1+n2-2)))
+        effect_d = round(float((g_d.mean() - g_b.mean()) / sd_pool), 4) if sd_pool > 0 else None
 
     h_id = {"Ambiguity Pooling": "H5", "Censorship Distortion": "H6"}.get(label, "H?")
     return {
@@ -1888,6 +1911,7 @@ def _hypothesis_from_infodesign(infodesign: dict, design_key: str, label: str) -
         "null": "$= 0$",
         "test": "$t$-test",
         "stat": t_stat,
+        "effect_size": effect_d,
         "p": p_val,
         "n": None,
         "supported": _hypothesis_supported(p_val, alpha=0.05, reject_null=True),

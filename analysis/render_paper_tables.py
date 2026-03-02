@@ -1817,20 +1817,21 @@ def render_tab_hypotheses(stats: dict) -> str:
         test = h.get("test", "---")
         stat = _fmt_stat(h.get("stat"))
         p = _fmt_p(h.get("p"))
+        es = _fmt_stat(h.get("effect_size"))
         supported = h.get("supported", "---")
         rows.append(
-            f"{hid} & {label} & {estimand} & {null} & {test} & {stat} & {p} & {supported} \\\\"
+            f"{hid} & {label} & {test} & {stat} & {p} & {es} & {supported} \\\\"
         )
 
     tex = r"""\begin{table*}[t]
 \centering
-\caption{Pre-specified hypotheses and test results. H1--H4 use pooled Part~I data across all seven models; H5--H8 use the primary model (Mistral Small Creative). ``Supported'' indicates whether the data pattern matches the hypothesis at $\alpha = 0.05$.}
+\caption{Pre-specified hypotheses and test results. H1--H4 use pooled Part~I data across all seven models; H5--H8 use the primary model (Mistral Small Creative). Effect size: $r$ for correlations (H1--H3), Cohen's $d$ or $d_z$ for mean comparisons (H4--H8). ``Supported'' at $\alpha = 0.05$.}
 \label{tab:hypotheses}
 \small
 \setlength{\tabcolsep}{4pt}
-\begin{tabular}{llllllcl}
+\begin{tabular}{llllccl}
 \toprule
-H & Hypothesis & Estimand & Null & Test & Stat & $p$ & Supported? \\
+H & Hypothesis & Test & Stat & $p$ & Effect & Supported? \\
 \midrule
 """
     tex += "\n".join(rows) + "\n"

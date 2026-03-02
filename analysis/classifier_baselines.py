@@ -18,6 +18,7 @@ Usage: uv run python analysis/classifier_baselines.py
 from __future__ import annotations
 
 import json
+import random
 import sys
 from pathlib import Path
 
@@ -28,6 +29,10 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import accuracy_score, roc_auc_score
 from sklearn.preprocessing import PolynomialFeatures
+
+# ── Set random seeds for reproducibility ───────────────────────────────
+np.random.seed(42)
+random.seed(42)
 
 # ── Paths ─────────────────────────────────────────────────────────────
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
