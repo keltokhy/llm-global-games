@@ -586,12 +586,19 @@ def render_tab_surv_censor_crossmodel(stats: dict) -> str:
         "GPT-OSS 120B",
         "Qwen3 235B",
     ]
+    _short = {
+        "Mistral Small Creative": "Mistral",
+        "Llama 3.3 70B": "Llama 70B",
+        "GPT-OSS 120B": "GPT-OSS",
+        "Qwen3 235B": "Qwen 235B",
+    }
 
     rows = []
     for m in models:
         d = sxc.get(m, {})
+        short = _short.get(m, m)
         if not d:
-            rows.append(f"{m} & --- & --- & --- & --- & --- \\\\")
+            rows.append(f"{short} & --- & --- & --- & --- & --- \\\\")
             continue
         bl = d.get("baseline")
         cu = d.get("censor_upper")
@@ -603,18 +610,19 @@ def render_tab_surv_censor_crossmodel(stats: dict) -> str:
         delta_l = (cl - bl) if bl is not None and cl is not None else None
         du_cell = _fmt_pp(delta_u, 1) if delta_u is not None else "---"
         dl_cell = _fmt_pp(delta_l, 1) if delta_l is not None else "---"
-        rows.append(f"{m} & {bl_cell} & {cu_cell} & {cl_cell} & {du_cell} & {dl_cell} \\\\")
+        rows.append(f"{short} & {bl_cell} & {cu_cell} & {cl_cell} & {du_cell} & {dl_cell} \\\\")
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{Cross-model surveillance $\times$ censorship interaction. All conditions run under surveillance with communication. $\Delta$ columns show the change relative to the surveilled baseline.}
+\caption{Cross-model surveillance $\times$ censorship interaction. $\Delta$: change vs.\ surveilled baseline (pp).}
 \label{tab:surv_censor_crossmodel}
 \footnotesize
+\setlength{\tabcolsep}{3pt}
 \begin{tabular}{lccccc}
 \toprule
 & \multicolumn{3}{c}{Mean join (surv.)} & \multicolumn{2}{c}{$\Delta$ (pp)} \\
 \cmidrule(lr){2-4} \cmidrule(lr){5-6}
-Model & Baseline & Upper cens. & Lower cens. & $\Delta$ upper & $\Delta$ lower \\
+Model & Base & Upper & Lower & $\Delta_U$ & $\Delta_L$ \\
 \midrule
 """
     tex += "\n".join(rows) + "\n"
@@ -1147,6 +1155,16 @@ def render_stats_macros(stats: dict) -> str:
     # Pooled flip
     pooled_flip = part1.get("_pooled_flip", {})
     lines.append(_mc_r("PooledFlipRAttack", (pooled_flip.get("r_vs_attack") or {}).get("r")))
+    lines.append("")
+
+    # ── Primary model logistic fit ──────────────────────────────────
+    logistic_fits = stats.get("logistic_fits", {})
+    from models import DISPLAY_NAMES, PRIMARY_SLUG
+    primary_display = DISPLAY_NAMES.get(PRIMARY_SLUG, "")
+    primary_fit = (logistic_fits.get(primary_display) or {}).get("pure", {})
+    lines.append("% Primary model (Mistral) logistic fit")
+    lines.append(_mc("PrimaryPureCutoff", primary_fit.get("cutoff"), 2))
+    lines.append(_mc("PrimaryPureSlope", primary_fit.get("b1"), 2))
     lines.append("")
 
     # ── Pooled OLS ────────────────────────────────────────────────
@@ -1764,7 +1782,8 @@ def render_tab_beliefs(stats: dict) -> str:
 \centering
 \caption{Agent-level belief correlations (primary model: Mistral Small Creative).}
 \label{tab:beliefs}
-\small
+\footnotesize
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{lccccc}
 \toprule
 Treatment & $N$ & $r_{\text{post}}$ & $r_{\text{b,d}}$ & $r_{\text{partial}}$ & Mean belief \\
@@ -1774,7 +1793,7 @@ Treatment & $N$ & $r_{\text{post}}$ & $r_{\text{b,d}}$ & $r_{\text{partial}}$ & 
     tex += r"""\bottomrule
 \end{tabular}
 \vspace{0.25em}
-\parbox{\columnwidth}{\footnotesize\emph{Notes:} $r_{\text{post}}$: correlation between posterior and stated belief. $r_{\text{b,d}}$: correlation between belief and decision. $r_{\text{partial}}$: partial correlation of belief and decision controlling for z-score.}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} $r_{\text{post}}$: posterior vs.\ stated belief. $r_{\text{b,d}}$: belief vs.\ decision. $r_{\text{partial}}$: belief--decision controlling for z-score.}
 \end{table}
 """
     return tex
@@ -2141,12 +2160,13 @@ def render_tab_bc_classifier(stats: dict) -> str:
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{B/C comparative statics: classifier vs.\ actual LLM behavior. A logistic trained on baseline join rates (which captures the same information as slider features) predicts similar join rates across all payoff conditions. Actual LLM behavior shifts by ${\approx}\,50$~pp, demonstrating that agents respond to payoff information not captured by text features.}
+\caption{B/C comparative statics: classifier vs.\ actual LLM behavior. Actual join rates shift by ${\approx}\,50$~pp across payoff conditions; the classifier, trained on text features alone, cannot predict this shift.}
 \label{tab:bc_classifier}
-\small
+\footnotesize
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{lcccc}
 \toprule
-Condition & $N$ & Classifier pred. & Actual & Gap (pp) \\
+Condition & $N$ & Classif.\ pred. & Actual & Gap (pp) \\
 \midrule
 """
     tex += "\n".join(rows) + "\n"
@@ -2166,7 +2186,16 @@ def render_tab_parse_errors(stats: dict) -> str:
 
     models = DISPLAY_ORDER
     treatments = ["pure", "comm", "scramble", "flip"]
-    treat_labels = {"pure": "Pure", "comm": "Comm", "scramble": "Scramble", "flip": "Flip"}
+    treat_labels = {"pure": "Pure", "comm": "Comm", "scramble": "Scr.", "flip": "Flip"}
+    _pe_short = {
+        "Mistral Small Creative": "Mistral",
+        "Llama 3.3 70B": "Llama 70B",
+        "Qwen3 30B": "Qwen 30B",
+        "GPT-OSS 120B": "GPT-OSS",
+        "Qwen3 235B": "Qwen 235B",
+        "Trinity Large": "Trinity",
+        "MiniMax M2-Her": "MiniMax",
+    }
 
     rows = []
     for model in models:
@@ -2174,6 +2203,7 @@ def render_tab_parse_errors(stats: dict) -> str:
         if not m_data:
             continue
         first = True
+        short_model = _pe_short.get(model, model)
         for t in treatments:
             t_data = m_data.get(t)
             if t_data is None:
@@ -2182,7 +2212,7 @@ def render_tab_parse_errors(stats: dict) -> str:
             unparse = t_data.get("mean_unparseable_rate", 0.0)
             combined = api_err + unparse
             n = t_data.get("n_periods", "---")
-            model_col = model if first else ""
+            model_col = short_model if first else ""
             first = False
             rows.append(
                 f"{model_col} & {treat_labels[t]} & {n} & "
@@ -2196,19 +2226,20 @@ def render_tab_parse_errors(stats: dict) -> str:
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{Parse error and API failure rates by model and treatment. API error = provider-side failure; unparseable = valid response that could not be classified as JOIN or STAY. Combined rates are below 2\% for five of seven models; Trinity Large has elevated API errors (${\approx}\,9$\%) due to provider-side content filtering.}
+\caption{Parse error and API failure rates by model and treatment.}
 \label{tab:parse_errors}
-\small
+\footnotesize
+\setlength{\tabcolsep}{3pt}
 \begin{tabular}{llcccc}
 \toprule
-Model & Treatment & $N$ & API err & Unparseable & Combined \\
+Model & Treat. & $N$ & API err & Unparse. & Combined \\
 \midrule
 """
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
 \end{tabular}
 \vspace{0.25em}
-\parbox{\columnwidth}{\footnotesize\emph{Notes:} Per-period averages. API error = provider-side failure (timeout, rate limit, content filter). Unparseable = valid LLM response that could not be classified as JOIN or STAY.}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Per-period averages. API error = provider-side failure (timeout, rate limit, content filter). Unparseable = valid response not classified as JOIN/STAY. Combined $< 2$\% for five of seven models; Trinity Large has elevated API errors (${\approx}\,9$\%) due to content filtering.}
 \end{table}
 """
     return tex

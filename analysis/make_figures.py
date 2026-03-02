@@ -2,17 +2,17 @@
 """
 Figure generation for "LLM Agents in Global Games."
 
-Generates all 17 figures to figures/ with sequential numbering matching paper order.
+Generates 23 publication figures to paper/figures/ with sequential numbering.
 
-Main figures:
+Main figures (Part I — core experiment):
   01. Core sigmoid — join fraction vs theta (pure + comm)
   02. Cross-model r-value forest plot
   03. Falsification triptych — pure / scramble / flip
-  04. Cross-model r-value bar chart
   05. Communication effect — dumbbell + sigmoid overlay
-  06. Agent-level threshold vs theoretical attack mass
   07. Information design — all designs on one canvas
   08. Treatment effect delta(theta)
+
+Main figures (Part II — information design):
   09. Censorship — curves + slope decomposition
   10. Infodesign falsification — scramble/flip
   11. Stability decomposition — single-channel
@@ -20,11 +20,14 @@ Main figures:
   13. Propaganda dose-response
   14. Cross-model infodesign replication
 
-  15. Surveillance mechanism tests (belief-behavior gap)
+Mechanism & belief figures:
+  15. Text baseline construct validity
   16. First-order beliefs (calibration + treatment divergence)
   17. Second-order beliefs
   18. B/C sweep — fitted vs theoretical cutoff
   19. Nonparametric monotonicity — E[belief | z-score bin] vs theory
+  20. Cross-generator replication
+  21. Placebo calibration
 
 Appendix:
   A1. Agent count robustness
@@ -32,7 +35,7 @@ Appendix:
   A3. Bandwidth robustness
   A4. Calibration convergence
 
-Usage: uv run python agent_based_simulation/make_figures.py
+Usage: cd analysis && uv run python make_figures.py
 """
 
 from pathlib import Path
@@ -416,9 +419,15 @@ def fig05_communication():
 
     delta_low = gc.iloc[:mid_idx]["mean"].mean() - gp.iloc[:mid_idx]["mean"].mean()
     delta_high = gc.iloc[mid_idx:]["mean"].mean() - gp.iloc[mid_idx:]["mean"].mean()
+
+    def _fmt_delta(v):
+        if abs(v) < 0.005:
+            return "0.00"
+        return f"{v:+.2f}"
+
     ax.text(0.97, 0.02,
-            f"Weak regime $\\Delta$ = {delta_low:+.2f}\n"
-            f"Strong regime $\\Delta$ = {delta_high:+.2f}",
+            f"Weak regime $\\Delta$ = {_fmt_delta(delta_low)}\n"
+            f"Strong regime $\\Delta$ = {_fmt_delta(delta_high)}",
             transform=ax.transAxes, fontsize=6, va="bottom", ha="right",
             bbox=dict(boxstyle="round,pad=0.2", facecolor="white",
                       alpha=0.8, edgecolor="#ccc", linewidth=0.4))
@@ -773,6 +782,7 @@ def fig12_surveillance():
                     ha="right", color="white", fontweight="bold")
 
     plt.tight_layout()
+    fig.subplots_adjust(left=0.08)
     save(fig, "fig12_surveillance")
 
 
@@ -1208,7 +1218,7 @@ def fig16_beliefs():
 
     fig, (ax_a, ax_b) = plt.subplots(1, 2, figsize=(TEXT_W, 2.6))
 
-    # Panel (a): Stated belief vs Bayesian posterior
+    # Panel A: Stated belief vs Bayesian posterior
     posteriors = np.array([r["posterior"] for r in pure])
     beliefs = np.array([r["belief"] for r in pure])
 
@@ -1235,7 +1245,7 @@ def fig16_beliefs():
               bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="#ccc", alpha=0.9))
     ax_a.set_title("A. Beliefs track Bayesian posterior", fontsize=8, loc="left")
 
-    # Panel (b): Join rate by belief bin
+    # Panel B: Join rate by belief bin
     bin_edges = np.array([0, 0.2, 0.4, 0.6, 0.8, 1.01])
     bin_labels = ["0\u201320", "20\u201340", "40\u201360", "60\u201380", "80\u2013100"]
 
@@ -1298,8 +1308,8 @@ def fig16_beliefs():
 # ═══════════════════════════════════════════════════════════════════
 
 def figA4_calibration():
-    """Two-panel figure: (A) convergence of fitted_center across rounds,
-    (B) bar chart of final cutoff_center per model."""
+    """Two-panel figure: A. convergence of fitted_center across rounds,
+    B. bar chart of final cutoff_center per model."""
     import json as _json
 
     # ── Load autocalibrate_history.csv for each model ────────────
@@ -1345,7 +1355,7 @@ def figA4_calibration():
 
         ax.set_xlabel("Calibration round")
         ax.set_ylabel("Fitted logistic center $c$")
-        ax.set_title("(A) Convergence of fitted center", fontsize=8)
+        ax.set_title("A. Convergence of fitted center", fontsize=8)
         ax.legend(fontsize=5, loc="upper right", ncol=2, framealpha=0.8)
 
         # Nice x-axis ticks (integer rounds only)
@@ -1363,7 +1373,7 @@ def figA4_calibration():
         ax.text(0.5, 0.5, "No autocalibrate_history.csv\nfiles found",
                 transform=ax.transAxes, ha="center", va="center",
                 fontsize=7, color="#999")
-        ax.set_title("(A) Convergence of fitted center", fontsize=8)
+        ax.set_title("A. Convergence of fitted center", fontsize=8)
         ax.set_xlabel("Calibration round")
         ax.set_ylabel("Fitted logistic center $c$")
 
@@ -1384,7 +1394,7 @@ def figA4_calibration():
         ax.set_yticklabels(names, fontsize=6)
         ax.axvline(0, color="#636363", linewidth=0.5, linestyle=":")
         ax.set_xlabel("Calibrated cutoff center")
-        ax.set_title("(B) Per-model calibration shift", fontsize=8)
+        ax.set_title("B. Per-model calibration shift", fontsize=8)
 
         # Add value labels
         for i, (bar, val) in enumerate(zip(bars, centers)):
@@ -1405,7 +1415,7 @@ def figA4_calibration():
 # ═══════════════════════════════════════════════════════════════════
 
 def fig17_second_order_beliefs():
-    """2-panel: (A) second-order belief vs theta, (B) second-order belief vs actual join."""
+    """2-panel: A. second-order belief vs theta, B. second-order belief vs actual join."""
     import json as _json
 
     _MISTRAL_DIR = ROOT / "mistralai--mistral-small-creative"
@@ -1953,6 +1963,7 @@ def fig15_text_baseline():
     ax.set_ylabel("Join rate")
     ax.set_ylim(-0.05, 1.05)
     ax.legend(fontsize=6, loc="upper right")
+    add_hgrid(ax)
 
     plt.tight_layout()
     save(fig, "fig15_text_baseline")

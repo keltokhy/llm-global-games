@@ -41,6 +41,7 @@ ANALYSIS_DIR = Path(__file__).resolve().parent
 RESULTS_PATH = ANALYSIS_DIR / "classifier_results.json"
 
 from models import PRIMARY_SLUG
+from style import join_col as _join_col, logistic as _logistic
 
 MODEL_SLUG = PRIMARY_SLUG
 MODEL_DIR = OUTPUT_ROOT / MODEL_SLUG
@@ -463,8 +464,7 @@ def _bc_comparative_statics() -> dict:
     """
     from scipy.optimize import curve_fit
 
-    def _logistic(x, b0, b1):
-        return 1.0 / (1.0 + np.exp(b0 + b1 * x))
+    # _logistic imported from style.py
 
     # Load baseline (canonical θ*=0.50 slice from bc_sweep if available)
     bc_sweep_path = MODEL_DIR / "experiment_bc_sweep_summary.csv"
@@ -485,7 +485,7 @@ def _bc_comparative_statics() -> dict:
     if len(baseline_df) == 0:
         return {}
 
-    jcol = "join_fraction_valid" if "join_fraction_valid" in baseline_df.columns else "join_fraction"
+    jcol = _join_col(baseline_df)
 
     # Fit logistic on baseline
     theta_base = baseline_df["theta"].astype(float).values
@@ -515,7 +515,7 @@ def _bc_comparative_statics() -> dict:
         df = pd.read_csv(cond_path)
         if len(df) == 0:
             continue
-        jc = "join_fraction_valid" if "join_fraction_valid" in df.columns else "join_fraction"
+        jc = _join_col(df)
         theta_cond = df["theta"].astype(float).values
         join_cond = df[jc].astype(float).values
         m = np.isfinite(theta_cond) & np.isfinite(join_cond)

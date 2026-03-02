@@ -15,6 +15,7 @@ import pandas as pd
 from scipy import stats
 
 from models import PART1_SLUGS, DISPLAY_NAMES, PRIMARY_SLUG
+from style import join_col as _join_col, logistic as _logistic
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 ROOT = PROJECT_ROOT / "output"
@@ -143,10 +144,7 @@ def fisher_z_test(r1, n1, r2, n2):
     p = 2 * stats.norm.sf(abs(z_stat))
     return {"z": round(z_stat, 4), "p": round(p, 6)}
 
-def _join_col(df: pd.DataFrame) -> str:
-    if "join_fraction_valid" in df.columns and df["join_fraction_valid"].notna().any():
-        return "join_fraction_valid"
-    return "join_fraction"
+# _join_col imported from style.py
 
 
 def _safe_mean(x) -> float:
@@ -1159,8 +1157,7 @@ def pooled_ols(all_stats):
 # LOGISTIC FITS: cutoff + slope per model × treatment
 # ═══════════════════════════════════════════════════════════════════
 
-def _logistic(x, b0, b1):
-    return 1.0 / (1.0 + np.exp(b0 + b1 * x))
+# _logistic imported from style.py
 
 
 def _fit_logistic(x, y):

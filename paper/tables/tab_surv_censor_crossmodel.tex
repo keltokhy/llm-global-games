@@ -1,18 +1,19 @@
 \begin{table}[t]
 \centering
-\caption{Cross-model surveillance $\times$ censorship interaction. All conditions run under surveillance with communication. $\Delta$ columns show the change relative to the surveilled baseline.}
+\caption{Cross-model surveillance $\times$ censorship interaction. $\Delta$: change vs.\ surveilled baseline (pp).}
 \label{tab:surv_censor_crossmodel}
 \footnotesize
+\setlength{\tabcolsep}{3pt}
 \begin{tabular}{lccccc}
 \toprule
 & \multicolumn{3}{c}{Mean join (surv.)} & \multicolumn{2}{c}{$\Delta$ (pp)} \\
 \cmidrule(lr){2-4} \cmidrule(lr){5-6}
-Model & Baseline & Upper cens. & Lower cens. & $\Delta$ upper & $\Delta$ lower \\
+Model & Base & Upper & Lower & $\Delta_U$ & $\Delta_L$ \\
 \midrule
-Mistral Small Creative & 0.009 & 0.037 & 0.042 & +2.8 & +3.3 \\
-Llama 3.3 70B & 0.114 & 0.039 & 0.115 & -7.5 & +0.1 \\
-GPT-OSS 120B & 0.316 & 0.177 & 0.312 & -13.9 & -0.4 \\
-Qwen3 235B & 0.336 & 0.321 & 0.468 & -1.5 & +13.1 \\
+Mistral & 0.009 & 0.037 & 0.042 & +2.8 & +3.3 \\
+Llama 70B & 0.114 & 0.039 & 0.115 & -7.5 & +0.1 \\
+GPT-OSS & 0.316 & 0.177 & 0.312 & -13.9 & -0.4 \\
+Qwen 235B & 0.336 & 0.321 & 0.468 & -1.5 & +13.1 \\
 \bottomrule
 \end{tabular}
 \vspace{0.25em}

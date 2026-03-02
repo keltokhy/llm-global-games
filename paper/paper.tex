@@ -80,7 +80,7 @@ The Bayesian persuasion framework \citep{kamenica2011}, applied to regime change
 
 On the methodological side, \citet{horton2023} proposed LLMs as ``homo silicus.'' Subsequent work found LLMs struggle in coordination games \citep{akata2025, sun2025survey}, with model scale not predicting strategic performance \citep{petrov2025}. \citet{huang2024} and \citet{carlini2025} document that alignment shifts risk preferences, motivating narrative rather than tabular payoffs. Critical reviews by \citet{larooij2025, larooij2025b} identify validation challenges that I address through cross-generator robustness (Appendix~\ref{sec:cross_generator}), scramble/flip falsification, and out-of-sample replication.
 
-The paper proceeds as follows. Section~\ref{sec:model} presents the theoretical framework. Section~\ref{sec:design} describes the experimental design. Part~I (Sections~\ref{sec:results}--\ref{sec:communication}) establishes that LLM agents implement equilibrium-consistent threshold policies and that pre-play communication creates an exploitable information channel. Part~II (Sections~\ref{sec:infodesign}--\ref{sec:propaganda}) shows how an information designer---through censorship, surveillance, and propaganda---can reshape coordination outcomes.
+The paper proceeds as follows. Section~\ref{sec:model} presents the theoretical framework. Section~\ref{sec:design} describes the experimental design. Part~I (Sections~\ref{sec:results}--\ref{sec:communication}) establishes that LLM agents implement equilibrium-consistent threshold policies and that pre-play communication creates an exploitable information channel. Part~II (Sections~\ref{sec:infodesign}--\ref{sec:decomposition}) shows how an information designer can reshape coordination outcomes through Bayesian persuasion. Part~III (Sections~\ref{sec:surveillance}--\ref{sec:propaganda}) tests whether an authoritarian regime can exploit the communication channel through surveillance and propaganda.
 
 
 %% 2. THEORETICAL FRAMEWORK
@@ -161,15 +161,16 @@ The experiment has three parts. Part~I tests whether LLM agents implement thresh
 
 A note on the state variable. In the theory (Section~\ref{sec:model}), $\theta$ is an unbounded fundamental with special roles for $\theta \le 0$ (regime falls without opposition) and $\theta \ge 1$ (regime survives even unanimous attack). In Part~I experiments, $\theta$ is drawn from a normal distribution and agents are not shown payoff parameters $(B, C)$. To evaluate monotonicity on a common scale, I compute the benchmark $A(\theta)$ under the canonical normalization $B=C=1$ (so $\theta^* = 0.50$) and $\sigma = 0.3$. In Part~II, I keep $B=C=1$ and restrict attention to a fixed $\theta$-grid in $[0.20, 0.80]$ for comparability with the canonical $[0,1]$ formulation. Table~\ref{tab:experiment_map} summarizes the three regimes.
 
-\begin{table}[h]\small\centering
+\begin{table}[h]\footnotesize\centering
 \caption{Experiment regimes across paper sections.}
+\setlength{\tabcolsep}{2.5pt}
 \begin{tabular}{llll}
 \toprule
-Part & $\theta$ distribution & Baseline & Estimand \\
+Part & $\theta$ distrib. & Baseline & Estimand \\
 \midrule
-I (Alignment) & $\theta \sim \mathcal{N}(\bar{z}, 1)$ & Pure game & Mean over $\theta$ draws \\
-II (Info Design) & Fixed 9-point grid $[0.2, 0.8]$ & Calibrated baseline & Mean over grid \\
-III (Regime Tools) & Same as Part~I & Comm.\ game & Mean over $\theta$ draws \\
+I (Align.) & $\mathcal{N}(\bar{z}, 1)$ & Pure game & Mean over $\theta$ draws \\
+II (Info.) & Grid $[0.2, 0.8]$ & Calibrated & Mean over grid \\
+III (Regime) & Same as I & Comm.\ game & Mean over $\theta$ draws \\
 \bottomrule
 \end{tabular}
 \label{tab:experiment_map}
@@ -207,7 +208,7 @@ Of the eight pre-specified hypotheses, five survive Bonferroni correction at $\a
 \section{Results} \label{sec:results}
 
 \begin{figure}[htbp]\centering\includegraphics[width=\columnwidth]{figures/fig01_sigmoid.pdf}
-\caption{Empirical join fraction vs.\ $\theta$ (Mistral, 1,000 periods). The empirical sigmoid is shifted leftward ($\hat{\theta}^* = -0.33$) relative to theory ($\theta^* = 0.50$). Cross-model results in Table~\ref{tab:main_results} (mean $r = +0.80$, all $p < 0.001$).}\label{fig:sigmoid}
+\caption{Empirical join fraction vs.\ $\theta$ (Mistral, 1,000 periods). The empirical sigmoid is shifted leftward ($\hat{\theta}^* = \PrimaryPureCutoff$) relative to theory ($\theta^* = 0.50$). Cross-model results in Table~\ref{tab:main_results} (mean $r = \MeanModelRPureAttack$, all $p < 0.001$).}\label{fig:sigmoid}
 \end{figure}
 
 \begin{result}[Threshold-Policy Alignment]
@@ -226,7 +227,7 @@ The slope reflects classical measurement error attenuation from narrative-to-bel
 
 Alignment is stable across architectures (Figure~\ref{fig:cross_model}): correlations span $r \in [\MinModelPureRAttack, \MaxModelPureRAttack]$ despite parameter counts ranging from 30B to 235B. Mean join rates vary, reflecting model-specific action biases that shift the intercept but not the correlation. Estimated cutoffs vary ($\hat{\theta}^* \in [-0.32, +0.10]$); the disciplined evidence on cutoff location comes from comparative statics, where changing narrative stakes shifts $\hat{\theta}^*$ in lockstep with payoff theory (Table~\ref{tab:bc_statics}, Figure~\ref{fig:bc_sweep}). A structural estimation against cognitive hierarchy benchmarks confirms these threshold policies are remarkably sophisticated: LLM behavior closely fits the unique Bayesian Nash Equilibrium (BNE), rejecting the level-$k$ behavior typically observed in human laboratory subjects.
 
-Human subjects in coordination game experiments consistently exhibit level-$k$ cognitive hierarchy behavior rather than full equilibrium reasoning \citep{szkup2020}. To test whether LLM agents play the BNE or a level-$k$ heuristic, I evaluate theoretical attack masses under BNE, $L_1$ (agents best-respond believing others randomize uniformly), and $L_2$ (agents best-respond believing others play $L_1$). While the thresholds are identical when $\theta^* = 0.50$, the cost/benefit sweep uniquely separates them. Across the seven cost/benefit conditions, the empirical join fraction overwhelmingly selects BNE (RMSE = 0.199, $r = +0.737$) over $L_1$ (RMSE = 0.307, $r = +0.445$) and $L_2$ (RMSE = 0.348, $r = +0.354$). The agents' threshold policies approximate the full Bayes-Nash Equilibrium.
+Human subjects in coordination game experiments consistently exhibit level-$k$ cognitive hierarchy behavior rather than full equilibrium reasoning \citep{szkup2020}. To test whether LLM agents play the BNE or a level-$k$ heuristic, I evaluate theoretical attack masses under BNE, $L_1$ (agents best-respond believing others randomize uniformly), and $L_2$ (agents best-respond believing others play $L_1$). While the thresholds are identical when $\theta^* = 0.50$, the cost/benefit sweep uniquely separates them. Across the seven cost/benefit conditions, the empirical join fraction overwhelmingly selects BNE (RMSE = 0.199, $r = +0.737$) over $L_1$ (RMSE = 0.307, $r = +0.445$) and $L_2$ (RMSE = 0.348, $r = +0.354$). The agents' threshold policies approximate the full Bayesian Nash Equilibrium.
 
 The claim is behavioral: agents do not observe $(B, C)$, $\sigma$, or $N$, yet the \textit{pattern} of responses---monotone sigmoid, payoff-sensitive cutoff, belief-mediated decisions---is robust across architectures and falsifiable. Three identification strategies establish that the regularity reflects more than text classification.
 
@@ -240,7 +241,7 @@ The claim is behavioral: agents do not observe $(B, C)$, $\sigma$, or $N$, yet t
 
 \textit{Classifier baselines.} Text features alone cannot reproduce LLM behavior. A bag-of-words classifier achieves \ClassBowAccuracyPct\ accuracy in-distribution but fails to predict the surveillance chilling effect ($\ClassBowSurvGapPP$~pp gap; Table~\ref{tab:classifiers} in Appendix~\ref{sec:identification_appendix}). Additional identification tests---coordination-cue manipulation and construct validity---are reported in Appendix~\ref{sec:identification_appendix}.
 
-The correlation is invariant to decoding temperature ($r \in [+0.76, +0.79]$ across $T \in \{0.3, 0.7, 1.0\}$; Appendix~\ref{sec:temp_robustness}). What matters for Part~II is that the behavioral regularity is robust enough to serve as a platform for studying how information structures shift coordination outcomes.
+The correlation is invariant to decoding temperature (for the primary model, $r \in [+0.76, +0.79]$ across $T \in \{0.3, 0.7, 1.0\}$; full three-model sweep in Appendix~\ref{sec:temp_robustness}). What matters for Part~II is that the behavioral regularity is robust enough to serve as a platform for studying how information structures shift coordination outcomes.
 
 \input{tables/tab_bc_statics.tex}
 
@@ -399,7 +400,7 @@ Message content reveals the mechanism (Table~\ref{tab:surveillance_propaganda}).
 %% 9. CONCLUSION
 \section{Conclusion} \label{sec:conclusion}
 
-The information channel is a trap, and this paper has documented the trap's mechanism. LLM agents implement threshold policies closely consistent with the unique Bayes-Nash Equilibrium, and this behavioral regularity converts the experiment into a testbed for information design. The key finding is that the communication channel enabling coordination is the same channel through which regimes suppress it: surveillance induces a belief--action wedge where agents self-censor while interpreting others' silence as genuine, preventing common knowledge of shared discontent from forming. Censorship and surveillance are complements---degrading private signals makes the communication channel more important, and surveillance poisons that channel.
+The information channel is a trap, and this paper has documented the trap's mechanism. LLM agents implement threshold policies closely consistent with the unique Bayesian Nash Equilibrium, and this behavioral regularity converts the experiment into a testbed for information design. The key finding is that the communication channel enabling coordination is the same channel through which regimes suppress it: surveillance induces a belief--action wedge where agents self-censor while interpreting others' silence as genuine, preventing common knowledge of shared discontent from forming. Censorship and surveillance are complements---degrading private signals makes the communication channel more important, and surveillance poisons that channel.
 
 A rough welfare accounting illustrates the stakes. Under uniform $\theta$, the BNE yields per-citizen expected payoff of 0.27 (on a $[-1, 1]$ scale), roughly half the first-best payoff of 0.50 achievable with perfect coordination. Surveillance reduces citizen welfare by a further 14\%---regime survival rises from 50\% to 54\%---while the stability design produces a comparable 13\% welfare loss. These calculations are stylized (they treat the observed level shifts as if they were uniform across $\theta$), but they quantify the core asymmetry: the regime's instruments improve its survival at citizens' expense, and the welfare cost of each instrument exceeds its effect on average join rates because the chilling effect concentrates in states where coordination is most valuable.
 
@@ -520,6 +521,11 @@ Threshold-policy alignment is stable to agent count ($r \in [+0.60, +0.68]$ acro
 Without calibration, all six models show $r > 0.69$ and five exceed $r > 0.75$ (Table~\ref{tab:uncalibrated_expanded}). Deliberately miscalibrating two models ($\pm 0.3$ shift) leaves $r$ virtually unchanged ($r \in [\PlaceboCalibLlamaBPlusRAttack, \PlaceboCalibMistralSmallMinusRAttack]$; Table~\ref{tab:placebo_calibration}): calibration adjusts the \textit{level} but does not create the \textit{slope}. Table~\ref{tab:calibration_robustness} and Figure~\ref{fig:calibration_convergence} report calibration quality across all seven models ($r$ ranges from $\MistralPureRAttack$ to $\TrinityPureRAttack$).
 \input{tables/tab_uncalibrated_expanded.tex}
 \input{tables/tab_placebo_calibration.tex}
+
+\begin{figure}[htbp]\centering\includegraphics[width=\columnwidth]{figures/fig21_placebo_calibration.pdf}
+\caption{Placebo calibration: deliberately miscalibrating Mistral and Llama ($\pm 0.3$ shift) leaves $r$ virtually unchanged, confirming calibration adjusts the \textit{level} but does not create the \textit{slope}.}\label{fig:placebo_calibration}
+\end{figure}
+
 \input{tables/tab_calibration_robustness.tex}
 \begin{figure*}[htbp]\centering\includegraphics[width=\textwidth]{figures/figA4_calibration.pdf}
 \caption{Calibration convergence. \textit{Left:} Trajectory of fitted logistic center across autocalibration rounds. \textit{Right:} Final calibrated cutoff center per model.}\label{fig:calibration_convergence}
@@ -554,7 +560,7 @@ Two placebo variants---monitoring ``for research purposes'' (no consequences) an
 
 \label{sec:within_scramble}Three tests confirm the signal is distributed across all eight evidence domains. Observation shuffle ($r = \WithinScrambleRAttack$), domain scramble for coordination bullets ($r = \DomainScrambleCoordRAttack$), and domain scramble for state-capacity bullets ($r = \DomainScrambleStateRAttack$) all preserve the baseline correlation ($r = \InfodesignBaselineRAttack$), ruling out bullet ordering or any single domain subset as the driver.
 
-\subsection{Finite-$N$ Benchmark}
+\subsection{Finite-\texorpdfstring{$N$}{N} Benchmark}
 Predicted regime fall rates (binomial model with out-of-sample logistic fits) correlate with empirical rates at $r \geq 0.88$ for every model (Mistral: $r = 0.9995$; Table~\ref{tab:finite_n}).
 \input{tables/tab_finite_n.tex}
 \subsection{Agent-Level Analysis}
@@ -575,7 +581,7 @@ Three text rendering formats---baseline narrative, diplomatic cable, journalisti
 \input{tables/tab_cross_generator.tex}
 
 \subsection{Belief and Risk Elicitation}
-Stated beliefs track the theoretical success probability ($r_{\text{post}} = \BeliefPureRPosterior$) and predict actions ($r_{\text{b,d}} = \BeliefPureRDecision$; partial $r = \BeliefPureRPartial$ controlling for signal). Under surveillance, beliefs shift only $\PrefFalsBeliefDeltaPP$~pp while actions shift $\PrefFalsActionDeltaPP$~pp (Table~\ref{tab:beliefs}). Pre-decision elicitation ($N = 5{,}000$) produces $r_{\text{pre}} = +0.82$ vs.\ $r_{\text{post}} = +0.84$, ruling out ex-post rationalization.
+Stated beliefs track the theoretical success probability ($r_{\text{belief,posterior}} = \BeliefPureRPosterior$) and predict actions ($r_{\text{belief,decision}} = \BeliefPureRDecision$; partial $r = \BeliefPureRPartial$ controlling for signal). Under surveillance, beliefs shift only $\PrefFalsBeliefDeltaPP$~pp while actions shift $\PrefFalsActionDeltaPP$~pp (Table~\ref{tab:beliefs}). Pre-decision elicitation ($N = 5{,}000$) produces $r = +0.82$ vs.\ post-decision $r = +0.84$, ruling out ex-post rationalization.
 \input{tables/tab_beliefs.tex}
 
 \label{sec:punishment_risk}Mean punishment risk is ${\approx}\,8.0/10$ across all conditions with negligible JOIN/STAY differences ($< 0.2$ points; Table~\ref{tab:punishment_risk}), supporting the contaminated-communication interpretation.

@@ -2,7 +2,8 @@
 \centering
 \caption{Agent-level belief correlations (primary model: Mistral Small Creative).}
 \label{tab:beliefs}
-\small
+\footnotesize
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{lccccc}
 \toprule
 Treatment & $N$ & $r_{\text{post}}$ & $r_{\text{b,d}}$ & $r_{\text{partial}}$ & Mean belief \\
@@ -13,5 +14,5 @@ Surveillance & 5000 & $+0.78$ & $+0.73$ & $+0.47$ & 0.436 \\
 \bottomrule
 \end{tabular}
 \vspace{0.25em}
-\parbox{\columnwidth}{\footnotesize\emph{Notes:} $r_{\text{post}}$: correlation between posterior and stated belief. $r_{\text{b,d}}$: correlation between belief and decision. $r_{\text{partial}}$: partial correlation of belief and decision controlling for z-score.}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} $r_{\text{post}}$: posterior vs.\ stated belief. $r_{\text{b,d}}$: belief vs.\ decision. $r_{\text{partial}}$: belief--decision controlling for z-score.}
 \end{table}
