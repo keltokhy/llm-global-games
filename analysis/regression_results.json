@@ -200,6 +200,33 @@
           "ci_hi": 0.0974
         }
       },
+      "marginal_effects_at_mean": {
+        "const": -0.0213,
+        "theta": -0.4104,
+        "treat_comm": 0.0056,
+        "treat_flip": 0.0019,
+        "treat_propaganda_k10": -0.0897,
+        "treat_propaganda_k2": -0.0543,
+        "treat_propaganda_k5": -0.2472,
+        "treat_propaganda_surveillance": -0.3637,
+        "treat_scramble": 0.0152,
+        "treat_surveillance": -0.3643,
+        "theta_x_comm": -0.1095,
+        "theta_x_flip": 0.7787,
+        "theta_x_propaganda_k10": -0.2408,
+        "theta_x_propaganda_k2": -0.2626,
+        "theta_x_propaganda_k5": -0.4573,
+        "theta_x_propaganda_surveillance": -0.0612,
+        "theta_x_scramble": 0.4,
+        "theta_x_surveillance": -0.2717,
+        "fe_meta-llama--llama-3.3-70b-instruct": -0.0752,
+        "fe_minimax--minimax-m2-her": -0.0335,
+        "fe_mistralai--mistral-small-creative": -0.1154,
+        "fe_openai--gpt-oss-120b": -0.0625,
+        "fe_qwen--qwen3-235b-a22b-2507": -0.1106,
+        "fe_qwen--qwen3-30b-a3b-instruct-2507": -0.0025
+      },
+      "mean_predicted_prob": 0.38,
       "base_model": "arcee-ai--trinity-large-preview_free",
       "base_treatment": "pure",
       "n_clusters": 4500
@@ -227,7 +254,12 @@
           "ci_lo": -1.129,
           "ci_hi": -1.0213
         }
-      }
+      },
+      "marginal_effects_at_mean": {
+        "const": -0.1438,
+        "theta": -0.2533
+      },
+      "mean_predicted_prob": 0.38
     }
   },
   "coordination_ablation": {
@@ -271,6 +303,13 @@
           "ci_hi": 0.6636
         }
       },
+      "marginal_effects_at_mean": {
+        "const": 2.6616,
+        "direction": -3.402,
+        "coordination": -2.2536,
+        "dir_x_coord": -0.0102
+      },
+      "mean_predicted_prob": 0.4077,
       "n_clusters": 1400
     },
     "direction_only": {
@@ -296,7 +335,12 @@
           "ci_lo": -6.0844,
           "ci_hi": -5.6733
         }
-      }
+      },
+      "marginal_effects_at_mean": {
+        "const": 0.5483,
+        "direction": -1.4196
+      },
+      "mean_predicted_prob": 0.4077
     },
     "with_model_fe": {
       "n_obs": 44662,
@@ -386,6 +430,19 @@
           "ci_hi": 2.5801
         }
       },
+      "marginal_effects_at_mean": {
+        "const": 2.8705,
+        "direction": -3.7164,
+        "coordination": -2.2406,
+        "dir_x_coord": 0.3695,
+        "fe_meta-llama--llama-3.3-70b-instruct": 0.0943,
+        "fe_minimax--minimax-m2-her": -0.2801,
+        "fe_mistralai--mistral-small-creative": -0.2425,
+        "fe_openai--gpt-oss-120b": -0.3335,
+        "fe_qwen--qwen3-235b-a22b-2507": 0.0121,
+        "fe_qwen--qwen3-30b-a3b-instruct-2507": 0.5334
+      },
+      "mean_predicted_prob": 0.4077,
       "base_model": "arcee-ai--trinity-large-preview_free"
     },
     "all_treatments": {
@@ -451,7 +508,17 @@
           "ci_lo": -0.0065,
           "ci_hi": 0.1581
         }
-      }
+      },
+      "marginal_effects_at_mean": {
+        "const": 2.3495,
+        "direction": -3.1032,
+        "coordination": -1.9126,
+        "dir_x_coord": -0.0547,
+        "treat_comm": 0.027,
+        "treat_scramble": 0.015,
+        "treat_flip": 0.0186
+      },
+      "mean_predicted_prob": 0.4286
     }
   },
   "belief_regressions": {
@@ -561,6 +628,15 @@
           "ci_hi": 0.524
         }
       },
+      "marginal_effects_at_mean": {
+        "const": -6.3822,
+        "belief": 0.0883,
+        "z_score": -0.0095,
+        "treat_beliefs_propaganda_k5": 0.0021,
+        "treat_beliefs_pure": 1.1608,
+        "treat_beliefs_surveillance": 0.0067
+      },
+      "mean_predicted_prob": 0.4045,
       "base_treatment": "beliefs_comm"
     }
   },

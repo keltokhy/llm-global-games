@@ -1,15 +1,18 @@
 \begin{table}[t]
 \centering
-\caption{B/C comparative statics: classifier vs.\ actual LLM behavior. A logistic trained on baseline join rates (which captures the same information as slider features) predicts similar join rates across all payoff conditions. Actual LLM behavior shifts by ${\approx}\,50$~pp, demonstrating that agents respond to payoff information not captured by text features.}
+\caption{B/C comparative statics: classifier vs.\ actual LLM behavior. Actual join rates shift by ${\approx}\,50$~pp across payoff conditions; the classifier, trained on text features alone, cannot predict this shift.}
 \label{tab:bc_classifier}
-\small
+\footnotesize
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{lcccc}
 \toprule
-Condition & $N$ & Classifier pred. & Actual & Gap (pp) \\
+Condition & $N$ & Classif.\ pred. & Actual & Gap (pp) \\
 \midrule
 Baseline ($\theta^* = 0.50$) & 270 & 40.9\% & 40.9\% & +0.0 \\
 High cost ($\theta^* = 0.25$) & 270 & 40.9\% & 19.0\% & +21.9 \\
 Low cost ($\theta^* = 0.75$) & 270 & 40.9\% & 69.3\% & -28.4 \\
 \bottomrule
 \end{tabular}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model (Mistral Small Creative). Logistic classifier trained on baseline slider features. Gap = classifier-predicted join rate $-$ actual LLM join rate (pp).}
 \end{table}

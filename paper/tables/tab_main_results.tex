@@ -9,16 +9,18 @@
 \cmidrule(lr){2-3} \cmidrule(lr){4-5}
 Model & Pure & Comm & Scramble & Flip & $n_{\text{pure}}$ & Mean join \\
 \midrule
-Mistral Small Creative & $+0.75$ {\scriptsize $[0.72,0.78]$} & $+0.74$ {\scriptsize $[0.71,0.76]$} & $+0.09$ & $-0.81$ & 1000 & 0.39 \\
-Llama 3.3 70B & $+0.82$ {\scriptsize $[0.74,0.87]$} & $+0.78$ {\scriptsize $[0.69,0.85]$} & $+0.02$ & $-0.84$ & 100 & 0.44 \\
-Qwen3 30B & $+0.76$ {\scriptsize $[0.66,0.83]$} & $+0.77$ {\scriptsize $[0.68,0.84]$} & $+0.13$ & $-0.87$ & 100 & 0.50 \\
-GPT-OSS 120B & $+0.79$ {\scriptsize $[0.74,0.84]$} & $+0.78$ {\scriptsize $[0.72,0.83]$} & $-0.01$ & $-0.80$ & 200 & 0.41 \\
-Qwen3 235B & $+0.80$ {\scriptsize $[0.74,0.84]$} & $+0.76$ {\scriptsize $[0.70,0.81]$} & $+0.06$ & $-0.85$ & 200 & 0.42 \\
-Trinity Large & $+0.84$ {\scriptsize $[0.77,0.89]$} & $+0.83$ {\scriptsize $[0.75,0.88]$} & $+0.05$ & $-0.80$ & 100 & 0.46 \\
-MiniMax M2-Her & $+0.82$ {\scriptsize $[0.74,0.87]$} & $+0.82$ {\scriptsize $[0.74,0.87]$} & $+0.01$ & $-0.62$ & 100 & 0.44 \\
+Mistral Small Creative & $+0.75$ {\scriptsize $[0.72,0.78]$} & $+0.74$ {\scriptsize $[0.71,0.76]$} & $+0.09$ & $-0.81$ & 1000 & 0.387 \\
+Llama 3.3 70B & $+0.82$ {\scriptsize $[0.74,0.87]$} & $+0.78$ {\scriptsize $[0.69,0.85]$} & $+0.02$ & $-0.84$ & 100 & 0.439 \\
+Qwen3 30B & $+0.76$ {\scriptsize $[0.66,0.83]$} & $+0.77$ {\scriptsize $[0.68,0.84]$} & $+0.13$ & $-0.87$ & 100 & 0.499 \\
+GPT-OSS 120B & $+0.79$ {\scriptsize $[0.74,0.84]$} & $+0.78$ {\scriptsize $[0.72,0.83]$} & $-0.01$ & $-0.80$ & 200 & 0.407 \\
+Qwen3 235B & $+0.80$ {\scriptsize $[0.74,0.84]$} & $+0.76$ {\scriptsize $[0.70,0.81]$} & $+0.06$ & $-0.85$ & 200 & 0.416 \\
+Trinity Large & $+0.84$ {\scriptsize $[0.77,0.89]$} & $+0.83$ {\scriptsize $[0.75,0.88]$} & $+0.05$ & $-0.80$ & 100 & 0.464 \\
+MiniMax M2-Her & $+0.82$ {\scriptsize $[0.74,0.87]$} & $+0.82$ {\scriptsize $[0.74,0.87]$} & $+0.01$ & $-0.62$ & 100 & 0.436 \\
 \midrule
-\textbf{Pooled} & $+0.76$ {\scriptsize $[0.74,0.78]$} & $+0.75$ {\scriptsize $[0.73,0.77]$} & $+0.03$ & $-0.79$ & 1800 & 0.41 \\
+\textbf{Pooled} & $+0.76$ {\scriptsize $[0.74,0.78]$} & $+0.75$ {\scriptsize $[0.73,0.77]$} & $+0.03$ & $-0.79$ & 1800 & 0.409 \\
 \textbf{Mean across models} & $+0.80$ & $+0.78$ & $+0.05$ & $-0.80$ & --- & --- \\
 \bottomrule
 \end{tabular}
+\vspace{0.25em}
+\parbox{\textwidth}{\footnotesize\emph{Notes:} $r = r(J, A(\theta))$: Pearson correlation between empirical join fraction and theoretical attack mass under $B = C = 1$. 95\% Fisher-$z$ confidence intervals in brackets. Join fraction uses valid decisions only (excluding parse errors). Pooled: all country-periods concatenated; Mean: equal-weighted average across models.}
 \end{table*}

@@ -9,6 +9,15 @@
 \providecommand{\CommCommMeanPooled}{0.421}
 \providecommand{\CommDeltaPPPooled}{+1.23}
 \providecommand{\CommPValueUnpaired}{0.327}
+\providecommand{\CommDeltaPPPaired}{+5.48}
+\providecommand{\CommTStatPaired}{11.200}
+\providecommand{\CommPValuePaired}{0.000}
+\providecommand{\CommNPairs}{680}
+
+% H8 power analysis
+\providecommand{\PropPowerCohensD}{-0.049}
+\providecommand{\PropPowerPostHoc}{0.145}
+\providecommand{\PropPowerMDEPP}{6.3}
 
 % Pooled pure/comm aggregates
 \providecommand{\PooledPureRTheta}{-0.82}
@@ -19,8 +28,13 @@
 \providecommand{\PooledCommMeanJoin}{0.421}
 \providecommand{\MeanModelRPureTheta}{-0.84}
 \providecommand{\MeanModelRPureAttack}{+0.80}
+\providecommand{\MeanModelRCommAttack}{+0.78}
 \providecommand{\MeanModelRFlipAttack}{-0.80}
 \providecommand{\PooledFlipRAttack}{-0.79}
+
+% Primary model (Mistral) logistic fit
+\providecommand{\PrimaryPureCutoff}{-0.32}
+\providecommand{\PrimaryPureSlope}{2.15}
 
 % Pooled OLS (join_fraction ~ theta)
 \providecommand{\PooledOLSIntercept}{0.132}
@@ -41,24 +55,31 @@
 \providecommand{\MistralPureRTheta}{-0.83}
 \providecommand{\MistralPureRAttack}{+0.75}
 \providecommand{\MistralPureMeanJoin}{0.387}
+\providecommand{\MistralCommRAttack}{+0.74}
 \providecommand{\LlamaPureRTheta}{-0.85}
 \providecommand{\LlamaPureRAttack}{+0.82}
 \providecommand{\LlamaPureMeanJoin}{0.439}
+\providecommand{\LlamaCommRAttack}{+0.78}
 \providecommand{\QwenSPureRTheta}{-0.84}
 \providecommand{\QwenSPureRAttack}{+0.76}
 \providecommand{\QwenSPureMeanJoin}{0.499}
+\providecommand{\QwenSCommRAttack}{+0.77}
 \providecommand{\GptOssPureRTheta}{-0.84}
 \providecommand{\GptOssPureRAttack}{+0.79}
 \providecommand{\GptOssPureMeanJoin}{0.407}
+\providecommand{\GptOssCommRAttack}{+0.78}
 \providecommand{\QwenLPureRTheta}{-0.85}
 \providecommand{\QwenLPureRAttack}{+0.80}
 \providecommand{\QwenLPureMeanJoin}{0.416}
+\providecommand{\QwenLCommRAttack}{+0.76}
 \providecommand{\TrinityPureRTheta}{-0.87}
 \providecommand{\TrinityPureRAttack}{+0.84}
 \providecommand{\TrinityPureMeanJoin}{0.464}
+\providecommand{\TrinityCommRAttack}{+0.83}
 \providecommand{\MiniMaxPureRTheta}{-0.79}
 \providecommand{\MiniMaxPureRAttack}{+0.82}
 \providecommand{\MiniMaxPureMeanJoin}{0.436}
+\providecommand{\MiniMaxCommRAttack}{+0.82}
 
 % Fisher z-tests
 \providecommand{\FisherPureVsScrambleZ}{25.09}
@@ -70,57 +91,90 @@
 \providecommand{\InfodesignBaselineMean}{0.409}
 \providecommand{\InfodesignBaselineMeanPct}{40.9\%}
 \providecommand{\InfodesignBaselineRTheta}{-0.884}
+\providecommand{\InfodesignBaselineRAttack}{+0.885}
 \providecommand{\InfodesignBaselineDeltaPP}{---}
 
 \providecommand{\InfodesignStabilityMean}{0.319}
 \providecommand{\InfodesignStabilityMeanPct}{31.9\%}
 \providecommand{\InfodesignStabilityRTheta}{-0.626}
+\providecommand{\InfodesignStabilityRAttack}{+0.624}
 \providecommand{\InfodesignStabilityDeltaPP}{-9.0}
 
 \providecommand{\InfodesignInstabilityMean}{0.067}
 \providecommand{\InfodesignInstabilityMeanPct}{6.7\%}
 \providecommand{\InfodesignInstabilityRTheta}{-0.740}
+\providecommand{\InfodesignInstabilityRAttack}{+0.742}
 \providecommand{\InfodesignInstabilityDeltaPP}{-34.2}
 
 \providecommand{\InfodesignPublicSignalMean}{0.017}
 \providecommand{\InfodesignPublicSignalMeanPct}{1.7\%}
 \providecommand{\InfodesignPublicSignalRTheta}{-0.537}
+\providecommand{\InfodesignPublicSignalRAttack}{+0.532}
 \providecommand{\InfodesignPublicSignalDeltaPP}{-39.2}
 
 \providecommand{\InfodesignScrambleMean}{0.121}
 \providecommand{\InfodesignScrambleMeanPct}{12.1\%}
 \providecommand{\InfodesignScrambleRTheta}{+0.037}
+\providecommand{\InfodesignScrambleRAttack}{-0.033}
 \providecommand{\InfodesignScrambleDeltaPP}{-28.8}
 
 \providecommand{\InfodesignFlipMean}{0.663}
 \providecommand{\InfodesignFlipMeanPct}{66.3\%}
 \providecommand{\InfodesignFlipRTheta}{+0.823}
+\providecommand{\InfodesignFlipRAttack}{-0.820}
 \providecommand{\InfodesignFlipDeltaPP}{+25.5}
 
 \providecommand{\InfodesignCensorUpperMean}{0.377}
 \providecommand{\InfodesignCensorUpperMeanPct}{37.7\%}
 \providecommand{\InfodesignCensorUpperRTheta}{-0.721}
+\providecommand{\InfodesignCensorUpperRAttack}{+0.722}
 \providecommand{\InfodesignCensorUpperDeltaPP}{-3.1}
 
 \providecommand{\InfodesignCensorLowerMean}{0.390}
 \providecommand{\InfodesignCensorLowerMeanPct}{39.0\%}
 \providecommand{\InfodesignCensorLowerRTheta}{+0.731}
+\providecommand{\InfodesignCensorLowerRAttack}{-0.750}
 \providecommand{\InfodesignCensorLowerDeltaPP}{-1.9}
+
+\providecommand{\InfodesignCensorUpperKnownMean}{0.432}
+\providecommand{\InfodesignCensorUpperKnownMeanPct}{43.2\%}
+\providecommand{\InfodesignCensorUpperKnownRTheta}{-0.739}
+\providecommand{\InfodesignCensorUpperKnownRAttack}{+0.738}
+\providecommand{\InfodesignCensorUpperKnownDeltaPP}{+2.4}
+
+\providecommand{\InfodesignHardScrambleMean}{0.403}
+\providecommand{\InfodesignHardScrambleMeanPct}{40.3\%}
+\providecommand{\InfodesignHardScrambleRTheta}{-0.057}
+\providecommand{\InfodesignHardScrambleRAttack}{+0.052}
+\providecommand{\InfodesignHardScrambleDeltaPP}{-0.6}
 
 \providecommand{\DecompClarityOnlyMean}{0.405}
 \providecommand{\DecompClarityOnlyMeanPct}{40.5\%}
 \providecommand{\DecompClarityOnlyRTheta}{-0.887}
+\providecommand{\DecompClarityOnlyRAttack}{+0.887}
 \providecommand{\DecompClarityOnlyDeltaPP}{-0.4}
 
 \providecommand{\DecompDirectionOnlyMean}{0.389}
 \providecommand{\DecompDirectionOnlyMeanPct}{38.9\%}
 \providecommand{\DecompDirectionOnlyRTheta}{-0.876}
+\providecommand{\DecompDirectionOnlyRAttack}{+0.874}
 \providecommand{\DecompDirectionOnlyDeltaPP}{-2.0}
 
 \providecommand{\DecompDissentOnlyMean}{0.406}
 \providecommand{\DecompDissentOnlyMeanPct}{40.6\%}
 \providecommand{\DecompDissentOnlyRTheta}{-0.882}
+\providecommand{\DecompDissentOnlyRAttack}{+0.882}
 \providecommand{\DecompDissentOnlyDeltaPP}{-0.2}
+
+% Regime fall rates (fraction of periods where join > theta)
+\providecommand{\InfodesignBaselineFallRate}{43.3\%}
+\providecommand{\InfodesignStabilityFallRate}{34.1\%}
+\providecommand{\InfodesignInstabilityFallRate}{2.8\%}
+\providecommand{\InfodesignPublicSignalFallRate}{0.0\%}
+\providecommand{\InfodesignCensorUpperFallRate}{41.9\%}
+\providecommand{\InfodesignCensorLowerFallRate}{21.5\%}
+\providecommand{\InfodesignCensorUpperKnownFallRate}{52.2\%}
+\providecommand{\InfodesignHardScrambleFallRate}{34.8\%}
 
 \providecommand{\DecompSumChannelsDeltaPP}{-2.6}
 \providecommand{\DecompFullDeltaPP}{-9.0}
@@ -128,14 +182,17 @@
 \providecommand{\WithinScrambleMean}{0.400}
 \providecommand{\WithinScrambleMeanPct}{40.0\%}
 \providecommand{\WithinScrambleRTheta}{-0.911}
+\providecommand{\WithinScrambleRAttack}{+0.912}
 \providecommand{\WithinScrambleDeltaPP}{-0.8}
 \providecommand{\DomainScrambleCoordMean}{0.424}
 \providecommand{\DomainScrambleCoordMeanPct}{42.4\%}
 \providecommand{\DomainScrambleCoordRTheta}{-0.921}
+\providecommand{\DomainScrambleCoordRAttack}{+0.921}
 \providecommand{\DomainScrambleCoordDeltaPP}{+1.6}
 \providecommand{\DomainScrambleStateMean}{0.424}
 \providecommand{\DomainScrambleStateMeanPct}{42.4\%}
 \providecommand{\DomainScrambleStateRTheta}{-0.928}
+\providecommand{\DomainScrambleStateRAttack}{+0.928}
 \providecommand{\DomainScrambleStateDeltaPP}{+1.6}
 
 % Surveillance x censorship levels (primary model)
@@ -147,31 +204,41 @@
 \providecommand{\SXCLowerSurvMeanPct}{4.2\%}
 
 % Surveillance per-model delta vs baseline
-\providecommand{\SurvMistralDeltaPP}{-1354.0}
+\providecommand{\SurvMistralDeltaPP}{-13.5}
 \providecommand{\SurvMistralMeanJoin}{0.276}
-\providecommand{\SurvLlamaDeltaPP}{-888.0}
+\providecommand{\SurvMistralRAttack}{+0.68}
+\providecommand{\SurvLlamaDeltaPP}{-8.9}
 \providecommand{\SurvLlamaMeanJoin}{0.327}
-\providecommand{\SurvQwenSDeltaPP}{-1093.0}
+\providecommand{\SurvLlamaRAttack}{+0.61}
+\providecommand{\SurvQwenSDeltaPP}{-10.9}
 \providecommand{\SurvQwenSMeanJoin}{0.343}
-\providecommand{\SurvGptOssDeltaPP}{-1192.0}
+\providecommand{\SurvQwenSRAttack}{+0.61}
+\providecommand{\SurvGptOssDeltaPP}{-11.9}
 \providecommand{\SurvGptOssMeanJoin}{0.322}
-\providecommand{\SurvQwenLDeltaPP}{-326.0}
+\providecommand{\SurvGptOssRAttack}{+0.76}
+\providecommand{\SurvQwenLDeltaPP}{-3.3}
 \providecommand{\SurvQwenLMeanJoin}{0.384}
+\providecommand{\SurvQwenLRAttack}{+0.77}
 \providecommand{\SurvTrinityDeltaPP}{---}
 \providecommand{\SurvTrinityMeanJoin}{---}
+\providecommand{\SurvTrinityRAttack}{---}
 \providecommand{\SurvMiniMaxDeltaPP}{---}
 \providecommand{\SurvMiniMaxMeanJoin}{---}
+\providecommand{\SurvMiniMaxRAttack}{---}
+\providecommand{\SurvMeanRAttack}{+0.69}
 
 % Surveillance variants
-\providecommand{\PlaceboSurvDeltaPP}{+257.0}
+\providecommand{\PlaceboSurvDeltaPP}{+2.6}
 \providecommand{\PlaceboSurvPValue}{0.4164}
 \providecommand{\PlaceboSurvMeanJoin}{0.437}
-\providecommand{\AnonSurvDeltaPP}{+405.0}
+\providecommand{\PlaceboSurvMeanJoinPct}{43.7\%}
+\providecommand{\AnonSurvDeltaPP}{+4.0}
 \providecommand{\AnonSurvPValue}{0.2006}
 \providecommand{\AnonSurvMeanJoin}{0.452}
+\providecommand{\AnonSurvMeanJoinPct}{45.2\%}
 
 % Fixed messages surveillance test
-\providecommand{\FixedMsgDeltaPP}{-2090.0}
+\providecommand{\FixedMsgDeltaPP}{-20.9}
 \providecommand{\FixedMsgTStat}{-6.89}
 \providecommand{\FixedMsgPValue}{0.0000}
 \providecommand{\FixedMsgBaselineMean}{0.411}
@@ -180,47 +247,76 @@
 % Beliefs v2
 \providecommand{\BeliefPureRPosterior}{+0.78}
 \providecommand{\BeliefPureRDecision}{+0.84}
+\providecommand{\BeliefPureRPartial}{+0.64}
 \providecommand{\BeliefPureMeanBelief}{0.444}
 \providecommand{\BeliefPureMeanJoin}{0.414}
 \providecommand{\BeliefCommRPosterior}{+0.79}
 \providecommand{\BeliefCommRDecision}{+0.83}
+\providecommand{\BeliefCommRPartial}{+0.56}
 \providecommand{\BeliefCommMeanBelief}{0.444}
 \providecommand{\BeliefCommMeanJoin}{0.414}
 \providecommand{\BeliefSurvRPosterior}{+0.78}
 \providecommand{\BeliefSurvRDecision}{+0.73}
+\providecommand{\BeliefSurvRPartial}{+0.47}
 \providecommand{\BeliefSurvMeanBelief}{0.436}
 \providecommand{\BeliefSurvMeanJoin}{0.285}
 % Second-order beliefs (surveillance vs comm)
 \providecommand{\SOBCommMean}{0.312}
 \providecommand{\SOBSurvMean}{0.309}
-\providecommand{\SOBDeltaPP}{-28.0}
+\providecommand{\SOBDeltaPP}{-0.3}
 \providecommand{\SOBPValue}{0.5866}
 \providecommand{\SOBTStat}{0.54}
 % Preference falsification
 \providecommand{\PrefFalsPureMeanBelief}{0.444}
 \providecommand{\PrefFalsSurvMeanBelief}{0.436}
-\providecommand{\PrefFalsBeliefDeltaPP}{-72.0}
-\providecommand{\PrefFalsActionDeltaPP}{-1293.0}
+\providecommand{\PrefFalsBeliefDeltaPP}{-0.7}
+\providecommand{\PrefFalsActionDeltaPP}{-12.9}
 
 % Classifier baselines
 \providecommand{\ClassBowAccuracy}{0.884}
 \providecommand{\ClassBowAUC}{0.947}
+\providecommand{\ClassBowAccuracyPct}{88.4\%}
 \providecommand{\ClassBowSurvPredicted}{0.405}
 \providecommand{\ClassBowSurvActual}{0.276}
+\providecommand{\ClassBowSurvPredictedPct}{40.5\%}
+\providecommand{\ClassBowSurvActualPct}{27.6\%}
 \providecommand{\ClassBowSurvGapPP}{+13.0}
 \providecommand{\ClassSliderAccuracy}{0.884}
 \providecommand{\ClassSliderAUC}{0.941}
+\providecommand{\ClassSliderAccuracyPct}{88.4\%}
 \providecommand{\ClassSliderSurvPredicted}{0.404}
 \providecommand{\ClassSliderSurvActual}{0.276}
+\providecommand{\ClassSliderSurvPredictedPct}{40.4\%}
 \providecommand{\ClassBCBaselinePredicted}{0.409}
 \providecommand{\ClassBCBaselineActual}{0.409}
 \providecommand{\ClassBCBaselineGapPP}{+0.0}
 \providecommand{\ClassBCHighCostPredicted}{0.409}
 \providecommand{\ClassBCHighCostActual}{0.190}
-\providecommand{\ClassBCHighCostGapPP}{+2190.0}
+\providecommand{\ClassBCHighCostGapPP}{+21.9}
 \providecommand{\ClassBCLowCostPredicted}{0.409}
 \providecommand{\ClassBCLowCostActual}{0.693}
-\providecommand{\ClassBCLowCostGapPP}{-2840.0}
+\providecommand{\ClassBCLowCostGapPP}{-28.4}
+
+% Agent-level regression results
+\providecommand{\ActionEqPseudoRSq}{0.975}
+\providecommand{\ActionEqNObs}{18,990}
+\providecommand{\MainLogitPseudoRSq}{0.3844}
+\providecommand{\MainLogitNObs}{287,055}
+\providecommand{\MEMThetaPP}{41}
+\providecommand{\MEMSurvPP}{36}
+
+% Message informativeness
+\providecommand{\MsgRSqComm}{0.12}
+\providecommand{\MsgRSqSurv}{0.02}
+\providecommand{\MsgRSqDropPct}{81\%}
+
+% Level-k benchmark (BNE vs L1 vs L2)
+\providecommand{\LevelKBNERMSE}{0.199}
+\providecommand{\LevelKBNER}{+0.74}
+\providecommand{\LevelKLOneRMSE}{0.307}
+\providecommand{\LevelKLOneR}{+0.45}
+\providecommand{\LevelKLTwoRMSE}{0.348}
+\providecommand{\LevelKLTwoR}{+0.35}
 
 % B/C sweep
 \providecommand{\BCSweepBaselineMeanJoin}{0.409}
@@ -229,6 +325,9 @@
 \providecommand{\BCSweepBaselineCutoff}{0.393}
 \providecommand{\BCSweepHighCostCutoff}{0.132}
 \providecommand{\BCSweepLowCostCutoff}{0.716}
+
+% B/C sweep cutoff tracking
+\providecommand{\BCSweepCutoffTrackingR}{0.997}
 
 % Coordination cues
 \providecommand{\CoordAmplifiedMeanJoin}{0.404}
@@ -256,33 +355,65 @@
 
 % Temperature robustness
 \providecommand{\TempThreeRTheta}{-0.87}
+\providecommand{\TempThreeRAttack}{+0.78}
 \providecommand{\TempThreeMeanJoin}{0.412}
 \providecommand{\TempSevenRTheta}{-0.87}
+\providecommand{\TempSevenRAttack}{+0.76}
 \providecommand{\TempSevenMeanJoin}{0.406}
 \providecommand{\TempOneRTheta}{-0.88}
+\providecommand{\TempOneRAttack}{+0.79}
 \providecommand{\TempOneMeanJoin}{0.410}
 
 % Uncalibrated robustness
 \providecommand{\UncalMistralR}{-0.86}
+\providecommand{\UncalMistralRAttack}{+0.81}
 \providecommand{\UncalMistralMeanJoin}{0.382}
 \providecommand{\UncalLlamaR}{-0.88}
+\providecommand{\UncalLlamaRAttack}{+0.83}
 \providecommand{\UncalLlamaMeanJoin}{0.422}
 \providecommand{\UncalQwenLR}{-0.86}
+\providecommand{\UncalQwenLRAttack}{+0.86}
 \providecommand{\UncalQwenLMeanJoin}{0.445}
 
 % Cross-generator robustness
 \providecommand{\CrossGenMistralSmallBaselineR}{-0.86}
+\providecommand{\CrossGenMistralSmallBaselineRAttack}{+0.77}
 \providecommand{\CrossGenMistralSmallCableR}{-0.86}
+\providecommand{\CrossGenMistralSmallCableRAttack}{+0.76}
 \providecommand{\CrossGenMistralSmallJournalisticR}{-0.86}
+\providecommand{\CrossGenMistralSmallJournalisticRAttack}{+0.75}
 \providecommand{\CrossGenLlamaBBaselineR}{-0.85}
+\providecommand{\CrossGenLlamaBBaselineRAttack}{+0.75}
 \providecommand{\CrossGenLlamaBCableR}{-0.85}
+\providecommand{\CrossGenLlamaBCableRAttack}{+0.75}
 \providecommand{\CrossGenLlamaBJournalisticR}{-0.85}
+\providecommand{\CrossGenLlamaBJournalisticRAttack}{+0.76}
+
+% Placebo calibration r_vs_attack
+\providecommand{\PlaceboCalibMistralSmallPlusRAttack}{+0.76}
+\providecommand{\PlaceboCalibMistralSmallMinusRAttack}{+0.76}
+\providecommand{\PlaceboCalibLlamaBPlusRAttack}{+0.75}
+\providecommand{\PlaceboCalibLlamaBMinusRAttack}{+0.76}
+
+% Per-model hard scramble
+\providecommand{\HardScrambleMistralSmallRAttack}{+0.05}
+\providecommand{\HardScrambleMistralSmallRTheta}{-0.05}
+\providecommand{\HardScrambleMistralSmallPValue}{0.42}
+\providecommand{\HardScrambleMistralSmallNObs}{270}
+\providecommand{\HardScrambleLlamaBRAttack}{+0.11}
+\providecommand{\HardScrambleLlamaBRTheta}{-0.11}
+\providecommand{\HardScrambleLlamaBPValue}{0.08}
+\providecommand{\HardScrambleLlamaBNObs}{270}
 
 % Propaganda saturation test
 \providecommand{\PropSatKFiveMeanJoin}{---}
 \providecommand{\PropSatKTenMeanJoin}{---}
-\providecommand{\PropSatDeltaPP}{-32.0}
+\providecommand{\PropSatDeltaPP}{-0.3}
 \providecommand{\PropSatPValue}{0.6676}
+
+% Propaganda + surveillance combined
+\providecommand{\PropSurvCombinedMeanRealPct}{24.3\%}
+\providecommand{\PropSurvCombinedDeltaPP}{-16.8}
 
 % Llama propaganda k=5 replication
 \providecommand{\LlamaPropKFiveDeltaRealPP}{-2.7}
@@ -290,6 +421,98 @@
 % Mixed-model robustness
 \providecommand{\MixedPureRAttack}{+0.77}
 \providecommand{\MixedCommRAttack}{+0.75}
+
+% Pooled scramble/flip aggregates
+\providecommand{\PooledScrambleRAttack}{+0.03}
+\providecommand{\PooledScrambleRTheta}{-0.02}
+\providecommand{\PooledScrambleMeanJoin}{0.430}
+\providecommand{\PooledFlipRTheta}{+0.82}
+\providecommand{\PooledFlipMeanJoin}{0.477}
+
+% Mean-of-models scramble r
+\providecommand{\MeanModelRScrambleAttack}{+0.05}
+
+% Mean join rate across all models (pure)
+\providecommand{\MeanModelPureMeanJoin}{0.409}
+
+% Per-model pure mean join range
+\providecommand{\MinModelPureMeanJoin}{0.387}
+\providecommand{\MaxModelPureMeanJoin}{0.499}
+
+% Per-model pure r_attack range
+\providecommand{\MinModelPureRAttack}{+0.75}
+\providecommand{\MaxModelPureRAttack}{+0.84}
+
+% B/C sweep percentage forms
+\providecommand{\BCSweepBaselineMeanPct}{40.9\%}
+\providecommand{\BCSweepHighCostMeanPct}{19.0\%}
+\providecommand{\BCSweepLowCostMeanPct}{69.3\%}
+
+% B/C comparative statics (actual join rates)
+\providecommand{\BCStatBaselineMeanPct}{40.9\%}
+\providecommand{\BCStatHighCostMeanPct}{19.0\%}
+\providecommand{\BCStatLowCostMeanPct}{69.3\%}
+
+% Beliefs second-order details
+\providecommand{\SOBPureMean}{0.310}
+\providecommand{\SOBPureMeanPct}{31.0\%}
+\providecommand{\SOBPureRTheta}{-0.73}
+\providecommand{\SOBCommMeanPct}{31.2\%}
+\providecommand{\SOBCommRTheta}{-0.73}
+\providecommand{\SOBSurvMeanPct}{30.9\%}
+\providecommand{\SOBSurvRTheta}{-0.73}
+
+% Beliefs additional details
+\providecommand{\BeliefPureMeanBeliefPct}{44.4\%}
+\providecommand{\BeliefPureMeanJoinPct}{41.4\%}
+\providecommand{\BeliefCommMeanBeliefPct}{44.4\%}
+\providecommand{\BeliefCommMeanJoinPct}{41.4\%}
+\providecommand{\BeliefSurvMeanBeliefPct}{43.6\%}
+\providecommand{\BeliefSurvMeanJoinPct}{28.5\%}
+
+% Surveillance cross-model average
+\providecommand{\SurvMeanDeltaPP}{-9.7}
+\providecommand{\SurvMistralBaselineMeanPct}{41.1\%}
+\providecommand{\SurvMistralMeanJoinPct}{27.6\%}
+\providecommand{\SurvLlamaBaselineMeanPct}{41.6\%}
+\providecommand{\SurvLlamaMeanJoinPct}{32.7\%}
+\providecommand{\SurvQwenSBaselineMeanPct}{45.2\%}
+\providecommand{\SurvQwenSMeanJoinPct}{34.3\%}
+\providecommand{\SurvGptOssBaselineMeanPct}{44.2\%}
+\providecommand{\SurvGptOssMeanJoinPct}{32.2\%}
+\providecommand{\SurvQwenLBaselineMeanPct}{41.7\%}
+\providecommand{\SurvQwenLMeanJoinPct}{38.4\%}
+
+% Preference falsification additional
+\providecommand{\PrefFalsBeliefPValue}{0.18}
+\providecommand{\PrefFalsActionPValue}{0.0000}
+
+% Fixed messages percentage forms
+\providecommand{\FixedMsgBaselineMeanPct}{41.1\%}
+\providecommand{\FixedMsgSurvMeanPct}{20.2\%}
+
+% Propaganda per-dose (Mistral)
+\providecommand{\PropKTwoMeanAllPct}{37.5\%}
+\providecommand{\PropKTwoMeanRealPct}{40.7\%}
+\providecommand{\PropKTwoDeltaAllPP}{-3.6}
+\providecommand{\PropKTwoDeltaRealPP}{-0.4}
+\providecommand{\PropKFiveMeanAllPct}{31.3\%}
+\providecommand{\PropKFiveMeanRealPct}{39.1\%}
+\providecommand{\PropKFiveDeltaAllPP}{-9.8}
+\providecommand{\PropKFiveDeltaRealPP}{-2.0}
+\providecommand{\PropKTenMeanAllPct}{23.3\%}
+\providecommand{\PropKTenMeanRealPct}{38.8\%}
+\providecommand{\PropKTenDeltaAllPP}{-17.8}
+\providecommand{\PropKTenDeltaRealPP}{-2.3}
+
+% CK cell means pct
+\providecommand{\CKHighCoordCellPct}{42.7\%}
+\providecommand{\CKLowCoordCellPct}{43.5\%}
+\providecommand{\PrivHighCoordCellPct}{37.8\%}
+\providecommand{\PrivLowCoordCellPct}{37.4\%}
+
+% Infodesign flip pct for prose
+\providecommand{\InfodesignFlipMeanJoinPct}{66.3\%}
 
 % Parse error rates
 \providecommand{\ParseErrMistral}{---}
@@ -299,4 +522,62 @@
 \providecommand{\ParseErrQwenL}{---}
 \providecommand{\ParseErrTrinity}{---}
 \providecommand{\ParseErrMiniMax}{---}
+
+% Misc inline paper stats
+\providecommand{\CutoffMin}{-0.32}
+\providecommand{\CutoffMax}{+0.10}
+\providecommand{\TempRMinPrimary}{+0.76}
+\providecommand{\TempRMaxPrimary}{+0.79}
+\providecommand{\TempRMinAll}{+0.76}
+\providecommand{\TempRMaxAll}{+0.84}
+\providecommand{\TempNCombos}{13}
+\providecommand{\UncalMinR}{0.71}
+\providecommand{\UncalNAbove}{5}
+\providecommand{\UncalNTotal}{6}
+\providecommand{\CalRMin}{+0.75}
+\providecommand{\CalRMax}{+0.84}
+\providecommand{\AgentCountRMin}{+0.60}
+\providecommand{\AgentCountRMax}{+0.65}
+\providecommand{\NetworkKEightR}{+0.66}
+\providecommand{\NetworkKFourR}{+0.74}
+\providecommand{\FlipRMax}{-0.62}
+\providecommand{\CrossgenMaxDiff}{0.02}
+\providecommand{\IDCommBaselinePct}{3.0}
+\providecommand{\IDCommCensorLowerPct}{17.7}
+\providecommand{\IDCommCensorUpperPct}{15.1}
+\providecommand{\PunishRiskMean}{8.0}
+\providecommand{\PunishRiskMaxDiff}{0.2}
+\providecommand{\HSixP}{0.023}
+\providecommand{\AgentLevelN}{287{,}055}
+\providecommand{\FiniteNMinR}{0.95}
+\providecommand{\FiniteNPrimaryR}{0.9968}
+\providecommand{\FiniteNPooledR}{0.9993}
+\providecommand{\BaselineRegimeSurvPct}{50\%}
+\providecommand{\TextBaselineR}{0.79}
+\providecommand{\GSPureJoin}{0.507}
+\providecommand{\GSBaselinePureJoin}{0.387}
+\providecommand{\GSCommPremiumPP}{-3.4}
+% Word frequency stats (surveillance)
+\providecommand{\WFActComm}{15.8}
+\providecommand{\WFActSurv}{4.1}
+\providecommand{\WFCollapseComm}{9.6}
+\providecommand{\WFCollapseSurv}{0.6}
+\providecommand{\WFActionJoinComm}{80.0}
+\providecommand{\WFActionJoinSurv}{61.0}
+% Word frequency stats (propaganda)
+\providecommand{\WFLoyalComm}{1.5}
+\providecommand{\WFLoyalKTen}{11.4}
+\providecommand{\WFReadyComm}{27.1}
+\providecommand{\WFReadyKTen}{18.5}
+\providecommand{\WFCautionStayComm}{51.7}
+\providecommand{\WFCautionStayKTen}{54.7}
+\providecommand{\WFActionJoinKTen}{85.1}
+\providecommand{\SurvPropSumPP}{-15.5}
+% Deduplication robustness (footnote)
+\providecommand{\DedupRPre}{0.753}
+\providecommand{\DedupRPost}{0.739}
+\providecommand{\DedupNUnique}{680}
+\providecommand{\InfodesignScramblePValue}{0.59}
+\providecommand{\LlamaInfodesignScrambleR}{+0.81}
+\providecommand{\TrinityAPIErrorPct}{9}
 

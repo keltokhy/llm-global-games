@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLMs Can Play (Global) Games</title>
+<style>
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Base ── */
+:root {
+  --bg: #fafaf8;
+  --fg: #111;
+  --fg-dim: #555;
+  --fg-faint: #888;
+  --border: #ccc;
+  --accent: #333;
+  --side-width: 220px;
+  --body-width: 680px;
+  --font: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', 'Liberation Mono', monospace;
+}
+
+html {
+  font-size: 15px;
+  scroll-behavior: smooth;
+  scroll-padding-top: 2rem;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Layout ── */
+.page {
+  max-width: var(--body-width);
+  margin: 0 auto;
+  padding: 4rem 1.5rem 6rem;
+  position: relative;
+}
+
+/* ── Typography ── */
+h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; }
+
+h1 {
+  font-size: 1.6rem;
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  font-size: 1.1rem;
+  margin-top: 3.5rem;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+h3 {
+  font-size: 0.95rem;
+  margin-top: 2rem;
+  margin-bottom: 0.8rem;
+  color: var(--accent);
+}
+
+p {
+  margin-bottom: 1.2rem;
+  font-size: 0.88rem;
+}
+
+/* ── Section numbers ── */
+.sec-num {
+  position: absolute;
+  left: -3rem;
+  top: 0;
+  font-size: 0.8rem;
+  color: var(--fg-faint);
+  font-weight: 400;
+}
+
+@media (max-width: 800px) {
+  .sec-num { position: static; display: inline; margin-right: 0.5rem; }
+}
+
+/* ── Header / meta ── */
+.paper-meta {
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.author {
+  font-size: 0.85rem;
+  color: var(--fg-dim);
+  margin-top: 0.8rem;
+  margin-bottom: 0.3rem;
+}
+
+.affiliation {
+  font-size: 0.78rem;
+  color: var(--fg-faint);
+}
+
+.paper-links {
+  margin-top: 1rem;
+  font-size: 0.78rem;
+}
+
+.paper-links a {
+  color: var(--fg-dim);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  margin-right: 1.5rem;
+}
+
+.paper-links a:hover { border-color: var(--fg); }
+
+/* ── Abstract ── */
+.abstract {
+  margin: 2rem 0;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.abstract-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--fg-faint);
+  margin-bottom: 0.8rem;
+}
+
+.abstract p {
+  font-size: 0.85rem;
+  line-height: 1.75;
+  color: var(--fg-dim);
+}
+
+/* ── Key numbers grid ── */
+.key-numbers {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+.key-number {
+  background: var(--bg);
+  padding: 1rem;
+}
+
+.key-number .value {
+  font-size: 1.3rem;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.key-number .label {
+  font-size: 0.7rem;
+  color: var(--fg-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.4;
+}
+
+/* ── Sidenotes (Tufte-style) ── */
+.sidenote-ref {
+  font-size: 0.7rem;
+  vertical-align: super;
+  line-height: 0;
+  color: var(--fg-faint);
+  cursor: default;
+}
+
+.sidenote {
+  float: right;
+  clear: right;
+  width: var(--side-width);
+  margin-right: calc(-1 * var(--side-width) - 2rem);
+  margin-bottom: 1rem;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--fg-faint);
+  position: relative;
+}
+
+.sidenote::before {
+  content: attr(data-num);
+  font-size: 0.65rem;
+  vertical-align: super;
+  margin-right: 0.3rem;
+}
+
+@media (max-width: 1000px) {
+  .sidenote {
+    float: none;
+    width: 100%;
+    margin: 0.5rem 0 1rem 1.5rem;
+    padding-left: 1rem;
+    border-left: 1px solid var(--border);
+    font-size: 0.75rem;
+  }
+}
+
+/* ── Equations ── */
+.equation {
+  margin: 1.8rem 0;
+  padding: 1rem 1.5rem;
+  background: transparent;
+  font-size: 0.9rem;
+  text-align: center;
+  border-left: 2px solid var(--border);
+  font-style: italic;
+}
+
+.equation .eq-label {
+  float: right;
+  font-size: 0.72rem;
+  color: var(--fg-faint);
+  font-style: normal;
+}
+
+/* ── Figures ── */
+.figure {
+  margin: 2.5rem 0;
+}
+
+.figure img {
+  width: 100%;
+  display: block;
+  border: 1px solid var(--border);
+}
+
+.figure-caption {
+  font-size: 0.72rem;
+  color: var(--fg-dim);
+  margin-top: 0.5rem;
+  line-height: 1.5;
+}
+
+.figure-caption .fig-label {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.68rem;
+}
+
+/* ── Collapsible technical details ── */
+.technical-detail {
+  margin: 1.5rem 0;
+  border: 1px solid var(--border);
+}
+
+.technical-detail summary {
+  padding: 0.7rem 1rem;
+  font-size: 0.78rem;
+  color: var(--fg-dim);
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.technical-detail summary::-webkit-details-marker { display: none; }
+
+.technical-detail summary::before {
+  content: '+';
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--fg-faint);
+  width: 1rem;
+  flex-shrink: 0;
+}
+
+.technical-detail[open] summary::before { content: '\2212'; }
+
+.technical-detail .detail-body {
+  padding: 0 1rem 1rem;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  border-top: 1px solid var(--border);
+}
+
+.technical-detail .detail-body p { font-size: 0.82rem; }
+
+/* ── Pipeline diagram (text) ── */
+.pipeline {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  font-size: 0.78rem;
+  line-height: 2;
+  text-align: center;
+  color: var(--fg-dim);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.pipeline .arrow { color: var(--fg-faint); margin: 0 0.3rem; }
+
+/* ── Tables ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.78rem;
+}
+
+th, td {
+  padding: 0.5rem 0.7rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  font-weight: 600;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--fg-dim);
+  border-bottom: 2px solid var(--accent);
+}
+
+td { color: var(--fg-dim); }
+td:first-child { color: var(--fg); }
+
+/* ── Inline code / emphasis ── */
+code {
+  font-family: var(--font);
+  font-size: 0.85em;
+  background: rgba(0,0,0,0.04);
+  padding: 0.1em 0.3em;
+}
+
+em { font-style: italic; }
+strong { font-weight: 600; }
+
+/* ── Lists ── */
+ul, ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+  font-size: 0.85rem;
+}
+
+li { margin-bottom: 0.4rem; }
+
+/* ── Block quotes ── */
+blockquote {
+  margin: 1.5rem 0;
+  padding: 0 0 0 1.2rem;
+  border-left: 2px solid var(--border);
+  color: var(--fg-dim);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+/* ── Links ── */
+a {
+  color: var(--fg);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+}
+
+a:hover { border-color: var(--fg); }
+
+/* ── Floating TOC ── */
+.toc {
+  position: fixed;
+  top: 4rem;
+  right: max(1rem, calc((100vw - var(--body-width)) / 2 - 280px));
+  width: 200px;
+  font-size: 0.68rem;
+  line-height: 1.6;
+  z-index: 100;
+}
+
+.toc-label {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--fg-faint);
+  font-size: 0.62rem;
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+}
+
+.toc a {
+  display: block;
+  padding: 0.15rem 0 0.15rem 0.8rem;
+  color: var(--fg-faint);
+  border-bottom: none;
+  border-left: 1px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.toc a:hover { color: var(--fg-dim); }
+
+.toc a.active {
+  color: var(--fg);
+  border-left-color: var(--fg);
+  font-weight: 600;
+}
+
+@media (max-width: 1200px) {
+  .toc { display: none; }
+}
+
+/* ── Footer ── */
+footer {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.72rem;
+  color: var(--fg-faint);
+  line-height: 1.7;
+}
+
+/* ── Utility ── */
+.dim { color: var(--fg-dim); }
+.faint { color: var(--fg-faint); }
+.small { font-size: 0.78rem; }
+.mono { font-family: var(--font); }
+.mt-2 { margin-top: 2rem; }
+.mb-1 { margin-bottom: 1rem; }
+
+/* ── Result highlight ── */
+.result {
+  display: inline-block;
+  font-weight: 600;
+}
+
+.result-positive { color: #1a6b1a; }
+.result-negative { color: #8b1a1a; }
+.result-neutral { color: var(--fg); }
+
+/* ── Separator ── */
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 3rem 0;
+}
+
+/* ── Print ── */
+@media print {
+  .toc { display: none; }
+  .page { padding: 0; }
+  .sidenote { float: none; width: auto; margin: 0.5rem 0 0.5rem 1rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Floating TOC ── -->
+<nav class="toc" id="toc">
+  <div class="toc-label">Contents</div>
+  <a href="#setup">1 The Setup</a>
+  <a href="#theory">2 The Theory</a>
+  <a href="#pipeline">3 Experimental Design</a>
+  <a href="#results">4 Results</a>
+  <a href="#identification">5 Identification</a>
+  <a href="#communication">6 Communication</a>
+  <a href="#infodesign">7 Information Design</a>
+  <a href="#surveillance">8 Surveillance</a>
+  <a href="#propaganda">9 Propaganda</a>
+  <a href="#conclusion">10 Conclusion</a>
+</nav>
+
+<main class="page">
+
+  <!-- ── Header ── -->
+  <header class="paper-meta">
+    <h1>LLMs Can Play (Global) Games</h1>
+    <div class="author">Khaled Eltokhy</div>
+    <div class="affiliation">Department of Economics, The Graduate Center, CUNY</div>
+    <div class="paper-links">
+      <a href="https://github.com/keltokhy/llm-global-games">GitHub</a>
+      <a href="../../paper.pdf">Paper (PDF)</a>
+    </div>
+  </header>
+
+  <!-- ── Abstract ── -->
+  <section class="abstract">
+    <div class="abstract-label">Abstract</div>
+    <p>
+      The communication channel that enables coordination is also the channel through which
+      regimes suppress it. I embed seven LLMs in the Morris&ndash;Shin (2003) regime change
+      global game, conveying private signals as natural-language intelligence briefings.
+      Across 1,800 country-periods and 45,000 decisions, join rates track the theoretical
+      attack mass with mean <em>r</em>&nbsp;=&nbsp;<span class="result result-positive">+0.80</span>
+      (<em>p</em>&nbsp;&lt;&nbsp;0.001 for every model), collapse to
+      <em>r</em>&nbsp;&asymp;&nbsp;0 under scrambled briefings, and invert to
+      <em>r</em>&nbsp;=&nbsp;<span class="result result-negative">&minus;0.72</span> under
+      flipped signals. The pattern reflects payoff structure, not sentiment: varying benefit/cost
+      narratives shifts cutoffs in lockstep with theory
+      (<em>r</em>&nbsp;=&nbsp;+0.97)&mdash;a 50&nbsp;pp swing invisible to any text classifier.
+      Surveillance poisons the communication channel: expressed joining falls by
+      ~13.5&nbsp;pp while second-order beliefs shift by less than 1&nbsp;pp.
+      Agents self-censor while interpreting others&rsquo; silence as genuine.
+    </p>
+  </section>
+
+  <!-- ── Key Numbers ── -->
+  <div class="key-numbers">
+    <div class="key-number">
+      <span class="value">7</span>
+      <span class="label">LLM models tested</span>
+    </div>
+    <div class="key-number">
+      <span class="value">45,000</span>
+      <span class="label">Individual decisions</span>
+    </div>
+    <div class="key-number">
+      <span class="value">r = +0.80</span>
+      <span class="label">Mean correlation w/ theory</span>
+    </div>
+    <div class="key-number">
+      <span class="value">&minus;13.5 pp</span>
+      <span class="label">Surveillance chilling effect</span>
+    </div>
+    <div class="key-number">
+      <span class="value">r = +0.97</span>
+      <span class="label">Cost/benefit tracks theory</span>
+    </div>
+    <div class="key-number">
+      <span class="value">&lt; 1 pp</span>
+      <span class="label">Belief shift under surveillance</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- §1 THE SETUP -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="setup">
+    <h2><span class="sec-num">1</span>The Setup</h2>
+
+    <p>
+      Imagine a country where citizens must independently decide whether to
+      <strong>join</strong> an uprising or <strong>stay</strong> home. The regime has some
+      hidden strength &theta;. If enough people join&mdash;if the
+      <em>attack mass</em> exceeds &theta;&mdash;the regime falls and joiners win.
+      If not enough join, the regime survives and joiners are punished.
+    </p>
+
+    <p>
+      Each citizen receives a noisy private signal about regime strength, delivered
+      as a natural-language intelligence briefing. Nobody knows exactly how strong
+      the regime is; nobody knows what signals others received. Everyone must
+      decide simultaneously.
+    </p>
+
+    <span class="sidenote" data-num="1">
+      This is a <em>global game</em> in the sense of Carlsson &amp; van Damme (1993)
+      and Morris &amp; Shin (1998, 2003). The incomplete-information structure
+      eliminates the multiplicity of equilibria that plagues complete-information
+      coordination games.
+    </span>
+
+    <p>
+      The question: when LLM agents play this game, do they behave like the
+      Bayesian rational players that theory assumes? And if so, can a social
+      planner exploit this rationality by manipulating the information environment?
+    </p>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- §2 THE THEORY -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="theory">
+    <h2><span class="sec-num">2</span>The Theory</h2>
+
+    <p>
+      Each citizen <em>i</em> observes a private signal:
+    </p>
+
+    <div class="equation">
+      x<sub>i</sub> = &theta; + &epsilon;<sub>i</sub>, &emsp;
+      &epsilon;<sub>i</sub> ~ N(0, &sigma;&sup2;)
+      <span class="eq-label">(1)</span>
+    </div>
+
+    <p>
+      Payoffs are simple. Joining when the regime falls pays +<em>B</em>.
+      Joining when it survives costs &minus;<em>C</em>. Staying always pays 0.
+      The regime falls when total attack mass <em>A</em>(&theta;) exceeds &theta;.
+    </p>
+
+    <span class="sidenote" data-num="2">
+      With <em>B</em>&nbsp;=&nbsp;<em>C</em>&nbsp;=&nbsp;1, the theoretical cutoff
+      is &theta;*&nbsp;=&nbsp;0.50. In the cost/benefit sweep experiments, we vary
+      this ratio and observe that LLM cutoffs track the theory almost perfectly.
+    </span>
+
+    <p>
+      Morris &amp; Shin (2003) show there exists a unique threshold equilibrium:
+      each citizen joins if and only if their signal falls below a cutoff
+      <em>x</em>*. This yields a predicted attack mass:
+    </p>
+
+    <div class="equation">
+      A(&theta;) = &Phi;((x* &minus; &theta;) / &sigma;)
+      <span class="eq-label">(2)</span>
+    </div>
+
+    <p>
+      where &Phi; is the standard normal CDF. The result is a sigmoid:
+      nearly everyone joins when &theta; is low (regime is weak), nearly
+      nobody joins when &theta; is high (regime is strong), with a smooth
+      transition around &theta;*.
+    </p>
+
+    <details class="technical-detail">
+      <summary>Technical Detail: Deriving the Threshold</summary>
+      <div class="detail-body">
+        <p>
+          The threshold &theta;* is pinned by the indifference condition at
+          the cutoff signal. A citizen with signal <em>x</em>* believes the
+          regime strength &theta; is distributed as
+          N(<em>x</em>*, &sigma;&sup2;) and the attack mass at each &theta;
+          is &Phi;((<em>x</em>*&nbsp;&minus;&nbsp;&theta;)/&sigma;). The regime
+          falls when A(&theta;)&nbsp;&ge;&nbsp;&theta;, i.e., when
+          &theta;&nbsp;&le;&nbsp;&theta;*. The indifference condition:
+        </p>
+        <div class="equation">
+          B &middot; Pr(&theta; &le; &theta;* | x*) =
+          C &middot; Pr(&theta; > &theta;* | x*)
+        </div>
+        <p>
+          yields &theta;*&nbsp;=&nbsp;<em>B</em>/(<em>B</em>&nbsp;+&nbsp;<em>C</em>)
+          and <em>x</em>*&nbsp;=&nbsp;&theta;*&nbsp;+&nbsp;&sigma;&Phi;<sup>&minus;1</sup>(&theta;*).
+          The elegant result: the threshold depends only on the benefit-cost
+          ratio, not on the noise level &sigma;.
+        </p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- §3 EXPERIMENTAL DESIGN -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="pipeline">
+    <h2><span class="sec-num">3</span>Experimental Design</h2>
+
+    <h3>The Signal-to-Text-to-Decision Pipeline</h3>
+
+    <p>
+      The core challenge: how do you give an LLM a continuous-valued private
+      signal? You can&rsquo;t hand it a number&mdash;that would bypass the
+      natural-language reasoning we want to test. Instead, the pipeline
+      converts signals into graded prose:
+    </p>
+
+    <div class="pipeline">
+      <strong>&theta;</strong>
+      <span class="arrow">&rarr;</span>
+      x<sub>i</sub> = &theta; + &epsilon;
+      <span class="arrow">&rarr;</span>
+      z-score
+      <span class="arrow">&rarr;</span>
+      <strong>Briefing Generator</strong>
+      <span class="arrow">&rarr;</span>
+      natural language
+      <span class="arrow">&rarr;</span>
+      <strong>LLM</strong>
+      <span class="arrow">&rarr;</span>
+      JOIN / STAY
+    </div>
+
+    <p>
+      The Briefing Generator is the key innovation. It uses three latent sliders
+      (direction, clarity, coordination) to control phrase selection across eight
+      evidence domains. Many small word-choice variations&mdash;what I call
+      &ldquo;dithering&rdquo;&mdash;recover effective signal continuity despite
+      discrete text.
+    </p>
+
+    <span class="sidenote" data-num="3">
+      The eight evidence domains cover: economic indicators, military readiness,
+      public sentiment, political leadership, international context, intelligence
+      reliability, historical precedent, and operational logistics.
+    </span>
+
+    <!-- Pipeline figure -->
+    <div class="figure">
+      <img src="../../figures/diagram_pipeline.png" alt="The signal-to-text-to-decision pipeline. Regime strength theta is converted to a private signal, then to a z-score, then through the Briefing Generator into natural language, which is fed to the LLM for a JOIN/STAY decision.">
+      <div class="figure-caption">
+        <span class="fig-label">Figure 1.</span>
+        The signal-to-text-to-decision pipeline.
+        Continuous signals are converted to graded natural language via eight
+        evidence domains and three latent sliders.
+      </div>
+    </div>
+
+    <details class="technical-detail">
+      <summary>Technical Detail: Briefing Generator Architecture</summary>
+      <div class="detail-body">
+        <p>
+          The Briefing Generator converts a z-score into text through a multi-stage process.
+          Three latent sliders&mdash;<em>direction</em> (logistic function of z),
+          <em>clarity</em> (Gaussian centered at z&nbsp;=&nbsp;0), and
+          <em>coordination</em> (sigmoid)&mdash;each output a value in [0, 1].
+          These drive phrase selection across eight evidence domains. Each domain
+          has a ladder of 4&ndash;6 phrases ordered from &ldquo;strongly suggests
+          regime weakness&rdquo; to &ldquo;strongly suggests regime strength.&rdquo;
+        </p>
+        <p>
+          The key to continuity: when the slider sits between two phrases, the
+          generator probabilistically selects one or the other, with probability
+          proportional to the slider position. Across eight independent domains,
+          this &ldquo;dithering&rdquo; produces a near-continuous mapping from
+          signal to text, even though each individual phrase is discrete.
+        </p>
+      </div>
+    </details>
+
+    <h3>Models</h3>
+
+    <p>
+      Seven LLMs serve as experimental subjects, spanning multiple model
+      families and sizes:
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Family</th>
+          <th>Parameters</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Mistral Small</td><td>Mistral</td><td>22B</td></tr>
+        <tr><td>Llama 3.1 8B</td><td>Meta</td><td>8B</td></tr>
+        <tr><td>GPT-4o Mini</td><td>OpenAI</td><td>undisclosed</td></tr>
+        <tr><td>Qwen 2.5 7B</td><td>Alibaba</td><td>7B</td></tr>
+        <tr><td>DeepSeek V3</td><td>DeepSeek</td><td>671B (MoE)</td></tr>
+        <tr><td>Hermes 3 8B</td><td>Nous Research</td><td>8B</td></tr>
+        <tr><td>Trinity v0.2</td><td>Cobalt Robotics</td><td>undisclosed</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Treatments</h3>
+
+    <p>
+      Five experimental conditions test different aspects of the game:
+    </p>
+
+    <ul>
+      <li><strong>Pure</strong> &mdash; Standard global game: private signals, simultaneous decisions</li>
+      <li><strong>Communication</strong> &mdash; Pre-play messaging round on a network before decisions</li>
+      <li><strong>Scramble</strong> &mdash; Briefings randomly permuted across agents (destroys signal content)</li>
+      <li><strong>Flip</strong> &mdash; Z-scores negated (inverts the signal)</li>
+      <li><strong>Cost/Benefit sweep</strong> &mdash; Same text, different payoff narratives</li>
+    </ul>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- §4 RESULTS -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="results">
+    <h2><span class="sec-num">4</span>Results</h2>
+
+    <h3>The Sigmoid</h3>
+
+    <p>
+      The central empirical finding: LLM join rates trace out a sigmoid as a
+      function of regime strength &theta;, closely tracking the theoretical
+      attack mass A(&theta;). The mean correlation across all seven models is
+      <span class="result result-positive"><em>r</em>&nbsp;=&nbsp;+0.80</span>
+      (<em>p</em>&nbsp;&lt;&nbsp;0.001 for every model).
+    </p>
+
+    <!-- Core sigmoid figure -->
+    <div class="figure">
+      <img src="../../figures/fig01_sigmoid.png" alt="Empirical join fraction versus regime strength theta shows a sigmoid curve closely tracking the theoretical prediction.">
+      <div class="figure-caption">
+        <span class="fig-label">Figure 2.</span>
+        Join fraction versus regime strength &theta;.
+        The empirical curve (solid) closely tracks the theoretical attack mass
+        A(&theta;) (dashed). Each point averages over all agents and periods
+        at that &theta; value.
+      </div>
+    </div>
+
+    <span class="sidenote" data-num="4">
+      The sigmoid shape is not an artifact of averaging. Individual-level
+      analysis confirms threshold behavior: agents switch from JOIN to STAY
+      around a personal cutoff that clusters near the theoretical &theta;*.
+    </span>
+
+    <h3>Cross-Model Consistency</h3>
+
+    <p>
+      All seven models produce the sigmoid pattern independently. This is not
+      a property of one architecture or training set&mdash;it emerges reliably
+      across model families, sizes, and training approaches.
+    </p>
+
+    <div class="figure">
+      <img src="../../figures/fig02_cross_model.png" alt="Cross-model comparison showing sigmoid patterns across all seven LLMs tested.">
+      <div class="figure-caption">
+        <span class="fig-label">Figure 3.</span>
+        Cross-model sigmoid comparison. All seven models produce qualitatively
+        similar sigmoid curves, with variation in slope (precision) and
+        intercept (bias).
+      </div>
+    </div>
+
+    <h3>BNE vs. Level-<em>k</em></h3>
+
+    <p>
+      Do the LLMs approximate Bayesian Nash Equilibrium (BNE) or simpler
+      Level-<em>k</em> reasoning? The data favor BNE:
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Model of reasoning</th>
+          <th>RMSE</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Bayesian Nash Equilibrium</td><td><strong>0.199</strong></td></tr>
+        <tr><td>Level-1</td><td>0.307</td></tr>
+        <tr><td>Level-2</td><td>0.348</td></tr>
+      </tbody>
+    </table>
+
+    <p>
+      BNE achieves the lowest root mean squared error against empirical
+      join rates. Level-<em>k</em> models, which assume agents best-respond
+      to naive opponents, systematically over- or under-predict joining.
+    </p>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- §5 IDENTIFICATION -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="identification">
+    <h2><span class="sec-num">5</span>Identification</h2>
+
+    <h3>Scramble: Breaking the Signal</h3>
+
+    <p>
+      If LLMs are truly responding to signal content, scrambling the
+      briefings&mdash;randomly permuting which agent gets which text&mdash;should
+      destroy the correlation. It does. Under scrambled briefings, the
+      correlation with theoretical attack mass collapses to
+      <span class="result result-neutral"><em>r</em>&nbsp;&asymp;&nbsp;0</span>.
+    </p>
+
+    <h3>Flip: Inverting the Signal</h3>
+
+    <p>
+      Negating the z-scores before generating briefings should invert the
+      sigmoid. It does: the correlation reverses to
+      <span class="result result-negative"><em>r</em>&nbsp;=&nbsp;&minus;0.72</span>.
+      Agents who should join now stay, and vice versa.
+    </p>
+
+    <div class="figure">
+      <img src="../../figures/fig03_falsification.png" alt="Falsification tests: scramble destroys the sigmoid, flip inverts it.">
+      <div class="figure-caption">
+        <span class="fig-label">Figure 4.</span>
+        Falsification. Scrambled briefings (center) produce flat, uncorrelated
+        join rates. Flipped signals (right) produce an inverted sigmoid.
+        Both confirm that the pattern in the pure treatment reflects genuine
+        signal processing, not text sentiment or positional bias.
+      </div>
+    </div>
+
+    <h3>The Cost/Benefit Test</h3>
+
+    <p>
+      The most powerful identification test: hold the briefing text constant but
+      change the payoff narrative. When benefits rise relative to costs, theory
+      predicts the cutoff &theta;* shifts&mdash;more agents should join. The
+      empirical cutoffs track the theoretical prediction with
+      <span class="result result-positive"><em>r</em>&nbsp;=&nbsp;+0.97</span>,
+      producing a 50&nbsp;pp swing in join rates from identical text.
+    </p>
+
+    <span class="sidenote" data-num="5">
+      This test is decisive against the &ldquo;text classifier&rdquo; hypothesis.
+      Any model that simply classifies briefing sentiment as positive/negative
+      cannot explain why the same text produces different decisions when
+      the payoff framing changes.
+    </span>
+
+    <div class="figure">
+      <img src="../../figures/fig18_bc_sweep.png" alt="Cost/benefit sweep showing cutoffs tracking theoretical prediction.">
+      <div class="figure-caption">
+        <span class="fig-label">Figure 5.</span>
+        Cost/benefit sweep. Same briefing text, different payoff narratives.
+        Empirical cutoffs track the theoretical &theta;*&nbsp;=&nbsp;B/(B+C) with
+        <em>r</em>&nbsp;=&nbsp;+0.97.
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- §6 COMMUNICATION -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="communication">
+    <h2><span class="sec-num">6</span>Communication</h2>
+
+    <p>
+      What happens when agents can talk before deciding? In the communication
+      treatment, agents exchange messages on a Watts-Strogatz small-world
+      network before making their JOIN/STAY decisions.
+    </p>
+
+    <p>
+      The key finding: communication preserves the sigmoid structure.
+      The signal-to-action mapping remains intact, suggesting that pre-play
+      messaging does not destroy private information or create herding.
+      Instead, agents appear to use messages as additional (noisy) signals
+      that refine rather than replace their private information.
+    </p>
+
+    <div class="figure">
+      <img src="../../figures/fig05_communication.png" alt="Communication treatment preserves the sigmoid pattern.">
+      <div class="figure-caption">
+        <span class="fig-label">Figure 6.</span>
+        Communication treatment. Pre-play messaging on a small-world network
+        preserves the sigmoid structure. The correlation with theoretical
+        attack mass remains strong.
+      </div>
+    </div>
+
+    <span class="sidenote" data-num="6">
+      This is theoretically important: in many models of cheap talk,
+      communication can either improve coordination (by aggregating information)
+      or destroy it (by enabling manipulation or herding). The empirical
+      result supports the information-aggregation view.
+    </span>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- §7 INFORMATION DESIGN -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="infodesign">
+    <h2><span class="sec-num">7</span>Information Design</h2>
+
+    <p>
+      If LLMs play threshold strategies, a social planner who controls the
+      information environment should be able to shift equilibrium outcomes.
+      This is the <em>Bayesian persuasion</em> angle: redesign the signal
+      structure to change behavior.
+    </p>
+
+    <p>
+      I test several information designs:
+    </p>
+
+    <ul>
+      <li><strong>Stability design</strong> &mdash; Compress signals near &theta;* to discourage coordination</li>
+      <li><strong>Instability design</strong> &mdash; Sharpen signals near &theta;* to encourage coordination</li>
+      <li><strong>Censorship</strong> &mdash; Suppress signals that suggest regime weakness</li>
+      <li><strong>Public signal</strong> &mdash; Add a common signal visible to all agents</li>
+    </ul>
+
+    <div class="figure">
+      <img src="../../figures/fig07_all_designs.png" alt="All information design treatments compared against the baseline.">
+      <div class="figure-caption">
+        <span class="fig-label">Figure 7.</span>
+        Information design treatments. Each design reshapes the sigmoid
+        in the direction predicted by theory. The stability design
+        suppresses joining; the instability design amplifies it.
+      </div>
+    </div>
+
+    <div class="figure">
+      <img src="../../figures/fig08_treatment_effect.png" alt="Treatment effects of information design relative to baseline.">
+      <div class="figure-caption">
+        <span class="fig-label">Figure 8.</span>
+        Treatment effects: difference in join rates between each design
+        and the baseline, as a function of &theta;. Effects are concentrated
+        around the theoretical cutoff &theta;*, exactly as theory predicts.
+      </div>
+    </div>
+
+    <details class="technical-detail">
+      <summary>Technical Detail: Information Design Implementation</summary>
+      <div class="detail-body">
+        <p>
+          Each information design is implemented as a set of parameter modifiers
+          applied to the Briefing Generator through a
+          <code>ThetaAdaptiveBriefingGenerator</code>. This wrapper uses a
+          Gaussian proximity weight centered at the target &theta;* to
+          smoothly interpolate between the baseline and modified parameters.
+        </p>
+        <p>
+          For example, the stability design increases the <em>clarity_width</em>
+          parameter (making signals noisier near &theta;*) and shifts the
+          <em>cutoff_center</em> upward (biasing toward STAY). The instability
+          design does the reverse. Censorship selectively suppresses evidence
+          domains that indicate regime weakness.
+        </p>
+      </div>
+    </details>
+
+    <h3>Decomposition</h3>
+
+    <p>
+      Which channels of the information design matter most? By enabling one
+      parameter modification at a time, we can decompose the total treatment
+      effect into contributions from each channel.
+    </p>
+
+    <div class="figure">
+      <img src="../../figures/fig11_decomposition.png" alt="Decomposition of information design effects by channel.">
+      <div class="figure-caption">
+        <span class="fig-label">Figure 9.</span>
+        Channel decomposition. The total information design effect is
+        decomposed into contributions from individual parameter modifications.
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- §8 SURVEILLANCE -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="surveillance">
+    <h2><span class="sec-num">8</span>Surveillance</h2>
+
+    <p>
+      The most striking result concerns surveillance. When agents are told that
+      their messages may be monitored, their <em>actions</em> change dramatically
+      but their <em>beliefs</em> do not.
+    </p>
+
+    <div class="figure">
+      <img src="../../figures/fig12_surveillance.png" alt="Surveillance effect: join rates drop substantially.">
+      <div class="figure-caption">
+        <span class="fig-label">Figure 10.</span>
+        Surveillance effect on join rates. The sigmoid shifts rightward
+        (toward more staying) when agents know they are being monitored.
+        Average join rate drops by ~13.5&nbsp;pp.
+      </div>
+    </div>
+
+    <h3>The Belief&ndash;Action Wedge</h3>
+
+    <p>
+      This is the core finding of the surveillance analysis. Under surveillance:
+    </p>
+
+    <ul>
+      <li>Expressed joining falls by <span class="result result-negative">&minus;13.5&nbsp;pp</span> on average</li>
+      <li>First-order beliefs (own assessment of regime strength) shift by <span class="result result-neutral">&lt;&nbsp;1&nbsp;pp</span></li>
+      <li>Second-order beliefs (what agents think others believe) shift by <span class="result result-neutral">&lt;&nbsp;1&nbsp;pp</span></li>
+    </ul>
+
+    <span class="sidenote" data-num="7">
+      This is self-censorship in the game-theoretic sense: agents change their
+      <em>expressed</em> action while maintaining their <em>private</em> beliefs.
+      The mechanism is strategic: each agent knows that surveillance might
+      punish joiners, so they stay&mdash;but they don&rsquo;t update their
+      assessment of the regime&rsquo;s actual strength.
+    </span>
+
+    <p>
+      Agents <em>self-censor</em>: they change behavior without changing beliefs.
+      But crucially, they interpret other agents&rsquo; silence as genuine
+      rather than strategic. This creates a
+      <strong>strategic update gap</strong>&mdash;each agent knows
+      <em>it</em> is self-censoring, but assumes others are not.
+    </p>
+
+    <div class="figure">
+      <img src="../../figures/fig16_beliefs.png" alt="First-order beliefs barely change under surveillance.">
+      <div class="figure-caption">
+        <span class="fig-label">Figure 11.</span>
+        First-order beliefs under surveillance vs. baseline.
+        Despite large changes in behavior, stated beliefs about regime
+        strength are nearly identical across conditions.
+      </div>
+    </div>
+
+    <div class="figure">
+      <img src="../../figures/fig17_second_order_beliefs.png" alt="Second-order beliefs also remain stable under surveillance.">
+      <div class="figure-caption">
+        <span class="fig-label">Figure 12.</span>
+        Second-order beliefs. Agents&rsquo; estimates of what others believe
+        are unchanged by surveillance, consistent with the strategic
+        update gap: each agent self-censors but interprets others&rsquo;
+        silence as genuine.
+      </div>
+    </div>
+
+    <h3>Surveillance &times; Censorship</h3>
+
+    <p>
+      When surveillance is combined with censorship, the interaction is
+      <em>super-additive</em>: the combined effect exceeds the sum of
+      individual effects. The regime&rsquo;s two instruments reinforce
+      each other.
+    </p>
+
+    <div class="figure">
+      <img src="../../figures/fig09_censorship.png" alt="Censorship variants and their effects.">
+      <div class="figure-caption">
+        <span class="fig-label">Figure 13.</span>
+        Censorship treatments. Different censorship strategies produce
+        different patterns of suppression. Combined with surveillance,
+        the effects are super-additive.
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- §9 PROPAGANDA -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="propaganda">
+    <h2><span class="sec-num">9</span>Propaganda</h2>
+
+    <p>
+      The regime can also inject propaganda agents&mdash;plants who always
+      advocate staying. The key finding: propaganda saturates quickly.
+    </p>
+
+    <div class="figure">
+      <img src="../../figures/fig13_propaganda.png" alt="Propaganda effects showing saturation.">
+      <div class="figure-caption">
+        <span class="fig-label">Figure 14.</span>
+        Propaganda effects. Adding 5 propaganda agents shifts join rates
+        substantially, but doubling to 10 adds
+        <span class="result result-neutral">0&nbsp;pp</span> additional effect.
+        Propaganda saturates: agents learn to discount uniformly
+        pro-regime voices.
+      </div>
+    </div>
+
+    <span class="sidenote" data-num="8">
+      The saturation result is consistent with a Bayesian agent who treats
+      propaganda as informative up to a point but then discounts further
+      pro-regime signals as redundant or obviously planted. This is
+      rational behavior, not na&iuml;vet&eacute;.
+    </span>
+
+    <p>
+      This contrasts sharply with surveillance, which does not saturate.
+      The mechanism is different: propaganda is a <em>signal</em> that can
+      be discounted, while surveillance is a <em>cost</em> that changes
+      the payoff structure. You can learn to ignore propaganda; you cannot
+      ignore the risk of punishment.
+    </p>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- §10 CONCLUSION -->
+  <!-- ══════════════════════════════════════ -->
+  <section id="conclusion">
+    <h2><span class="sec-num">10</span>Conclusion</h2>
+
+    <p>
+      Seven LLM models, embedded in a canonical regime-change coordination
+      game, play threshold strategies consistent with Bayesian Nash Equilibrium.
+      The correlation between empirical join rates and theoretical attack mass
+      averages <em>r</em>&nbsp;=&nbsp;+0.80 across models, survives
+      falsification tests, and reflects payoff structure rather than text
+      sentiment.
+    </p>
+
+    <p>
+      The information channel that enables coordination is also the channel
+      through which regimes suppress it. A social planner can reshape
+      equilibrium outcomes by redesigning the signal structure. Surveillance
+      creates self-censorship&mdash;a wedge between beliefs and actions&mdash;while
+      propaganda saturates as agents learn to discount planted signals.
+    </p>
+
+    <p>
+      The deeper implication: LLMs are not just text classifiers that happen
+      to correlate with game-theoretic predictions. They process payoff-relevant
+      information, respond to strategic incentives, and exhibit the belief-action
+      separation that characterizes rational agents under institutional
+      constraints. The same machinery that enables coordination also makes
+      it suppressible.
+    </p>
+  </section>
+
+  <hr>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <p>
+      Khaled Eltokhy &middot; Department of Economics, The Graduate Center, CUNY
+    </p>
+    <p>
+      <a href="https://github.com/keltokhy/llm-global-games">Code &amp; data on GitHub</a>
+    </p>
+    <p class="faint" style="margin-top: 1rem;">
+      Seven models. 45,000 decisions. The sigmoid holds.
+    </p>
+  </footer>
+
+</main>
+
+<script>
+// ── TOC Scroll-Spy ──
+(function() {
+  const toc = document.getElementById('toc');
+  if (!toc) return;
+  const links = toc.querySelectorAll('a');
+  const sections = [];
+  links.forEach(function(link) {
+    const id = link.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (el) sections.push({ id: id, el: el, link: link });
+  });
+
+  function update() {
+    let current = '';
+    const offset = window.scrollY + 80;
+    for (let i = sections.length - 1; i >= 0; i--) {
+      if (sections[i].el.offsetTop <= offset) {
+        current = sections[i].id;
+        break;
+      }
+    }
+    links.forEach(function(link) {
+      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+    });
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
+
+</body>
+</html>

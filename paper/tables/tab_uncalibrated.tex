@@ -1,16 +1,18 @@
 \begin{table}[t]
 \centering
-\caption{Uncalibrated robustness: models run without calibration adjustment. $r$ is the Pearson correlation between $\theta$ and join fraction.}
+\caption{Uncalibrated robustness: models run without calibration adjustment. $r$ is the Pearson correlation $r(J, A(\theta))$ between join fraction and theoretical attack mass.}
 \label{tab:uncalibrated}
 \small
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{lcccc}
 \toprule
-Model & $N$ & Mean join & $r(\theta, J)$ & $p$ \\
+Model & $N$ & Mean join & $r(J, A(\theta))$ & $p$ \\
 \midrule
-Mistral Small Creative & 100 & 0.382 & $-0.865$ & 0.0000 \\
-Llama 3.3 70B & 100 & 0.422 & $-0.875$ & 0.0000 \\
-Qwen3 235B & 100 & 0.445 & $-0.857$ & 0.0000 \\
+Mistral Small Creative & 100 & 0.382 & $+0.81$ & 0.0000 \\
+Llama 3.3 70B & 100 & 0.422 & $+0.83$ & 0.0000 \\
+Qwen3 235B & 100 & 0.445 & $+0.86$ & 0.0000 \\
 \bottomrule
 \end{tabular}}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Pure treatment, no calibration adjustment (cutoff center $= 0$). $r = r(J, A(\theta))$.}
 \end{table}

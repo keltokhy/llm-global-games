@@ -15,6 +15,7 @@ import pandas as pd
 from scipy import stats
 
 from models import PART1_SLUGS, DISPLAY_NAMES, PRIMARY_SLUG
+from style import join_col as _join_col, logistic as _logistic
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 ROOT = PROJECT_ROOT / "output"
@@ -84,6 +85,37 @@ def pearson_with_ci(x, y, alpha=0.05):
             "ci_hi": round(ci_hi, 4), "n": int(n)}
 
 
+def bootstrap_pearson_ci(x, y, n_boot=10000, alpha=0.05, seed=42):
+    """Bootstrap 95% CI for Pearson r using the percentile method.
+
+    Resamples (x, y) pairs with replacement n_boot times and returns the
+    alpha/2 and 1-alpha/2 percentiles of the bootstrap distribution.
+    Returns NaN bounds when fewer than 3 finite pairs are available.
+    """
+    x, y = np.asarray(x, dtype=float), np.asarray(y, dtype=float)
+    mask = np.isfinite(x) & np.isfinite(y)
+    x, y = x[mask], y[mask]
+    n = len(x)
+    if n < 3:
+        return {"bootstrap_ci_lo": float("nan"), "bootstrap_ci_hi": float("nan"),
+                "n_boot": n_boot}
+    rng = np.random.default_rng(seed)
+    boot_rs = np.empty(n_boot)
+    for i in range(n_boot):
+        idx = rng.integers(0, n, size=n)
+        xb, yb = x[idx], y[idx]
+        # Guard against zero-variance samples (pearsonr would raise)
+        if xb.std() == 0 or yb.std() == 0:
+            boot_rs[i] = float("nan")
+        else:
+            boot_rs[i] = stats.pearsonr(xb, yb)[0]
+    boot_rs = boot_rs[np.isfinite(boot_rs)]
+    ci_lo = float(np.percentile(boot_rs, 100 * alpha / 2))
+    ci_hi = float(np.percentile(boot_rs, 100 * (1 - alpha / 2)))
+    return {"bootstrap_ci_lo": round(ci_lo, 4), "bootstrap_ci_hi": round(ci_hi, 4),
+            "n_boot": n_boot}
+
+
 def within_country_pearson(df: pd.DataFrame, xcol: str, ycol: str,
                            group_col: str = "country", alpha: float = 0.05):
     """Pearson r on country-demeaned values (removes between-country variation).
@@ -112,10 +144,7 @@ def fisher_z_test(r1, n1, r2, n2):
     p = 2 * stats.norm.sf(abs(z_stat))
     return {"z": round(z_stat, 4), "p": round(p, 6)}
 
-def _join_col(df: pd.DataFrame) -> str:
-    if "join_fraction_valid" in df.columns and df["join_fraction_valid"].notna().any():
-        return "join_fraction_valid"
-    return "join_fraction"
+# _join_col imported from style.py
 
 
 def _safe_mean(x) -> float:
@@ -308,7 +337,7 @@ def compute_part1():
         results[name] = m
 
     # Pooled across all models
-    def _pooled_entry(dfs: list[pd.DataFrame]) -> dict:
+    def _pooled_entry(dfs: list[pd.DataFrame], add_bootstrap: bool = False) -> dict:
         if not dfs:
             return {}
         pooled = pd.concat(dfs, ignore_index=True)
@@ -317,9 +346,12 @@ def compute_part1():
         theta = pooled["theta"].astype(float).values
         attack = _attack_mass_benchmark(theta)
         jf = pooled[jcol].astype(float).values
+        r_attack_ci = pearson_with_ci(attack, jf)
+        if add_bootstrap:
+            r_attack_ci.update(bootstrap_pearson_ci(attack, jf))
         out = {
             "r_vs_theta": pearson_with_ci(theta, jf),
-            "r_vs_attack": pearson_with_ci(attack, jf),
+            "r_vs_attack": r_attack_ci,
             "n_obs": int(len(pooled)),
             "mean_join": round(_safe_mean(jf), 4),
         }
@@ -331,9 +363,9 @@ def compute_part1():
             out["n_agents"] = int(n_agents)
         return out
 
-    results["_pooled_pure"] = _pooled_entry(all_pure) if all_pure else {}
+    results["_pooled_pure"] = _pooled_entry(all_pure, add_bootstrap=True) if all_pure else {}
     results["_pooled_comm"] = _pooled_entry(all_comm) if all_comm else {}
-    results["_pooled_flip"] = _pooled_entry(all_flip) if all_flip else {}
+    results["_pooled_flip"] = _pooled_entry(all_flip, add_bootstrap=True) if all_flip else {}
 
     # Pooled scramble: use within-country demeaned correlation
     if all_scramble:
@@ -364,6 +396,20 @@ def compute_part1():
             )
             raw_entry["r_vs_attack"] = within_country_pearson(
                 tagged, "_attack_benchmark", jcol_scr, group_col="_group"
+            )
+
+            # Bootstrap CI on within-country demeaned (attack, join) pairs.
+            # Demean the same way within_country_pearson does, then bootstrap.
+            _tmp_scr = tagged[["_group", "_attack_benchmark", jcol_scr]].dropna().copy()
+            for _col in ["_attack_benchmark", jcol_scr]:
+                _tmp_scr[_col] = _tmp_scr.groupby("_group")[_col].transform(
+                    lambda s: s - s.mean()
+                )
+            raw_entry["r_vs_attack"].update(
+                bootstrap_pearson_ci(
+                    _tmp_scr["_attack_benchmark"].values,
+                    _tmp_scr[jcol_scr].values,
+                )
             )
 
         results["_pooled_scramble"] = raw_entry
@@ -479,6 +525,9 @@ def compute_infodesign():
             "r_vs_attack": r_attack,
             "n_obs": len(sub),
         }
+        # Regime fall rate: fraction of periods where join_fraction > theta
+        if "coup_success" in sub.columns:
+            entry["regime_fall_rate"] = round(float(sub["coup_success"].mean()), 4)
 
         # For scramble designs: demean by rep to remove ecological confound,
         # mirroring the within-country demeaning used for Part I scramble.
@@ -541,6 +590,8 @@ def compute_infodesign():
             "r_vs_attack": r_attack,
             "n_obs": len(df_d),
         }
+        if "coup_success" in df_d.columns:
+            entry["regime_fall_rate"] = round(float(df_d["coup_success"].mean()), 4)
 
         # Scramble demeaning for individual per-design CSVs
         if "scramble" in design and "rep" in df_d.columns:
@@ -562,13 +613,16 @@ def compute_infodesign():
         r_theta = pearson_with_ci(bc_sweep_baseline["theta"], bc_sweep_baseline[jc])
         r_attack = pearson_with_ci(bc_sweep_baseline["theoretical_attack"], bc_sweep_baseline[jc]) \
             if "theoretical_attack" in bc_sweep_baseline.columns else {}
-        results["baseline"] = {
+        baseline_entry = {
             "mean_join": round(bc_sweep_baseline[jc].mean(), 4),
             "r_vs_theta": r_theta,
             "r_vs_attack": r_attack,
             "n_obs": int(len(bc_sweep_baseline)),
             "_source": "experiment_bc_sweep_summary.csv[theta_star_target=0.50]",
         }
+        if "coup_success" in bc_sweep_baseline.columns:
+            baseline_entry["regime_fall_rate"] = round(float(bc_sweep_baseline["coup_success"].mean()), 4)
+        results["baseline"] = baseline_entry
 
     # Treatment effects relative to baseline
     if "baseline" in results:
@@ -600,12 +654,46 @@ def compute_infodesign():
         if fit is not None:
             results[dname]["logistic_fit"] = fit
 
+    # B/C sweep: cutoff tracking across all 7 theta_star targets
+    if bc_sweep_path.exists():
+        try:
+            bc_full = pd.read_csv(bc_sweep_path)
+            if "theta_star_target" in bc_full.columns:
+                from scipy.optimize import curve_fit as _curve_fit
+                def _logistic4(x, L, k, x0, b):
+                    return L / (1 + np.exp(-k * (x - x0))) + b
+                _targets, _fitted = [], []
+                for ts in sorted(bc_full["theta_star_target"].unique()):
+                    sub = bc_full[bc_full["theta_star_target"] == ts]
+                    jc = _join_col(sub)
+                    grouped = sub.groupby("theta")[jc].mean()
+                    try:
+                        popt, _ = _curve_fit(
+                            _logistic4, grouped.index.values, grouped.values,
+                            p0=[1.0, -10.0, 0.5, 0.0], maxfev=5000,
+                        )
+                        _targets.append(float(ts))
+                        _fitted.append(round(float(popt[2]), 4))
+                    except Exception:
+                        pass
+                if len(_targets) >= 3:
+                    r_ct, p_ct = stats.pearsonr(np.array(_targets), np.array(_fitted))
+                    results["_bc_sweep_cutoff_tracking"] = {
+                        "r": round(r_ct, 4),
+                        "p": round(p_ct, 6),
+                        "n_conditions": len(_targets),
+                        "targets": _targets,
+                        "fitted_cutoffs": _fitted,
+                    }
+        except Exception:
+            pass
+
     # Cross-model infodesign replication
     cross = {}
     for m in PART1_MODELS:
         name = SHORT[m]
         cross[name] = {}
-        for design in ["baseline", "scramble", "flip"]:
+        for design in ["baseline", "scramble", "flip", "hard_scramble"]:
             # Primary-model baseline is sourced from the canonical θ*=0.50 sweep slice when available.
             if m == model and design == "baseline" and bc_sweep_baseline is not None:
                 df_d = bc_sweep_baseline
@@ -615,9 +703,12 @@ def compute_infodesign():
                 continue
             jc = _join_col(df_d)
             r_t = pearson_with_ci(df_d["theta"], df_d[jc])
+            attack = _attack_mass_benchmark(df_d["theta"].astype(float).values)
+            r_a = pearson_with_ci(attack, df_d[jc].astype(float).values)
             cross[name][design] = {
                 "mean_join": round(df_d[jc].mean(), 4),
                 "r_vs_theta": r_t,
+                "r_vs_attack": r_a,
                 "n_obs": len(df_d),
             }
     results["_cross_model"] = cross
@@ -742,9 +833,13 @@ def compute_infodesign_comm():
     jcol = _join_col(df_all)
     for design in sorted(df_all["design"].dropna().unique().tolist()):
         sub = df_all[df_all["design"] == design]
+        theta_vals = sub["theta"].astype(float).values
+        jf_vals = sub[jcol].astype(float).values
+        attack = _attack_mass_benchmark(theta_vals)
         results[design] = {
-            "mean_join": round(_safe_mean(sub[jcol]), 4),
-            "r_vs_theta": pearson_with_ci(sub["theta"], sub[jcol]),
+            "mean_join": round(_safe_mean(jf_vals), 4),
+            "r_vs_theta": pearson_with_ci(theta_vals, jf_vals),
+            "r_vs_attack": pearson_with_ci(attack, jf_vals),
             "n_obs": int(len(sub)),
         }
 
@@ -796,9 +891,11 @@ def compute_regime_control():
             continue
         df = _load_summary(f)
         jcol = _join_col(df)
+        attack = _attack_mass_benchmark(df["theta"].astype(float).values)
         out = {
             "mean_join": round(_safe_mean(df[jcol]), 4),
             "r_vs_theta": pearson_with_ci(df["theta"], df[jcol]),
+            "r_vs_attack": pearson_with_ci(attack, df[jcol].astype(float).values),
             "n_obs": int(len(df)),
         }
         # Delta vs baseline comm (main output dir)
@@ -818,9 +915,11 @@ def compute_regime_control():
                 continue
             df = _load_summary(f)
             jcol = _join_col(df)
+            attack = _attack_mass_benchmark(df["theta"].astype(float).values)
             out = {
                 "mean_join_all": round(_safe_mean(df[jcol]), 4),
                 "r_vs_theta_all": pearson_with_ci(df["theta"], df[jcol]),
+                "r_vs_attack_all": pearson_with_ci(attack, df[jcol].astype(float).values),
                 "n_obs": int(len(df)),
             }
             # Real-citizen join fraction from comm log
@@ -852,9 +951,11 @@ def compute_regime_control():
             continue
         df = _load_summary(f)
         jcol = _join_col(df)
+        attack = _attack_mass_benchmark(df["theta"].astype(float).values)
         out = {
             "mean_join_all": round(_safe_mean(df[jcol]), 4),
             "r_vs_theta_all": pearson_with_ci(df["theta"], df[jcol]),
+            "r_vs_attack_all": pearson_with_ci(attack, df[jcol].astype(float).values),
             "n_obs": int(len(df)),
         }
         log_path = f.parent / "experiment_comm_log.json"
@@ -1056,8 +1157,7 @@ def pooled_ols(all_stats):
 # LOGISTIC FITS: cutoff + slope per model × treatment
 # ═══════════════════════════════════════════════════════════════════
 
-def _logistic(x, b0, b1):
-    return 1.0 / (1.0 + np.exp(b0 + b1 * x))
+# _logistic imported from style.py
 
 
 def _fit_logistic(x, y):
@@ -1271,10 +1371,14 @@ def compute_surveillance_variants():
         else:
             t_test = None
 
+        attack = _attack_mass_benchmark(theta)
+        r_attack = pearson_with_ci(attack, jf)
+
         results[variant_name] = {
             "n_obs": len(df),
             "mean_join": mean_join,
             "r_vs_theta": r_theta,
+            "r_vs_attack": r_attack,
             "delta_vs_comm_pp": delta_vs_comm,
             "t_test_vs_comm": t_test,
         }
@@ -1307,12 +1411,15 @@ def compute_uncalibrated():
             fall_rate = round(float((df["theta"] < df["theta_star"]).mean()), 4)
         else:
             fall_rate = None
+        attack = _attack_mass_benchmark(theta)
+        r_attack = pearson_with_ci(attack, jf)
         name = SHORT.get(model_slug, model_slug)
         results[name] = {
             "n_obs": int(len(df)),
             "mean_join": round(_safe_mean(jf), 4),
             "std_join": round(_safe_std(jf), 4),
             "r_vs_theta": r_theta,
+            "r_vs_attack": r_attack,
             "regime_fall_rate": fall_rate,
         }
     return results
@@ -1431,6 +1538,33 @@ def compute_beliefs_v2():
         join_beliefs = beliefs[decisions == 1]
         stay_beliefs = beliefs[decisions == 0]
 
+        # Partial correlation: r_partial = (r_bd - r_bz * r_dz) / sqrt((1 - r_bz²)(1 - r_dz²))
+        z_scores = np.array([r["z_score"] for r in rows])
+        r_bz_info = pearson_with_ci(beliefs, z_scores)
+        r_dz_info = pearson_with_ci(decisions, z_scores)
+        r_bd_val = r_belief_decision["r"]
+        r_bz_val = r_bz_info["r"]
+        r_dz_val = r_dz_info["r"]
+        denom = (1 - r_bz_val**2) * (1 - r_dz_val**2)
+        if np.isfinite(denom) and denom > 0:
+            r_partial_val = (r_bd_val - r_bz_val * r_dz_val) / np.sqrt(denom)
+            # Approximate t-test for partial correlation
+            df_partial = len(rows) - 3
+            if df_partial > 0 and abs(r_partial_val) < 1.0:
+                t_partial = r_partial_val * np.sqrt(df_partial / (1 - r_partial_val**2))
+                p_partial = float(2 * stats.t.sf(abs(t_partial), df_partial))
+            else:
+                t_partial = float("nan")
+                p_partial = float("nan")
+            r_partial = {
+                "r": round(float(r_partial_val), 4),
+                "p": round(p_partial, 6),
+                "t": round(float(t_partial), 4),
+                "df": df_partial,
+            }
+        else:
+            r_partial = {"r": float("nan"), "p": float("nan"), "t": float("nan"), "df": 0}
+
         entry = {
             "n": len(rows),
             "mean_belief": round(float(beliefs.mean()), 4),
@@ -1439,6 +1573,9 @@ def compute_beliefs_v2():
             "r_posterior_belief": r_post,
             "r_theta_belief": r_theta,
             "r_belief_decision": r_belief_decision,
+            "r_belief_zscore": r_bz_info,
+            "r_decision_zscore": r_dz_info,
+            "r_partial": r_partial,
             "mean_belief_join": round(float(join_beliefs.mean()), 4) if len(join_beliefs) else None,
             "mean_belief_stay": round(float(stay_beliefs.mean()), 4) if len(stay_beliefs) else None,
         }
@@ -1529,6 +1666,7 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
         "stat": r_attack.get("r"),
         "p": r_attack.get("p"),
         "n": r_attack.get("n"),
+        "effect_size": r_attack.get("r"),  # r is the effect size for correlations
         "supported": _hypothesis_supported(r_attack.get("p"), alpha=0.05, reject_null=True),
     })
 
@@ -1539,11 +1677,12 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
         "id": "H2",
         "hypothesis": "Scramble Falsification",
         "estimand": r"$r(\text{scramble})$",
-        "null": r"$r \neq 0$",
+        "null": r"$r = 0$",
         "test": "Pearson",
         "stat": r_scr.get("r"),
         "p": r_scr.get("p"),
         "n": r_scr.get("n"),
+        "effect_size": r_scr.get("r"),
         "supported": _hypothesis_supported(r_scr.get("p"), alpha=0.05, reject_null=False),
     })
 
@@ -1567,21 +1706,40 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
         "stat": r_flip_val,
         "p": round(p_flip_one, 6) if np.isfinite(p_flip_one) else None,
         "n": n_flip,
+        "effect_size": r_flip_val,
         "supported": _hypothesis_supported(p_flip_one, alpha=0.05, reject_null=True),
     })
 
     # ── H4: Communication ─ delta_pp ≠ 0 ─────────────────────────────
-    comm_eff = part1.get("_pooled_comm_effect", {}).get("unpaired", {})
+    # Use paired test (matched on model/country/theta) — correct since same
+    # experimental units are run across pure vs communication treatments.
+    comm_paired = part1.get("_pooled_comm_effect", {}).get("paired", {})
+    if comm_paired and comm_paired.get("t_stat") is not None:
+        comm_stat = comm_paired.get("t_stat")
+        comm_p = comm_paired.get("p_value")
+        comm_n = comm_paired.get("n_pairs")
+        comm_test = "Paired $t$"
+    else:
+        comm_eff = part1.get("_pooled_comm_effect", {}).get("unpaired", {})
+        comm_stat = comm_eff.get("t_stat")
+        comm_p = comm_eff.get("p_value")
+        comm_n = None
+        comm_test = "$t$-test"
+    # Cohen's d_z for paired test: t / sqrt(n)
+    comm_d = None
+    if comm_stat is not None and comm_n is not None and comm_n > 0:
+        comm_d = round(comm_stat / np.sqrt(comm_n), 4)
     table.append({
         "id": "H4",
         "hypothesis": "Communication Channel",
         "estimand": r"$\Delta_{\text{pp}}$",
         "null": "$= 0$",
-        "test": "$t$-test",
-        "stat": comm_eff.get("t_stat"),
-        "p": comm_eff.get("p_value"),
-        "n": None,
-        "supported": _hypothesis_supported(comm_eff.get("p_value"), alpha=0.05, reject_null=True),
+        "test": comm_test,
+        "stat": comm_stat,
+        "p": comm_p,
+        "n": comm_n,
+        "effect_size": comm_d,
+        "supported": _hypothesis_supported(comm_p, alpha=0.05, reject_null=True),
     })
 
     # ── H5-H8: Infodesign / regime treatments (primary model) ────────
@@ -1602,15 +1760,19 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
     primary = PRIMARY
     surv_df = _load_summary(ROOT / "surveillance" / primary / "experiment_comm_summary.csv")
     base_comm_df = _load_summary(ROOT / primary / "experiment_comm_summary.csv")
+    surv_d = None
     if len(surv_df) > 0 and len(base_comm_df) > 0:
         sjcol = _join_col(surv_df)
         bjcol = _join_col(base_comm_df)
-        t_s, p_s = stats.ttest_ind(
-            surv_df[sjcol].astype(float).dropna(),
-            base_comm_df[bjcol].astype(float).dropna(),
-        )
+        s_jf = surv_df[sjcol].astype(float).dropna()
+        b_jf = base_comm_df[bjcol].astype(float).dropna()
+        t_s, p_s = stats.ttest_ind(s_jf, b_jf)
         surv_t = round(float(t_s), 4)
         surv_p = round(float(p_s), 6)
+        # Cohen's d
+        n1, n2 = len(s_jf), len(b_jf)
+        sd_pool = float(np.sqrt(((n1-1)*s_jf.std()**2 + (n2-1)*b_jf.std()**2) / (n1+n2-2)))
+        surv_d = round(float((s_jf.mean() - b_jf.mean()) / sd_pool), 4) if sd_pool > 0 else None
     table.append({
         "id": "H7",
         "hypothesis": "Surveillance Chilling",
@@ -1620,6 +1782,7 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
         "stat": surv_t,
         "p": surv_p,
         "n": None,
+        "effect_size": surv_d,
         "supported": _hypothesis_supported(surv_p, alpha=0.05, reject_null=True),
     })
 
@@ -1629,6 +1792,8 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
     # t-test on period-level join fractions (propaganda real vs baseline comm)
     prop_t = None
     prop_p = None
+    prop_d = None
+    prop_real_jf = None
     prop_log = _load_experiment_log(
         ROOT / "propaganda-k5" / primary / "experiment_comm_log.json"
     )
@@ -1641,6 +1806,10 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
             t_p_stat, p_p_val = stats.ttest_ind(prop_real_jf, base_jf)
             prop_t = round(float(t_p_stat), 4)
             prop_p = round(float(p_p_val), 6)
+            # Cohen's d
+            n1_p, n2_p = len(base_jf), len(prop_real_jf)
+            sd_pool_p = float(np.sqrt(((n1_p-1)*base_jf.std()**2 + (n2_p-1)*prop_real_jf.std()**2) / (n1_p+n2_p-2)))
+            prop_d = round(float((prop_real_jf.mean() - base_jf.mean()) / sd_pool_p), 4) if sd_pool_p > 0 else None
     table.append({
         "id": "H8",
         "hypothesis": "Propaganda Dose-Response",
@@ -1650,8 +1819,79 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
         "stat": prop_t,
         "p": prop_p,
         "n": None,
+        "effect_size": prop_d,
         "supported": _hypothesis_supported(prop_p, alpha=0.05, reject_null=True),
     })
+
+    # ── Power analysis for non-significant results ─────────────────────
+    # Compute post-hoc power, Cohen's d, and MDE for H8 (and H4 unpaired)
+    power_analysis = {}
+    z_crit = stats.norm.ppf(0.975)
+    z_beta = stats.norm.ppf(0.80)
+
+    # H4 unpaired (kept for reference even though we now use paired)
+    comm_unpaired = part1.get("_pooled_comm_effect", {}).get("unpaired", {})
+    pp_pure = part1.get("_pooled_pure", {})
+    pp_comm = part1.get("_pooled_comm", {})
+    if pp_pure.get("n_obs") and pp_comm.get("n_obs"):
+        n1_h4 = pp_pure["n_obs"]
+        n2_h4 = pp_comm["n_obs"]
+        delta_h4 = (comm_unpaired.get("delta_pp") or 0) / 100
+        # Estimate pooled SD from raw data
+        _pp = pd.concat([_load_summary(ROOT / s / "experiment_pure_summary.csv") for s in PART1_MODELS if (ROOT / s / "experiment_pure_summary.csv").exists()], ignore_index=True)
+        _pc = pd.concat([_load_summary(ROOT / s / "experiment_comm_summary.csv") for s in PART1_MODELS if (ROOT / s / "experiment_comm_summary.csv").exists()], ignore_index=True)
+        _jp = _join_col(_pp)
+        _jc = _join_col(_pc)
+        s1 = _pp[_jp].astype(float).dropna().std()
+        s2 = _pc[_jc].astype(float).dropna().std()
+        pooled_sd = float(np.sqrt(((n1_h4-1)*s1**2 + (n2_h4-1)*s2**2) / (n1_h4+n2_h4-2)))
+        d_h4 = delta_h4 / pooled_sd if pooled_sd > 0 else 0
+        neff = (n1_h4 * n2_h4) / (n1_h4 + n2_h4)
+        ncp = abs(d_h4) * np.sqrt(neff)
+        power_h4 = float(1 - stats.norm.cdf(z_crit - ncp) + stats.norm.cdf(-z_crit - ncp))
+        mde_d = (z_crit + z_beta) / np.sqrt(neff)
+        mde_pp = mde_d * pooled_sd * 100
+        power_analysis["H4_unpaired"] = {
+            "cohens_d": round(d_h4, 4),
+            "power": round(power_h4, 4),
+            "mde_d": round(mde_d, 4),
+            "mde_pp": round(mde_pp, 2),
+            "n1": n1_h4, "n2": n2_h4,
+            "note": "Unpaired test; paper uses paired test (H4 is significant)",
+        }
+
+    # H8: Propaganda k=5 real agents vs baseline comm
+    if prop_real_jf is not None and len(prop_real_jf) > 0 and len(base_comm_df) > 0:
+        bjcol_h8 = _join_col(base_comm_df)
+        base_h8 = base_comm_df[bjcol_h8].astype(float).dropna()
+        n1_h8 = int(len(base_h8))
+        n2_h8 = int(len(prop_real_jf))
+        delta_h8 = float(prop_real_jf.mean() - base_h8.mean())
+        sd1 = float(base_h8.std())
+        sd2 = float(prop_real_jf.std())
+        pooled_sd_h8 = float(np.sqrt(((n1_h8-1)*sd1**2 + (n2_h8-1)*sd2**2) / (n1_h8+n2_h8-2)))
+        d_h8 = delta_h8 / pooled_sd_h8 if pooled_sd_h8 > 0 else 0
+        neff_h8 = (n1_h8 * n2_h8) / (n1_h8 + n2_h8)
+        ncp_h8 = abs(d_h8) * np.sqrt(neff_h8)
+        power_h8 = float(1 - stats.norm.cdf(z_crit - ncp_h8) + stats.norm.cdf(-z_crit - ncp_h8))
+        mde_d_h8 = (z_crit + z_beta) / np.sqrt(neff_h8)
+        mde_pp_h8 = mde_d_h8 * pooled_sd_h8 * 100
+        power_analysis["H8"] = {
+            "cohens_d": round(d_h8, 4),
+            "power": round(power_h8, 4),
+            "mde_d": round(mde_d_h8, 4),
+            "mde_pp": round(mde_pp_h8, 2),
+            "n_baseline": n1_h8, "n_propaganda": n2_h8,
+            "delta_pp": round(delta_h8 * 100, 2),
+        }
+
+    # Attach power analysis to each hypothesis row
+    for row in table:
+        hid = row["id"]
+        if hid in power_analysis:
+            row["power_analysis"] = power_analysis[hid]
+        elif f"{hid}_unpaired" in power_analysis:
+            row["power_analysis_unpaired"] = power_analysis[f"{hid}_unpaired"]
 
     return table
 
@@ -1694,15 +1934,19 @@ def _hypothesis_from_infodesign(infodesign: dict, design_key: str, label: str) -
 
     t_stat = None
     p_val = None
+    effect_d = None
     if len(df_design) > 0 and len(df_baseline) > 0:
         jc_d = _join_col(df_design)
         jc_b = _join_col(df_baseline)
-        t_s, p_v = stats.ttest_ind(
-            df_design[jc_d].astype(float).dropna(),
-            df_baseline[jc_b].astype(float).dropna(),
-        )
+        g_d = df_design[jc_d].astype(float).dropna()
+        g_b = df_baseline[jc_b].astype(float).dropna()
+        t_s, p_v = stats.ttest_ind(g_d, g_b)
         t_stat = round(float(t_s), 4)
         p_val = round(float(p_v), 6)
+        # Cohen's d
+        n1, n2 = len(g_d), len(g_b)
+        sd_pool = float(np.sqrt(((n1-1)*g_d.std()**2 + (n2-1)*g_b.std()**2) / (n1+n2-2)))
+        effect_d = round(float((g_d.mean() - g_b.mean()) / sd_pool), 4) if sd_pool > 0 else None
 
     h_id = {"Ambiguity Pooling": "H5", "Censorship Distortion": "H6"}.get(label, "H?")
     return {
@@ -1712,6 +1956,7 @@ def _hypothesis_from_infodesign(infodesign: dict, design_key: str, label: str) -
         "null": "$= 0$",
         "test": "$t$-test",
         "stat": t_stat,
+        "effect_size": effect_d,
         "p": p_val,
         "n": None,
         "supported": _hypothesis_supported(p_val, alpha=0.05, reject_null=True),
@@ -1766,7 +2011,7 @@ def compute_ck_interaction():
     XtX_inv = np.linalg.inv(X.T @ X)
     se = np.sqrt(np.diag(s2 * XtX_inv))
     t_stats = beta / se
-    p_values = 2 * (1 - stats.norm.cdf(np.abs(t_stats)))
+    p_values = 2 * (1 - stats.t.cdf(np.abs(t_stats), df=n - k))
 
     labels = ["intercept", "ck", "high_coord", "interaction"]
     result = {
@@ -1961,12 +2206,15 @@ def compute_temperature_expanded():
         jcol = _join_col(df)
         jf = df[jcol].astype(float).values
         theta = df["theta"].astype(float).values
+        attack = _attack_mass_benchmark(theta)
         r_theta = pearson_with_ci(theta, jf)
+        r_attack = pearson_with_ci(attack, jf)
         fit = _fit_logistic(theta, jf)
         entry = {
             "n_obs": int(len(df)),
             "mean_join": round(_safe_mean(jf), 4),
             "r_vs_theta": r_theta,
+            "r_vs_attack": r_attack,
         }
         if fit is not None:
             entry["logistic_fit"] = fit
@@ -2005,11 +2253,14 @@ def compute_uncalibrated_expanded():
         if np.all(np.isnan(jf)):
             continue
         r_theta = pearson_with_ci(theta, jf)
+        attack = _attack_mass_benchmark(theta)
+        r_attack = pearson_with_ci(attack, jf)
         name = SHORT.get(slug, slug)
         results[name] = {
             "n_obs": int(len(df)),
             "mean_join": round(_safe_mean(jf), 4),
             "r_vs_theta": r_theta,
+            "r_vs_attack": r_attack,
         }
 
     # Nested slug dirs (newer runs with bash slug issue)
@@ -2029,10 +2280,13 @@ def compute_uncalibrated_expanded():
         if np.all(np.isnan(jf)):
             continue
         r_theta = pearson_with_ci(theta, jf)
+        attack = _attack_mass_benchmark(theta)
+        r_attack = pearson_with_ci(attack, jf)
         results[name] = {
             "n_obs": int(len(df)),
             "mean_join": round(_safe_mean(jf), 4),
             "r_vs_theta": r_theta,
+            "r_vs_attack": r_attack,
         }
 
     return results
@@ -2195,6 +2449,468 @@ def compute_parse_error_rates():
     return results
 
 
+def compute_level_k_benchmark():
+    """Compare BNE, L1, L2 predictions against empirical bc_sweep data."""
+    from scipy.stats import norm
+    from scipy.optimize import root_scalar
+
+    bc_path = ROOT / PRIMARY / "experiment_bc_sweep_summary.csv"
+    if not bc_path.exists():
+        return {}
+
+    df = pd.read_csv(bc_path)
+    jcol = _join_col(df)
+    sigma = 0.3
+    y_emp = df[jcol].values
+    theta_star = df["theta_star_target"].values
+    theta = df["theta"].values
+
+    # BNE
+    x_bne = theta_star + sigma * norm.ppf(theta_star)
+    a_bne = norm.cdf((x_bne - theta) / sigma)
+
+    # L1: best-respond to uniform
+    x_l1 = 0.5 - sigma * norm.ppf(theta_star)
+    a_l1 = norm.cdf((x_l1 - theta) / sigma)
+
+    # L2: best-respond to L1
+    a_l2 = np.zeros_like(theta)
+    for i, ts in enumerate(theta_star):
+        xl1_val = 0.5 - sigma * norm.ppf(ts)
+        def obj(t, _xl1=xl1_val):
+            return norm.cdf((_xl1 - t) / sigma) - t
+        try:
+            res = root_scalar(obj, bracket=[-2, 2])
+            theta_L1 = res.root
+        except ValueError:
+            theta_L1 = 0.5
+        xl2_val = theta_L1 - sigma * norm.ppf(ts)
+        a_l2[i] = norm.cdf((xl2_val - theta[i]) / sigma)
+
+    results = {}
+    for name, a_pred in [("bne", a_bne), ("l1", a_l1), ("l2", a_l2)]:
+        mse = float(np.mean((y_emp - a_pred) ** 2))
+        rmse = float(np.sqrt(mse))
+        r, p = stats.pearsonr(a_pred, y_emp)
+        results[name] = {"rmse": round(rmse, 4), "r": round(float(r), 4), "p": float(p)}
+
+    return results
+
+
+def compute_paper_misc_stats(all_stats: dict) -> dict:
+    """Derive aggregate/summary numbers referenced inline in the paper.
+
+    These are computed from the already-populated all_stats dict so they
+    stay consistent with the per-model/per-treatment results.
+    """
+    misc = {}
+
+    # ── Cutoff range across models ───────────────────────────────────
+    logistic_fits = all_stats.get("logistic_fits", {})
+    cutoffs = []
+    for model, treatments in logistic_fits.items():
+        if isinstance(treatments, dict) and "pure" in treatments:
+            pure = treatments["pure"]
+            b0, b1 = pure.get("b0"), pure.get("b1")
+            if b0 is not None and b1 is not None and b1 != 0:
+                cutoffs.append(-b0 / b1)
+    if cutoffs:
+        misc["cutoff_min"] = round(min(cutoffs), 2)
+        misc["cutoff_max"] = round(max(cutoffs), 2)
+
+    # ── Temperature robustness range (primary model only) ────────────
+    temp_r = all_stats.get("temperature_robustness", {})
+    primary_temp_rs = []
+    for t_key, v in temp_r.items():
+        r = v.get("r_vs_attack", {}).get("r")
+        if r is not None:
+            primary_temp_rs.append(r)
+    if primary_temp_rs:
+        misc["temp_r_min_primary"] = round(min(primary_temp_rs), 2)
+        misc["temp_r_max_primary"] = round(max(primary_temp_rs), 2)
+
+    # ── Temperature full range (all model-temperature combos) ────────
+    all_temp_rs = list(primary_temp_rs)  # start with primary
+    for model, model_data in all_stats.get("temperature_expanded", {}).items():
+        if isinstance(model_data, dict):
+            for t_key, v in model_data.items():
+                if isinstance(v, dict):
+                    r = v.get("r_vs_attack", {}).get("r")
+                    if r is not None:
+                        all_temp_rs.append(r)
+    if all_temp_rs:
+        misc["temp_r_min_all"] = round(min(all_temp_rs), 2)
+        misc["temp_r_max_all"] = round(max(all_temp_rs), 2)
+        misc["temp_n_combos"] = len(all_temp_rs)
+
+    # ── Uncalibrated model r values ──────────────────────────────────
+    uncal = all_stats.get("uncalibrated_expanded", {})
+    uncal_rs = []
+    for model, v in uncal.items():
+        r = v.get("r_vs_attack", {}).get("r")
+        if r is not None and not np.isnan(r):
+            uncal_rs.append(r)
+    if uncal_rs:
+        uncal_rs_sorted = sorted(uncal_rs)
+        misc["uncal_min_r"] = round(uncal_rs_sorted[0], 2)
+        misc["uncal_n_above_75"] = sum(1 for r in uncal_rs if r > 0.75)
+        misc["uncal_n_total"] = len(uncal_rs)
+
+    # ── Calibration quality range (r_vs_attack from Part I pure) ─────
+    cal_rs = []
+    part1 = all_stats.get("part1", {})
+    for model, v in part1.items():
+        if model.startswith("_"):
+            continue
+        if isinstance(v, dict) and "pure" in v:
+            r = v["pure"].get("r_vs_attack", {}).get("r")
+            if r is not None:
+                cal_rs.append(r)
+    if cal_rs:
+        misc["cal_r_min"] = round(min(cal_rs), 2)
+        misc["cal_r_max"] = round(max(cal_rs), 2)
+
+    # ── Agent count robustness r range ───────────────────────────────
+    ac = all_stats.get("robustness", {}).get("agent_count", {})
+    ac_rs = []
+    for n_key, models in ac.items():
+        for m, v in models.items():
+            r = v.get("r_vs_attack", {}).get("r")
+            if r is not None:
+                ac_rs.append(r)
+    if ac_rs:
+        misc["agent_count_r_min"] = round(min(ac_rs), 2)
+        misc["agent_count_r_max"] = round(max(ac_rs), 2)
+
+    # ── Network density ──────────────────────────────────────────────
+    nk8 = all_stats.get("robustness", {}).get("network_k8", {})
+    for m, v in nk8.items():
+        r = v.get("r_vs_attack", {}).get("r")
+        if r is not None:
+            misc["network_k8_r"] = round(r, 2)
+    # k=4 is baseline comm
+    for model, v in part1.items():
+        if model == "Mistral Small Creative" and isinstance(v, dict):
+            r = v.get("comm", {}).get("r_vs_attack", {}).get("r")
+            if r is not None:
+                misc["network_k4_r"] = round(r, 2)
+
+    # ── Flip r across models (for cross-model threshold) ─────────────
+    flip_rs = []
+    for model, v in part1.items():
+        if model.startswith("_"):
+            continue
+        if isinstance(v, dict) and "flip" in v:
+            r = v["flip"].get("r_vs_attack", {}).get("r")
+            if r is not None:
+                flip_rs.append(r)
+    if flip_rs:
+        misc["flip_r_max"] = round(max(flip_rs), 2)  # least negative
+
+    # ── Cross-generator max within-model diff ────────────────────────
+    cg = all_stats.get("cross_generator", {})
+    cg_diffs = []
+    for model, gen_data in cg.items():
+        rs = []
+        for gen, v in gen_data.items():
+            if isinstance(v, dict) and "r_vs_attack" in v:
+                rs.append(v["r_vs_attack"]["r"])
+        if len(rs) >= 2:
+            cg_diffs.append(max(rs) - min(rs))
+    if cg_diffs:
+        misc["crossgen_max_diff"] = round(max(cg_diffs), 2)
+
+    # ── Infodesign comm join rates ───────────────────────────────────
+    ic = all_stats.get("infodesign_comm", {})
+    for design in ["baseline", "censor_lower", "censor_upper"]:
+        v = ic.get(design, {})
+        mj = v.get("mean_join")
+        if mj is not None:
+            misc[f"idcomm_{design}_pct"] = round(mj * 100, 1)
+
+    # ── Punishment risk summary ──────────────────────────────────────
+    pr = all_stats.get("punishment_risk", {})
+    all_pr_means = []
+    all_pr_diffs = []
+    for model, model_data in pr.items():
+        for treatment, t_data in model_data.items():
+            al = t_data.get("agent_level", {})
+            mean_pr = al.get("mean_pr")
+            if mean_pr is not None:
+                all_pr_means.append(mean_pr)
+            join_pr = al.get("mean_pr_join")
+            stay_pr = al.get("mean_pr_stay")
+            if join_pr is not None and stay_pr is not None:
+                all_pr_diffs.append(abs(join_pr - stay_pr))
+    if all_pr_means:
+        misc["punishment_risk_mean"] = round(np.mean(all_pr_means), 1)
+    if all_pr_diffs:
+        misc["punishment_risk_max_diff"] = round(max(all_pr_diffs), 1)
+
+    # ── H6 censorship p-value ────────────────────────────────────────
+    ht = all_stats.get("hypothesis_table", [])
+    for h in ht:
+        if h.get("id") == "H6":
+            misc["h6_p"] = round(h["p"], 3)
+
+    # ── Agent-level regression N (from regression_results.json) ─────
+    reg_path = Path(__file__).resolve().parent / "regression_results.json"
+    if reg_path.exists():
+        with open(reg_path) as f:
+            reg = json.load(f)
+        n_obs = reg.get("agent_logit", {}).get("main_logit", {}).get("n_obs")
+        if n_obs:
+            misc["agent_level_n"] = int(n_obs)
+        # Finite-N benchmark
+        fn = reg.get("finite_n_benchmark", {})
+        fn_per_model = fn.get("per_model", {})
+        fn_rs = []
+        for model, v in fn_per_model.items():
+            r = v.get("pearson_r")
+            if r is not None:
+                fn_rs.append((model, r))
+        if fn_rs:
+            misc["finite_n_min_r"] = round(min(r for _, r in fn_rs), 2)
+            # Find primary model
+            for model, r in fn_rs:
+                if "mistral" in model.lower():
+                    misc["finite_n_primary_r"] = round(r, 4)
+        # Pooled finite-N
+        fn_pooled = fn.get("pooled", {})
+        pr = fn_pooled.get("pearson_r")
+        if pr is not None:
+            misc["finite_n_pooled_r"] = round(pr, 4)
+
+    # ── Sum of individual surveillance + propaganda effects ──────────
+    rc = all_stats.get("regime_control", {})
+    surv_delta = None
+    prop_delta = None
+    surv = rc.get("surveillance", {}).get("Mistral Small Creative", {})
+    if surv:
+        surv_delta = surv.get("delta_vs_baseline_pp")
+    prop = rc.get("propaganda", {})
+    # propaganda keyed by model then dose
+    if isinstance(prop, dict):
+        for model_key, model_data in prop.items():
+            if "Mistral" in str(model_key):
+                if isinstance(model_data, dict):
+                    prop_delta = model_data.get("delta_vs_baseline_pp")
+    # Also check _propaganda_saturation_k5_k10
+    prop_sat = rc.get("_propaganda_saturation_k5_k10", {})
+    if isinstance(prop_sat, dict):
+        for k, v in prop_sat.items():
+            if "k=5" in str(k) and isinstance(v, dict):
+                d = v.get("delta_vs_baseline_pp")
+                if d is not None:
+                    prop_delta = d
+    if surv_delta is not None and prop_delta is not None:
+        misc["sum_individual_effects_pp"] = round(surv_delta + prop_delta, 1)
+
+    # ── Regime survival (theoretical BNE baseline) ─────────────────
+    sigma = PART1_BENCHMARK_SIGMA
+    theta_star = PART1_BENCHMARK_THETA_STAR
+    from scipy.stats import norm
+    x_star = theta_star + sigma * norm.ppf(theta_star)
+    n_grid = 10000
+    theta_grid = np.linspace(0.001, 0.999, n_grid)
+    a_grid = norm.cdf((x_star - theta_grid) / sigma)
+    baseline_survival = float(np.mean(a_grid < theta_grid))
+    misc["baseline_regime_survival_pct"] = round(baseline_survival * 100)
+
+    # ── Text baseline (direction score → decision correlation) ────
+    primary_df = load(PRIMARY, "pure")
+    if not primary_df.empty:
+        thetas = primary_df["theta"].values
+        z_scores = (thetas - x_star) / sigma
+        import sys as _sys
+        _sys.path.insert(0, str(PROJECT_ROOT))
+        from agent_based_simulation.briefing import _compute_sliders
+        cal_path = ROOT / PRIMARY / "calibrated_index.json"
+        cc = 0.0
+        if cal_path.exists():
+            with open(cal_path) as f:
+                cal_data = json.load(f)
+            model_name = PRIMARY.replace("--", "/")
+            cc = cal_data.get(model_name, {}).get("cutoff_center", 0.0)
+        directions = np.array([_compute_sliders(z, cutoff_center=cc)[0]
+                               for z in z_scores])
+        p_join_hat = 1.0 - directions
+        jcol = _join_col(primary_df)
+        actual = primary_df[jcol].values
+        r_txt, _ = stats.pearsonr(p_join_hat, actual)
+        misc["text_baseline_r"] = round(abs(r_txt), 2)
+
+    # ── Group-size awareness ─────────────────────────────────────
+    gs_root = ROOT / "group-size-info" / PRIMARY
+    gs_pure_path = gs_root / "experiment_pure_summary.csv"
+    gs_comm_path = gs_root / "experiment_comm_summary.csv"
+    if gs_pure_path.exists() and gs_comm_path.exists():
+        gs_pure_df = pd.read_csv(gs_pure_path)
+        gs_comm_df = pd.read_csv(gs_comm_path)
+        gs_jcol = _join_col(gs_pure_df)
+        gs_pure_mean = float(gs_pure_df[gs_jcol].mean())
+        gs_comm_mean = float(gs_comm_df[gs_jcol].mean())
+        misc["gs_pure_join"] = round(gs_pure_mean, 3)
+        misc["gs_comm_join"] = round(gs_comm_mean, 3)
+        misc["gs_comm_premium_pp"] = round((gs_comm_mean - gs_pure_mean) * 100, 1)
+        # Baseline for comparison
+        bl_df = load(PRIMARY, "pure")
+        if not bl_df.empty:
+            bl_jcol = _join_col(bl_df)
+            misc["gs_baseline_pure_join"] = round(float(bl_df[bl_jcol].mean()), 3)
+
+    # ── Word frequency stats from message logs ─────────────────
+    import re as _re
+
+    ACTION_WORDS = {
+        "act", "action", "rise", "rising", "revolt", "rebel", "join", "fight",
+        "resist", "overthrow", "protest", "strike", "march", "mobilize", "move",
+        "now", "cracking", "crumbling", "collapse", "collapsing", "falling",
+        "weak", "weakening", "fracture", "fracturing", "breaking", "fragile",
+        "opportunity", "moment", "window", "momentum", "ready", "time",
+        "together", "unite", "unified", "solidarity", "everyone",
+    }
+    CAUTION_WORDS = {
+        "wait", "careful", "caution", "cautious", "patience", "patient", "risk",
+        "risky", "dangerous", "danger", "trap", "stable", "strong", "strength",
+        "grip", "control", "powerful", "secure", "security", "surveillance",
+        "monitor", "watching", "uncertain", "unclear", "premature",
+        "hold", "hesitate", "steady", "firm", "loyal", "intact",
+        "suppress", "crackdown", "retaliate", "punish",
+    }
+
+    def _load_log(path):
+        if path.exists():
+            with open(path) as f:
+                return json.load(f)
+        return []
+
+    def _flatten(log, real_only=False):
+        agents = []
+        for period in log:
+            for a in period.get("agents", []):
+                if real_only and a.get("is_propaganda"):
+                    continue
+                agents.append(a)
+        return agents
+
+    def _word_pct(agents, word):
+        """Pct of agents whose message contains word (substring, case-insensitive)."""
+        msgs = [a["message_sent"] for a in agents if a.get("message_sent")]
+        if not msgs:
+            return None
+        return round(100.0 * sum(1 for m in msgs if word in m.lower()) / len(msgs), 1)
+
+    def _has_action(msg):
+        words = set(_re.findall(r"[a-z]+", msg.lower()))
+        return bool(words & ACTION_WORDS)
+
+    def _has_caution(msg):
+        words = set(_re.findall(r"[a-z]+", msg.lower()))
+        return bool(words & CAUTION_WORDS)
+
+    comm_path = ROOT / PRIMARY / "experiment_comm_log.json"
+    surv_path = ROOT / "surveillance" / PRIMARY / "experiment_comm_log.json"
+    prop_k10_path = ROOT / "propaganda-k10" / PRIMARY / "experiment_comm_log.json"
+
+    comm_log = _load_log(comm_path)
+    surv_log = _load_log(surv_path)
+    prop_k10_log = _load_log(prop_k10_path)
+
+    if comm_log and surv_log:
+        comm_agents = _flatten(comm_log)
+        surv_agents = _flatten(surv_log)
+
+        # Single-word surveillance frequencies
+        misc["wf_act_comm"] = _word_pct(comm_agents, "act")
+        misc["wf_act_surv"] = _word_pct(surv_agents, "act")
+        misc["wf_collapse_comm"] = _word_pct(comm_agents, "collapse")
+        misc["wf_collapse_surv"] = _word_pct(surv_agents, "collapse")
+
+        # Action signaling among JOIN deciders
+        comm_join = [a for a in comm_agents if a.get("decision") == "JOIN" and a.get("message_sent")]
+        surv_join = [a for a in surv_agents if a.get("decision") == "JOIN" and a.get("message_sent")]
+        if comm_join:
+            misc["wf_action_join_comm"] = round(100.0 * sum(1 for a in comm_join if _has_action(a["message_sent"])) / len(comm_join), 1)
+        if surv_join:
+            misc["wf_action_join_surv"] = round(100.0 * sum(1 for a in surv_join if _has_action(a["message_sent"])) / len(surv_join), 1)
+
+    if comm_log and prop_k10_log:
+        comm_agents = _flatten(comm_log)
+        prop_k10_all = _flatten(prop_k10_log, real_only=False)
+        prop_k10_real = _flatten(prop_k10_log, real_only=True)
+
+        # Single-word propaganda frequencies
+        misc["wf_loyal_comm"] = _word_pct(comm_agents, "loyal")
+        misc["wf_loyal_k10"] = _word_pct(prop_k10_all, "loyal")
+        misc["wf_ready_comm"] = _word_pct(comm_agents, "ready")
+        misc["wf_ready_k10"] = _word_pct(prop_k10_all, "ready")
+
+        # Caution-coded among STAY deciders
+        comm_stay = [a for a in comm_agents if a.get("decision") == "STAY" and a.get("message_sent")]
+        prop_stay = [a for a in prop_k10_real if a.get("decision") == "STAY" and a.get("message_sent")]
+        if comm_stay:
+            misc["wf_caution_stay_comm"] = round(100.0 * sum(1 for a in comm_stay if _has_caution(a["message_sent"])) / len(comm_stay), 1)
+        if prop_stay:
+            misc["wf_caution_stay_k10"] = round(100.0 * sum(1 for a in prop_stay if _has_caution(a["message_sent"])) / len(prop_stay), 1)
+
+        # Action signaling among JOIN deciders in propaganda
+        prop_join = [a for a in prop_k10_real if a.get("decision") == "JOIN" and a.get("message_sent")]
+        if prop_join:
+            misc["wf_action_join_k10"] = round(100.0 * sum(1 for a in prop_join if _has_action(a["message_sent"])) / len(prop_join), 1)
+
+    # ── Surveillance + propaganda sum ────────────────────────────
+    # Read delta values from existing macros in stats_macros.tex
+    # These are computed by the surveillance/propaganda table pipeline
+    macros_path = PROJECT_ROOT / "paper" / "tables" / "stats_macros.tex"
+    if macros_path.exists():
+        import re as _re2
+        macro_text = macros_path.read_text()
+        surv_match = _re2.search(r"\\SurvMistralDeltaPP\}\{([^}]+)\}", macro_text)
+        prop_match = _re2.search(r"\\PropKFiveDeltaRealPP\}\{([^}]+)\}", macro_text)
+        if surv_match and prop_match:
+            surv_val = float(surv_match.group(1))
+            prop_val = float(prop_match.group(1))
+            misc["surv_prop_sum_pp"] = round(surv_val + prop_val, 1)
+
+    # ── Deduplication robustness (Mistral footnote) ───────────────
+    primary_df = load(PRIMARY, "pure")
+    if not primary_df.empty:
+        from scipy.stats import norm as _norm
+        jcol_d = _join_col(primary_df)
+        A_vals = _norm.cdf((theta_star + sigma * _norm.ppf(theta_star) - primary_df["theta"].values) / sigma)
+        r_predeup, _ = stats.pearsonr(A_vals, primary_df[jcol_d].values)
+        misc["dedup_r_pre"] = round(r_predeup, 3)
+        dedup = primary_df.groupby(["country", "period", "theta"])[jcol_d].mean().reset_index()
+        A_dedup = _norm.cdf((theta_star + sigma * _norm.ppf(theta_star) - dedup["theta"].values) / sigma)
+        r_postdedup, _ = stats.pearsonr(A_dedup, dedup[jcol_d].values)
+        misc["dedup_r_post"] = round(r_postdedup, 3)
+        misc["dedup_n_unique"] = int(len(dedup))
+
+    # ── Infodesign scramble p-value ──────────────────────────────
+    id_scr = all_stats.get("infodesign", {}).get("scramble", {}).get("r_vs_attack", {})
+    if "p" in id_scr:
+        misc["infodesign_scramble_p"] = round(id_scr["p"], 2)
+
+    # ── Llama infodesign scramble r ──────────────────────────────
+    id_cm = all_stats.get("infodesign", {}).get("_cross_model", {})
+    for model, data in id_cm.items():
+        if "llama" in model.lower():
+            r_val = data.get("scramble", {}).get("r_vs_attack", {}).get("r")
+            if r_val is not None:
+                misc["llama_infodesign_scramble_r"] = round(r_val, 2)
+
+    # ── Trinity parse error rate ─────────────────────────────────
+    pe = all_stats.get("parse_errors", {})
+    for model, data in pe.items():
+        if "trinity" in model.lower():
+            pure_api = data.get("pure", {}).get("mean_api_error_rate")
+            if pure_api is not None:
+                misc["trinity_api_error_pct"] = round(pure_api * 100)
+
+    return misc
+
+
 def main():
     print("Computing Part I statistics...")
     part1 = compute_part1()
@@ -2257,6 +2973,9 @@ def main():
     print("Computing parse error rates...")
     parse_errors = compute_parse_error_rates()
 
+    print("Computing level-k benchmark...")
+    level_k = compute_level_k_benchmark()
+
     all_stats = {
         "part1": part1,
         "infodesign": infodesign,
@@ -2279,11 +2998,16 @@ def main():
         "uncalibrated_expanded": uncalibrated_expanded,
         "punishment_risk": punishment_risk,
         "parse_errors": parse_errors,
+        "level_k": level_k,
     }
 
     print("Computing hypothesis table...")
     hypothesis_table = compute_hypothesis_table(all_stats)
     all_stats["hypothesis_table"] = hypothesis_table
+
+    print("Computing misc paper stats...")
+    misc = compute_paper_misc_stats(all_stats)
+    all_stats["misc"] = misc
 
     print("\nRunning discrepancy analysis...")
     discrepancies = discrepancy_report(all_stats)

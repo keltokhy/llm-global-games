@@ -1,6 +1,6 @@
 \begin{table}[t]
 \centering
-\caption{Bandwidth robustness: treatment effects $\Delta$ (treatment $-$ baseline) within each bandwidth condition (primary model: Mistral Small Creative). Top row shows baseline join rates for reference.}
+\caption{Bandwidth robustness: treatment effects $\Delta$ (pp, treatment $-$ baseline) within each bandwidth condition (primary model: Mistral Small Creative). Top row shows baseline join rates for reference.}
 \label{tab:bandwidth}
 \small
 \begin{tabular}{lccc}
@@ -10,9 +10,11 @@
 Baseline (level) & 0.054 & 0.409 & 0.061 \\
 \midrule
 \multicolumn{4}{l}{\textit{Treatment effect $\Delta$ (treatment $-$ baseline):}} \\
-Stability & +0.007 & -0.090 & +0.009 \\
-Upper cens. & +0.062 & -0.031 & +0.053 \\
-Lower cens. & +0.101 & -0.019 & +0.096 \\
+Stability & +0.7 & -9.0 & +0.9 \\
+Upper cens. & +6.2 & -3.1 & +5.3 \\
+Lower cens. & +10.1 & -1.9 & +9.6 \\
 \bottomrule
 \end{tabular}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model, information design $\theta$-grid $[0.20, 0.80]$. $h$ = Gaussian proximity bandwidth controlling how broadly manipulation spreads around $\theta^*$. $\Delta$: change in mean join vs.\ bandwidth-specific baseline (pp).}
 \end{table}

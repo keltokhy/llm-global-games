@@ -6,11 +6,13 @@
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{lcccc}
 \toprule
-Design & $N$ & Mean join & $r(\theta, J)$ & $\Delta$ vs baseline \\
+Design & $N$ & Mean join & $r(J, A(\theta))$ & $\Delta$ (pp) \\
 \midrule
-Baseline (no censorship) & 270 & 0.409 & -0.88 & --- \\
-Upper censorship (na\"ive) & 270 & 0.377 & -0.72 & -0.031 \\
-Upper censorship (known) & 270 & 0.432 & -0.74 & +0.024 \\
+Baseline (no censorship) & 270 & 0.409 & +0.88 & --- \\
+Upper censorship (na\"ive) & 270 & 0.377 & +0.72 & -3.1 \\
+Upper censorship (known) & 270 & 0.432 & +0.74 & +2.4 \\
 \bottomrule
 \end{tabular}}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model, information design $\theta$-grid. ``Known'': agents are told that the regime censors intelligence above a severity threshold. $\Delta$: change vs.\ baseline (pp).}
 \end{table}

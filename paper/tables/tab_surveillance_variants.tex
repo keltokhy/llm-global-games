@@ -6,10 +6,12 @@
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{lccccc}
 \toprule
-Variant & $N$ & Mean join & $r(\theta, J)$ & $\Delta$ & $p$ \\
+Variant & $N$ & Mean join & $r(J, A(\theta))$ & $\Delta$ (pp) & $p$ \\
 \midrule
-Placebo & 200 & 0.437 & -0.87 & +0.026 & 0.416 \\
-Anonymous & 200 & 0.452 & -0.87 & +0.041 & 0.201 \\
+Placebo & 200 & 0.437 & +0.75 & +2.6 & 0.416 \\
+Anonymous & 200 & 0.452 & +0.77 & +4.0 & 0.201 \\
 \bottomrule
 \end{tabular}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model (Mistral Small Creative). Placebo: agents told monitoring is for research purposes only (no consequences). Anonymous: messages aggregated before delivery. $\Delta$: change vs.\ communication baseline (pp). $p$-value from two-sample $t$-test.}
 \end{table}

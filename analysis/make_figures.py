@@ -2,17 +2,17 @@
 """
 Figure generation for "LLM Agents in Global Games."
 
-Generates all 17 figures to figures/ with sequential numbering matching paper order.
+Generates 23 publication figures to paper/figures/ with sequential numbering.
 
-Main figures:
+Main figures (Part I — core experiment):
   01. Core sigmoid — join fraction vs theta (pure + comm)
   02. Cross-model r-value forest plot
   03. Falsification triptych — pure / scramble / flip
-  04. Cross-model r-value bar chart
   05. Communication effect — dumbbell + sigmoid overlay
-  06. Agent-level threshold vs theoretical attack mass
   07. Information design — all designs on one canvas
   08. Treatment effect delta(theta)
+
+Main figures (Part II — information design):
   09. Censorship — curves + slope decomposition
   10. Infodesign falsification — scramble/flip
   11. Stability decomposition — single-channel
@@ -20,11 +20,14 @@ Main figures:
   13. Propaganda dose-response
   14. Cross-model infodesign replication
 
-  15. Surveillance mechanism tests (belief-behavior gap)
+Mechanism & belief figures:
+  15. Text baseline construct validity
   16. First-order beliefs (calibration + treatment divergence)
   17. Second-order beliefs
   18. B/C sweep — fitted vs theoretical cutoff
   19. Nonparametric monotonicity — E[belief | z-score bin] vs theory
+  20. Cross-generator replication
+  21. Placebo calibration
 
 Appendix:
   A1. Agent count robustness
@@ -32,7 +35,7 @@ Appendix:
   A3. Bandwidth robustness
   A4. Calibration convergence
 
-Usage: uv run python agent_based_simulation/make_figures.py
+Usage: cd analysis && uv run python make_figures.py
 """
 
 from pathlib import Path
@@ -42,8 +45,16 @@ from scipy import stats
 from scipy.optimize import curve_fit
 from matplotlib.lines import Line2D
 
-import matplotlib
-matplotlib.use("Agg")
+from style import (
+    apply_style, COL_W, TEXT_W, OUTPUT_DIR, FIG_DIR,
+    C_PURE, C_COMM, C_FLIP, C_SCRAMBLE, C_NET, C_SURV, C_PROP,
+    C_BASELINE, C_STABILITY, C_INSTABILITY, C_CENS_UP, C_CENS_LO, C_PUBLIC,
+    DESIGN_COLORS, DESIGN_LABELS, DESIGN_MARKERS,
+    join_col as _join_col, logistic, fit_logistic, attack_mass,
+    save, add_hgrid, add_vgrid, panel_label,
+)
+
+apply_style()
 import matplotlib.pyplot as plt
 
 from models import (
@@ -55,78 +66,7 @@ from models import (
 
 # ── Paths ─────────────────────────────────────────────────────────
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-ROOT = PROJECT_ROOT / "output"
-FIG_DIR = PROJECT_ROOT / "paper" / "figures"
-FIG_DIR.mkdir(exist_ok=True)
-
-# ── Two-column arxiv layout dimensions ────────────────────────────
-COL_W = 3.4    # \columnwidth in inches (single-column figure)
-TEXT_W = 7.0   # \textwidth in inches (figure* spanning both columns)
-
-# ── Style (sized for 1:1 rendering in two-column layout) ─────────
-plt.rcParams.update({
-    "font.size": 8,
-    "axes.titlesize": 9,
-    "axes.labelsize": 8,
-    "xtick.labelsize": 7,
-    "ytick.labelsize": 7,
-    "legend.fontsize": 7,
-    "figure.dpi": 150,
-    "savefig.dpi": 300,
-    "axes.spines.top": False,
-    "axes.spines.right": False,
-    "axes.grid": False,
-    "font.family": "serif",
-    "lines.linewidth": 1.0,
-    "lines.markersize": 4,
-})
-
-# ── Colors ────────────────────────────────────────────────────────
-
-# Treatment colors
-C_PURE = "#636363"
-C_COMM = "#2c7bb6"
-C_FLIP = "#d7191c"
-C_SCRAMBLE = "#fdae61"
-C_NET = "#1a9641"
-C_SURV = "#7b3294"
-C_PROP = "#CC79A7"
-
-# Information design colors
-C_BASELINE = "#636363"
-C_STABILITY = "#2c7bb6"
-C_INSTABILITY = "#d7191c"
-C_CENS_UP = "#1a9641"
-C_CENS_LO = "#e66101"
-C_PUBLIC = "#7b3294"
-
-DESIGN_COLORS = {
-    "baseline": C_BASELINE,
-    "stability": C_STABILITY,
-    "instability": C_INSTABILITY,
-    "censor_upper": C_CENS_UP,
-    "censor_lower": C_CENS_LO,
-    "public_signal": C_PUBLIC,
-    "scramble": C_SCRAMBLE,
-    "flip": C_FLIP,
-    "stability_clarity": "#abd9e9",
-    "stability_direction": "#74add1",
-    "stability_dissent": "#4575b4",
-}
-
-DESIGN_LABELS = {
-    "baseline": "Baseline",
-    "stability": "Stability",
-    "instability": "Instability",
-    "censor_upper": "Censor upper",
-    "censor_lower": "Censor lower",
-    "public_signal": "Public signal",
-    "scramble": "Scramble",
-    "flip": "Flip",
-    "stability_clarity": "Clarity only",
-    "stability_direction": "Direction only",
-    "stability_dissent": "Dissent only",
-}
+ROOT = OUTPUT_DIR
 
 # Model colors, short names, and exclusions — imported from models.py
 MODEL_COLORS = _MODEL_COLORS
@@ -135,28 +75,6 @@ EXCLUDE_MODELS = _EXCLUDE_MODELS
 
 
 # ── Helpers ───────────────────────────────────────────────────────
-
-
-def _join_col(df):
-    """Prefer join_fraction_valid when available, fall back to join_fraction."""
-    if "join_fraction_valid" in df.columns and df["join_fraction_valid"].notna().any():
-        return "join_fraction_valid"
-    return "join_fraction"
-
-
-def logistic(x, b0, b1):
-    return 1.0 / (1.0 + np.exp(b0 + b1 * x))
-
-
-def fit_logistic(df, theta_col="theta", join_col=None):
-    join_col = join_col or _join_col(df)
-    d = df.dropna(subset=[theta_col, join_col])
-    x, y = d[theta_col].values, d[join_col].values
-    try:
-        popt, pcov = curve_fit(logistic, x, y, p0=[0, 2], maxfev=10000)
-        return popt, pcov
-    except RuntimeError:
-        return np.array([0.0, 0.0]), np.zeros((2, 2))
 
 
 def binned(df, theta_col="theta", join_col=None, n_bins=15):
@@ -195,11 +113,7 @@ def load_all_csvs(directory, pattern="*summary*.csv"):
     return pd.DataFrame()
 
 
-def save(fig, name):
-    fig.savefig(FIG_DIR / f"{name}.pdf", bbox_inches="tight")
-    fig.savefig(FIG_DIR / f"{name}.png", dpi=300, bbox_inches="tight")
-    plt.close(fig)
-    print(f"  Saved {name}")
+# save() is imported from style.py
 
 
 # ── Load data ─────────────────────────────────────────────────────
@@ -366,7 +280,8 @@ def fig02_cross_model():
     ax.set_yticks(y)
     ax.set_yticklabels(short_names, fontsize=6.5)
     ax.set_xlabel(r"$|r(\theta, \mathrm{join\ fraction})|$")
-    ax.set_xlim(0.3, 1.0)
+    ax.set_xlim(0.7, 1.0)
+    add_hgrid(ax)
 
     handles = [
         Line2D([0], [0], marker="o", color="w", markerfacecolor=C_PURE,
@@ -504,9 +419,15 @@ def fig05_communication():
 
     delta_low = gc.iloc[:mid_idx]["mean"].mean() - gp.iloc[:mid_idx]["mean"].mean()
     delta_high = gc.iloc[mid_idx:]["mean"].mean() - gp.iloc[mid_idx:]["mean"].mean()
+
+    def _fmt_delta(v):
+        if abs(v) < 0.005:
+            return "0.00"
+        return f"{v:+.2f}"
+
     ax.text(0.97, 0.02,
-            f"Weak regime $\\Delta$ = +{delta_low:.2f}\n"
-            f"Strong regime $\\Delta$ = +{delta_high:.2f}",
+            f"Weak regime $\\Delta$ = {_fmt_delta(delta_low)}\n"
+            f"Strong regime $\\Delta$ = {_fmt_delta(delta_high)}",
             transform=ax.transAxes, fontsize=6, va="bottom", ha="right",
             bbox=dict(boxstyle="round,pad=0.2", facecolor="white",
                       alpha=0.8, edgecolor="#ccc", linewidth=0.4))
@@ -667,6 +588,7 @@ def fig09_censorship():
         ax.axvline(0, color="#333", linewidth=0.6)
         ax.set_xlabel(r"OLS slope ($\Delta$join / $\Delta\theta$)")
         ax.set_title("B. Slope decomposition")
+        add_vgrid(ax)
 
         for i, (_, row) in enumerate(sd.iterrows()):
             if row["slope"] >= 0:
@@ -852,6 +774,7 @@ def fig12_surveillance():
         ax.axvline(0, color="#333", linewidth=0.6)
         ax.set_xlabel("Chilling effect (pp)")
         ax.set_title("B. $\\Delta$ join fraction (surveillance $-$ comm)")
+        add_vgrid(ax)
 
         for i, (_, row) in enumerate(ddf.iterrows()):
             ax.text(row["delta"] * 100 - 0.8, i,
@@ -859,6 +782,7 @@ def fig12_surveillance():
                     ha="right", color="white", fontweight="bold")
 
     plt.tight_layout()
+    fig.subplots_adjust(left=0.08)
     save(fig, "fig12_surveillance")
 
 
@@ -882,9 +806,9 @@ def fig13_propaganda():
 
     prop_specs = [
         ("k=0 (baseline)", comm_df, 0, C_COMM, 1.0, "o"),
-        ("k=2 bots", prop2, 2, C_PROP, 0.9, "s"),
-        ("k=5 bots", prop5, 5, C_PROP, 0.6, "^"),
-        ("k=10 bots", prop10, 10, C_PROP, 0.3, "D"),
+        ("k=2 bots", prop2, 2, "#CC79A7", 1.0, "s"),
+        ("k=5 bots", prop5, 5, "#E69F00", 1.0, "^"),
+        ("k=10 bots", prop10, 10, "#D55E00", 1.0, "D"),
     ]
 
     for _, df, k, *_ in prop_specs:
@@ -960,6 +884,7 @@ def fig13_propaganda():
         ax.set_yticks(y)
         ax.set_yticklabels(bdf["model"], fontsize=6)
         ax.axvline(0, color="#333", linewidth=0.6)
+        add_vgrid(ax)
         ax.set_xlabel("Behavioral $\\Delta$ (pp)")
         ax.set_title("C. Cross-model\n(k=5, real citizens)", fontsize=8)
 
@@ -1294,7 +1219,7 @@ def fig16_beliefs():
 
     fig, (ax_a, ax_b) = plt.subplots(1, 2, figsize=(TEXT_W, 2.6))
 
-    # Panel (a): Stated belief vs Bayesian posterior
+    # Panel A: Stated belief vs Bayesian posterior
     posteriors = np.array([r["posterior"] for r in pure])
     beliefs = np.array([r["belief"] for r in pure])
 
@@ -1319,9 +1244,9 @@ def fig16_beliefs():
     ax_a.text(0.05, 0.92, f"$r = {r_val:+.2f}$\nslope $= {slope:.2f}$",
               transform=ax_a.transAxes, fontsize=7, va="top",
               bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="#ccc", alpha=0.9))
-    ax_a.set_title("(a) Beliefs track Bayesian posterior", fontsize=8, loc="left")
+    ax_a.set_title("A. Beliefs track Bayesian posterior", fontsize=8, loc="left")
 
-    # Panel (b): Join rate by belief bin
+    # Panel B: Join rate by belief bin
     bin_edges = np.array([0, 0.2, 0.4, 0.6, 0.8, 1.01])
     bin_labels = ["0\u201320", "20\u201340", "40\u201360", "60\u201380", "80\u2013100"]
 
@@ -1373,7 +1298,8 @@ def fig16_beliefs():
     ax_b.set_xticklabels(bin_labels)
     ax_b.set_ylim(-0.05, 1.08)
     ax_b.legend(loc="upper left", framealpha=0.9, edgecolor="#ccc")
-    ax_b.set_title("(b) Actions diverge from beliefs under treatment", fontsize=8, loc="left")
+    add_hgrid(ax_b)
+    ax_b.set_title("B. Actions diverge from beliefs under treatment", fontsize=8, loc="left")
 
     plt.tight_layout()
     save(fig, "fig16_beliefs")
@@ -1384,8 +1310,8 @@ def fig16_beliefs():
 # ═══════════════════════════════════════════════════════════════════
 
 def figA4_calibration():
-    """Two-panel figure: (A) convergence of fitted_center across rounds,
-    (B) bar chart of final cutoff_center per model."""
+    """Two-panel figure: A. convergence of fitted_center across rounds,
+    B. bar chart of final cutoff_center per model."""
     import json as _json
 
     # ── Load autocalibrate_history.csv for each model ────────────
@@ -1431,7 +1357,7 @@ def figA4_calibration():
 
         ax.set_xlabel("Calibration round")
         ax.set_ylabel("Fitted logistic center $c$")
-        ax.set_title("(A) Convergence of fitted center", fontsize=8)
+        ax.set_title("A. Convergence of fitted center", fontsize=8)
         ax.legend(fontsize=5, loc="upper right", ncol=2, framealpha=0.8)
 
         # Nice x-axis ticks (integer rounds only)
@@ -1449,7 +1375,7 @@ def figA4_calibration():
         ax.text(0.5, 0.5, "No autocalibrate_history.csv\nfiles found",
                 transform=ax.transAxes, ha="center", va="center",
                 fontsize=7, color="#999")
-        ax.set_title("(A) Convergence of fitted center", fontsize=8)
+        ax.set_title("A. Convergence of fitted center", fontsize=8)
         ax.set_xlabel("Calibration round")
         ax.set_ylabel("Fitted logistic center $c$")
 
@@ -1469,8 +1395,9 @@ def figA4_calibration():
         ax.set_yticks(range(len(names)))
         ax.set_yticklabels(names, fontsize=6)
         ax.axvline(0, color="#636363", linewidth=0.5, linestyle=":")
+        add_vgrid(ax)
         ax.set_xlabel("Calibrated cutoff center")
-        ax.set_title("(B) Per-model calibration shift", fontsize=8)
+        ax.set_title("B. Per-model calibration shift", fontsize=8)
 
         # Add value labels
         for i, (bar, val) in enumerate(zip(bars, centers)):
@@ -1491,7 +1418,7 @@ def figA4_calibration():
 # ═══════════════════════════════════════════════════════════════════
 
 def fig17_second_order_beliefs():
-    """2-panel: (A) second-order belief vs theta, (B) second-order belief vs actual join."""
+    """2-panel: A. second-order belief vs theta, B. second-order belief vs actual join."""
     import json as _json
 
     _MISTRAL_DIR = ROOT / "mistralai--mistral-small-creative"
@@ -1598,7 +1525,7 @@ def fig17_second_order_beliefs():
     ax_a.set_ylabel("Second-order belief")
     ax_a.set_ylim(-0.03, 1.03)
     ax_a.legend(fontsize=6, loc="upper right")
-    ax_a.set_title("(a) Second-order belief vs regime strength", fontsize=8, loc="left")
+    ax_a.set_title("A. Second-order belief vs regime strength", fontsize=8, loc="left")
 
     # Panel B: Second-order belief vs actual join rate
     for t, (color, label) in treatments.items():
@@ -1638,7 +1565,7 @@ def fig17_second_order_beliefs():
     ax_b.set_xlim(-0.03, 1.03)
     ax_b.set_ylim(-0.03, 1.03)
     ax_b.legend(fontsize=6, loc="upper left")
-    ax_b.set_title("(b) Calibration: belief vs actual join", fontsize=8, loc="left")
+    ax_b.set_title("B. Calibration: belief vs actual join", fontsize=8, loc="left")
 
     plt.tight_layout()
     save(fig, "fig17_second_order_beliefs")
@@ -1797,10 +1724,6 @@ def fig19_nonparametric_beliefs():
             alpha=0.7, zorder=2,
             label=r"Theoretical $P(\mathrm{success} \mid z)$")
 
-    # Binned theoretical posterior means (accounts for varying theta* and z across periods)
-    ax.plot(bin_centers_t, bin_means_t, color="#d62728", marker="D", markersize=3,
-            linewidth=0, alpha=0.5, zorder=2)
-
     # Empirical stated beliefs
     ax.errorbar(bin_centers_b, bin_means_b, yerr=1.96 * bin_sems_b,
                 fmt="o", color=C_PURE, markersize=4, elinewidth=0.6,
@@ -1867,7 +1790,7 @@ def fig20_cross_generator():
             centers, means, ses = binned(df, join_col=jcol)
 
             # Fitted logistic
-            popt, _ = fit_logistic(df, join_col=jcol)
+            popt, _ = fit_logistic(df, jcol=jcol)
 
             # Plot binned points
             ax.errorbar(centers, means, yerr=1.96 * ses,
@@ -1957,26 +1880,177 @@ def fig21_placebo_calibration():
         else:
             colors.append("#2c7bb6")
 
+    add_vgrid(ax1)
     ax1.barh(range(len(conditions)), r_vals, color=colors, height=0.6, alpha=0.8)
     ax1.set_yticks(range(len(conditions)))
     ax1.set_yticklabels(labels, fontsize=6)
     ax1.set_xlabel("$r(\\theta, J)$")
-    ax1.set_title("(a) Correlation unchanged", fontsize=9, loc="left")
+    ax1.set_title("A. Correlation unchanged", fontsize=9, loc="left")
     ax1.set_xlim(-1, 0)
     ax1.invert_yaxis()
 
     # Panel B: mean join shifts
     means = [mj for _, _, _, mj in conditions]
+    add_vgrid(ax2)
     ax2.barh(range(len(conditions)), means, color=colors, height=0.6, alpha=0.8)
     ax2.set_yticks(range(len(conditions)))
     ax2.set_yticklabels(labels, fontsize=6)
     ax2.set_xlabel("Mean join fraction")
-    ax2.set_title("(b) Mean join shifts with center", fontsize=9, loc="left")
+    ax2.set_title("B. Mean join shifts with center", fontsize=9, loc="left")
     ax2.set_xlim(0, 1)
     ax2.invert_yaxis()
 
     plt.tight_layout()
     save(fig, "fig21_placebo_calibration")
+
+
+def fig15_text_baseline():
+    """Text baseline test: LLM join curve vs naive text predictor (1 - direction).
+
+    Shows the LLM produces a steeper threshold response than the text-only
+    baseline, demonstrating processing beyond surface sentiment.
+    """
+    path = ROOT / PRIMARY_SLUG / "autocalibrate_final_raw.csv"
+    if not path.exists():
+        print("  [skip] fig15_text_baseline — no calibration data")
+        return
+
+    df = pd.read_csv(path)
+    df = df[df["api_error"] == 0].copy()
+
+    # Bin by z-score
+    bins = df.groupby("z_score").agg(
+        join_rate=("join", "mean"),
+        join_se=("join", "sem"),
+        direction_mean=("direction", "mean"),
+        n=("join", "count"),
+    ).reset_index()
+
+    # Text-only baseline: 1 - direction
+    bins["text_baseline"] = 1.0 - bins["direction_mean"]
+
+    # Fitted logistic for LLM curve
+    z_fine = np.linspace(bins["z_score"].min(), bins["z_score"].max(), 200)
+    try:
+        from scipy.optimize import curve_fit as _cf
+        def _logistic_z(z, c, s):
+            return 1.0 / (1.0 + np.exp(s * (z - c)))
+        popt, _ = _cf(_logistic_z, bins["z_score"].values, bins["join_rate"].values,
+                       p0=[0.0, 1.0], maxfev=5000)
+        fitted = _logistic_z(z_fine, *popt)
+        slope_label = f"slope = {abs(popt[1]):.2f}"
+    except RuntimeError:
+        fitted = None
+        slope_label = ""
+
+    fig, ax = plt.subplots(figsize=(COL_W, COL_W * 0.75))
+
+    # Empirical join rate
+    ax.errorbar(bins["z_score"], bins["join_rate"], yerr=1.96 * bins["join_se"],
+                fmt="o", color=C_PURE, markersize=3, elinewidth=0.5, capsize=1.5,
+                label="LLM join rate", zorder=3)
+
+    # Fitted logistic
+    if fitted is not None:
+        ax.plot(z_fine, fitted, "-", color=C_COMM, linewidth=1.2,
+                label=f"Fitted logistic ({slope_label})", zorder=2)
+
+    # Text-only baseline
+    ax.plot(bins["z_score"], bins["text_baseline"], "s--", color=C_SCRAMBLE,
+            markersize=3, linewidth=0.8, alpha=0.8,
+            label=f"Text baseline ($1 - d$)")
+
+    # Reference lines
+    ax.axhline(0.5, color="#cccccc", linewidth=0.5, linestyle=":")
+    ax.axvline(0.0, color="#cccccc", linewidth=0.5, linestyle=":")
+
+    ax.set_xlabel("$z$-score")
+    ax.set_ylabel("Join rate")
+    ax.set_ylim(-0.05, 1.05)
+    ax.legend(fontsize=6, loc="upper right")
+    add_hgrid(ax)
+
+    plt.tight_layout()
+    save(fig, "fig15_text_baseline")
+
+
+# ═══════════════════════════════════════════════════════════════════
+# FIGURE: Example briefings at z = {-2, 0, +2}
+# ═══════════════════════════════════════════════════════════════════
+
+def fig_example_briefings():
+    """Three side-by-side intelligence briefings showing signal-to-text mapping.
+
+    Displays full briefing text at z = -2 (weak regime / strong join signal),
+    z = 0 (ambiguous), and z = +2 (strong regime / strong stay signal).
+    """
+    import textwrap
+    import sys
+
+    sys.path.insert(0, str(PROJECT_ROOT))
+    from agent_based_simulation.briefing import BriefingGenerator
+
+    gen = BriefingGenerator(seed=42)
+
+    z_scores = [-2.0, 0.0, 2.0]
+    titles = [
+        "$z = -2$ (weak regime)",
+        "$z = \\,\\,0$ (ambiguous)",
+        "$z = +2$ (strong regime)",
+    ]
+    title_colors = ["#d7191c", "#636363", "#2c7bb6"]
+
+    briefings = []
+    for z in z_scores:
+        b = gen.generate(z_score=z, agent_id=0, period=0)
+        briefings.append(b.render())
+
+    # ── Layout: three equal panels, full text width ──
+    fig, axes = plt.subplots(1, 3, figsize=(TEXT_W, 7.5))
+
+    wrap_width = 52  # characters per line
+
+    for ax, text, title, color in zip(axes, briefings, titles, title_colors):
+        ax.set_xlim(0, 1)
+        ax.set_ylim(0, 1)
+        ax.axis("off")
+
+        # Panel title with colored background bar
+        ax.text(0.5, 0.995, title, transform=ax.transAxes,
+                fontsize=8, fontweight="bold", color=color,
+                ha="center", va="top")
+
+        # Wrap and render briefing text
+        lines = []
+        for raw_line in text.split("\n"):
+            if raw_line.strip() == "":
+                lines.append("")
+            elif raw_line.startswith("  - "):
+                # Bullet items: wrap with hanging indent
+                wrapped = textwrap.fill(
+                    raw_line.strip(), width=wrap_width,
+                    initial_indent="  \u2022 ", subsequent_indent="     ",
+                )
+                lines.append(wrapped)
+            else:
+                wrapped = textwrap.fill(raw_line.strip(), width=wrap_width)
+                lines.append(wrapped)
+
+        rendered = "\n".join(lines)
+
+        ax.text(0.03, 0.96, rendered, transform=ax.transAxes,
+                fontsize=5.0, fontfamily="monospace",
+                va="top", ha="left",
+                linespacing=1.2)
+
+        # Subtle border around each panel
+        for spine in ax.spines.values():
+            spine.set_visible(True)
+            spine.set_edgecolor("#cccccc")
+            spine.set_linewidth(0.5)
+
+    fig.subplots_adjust(left=0.01, right=0.99, top=0.97, bottom=0.01, wspace=0.08)
+    save(fig, "fig_example_briefings")
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -2003,6 +2077,7 @@ if __name__ == "__main__":
     figA1_agent_count()
     figA2_network()
     figA3_bandwidth()
+    fig15_text_baseline()
     fig16_beliefs()
     figA4_calibration()
     fig17_second_order_beliefs()
@@ -2010,5 +2085,6 @@ if __name__ == "__main__":
     fig19_nonparametric_beliefs()
     fig20_cross_generator()
     fig21_placebo_calibration()
+    fig_example_briefings()
 
     print(f"\nAll figures saved to {FIG_DIR}")
