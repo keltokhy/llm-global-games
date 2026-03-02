@@ -416,8 +416,8 @@ def fig05_communication():
     delta_low = gc.iloc[:mid_idx]["mean"].mean() - gp.iloc[:mid_idx]["mean"].mean()
     delta_high = gc.iloc[mid_idx:]["mean"].mean() - gp.iloc[mid_idx:]["mean"].mean()
     ax.text(0.97, 0.02,
-            f"Weak regime $\\Delta$ = +{delta_low:.2f}\n"
-            f"Strong regime $\\Delta$ = +{delta_high:.2f}",
+            f"Weak regime $\\Delta$ = {delta_low:+.2f}\n"
+            f"Strong regime $\\Delta$ = {delta_high:+.2f}",
             transform=ax.transAxes, fontsize=6, va="bottom", ha="right",
             bbox=dict(boxstyle="round,pad=0.2", facecolor="white",
                       alpha=0.8, edgecolor="#ccc", linewidth=0.4))
@@ -1230,7 +1230,7 @@ def fig16_beliefs():
     ax_a.text(0.05, 0.92, f"$r = {r_val:+.2f}$\nslope $= {slope:.2f}$",
               transform=ax_a.transAxes, fontsize=7, va="top",
               bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="#ccc", alpha=0.9))
-    ax_a.set_title("(a) Beliefs track Bayesian posterior", fontsize=8, loc="left")
+    ax_a.set_title("A. Beliefs track Bayesian posterior", fontsize=8, loc="left")
 
     # Panel (b): Join rate by belief bin
     bin_edges = np.array([0, 0.2, 0.4, 0.6, 0.8, 1.01])
@@ -1284,7 +1284,7 @@ def fig16_beliefs():
     ax_b.set_xticklabels(bin_labels)
     ax_b.set_ylim(-0.05, 1.08)
     ax_b.legend(loc="upper left", framealpha=0.9, edgecolor="#ccc")
-    ax_b.set_title("(b) Actions diverge from beliefs under treatment", fontsize=8, loc="left")
+    ax_b.set_title("B. Actions diverge from beliefs under treatment", fontsize=8, loc="left")
 
     plt.tight_layout()
     save(fig, "fig16_beliefs")
@@ -1509,7 +1509,7 @@ def fig17_second_order_beliefs():
     ax_a.set_ylabel("Second-order belief")
     ax_a.set_ylim(-0.03, 1.03)
     ax_a.legend(fontsize=6, loc="upper right")
-    ax_a.set_title("(a) Second-order belief vs regime strength", fontsize=8, loc="left")
+    ax_a.set_title("A. Second-order belief vs regime strength", fontsize=8, loc="left")
 
     # Panel B: Second-order belief vs actual join rate
     for t, (color, label) in treatments.items():
@@ -1549,7 +1549,7 @@ def fig17_second_order_beliefs():
     ax_b.set_xlim(-0.03, 1.03)
     ax_b.set_ylim(-0.03, 1.03)
     ax_b.legend(fontsize=6, loc="upper left")
-    ax_b.set_title("(b) Calibration: belief vs actual join", fontsize=8, loc="left")
+    ax_b.set_title("B. Calibration: belief vs actual join", fontsize=8, loc="left")
 
     plt.tight_layout()
     save(fig, "fig17_second_order_beliefs")
@@ -1872,7 +1872,7 @@ def fig21_placebo_calibration():
     ax1.set_yticks(range(len(conditions)))
     ax1.set_yticklabels(labels, fontsize=6)
     ax1.set_xlabel("$r(\\theta, J)$")
-    ax1.set_title("(a) Correlation unchanged", fontsize=9, loc="left")
+    ax1.set_title("A. Correlation unchanged", fontsize=9, loc="left")
     ax1.set_xlim(-1, 0)
     ax1.invert_yaxis()
 
@@ -1882,12 +1882,81 @@ def fig21_placebo_calibration():
     ax2.set_yticks(range(len(conditions)))
     ax2.set_yticklabels(labels, fontsize=6)
     ax2.set_xlabel("Mean join fraction")
-    ax2.set_title("(b) Mean join shifts with center", fontsize=9, loc="left")
+    ax2.set_title("B. Mean join shifts with center", fontsize=9, loc="left")
     ax2.set_xlim(0, 1)
     ax2.invert_yaxis()
 
     plt.tight_layout()
     save(fig, "fig21_placebo_calibration")
+
+
+def fig15_text_baseline():
+    """Text baseline test: LLM join curve vs naive text predictor (1 - direction).
+
+    Shows the LLM produces a steeper threshold response than the text-only
+    baseline, demonstrating processing beyond surface sentiment.
+    """
+    path = ROOT / PRIMARY_SLUG / "autocalibrate_final_raw.csv"
+    if not path.exists():
+        print("  [skip] fig15_text_baseline — no calibration data")
+        return
+
+    df = pd.read_csv(path)
+    df = df[df["api_error"] == 0].copy()
+
+    # Bin by z-score
+    bins = df.groupby("z_score").agg(
+        join_rate=("join", "mean"),
+        join_se=("join", "sem"),
+        direction_mean=("direction", "mean"),
+        n=("join", "count"),
+    ).reset_index()
+
+    # Text-only baseline: 1 - direction
+    bins["text_baseline"] = 1.0 - bins["direction_mean"]
+
+    # Fitted logistic for LLM curve
+    z_fine = np.linspace(bins["z_score"].min(), bins["z_score"].max(), 200)
+    try:
+        from scipy.optimize import curve_fit as _cf
+        def _logistic_z(z, c, s):
+            return 1.0 / (1.0 + np.exp(s * (z - c)))
+        popt, _ = _cf(_logistic_z, bins["z_score"].values, bins["join_rate"].values,
+                       p0=[0.0, 1.0], maxfev=5000)
+        fitted = _logistic_z(z_fine, *popt)
+        slope_label = f"slope = {abs(popt[1]):.2f}"
+    except RuntimeError:
+        fitted = None
+        slope_label = ""
+
+    fig, ax = plt.subplots(figsize=(COL_W, COL_W * 0.75))
+
+    # Empirical join rate
+    ax.errorbar(bins["z_score"], bins["join_rate"], yerr=1.96 * bins["join_se"],
+                fmt="o", color=C_PURE, markersize=3, elinewidth=0.5, capsize=1.5,
+                label="LLM join rate", zorder=3)
+
+    # Fitted logistic
+    if fitted is not None:
+        ax.plot(z_fine, fitted, "-", color=C_COMM, linewidth=1.2,
+                label=f"Fitted logistic ({slope_label})", zorder=2)
+
+    # Text-only baseline
+    ax.plot(bins["z_score"], bins["text_baseline"], "s--", color=C_SCRAMBLE,
+            markersize=3, linewidth=0.8, alpha=0.8,
+            label=f"Text baseline ($1 - d$)")
+
+    # Reference lines
+    ax.axhline(0.5, color="#cccccc", linewidth=0.5, linestyle=":")
+    ax.axvline(0.0, color="#cccccc", linewidth=0.5, linestyle=":")
+
+    ax.set_xlabel("$z$-score")
+    ax.set_ylabel("Join rate")
+    ax.set_ylim(-0.05, 1.05)
+    ax.legend(fontsize=6, loc="upper right")
+
+    plt.tight_layout()
+    save(fig, "fig15_text_baseline")
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -1914,6 +1983,7 @@ if __name__ == "__main__":
     figA1_agent_count()
     figA2_network()
     figA3_bandwidth()
+    fig15_text_baseline()
     fig16_beliefs()
     figA4_calibration()
     fig17_second_order_beliefs()
