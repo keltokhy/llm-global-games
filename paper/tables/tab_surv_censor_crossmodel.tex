@@ -2,8 +2,7 @@
 \centering
 \caption{Cross-model surveillance $\times$ censorship interaction. All conditions run under surveillance with communication. $\Delta$ columns show the change relative to the surveilled baseline.}
 \label{tab:surv_censor_crossmodel}
-\small
-\resizebox{\columnwidth}{!}{%
+\footnotesize
 \begin{tabular}{lccccc}
 \toprule
 & \multicolumn{3}{c}{Mean join (surv.)} & \multicolumn{2}{c}{$\Delta$ (pp)} \\
@@ -15,5 +14,7 @@ Llama 3.3 70B & 0.114 & 0.039 & 0.115 & -7.5 & +0.1 \\
 GPT-OSS 120B & 0.316 & 0.177 & 0.312 & -13.9 & -0.4 \\
 Qwen3 235B & 0.336 & 0.321 & 0.468 & -1.5 & +13.1 \\
 \bottomrule
-\end{tabular}}
+\end{tabular}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Communication treatment, information design $\theta$-grid, surveillance active during messaging. $\Delta$: change vs.\ surveilled baseline (pp). $N = 25$ agents per period.}
 \end{table}

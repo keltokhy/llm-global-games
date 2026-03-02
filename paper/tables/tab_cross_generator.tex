@@ -8,13 +8,15 @@
 \toprule
 Model & Generator & $N$ & Mean join & $r(J, A(\theta))$ & Cutoff $\hat{\theta}^*$ \\
 \midrule
-Mistral Small Creative & Baseline & 100 & 0.402 & $+0.769$ & -0.070 \\
-Mistral Small Creative & Cable & 100 & 0.406 & $+0.760$ & -0.057 \\
-Mistral Small Creative & Journalistic & 100 & 0.403 & $+0.752$ & -0.065 \\
+Mistral Small Creative & Baseline & 100 & 0.402 & $+0.77$ & -0.070 \\
+Mistral Small Creative & Cable & 100 & 0.406 & $+0.76$ & -0.057 \\
+Mistral Small Creative & Journalistic & 100 & 0.403 & $+0.75$ & -0.065 \\
 \midrule
-Llama 3.3 70B & Baseline & 100 & 0.354 & $+0.753$ & -0.249 \\
-Llama 3.3 70B & Cable & 100 & 0.362 & $+0.753$ & -0.226 \\
-Llama 3.3 70B & Journalistic & 100 & 0.360 & $+0.759$ & -0.233 \\
+Llama 3.3 70B & Baseline & 100 & 0.354 & $+0.75$ & -0.249 \\
+Llama 3.3 70B & Cable & 100 & 0.362 & $+0.75$ & -0.226 \\
+Llama 3.3 70B & Journalistic & 100 & 0.360 & $+0.76$ & -0.233 \\
 \bottomrule
 \end{tabular}}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Information design $\theta$-grid. Three text renderers (baseline intelligence briefing, diplomatic cable, journalistic wire) use identical slider functions and evidence items; only prose formatting differs.}
 \end{table}

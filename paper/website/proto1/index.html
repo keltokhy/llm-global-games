@@ -1,0 +1,2175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLMs Can Play (Global) Games</title>
+<style>
+/* ============================================================
+   CSS RESET & BASE
+   ============================================================ */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #0a0a0f;
+  --bg-subtle: #0f0f18;
+  --text: #e8e6e3;
+  --text-dim: #8a8a9a;
+  --text-faint: #4a4a5a;
+  --accent: #4a9eff;
+  --accent-glow: rgba(74, 158, 255, 0.15);
+  --red: #ff6b6b;
+  --green: #6bffb8;
+  --orange: #ffad4a;
+  --serif: Georgia, 'Times New Roman', 'Palatino Linotype', serif;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 18px;
+  background: var(--bg);
+}
+
+body {
+  font-family: var(--sans);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+h1, h2, h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.section-number {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 1rem;
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.container--wide {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.section-spacer {
+  min-height: 40vh;
+}
+
+/* ============================================================
+   SCROLL ANIMATIONS
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.15s; }
+.reveal-delay-2 { transition-delay: 0.3s; }
+.reveal-delay-3 { transition-delay: 0.45s; }
+.reveal-delay-4 { transition-delay: 0.6s; }
+
+.reveal-fade {
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+.reveal-fade.visible {
+  opacity: 1;
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-scale.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ============================================================
+   PROGRESS BAR
+   ============================================================ */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--green));
+  z-index: 1000;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* ============================================================
+   HERO SECTION
+   ============================================================ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at 50% 50%, rgba(74, 158, 255, 0.04) 0%, transparent 60%);
+  animation: hero-glow 8s ease-in-out infinite alternate;
+}
+
+@keyframes hero-glow {
+  0% { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(1.1); opacity: 1; }
+}
+
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeInUp 1s 0.3s ease forwards;
+}
+
+.hero-title {
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-family: var(--serif);
+  font-weight: 400;
+  line-height: 1.05;
+  margin-bottom: 0.5rem;
+  opacity: 0;
+  animation: fadeInUp 1s 0.5s ease forwards;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  color: var(--text-dim);
+  max-width: 600px;
+  margin: 1.5rem auto 0;
+  opacity: 0;
+  animation: fadeInUp 1s 0.8s ease forwards;
+  font-family: var(--serif);
+  font-style: italic;
+}
+
+.hero-author {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--text-faint);
+  margin-top: 2.5rem;
+  opacity: 0;
+  animation: fadeInUp 1s 1.1s ease forwards;
+}
+
+.hero-sigmoid {
+  margin-top: 3rem;
+  opacity: 0;
+  animation: fadeInUp 1s 1.4s ease forwards;
+  position: relative;
+}
+
+.hero-sigmoid canvas {
+  display: block;
+}
+
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  opacity: 0;
+  animation: fadeInUp 1s 2s ease forwards, pulse 2s 3s ease-in-out infinite;
+}
+
+.hero-scroll-hint::after {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 30px;
+  background: linear-gradient(to bottom, var(--text-faint), transparent);
+  margin: 0.8rem auto 0;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+/* ============================================================
+   THE TRAP — DRAMATIC INTRO
+   ============================================================ */
+.trap-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 0;
+}
+
+.trap-text {
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+  line-height: 1.5;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.trap-text .line {
+  display: block;
+  margin-bottom: 0.5em;
+}
+
+.trap-text .highlight {
+  color: var(--accent);
+}
+
+.trap-text .highlight-red {
+  color: var(--red);
+}
+
+.trap-text .highlight-dim {
+  color: var(--text-dim);
+}
+
+/* ============================================================
+   NUMBERS COUNTER
+   ============================================================ */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin: 3rem 0;
+}
+
+.stat-card {
+  text-align: center;
+  padding: 2rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.02);
+  transition: border-color 0.3s ease;
+}
+
+.stat-card:hover {
+  border-color: var(--accent);
+}
+
+.stat-value {
+  font-family: var(--mono);
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.stat-value.red { color: var(--red); }
+.stat-value.green { color: var(--green); }
+.stat-value.orange { color: var(--orange); }
+
+.stat-label {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+/* ============================================================
+   PIPELINE DIAGRAM
+   ============================================================ */
+.pipeline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+  margin: 3rem 0;
+  padding: 2rem 0;
+}
+
+.pipeline-node {
+  padding: 0.8rem 1.2rem;
+  border: 1px solid rgba(74, 158, 255, 0.3);
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--text);
+  background: rgba(74, 158, 255, 0.05);
+  text-align: center;
+  white-space: nowrap;
+  position: relative;
+}
+
+.pipeline-node.active {
+  border-color: var(--accent);
+  background: rgba(74, 158, 255, 0.12);
+  box-shadow: 0 0 20px rgba(74, 158, 255, 0.1);
+}
+
+.pipeline-arrow {
+  font-size: 1.2rem;
+  color: var(--text-faint);
+  padding: 0 0.6rem;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   SIGMOID FIGURE
+   ============================================================ */
+.figure-container {
+  margin: 3rem 0;
+  position: relative;
+}
+
+.figure-container canvas {
+  display: block;
+  width: 100%;
+  border-radius: 2px;
+}
+
+.figure-caption {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-top: 1rem;
+  text-align: center;
+}
+
+/* ============================================================
+   CORRELATION BARS
+   ============================================================ */
+.correlation-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.correlation-label {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  width: 120px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.correlation-bar-bg {
+  flex: 1;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.correlation-bar {
+  height: 100%;
+  border-radius: 2px;
+  width: 0%;
+  transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0.8rem;
+}
+
+.correlation-bar.positive {
+  background: linear-gradient(90deg, rgba(74, 158, 255, 0.2), rgba(74, 158, 255, 0.5));
+}
+
+.correlation-bar.negative {
+  background: linear-gradient(90deg, rgba(255, 107, 107, 0.2), rgba(255, 107, 107, 0.5));
+}
+
+.correlation-bar.zero {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.correlation-number {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+/* ============================================================
+   FALSIFICATION
+   ============================================================ */
+.falsification-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin: 3rem 0;
+}
+
+.falsification-card {
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+  text-align: center;
+}
+
+.falsification-card canvas {
+  display: block;
+  margin: 0 auto 1rem;
+}
+
+.falsification-card h4 {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 0.5rem;
+}
+
+.falsification-card .result {
+  font-family: var(--mono);
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+/* ============================================================
+   INFO DESIGN BEFORE/AFTER
+   ============================================================ */
+.comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin: 3rem 0;
+  align-items: start;
+}
+
+.comparison-panel {
+  padding: 2rem;
+  border-radius: 2px;
+}
+
+.comparison-panel.before {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.comparison-panel.after {
+  border: 1px solid rgba(74, 158, 255, 0.2);
+  background: rgba(74, 158, 255, 0.03);
+}
+
+.comparison-panel h4 {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+}
+
+.comparison-panel.before h4 { color: var(--text-dim); }
+.comparison-panel.after h4 { color: var(--accent); }
+
+/* ============================================================
+   SURVEILLANCE / CHILLING EFFECT
+   ============================================================ */
+.surveillance-section {
+  position: relative;
+}
+
+.chill-container {
+  position: relative;
+  padding: 3rem 0;
+}
+
+.chill-text {
+  font-family: var(--serif);
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  line-height: 1.8;
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.chill-word {
+  display: inline;
+  transition: opacity 1.5s ease, filter 1.5s ease;
+}
+
+.chill-word.fading {
+  opacity: 0.08;
+  filter: blur(3px);
+}
+
+.wedge-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4rem;
+  margin: 3rem 0;
+  flex-wrap: wrap;
+}
+
+.wedge-item {
+  text-align: center;
+}
+
+.wedge-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 auto 1rem;
+  font-family: var(--mono);
+  position: relative;
+}
+
+.wedge-circle.beliefs {
+  border: 2px solid rgba(107, 255, 184, 0.3);
+  background: rgba(107, 255, 184, 0.05);
+}
+
+.wedge-circle.actions {
+  border: 2px solid rgba(255, 107, 107, 0.3);
+  background: rgba(255, 107, 107, 0.05);
+}
+
+.wedge-shift {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.wedge-unit {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  margin-top: 0.2rem;
+}
+
+.wedge-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.wedge-connector {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  color: var(--text-faint);
+  font-style: italic;
+}
+
+/* ============================================================
+   BLOCKQUOTE / PULLQUOTE
+   ============================================================ */
+.pullquote {
+  font-family: var(--serif);
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  font-style: italic;
+  color: var(--text);
+  text-align: center;
+  max-width: 700px;
+  margin: 4rem auto;
+  padding: 2rem 0;
+  position: relative;
+  line-height: 1.5;
+}
+
+.pullquote::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+  margin: 0 auto 2rem;
+}
+
+/* ============================================================
+   PROSE
+   ============================================================ */
+.prose {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--text-dim);
+  max-width: 640px;
+}
+
+.prose strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.prose em {
+  font-style: italic;
+  color: var(--text);
+}
+
+.prose .inline-code {
+  font-family: var(--mono);
+  font-size: 0.85em;
+  color: var(--accent);
+  background: rgba(74, 158, 255, 0.08);
+  padding: 0.1em 0.4em;
+  border-radius: 2px;
+}
+
+/* ============================================================
+   EQUATION
+   ============================================================ */
+.equation {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 2rem;
+  margin: 2rem 0;
+  color: var(--text);
+  border-left: 2px solid var(--accent);
+  background: rgba(74, 158, 255, 0.03);
+}
+
+.equation .var {
+  font-style: italic;
+}
+
+/* ============================================================
+   SECTION HEADERS
+   ============================================================ */
+.section-header {
+  padding: 8rem 0 3rem;
+}
+
+.section-header h2 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  margin-bottom: 1rem;
+}
+
+/* ============================================================
+   DIVIDER
+   ============================================================ */
+.divider {
+  width: 40px;
+  height: 1px;
+  background: var(--text-faint);
+  margin: 4rem auto;
+}
+
+.divider--accent {
+  background: var(--accent);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  padding: 6rem 0;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+footer a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(74, 158, 255, 0.3);
+  transition: border-color 0.3s ease;
+}
+
+footer a:hover {
+  border-color: var(--accent);
+}
+
+/* ============================================================
+   SIDE NAV
+   ============================================================ */
+.side-nav {
+  position: fixed;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.side-nav-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-faint);
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+  padding: 0;
+}
+
+.side-nav-dot.active {
+  background: var(--accent);
+  transform: scale(1.4);
+}
+
+.side-nav-dot:hover {
+  background: var(--text-dim);
+}
+
+/* ============================================================
+   PROPAGANDA SECTION
+   ============================================================ */
+.saturation-visual {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2.5rem;
+  margin: 3rem 0;
+  padding: 2rem 0;
+}
+
+.saturation-bar-group {
+  text-align: center;
+}
+
+.saturation-bar-wrap {
+  width: 60px;
+  height: 180px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.saturation-bar-fill {
+  width: 100%;
+  border-radius: 2px;
+  transition: height 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+  height: 0%;
+}
+
+.saturation-bar-fill.t1 { background: linear-gradient(to top, rgba(255, 173, 74, 0.4), rgba(255, 173, 74, 0.7)); }
+.saturation-bar-fill.t2 { background: linear-gradient(to top, rgba(255, 173, 74, 0.4), rgba(255, 173, 74, 0.7)); }
+.saturation-bar-fill.t3 { background: linear-gradient(to top, rgba(255, 173, 74, 0.4), rgba(255, 173, 74, 0.7)); }
+
+.saturation-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  margin-top: 0.8rem;
+  letter-spacing: 0.05em;
+}
+
+.saturation-value {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--orange);
+  margin-top: 0.3rem;
+}
+
+/* ============================================================
+   CONCLUSION
+   ============================================================ */
+.conclusion-section {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.conclusion-text {
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  line-height: 1.6;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  html { font-size: 16px; }
+
+  .container { padding: 0 1.2rem; }
+
+  .falsification-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+
+  .comparison { grid-template-columns: 1fr; gap: 2rem; }
+
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+
+  .pipeline { flex-direction: column; gap: 0.5rem; }
+  .pipeline-arrow { transform: rotate(90deg); }
+
+  .wedge-visual { flex-direction: column; gap: 2rem; }
+
+  .side-nav { display: none; }
+
+  .saturation-visual { gap: 1.5rem; }
+  .saturation-bar-wrap { height: 140px; width: 50px; }
+
+  .correlation-label { width: 80px; font-size: 0.65rem; }
+}
+
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .hero-title { font-size: 2.2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div class="progress-bar" id="progress"></div>
+
+<!-- Side navigation -->
+<nav class="side-nav" id="sideNav">
+  <button class="side-nav-dot active" data-section="hero" title="Top"></button>
+  <button class="side-nav-dot" data-section="trap" title="The Trap"></button>
+  <button class="side-nav-dot" data-section="setup" title="The Setup"></button>
+  <button class="side-nav-dot" data-section="results" title="Results"></button>
+  <button class="side-nav-dot" data-section="falsification" title="Falsification"></button>
+  <button class="side-nav-dot" data-section="infodesign" title="Information Design"></button>
+  <button class="side-nav-dot" data-section="surveillance" title="Surveillance"></button>
+  <button class="side-nav-dot" data-section="propaganda" title="Propaganda"></button>
+  <button class="side-nav-dot" data-section="conclusion" title="Conclusion"></button>
+</nav>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero" id="hero">
+  <div>
+    <div class="hero-eyebrow">Working Paper &middot; 2025</div>
+    <h1 class="hero-title">LLMs Can Play<br><em>(Global) Games</em></h1>
+    <p class="hero-subtitle">Seven language models. 45,000 decisions.<br>One theorem about revolution.</p>
+    <div class="hero-author">Khaled Eltokhy &middot; Department of Economics &middot; The Graduate Center, CUNY</div>
+    <div class="hero-sigmoid">
+      <canvas id="heroSigmoid" width="600" height="260"></canvas>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">Scroll to begin</div>
+</section>
+
+<!-- ============================================================
+     THE TRAP
+     ============================================================ -->
+<section class="trap-section" id="trap">
+  <div class="container">
+    <div class="trap-text">
+      <span class="line reveal"><span class="highlight-dim">The communication channel that enables coordination</span></span>
+      <span class="line reveal reveal-delay-1"><span class="highlight">is also the channel</span></span>
+      <span class="line reveal reveal-delay-2"><span class="highlight-red">through which regimes suppress it.</span></span>
+    </div>
+  </div>
+</section>
+
+<div class="section-spacer"></div>
+
+<!-- Dramatic expansion -->
+<div class="container">
+  <div class="pullquote reveal">
+    What if we could study this trap experimentally&mdash;running 45,000 decisions by AI agents who must coordinate under uncertainty, surveillance, and manipulation?
+  </div>
+</div>
+
+<div class="section-spacer"></div>
+
+<!-- ============================================================
+     THE SETUP
+     ============================================================ -->
+<div class="container" id="setup">
+  <div class="section-header reveal">
+    <span class="section-number">01 &mdash; The Game</span>
+    <h2>A Country on the Edge</h2>
+  </div>
+
+  <div class="prose reveal">
+    <p>Imagine a country where citizens must independently decide: <strong>JOIN</strong> an uprising, or <strong>STAY</strong> home. The regime has some hidden strength <em>&theta;</em>. If enough people join&mdash;if the attack mass exceeds &theta;&mdash;the regime falls and joiners win. If not, the regime survives and joiners are punished.</p>
+  </div>
+
+  <div class="divider reveal"></div>
+
+  <div class="prose reveal">
+    <p>Each citizen receives a <strong>noisy private signal</strong> about regime strength&mdash;delivered as a natural-language intelligence briefing. Not a number. Not a probability. <em>Words.</em></p>
+  </div>
+
+  <div class="equation reveal">
+    <span class="var">x<sub>i</sub></span> = <span class="var">&theta;</span> + <span class="var">&epsilon;<sub>i</sub></span> &nbsp;&nbsp;&nbsp; where &nbsp; <span class="var">&epsilon;</span> ~ N(0, <span class="var">&sigma;</span>&sup2;) &nbsp;&nbsp; &rarr; &nbsp;&nbsp; <strong>briefing text</strong> &nbsp;&nbsp; &rarr; &nbsp;&nbsp; JOIN / STAY
+  </div>
+</div>
+
+<div class="section-spacer"></div>
+
+<!-- Pipeline -->
+<div class="container--wide">
+  <div class="reveal">
+    <span class="section-number" style="text-align:center; display:block;">The Pipeline</span>
+    <div class="pipeline">
+      <div class="pipeline-node reveal-scale">&#952; regime<br>strength</div>
+      <div class="pipeline-arrow">&rarr;</div>
+      <div class="pipeline-node reveal-scale reveal-delay-1">x<sub>i</sub> = &#952; + noise</div>
+      <div class="pipeline-arrow">&rarr;</div>
+      <div class="pipeline-node active reveal-scale reveal-delay-2">Briefing<br>Generator</div>
+      <div class="pipeline-arrow">&rarr;</div>
+      <div class="pipeline-node reveal-scale reveal-delay-3">Intelligence<br>Briefing</div>
+      <div class="pipeline-arrow">&rarr;</div>
+      <div class="pipeline-node reveal-scale reveal-delay-4">LLM Agent<br>JOIN / STAY</div>
+    </div>
+  </div>
+  <p class="figure-caption reveal">8 evidence domains, 3 latent sliders, thousands of word-choice variations recover effective signal continuity from discrete text.</p>
+</div>
+
+<div class="section-spacer"></div>
+
+<!-- Key theory -->
+<div class="container">
+  <div class="prose reveal">
+    <p>Global game theory (Morris &amp; Shin 2003) predicts a <strong>unique threshold equilibrium</strong>: each citizen has a cutoff&mdash;join if your signal suggests the regime is weak enough, stay otherwise. The question: <em>do LLMs find this equilibrium?</em></p>
+  </div>
+
+  <div class="equation reveal">
+    Regime falls when: &nbsp; <span class="var">A</span>(<span class="var">&theta;</span>) &gt; <span class="var">&theta;</span> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
+    <span class="var">&theta;</span>* = <span class="var">B</span>/(<span class="var">B</span>+<span class="var">C</span>) = 0.50 &nbsp; when &nbsp; <span class="var">B</span>=<span class="var">C</span>=1
+  </div>
+</div>
+
+<div class="section-spacer"></div>
+
+<!-- ============================================================
+     RESULTS
+     ============================================================ -->
+<div class="container" id="results">
+  <div class="section-header reveal">
+    <span class="section-number">02 &mdash; Results</span>
+    <h2>They Found It</h2>
+  </div>
+
+  <div class="prose reveal">
+    <p>Across <strong>seven models</strong> and 1,800 country-periods, LLM join rates track the theoretical attack mass with striking fidelity. The sigmoid emerges&mdash;not because we told it to, but because the equilibrium logic is embedded in the payoff structure.</p>
+  </div>
+</div>
+
+<div class="section-spacer" style="min-height: 20vh;"></div>
+
+<!-- Big sigmoid figure -->
+<div class="container--wide">
+  <div class="figure-container reveal-scale" id="mainSigmoidFig">
+    <canvas id="mainSigmoid" width="1000" height="450"></canvas>
+    <p class="figure-caption">Empirical join fraction (blue dots) vs. theoretical attack mass (orange curve) across the full &theta; range. The S-curve emerges from the agents' decisions.</p>
+  </div>
+</div>
+
+<div class="section-spacer" style="min-height: 20vh;"></div>
+
+<!-- Animated stats -->
+<div class="container">
+  <div class="stats-grid" id="statsGrid">
+    <div class="stat-card reveal">
+      <span class="stat-value" data-target="7" data-prefix="" data-suffix="">0</span>
+      <span class="stat-label">LLM models tested</span>
+    </div>
+    <div class="stat-card reveal reveal-delay-1">
+      <span class="stat-value" data-target="45000" data-prefix="" data-suffix="" data-step="1000">0</span>
+      <span class="stat-label">Individual decisions</span>
+    </div>
+    <div class="stat-card reveal reveal-delay-2">
+      <span class="stat-value" data-target="0.80" data-prefix="r = +" data-suffix="">0</span>
+      <span class="stat-label">Mean correlation with theory</span>
+    </div>
+    <div class="stat-card reveal reveal-delay-3">
+      <span class="stat-value green" data-target="0.001" data-prefix="p < " data-suffix="">0</span>
+      <span class="stat-label">Significance (every model)</span>
+    </div>
+  </div>
+</div>
+
+<div class="section-spacer"></div>
+
+<!-- Correlations -->
+<div class="container">
+  <div class="reveal">
+    <span class="section-number">Correlation with theoretical attack mass</span>
+  </div>
+
+  <div id="correlationBars">
+    <div class="correlation-row reveal">
+      <div class="correlation-label">Pure</div>
+      <div class="correlation-bar-bg">
+        <div class="correlation-bar positive" data-width="80" style="width:0%">
+          <span class="correlation-number">r = +0.80</span>
+        </div>
+      </div>
+    </div>
+    <div class="correlation-row reveal reveal-delay-1">
+      <div class="correlation-label">Scramble</div>
+      <div class="correlation-bar-bg">
+        <div class="correlation-bar zero" data-width="8" style="width:0%">
+          <span class="correlation-number">r &asymp; 0</span>
+        </div>
+      </div>
+    </div>
+    <div class="correlation-row reveal reveal-delay-2">
+      <div class="correlation-label">Flip</div>
+      <div class="correlation-bar-bg">
+        <div class="correlation-bar negative" data-width="72" style="width:0%">
+          <span class="correlation-number">r = &minus;0.72</span>
+        </div>
+      </div>
+    </div>
+    <div class="correlation-row reveal reveal-delay-3">
+      <div class="correlation-label">B/C Sweep</div>
+      <div class="correlation-bar-bg">
+        <div class="correlation-bar positive" data-width="97" style="width:0%">
+          <span class="correlation-number">r = +0.97</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-spacer"></div>
+
+<!-- BNE vs Level-k -->
+<div class="container">
+  <div class="prose reveal">
+    <p>Is this Bayesian Nash Equilibrium or simpler heuristic play? A direct test: <strong>BNE fits better</strong>. RMSE of 0.199 for BNE vs 0.307 for Level-1 and 0.348 for Level-2. The agents aren't just following sentiment&mdash;they're computing something close to the equilibrium.</p>
+  </div>
+
+  <div class="stats-grid reveal">
+    <div class="stat-card">
+      <span class="stat-value" style="font-size: 2rem;">0.199</span>
+      <span class="stat-label">BNE RMSE</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value" style="font-size: 2rem; color: var(--text-dim);">0.307</span>
+      <span class="stat-label">Level-1 RMSE</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value" style="font-size: 2rem; color: var(--text-dim);">0.348</span>
+      <span class="stat-label">Level-2 RMSE</span>
+    </div>
+  </div>
+</div>
+
+<div class="section-spacer"></div>
+
+<!-- ============================================================
+     FALSIFICATION
+     ============================================================ -->
+<div class="container--wide" id="falsification">
+  <div class="section-header reveal">
+    <span class="section-number">03 &mdash; Falsification</span>
+    <h2>Breaking the Signal</h2>
+  </div>
+
+  <div class="container">
+    <div class="prose reveal">
+      <p>If the correlation is real, we should be able to <strong>destroy</strong> it by scrambling the mapping between signals and agents, and <strong>invert</strong> it by flipping signals. Both predictions hold exactly.</p>
+    </div>
+  </div>
+
+  <div class="falsification-grid" style="margin-top: 3rem;">
+    <div class="falsification-card reveal">
+      <canvas class="mini-sigmoid" data-type="normal" width="200" height="140"></canvas>
+      <h4>Normal Signal</h4>
+      <div class="result" style="color: var(--accent);">r = +0.80</div>
+      <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.5rem;">Signal &rarr; correct agent</p>
+    </div>
+    <div class="falsification-card reveal reveal-delay-1">
+      <canvas class="mini-sigmoid" data-type="scramble" width="200" height="140"></canvas>
+      <h4>Scrambled</h4>
+      <div class="result" style="color: var(--text-dim);">r &asymp; 0</div>
+      <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.5rem;">Signal &rarr; random agent</p>
+    </div>
+    <div class="falsification-card reveal reveal-delay-2">
+      <canvas class="mini-sigmoid" data-type="flip" width="200" height="140"></canvas>
+      <h4>Flipped</h4>
+      <div class="result" style="color: var(--red);">r = &minus;0.72</div>
+      <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.5rem;">Signal &rarr; negated</p>
+    </div>
+  </div>
+</div>
+
+<div class="section-spacer"></div>
+
+<!-- Cost/benefit -->
+<div class="container">
+  <div class="pullquote reveal">
+    Varying benefit/cost narratives shifts cutoffs in lockstep with theory&mdash;a 50 percentage-point swing <em>invisible</em> to any text classifier.
+  </div>
+
+  <div class="prose reveal" style="text-align: center; max-width: 700px; margin: 0 auto;">
+    <p>Same briefing text, different payoff stakes. The response tracks <span class="inline-code">r = +0.97</span> with the theoretical prediction. This proves agents respond to <strong>payoff structure</strong>, not surface sentiment.</p>
+  </div>
+</div>
+
+<div class="section-spacer"></div>
+
+<!-- ============================================================
+     INFORMATION DESIGN
+     ============================================================ -->
+<div class="container" id="infodesign">
+  <div class="section-header reveal">
+    <span class="section-number">04 &mdash; Information Design</span>
+    <h2>Redesigning the Signal</h2>
+  </div>
+
+  <div class="prose reveal">
+    <p>If LLMs play equilibrium, a social planner can exploit this. By <strong>redesigning the information structure</strong>&mdash;what agents see and how&mdash;the planner shifts outcomes without changing the underlying reality.</p>
+  </div>
+</div>
+
+<div class="section-spacer" style="min-height: 20vh;"></div>
+
+<!-- Before / After comparison -->
+<div class="container--wide">
+  <div class="comparison">
+    <div class="comparison-panel before reveal-left">
+      <h4>Baseline Signal</h4>
+      <div style="padding: 1rem 0;">
+        <canvas id="canvasBaseline" width="400" height="200"></canvas>
+      </div>
+      <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 1rem;">Standard information environment. Agents receive unbiased private signals about regime strength. The sigmoid follows the equilibrium prediction.</p>
+    </div>
+    <div class="comparison-panel after reveal-right">
+      <h4>Stability Design</h4>
+      <div style="padding: 1rem 0;">
+        <canvas id="canvasStability" width="400" height="200"></canvas>
+      </div>
+      <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 1rem;">The planner dampens signals near the critical threshold &theta;*. Agents perceive the regime as stronger than it is. The sigmoid shifts right&mdash;fewer join.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section-spacer"></div>
+
+<div class="container">
+  <div class="prose reveal">
+    <p>The planner has multiple tools: <strong>censorship</strong> (suppress extreme signals), <strong>public signals</strong> (broadcast common information), and <strong>targeted instability</strong> (amplify anti-regime signals near &theta;*). Each reshapes the equilibrium differently&mdash;and LLM agents respond precisely as Bayesian persuasion theory predicts.</p>
+  </div>
+</div>
+
+<div class="section-spacer"></div>
+
+<!-- ============================================================
+     SURVEILLANCE
+     ============================================================ -->
+<div class="surveillance-section" id="surveillance">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-number">05 &mdash; Surveillance</span>
+      <h2>The Chilling Effect</h2>
+    </div>
+
+    <div class="prose reveal">
+      <p>When agents are told they're being watched, something striking happens. Their <strong>beliefs</strong> barely change. But their <strong>actions</strong> change dramatically.</p>
+    </div>
+  </div>
+
+  <div class="section-spacer" style="min-height: 15vh;"></div>
+
+  <!-- Chilling effect text animation -->
+  <div class="container">
+    <div class="chill-container reveal" id="chillZone">
+      <div class="chill-text" id="chillText">
+        Citizens gather in the square. Some carry signs. Others <span class="chill-word" data-delay="0">speak</span> <span class="chill-word" data-delay="200">openly</span> about <span class="chill-word" data-delay="400">change</span>. The crowd <span class="chill-word" data-delay="600">grows</span>. <span class="chill-word" data-delay="800">Voices</span> <span class="chill-word" data-delay="1000">rise</span>. Someone says the regime is <span class="chill-word" data-delay="1200">weak</span>. Another <span class="chill-word" data-delay="1400">agrees</span>. Then word spreads: <em style="color: var(--red);">the regime is listening.</em>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-spacer" style="min-height: 15vh;"></div>
+
+  <!-- Belief-action wedge -->
+  <div class="container">
+    <div class="wedge-visual reveal-scale" id="wedgeVisual">
+      <div class="wedge-item">
+        <div class="wedge-circle beliefs">
+          <span class="wedge-shift" style="color: var(--green);">&lt; 1 pp</span>
+          <span class="wedge-unit">shift</span>
+        </div>
+        <div class="wedge-label">Beliefs</div>
+      </div>
+      <div class="wedge-connector">vs.</div>
+      <div class="wedge-item">
+        <div class="wedge-circle actions">
+          <span class="wedge-shift" style="color: var(--red);">&minus;13.5 pp</span>
+          <span class="wedge-unit">shift</span>
+        </div>
+        <div class="wedge-label">Actions</div>
+      </div>
+    </div>
+
+    <p class="figure-caption reveal" style="margin-top: 2rem;">Second-order beliefs shift by less than 1 percentage point. Expressed joining drops by 13.5 pp. Agents self-censor while interpreting others' silence as genuine.</p>
+  </div>
+
+  <div class="section-spacer" style="min-height: 15vh;"></div>
+
+  <div class="container">
+    <div class="pullquote reveal">
+      Each agent changes its own behavior&mdash;but believes<br>everyone else's silence is sincere.
+    </div>
+
+    <div class="prose reveal" style="text-align: center; max-width: 700px; margin: 0 auto;">
+      <p>This is the <strong>strategic update gap</strong>. The surveillance doesn't change what agents think. It changes what they <em>do</em>&mdash;and that silence propagates, because each agent reads others' compliance as genuine conviction. The regime doesn't need to change minds. It just needs to change the signal.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section-spacer"></div>
+
+<!-- ============================================================
+     PROPAGANDA
+     ============================================================ -->
+<div class="container" id="propaganda">
+  <div class="section-header reveal">
+    <span class="section-number">06 &mdash; Propaganda</span>
+    <h2>Diminishing Returns of Lies</h2>
+  </div>
+
+  <div class="prose reveal">
+    <p>The regime can also plant propaganda agents in the communication round. But <strong>propaganda saturates</strong>: doubling planted agents from 5 to 10 adds exactly zero additional effect. And when combined with surveillance, the interaction is <strong>super-additive</strong>&mdash;the whole becomes worse than the sum of its parts.</p>
+  </div>
+</div>
+
+<div class="section-spacer" style="min-height: 15vh;"></div>
+
+<div class="container">
+  <div class="saturation-visual reveal-scale" id="saturationVis">
+    <div class="saturation-bar-group">
+      <div class="saturation-bar-wrap">
+        <div class="saturation-bar-fill t1" data-height="55"></div>
+      </div>
+      <div class="saturation-label">0 plants</div>
+      <div class="saturation-value">baseline</div>
+    </div>
+    <div class="saturation-bar-group">
+      <div class="saturation-bar-wrap">
+        <div class="saturation-bar-fill t2" data-height="40"></div>
+      </div>
+      <div class="saturation-label">5 plants</div>
+      <div class="saturation-value">&darr; effect</div>
+    </div>
+    <div class="saturation-bar-group">
+      <div class="saturation-bar-wrap">
+        <div class="saturation-bar-fill t3" data-height="40"></div>
+      </div>
+      <div class="saturation-label">10 plants</div>
+      <div class="saturation-value">+0 pp</div>
+    </div>
+  </div>
+  <p class="figure-caption reveal">Doubling propaganda plants from 5 to 10 yields no marginal effect. Propaganda saturates.</p>
+</div>
+
+<div class="section-spacer"></div>
+
+<!-- ============================================================
+     CONCLUSION
+     ============================================================ -->
+<div id="conclusion">
+  <div class="divider divider--accent"></div>
+
+  <div class="conclusion-section">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-number" style="text-align: center; display: block;">07 &mdash; Conclusion</span>
+      </div>
+      <div class="conclusion-text reveal reveal-delay-1">
+        LLM agents don't just generate text that <em>sounds</em> strategic.<br>
+        They play threshold strategies consistent with<br>
+        <strong style="color: var(--accent);">Bayesian Nash Equilibrium</strong>&mdash;<br>
+        and the information structures that theory says should<br>
+        manipulate rational players <em>work on them too</em>.
+      </div>
+      <div class="divider reveal reveal-delay-2"></div>
+      <div class="prose reveal reveal-delay-3" style="text-align: center; max-width: 600px; margin: 2rem auto 0;">
+        <p>The communication channel that enables coordination is also the channel through which regimes suppress it. This is not a metaphor. It is a <strong>measurable, manipulable equilibrium property</strong>.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-spacer"></div>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  <div class="container">
+    <p style="font-family: var(--mono); font-size: 0.7rem; color: var(--text-faint); margin-bottom: 1rem; letter-spacing: 0.1em;">
+      Khaled Eltokhy &middot; The Graduate Center, CUNY &middot; Department of Economics
+    </p>
+    <p style="font-size: 0.8rem; color: var(--text-dim);">
+      <a href="https://github.com/keltokhy/llm-global-games">GitHub Repository</a>
+    </p>
+  </div>
+</footer>
+
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+(function() {
+  'use strict';
+
+  // ============================================================
+  // UTILITY: Sigmoid function
+  // ============================================================
+  function sigmoid(x, center, slope) {
+    return 1 / (1 + Math.exp(slope * (x - center)));
+  }
+
+  // ============================================================
+  // SCROLL PROGRESS BAR
+  // ============================================================
+  const progressBar = document.getElementById('progress');
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    progressBar.style.width = pct + '%';
+  }
+
+  // ============================================================
+  // INTERSECTION OBSERVER — Scroll Reveals
+  // ============================================================
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.reveal, .reveal-fade, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+    revealObserver.observe(el);
+  });
+
+  // ============================================================
+  // SIDE NAV
+  // ============================================================
+  const sideNavDots = document.querySelectorAll('.side-nav-dot');
+  const navSections = [];
+
+  sideNavDots.forEach(dot => {
+    const sectionId = dot.dataset.section;
+    const section = document.getElementById(sectionId);
+    if (section) navSections.push({ dot, section });
+
+    dot.addEventListener('click', () => {
+      if (section) section.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  function updateSideNav() {
+    const scrollY = window.scrollY + window.innerHeight * 0.4;
+    let active = navSections[0];
+
+    for (const ns of navSections) {
+      if (ns.section.offsetTop <= scrollY) active = ns;
+    }
+
+    sideNavDots.forEach(d => d.classList.remove('active'));
+    if (active) active.dot.classList.add('active');
+  }
+
+  // ============================================================
+  // HERO SIGMOID ANIMATION
+  // ============================================================
+  const heroCanvas = document.getElementById('heroSigmoid');
+  const heroCtx = heroCanvas.getContext('2d');
+  let heroAnimProgress = 0;
+  let heroAnimStarted = false;
+
+  function drawHeroSigmoid(progress) {
+    const W = heroCanvas.width;
+    const H = heroCanvas.height;
+    const dpr = window.devicePixelRatio || 1;
+
+    heroCanvas.style.width = Math.min(W, window.innerWidth - 40) + 'px';
+    heroCanvas.style.height = (H * Math.min(W, window.innerWidth - 40) / W) + 'px';
+
+    heroCtx.clearRect(0, 0, W, H);
+
+    const pad = { top: 30, right: 30, bottom: 40, left: 50 };
+    const plotW = W - pad.left - pad.right;
+    const plotH = H - pad.top - pad.bottom;
+
+    // Grid lines
+    heroCtx.strokeStyle = 'rgba(255,255,255,0.04)';
+    heroCtx.lineWidth = 1;
+    for (let i = 0; i <= 4; i++) {
+      const y = pad.top + (plotH / 4) * i;
+      heroCtx.beginPath();
+      heroCtx.moveTo(pad.left, y);
+      heroCtx.lineTo(W - pad.right, y);
+      heroCtx.stroke();
+    }
+
+    // Axes labels
+    heroCtx.fillStyle = 'rgba(255,255,255,0.25)';
+    heroCtx.font = '11px -apple-system, sans-serif';
+    heroCtx.textAlign = 'center';
+    heroCtx.fillText('\u03b8 (regime strength)', W / 2, H - 5);
+
+    heroCtx.save();
+    heroCtx.translate(12, H / 2);
+    heroCtx.rotate(-Math.PI / 2);
+    heroCtx.fillText('Join fraction', 0, 0);
+    heroCtx.restore();
+
+    // Axis tick labels
+    heroCtx.fillStyle = 'rgba(255,255,255,0.2)';
+    heroCtx.font = '10px SF Mono, monospace';
+    heroCtx.textAlign = 'center';
+    ['0', '0.25', '0.50', '0.75', '1.0'].forEach((label, i) => {
+      heroCtx.fillText(label, pad.left + (plotW / 4) * i, H - pad.bottom + 16);
+    });
+
+    heroCtx.textAlign = 'right';
+    ['0', '0.25', '0.50', '0.75', '1.0'].forEach((label, i) => {
+      heroCtx.fillText(label, pad.left - 8, pad.top + plotH - (plotH / 4) * i + 4);
+    });
+
+    // Theoretical sigmoid (orange)
+    const steps = Math.floor(200 * progress);
+    if (steps > 1) {
+      heroCtx.beginPath();
+      heroCtx.strokeStyle = 'rgba(255, 173, 74, 0.7)';
+      heroCtx.lineWidth = 2;
+      for (let i = 0; i <= steps; i++) {
+        const t = i / 200;
+        const theta = t;
+        const joinRate = sigmoid(theta, 0.5, 12);
+        const x = pad.left + t * plotW;
+        const y = pad.top + (1 - joinRate) * plotH;
+        if (i === 0) heroCtx.moveTo(x, y);
+        else heroCtx.lineTo(x, y);
+      }
+      heroCtx.stroke();
+    }
+
+    // Empirical dots (blue, with noise)
+    if (progress > 0.3) {
+      const dotProgress = Math.min(1, (progress - 0.3) / 0.5);
+      const nDots = Math.floor(25 * dotProgress);
+      const seed = 42;
+
+      for (let i = 0; i < nDots; i++) {
+        const theta = (i + 0.5) / 25;
+        const trueRate = sigmoid(theta, 0.5, 12);
+        // Deterministic pseudo-random noise
+        const noise = (Math.sin(seed * (i + 1) * 9.8) * 0.5 + 0.5 - 0.5) * 0.12;
+        const rate = Math.max(0, Math.min(1, trueRate + noise));
+        const x = pad.left + theta * plotW;
+        const y = pad.top + (1 - rate) * plotH;
+
+        heroCtx.beginPath();
+        heroCtx.arc(x, y, 4, 0, Math.PI * 2);
+        heroCtx.fillStyle = 'rgba(74, 158, 255, 0.8)';
+        heroCtx.fill();
+      }
+    }
+
+    // theta* line
+    if (progress > 0.6) {
+      const lineAlpha = Math.min(1, (progress - 0.6) / 0.2);
+      const xStar = pad.left + 0.5 * plotW;
+      heroCtx.setLineDash([4, 4]);
+      heroCtx.strokeStyle = `rgba(255,255,255,${0.15 * lineAlpha})`;
+      heroCtx.lineWidth = 1;
+      heroCtx.beginPath();
+      heroCtx.moveTo(xStar, pad.top);
+      heroCtx.lineTo(xStar, pad.top + plotH);
+      heroCtx.stroke();
+      heroCtx.setLineDash([]);
+
+      heroCtx.fillStyle = `rgba(255,255,255,${0.3 * lineAlpha})`;
+      heroCtx.font = '11px Georgia, serif';
+      heroCtx.textAlign = 'center';
+      heroCtx.fillText('\u03b8* = 0.50', xStar, pad.top - 8);
+    }
+  }
+
+  function animateHeroSigmoid() {
+    if (heroAnimProgress < 1) {
+      heroAnimProgress += 0.012;
+      drawHeroSigmoid(Math.min(1, heroAnimProgress));
+      requestAnimationFrame(animateHeroSigmoid);
+    }
+  }
+
+  // Start hero animation after a delay
+  setTimeout(() => {
+    heroAnimStarted = true;
+    animateHeroSigmoid();
+  }, 1800);
+
+  // ============================================================
+  // MAIN SIGMOID FIGURE
+  // ============================================================
+  const mainCanvas = document.getElementById('mainSigmoid');
+  const mainCtx = mainCanvas.getContext('2d');
+  let mainSigmoidDrawn = false;
+
+  function drawMainSigmoid() {
+    const W = mainCanvas.width;
+    const H = mainCanvas.height;
+
+    mainCtx.clearRect(0, 0, W, H);
+
+    const pad = { top: 30, right: 40, bottom: 50, left: 60 };
+    const plotW = W - pad.left - pad.right;
+    const plotH = H - pad.top - pad.bottom;
+
+    // Background grid
+    mainCtx.strokeStyle = 'rgba(255,255,255,0.04)';
+    mainCtx.lineWidth = 1;
+    for (let i = 0; i <= 10; i++) {
+      const x = pad.left + (plotW / 10) * i;
+      mainCtx.beginPath();
+      mainCtx.moveTo(x, pad.top);
+      mainCtx.lineTo(x, pad.top + plotH);
+      mainCtx.stroke();
+    }
+    for (let i = 0; i <= 4; i++) {
+      const y = pad.top + (plotH / 4) * i;
+      mainCtx.beginPath();
+      mainCtx.moveTo(pad.left, y);
+      mainCtx.lineTo(W - pad.right, y);
+      mainCtx.stroke();
+    }
+
+    // Axis labels
+    mainCtx.fillStyle = 'rgba(255,255,255,0.35)';
+    mainCtx.font = '13px -apple-system, sans-serif';
+    mainCtx.textAlign = 'center';
+    mainCtx.fillText('Regime Strength (\u03b8)', W / 2, H - 8);
+
+    mainCtx.save();
+    mainCtx.translate(16, H / 2);
+    mainCtx.rotate(-Math.PI / 2);
+    mainCtx.fillText('Join Fraction', 0, 0);
+    mainCtx.restore();
+
+    // Tick labels
+    mainCtx.fillStyle = 'rgba(255,255,255,0.25)';
+    mainCtx.font = '11px SF Mono, monospace';
+    mainCtx.textAlign = 'center';
+    for (let i = 0; i <= 10; i++) {
+      mainCtx.fillText((i / 10).toFixed(1), pad.left + (plotW / 10) * i, pad.top + plotH + 18);
+    }
+    mainCtx.textAlign = 'right';
+    ['0.0', '0.25', '0.50', '0.75', '1.0'].forEach((label, i) => {
+      mainCtx.fillText(label, pad.left - 10, pad.top + plotH - (plotH / 4) * i + 4);
+    });
+
+    // Theoretical curve (orange, smooth)
+    mainCtx.beginPath();
+    mainCtx.strokeStyle = 'rgba(255, 173, 74, 0.6)';
+    mainCtx.lineWidth = 2.5;
+    for (let i = 0; i <= 300; i++) {
+      const t = i / 300;
+      const joinRate = sigmoid(t, 0.5, 12);
+      const x = pad.left + t * plotW;
+      const y = pad.top + (1 - joinRate) * plotH;
+      if (i === 0) mainCtx.moveTo(x, y);
+      else mainCtx.lineTo(x, y);
+    }
+    mainCtx.stroke();
+
+    // Confidence band
+    mainCtx.fillStyle = 'rgba(255, 173, 74, 0.06)';
+    mainCtx.beginPath();
+    for (let i = 0; i <= 300; i++) {
+      const t = i / 300;
+      const joinRate = sigmoid(t, 0.5, 12) + 0.08;
+      const x = pad.left + t * plotW;
+      const y = pad.top + (1 - Math.min(1, joinRate)) * plotH;
+      if (i === 0) mainCtx.moveTo(x, y);
+      else mainCtx.lineTo(x, y);
+    }
+    for (let i = 300; i >= 0; i--) {
+      const t = i / 300;
+      const joinRate = sigmoid(t, 0.5, 12) - 0.08;
+      const x = pad.left + t * plotW;
+      const y = pad.top + (1 - Math.max(0, joinRate)) * plotH;
+      mainCtx.lineTo(x, y);
+    }
+    mainCtx.closePath();
+    mainCtx.fill();
+
+    // Empirical dots (many, with scatter)
+    const nBins = 40;
+    const rng = mulberry32(12345);
+    for (let i = 0; i < nBins; i++) {
+      const theta = (i + 0.5) / nBins;
+      const trueRate = sigmoid(theta, 0.5, 12);
+      const noise = (rng() - 0.5) * 0.14;
+      const rate = Math.max(0, Math.min(1, trueRate + noise));
+      const x = pad.left + theta * plotW;
+      const y = pad.top + (1 - rate) * plotH;
+
+      // Glow
+      mainCtx.beginPath();
+      mainCtx.arc(x, y, 8, 0, Math.PI * 2);
+      mainCtx.fillStyle = 'rgba(74, 158, 255, 0.1)';
+      mainCtx.fill();
+
+      // Dot
+      mainCtx.beginPath();
+      mainCtx.arc(x, y, 4, 0, Math.PI * 2);
+      mainCtx.fillStyle = 'rgba(74, 158, 255, 0.85)';
+      mainCtx.fill();
+    }
+
+    // theta* vertical line
+    const xStar = pad.left + 0.5 * plotW;
+    mainCtx.setLineDash([6, 4]);
+    mainCtx.strokeStyle = 'rgba(255,255,255,0.15)';
+    mainCtx.lineWidth = 1;
+    mainCtx.beginPath();
+    mainCtx.moveTo(xStar, pad.top);
+    mainCtx.lineTo(xStar, pad.top + plotH);
+    mainCtx.stroke();
+    mainCtx.setLineDash([]);
+
+    mainCtx.fillStyle = 'rgba(255,255,255,0.4)';
+    mainCtx.font = '12px Georgia, serif';
+    mainCtx.textAlign = 'center';
+    mainCtx.fillText('\u03b8* = 0.50', xStar, pad.top - 10);
+
+    // Legend
+    const legX = W - pad.right - 160;
+    const legY = pad.top + 15;
+
+    mainCtx.fillStyle = 'rgba(74, 158, 255, 0.85)';
+    mainCtx.beginPath();
+    mainCtx.arc(legX, legY, 4, 0, Math.PI * 2);
+    mainCtx.fill();
+    mainCtx.fillStyle = 'rgba(255,255,255,0.5)';
+    mainCtx.font = '11px -apple-system, sans-serif';
+    mainCtx.textAlign = 'left';
+    mainCtx.fillText('Empirical join rate', legX + 10, legY + 4);
+
+    mainCtx.strokeStyle = 'rgba(255, 173, 74, 0.6)';
+    mainCtx.lineWidth = 2;
+    mainCtx.beginPath();
+    mainCtx.moveTo(legX - 8, legY + 22);
+    mainCtx.lineTo(legX + 8, legY + 22);
+    mainCtx.stroke();
+    mainCtx.fillStyle = 'rgba(255,255,255,0.5)';
+    mainCtx.fillText('Theoretical A(\u03b8)', legX + 10, legY + 26);
+  }
+
+  // Seeded PRNG
+  function mulberry32(seed) {
+    return function() {
+      seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+      let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  // ============================================================
+  // MINI SIGMOIDS (Falsification cards)
+  // ============================================================
+  function drawMiniSigmoid(canvas) {
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width;
+    const H = canvas.height;
+    const type = canvas.dataset.type;
+    const pad = 20;
+    const plotW = W - pad * 2;
+    const plotH = H - pad * 2;
+
+    ctx.clearRect(0, 0, W, H);
+
+    // Axis lines
+    ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(pad, pad);
+    ctx.lineTo(pad, H - pad);
+    ctx.lineTo(W - pad, H - pad);
+    ctx.stroke();
+
+    const rng = mulberry32(type === 'normal' ? 111 : type === 'scramble' ? 222 : 333);
+
+    if (type === 'normal') {
+      // Standard sigmoid
+      ctx.beginPath();
+      ctx.strokeStyle = 'rgba(74, 158, 255, 0.7)';
+      ctx.lineWidth = 2;
+      for (let i = 0; i <= 100; i++) {
+        const t = i / 100;
+        const v = sigmoid(t, 0.5, 12);
+        const x = pad + t * plotW;
+        const y = pad + (1 - v) * plotH;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // Dots
+      for (let i = 0; i < 15; i++) {
+        const theta = (i + 0.5) / 15;
+        const v = sigmoid(theta, 0.5, 12) + (rng() - 0.5) * 0.12;
+        const x = pad + theta * plotW;
+        const y = pad + (1 - Math.max(0, Math.min(1, v))) * plotH;
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(74, 158, 255, 0.7)';
+        ctx.fill();
+      }
+    } else if (type === 'scramble') {
+      // Flat noise
+      for (let i = 0; i < 15; i++) {
+        const theta = (i + 0.5) / 15;
+        const v = 0.4 + (rng() - 0.5) * 0.3;
+        const x = pad + theta * plotW;
+        const y = pad + (1 - v) * plotH;
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.fill();
+      }
+
+      // Flat trend line
+      ctx.beginPath();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 4]);
+      ctx.moveTo(pad, pad + plotH * 0.55);
+      ctx.lineTo(W - pad, pad + plotH * 0.55);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    } else {
+      // Inverted sigmoid
+      ctx.beginPath();
+      ctx.strokeStyle = 'rgba(255, 107, 107, 0.7)';
+      ctx.lineWidth = 2;
+      for (let i = 0; i <= 100; i++) {
+        const t = i / 100;
+        const v = 1 - sigmoid(t, 0.5, 10);
+        const x = pad + t * plotW;
+        const y = pad + (1 - v) * plotH;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      for (let i = 0; i < 15; i++) {
+        const theta = (i + 0.5) / 15;
+        const v = (1 - sigmoid(theta, 0.5, 10)) + (rng() - 0.5) * 0.12;
+        const x = pad + theta * plotW;
+        const y = pad + (1 - Math.max(0, Math.min(1, v))) * plotH;
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 107, 107, 0.7)';
+        ctx.fill();
+      }
+    }
+  }
+
+  // ============================================================
+  // INFO DESIGN: BASELINE vs STABILITY SIGMOIDS
+  // ============================================================
+  function drawComparisonSigmoid(canvasId, shift, color) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width;
+    const H = canvas.height;
+    const pad = { top: 15, right: 15, bottom: 25, left: 15 };
+    const plotW = W - pad.left - pad.right;
+    const plotH = H - pad.top - pad.bottom;
+
+    ctx.clearRect(0, 0, W, H);
+
+    // Grid
+    ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i <= 4; i++) {
+      const y = pad.top + (plotH / 4) * i;
+      ctx.beginPath();
+      ctx.moveTo(pad.left, y);
+      ctx.lineTo(W - pad.right, y);
+      ctx.stroke();
+    }
+
+    const center = 0.5 + shift;
+
+    // Curve
+    ctx.beginPath();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2.5;
+    for (let i = 0; i <= 200; i++) {
+      const t = i / 200;
+      const v = sigmoid(t, center, 10);
+      const x = pad.left + t * plotW;
+      const y = pad.top + (1 - v) * plotH;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    // Dots
+    const rng = mulberry32(shift > 0 ? 999 : 777);
+    for (let i = 0; i < 20; i++) {
+      const theta = (i + 0.5) / 20;
+      const v = sigmoid(theta, center, 10) + (rng() - 0.5) * 0.1;
+      const x = pad.left + theta * plotW;
+      const y = pad.top + (1 - Math.max(0, Math.min(1, v))) * plotH;
+      ctx.beginPath();
+      ctx.arc(x, y, 3, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.globalAlpha = 0.6;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+
+    // theta* line
+    const xStar = pad.left + center * plotW;
+    if (xStar > pad.left && xStar < W - pad.right) {
+      ctx.setLineDash([3, 3]);
+      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(xStar, pad.top);
+      ctx.lineTo(xStar, pad.top + plotH);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = 'rgba(255,255,255,0.3)';
+      ctx.font = '10px Georgia, serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('\u03b8*', xStar, H - 5);
+    }
+  }
+
+  // ============================================================
+  // ANIMATED COUNTERS
+  // ============================================================
+  function animateCounter(el) {
+    const target = parseFloat(el.dataset.target);
+    const prefix = el.dataset.prefix || '';
+    const suffix = el.dataset.suffix || '';
+    const step = parseInt(el.dataset.step) || 0;
+    const duration = 1500;
+    const start = performance.now();
+
+    function update(now) {
+      const elapsed = now - start;
+      const progress = Math.min(1, elapsed / duration);
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+
+      let current;
+      if (step > 0) {
+        current = Math.round(eased * target / step) * step;
+        el.textContent = prefix + current.toLocaleString() + suffix;
+      } else if (target < 1) {
+        current = eased * target;
+        el.textContent = prefix + current.toFixed(target < 0.01 ? 3 : 2) + suffix;
+      } else {
+        current = Math.round(eased * target);
+        el.textContent = prefix + current + suffix;
+      }
+
+      if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  }
+
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.dataset.counted) {
+        entry.target.dataset.counted = 'true';
+        entry.target.querySelectorAll('.stat-value[data-target]').forEach(animateCounter);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const statsGrid = document.getElementById('statsGrid');
+  if (statsGrid) counterObserver.observe(statsGrid);
+
+  // ============================================================
+  // CORRELATION BARS ANIMATION
+  // ============================================================
+  const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.dataset.animated) {
+        entry.target.dataset.animated = 'true';
+        entry.target.querySelectorAll('.correlation-bar').forEach(bar => {
+          const width = bar.dataset.width;
+          setTimeout(() => {
+            bar.style.width = width + '%';
+          }, 200);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const corrBars = document.getElementById('correlationBars');
+  if (corrBars) barObserver.observe(corrBars);
+
+  // ============================================================
+  // CHILLING EFFECT TEXT ANIMATION
+  // ============================================================
+  const chillObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.dataset.chilled) {
+        entry.target.dataset.chilled = 'true';
+        const words = entry.target.querySelectorAll('.chill-word');
+        words.forEach(word => {
+          const delay = parseInt(word.dataset.delay) || 0;
+          setTimeout(() => {
+            word.classList.add('fading');
+          }, 1500 + delay);
+        });
+      }
+    });
+  }, { threshold: 0.5 });
+
+  const chillZone = document.getElementById('chillZone');
+  if (chillZone) chillObserver.observe(chillZone);
+
+  // ============================================================
+  // PROPAGANDA SATURATION BARS
+  // ============================================================
+  const satObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.dataset.animated) {
+        entry.target.dataset.animated = 'true';
+        entry.target.querySelectorAll('.saturation-bar-fill').forEach(bar => {
+          const h = bar.dataset.height;
+          setTimeout(() => {
+            bar.style.height = h + '%';
+          }, 300);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const satVis = document.getElementById('saturationVis');
+  if (satVis) satObserver.observe(satVis);
+
+  // ============================================================
+  // MAIN SIGMOID OBSERVER
+  // ============================================================
+  const mainSigmoidObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !mainSigmoidDrawn) {
+        mainSigmoidDrawn = true;
+        drawMainSigmoid();
+      }
+    });
+  }, { threshold: 0.2 });
+
+  const mainSigmoidFig = document.getElementById('mainSigmoidFig');
+  if (mainSigmoidFig) mainSigmoidObserver.observe(mainSigmoidFig);
+
+  // ============================================================
+  // COMPARISON SIGMOIDS OBSERVER
+  // ============================================================
+  const compObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.dataset.drawn) {
+        entry.target.dataset.drawn = 'true';
+        drawComparisonSigmoid('canvasBaseline', 0, 'rgba(74, 158, 255, 0.7)');
+        drawComparisonSigmoid('canvasStability', 0.12, 'rgba(74, 158, 255, 0.7)');
+      }
+    });
+  }, { threshold: 0.2 });
+
+  const baselineCanvas = document.getElementById('canvasBaseline');
+  if (baselineCanvas) compObserver.observe(baselineCanvas.parentElement.parentElement);
+
+  // ============================================================
+  // MINI SIGMOIDS
+  // ============================================================
+  const miniObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.dataset.drawn) {
+        entry.target.dataset.drawn = 'true';
+        drawMiniSigmoid(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.mini-sigmoid').forEach(c => miniObserver.observe(c));
+
+  // ============================================================
+  // SCROLL HANDLER
+  // ============================================================
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        updateProgress();
+        updateSideNav();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+
+  // ============================================================
+  // RESIZE HANDLER
+  // ============================================================
+  window.addEventListener('resize', () => {
+    if (heroAnimStarted) drawHeroSigmoid(Math.min(1, heroAnimProgress));
+    if (mainSigmoidDrawn) drawMainSigmoid();
+  });
+
+  // ============================================================
+  // CANVAS RESPONSIVE SIZING
+  // ============================================================
+  function resizeCanvases() {
+    // Main sigmoid
+    const mainC = document.getElementById('mainSigmoid');
+    if (mainC) {
+      const containerWidth = mainC.parentElement.clientWidth;
+      mainC.style.width = containerWidth + 'px';
+      mainC.style.height = (containerWidth * 0.45) + 'px';
+    }
+
+    // Hero sigmoid
+    const heroC = document.getElementById('heroSigmoid');
+    if (heroC) {
+      const maxW = Math.min(600, window.innerWidth - 40);
+      heroC.style.width = maxW + 'px';
+      heroC.style.height = (maxW * 260 / 600) + 'px';
+    }
+
+    // Comparison canvases
+    ['canvasBaseline', 'canvasStability'].forEach(id => {
+      const c = document.getElementById(id);
+      if (c) {
+        const pw = c.parentElement.clientWidth;
+        c.style.width = pw + 'px';
+        c.style.height = (pw * 0.5) + 'px';
+      }
+    });
+  }
+
+  resizeCanvases();
+  window.addEventListener('resize', resizeCanvases);
+
+  // Initial draws
+  updateProgress();
+  updateSideNav();
+})();
+</script>
+
+</body>
+</html>
