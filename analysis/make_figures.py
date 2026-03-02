@@ -884,6 +884,7 @@ def fig13_propaganda():
         ax.set_yticks(y)
         ax.set_yticklabels(bdf["model"], fontsize=6)
         ax.axvline(0, color="#333", linewidth=0.6)
+        add_vgrid(ax)
         ax.set_xlabel("Behavioral $\\Delta$ (pp)")
         ax.set_title("C. Cross-model\n(k=5, real citizens)", fontsize=8)
 
@@ -1297,6 +1298,7 @@ def fig16_beliefs():
     ax_b.set_xticklabels(bin_labels)
     ax_b.set_ylim(-0.05, 1.08)
     ax_b.legend(loc="upper left", framealpha=0.9, edgecolor="#ccc")
+    add_hgrid(ax_b)
     ax_b.set_title("B. Actions diverge from beliefs under treatment", fontsize=8, loc="left")
 
     plt.tight_layout()
@@ -1393,6 +1395,7 @@ def figA4_calibration():
         ax.set_yticks(range(len(names)))
         ax.set_yticklabels(names, fontsize=6)
         ax.axvline(0, color="#636363", linewidth=0.5, linestyle=":")
+        add_vgrid(ax)
         ax.set_xlabel("Calibrated cutoff center")
         ax.set_title("B. Per-model calibration shift", fontsize=8)
 
@@ -1877,6 +1880,7 @@ def fig21_placebo_calibration():
         else:
             colors.append("#2c7bb6")
 
+    add_vgrid(ax1)
     ax1.barh(range(len(conditions)), r_vals, color=colors, height=0.6, alpha=0.8)
     ax1.set_yticks(range(len(conditions)))
     ax1.set_yticklabels(labels, fontsize=6)
@@ -1887,6 +1891,7 @@ def fig21_placebo_calibration():
 
     # Panel B: mean join shifts
     means = [mj for _, _, _, mj in conditions]
+    add_vgrid(ax2)
     ax2.barh(range(len(conditions)), means, color=colors, height=0.6, alpha=0.8)
     ax2.set_yticks(range(len(conditions)))
     ax2.set_yticklabels(labels, fontsize=6)
