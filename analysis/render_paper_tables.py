@@ -1806,6 +1806,60 @@ def render_stats_macros(stats: dict) -> str:
         lines.append(_mc(f"ParseErr{mname}", rate, 3))
     lines.append("")
 
+    # ── Misc paper stats (cutoff range, temperature, robustness, etc.) ──
+    misc = stats.get("misc", {})
+    if misc:
+        lines.append("% Misc inline paper stats")
+        # Cutoff range
+        lines.append(_mc_r("CutoffMin", misc.get("cutoff_min")))
+        lines.append(_mc_r("CutoffMax", misc.get("cutoff_max")))
+        # Temperature robustness (primary model)
+        lines.append(_mc_r("TempRMinPrimary", misc.get("temp_r_min_primary")))
+        lines.append(_mc_r("TempRMaxPrimary", misc.get("temp_r_max_primary")))
+        # Temperature robustness (all combos)
+        lines.append(_mc_r("TempRMinAll", misc.get("temp_r_min_all")))
+        lines.append(_mc_r("TempRMaxAll", misc.get("temp_r_max_all")))
+        lines.append(_mc_raw("TempNCombos", str(misc.get("temp_n_combos", ""))))
+        # Uncalibrated
+        lines.append(_mc("UncalMinR", misc.get("uncal_min_r"), 2))
+        lines.append(_mc_raw("UncalNAbove", str(misc.get("uncal_n_above_75", ""))))
+        lines.append(_mc_raw("UncalNTotal", str(misc.get("uncal_n_total", ""))))
+        # Calibrated range
+        lines.append(_mc_r("CalRMin", misc.get("cal_r_min")))
+        lines.append(_mc_r("CalRMax", misc.get("cal_r_max")))
+        # Agent count robustness
+        lines.append(_mc_r("AgentCountRMin", misc.get("agent_count_r_min")))
+        lines.append(_mc_r("AgentCountRMax", misc.get("agent_count_r_max")))
+        # Network density
+        lines.append(_mc_r("NetworkKEightR", misc.get("network_k8_r")))
+        lines.append(_mc_r("NetworkKFourR", misc.get("network_k4_r")))
+        # Flip r
+        lines.append(_mc_r("FlipRMax", misc.get("flip_r_max")))
+        # Cross-generator
+        lines.append(_mc("CrossgenMaxDiff", misc.get("crossgen_max_diff"), 2))
+        # Infodesign comm join rates
+        lines.append(_mc("IDCommBaselinePct", misc.get("idcomm_baseline_pct"), 1))
+        lines.append(_mc("IDCommCensorLowerPct", misc.get("idcomm_censor_lower_pct"), 1))
+        lines.append(_mc("IDCommCensorUpperPct", misc.get("idcomm_censor_upper_pct"), 1))
+        # Punishment risk
+        lines.append(_mc("PunishRiskMean", misc.get("punishment_risk_mean"), 1))
+        lines.append(_mc("PunishRiskMaxDiff", misc.get("punishment_risk_max_diff"), 1))
+        # H6 p-value
+        lines.append(_mc("HSixP", misc.get("h6_p"), 3))
+        # Agent-level regression N
+        n_agents = misc.get("agent_level_n")
+        if n_agents:
+            n_str = f"{n_agents:,}".replace(",", "{,}")
+            lines.append(_mc_raw("AgentLevelN", n_str))
+        # Finite-N benchmark
+        lines.append(_mc("FiniteNMinR", misc.get("finite_n_min_r"), 2))
+        lines.append(_mc("FiniteNPrimaryR", misc.get("finite_n_primary_r"), 4))
+        lines.append(_mc("FiniteNPooledR", misc.get("finite_n_pooled_r"), 4))
+        # Regime survival
+        lines.append(_mc_raw("BaselineRegimeSurvPct",
+                             f"{misc.get('baseline_regime_survival_pct', 50)}\\%"))
+        lines.append("")
+
     return "\n".join(lines) + "\n"
 
 

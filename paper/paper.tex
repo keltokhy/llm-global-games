@@ -186,7 +186,7 @@ For each country--period, nature draws $\theta \sim \mathcal{N}(\bar{z}, 1)$, wh
 
 Because the briefing generator maps z-scores monotonically to narrative, any sentiment-extracting model will produce a positive correlation with $A(\theta)$. The empirical contribution lies in the \textit{quantitative structure}: sigmoid shape, payoff-narrative sensitivity, and robustness across seven models. Within-briefing falsification tests (Appendix~\ref{sec:within_scramble}) confirm that the signal is distributed across all eight evidence domains.
 
-Calibration adjusts a single parameter---the cutoff center---via a damped iterative procedure. The sigmoid shape is emergent and never optimized. Holdout validation confirms no overfitting; six uncalibrated models produce $|r| > 0.69$ (Appendix Table~\ref{tab:uncalibrated_expanded}). No explicit payoff table is provided---the stakes are conveyed through narrative, since explicit payoffs caused models to ignore briefing content.
+Calibration adjusts a single parameter---the cutoff center---via a damped iterative procedure. The sigmoid shape is emergent and never optimized. Holdout validation confirms no overfitting; \UncalNTotal\ uncalibrated models produce $|r| > \UncalMinR$ (Appendix Table~\ref{tab:uncalibrated_expanded}). No explicit payoff table is provided---the stakes are conveyed through narrative, since explicit payoffs caused models to ignore briefing content.
 
 Part~I has four treatments: a \textit{pure global game} (independent decisions), \textit{communication} (pre-play messaging on a Watts--Strogatz network, $k=4$, $p=0.3$), \textit{scramble} (cross-period briefing permutation breaking the $\theta$-to-signal link), and \textit{flip} (negated z-scores). Part~II implements information designs: \textit{stability} (increased ambiguity near $\theta^*$), \textit{instability} (sharpened signals), \textit{public signal injection}, and \textit{upper/lower censorship} \citep{kolotilin2022}. Part~III tests authoritarian instruments: \textit{surveillance} (monitoring warning in communication prompt) and \textit{propaganda} ($m = 2, 5, 10$ regime plants).
 
@@ -202,7 +202,7 @@ Table~\ref{tab:treatment_map} maps each treatment to the theoretical channel it 
 
 \input{tables/tab_treatment_map.tex}
 
-Of the eight pre-specified hypotheses, five survive Bonferroni correction at $\alpha = 0.05/8$: alignment (H1), flip (H3), communication (H4, paired $t = \CommTStatPaired$), stability (H5), and surveillance (H7). H2 (scramble) confirms a null prediction by design. H6 (censorship) is significant at conventional levels ($p = 0.023$) but not after correction. H8 (propaganda) is directionally correct but non-significant ($d = \PropPowerCohensD$; post-hoc power $= \PropPowerPostHoc$, MDE at 80\% power $= \PropPowerMDEPP$~pp). Exploratory analyses are reported with uncorrected $p$-values.
+Of the eight pre-specified hypotheses, five survive Bonferroni correction at $\alpha = 0.05/8$: alignment (H1), flip (H3), communication (H4, paired $t = \CommTStatPaired$), stability (H5), and surveillance (H7). H2 (scramble) confirms a null prediction by design. H6 (censorship) is significant at conventional levels ($p = \HSixP$) but not after correction. H8 (propaganda) is directionally correct but non-significant ($d = \PropPowerCohensD$; post-hoc power $= \PropPowerPostHoc$, MDE at 80\% power $= \PropPowerMDEPP$~pp). Exploratory analyses are reported with uncorrected $p$-values.
 
 %% 4. RESULTS
 \section{Results} \label{sec:results}
@@ -225,7 +225,7 @@ The slope reflects classical measurement error attenuation from narrative-to-bel
 \caption{Cross-model signal monotonicity. Points report $r(J, A(\theta))$ under pure and communication.}\label{fig:cross_model}
 \end{figure}
 
-Alignment is stable across architectures (Figure~\ref{fig:cross_model}): correlations span $r \in [\MinModelPureRAttack, \MaxModelPureRAttack]$ despite parameter counts ranging from 30B to 235B. Mean join rates vary, reflecting model-specific action biases that shift the intercept but not the correlation. Estimated cutoffs vary ($\hat{\theta}^* \in [-0.32, +0.10]$); the disciplined evidence on cutoff location comes from comparative statics, where changing narrative stakes shifts $\hat{\theta}^*$ in lockstep with payoff theory (Table~\ref{tab:bc_statics}, Figure~\ref{fig:bc_sweep}). A structural estimation against cognitive hierarchy benchmarks confirms these threshold policies are remarkably sophisticated: LLM behavior closely fits the unique Bayesian Nash equilibrium (BNE), rejecting the level-$k$ behavior typically observed in human laboratory subjects.
+Alignment is stable across architectures (Figure~\ref{fig:cross_model}): correlations span $r \in [\MinModelPureRAttack, \MaxModelPureRAttack]$ despite parameter counts ranging from 30B to 235B. Mean join rates vary, reflecting model-specific action biases that shift the intercept but not the correlation. Estimated cutoffs vary ($\hat{\theta}^* \in [\CutoffMin, \CutoffMax]$); the disciplined evidence on cutoff location comes from comparative statics, where changing narrative stakes shifts $\hat{\theta}^*$ in lockstep with payoff theory (Table~\ref{tab:bc_statics}, Figure~\ref{fig:bc_sweep}). A structural estimation against cognitive hierarchy benchmarks confirms these threshold policies are remarkably sophisticated: LLM behavior closely fits the unique Bayesian Nash equilibrium (BNE), rejecting the level-$k$ behavior typically observed in human laboratory subjects.
 
 Human subjects in coordination game experiments consistently exhibit level-$k$ cognitive hierarchy behavior rather than full equilibrium reasoning \citep{szkup2020}. To test whether LLM agents play the BNE or a level-$k$ heuristic, I evaluate theoretical attack masses under BNE, $L_1$ (agents best-respond believing others randomize uniformly), and $L_2$ (agents best-respond believing others play $L_1$). While the thresholds are identical when $\theta^* = 0.50$, the cost/benefit sweep uniquely separates them. Across the seven cost/benefit conditions, the empirical join fraction overwhelmingly selects BNE (RMSE = \LevelKBNERMSE, $r = \LevelKBNER$) over $L_1$ (RMSE = \LevelKLOneRMSE, $r = \LevelKLOneR$) and $L_2$ (RMSE = \LevelKLTwoRMSE, $r = \LevelKLTwoR$). The agents' threshold policies approximate the full Bayesian Nash equilibrium.
 
@@ -241,7 +241,7 @@ The claim is behavioral: agents do not observe $(B, C)$, $\sigma$, or $N$, yet t
 
 \textit{Classifier baselines.} Text features alone cannot reproduce LLM behavior. A TF-IDF logistic classifier achieves \ClassBowAccuracyPct\ accuracy in-distribution---top features are regime-stability language (``trajectory,'' ``deterioration'' predicting JOIN; ``stability,'' ``absence'' predicting STAY)---but fails on the surveillance chilling effect ($\ClassBowSurvGapPP$~pp gap; Table~\ref{tab:classifiers} in Appendix~\ref{sec:identification_appendix}). Additional identification tests are reported in Appendix~\ref{sec:identification_appendix}.
 
-The correlation is invariant to decoding temperature (for the primary model, $r \in [+0.76, +0.79]$ across $T \in \{0.3, 0.7, 1.0\}$; full three-model sweep in Appendix~\ref{sec:temp_robustness}). What matters for Part~II is that the behavioral regularity is robust enough to serve as a platform for studying how information structures shift coordination outcomes.
+The correlation is invariant to decoding temperature (for the primary model, $r \in [\TempRMinPrimary, \TempRMaxPrimary]$ across $T \in \{0.3, 0.7, 1.0\}$; full three-model sweep in Appendix~\ref{sec:temp_robustness}). What matters for Part~II is that the behavioral regularity is robust enough to serve as a platform for studying how information structures shift coordination outcomes.
 
 \input{tables/tab_bc_statics.tex}
 
@@ -353,7 +353,7 @@ Surveillance shifts stated beliefs by only $\PrefFalsBeliefDeltaPP$~pp ($p = \Pr
     \underbrace{\Delta \bar{J}}_{\text{total}} = \underbrace{\frac{\partial \bar{J}}{\partial b}\,\Delta \bar{b}}_{\text{belief updating}} + \underbrace{\Delta \bar{J}\big|_{\bar{b}\text{ fixed}}}_{\text{belief--action wedge}}
     \label{eq:belief_decomp}
 \end{equation}
-Virtually the entire effect passes through the belief--action wedge---agents change what they \textit{do} without changing what they \textit{believe}. Elicited punishment risk is approximately 8.0/10 across all conditions with negligible differences between JOIN and STAY agents (Table~\ref{tab:punishment_risk}).
+Virtually the entire effect passes through the belief--action wedge---agents change what they \textit{do} without changing what they \textit{believe}. Elicited punishment risk is approximately \PunishRiskMean/10 across all conditions with negligible differences between JOIN and STAY agents (Table~\ref{tab:punishment_risk}).
 
 Second-order beliefs are unchanged by surveillance ($\SOBPureMeanPct \to \SOBSurvMeanPct$, $p = \SOBPValue$), revealing the \textit{strategic update gap}: each agent self-censors while interpreting others' silence as genuine, sustaining the suppressed equilibrium because common knowledge of the chilling effect never forms. The $R^2$ of message content on true $\theta$ drops from \MsgRSqComm\ to \MsgRSqSurv---an \MsgRSqDropPct\ reduction in informational content.
 
@@ -515,10 +515,10 @@ Summing the single-channel effects (Table~\ref{tab:decomposition}) yields \Decom
   \label{fig:robustness}
 \end{figure}
 
-Threshold-policy alignment is stable to agent count ($r \in [+0.60, +0.68]$ across $N \in \{5, 10, 25, 50, 100\}$), network density ($r = +0.66$ at $k = 8$ vs.\ $+0.65$ at $k = 4$), and mixed-model populations ($r = \MixedPureRAttack$ pure, $r = \MixedCommRAttack$ communication; Figure~\ref{fig:robustness}).
+Threshold-policy alignment is stable to agent count ($r \in [\AgentCountRMin, \AgentCountRMax]$ across $N \in \{5, 10, 50, 100\}$), network density ($r = \NetworkKEightR$ at $k = 8$ vs.\ $\NetworkKFourR$ at $k = 4$), and mixed-model populations ($r = \MixedPureRAttack$ pure, $r = \MixedCommRAttack$ communication; Figure~\ref{fig:robustness}).
 
 \subsection{Robustness Checks}
-Without calibration, all six models show $r > 0.69$ and five exceed $r > 0.75$ (Table~\ref{tab:uncalibrated_expanded}). Deliberately miscalibrating two models ($\pm 0.3$ shift) leaves $r$ virtually unchanged ($r \in [\PlaceboCalibLlamaBPlusRAttack, \PlaceboCalibMistralSmallMinusRAttack]$; Table~\ref{tab:placebo_calibration}): calibration adjusts the \textit{level} but does not create the \textit{slope}. Table~\ref{tab:calibration_robustness} and Figure~\ref{fig:calibration_convergence} report calibration quality across all seven models ($r_A \in [+0.66, +0.84]$).
+Without calibration, all \UncalNTotal\ models show $r > \UncalMinR$ and \UncalNAbove\ exceed $r > 0.75$ (Table~\ref{tab:uncalibrated_expanded}). Deliberately miscalibrating two models ($\pm 0.3$ shift) leaves $r$ virtually unchanged ($r \in [\PlaceboCalibLlamaBPlusRAttack, \PlaceboCalibMistralSmallMinusRAttack]$; Table~\ref{tab:placebo_calibration}): calibration adjusts the \textit{level} but does not create the \textit{slope}. Table~\ref{tab:calibration_robustness} and Figure~\ref{fig:calibration_convergence} report calibration quality across all seven models ($r_A \in [\CalRMin, \CalRMax]$).
 \input{tables/tab_uncalibrated_expanded.tex}
 \input{tables/tab_placebo_calibration.tex}
 
@@ -538,11 +538,11 @@ Without calibration, all six models show $r > 0.69$ and five exceed $r > 0.75$ (
 \begin{figure*}[htbp]\centering\includegraphics[width=\textwidth]{figures/fig14_cross_model_infodesign.pdf}
 \caption{Cross-model replication of information design treatments.}\label{fig:oa_crossmodel_infodesign}
 \end{figure*}
-The flip inversion replicates across all five models (flip $r < -0.43$; Figure~\ref{fig:oa_crossmodel_infodesign}, Table~\ref{tab:crossmodel}). The within-country scramble shows heterogeneity: Mistral, GPT-OSS, and Qwen3~235B collapse cleanly ($r \approx 0$), but Llama retains $r = +0.81$ because the within-country permutation preserves ecological structure through the country prior mean. The hard scramble ($\theta = 0.5$ for all briefings) collapses Llama to $r = \HardScrambleLlamaBRAttack$ ($p = \HardScrambleLlamaBPValue$), confirming residual ecological signal rather than a falsification failure.
+The flip inversion replicates across all five models (flip $r < \FlipRMax$; Figure~\ref{fig:oa_crossmodel_infodesign}, Table~\ref{tab:crossmodel}). The within-country scramble shows heterogeneity: Mistral, GPT-OSS, and Qwen3~235B collapse cleanly ($r \approx 0$), but Llama retains $r = +0.81$ because the within-country permutation preserves ecological structure through the country prior mean. The hard scramble ($\theta = 0.5$ for all briefings) collapses Llama to $r = \HardScrambleLlamaBRAttack$ ($p = \HardScrambleLlamaBPValue$), confirming residual ecological signal rather than a falsification failure.
 \input{tables/tab_crossmodel.tex}
 
 \subsection{Information Design with Communication}
-In a communication version of the information-design grid, upper censorship yields 15.1\% joining and lower censorship 17.7\% (baseline 3.0\%), consistent with censorship making the social-information channel relatively more important.
+In a communication version of the information-design grid, upper censorship yields \IDCommCensorUpperPct\% joining and lower censorship \IDCommCensorLowerPct\% (baseline \IDCommBaselinePct\%), consistent with censorship making the social-information channel relatively more important.
 
 \subsection{Group-Size Awareness}
 With group-size knowledge (``You are one of 25 citizens''), the pure join rate rises to 0.507 (vs.\ 0.369 baseline) and the communication premium reverses ($-3.4$~pp). Monotone signal response is preserved.
@@ -552,7 +552,7 @@ With group-size knowledge (``You are one of 25 citizens''), the pure join rate r
 Making censorship common knowledge (``regime censors are suppressing unfavorable intelligence'') nearly eliminates the pooling effect: mean join rate returns to \InfodesignCensorUpperKnownMeanPct\ ($\InfodesignCensorUpperKnownDeltaPP$~pp vs.\ baseline) compared with \InfodesignCensorUpperMeanPct\ ($\InfodesignCensorUpperDeltaPP$~pp) under na\"ive censorship (Table~\ref{tab:censor_ck}). The behavioral shift requires agents to be na\"ive about the censorship rule.
 
 \label{sec:temp_robustness}\input{tables/tab_temperature_expanded.tex}
-The correlation $r(J, A(\theta))$ ranges from $+0.76$ to $+0.84$ across 13 model--temperature combinations ($T \in \{0.3, 0.5, 0.7, 1.0, 1.2\}$ for three models; Table~\ref{tab:temperature_expanded}).
+The correlation $r(J, A(\theta))$ ranges from $\TempRMinAll$ to $\TempRMaxAll$ across \TempNCombos\ model--temperature combinations ($T \in \{0.3, 0.5, 0.7, 1.0, 1.2\}$ for three models; Table~\ref{tab:temperature_expanded}).
 
 \subsection{Falsification and Placebo Tests} \label{sec:surv_isolation}
 \input{tables/tab_surveillance_variants.tex}
@@ -561,10 +561,10 @@ Two placebo variants---monitoring ``for research purposes'' (no consequences) an
 \label{sec:within_scramble}Three tests confirm the signal is distributed across all eight evidence domains. Observation shuffle ($r = \WithinScrambleRAttack$), domain scramble for coordination bullets ($r = \DomainScrambleCoordRAttack$), and domain scramble for state-capacity bullets ($r = \DomainScrambleStateRAttack$) all preserve the baseline correlation ($r = \InfodesignBaselineRAttack$), ruling out bullet ordering or any single domain subset as the driver.
 
 \subsection{Finite-\texorpdfstring{$N$}{N} Benchmark}
-Predicted regime fall rates (binomial model with out-of-sample logistic fits) correlate with empirical rates at $r \geq 0.88$ for every model (Mistral: $r = 0.9995$; Table~\ref{tab:finite_n}).
+Predicted regime fall rates (binomial model with out-of-sample logistic fits) correlate with empirical rates at $r \geq \FiniteNMinR$ for every model (Mistral: $r = \FiniteNPrimaryR$; Table~\ref{tab:finite_n}).
 \input{tables/tab_finite_n.tex}
 \subsection{Agent-Level Analysis}
-Table~\ref{tab:regressions} reports agent-level logit regressions ($N = 287{,}055$, clustered SEs). All treatment effects are significant and correctly signed. Marginal effects at the mean: a one-unit increase in $\theta$ reduces $P(\text{join})$ by \MEMThetaPP~pp; surveillance reduces it by \MEMSurvPP~pp. Elicited beliefs predict actions beyond what the signal alone predicts (Column~3).
+Table~\ref{tab:regressions} reports agent-level logit regressions ($N = \AgentLevelN$, clustered SEs). All treatment effects are significant and correctly signed. Marginal effects at the mean: a one-unit increase in $\theta$ reduces $P(\text{join})$ by \MEMThetaPP~pp; surveillance reduces it by \MEMSurvPP~pp. Elicited beliefs predict actions beyond what the signal alone predicts (Column~3).
 \input{tables/tab_regressions.tex}
 \input{tables/tab_logistic_params.tex}
 
@@ -574,7 +574,7 @@ Figure~\ref{fig:construct_validity}(A) shows a three-feature model (direction, c
 \end{figure*}
 
 \subsection{Cross-Generator Robustness} \label{sec:cross_generator}
-Three text rendering formats---baseline narrative, diplomatic cable, journalistic wire---use identical slider functions but differ in surface prose. Correlations are virtually identical (max within-model difference $0.02$; Figure~\ref{fig:cross_generator}, Table~\ref{tab:cross_generator}), ruling out prose style as the driver.
+Three text rendering formats---baseline narrative, diplomatic cable, journalistic wire---use identical slider functions but differ in surface prose. Correlations are virtually identical (max within-model difference $\CrossgenMaxDiff$; Figure~\ref{fig:cross_generator}, Table~\ref{tab:cross_generator}), ruling out prose style as the driver.
 \begin{figure*}[htbp]\centering\includegraphics[width=\textwidth]{figures/fig20_cross_generator.pdf}
 \caption{Cross-generator robustness. Three text formats produce indistinguishable sigmoids.}\label{fig:cross_generator}
 \end{figure*}
@@ -584,7 +584,7 @@ Three text rendering formats---baseline narrative, diplomatic cable, journalisti
 Stated beliefs track the theoretical success probability ($r_{\text{belief,posterior}} = \BeliefPureRPosterior$) and predict actions ($r_{\text{belief,decision}} = \BeliefPureRDecision$; partial $r = \BeliefPureRPartial$ controlling for signal). Under surveillance, beliefs shift only $\PrefFalsBeliefDeltaPP$~pp while actions shift $\PrefFalsActionDeltaPP$~pp (Table~\ref{tab:beliefs}). Pre-decision elicitation ($N = 5{,}000$) produces $r = +0.82$ vs.\ post-decision $r = +0.84$, ruling out ex-post rationalization.
 \input{tables/tab_beliefs.tex}
 
-\label{sec:punishment_risk}Mean punishment risk is ${\approx}\,8.0/10$ across all conditions with negligible JOIN/STAY differences ($< 0.2$ points; Table~\ref{tab:punishment_risk}), supporting the contaminated-communication interpretation.
+\label{sec:punishment_risk}Mean punishment risk is ${\approx}\,\PunishRiskMean/10$ across all conditions with negligible JOIN/STAY differences ($< \PunishRiskMaxDiff$ points; Table~\ref{tab:punishment_risk}), supporting the contaminated-communication interpretation.
 \input{tables/tab_punishment_risk.tex}
 
 \subsection{Briefing Generator Examples} \label{sec:briefing_examples}

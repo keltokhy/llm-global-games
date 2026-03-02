@@ -4589,5 +4589,36 @@
       }
     }
   ],
+  "misc": {
+    "cutoff_min": -0.32,
+    "cutoff_max": 0.1,
+    "temp_r_min_primary": 0.76,
+    "temp_r_max_primary": 0.79,
+    "temp_r_min_all": 0.76,
+    "temp_r_max_all": 0.84,
+    "temp_n_combos": 13,
+    "uncal_min_r": 0.71,
+    "uncal_n_above_75": 5,
+    "uncal_n_total": 6,
+    "cal_r_min": 0.75,
+    "cal_r_max": 0.84,
+    "agent_count_r_min": 0.6,
+    "agent_count_r_max": 0.65,
+    "network_k8_r": 0.66,
+    "network_k4_r": 0.74,
+    "flip_r_max": -0.62,
+    "crossgen_max_diff": 0.02,
+    "idcomm_baseline_pct": 3.0,
+    "idcomm_censor_lower_pct": 17.7,
+    "idcomm_censor_upper_pct": 15.1,
+    "punishment_risk_mean": 8.0,
+    "punishment_risk_max_diff": 0.2,
+    "h6_p": 0.023,
+    "agent_level_n": 287055,
+    "finite_n_min_r": 0.95,
+    "finite_n_primary_r": 0.9968,
+    "finite_n_pooled_r": 0.9993,
+    "baseline_regime_survival_pct": 50
+  },
   "discrepancy_report": []
 }

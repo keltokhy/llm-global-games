@@ -2497,6 +2497,229 @@ def compute_level_k_benchmark():
     return results
 
 
+def compute_paper_misc_stats(all_stats: dict) -> dict:
+    """Derive aggregate/summary numbers referenced inline in the paper.
+
+    These are computed from the already-populated all_stats dict so they
+    stay consistent with the per-model/per-treatment results.
+    """
+    misc = {}
+
+    # ── Cutoff range across models ───────────────────────────────────
+    logistic_fits = all_stats.get("logistic_fits", {})
+    cutoffs = []
+    for model, treatments in logistic_fits.items():
+        if isinstance(treatments, dict) and "pure" in treatments:
+            pure = treatments["pure"]
+            b0, b1 = pure.get("b0"), pure.get("b1")
+            if b0 is not None and b1 is not None and b1 != 0:
+                cutoffs.append(-b0 / b1)
+    if cutoffs:
+        misc["cutoff_min"] = round(min(cutoffs), 2)
+        misc["cutoff_max"] = round(max(cutoffs), 2)
+
+    # ── Temperature robustness range (primary model only) ────────────
+    temp_r = all_stats.get("temperature_robustness", {})
+    primary_temp_rs = []
+    for t_key, v in temp_r.items():
+        r = v.get("r_vs_attack", {}).get("r")
+        if r is not None:
+            primary_temp_rs.append(r)
+    if primary_temp_rs:
+        misc["temp_r_min_primary"] = round(min(primary_temp_rs), 2)
+        misc["temp_r_max_primary"] = round(max(primary_temp_rs), 2)
+
+    # ── Temperature full range (all model-temperature combos) ────────
+    all_temp_rs = list(primary_temp_rs)  # start with primary
+    for model, model_data in all_stats.get("temperature_expanded", {}).items():
+        if isinstance(model_data, dict):
+            for t_key, v in model_data.items():
+                if isinstance(v, dict):
+                    r = v.get("r_vs_attack", {}).get("r")
+                    if r is not None:
+                        all_temp_rs.append(r)
+    if all_temp_rs:
+        misc["temp_r_min_all"] = round(min(all_temp_rs), 2)
+        misc["temp_r_max_all"] = round(max(all_temp_rs), 2)
+        misc["temp_n_combos"] = len(all_temp_rs)
+
+    # ── Uncalibrated model r values ──────────────────────────────────
+    uncal = all_stats.get("uncalibrated_expanded", {})
+    uncal_rs = []
+    for model, v in uncal.items():
+        r = v.get("r_vs_attack", {}).get("r")
+        if r is not None and not np.isnan(r):
+            uncal_rs.append(r)
+    if uncal_rs:
+        uncal_rs_sorted = sorted(uncal_rs)
+        misc["uncal_min_r"] = round(uncal_rs_sorted[0], 2)
+        misc["uncal_n_above_75"] = sum(1 for r in uncal_rs if r > 0.75)
+        misc["uncal_n_total"] = len(uncal_rs)
+
+    # ── Calibration quality range (r_vs_attack from Part I pure) ─────
+    cal_rs = []
+    part1 = all_stats.get("part1", {})
+    for model, v in part1.items():
+        if model.startswith("_"):
+            continue
+        if isinstance(v, dict) and "pure" in v:
+            r = v["pure"].get("r_vs_attack", {}).get("r")
+            if r is not None:
+                cal_rs.append(r)
+    if cal_rs:
+        misc["cal_r_min"] = round(min(cal_rs), 2)
+        misc["cal_r_max"] = round(max(cal_rs), 2)
+
+    # ── Agent count robustness r range ───────────────────────────────
+    ac = all_stats.get("robustness", {}).get("agent_count", {})
+    ac_rs = []
+    for n_key, models in ac.items():
+        for m, v in models.items():
+            r = v.get("r_vs_attack", {}).get("r")
+            if r is not None:
+                ac_rs.append(r)
+    if ac_rs:
+        misc["agent_count_r_min"] = round(min(ac_rs), 2)
+        misc["agent_count_r_max"] = round(max(ac_rs), 2)
+
+    # ── Network density ──────────────────────────────────────────────
+    nk8 = all_stats.get("robustness", {}).get("network_k8", {})
+    for m, v in nk8.items():
+        r = v.get("r_vs_attack", {}).get("r")
+        if r is not None:
+            misc["network_k8_r"] = round(r, 2)
+    # k=4 is baseline comm
+    for model, v in part1.items():
+        if model == "Mistral Small Creative" and isinstance(v, dict):
+            r = v.get("comm", {}).get("r_vs_attack", {}).get("r")
+            if r is not None:
+                misc["network_k4_r"] = round(r, 2)
+
+    # ── Flip r across models (for cross-model threshold) ─────────────
+    flip_rs = []
+    for model, v in part1.items():
+        if model.startswith("_"):
+            continue
+        if isinstance(v, dict) and "flip" in v:
+            r = v["flip"].get("r_vs_attack", {}).get("r")
+            if r is not None:
+                flip_rs.append(r)
+    if flip_rs:
+        misc["flip_r_max"] = round(max(flip_rs), 2)  # least negative
+
+    # ── Cross-generator max within-model diff ────────────────────────
+    cg = all_stats.get("cross_generator", {})
+    cg_diffs = []
+    for model, gen_data in cg.items():
+        rs = []
+        for gen, v in gen_data.items():
+            if isinstance(v, dict) and "r_vs_attack" in v:
+                rs.append(v["r_vs_attack"]["r"])
+        if len(rs) >= 2:
+            cg_diffs.append(max(rs) - min(rs))
+    if cg_diffs:
+        misc["crossgen_max_diff"] = round(max(cg_diffs), 2)
+
+    # ── Infodesign comm join rates ───────────────────────────────────
+    ic = all_stats.get("infodesign_comm", {})
+    for design in ["baseline", "censor_lower", "censor_upper"]:
+        v = ic.get(design, {})
+        mj = v.get("mean_join")
+        if mj is not None:
+            misc[f"idcomm_{design}_pct"] = round(mj * 100, 1)
+
+    # ── Punishment risk summary ──────────────────────────────────────
+    pr = all_stats.get("punishment_risk", {})
+    all_pr_means = []
+    all_pr_diffs = []
+    for model, model_data in pr.items():
+        for treatment, t_data in model_data.items():
+            al = t_data.get("agent_level", {})
+            mean_pr = al.get("mean_pr")
+            if mean_pr is not None:
+                all_pr_means.append(mean_pr)
+            join_pr = al.get("mean_pr_join")
+            stay_pr = al.get("mean_pr_stay")
+            if join_pr is not None and stay_pr is not None:
+                all_pr_diffs.append(abs(join_pr - stay_pr))
+    if all_pr_means:
+        misc["punishment_risk_mean"] = round(np.mean(all_pr_means), 1)
+    if all_pr_diffs:
+        misc["punishment_risk_max_diff"] = round(max(all_pr_diffs), 1)
+
+    # ── H6 censorship p-value ────────────────────────────────────────
+    ht = all_stats.get("hypothesis_table", [])
+    for h in ht:
+        if h.get("id") == "H6":
+            misc["h6_p"] = round(h["p"], 3)
+
+    # ── Agent-level regression N (from regression_results.json) ─────
+    reg_path = Path(__file__).resolve().parent / "regression_results.json"
+    if reg_path.exists():
+        with open(reg_path) as f:
+            reg = json.load(f)
+        n_obs = reg.get("agent_logit", {}).get("main_logit", {}).get("n_obs")
+        if n_obs:
+            misc["agent_level_n"] = int(n_obs)
+        # Finite-N benchmark
+        fn = reg.get("finite_n_benchmark", {})
+        fn_per_model = fn.get("per_model", {})
+        fn_rs = []
+        for model, v in fn_per_model.items():
+            r = v.get("pearson_r")
+            if r is not None:
+                fn_rs.append((model, r))
+        if fn_rs:
+            misc["finite_n_min_r"] = round(min(r for _, r in fn_rs), 2)
+            # Find primary model
+            for model, r in fn_rs:
+                if "mistral" in model.lower():
+                    misc["finite_n_primary_r"] = round(r, 4)
+        # Pooled finite-N
+        fn_pooled = fn.get("pooled", {})
+        pr = fn_pooled.get("pearson_r")
+        if pr is not None:
+            misc["finite_n_pooled_r"] = round(pr, 4)
+
+    # ── Sum of individual surveillance + propaganda effects ──────────
+    rc = all_stats.get("regime_control", {})
+    surv_delta = None
+    prop_delta = None
+    surv = rc.get("surveillance", {}).get("Mistral Small Creative", {})
+    if surv:
+        surv_delta = surv.get("delta_vs_baseline_pp")
+    prop = rc.get("propaganda", {})
+    # propaganda keyed by model then dose
+    if isinstance(prop, dict):
+        for model_key, model_data in prop.items():
+            if "Mistral" in str(model_key):
+                if isinstance(model_data, dict):
+                    prop_delta = model_data.get("delta_vs_baseline_pp")
+    # Also check _propaganda_saturation_k5_k10
+    prop_sat = rc.get("_propaganda_saturation_k5_k10", {})
+    if isinstance(prop_sat, dict):
+        for k, v in prop_sat.items():
+            if "k=5" in str(k) and isinstance(v, dict):
+                d = v.get("delta_vs_baseline_pp")
+                if d is not None:
+                    prop_delta = d
+    if surv_delta is not None and prop_delta is not None:
+        misc["sum_individual_effects_pp"] = round(surv_delta + prop_delta, 1)
+
+    # ── Regime survival (theoretical BNE baseline) ─────────────────
+    sigma = PART1_BENCHMARK_SIGMA
+    theta_star = PART1_BENCHMARK_THETA_STAR
+    from scipy.stats import norm
+    x_star = theta_star + sigma * norm.ppf(theta_star)
+    n_grid = 10000
+    theta_grid = np.linspace(0.001, 0.999, n_grid)
+    a_grid = norm.cdf((x_star - theta_grid) / sigma)
+    baseline_survival = float(np.mean(a_grid < theta_grid))
+    misc["baseline_regime_survival_pct"] = round(baseline_survival * 100)
+
+    return misc
+
+
 def main():
     print("Computing Part I statistics...")
     part1 = compute_part1()
@@ -2590,6 +2813,10 @@ def main():
     print("Computing hypothesis table...")
     hypothesis_table = compute_hypothesis_table(all_stats)
     all_stats["hypothesis_table"] = hypothesis_table
+
+    print("Computing misc paper stats...")
+    misc = compute_paper_misc_stats(all_stats)
+    all_stats["misc"] = misc
 
     print("\nRunning discrepancy analysis...")
     discrepancies = discrepancy_report(all_stats)
