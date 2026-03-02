@@ -212,25 +212,19 @@ Alignment is stable across architectures (Figure~\ref{fig:cross_model}): correla
 
 Human subjects in coordination game experiments consistently exhibit level-$k$ cognitive hierarchy behavior rather than full equilibrium reasoning \citep{szkup2020}. To test whether LLM agents play the BNE or a level-$k$ heuristic, I evaluate theoretical attack masses under BNE, $L_1$ (agents best-respond believing others randomize uniformly), and $L_2$ (agents best-respond believing others play $L_1$). While the thresholds are identical when $\theta^* = 0.50$, the cost/benefit sweep uniquely separates them. Across the seven cost/benefit conditions, the empirical join fraction overwhelmingly selects BNE (RMSE = 0.199, $r = +0.737$) over $L_1$ (RMSE = 0.307, $r = +0.445$) and $L_2$ (RMSE = 0.348, $r = +0.354$). The agents' threshold policies approximate the full Bayes-Nash Equilibrium.
 
-The claim is purely behavioral: agents do not observe $(B, C)$, $\sigma$, or $N$, yet the \textit{pattern} of responses---monotone sigmoid, payoff-sensitive cutoff, belief-mediated decisions---is robust, replicable, and falsifiable regardless of the underlying process. Stated probability judgments mediate the signal-to-action pathway (Pseudo $R^2 = 0.975$; Table~\ref{tab:regressions}, Column~3), and this mediation survives pre-decision elicitation ($r_{\text{pre}} = +0.82$; Figure~\ref{fig:beliefs} in Appendix~\ref{sec:belief_appendix}), ruling out ex-post rationalization. Binned mean beliefs track the theoretical benchmark monotonically (Figure~\ref{fig:nonparametric_beliefs} in Appendix~\ref{sec:belief_appendix}).
+The claim is behavioral: agents do not observe $(B, C)$, $\sigma$, or $N$, yet the \textit{pattern} of responses---monotone sigmoid, payoff-sensitive cutoff, belief-mediated decisions---is robust across architectures and falsifiable. Three identification strategies establish that the regularity reflects more than text classification.
 
-\textit{Five identification tests establish that the behavioral regularity reflects more than text classification.} Each exploits an orthogonal dimension that sentiment classification cannot predict.
-
-First, the cost/benefit test shifts cutoffs in lockstep with payoff theory while preserving the sigmoid ($|r| > 0.85$ in all conditions). High-cost narratives drop mean joining to \BCStatHighCostMeanPct\ ($\hat{\theta}^* = \BCSweepHighCostCutoff$); low-cost raises it to \BCStatLowCostMeanPct\ ($\hat{\theta}^* = \BCSweepLowCostCutoff$)---a 50~pp swing invisible to any text classifier since briefings are identical across conditions. A systematic sweep across seven $B/C$ ratios confirms $\hat{\theta}^*$ tracks $\theta^*$ with $r = \BCSweepCutoffTrackingR$ ($p < 0.001$; Figure~\ref{fig:bc_sweep}).
+\textit{Cost/benefit identification.} Varying narrative stakes while holding briefings fixed shifts cutoffs in lockstep with payoff theory. High-cost narratives drop mean joining to \BCStatHighCostMeanPct\ ($\hat{\theta}^* = \BCSweepHighCostCutoff$); low-cost raises it to \BCStatLowCostMeanPct\ ($\hat{\theta}^* = \BCSweepLowCostCutoff$)---a 50~pp swing invisible to any text classifier. A sweep across seven $B/C$ ratios confirms $\hat{\theta}^*$ tracks $\theta^*$ with $r = \BCSweepCutoffTrackingR$ ($p < 0.001$; Figure~\ref{fig:bc_sweep}).
 
 \begin{figure}[htbp]\centering\includegraphics[width=\columnwidth]{figures/fig18_bc_sweep.pdf}
 \caption{Fitted cutoff $\hat{\theta}^*$ vs.\ theoretical $\theta^*$ across seven $B/C$ ratios ($r = \BCSweepCutoffTrackingR$).}\label{fig:bc_sweep}
 \end{figure}
 
-Second, belief elicitation shows beliefs track the theoretical success probability ($r = \BeliefPureRPosterior$) and predict actions beyond what signals alone explain (partial $r = \BeliefPureRPartial$), consistent with strategic inference about others' likely behavior.
+\textit{Belief mediation.} Stated probability judgments mediate the signal-to-action pathway (Pseudo $R^2 = 0.975$; Table~\ref{tab:regressions}). Beliefs track the theoretical success probability ($r = \BeliefPureRPosterior$) and predict actions beyond what signals alone explain (partial $r = \BeliefPureRPartial$). Pre-decision elicitation ($r_{\text{pre}} = +0.82$) rules out ex-post rationalization.
 
-Third, a coordination-cue experiment holds sentiment fixed and varies only the coordination slope. Amplified cues ($\times 2.0$) steepen the logistic slope to $\beta = 7.2$ vs.\ $\beta = 3.1$ under suppressed cues ($\times 0.3$), while join rates remain similar. A common-knowledge framing (``this briefing has been distributed to all citizens'') raises joining by \CKMainEffectBeta~pp relative to private framing; the interaction is additive ($\beta_{\text{interaction}} = \CKInteractionBeta$~pp, $p = \CKInteractionPValue$; Table~\ref{tab:ck_2x2} in Appendix~\ref{sec:identification_appendix}).
+\textit{Classifier baselines.} Text features alone cannot reproduce LLM behavior. A bag-of-words classifier achieves \ClassBowAccuracyPct\ accuracy in-distribution but fails to predict the surveillance chilling effect ($\ClassBowSurvGapPP$~pp gap; Table~\ref{tab:classifiers} in Appendix~\ref{sec:identification_appendix}). Additional identification tests---coordination-cue manipulation and construct validity---are reported in Appendix~\ref{sec:identification_appendix}.
 
-Fourth, classifier baselines show that text features alone cannot reproduce LLM behavior. A bag-of-words classifier achieves \ClassBowAccuracyPct\ accuracy in-distribution but predicts \ClassBowSurvPredictedPct\ joining under surveillance, while actual LLM rates drop to \ClassBowSurvActualPct---a $\ClassBowSurvGapPP$~pp gap invisible to any text-conditioned classifier (Table~\ref{tab:classifiers} in Appendix~\ref{sec:identification_appendix}). Fifth, a three-feature construct validity model outperforms a one-feature sentiment baseline.
-
-Together, these five tests rule out text classification as the generating process. The 50~pp B/C swing is invisible to any classifier conditioned on briefing text (Table~\ref{tab:bc_classifier} in Appendix~\ref{sec:identification_appendix}).
-
-The correlation is also invariant to LLM decoding temperature ($r(J, A(\theta)) \in [+0.76, +0.79]$ across $T \in \{0.3, 0.7, 1.0\}$; Appendix~\ref{sec:temp_robustness}). What matters for the information design experiments in Parts~II and~III is that the behavioral regularity---monotone signal response---is robust enough to serve as a platform for studying how information structures shift coordination outcomes.
+The correlation is invariant to decoding temperature ($r \in [+0.76, +0.79]$ across $T \in \{0.3, 0.7, 1.0\}$; Appendix~\ref{sec:temp_robustness}). What matters for Part~II is that the behavioral regularity is robust enough to serve as a platform for studying how information structures shift coordination outcomes.
 
 \input{tables/tab_bc_statics.tex}
 
@@ -252,13 +246,11 @@ The pure $\to$ scramble $\to$ flip pattern replicates across all seven models (F
 \caption{Falsification triptych. \textit{Left:} Pure (mean $r = \MeanModelRPureAttack$). \textit{Center:} Scramble ($r = \MeanModelRScrambleAttack$). \textit{Right:} Flip ($r = \MeanModelRFlipAttack$).}\label{fig:falsification}
 \end{figure*}
 
-A na\"ive text baseline---predicting $\hat{p}_{\text{join}} = 1 - d$ from the briefing's internal direction score $d$---correlates with LLM decisions at $r = 0.80$, but the LLM's join curve is substantially steeper (logistic slope 1.78 vs.\ the gradual text baseline; Figure~\ref{fig:text_baseline}). The LLM sharpens the signal beyond surface sentiment, producing threshold-like behavior rather than linearly tracking tone.
+A text-only baseline ($\hat{p}_{\text{join}} = 1 - d$, where $d$ is the briefing's internal direction score) correlates with LLM decisions at $r = 0.80$, but the LLM's join curve is substantially steeper (Figure~\ref{fig:text_baseline}), producing threshold-like behavior rather than linearly tracking tone.
 
 \begin{figure}[htbp]\centering\includegraphics[width=\columnwidth]{figures/fig15_text_baseline.pdf}
-\caption{Text baseline test. The LLM join curve (logistic slope 1.78) is steeper than the na\"ive text predictor ($1 - \text{direction}$, $r = 0.80$), indicating processing beyond sentiment.}\label{fig:text_baseline}
+\caption{Text baseline test. The LLM join curve is steeper than the na\"ive text predictor ($1 - d$), indicating processing beyond surface sentiment.}\label{fig:text_baseline}
 \end{figure}
-
-Stated beliefs correlate strongly with the theoretical success probability ($r = \BeliefPureRPosterior$ in pure, $\BeliefCommRPosterior$ under communication, $\BeliefSurvRPosterior$ under surveillance; Figures~\ref{fig:beliefs}--\ref{fig:second_order_beliefs} in Appendix~\ref{sec:belief_appendix}). The belief--action correlation ($r = \BeliefPureRDecision$) drops to $r = \BeliefSurvRDecision$ under surveillance---direct evidence of a belief--action wedge.\footnote{Belief elicitation data are from Mistral Small Creative. The behavioral patterns replicate across three architectures (Mistral, Llama, Qwen3).} Second-order beliefs are unchanged by surveillance ($\SOBPureMeanPct \to \SOBSurvMeanPct$, $p = \SOBPValue$) while behavior shifts by $\SurvMistralDeltaPP$~pp---the signature of a strategic update gap \citep{kuran1991}.
 
 %% 5. COMMUNICATION
 \section{Communication} \label{sec:communication}
@@ -368,7 +360,7 @@ Surveillance and censorship, by contrast, interact super-additively (Table~\ref{
 
 
 %% 8. PROPAGANDA
-\section{Propaganda} \label{sec:propaganda}
+\subsection{Propaganda} \label{sec:propaganda}
 
 \citet{edmond2013} modeled propaganda as the regime shifting citizens' signal distributions. I introduce $m$ propaganda agents (regime plants, always STAY) into the 25-citizen communication network. The \textit{overall} join rate includes plants; the \textit{real citizen} rate isolates the behavioral effect (Figure~\ref{fig:propaganda}).
 
@@ -390,9 +382,11 @@ Message content reveals the mechanism (Table~\ref{tab:surveillance_propaganda}).
 %% 9. CONCLUSION
 \section{Conclusion} \label{sec:conclusion}
 
-LLM agents implement threshold policies closely consistent with the unique Bayes-Nash Equilibrium across seven architectures, and this behavioral regularity makes them a viable platform for studying how information structures shape coordination outcomes. The information environment is the key policy lever: signal design shifts posterior beliefs and therefore equilibrium thresholds, unifying persuasion, censorship, and surveillance into a single formal object. Surveillance compounds information friction through a belief--action wedge---agents maintain beliefs but suppress behavior, poisoning the communication channel. The strategic update gap ensures this suppressed equilibrium is sustained, because common knowledge of the chilling effect never forms.
+The information channel is a trap, and this paper has documented the trap's mechanism. LLM agents implement threshold policies closely consistent with the unique Bayes-Nash Equilibrium, and this behavioral regularity converts the experiment into a testbed for information design. The key finding is that the communication channel enabling coordination is the same channel through which regimes suppress it: surveillance induces a belief--action wedge where agents self-censor while interpreting others' silence as genuine, preventing common knowledge of shared discontent from forming. Censorship and surveillance are complements---degrading private signals makes the communication channel more important, and surveillance poisons that channel.
 
-Whether the underlying mechanism is approximate Bayesian reasoning or a learned heuristic remains open. The relevant finding is that the structural fit is robust enough to serve as a reusable template for linking global-game theory, Bayesian persuasion, and empirical evidence in settings that have traditionally been out of reach for conventional experiments.
+Three limitations warrant discussion. First, whether the underlying mechanism is approximate Bayesian reasoning or a learned heuristic that happens to match BNE remains open. The behavioral claim---that the pattern is robust, replicable, and falsifiable---does not require resolving this question, but interpreting the welfare implications requires it. Second, the experiments are static; real coordination problems are dynamic \citep{angeletos2007a, chassang2010}, and the dynamics of belief updating under persistent surveillance may differ from the one-shot effects documented here. Third, external validity remains the fundamental challenge for ``homo silicus'' \citep{horton2023}: what LLM agents do in a coordination game is evidence about the structure of the game, not necessarily about how humans would play it.
+
+Despite these limitations, the framework offers something neither laboratory experiments nor field data can: a setting where the information environment---signal precision, correlation structure, disclosure rules, communication monitoring---can be manipulated while holding everything else fixed. The experimental template is reusable, and the data and code are publicly available.
 
 
 %% REFERENCES
