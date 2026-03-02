@@ -839,7 +839,10 @@
         "p": 0.0,
         "ci_lo": 0.737,
         "ci_hi": 0.7765,
-        "n": 1800
+        "n": 1800,
+        "bootstrap_ci_lo": 0.7394,
+        "bootstrap_ci_hi": 0.7749,
+        "n_boot": 10000
       },
       "n_obs": 1800,
       "mean_join": 0.4087,
@@ -881,7 +884,10 @@
         "p": 0.0,
         "ci_lo": -0.8118,
         "ci_hi": -0.7674,
-        "n": 1100
+        "n": 1100,
+        "bootstrap_ci_lo": -0.8115,
+        "bootstrap_ci_hi": -0.7685,
+        "n_boot": 10000
       },
       "n_obs": 1100,
       "mean_join": 0.4771,
@@ -902,7 +908,10 @@
         "p": 0.342536,
         "ci_lo": -0.0305,
         "ci_hi": 0.0876,
-        "n": 1100
+        "n": 1100,
+        "bootstrap_ci_lo": -0.0291,
+        "bootstrap_ci_hi": 0.0863,
+        "n_boot": 10000
       },
       "n_obs": 1100,
       "mean_join": 0.4301,

@@ -84,6 +84,37 @@ def pearson_with_ci(x, y, alpha=0.05):
             "ci_hi": round(ci_hi, 4), "n": int(n)}
 
 
+def bootstrap_pearson_ci(x, y, n_boot=10000, alpha=0.05, seed=42):
+    """Bootstrap 95% CI for Pearson r using the percentile method.
+
+    Resamples (x, y) pairs with replacement n_boot times and returns the
+    alpha/2 and 1-alpha/2 percentiles of the bootstrap distribution.
+    Returns NaN bounds when fewer than 3 finite pairs are available.
+    """
+    x, y = np.asarray(x, dtype=float), np.asarray(y, dtype=float)
+    mask = np.isfinite(x) & np.isfinite(y)
+    x, y = x[mask], y[mask]
+    n = len(x)
+    if n < 3:
+        return {"bootstrap_ci_lo": float("nan"), "bootstrap_ci_hi": float("nan"),
+                "n_boot": n_boot}
+    rng = np.random.default_rng(seed)
+    boot_rs = np.empty(n_boot)
+    for i in range(n_boot):
+        idx = rng.integers(0, n, size=n)
+        xb, yb = x[idx], y[idx]
+        # Guard against zero-variance samples (pearsonr would raise)
+        if xb.std() == 0 or yb.std() == 0:
+            boot_rs[i] = float("nan")
+        else:
+            boot_rs[i] = stats.pearsonr(xb, yb)[0]
+    boot_rs = boot_rs[np.isfinite(boot_rs)]
+    ci_lo = float(np.percentile(boot_rs, 100 * alpha / 2))
+    ci_hi = float(np.percentile(boot_rs, 100 * (1 - alpha / 2)))
+    return {"bootstrap_ci_lo": round(ci_lo, 4), "bootstrap_ci_hi": round(ci_hi, 4),
+            "n_boot": n_boot}
+
+
 def within_country_pearson(df: pd.DataFrame, xcol: str, ycol: str,
                            group_col: str = "country", alpha: float = 0.05):
     """Pearson r on country-demeaned values (removes between-country variation).
@@ -308,7 +339,7 @@ def compute_part1():
         results[name] = m
 
     # Pooled across all models
-    def _pooled_entry(dfs: list[pd.DataFrame]) -> dict:
+    def _pooled_entry(dfs: list[pd.DataFrame], add_bootstrap: bool = False) -> dict:
         if not dfs:
             return {}
         pooled = pd.concat(dfs, ignore_index=True)
@@ -317,9 +348,12 @@ def compute_part1():
         theta = pooled["theta"].astype(float).values
         attack = _attack_mass_benchmark(theta)
         jf = pooled[jcol].astype(float).values
+        r_attack_ci = pearson_with_ci(attack, jf)
+        if add_bootstrap:
+            r_attack_ci.update(bootstrap_pearson_ci(attack, jf))
         out = {
             "r_vs_theta": pearson_with_ci(theta, jf),
-            "r_vs_attack": pearson_with_ci(attack, jf),
+            "r_vs_attack": r_attack_ci,
             "n_obs": int(len(pooled)),
             "mean_join": round(_safe_mean(jf), 4),
         }
@@ -331,9 +365,9 @@ def compute_part1():
             out["n_agents"] = int(n_agents)
         return out
 
-    results["_pooled_pure"] = _pooled_entry(all_pure) if all_pure else {}
+    results["_pooled_pure"] = _pooled_entry(all_pure, add_bootstrap=True) if all_pure else {}
     results["_pooled_comm"] = _pooled_entry(all_comm) if all_comm else {}
-    results["_pooled_flip"] = _pooled_entry(all_flip) if all_flip else {}
+    results["_pooled_flip"] = _pooled_entry(all_flip, add_bootstrap=True) if all_flip else {}
 
     # Pooled scramble: use within-country demeaned correlation
     if all_scramble:
@@ -364,6 +398,20 @@ def compute_part1():
             )
             raw_entry["r_vs_attack"] = within_country_pearson(
                 tagged, "_attack_benchmark", jcol_scr, group_col="_group"
+            )
+
+            # Bootstrap CI on within-country demeaned (attack, join) pairs.
+            # Demean the same way within_country_pearson does, then bootstrap.
+            _tmp_scr = tagged[["_group", "_attack_benchmark", jcol_scr]].dropna().copy()
+            for _col in ["_attack_benchmark", jcol_scr]:
+                _tmp_scr[_col] = _tmp_scr.groupby("_group")[_col].transform(
+                    lambda s: s - s.mean()
+                )
+            raw_entry["r_vs_attack"].update(
+                bootstrap_pearson_ci(
+                    _tmp_scr["_attack_benchmark"].values,
+                    _tmp_scr[jcol_scr].values,
+                )
             )
 
         results["_pooled_scramble"] = raw_entry
