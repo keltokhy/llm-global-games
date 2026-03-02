@@ -4623,7 +4623,21 @@
     "gs_pure_join": 0.507,
     "gs_comm_join": 0.473,
     "gs_comm_premium_pp": -3.4,
-    "gs_baseline_pure_join": 0.387
+    "gs_baseline_pure_join": 0.387,
+    "wf_act_comm": 15.8,
+    "wf_act_surv": 4.1,
+    "wf_collapse_comm": 9.6,
+    "wf_collapse_surv": 0.6,
+    "wf_action_join_comm": 80.0,
+    "wf_action_join_surv": 61.0,
+    "wf_loyal_comm": 1.5,
+    "wf_loyal_k10": 11.4,
+    "wf_ready_comm": 27.1,
+    "wf_ready_k10": 18.5,
+    "wf_caution_stay_comm": 51.7,
+    "wf_caution_stay_k10": 54.7,
+    "wf_action_join_k10": 85.1,
+    "surv_prop_sum_pp": -15.5
   },
   "discrepancy_report": []
 }

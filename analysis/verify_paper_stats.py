@@ -2759,6 +2759,120 @@ def compute_paper_misc_stats(all_stats: dict) -> dict:
             bl_jcol = _join_col(bl_df)
             misc["gs_baseline_pure_join"] = round(float(bl_df[bl_jcol].mean()), 3)
 
+    # ── Word frequency stats from message logs ─────────────────
+    import re as _re
+
+    ACTION_WORDS = {
+        "act", "action", "rise", "rising", "revolt", "rebel", "join", "fight",
+        "resist", "overthrow", "protest", "strike", "march", "mobilize", "move",
+        "now", "cracking", "crumbling", "collapse", "collapsing", "falling",
+        "weak", "weakening", "fracture", "fracturing", "breaking", "fragile",
+        "opportunity", "moment", "window", "momentum", "ready", "time",
+        "together", "unite", "unified", "solidarity", "everyone",
+    }
+    CAUTION_WORDS = {
+        "wait", "careful", "caution", "cautious", "patience", "patient", "risk",
+        "risky", "dangerous", "danger", "trap", "stable", "strong", "strength",
+        "grip", "control", "powerful", "secure", "security", "surveillance",
+        "monitor", "watching", "uncertain", "unclear", "premature",
+        "hold", "hesitate", "steady", "firm", "loyal", "intact",
+        "suppress", "crackdown", "retaliate", "punish",
+    }
+
+    def _load_log(path):
+        if path.exists():
+            with open(path) as f:
+                return json.load(f)
+        return []
+
+    def _flatten(log, real_only=False):
+        agents = []
+        for period in log:
+            for a in period.get("agents", []):
+                if real_only and a.get("is_propaganda"):
+                    continue
+                agents.append(a)
+        return agents
+
+    def _word_pct(agents, word):
+        """Pct of agents whose message contains word (substring, case-insensitive)."""
+        msgs = [a["message_sent"] for a in agents if a.get("message_sent")]
+        if not msgs:
+            return None
+        return round(100.0 * sum(1 for m in msgs if word in m.lower()) / len(msgs), 1)
+
+    def _has_action(msg):
+        words = set(_re.findall(r"[a-z]+", msg.lower()))
+        return bool(words & ACTION_WORDS)
+
+    def _has_caution(msg):
+        words = set(_re.findall(r"[a-z]+", msg.lower()))
+        return bool(words & CAUTION_WORDS)
+
+    comm_path = ROOT / PRIMARY / "experiment_comm_log.json"
+    surv_path = ROOT / "surveillance" / PRIMARY / "experiment_comm_log.json"
+    prop_k10_path = ROOT / "propaganda-k10" / PRIMARY / "experiment_comm_log.json"
+
+    comm_log = _load_log(comm_path)
+    surv_log = _load_log(surv_path)
+    prop_k10_log = _load_log(prop_k10_path)
+
+    if comm_log and surv_log:
+        comm_agents = _flatten(comm_log)
+        surv_agents = _flatten(surv_log)
+
+        # Single-word surveillance frequencies
+        misc["wf_act_comm"] = _word_pct(comm_agents, "act")
+        misc["wf_act_surv"] = _word_pct(surv_agents, "act")
+        misc["wf_collapse_comm"] = _word_pct(comm_agents, "collapse")
+        misc["wf_collapse_surv"] = _word_pct(surv_agents, "collapse")
+
+        # Action signaling among JOIN deciders
+        comm_join = [a for a in comm_agents if a.get("decision") == "JOIN" and a.get("message_sent")]
+        surv_join = [a for a in surv_agents if a.get("decision") == "JOIN" and a.get("message_sent")]
+        if comm_join:
+            misc["wf_action_join_comm"] = round(100.0 * sum(1 for a in comm_join if _has_action(a["message_sent"])) / len(comm_join), 1)
+        if surv_join:
+            misc["wf_action_join_surv"] = round(100.0 * sum(1 for a in surv_join if _has_action(a["message_sent"])) / len(surv_join), 1)
+
+    if comm_log and prop_k10_log:
+        comm_agents = _flatten(comm_log)
+        prop_k10_all = _flatten(prop_k10_log, real_only=False)
+        prop_k10_real = _flatten(prop_k10_log, real_only=True)
+
+        # Single-word propaganda frequencies
+        misc["wf_loyal_comm"] = _word_pct(comm_agents, "loyal")
+        misc["wf_loyal_k10"] = _word_pct(prop_k10_all, "loyal")
+        misc["wf_ready_comm"] = _word_pct(comm_agents, "ready")
+        misc["wf_ready_k10"] = _word_pct(prop_k10_all, "ready")
+
+        # Caution-coded among STAY deciders
+        comm_stay = [a for a in comm_agents if a.get("decision") == "STAY" and a.get("message_sent")]
+        prop_stay = [a for a in prop_k10_real if a.get("decision") == "STAY" and a.get("message_sent")]
+        if comm_stay:
+            misc["wf_caution_stay_comm"] = round(100.0 * sum(1 for a in comm_stay if _has_caution(a["message_sent"])) / len(comm_stay), 1)
+        if prop_stay:
+            misc["wf_caution_stay_k10"] = round(100.0 * sum(1 for a in prop_stay if _has_caution(a["message_sent"])) / len(prop_stay), 1)
+
+        # Action signaling among JOIN deciders in propaganda
+        prop_join = [a for a in prop_k10_real if a.get("decision") == "JOIN" and a.get("message_sent")]
+        if prop_join:
+            misc["wf_action_join_k10"] = round(100.0 * sum(1 for a in prop_join if _has_action(a["message_sent"])) / len(prop_join), 1)
+
+    # ── Surveillance + propaganda sum ────────────────────────────
+    # Read delta values from existing macros in stats_macros.tex
+    # These are computed by the surveillance/propaganda table pipeline
+    macros_path = PROJECT_ROOT / "paper" / "tables" / "stats_macros.tex"
+    if macros_path.exists():
+        import re as _re2
+        macro_text = macros_path.read_text()
+        surv_match = _re2.search(r"\\SurvMistralDeltaPP\}\{([^}]+)\}", macro_text)
+        prop_match = _re2.search(r"\\PropKFiveDeltaRealPP\}\{([^}]+)\}", macro_text)
+        if surv_match and prop_match:
+            surv_val = float(surv_match.group(1))
+            prop_val = float(prop_match.group(1))
+            misc["surv_prop_sum_pp"] = round(surv_val + prop_val, 1)
+
     return misc
 
 

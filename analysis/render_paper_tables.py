@@ -1865,6 +1865,27 @@ def render_stats_macros(stats: dict) -> str:
         lines.append(_mc("GSBaselinePureJoin", misc.get("gs_baseline_pure_join"), 3))
         lines.append(_mc_raw("GSCommPremiumPP",
                              f"{misc.get('gs_comm_premium_pp', 0):+.1f}"))
+        # Word frequencies — surveillance
+        lines.append("% Word frequency stats (surveillance)")
+        lines.append(_mc("WFActComm", misc.get("wf_act_comm"), 1))
+        lines.append(_mc("WFActSurv", misc.get("wf_act_surv"), 1))
+        lines.append(_mc("WFCollapseComm", misc.get("wf_collapse_comm"), 1))
+        lines.append(_mc("WFCollapseSurv", misc.get("wf_collapse_surv"), 1))
+        lines.append(_mc("WFActionJoinComm", misc.get("wf_action_join_comm"), 1))
+        lines.append(_mc("WFActionJoinSurv", misc.get("wf_action_join_surv"), 1))
+        # Word frequencies — propaganda
+        lines.append("% Word frequency stats (propaganda)")
+        lines.append(_mc("WFLoyalComm", misc.get("wf_loyal_comm"), 1))
+        lines.append(_mc("WFLoyalKTen", misc.get("wf_loyal_k10"), 1))
+        lines.append(_mc("WFReadyComm", misc.get("wf_ready_comm"), 1))
+        lines.append(_mc("WFReadyKTen", misc.get("wf_ready_k10"), 1))
+        lines.append(_mc("WFCautionStayComm", misc.get("wf_caution_stay_comm"), 1))
+        lines.append(_mc("WFCautionStayKTen", misc.get("wf_caution_stay_k10"), 1))
+        lines.append(_mc("WFActionJoinKTen", misc.get("wf_action_join_k10"), 1))
+        # Surveillance + propaganda sum
+        sp_sum = misc.get("surv_prop_sum_pp")
+        if sp_sum is not None:
+            lines.append(_mc_raw("SurvPropSumPP", f"{sp_sum:+.1f}"))
         lines.append("")
 
     return "\n".join(lines) + "\n"

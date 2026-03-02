@@ -283,7 +283,7 @@ A paired $t$-test matching on (model, country, $\theta$) yields $\Delta = \CommD
 
 Communication preserves the signal structure ($r = \MeanModelRCommAttack$ vs.\ $\MeanModelRPureAttack$ under pure; Figure~\ref{fig:communication}). The effect on join rates is heterogeneous across models and near zero on average, consistent with passive Bayesian updating concentrated in weak-regime environments.
 
-How informative are the messages? Regressing $\theta$ on message features yields $R^2 = \MsgRSqComm$---messages carry real information, noisily. This informativeness is what makes the channel exploitable: surveillance degrades $R^2$ to $\MsgRSqSurv$ (Section~\ref{sec:surveillance}), an \MsgRSqDropPct\ reduction. Communication creates the information topology that authoritarian instruments exploit. With group-size knowledge, the communication premium reverses ($-3.4$~pp; Appendix~\ref{sec:robustness}).
+How informative are the messages? Regressing $\theta$ on message features yields $R^2 = \MsgRSqComm$---messages carry real information, noisily. This informativeness is what makes the channel exploitable: surveillance degrades $R^2$ to $\MsgRSqSurv$ (Section~\ref{sec:surveillance}), an \MsgRSqDropPct\ reduction. Communication creates the information topology that authoritarian instruments exploit. With group-size knowledge, the communication premium reverses ($\GSCommPremiumPP$~pp; Appendix~\ref{sec:robustness}).
 
 
 %% 6. INFORMATION DESIGN
@@ -361,10 +361,10 @@ Second-order beliefs are unchanged by surveillance ($\SOBPureMeanPct \to \SOBSur
 
 A hold-fixed test replays baseline messages verbatim while warning that actions may be monitored. Join rates drop by $\FixedMsgDeltaPP$~pp ($p < 0.001$), confirming that surveillance can also operate through a direct decision-stage channel. This channel is absent in the main design (where the decision prompt contains no surveillance reference); the main treatment isolates the indirect channel.
 
-Message content confirms self-censorship: ``act'' drops from 19.0\% to 3.8\% of messages under surveillance; ``collapse'' from 11.6\% to 0.6\%. Among agents who privately decide to JOIN, only 19.0\% send action-signaling messages under surveillance vs.\ 46.1\% under regular communication.
+Message content confirms self-censorship: ``act'' drops from \WFActComm\% to \WFActSurv\% of messages under surveillance; ``collapse'' from \WFCollapseComm\% to \WFCollapseSurv\%. Among agents who privately decide to JOIN, \WFActionJoinSurv\% send action-signaling messages under surveillance vs.\ \WFActionJoinComm\% under regular communication.
 
 \paragraph{Instrument interactions.}
-When propaganda ($m = 5$) and surveillance are combined, the mean join rate among real citizens falls to \PropSurvCombinedMeanRealPct, a reduction of $\PropSurvCombinedDeltaPP$~pp from the communication baseline (\SurvMistralBaselineMeanPct). The sum of individual effects is $-15.5$~pp (surveillance $\SurvMistralDeltaPP$~pp $+$ propaganda $\PropKFiveDeltaRealPP$~pp), so the combined effect ($\PropSurvCombinedDeltaPP$~pp) is approximately additive: once surveillance has suppressed expressed dissent, propaganda adds only modest additional deterrence.
+When propaganda ($m = 5$) and surveillance are combined, the mean join rate among real citizens falls to \PropSurvCombinedMeanRealPct, a reduction of $\PropSurvCombinedDeltaPP$~pp from the communication baseline (\SurvMistralBaselineMeanPct). The sum of individual effects is $\SurvPropSumPP$~pp (surveillance $\SurvMistralDeltaPP$~pp $+$ propaganda $\PropKFiveDeltaRealPP$~pp), so the combined effect ($\PropSurvCombinedDeltaPP$~pp) is approximately additive: once surveillance has suppressed expressed dissent, propaganda adds only modest additional deterrence.
 
 Surveillance and censorship, by contrast, interact super-additively (Table~\ref{tab:surv_censor}): the marginal effect of surveillance is substantially larger under censorship than at baseline. Censorship degrades private signal quality, making the communication channel relatively more important, and surveillance poisons that channel. With both instruments active, agents have neither private signals to trust nor authentic messages to learn from (Figure~\ref{fig:authoritarian_control}). The interaction is heterogeneous across architectures (Table~\ref{tab:surv_censor_crossmodel}): the joint effect depends on model-specific resolution of pooled private signals and self-censored messages.
 
@@ -392,7 +392,7 @@ Mean join fraction (including plants) falls from \SurvMistralBaselineMeanPct\ ($
 
 The mechanical channel (plants always STAY) is approximately linear in $m$; the behavioral channel saturates quickly---doubling plants from 5 to 10 produces no additional effect ($\PropSatDeltaPP$~pp, $p = \PropSatPValue$). The pattern replicates with Llama ($\LlamaPropKFiveDeltaRealPP$~pp at $m = 5$).
 
-Message content reveals the mechanism (Table~\ref{tab:surveillance_propaganda}). Propaganda injects regime-loyal vocabulary (``loyal'' rises from 1.5\% to 11.4\% at $m = 10$) while coordination language declines (``ready'' from 30.5\% to 18.5\%). Among real agents who STAY, caution-coded messages rise from 24.2\% to 38.2\%---agents echo propaganda. Among those who JOIN, action signaling remains stable at ${\approx}\,86\%$.
+Message content reveals the mechanism (Table~\ref{tab:surveillance_propaganda}). Propaganda injects regime-loyal vocabulary (``loyal'' rises from \WFLoyalComm\% to \WFLoyalKTen\% at $m = 10$) while coordination language declines (``ready'' from \WFReadyComm\% to \WFReadyKTen\%). Among real agents who STAY, caution-coded messages rise from \WFCautionStayComm\% to \WFCautionStayKTen\%---agents echo propaganda. Among those who JOIN, action signaling remains stable at ${\approx}\,\WFActionJoinKTen\%$.
 
 \input{tables/tab_surveillance_propaganda.tex}
 
@@ -581,7 +581,7 @@ Three text rendering formats---baseline narrative, diplomatic cable, journalisti
 \input{tables/tab_cross_generator.tex}
 
 \subsection{Belief and Risk Elicitation}
-Stated beliefs track the theoretical success probability ($r_{\text{belief,posterior}} = \BeliefPureRPosterior$) and predict actions ($r_{\text{belief,decision}} = \BeliefPureRDecision$; partial $r = \BeliefPureRPartial$ controlling for signal). Under surveillance, beliefs shift only $\PrefFalsBeliefDeltaPP$~pp while actions shift $\PrefFalsActionDeltaPP$~pp (Table~\ref{tab:beliefs}). Pre-decision elicitation ($N = 5{,}000$) produces $r = +0.82$ vs.\ post-decision $r = +0.84$, ruling out ex-post rationalization.
+Stated beliefs track the theoretical success probability ($r_{\text{belief,posterior}} = \BeliefPureRPosterior$) and predict actions ($r_{\text{belief,decision}} = \BeliefPureRDecision$; partial $r = \BeliefPureRPartial$ controlling for signal). Under surveillance, beliefs shift only $\PrefFalsBeliefDeltaPP$~pp while actions shift $\PrefFalsActionDeltaPP$~pp (Table~\ref{tab:beliefs}). Pre-decision elicitation ($N = 5{,}000$) produces $r = +0.82$ vs.\ post-decision $r = \BeliefPureRDecision$, ruling out ex-post rationalization. %% TODO: pre-decision r=+0.82 not reproducible from current _beliefs_pre_v2 data (degenerate elicitation)
 \input{tables/tab_beliefs.tex}
 
 \label{sec:punishment_risk}Mean punishment risk is ${\approx}\,\PunishRiskMean/10$ across all conditions with negligible JOIN/STAY differences ($< \PunishRiskMaxDiff$ points; Table~\ref{tab:punishment_risk}), supporting the contaminated-communication interpretation.
