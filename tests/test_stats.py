@@ -330,6 +330,53 @@ class TestFitLogistic:
         assert fitted_midpoint == pytest.approx(0.5, abs=0.05)
 
 
+# ── BriefingGenerator smoke tests ─────────────────────────────────────────────
+
+
+# Add parent project to path for agent_based_simulation imports
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from agent_based_simulation.briefing import BriefingGenerator
+
+
+class TestBriefingGenerator:
+    """Smoke tests for the signal-to-text pipeline."""
+
+    def setup_method(self):
+        self.gen = BriefingGenerator(seed=42)
+
+    def test_generates_nonempty_briefing(self):
+        briefing = self.gen.generate(z_score=0.0, agent_id=0, period=0)
+        text = briefing.render()
+        assert isinstance(text, str)
+        assert len(text) > 100  # a real briefing is several paragraphs
+
+    def test_different_z_scores_produce_different_text(self):
+        b_low = self.gen.generate(z_score=-2.0, agent_id=0, period=0).render()
+        b_high = self.gen.generate(z_score=+2.0, agent_id=0, period=0).render()
+        assert b_low != b_high
+
+    def test_extreme_z_scores_have_directional_content(self):
+        b_low = self.gen.generate(z_score=-2.0, agent_id=0, period=0).render().lower()
+        b_high = self.gen.generate(z_score=+2.0, agent_id=0, period=0).render().lower()
+        # Weak-regime briefing should have weakness-related language
+        assert any(w in b_low for w in ["deteriorat", "fractur", "weaken", "crisis", "losing"])
+        # Strong-regime briefing should have stability-related language
+        assert any(w in b_high for w in ["stable", "unified", "firm", "cohes", "confident"])
+
+    def test_z_zero_produces_ambiguous_briefing(self):
+        b_mid = self.gen.generate(z_score=0.0, agent_id=0, period=0).render().lower()
+        # Ambiguous briefing should have mixed or uncertain language
+        assert any(w in b_mid for w in ["mixed", "ambiguous", "uncertain", "balanced", "edge"])
+
+    def test_seed_reproducibility(self):
+        gen1 = BriefingGenerator(seed=123)
+        gen2 = BriefingGenerator(seed=123)
+        b1 = gen1.generate(z_score=1.0, agent_id=0, period=0).render()
+        b2 = gen2.generate(z_score=1.0, agent_id=0, period=0).render()
+        assert b1 == b2
+
+
 # ── join_col ──────────────────────────────────────────────────────────────────
 
 
