@@ -595,17 +595,13 @@ The flip inversion replicates across all five models (flip $r < -0.43$; Figure~\
 \input{tables/tab_crossmodel.tex}
 
 \subsection{Information Design with Communication}
-
-In a communication version of the information-design grid (same 9-point $\theta$ grid centered on $\theta^*$), the baseline mean join rate is 3.0\%. Under censorship with communication, pooling raises coordination substantially: upper censorship yields 15.1\% and lower censorship 17.7\%. These patterns are consistent with censorship reducing private signal quality, making the social-information channel relatively more important, while leaving coordination vulnerable to surveillance in the messaging stage.
+In a communication version of the information-design grid, upper censorship yields 15.1\% joining and lower censorship 17.7\% (baseline 3.0\%), consistent with censorship making the social-information channel relatively more important.
 
 \subsection{Group-Size Awareness}
+With group-size knowledge (``You are one of 25 citizens''), the pure join rate rises to 0.507 (vs.\ 0.369 baseline) and the communication premium reverses ($-3.4$~pp). Monotone signal response is preserved.
 
-In the main experiments, agents are told ``You do not know how many others will JOIN'' but are not told the group size, leaving them no basis for reasoning about coordination thresholds. As a robustness check, I run the pure and communication treatments with modified prompts that state ``You are one of 25 citizens deciding whether to JOIN an uprising or STAY home.'' Over 100 country--periods per treatment, the pure join rate is 0.507 (vs.\ 0.369 baseline) and the communication join rate is 0.473 (vs.\ 0.452 baseline). Monotone response to signals is preserved in both treatments. The communication premium, however, reverses: with group-size knowledge, communication \textit{lowers} join rates by 3.4~pp rather than raising them. One interpretation is that when agents know the group size, messages revealing others' reluctance become more informative about the probability of reaching critical mass, amplifying the deterrent effect of cautious peers. The level shift in the pure treatment suggests that group-size knowledge increases baseline willingness to coordinate, but the core finding---monotone signal response---is robust.
-
-\subsection{Primitive Comparative Statics (Cost/Benefit Narrative)}
-\label{sec:bc_statics}
-
-The cost/benefit narrative test and its results are described in Section~\ref{sec:results}; full treatment text is reproduced in Appendix~\ref{sec:implementation}. Each design uses the same 9-point $\theta$-grid with 30 repetitions per grid point (25 agents each), totaling 270 country--periods per design.
+\subsection{Primitive Comparative Statics (Cost/Benefit Narrative)} \label{sec:bc_statics}
+The cost/benefit test is described in Section~\ref{sec:results}; treatment text in Appendix~\ref{sec:implementation}.
 
 \subsection{Censorship with Common Knowledge}
 \label{sec:censor_ck}
