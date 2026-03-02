@@ -286,6 +286,20 @@ def _format_logit_results(result, var_names: list[str]) -> dict:
             "ci_lo": round(float(result.conf_int()[i, 0]), 4),
             "ci_hi": round(float(result.conf_int()[i, 1]), 4),
         }
+
+    # Marginal effects at the mean (MEM): dP/dx_j = β_j * P̄(1 - P̄)
+    try:
+        p_hat = result.predict()
+        p_bar = float(np.mean(p_hat))
+        scale = p_bar * (1 - p_bar)
+        mem = {}
+        for i, name in enumerate(var_names):
+            mem[name] = round(float(result.params[i]) * scale, 4)
+        out["marginal_effects_at_mean"] = mem
+        out["mean_predicted_prob"] = round(p_bar, 4)
+    except Exception:
+        pass
+
     return out
 
 

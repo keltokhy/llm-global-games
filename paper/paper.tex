@@ -67,7 +67,7 @@ Global game models are highly tractable theoretically but notoriously difficult 
 I address this gap by embedding seven architecturally distinct large language models (LLMs) in the \citet{morris2003} regime change game. Each agent receives a private signal $x_i = \theta + \varepsilon_i$, translated into a natural-language intelligence briefing whose content shifts monotonically with signal strength across eight evidence domains. No explicit payoff table is provided---the stakes are embedded in the narrative, forcing agents to form beliefs from language. The design enables what neither lab experiments nor field data can: testing information design predictions under near-full model complexity, at scale.
 
 \paragraph{Three contributions.}
-First, across 1,800 country--periods and seven models, LLM agents implement threshold policies closely consistent with the unique Bayesian Nash Equilibrium. Join rates track the theoretical attack mass with mean $r = \MeanModelRPureAttack$ ($p < 0.001$ for every model), and an orthogonal cost/benefit sweep shifts equilibrium cutoffs in lockstep with theory ($r = \BCSweepCutoffTrackingR$). Unlike human subjects, who consistently exhibit level-$k$ cognitive hierarchy behavior in coordination experiments \citep{szkup2020}, LLM agents' behavior overwhelmingly selects BNE over $L_1$ and $L_2$ alternatives.
+First, across 1,800 country--periods and seven models, LLM agents implement threshold policies closely consistent with the unique Bayesian Nash equilibrium. Join rates track the theoretical attack mass with mean $r = \MeanModelRPureAttack$ ($p < 0.001$ for every model), and an orthogonal cost/benefit sweep shifts equilibrium cutoffs in lockstep with theory ($r = \BCSweepCutoffTrackingR$). Unlike human subjects, who consistently exhibit level-$k$ cognitive hierarchy behavior in coordination experiments \citep{szkup2020}, LLM agents' behavior overwhelmingly selects BNE over $L_1$ and $L_2$ alternatives.
 
 Second, this behavioral regularity converts the experiment into a testbed for information design \citep{kamenica2011, goldstein2016}. I test whether manipulating the signal structure---precision, correlation, or disclosure rules---shifts coordination outcomes as Bayesian persuasion theory predicts. Stability framing, public signal injection, and upper/lower censorship \citep{kolotilin2022} each produce the directional shifts the theory requires.
 
@@ -105,7 +105,7 @@ where $B > 0$ is the payoff to joining a successful uprising and $C > 0$ is the 
 
 Each citizen observes a private signal $x_i = \theta + \varepsilon_i$, where $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$ independently across citizens.
 
-\begin{proposition}[Morris and Shin, 2003]
+\begin{proposition}[Morris and Shin, 2003]\label{prop:ms}
 In the limit of diffuse priors, there exists a unique Bayesian Nash equilibrium in threshold strategies. An agent joins if and only if $x_i < x^*$ (Eq.~\ref{eq:signal_cutoff}), where
 \begin{equation}
     x^* = \theta^* + \sigma \Phi^{-1}(\theta^*)
@@ -192,11 +192,11 @@ Part~I has four treatments: a \textit{pure global game} (independent decisions),
 
 \input{tables/tab_models.tex}
 
-I test seven models spanning six families (30B--235B parameters; Table~\ref{tab:models}). All experiments use $N = 25$ agents per country--period and $\sigma = 0.3$. Part~I benchmarks use $B=C=1$ ($\theta^* = 0.50$); payoff comparative statics vary narrative stakes. All LLM calls use temperature $= 0.7$ with a single sample per decision, routed through OpenRouter and cached by request hash (Appendix~\ref{sec:decoding}). Throughout, $N$ without subscript refers to country--periods unless otherwise stated.
+I test seven models spanning six families (Table~\ref{tab:models}). All experiments use $N = 25$ agents per country--period and $\sigma = 0.3$. Part~I benchmarks use $B=C=1$ ($\theta^* = 0.50$); payoff comparative statics vary narrative stakes. All LLM calls use temperature $= 0.7$ with a single sample per decision, routed through OpenRouter and cached by request hash (Appendix~\ref{sec:decoding}). Throughout, $N$ without subscript refers to country--periods unless otherwise stated.
 
 The unit of randomization is the country--period ($\theta$ draw plus agent-level decoding stochasticity). For agent-level regressions, standard errors are clustered at the country--period level to account for within-period correlation among agents sharing the same $\theta$. For period-level correlations, I report Fisher-$z$ confidence intervals. The 25 agents within a period share the same $\theta$ and calibration; their decisions are conditionally independent given their private signals.\footnote{I do not claim literal conditional independence---shared prompt structure and model weights introduce common factors. The clustering accounts for within-period correlation.}
 
-For the information design experiments, I fix $B = C = 1$ (so $\theta^* = 0.50$) and a 9-point $\theta$-grid in $[0.20, 0.80]$, with 30--60 repetitions per $(\text{design}, \theta)$ cell and 25 agents each. The primary model is Mistral Small Creative; cross-model replication uses five additional models.
+For the information design experiments, I fix $B = C = 1$ (so $\theta^* = 0.50$) and a 9-point $\theta$-grid in $[0.20, 0.80]$, with 30--60 repetitions per $(\text{design}, \theta)$ cell and 25 agents each. The primary model is Mistral Small Creative; cross-model replication uses four additional models.
 
 Table~\ref{tab:treatment_map} maps each treatment to the theoretical channel it tests, the directional prediction, and the observed result.
 
@@ -225,9 +225,9 @@ The slope reflects classical measurement error attenuation from narrative-to-bel
 \caption{Cross-model signal monotonicity. Points report $r(J, A(\theta))$ under pure and communication.}\label{fig:cross_model}
 \end{figure}
 
-Alignment is stable across architectures (Figure~\ref{fig:cross_model}): correlations span $r \in [\MinModelPureRAttack, \MaxModelPureRAttack]$ despite parameter counts ranging from 30B to 235B. Mean join rates vary, reflecting model-specific action biases that shift the intercept but not the correlation. Estimated cutoffs vary ($\hat{\theta}^* \in [-0.32, +0.10]$); the disciplined evidence on cutoff location comes from comparative statics, where changing narrative stakes shifts $\hat{\theta}^*$ in lockstep with payoff theory (Table~\ref{tab:bc_statics}, Figure~\ref{fig:bc_sweep}). A structural estimation against cognitive hierarchy benchmarks confirms these threshold policies are remarkably sophisticated: LLM behavior closely fits the unique Bayesian Nash Equilibrium (BNE), rejecting the level-$k$ behavior typically observed in human laboratory subjects.
+Alignment is stable across architectures (Figure~\ref{fig:cross_model}): correlations span $r \in [\MinModelPureRAttack, \MaxModelPureRAttack]$ despite parameter counts ranging from 30B to 235B. Mean join rates vary, reflecting model-specific action biases that shift the intercept but not the correlation. Estimated cutoffs vary ($\hat{\theta}^* \in [-0.32, +0.10]$); the disciplined evidence on cutoff location comes from comparative statics, where changing narrative stakes shifts $\hat{\theta}^*$ in lockstep with payoff theory (Table~\ref{tab:bc_statics}, Figure~\ref{fig:bc_sweep}). A structural estimation against cognitive hierarchy benchmarks confirms these threshold policies are remarkably sophisticated: LLM behavior closely fits the unique Bayesian Nash equilibrium (BNE), rejecting the level-$k$ behavior typically observed in human laboratory subjects.
 
-Human subjects in coordination game experiments consistently exhibit level-$k$ cognitive hierarchy behavior rather than full equilibrium reasoning \citep{szkup2020}. To test whether LLM agents play the BNE or a level-$k$ heuristic, I evaluate theoretical attack masses under BNE, $L_1$ (agents best-respond believing others randomize uniformly), and $L_2$ (agents best-respond believing others play $L_1$). While the thresholds are identical when $\theta^* = 0.50$, the cost/benefit sweep uniquely separates them. Across the seven cost/benefit conditions, the empirical join fraction overwhelmingly selects BNE (RMSE = 0.199, $r = +0.737$) over $L_1$ (RMSE = 0.307, $r = +0.445$) and $L_2$ (RMSE = 0.348, $r = +0.354$). The agents' threshold policies approximate the full Bayesian Nash Equilibrium.
+Human subjects in coordination game experiments consistently exhibit level-$k$ cognitive hierarchy behavior rather than full equilibrium reasoning \citep{szkup2020}. To test whether LLM agents play the BNE or a level-$k$ heuristic, I evaluate theoretical attack masses under BNE, $L_1$ (agents best-respond believing others randomize uniformly), and $L_2$ (agents best-respond believing others play $L_1$). While the thresholds are identical when $\theta^* = 0.50$, the cost/benefit sweep uniquely separates them. Across the seven cost/benefit conditions, the empirical join fraction overwhelmingly selects BNE (RMSE = 0.199, $r = +0.737$) over $L_1$ (RMSE = 0.307, $r = +0.445$) and $L_2$ (RMSE = 0.348, $r = +0.354$). The agents' threshold policies approximate the full Bayesian Nash equilibrium.
 
 The claim is behavioral: agents do not observe $(B, C)$, $\sigma$, or $N$, yet the \textit{pattern} of responses---monotone sigmoid, payoff-sensitive cutoff, belief-mediated decisions---is robust across architectures and falsifiable. Three identification strategies establish that the regularity reflects more than text classification.
 
@@ -239,7 +239,7 @@ The claim is behavioral: agents do not observe $(B, C)$, $\sigma$, or $N$, yet t
 
 \textit{Belief mediation.} Stated probability judgments mediate the signal-to-action pathway (Pseudo $R^2 = 0.975$; Table~\ref{tab:regressions}). Beliefs track the theoretical success probability ($r = \BeliefPureRPosterior$) and predict actions beyond what signals alone explain (partial $r = \BeliefPureRPartial$). Pre-decision elicitation ($r_{\text{pre}} = +0.82$) rules out ex-post rationalization.
 
-\textit{Classifier baselines.} Text features alone cannot reproduce LLM behavior. A bag-of-words classifier achieves \ClassBowAccuracyPct\ accuracy in-distribution but fails to predict the surveillance chilling effect ($\ClassBowSurvGapPP$~pp gap; Table~\ref{tab:classifiers} in Appendix~\ref{sec:identification_appendix}). Additional identification tests---coordination-cue manipulation and construct validity---are reported in Appendix~\ref{sec:identification_appendix}.
+\textit{Classifier baselines.} Text features alone cannot reproduce LLM behavior. A TF-IDF logistic classifier achieves \ClassBowAccuracyPct\ accuracy in-distribution---top features are regime-stability language (``trajectory,'' ``deterioration'' predicting JOIN; ``stability,'' ``absence'' predicting STAY)---but fails on the surveillance chilling effect ($\ClassBowSurvGapPP$~pp gap; Table~\ref{tab:classifiers} in Appendix~\ref{sec:identification_appendix}). Additional identification tests are reported in Appendix~\ref{sec:identification_appendix}.
 
 The correlation is invariant to decoding temperature (for the primary model, $r \in [+0.76, +0.79]$ across $T \in \{0.3, 0.7, 1.0\}$; full three-model sweep in Appendix~\ref{sec:temp_robustness}). What matters for Part~II is that the behavioral regularity is robust enough to serve as a platform for studying how information structures shift coordination outcomes.
 
@@ -400,7 +400,7 @@ Message content reveals the mechanism (Table~\ref{tab:surveillance_propaganda}).
 %% 9. CONCLUSION
 \section{Conclusion} \label{sec:conclusion}
 
-The information channel is a trap, and this paper has documented the trap's mechanism. LLM agents implement threshold policies closely consistent with the unique Bayesian Nash Equilibrium, and this behavioral regularity converts the experiment into a testbed for information design. The key finding is that the communication channel enabling coordination is the same channel through which regimes suppress it: surveillance induces a belief--action wedge where agents self-censor while interpreting others' silence as genuine, preventing common knowledge of shared discontent from forming. Censorship and surveillance are complements---degrading private signals makes the communication channel more important, and surveillance poisons that channel.
+LLM agents implement threshold policies closely consistent with the unique Bayesian Nash equilibrium, and this behavioral regularity converts the experiment into a testbed for information design. The central result is that the same communication channel enabling coordination also enables its suppression: surveillance induces self-censorship that propagates through the network as silence, which other agents interpret as genuine absence of opposition. The channel that solves the coordination problem also transmits the regime's poison. Censorship and surveillance are complements---degrading private signals makes the communication channel more important, and surveillance poisons precisely that channel.
 
 A rough welfare accounting illustrates the stakes. Under uniform $\theta$, the BNE yields per-citizen expected payoff of 0.27 (on a $[-1, 1]$ scale), roughly half the first-best payoff of 0.50 achievable with perfect coordination. Surveillance reduces citizen welfare by a further 14\%---regime survival rises from 50\% to 54\%---while the stability design produces a comparable 13\% welfare loss. These calculations are stylized (they treat the observed level shifts as if they were uniform across $\theta$), but they quantify the core asymmetry: the regime's instruments improve its survival at citizens' expense, and the welfare cost of each instrument exceeds its effect on average join rates because the chilling effect concentrates in states where coordination is most valuable.
 
@@ -463,7 +463,7 @@ Table~\ref{tab:ck_2x2} reports OLS and logit estimates for the common-knowledge 
 
 \section{Information Design Details} \label{sec:infodesign_appendix}
 
-Figure~\ref{fig:treatment_effect} plots $\Delta(\theta)$ — the treatment-induced shift in join rate as a function of regime strength — for each design. Figure~\ref{fig:infodesign_falsification} confirms internal validity: the scramble and flip falsifications replicate within the information design $\theta$-grid, ruling out confounds from the grid's $\theta$ range. The proximity bandwidth $h$ controls how sharply manipulation concentrates around $\theta^*$; the baseline $h = 0.15$ matches the $\theta$-grid spacing and is approximately optimal (Table~\ref{tab:bandwidth}, Appendix~\ref{sec:robustness}).
+Figure~\ref{fig:treatment_effect} plots $\Delta(\theta)$ --- the treatment-induced shift in join rate as a function of regime strength --- for each design. Figure~\ref{fig:infodesign_falsification} confirms internal validity: the scramble and flip falsifications replicate within the information design $\theta$-grid, ruling out confounds from the grid's $\theta$ range. The proximity bandwidth $h$ controls how sharply manipulation concentrates around $\theta^*$; the baseline $h = 0.15$ matches the $\theta$-grid spacing and is approximately optimal (Table~\ref{tab:bandwidth}, Appendix~\ref{sec:robustness}).
 
 \begin{figure}[htbp]\centering\includegraphics[width=\columnwidth]{figures/fig08_treatment_effect.pdf}
 \caption{Treatment effect $\Delta(\theta)$ by information design.}\label{fig:treatment_effect}
@@ -518,7 +518,7 @@ Summing the single-channel effects (Table~\ref{tab:decomposition}) yields \Decom
 Threshold-policy alignment is stable to agent count ($r \in [+0.60, +0.68]$ across $N \in \{5, 10, 25, 50, 100\}$), network density ($r = +0.66$ at $k = 8$ vs.\ $+0.65$ at $k = 4$), and mixed-model populations ($r = \MixedPureRAttack$ pure, $r = \MixedCommRAttack$ communication; Figure~\ref{fig:robustness}).
 
 \subsection{Robustness Checks}
-Without calibration, all six models show $r > 0.69$ and five exceed $r > 0.75$ (Table~\ref{tab:uncalibrated_expanded}). Deliberately miscalibrating two models ($\pm 0.3$ shift) leaves $r$ virtually unchanged ($r \in [\PlaceboCalibLlamaBPlusRAttack, \PlaceboCalibMistralSmallMinusRAttack]$; Table~\ref{tab:placebo_calibration}): calibration adjusts the \textit{level} but does not create the \textit{slope}. Table~\ref{tab:calibration_robustness} and Figure~\ref{fig:calibration_convergence} report calibration quality across all seven models ($r$ ranges from $\MistralPureRAttack$ to $\TrinityPureRAttack$).
+Without calibration, all six models show $r > 0.69$ and five exceed $r > 0.75$ (Table~\ref{tab:uncalibrated_expanded}). Deliberately miscalibrating two models ($\pm 0.3$ shift) leaves $r$ virtually unchanged ($r \in [\PlaceboCalibLlamaBPlusRAttack, \PlaceboCalibMistralSmallMinusRAttack]$; Table~\ref{tab:placebo_calibration}): calibration adjusts the \textit{level} but does not create the \textit{slope}. Table~\ref{tab:calibration_robustness} and Figure~\ref{fig:calibration_convergence} report calibration quality across all seven models ($r_A \in [+0.66, +0.84]$).
 \input{tables/tab_uncalibrated_expanded.tex}
 \input{tables/tab_placebo_calibration.tex}
 
@@ -564,7 +564,7 @@ Two placebo variants---monitoring ``for research purposes'' (no consequences) an
 Predicted regime fall rates (binomial model with out-of-sample logistic fits) correlate with empirical rates at $r \geq 0.88$ for every model (Mistral: $r = 0.9995$; Table~\ref{tab:finite_n}).
 \input{tables/tab_finite_n.tex}
 \subsection{Agent-Level Analysis}
-Table~\ref{tab:regressions} reports agent-level logit regressions ($N = 287{,}055$, clustered SEs). All treatment effects are significant and correctly signed. Elicited beliefs predict actions beyond what the signal alone predicts (Column~3).
+Table~\ref{tab:regressions} reports agent-level logit regressions ($N = 287{,}055$, clustered SEs). All treatment effects are significant and correctly signed. Marginal effects at the mean: a one-unit increase in $\theta$ reduces $P(\text{join})$ by 41~pp; surveillance reduces it by 36~pp. Elicited beliefs predict actions beyond what the signal alone predicts (Column~3).
 \input{tables/tab_regressions.tex}
 \input{tables/tab_logistic_params.tex}
 
@@ -623,6 +623,8 @@ Each country has a base prior $\bar{z} \sim \mathcal{N}(0, 0.3)$; each period pe
 
 \label{sec:parse_errors}Responses are parsed for JOIN/STAY tokens. Combined error rates are below 2\% for five of seven models; Trinity Large has elevated API errors (${\approx}\,9\%$) due to content filtering. All statistics use \texttt{join\_fraction\_valid} (Table~\ref{tab:parse_errors}).
 \input{tables/tab_parse_errors.tex}
+
+The dissent floor parameter (default 0.25) controls the minimum probability of contrary-valence cues in any briefing. At 0.25, the effective cue separation between extreme signals ($z = \pm 2$) retains 79\% of the maximum separation achievable with no floor ($= 0.00$). The parameter degrades smoothly---halving it to 0.125 recovers 89\%, doubling it to 0.50 retains 59\%---confirming the results are not knife-edge in this design choice.
 
 All code, prompts, cached responses, and output data are available at \url{https://github.com/keltokhy/llm-global-games}.
 

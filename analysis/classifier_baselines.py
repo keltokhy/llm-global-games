@@ -307,6 +307,25 @@ def main():
               f"({'classifier misses chilling effect' if abs(delta) > 0.05 else 'similar'})")
         results["bow_tfidf"]["cross_pure_to_surv"] = cross_surv
 
+    # Feature importance: train on full pure data, extract top coefficients
+    clf_full = LogisticRegression(max_iter=1000, solver="lbfgs", random_state=42)
+    clf_full.fit(X_bow_pure, y_pure)
+    feature_names = tfidf.get_feature_names_out()
+    coefs = clf_full.coef_[0]
+    top_k = 15
+    top_join_idx = np.argsort(coefs)[-top_k:][::-1]
+    top_stay_idx = np.argsort(coefs)[:top_k]
+    top_join = [{"feature": feature_names[i], "coef": round(float(coefs[i]), 4)} for i in top_join_idx]
+    top_stay = [{"feature": feature_names[i], "coef": round(float(coefs[i]), 4)} for i in top_stay_idx]
+    results["bow_tfidf"]["top_features_join"] = top_join
+    results["bow_tfidf"]["top_features_stay"] = top_stay
+    print(f"\n  Top {top_k} features predicting JOIN:")
+    for f in top_join:
+        print(f"    {f['coef']:+.4f}  {f['feature']}")
+    print(f"  Top {top_k} features predicting STAY:")
+    for f in top_stay:
+        print(f"    {f['coef']:+.4f}  {f['feature']}")
+
     # ==================================================================
     # Classifier 2: All-slider logistic regression
     # ==================================================================

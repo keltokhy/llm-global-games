@@ -17,7 +17,131 @@
       "auc": 0.9377747188116544,
       "predicted_join_rate": 0.40528,
       "actual_join_rate": 0.27568
-    }
+    },
+    "top_features_join": [
+      {
+        "feature": "trajectory",
+        "coef": 1.5182
+      },
+      {
+        "feature": "versus",
+        "coef": 1.4906
+      },
+      {
+        "feature": "moment",
+        "coef": 1.3159
+      },
+      {
+        "feature": "losing",
+        "coef": 1.3114
+      },
+      {
+        "feature": "weakness",
+        "coef": 1.2208
+      },
+      {
+        "feature": "apparent",
+        "coef": 1.1947
+      },
+      {
+        "feature": "deterioration",
+        "coef": 1.1667
+      },
+      {
+        "feature": "simultaneously",
+        "coef": 1.1154
+      },
+      {
+        "feature": "circle freezing",
+        "coef": 1.0989
+      },
+      {
+        "feature": "intentionally tightening",
+        "coef": 1.0989
+      },
+      {
+        "feature": "intentionally",
+        "coef": 1.0989
+      },
+      {
+        "feature": "control intentionally",
+        "coef": 1.0989
+      },
+      {
+        "feature": "tightening circle",
+        "coef": 1.0989
+      },
+      {
+        "feature": "losing control",
+        "coef": 1.0989
+      },
+      {
+        "feature": "reaching",
+        "coef": 1.0713
+      }
+    ],
+    "top_features_stay": [
+      {
+        "feature": "absence",
+        "coef": -2.3708
+      },
+      {
+        "feature": "current",
+        "coef": -2.3056
+      },
+      {
+        "feature": "stability",
+        "coef": -2.2043
+      },
+      {
+        "feature": "trend moving",
+        "coef": -1.9644
+      },
+      {
+        "feature": "challengers",
+        "coef": -1.9548
+      },
+      {
+        "feature": "potential challengers",
+        "coef": -1.9548
+      },
+      {
+        "feature": "hold",
+        "coef": -1.9444
+      },
+      {
+        "feature": "potential",
+        "coef": -1.8833
+      },
+      {
+        "feature": "appears",
+        "coef": -1.6787
+      },
+      {
+        "feature": "indicators",
+        "coef": -1.6418
+      },
+      {
+        "feature": "communicating",
+        "coef": -1.6365
+      },
+      {
+        "feature": "trend",
+        "coef": -1.6267
+      },
+      {
+        "feature": "bet",
+        "coef": -1.6035
+      },
+      {
+        "feature": "noticeably",
+        "coef": -1.5363
+      },
+      {
+        "feature": "accelerating noticeably",
+        "coef": -1.5363
+      }
+    ]
   },
   "slider_logistic": {
     "cv_pure": {
