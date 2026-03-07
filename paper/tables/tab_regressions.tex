@@ -5,40 +5,40 @@
 \label{tab:regressions}
 \begin{tabular}{lcccccc}
 \toprule
- & \multicolumn{2}{c}{(1) Join Decision} & \multicolumn{2}{c}{(2) Coordination} & \multicolumn{2}{c}{(3) Belief $\to$ Action} \\
+ & \multicolumn{2}{c}{(1) Join Decision} & \multicolumn{2}{c}{(2) Coord.\ Ablation} & \multicolumn{2}{c}{(3) Belief $\to$ Action} \\
  & \multicolumn{2}{c}{Logit} & \multicolumn{2}{c}{Logit} & \multicolumn{2}{c}{Logit} \\
 \midrule
-$\theta$ & $-1.742^{***}$ & $(0.043)$ &  &  &  &  \\
+$\theta$ & $-1.741^{***}$ & $(0.043)$ &  &  &  &  \\
 Direction &  &  & $-14.088^{***}$ & $(0.996)$ &  &  \\
 Coordination &  &  & $-9.333^{***}$ & $(1.131)$ &  &  \\
 Dir $\times$ Coord &  &  & $-0.042$ & $(0.360)$ &  &  \\
 Belief &  &  &  &  & $0.367^{***}$ & $(0.021)$ \\
 $z$-score &  &  &  &  & $-0.040$ & $(0.077)$ \\
 Comm & $0.024$ & $(0.023)$ &  &  &  &  \\
-Flip & $0.008$ & $(0.056)$ &  &  &  &  \\
-Propaganda K10 & $-0.381^{***}$ & $(0.069)$ &  &  &  &  \\
-Propaganda K2 & $-0.230^{***}$ & $(0.073)$ &  &  &  &  \\
+Flip & $0.017$ & $(0.055)$ &  &  &  &  \\
+Propaganda K10 & $-0.388^{***}$ & $(0.069)$ &  &  &  &  \\
+Propaganda K2 & $-0.237^{***}$ & $(0.073)$ &  &  &  &  \\
 Propaganda K5 & $-1.049^{***}$ & $(0.068)$ &  &  &  &  \\
-Propaganda Surveillance & $-1.544^{***}$ & $(0.062)$ &  &  &  &  \\
-Scramble & $0.065$ & $(0.040)$ &  &  &  &  \\
-Surveillance & $-1.546^{***}$ & $(0.048)$ &  &  &  &  \\
+Propaganda Surveillance & $-1.551^{***}$ & $(0.062)$ &  &  &  &  \\
+Scramble & $0.088^{**}$ & $(0.038)$ &  &  &  &  \\
+Surveillance & $-1.545^{***}$ & $(0.048)$ &  &  &  &  \\
 $\theta \times$ Comm & $-0.465^{***}$ & $(0.041)$ &  &  &  &  \\
-$\theta \times$ Flip & $3.305^{***}$ & $(0.071)$ &  &  &  &  \\
-$\theta \times$ Propaganda K10 & $-1.022^{***}$ & $(0.107)$ &  &  &  &  \\
+$\theta \times$ Flip & $3.304^{***}$ & $(0.071)$ &  &  &  &  \\
+$\theta \times$ Propaganda K10 & $-1.023^{***}$ & $(0.107)$ &  &  &  &  \\
 $\theta \times$ Propaganda K2 & $-1.115^{***}$ & $(0.113)$ &  &  &  &  \\
-$\theta \times$ Propaganda K5 & $-1.941^{***}$ & $(0.092)$ &  &  &  &  \\
+$\theta \times$ Propaganda K5 & $-1.942^{***}$ & $(0.091)$ &  &  &  &  \\
 $\theta \times$ Propaganda Surveillance & $-0.260^{***}$ & $(0.082)$ &  &  &  &  \\
-$\theta \times$ Scramble & $1.698^{***}$ & $(0.044)$ &  &  &  &  \\
+$\theta \times$ Scramble & $1.699^{***}$ & $(0.044)$ &  &  &  &  \\
 $\theta \times$ Surveillance & $-1.153^{***}$ & $(0.062)$ &  &  &  &  \\
-Beliefs Propaganda K5 (belief) &  &  &  &  & $0.009$ & $(0.244)$ \\
-Beliefs Pure (belief) &  &  &  &  & $4.819^{***}$ & $(1.106)$ \\
-Beliefs Surveillance (belief) &  &  &  &  & $0.028$ & $(0.253)$ \\
-Constant & $-0.090^{*}$ & $(0.051)$ & $11.022^{***}$ & $(1.065)$ & $-26.495^{***}$ & $(1.581)$ \\
+Treat: Propaganda K5 &  &  &  &  & $0.009$ & $(0.244)$ \\
+Treat: Pure &  &  &  &  & $4.819^{***}$ & $(1.106)$ \\
+Treat: Surveillance &  &  &  &  & $0.028$ & $(0.253)$ \\
+Constant & $-0.101^{**}$ & $(0.050)$ & $11.022^{***}$ & $(1.065)$ & $-26.495^{***}$ & $(1.581)$ \\
 \midrule
 Model FE & \multicolumn{2}{c}{Yes} & \multicolumn{2}{c}{No} & \multicolumn{2}{c}{No} \\
 Clustered SE & \multicolumn{2}{c}{Yes} & \multicolumn{2}{c}{Yes} & \multicolumn{2}{c}{Yes} \\
-$N$ & \multicolumn{2}{c}{287,055} & \multicolumn{2}{c}{44,662} & \multicolumn{2}{c}{18,990} \\
-Pseudo $R^2$ & \multicolumn{2}{c}{0.384} & \multicolumn{2}{c}{0.442} & \multicolumn{2}{c}{0.975} \\
+$N$ & \multicolumn{2}{c}{289,555} & \multicolumn{2}{c}{44,662} & \multicolumn{2}{c}{18,990} \\
+Pseudo $R^2$ & \multicolumn{2}{c}{0.381} & \multicolumn{2}{c}{0.442} & \multicolumn{2}{c}{0.975} \\
 \bottomrule
 \end{tabular}
 \begin{tablenotes}
@@ -47,8 +47,10 @@ Pseudo $R^2$ & \multicolumn{2}{c}{0.384} & \multicolumn{2}{c}{0.442} & \multicol
 (model--country--period) in parentheses.
 Column (1): agent-level join decision on $\theta$, treatment dummies, and interactions,
 with model fixed effects. Base category: pure treatment.
-Column (2): coordination ablation using briefing slider values (pure treatment only).
-Column (3): partial effect of elicited belief on action, controlling for $z$-score.
+Column (2): coordination ablation---$\Pr(\text{join}_i = 1) = \Lambda(\beta_0 + \beta_1 \text{Dir}_i + \beta_2 \text{Coord}_i + \beta_3 \text{Dir}_i \times \text{Coord}_i)$---using briefing slider values (pure treatment only). Direction $\in [0,1]$ is increasing in regime strength; Coordination $\in [0,1]$ is decreasing (high = weaker regime). Because both are monotone logistic transforms of the same signal, they are near-collinear ($\rho \approx -1$); individual coefficients reflect the partial effect \textit{conditional on the other}, not the marginal effect.
+Column (3): partial effect of elicited belief ($b_i \in [0,100]$, stated success probability) on action, controlling for $z$-score. ``Treat: X'' rows are treatment intercept dummies (base category: communication), not interactions with belief.
+\textbf{Caveat:} beliefs are elicited \textit{after} the join/stay decision (post-decision), so the belief coefficient reflects association rather than a causal pathway; post-decision rationalization may inflate the correlation.
+The very high pseudo-$R^2$ (0.975) and large intercept indicate near-deterministic prediction consistent with quasi-separation---belief almost perfectly predicts action, as expected when belief is stated \textit{post hoc}.
 ${}^{*}p<0.10$, ${}^{**}p<0.05$, ${}^{***}p<0.01$.
 \end{tablenotes}
 \end{table*}

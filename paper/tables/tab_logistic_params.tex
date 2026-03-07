@@ -1,6 +1,6 @@
 \begin{table*}[t]
 \centering
-\caption{Logistic fit parameters by model and treatment. $\hat{\theta}^*$ is the estimated cutoff ($-b_0/b_1$); $\beta$ is the logistic slope. Standard errors from the covariance matrix of the nonlinear fit; cutoff SE by delta method.}
+\caption{Logistic fit parameters by model and treatment. Fitted form: $P(\text{join}\mid\theta) = 1/(1+e^{b_0 + b_1\theta})$, where $b_1 > 0$ implies a \textit{decreasing} join curve. $\hat{\theta}^*$ is the estimated cutoff ($-b_0/b_1$); $\beta \equiv b_1$ is the steepness parameter.}
 \label{tab:logistic_params}
 \small
 \begin{tabular}{lcccc}
@@ -19,5 +19,5 @@ MiniMax M2-Her & $-0.17$ (0.09) & $+0.61$ (0.06) & $-0.07$ (0.09) & $+0.66$ (0.0
 \bottomrule
 \end{tabular}
 \vspace{0.25em}
-\parbox{\textwidth}{\footnotesize\emph{Notes:} $\hat{\theta}^* = -b_0/b_1$: estimated cutoff. $\beta \equiv b_1$: logistic slope coefficient. Standard errors from the covariance matrix of the logistic fit; cutoff SE by delta method.}
+\parbox{\textwidth}{\footnotesize\emph{Notes:} Fitted form: $P(\text{join}\mid\theta) = 1/(1+e^{b_0 + b_1\theta})$, so $b_1 > 0$ corresponds to a decreasing join curve (the expected direction). $\hat{\theta}^* = -b_0/b_1$: estimated cutoff. $\beta \equiv b_1$: logistic steepness (larger = sharper threshold). Standard errors from the covariance matrix of the nonlinear fit; cutoff SE by delta method.}
 \end{table*}

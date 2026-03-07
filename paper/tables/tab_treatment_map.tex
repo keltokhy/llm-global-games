@@ -4,20 +4,21 @@
 \label{tab:treatment_map}
 \footnotesize
 \setlength{\tabcolsep}{4pt}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lllllr}
 \toprule
 Treatment & Part & Channel tested & Unit & Prediction & Observed \\
 \midrule
 \multicolumn{6}{l}{\textit{Core treatments}} \\
 Pure global game      & I  & Baseline monotonicity       & Period & $r(J, A(\theta)) > 0$   & $r = \MeanModelRPureAttack$ \\
-Communication         & I  & Pre-play messaging          & Period & Ambiguous               & \CommDeltaPPPooled~pp ($p = \CommPValueUnpaired$) \\
-Scramble (cross-agent)& I  & Content vs.\ format         & Period & $r \to 0$               & $r = \MeanModelRScrambleAttack$ \\
+Communication         & I  & Pre-play messaging          & Period & Small within-cell effect & \CommDeltaPPPaired~pp (paired) \\
+Scramble (cross-period)& I  & Content vs.\ format         & Period & $r \to 0$               & $r = \MeanModelRScrambleAttack$ \\
 Flip                  & I  & Signal direction            & Period & Sign reversal           & $r = \MeanModelRFlipAttack$ \\
-B/C narratives        & I  & Payoff comparative statics  & Period & Cutoff shifts           & As predicted \\
+B/C narratives        & I  & Payoff comparative statics  & Period & Centering + payoff sensitivity & Grid recenters; header swing 57.6~pp \\
 \addlinespace
 \multicolumn{6}{l}{\textit{Information design (Part~II, primary model)}} \\
-Stability             & II & Ambiguity near $\theta^*$   & Period & $\downarrow$ join       & $\InfodesignStabilityDeltaPP$~pp \\
-Instability           & II & Sharpened signals            & Period & $\downarrow$ join (clearer sorting) & $\InfodesignInstabilityDeltaPP$~pp \\
+Stability             & II & Ambiguity near $\theta^*$   & Period & Small $\downarrow$ join  & $\InfodesignStabilityDeltaPP$~pp (n.s.) \\
+Instability           & II & Sharpened signals            & Period & Sharper sorting; mean sign ambiguous & $\InfodesignInstabilityDeltaPP$~pp \\
 Public signal         & II & Common knowledge channel     & Period & $\downarrow$ join (dominates private) & $\InfodesignPublicSignalDeltaPP$~pp \\
 Censor (upper)        & II & Pooling weak states          & Period & Plateau below $\theta^*$ & $\InfodesignCensorUpperDeltaPP$~pp \\
 Censor (lower)        & II & Pooling strong states        & Period & Plateau above $\theta^*$ & $\InfodesignCensorLowerDeltaPP$~pp \\
@@ -32,6 +33,7 @@ Domain scramble (coord.)  & I  & Coordination-relevant domains & Period & $|r|$ 
 Domain scramble (state)   & I  & State-capacity domains       & Period & $|r|$ falls if domains drive signal & $r = \DomainScrambleStateRAttack$ \\
 \bottomrule
 \end{tabular}
+}
 \vspace{0.25em}
 \parbox{\textwidth}{\footnotesize\emph{Notes:} $r = r(J, A(\theta))$: Pearson correlation between empirical join fraction and theoretical attack mass. $\Delta$: change vs.\ relevant baseline (pp). Part~I results are pooled across 7 models; Parts~II--III use the primary model (Mistral Small Creative).}
 \end{table*}
