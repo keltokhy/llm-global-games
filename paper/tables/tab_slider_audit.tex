@@ -1,0 +1,24 @@
+\begin{table}[t]
+\centering
+\caption{Representative realized slider values by information design and $\theta$ in the main Part~II parameterization. Direction (D): 0 = regime weak, 1 = strong. Clarity (C): 0 = maximally ambiguous, 1 = clear. Coordination (K): 0 = quiet, 1 = open mobilization. $\theta^* = 0.50$.}
+\label{tab:slider_audit}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{l ccc ccc ccc ccc ccc}
+\toprule
+ & \multicolumn{3}{c}{$\theta=0.20$} & \multicolumn{3}{c}{$\theta=0.35$} & \multicolumn{3}{c}{$\theta=0.50$} & \multicolumn{3}{c}{$\theta=0.65$} & \multicolumn{3}{c}{$\theta=0.80$} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10} \cmidrule(lr){11-13} \cmidrule(lr){14-16}
+Design & D & C & K & D & C & K & D & C & K & D & C & K & D & C & K \\
+\midrule
+Baseline & .30 & .64 & .66 & .38 & .51 & .59 & .47 & .43 & .53 & .56 & .43 & .46 & .64 & .53 & .39 \\
+Stability & .30 & .62 & .66 & .41 & .22 & .59 & .49 & .06 & .53 & .54 & .18 & .46 & .64 & .51 & .39 \\
+Instability & .30 & .64 & .66 & .33 & .64 & .59 & .44 & .91 & .53 & .58 & .57 & .46 & .64 & .53 & .39 \\
+Upper cens. & .46 & .04 & .53 & .46 & .04 & .53 & .46 & .04 & .53 & .56 & .43 & .46 & .64 & .53 & .39 \\
+Lower cens. & .30 & .64 & .66 & .38 & .51 & .59 & .46 & .04 & .53 & .46 & .04 & .53 & .46 & .04 & .53 \\
+\bottomrule
+\end{tabular}
+}
+\vspace{0.25em}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Values are averages of the realized \texttt{briefing\_mean\_*} summaries in the main Part~II output files for the primary model. Representative points are taken directly from the replication-relevant grid $\theta \in \{0.20, 0.35, 0.50, 0.65, 0.80\}$. Stability collapses clarity near $\theta^*$; instability sharply increases clarity in the middle of the grid; upper and lower censorship pool the corresponding side of the threshold to a common neutral profile.}
+\end{table}

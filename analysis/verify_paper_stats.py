@@ -286,14 +286,16 @@ def compute_part1():
 
             m[treatment] = entry
 
+            pooled_df = df.copy()
+            pooled_df["model"] = model
             if treatment == "pure":
-                all_pure.append(df)
+                all_pure.append(pooled_df)
             elif treatment == "comm":
-                all_comm.append(df)
+                all_comm.append(pooled_df)
             elif treatment == "scramble":
-                all_scramble.append(df)
+                all_scramble.append(pooled_df)
             elif treatment == "flip":
-                all_flip.append(df)
+                all_flip.append(pooled_df)
 
         if n_agents is not None:
             m["_n_agents"] = int(n_agents)

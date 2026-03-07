@@ -374,7 +374,7 @@ Design & No Surv. & Surv. & $\Delta$ (pp) \\
     tex += r"""\bottomrule
 \end{tabular}
 \par\vspace{0.25em}
-\parbox{\columnwidth}{\footnotesize\emph{Notes:} ``No Surv.'' uses the communication infodesign grid. ``Surv.'' uses the same grid with surveillance active during messaging. All entries are means of \texttt{join\_fraction\_valid}.}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Both columns use the communication information-design grid ($\theta \in [0.20, 0.80]$, 9 points, calibrated briefings, communication game). The low baseline level (3.0\%) reflects this grid regime, not the Part~I normal-draw regime (${\approx}40\%$); see text for discussion. ``Surv.'' adds surveillance during messaging. All entries are means of \texttt{join\_fraction\_valid}. $\Delta$ is the surveillance increment (Surv.\ $-$ No Surv.) in percentage points.}
 \end{table}
 """
     return tex
@@ -425,7 +425,7 @@ def render_tab_bandwidth(stats: dict) -> str:
     tex += r"""\bottomrule
 \end{tabular}
 \vspace{0.25em}
-\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model, information design $\theta$-grid $[0.20, 0.80]$. $h$ = Gaussian proximity bandwidth controlling how broadly manipulation spreads around $\theta^*$. $\Delta$: change in mean join vs.\ bandwidth-specific baseline (pp).}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model. All three bandwidth conditions use the same calibrated Mistral setup with $B = C = 1$ ($\theta^* = 0.50$, grid $[0.20, 0.80]$). $h = 0.15$: primary information design experiment. $h \in \{0.05, 0.30\}$: separate reruns with the same prompt template and \texttt{--load-calibrated} briefing parameters, but executed in dedicated batches (20 reps per cell under \texttt{output/bandwidth-005} and \texttt{output/bandwidth-030}). Their summaries also use an older output schema, omitting the briefing-diagnostic columns recorded in the main $h = 0.15$ run. Level comparisons across columns are therefore not meaningful; the low baselines reflect between-batch decoding variation rather than different payoff or grid settings. $\Delta$: change in mean join vs.\ within-condition baseline (pp).}
 \end{table}
 """
     return tex
@@ -476,7 +476,7 @@ Model & Mean & $r$ & Mean & $r$ & Mean & $r$ \\
     tex += r"""\bottomrule
 \end{tabular}
 \vspace{0.25em}
-\parbox{\textwidth}{\footnotesize\emph{Notes:} Information design $\theta$-grid $[0.20, 0.80]$. $r = r(J, A(\theta))$: Pearson correlation between join fraction and theoretical attack mass. $N = 25$ agents per period.}
+\parbox{\textwidth}{\footnotesize\emph{Notes:} Information design $\theta$-grid $[0.20, 0.80]$. $r = r(J, A(\theta))$: Pearson correlation between join fraction and theoretical attack mass. $N = 25$ agents per period. Scramble mean join rates for some models reflect earlier experimental batches and are not directly comparable to baseline means; the diagnostic metric is $r \approx 0$.}
 \end{table*}
 """
     return tex
@@ -667,7 +667,7 @@ def render_tab_logistic_params(stats: dict) -> str:
 
     tex = r"""\begin{table*}[t]
 \centering
-\caption{Logistic fit parameters by model and treatment. $\hat{\theta}^*$ is the estimated cutoff ($-b_0/b_1$); $\beta$ is the logistic slope. Standard errors from the covariance matrix of the nonlinear fit; cutoff SE by delta method.}
+\caption{Logistic fit parameters by model and treatment. Fitted form: $P(\text{join}\mid\theta) = 1/(1+e^{b_0 + b_1\theta})$, where $b_1 > 0$ implies a \textit{decreasing} join curve. $\hat{\theta}^*$ is the estimated cutoff ($-b_0/b_1$); $\beta \equiv b_1$ is the steepness parameter.}
 \label{tab:logistic_params}
 \small
 \begin{tabular}{lcccc}
@@ -681,7 +681,7 @@ Model & $\hat{\theta}^*$ (SE) & $\beta$ (SE) & $\hat{\theta}^*$ (SE) & $\beta$ (
     tex += r"""\bottomrule
 \end{tabular}
 \vspace{0.25em}
-\parbox{\textwidth}{\footnotesize\emph{Notes:} $\hat{\theta}^* = -b_0/b_1$: estimated cutoff. $\beta \equiv b_1$: logistic slope coefficient. Standard errors from the covariance matrix of the logistic fit; cutoff SE by delta method.}
+\parbox{\textwidth}{\footnotesize\emph{Notes:} Fitted form: $P(\text{join}\mid\theta) = 1/(1+e^{b_0 + b_1\theta})$, so $b_1 > 0$ corresponds to a decreasing join curve (the expected direction). $\hat{\theta}^* = -b_0/b_1$: estimated cutoff. $\beta \equiv b_1$: logistic steepness (larger = sharper threshold). Standard errors from the covariance matrix of the nonlinear fit; cutoff SE by delta method.}
 \end{table*}
 """
     return tex
@@ -917,7 +917,7 @@ def render_tab_ck_2x2(stats: dict) -> str:
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{Common knowledge $\times$ coordination intensity. Each cell reports mean join rate (270 country--periods). The CK main effect is """ + f"{pp(ck_main.get('beta'), 0) if ck_main.get('beta') is not None else '---'}" + r"""~pp ($p = """ + f"{ck_main.get('p', '---'):.4f}" + r"""$); the interaction is """ + f"{pp(inter_beta, 0) if inter_beta is not None else '---'}" + r"""~pp ($p = """ + f"{inter_p:.2f}" + r"""$).}
+\caption{Common knowledge $\times$ coordination intensity. Each cell reports mean join rate (270 country--periods). The CK main effect is """ + f"{pp(ck_main.get('beta'), 0) if ck_main.get('beta') is not None else '---'}" + r"""~pp ($p = """ + f"{ck_main.get('p', '---'):.4f}" + r"""$); the interaction is """ + f"{pp(inter_beta, 0) if inter_beta is not None else '---'}" + r"""~pp ($p = """ + f"{inter_p:.2f}" + r"""$). This is a header-only framing test, not the main public-signal bulletin treatment.}
 \label{tab:ck_2x2}
 \small
 \begin{tabular}{lccc}
@@ -931,7 +931,7 @@ $\Delta$ (CK) & """ + pp(ck_low, priv_low) + "~pp & " + pp(ck_high, priv_high) +
 \bottomrule
 \end{tabular}
 \vspace{0.25em}
-\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model, information design $\theta$-grid. 270 country-periods per cell. CK framing: agents told their briefing is ``widely shared.'' High-coord: coordination-cue intensity amplified.}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model, information design $\theta$-grid. 270 country-periods per cell. CK framing changes only the publicness/source header (``widely shared''); the private briefing body is otherwise unchanged. High-coord: coordination-cue intensity amplified. Unlike the main public-signal treatment, no separate public bulletin is appended.}
 \end{table}
 """
     return tex
@@ -1990,6 +1990,15 @@ def render_tab_hypotheses(stats: dict) -> str:
             f"{hid} & {label} & {test} & {stat} & {p} & {es} & {supported} \\\\"
         )
 
+    bonf_alpha = 0.05 / len(hyp) if hyp else 0.05
+    bonf_survivors = ", ".join(
+        h["id"]
+        for h in hyp
+        if h.get("p") is not None and h.get("p") == h.get("p") and h.get("p") <= bonf_alpha
+    )
+    if not bonf_survivors:
+        bonf_survivors = "none"
+
     tex = r"""\begin{table*}[t]
 \centering
 \caption{Pre-specified hypotheses and test results. H1--H4 use pooled Part~I data across all seven models; H5--H8 use the primary model (Mistral Small Creative). Effect size: $r$ for correlations (H1--H3), Cohen's $d$ or $d_z$ for mean comparisons (H4--H8). ``Supported'' at $\alpha = 0.05$.}
@@ -2005,7 +2014,11 @@ H & Hypothesis & Test & Stat & $p$ & Effect & Supported? \\
     tex += r"""\bottomrule
 \end{tabular}
 \vspace{0.25em}
-\parbox{\textwidth}{\footnotesize\emph{Notes:} H1--H4: pooled across all seven models (H4 uses paired $t$-test matched on model/country/$\theta$). H5--H8: primary model (Mistral Small Creative). """
+\parbox{\textwidth}{\footnotesize\emph{Notes:} H1--H4: pooled across all seven models (H4 uses paired $t$-test matched on model/country/period/$\theta$ task cells). H5--H8: primary model (Mistral Small Creative). Bonferroni survivors at $\alpha = """
+    tex += f"{bonf_alpha:.5f}"
+    tex += r"""$: """
+    tex += bonf_survivors
+    tex += r""". """
 
     # Add power analysis note for H8
     h8 = next((h for h in hyp if h["id"] == "H8"), None)
