@@ -76,6 +76,12 @@ def run_infodesign(args):
             "seed": args.seed,
         }
 
+    # Apply CLI overrides for direction transform and domain ablation
+    base_params["direction_transform"] = getattr(args, 'direction_transform', 'logistic')
+    cli_disabled = getattr(args, 'disabled_domains', [])
+    if cli_disabled:
+        base_params["disabled_domains"] = tuple(cli_disabled)
+
     # ── Compute θ* and z-center ──────────────────────────────────────
     theta_star = theta_star_baseline(max(args.benefit, 1e-6))
     z_center = args.z_center if args.z_center is not None else theta_star
@@ -331,6 +337,10 @@ def run_infodesign(args):
                 briefing_overrides=briefing_overrides,
                 group_size_info=getattr(args, 'group_size_info', False),
                 elicit_beliefs=getattr(args, 'elicit_beliefs', False),
+                elicit_second_order=getattr(args, 'elicit_second_order', False),
+                belief_order=getattr(args, 'belief_order', 'post'),
+                second_order_order=getattr(args, 'second_order_order', 'post'),
+                beliefs_include_messages=getattr(args, 'beliefs_include_messages', False),
                 temperature=getattr(args, 'temperature', 0.7),
             )
             if is_comm:
@@ -338,6 +348,8 @@ def run_infodesign(args):
                     **game_kwargs,
                     surveillance=getattr(args, 'surveillance', False),
                     surveillance_mode=getattr(args, 'surveillance_mode', 'full'),
+                    decision_context=getattr(args, 'decision_context', 'auto'),
+                    degrade_messages=getattr(args, 'degrade_messages', False),
                 )
             else:
                 result = await run_pure_global_game(**game_kwargs)
@@ -549,12 +561,27 @@ def main():
                         help="Tell agents their messages are monitored by regime security")
     parser.add_argument("--surveillance-mode", choices=["full", "placebo", "anonymous"], default="full",
                         help="Type of surveillance applied (if --surveillance is active).")
+    parser.add_argument("--degrade-messages", action="store_true",
+                        help="Replace all communication messages with generic uninformative content "
+                             "(no surveillance framing). Isolates the information-loss channel.")
     parser.add_argument("--z-center", type=float, default=None,
                         help="z-score centering point (default: θ*, use 0.0 for legacy behavior)")
     parser.add_argument("--group-size-info", action="store_true",
                         help="Tell agents how many citizens are in the group")
     parser.add_argument("--elicit-beliefs", action="store_true",
                         help="After each decision, ask agents for P(uprising succeeds) on 0-100 scale")
+    parser.add_argument("--elicit-second-order", action="store_true",
+                        help="Ask agents what %% of citizens will JOIN (0-100 scale)")
+    parser.add_argument("--beliefs-include-messages", action="store_true",
+                        help="Include received messages in belief / second-order elicitation prompts")
+    parser.add_argument("--belief-order", type=str, choices=["post", "pre", "both"], default="post",
+                        help="When to elicit first-order beliefs")
+    parser.add_argument("--second-order-order", type=str, choices=["post", "pre", "both"], default="post",
+                        help="When to elicit second-order beliefs")
+    parser.add_argument("--decision-context", type=str,
+                        choices=["auto", "none", "full", "placebo", "anonymous"],
+                        default="auto",
+                        help="Decision-stage context shown to the deciding agent in communication runs")
     parser.add_argument("--benefit-grid", action="store_true",
                         help="Run systematic B/C sweep: θ* ∈ {0.25, 0.33, 0.45, 0.50, 0.60, 0.67, 0.75}")
     parser.add_argument("--benefit-grid-values", type=float, nargs="+",

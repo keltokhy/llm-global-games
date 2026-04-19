@@ -2,7 +2,7 @@
 """
 Figure generation for "LLM Agents in Global Games."
 
-Generates 23 publication figures to paper/figures/ with sequential numbering.
+Generates publication figures to paper/figures/ with sequential numbering.
 
 Main figures (Part I — core experiment):
   01. Core sigmoid — join fraction vs theta (pure + comm)
@@ -32,7 +32,6 @@ Mechanism & belief figures:
 Appendix:
   A1. Agent count robustness
   A2. Network topology
-  A3. Bandwidth robustness
   A4. Calibration convergence
 
 Usage: cd analysis && uv run python make_figures.py
@@ -171,10 +170,6 @@ surv_cens = load_all_csvs(ROOT / "surveillance-x-censorship")
 prop2 = load_all_csvs(ROOT / "propaganda-k2")
 prop5 = load_all_csvs(ROOT / "propaganda-k5")
 prop10 = load_all_csvs(ROOT / "propaganda-k10")
-
-# Bandwidth robustness
-bw005 = load_all_csvs(ROOT / "bandwidth-005")
-bw030 = load_all_csvs(ROOT / "bandwidth-030")
 
 # Models with infodesign data
 INFODESIGN_MODELS = [d.name for d in ROOT.iterdir()
@@ -813,7 +808,7 @@ def fig13_propaganda():
 
     for _, df, k, *_ in prop_specs:
         if len(df) > 0:
-            n_total = int(df["n_agents"].iloc[0]) if "n_agents" in df.columns else 25
+            n_total = int(df["n_agents"].dropna().iloc[0]) if "n_agents" in df.columns and df["n_agents"].notna().any() else 25
             df["join_fraction_real"] = df["n_join"] / (n_total - k)
 
     for panel_idx, (ax, col, title) in enumerate(zip(
@@ -1084,51 +1079,6 @@ def figA2_network():
     ax.set_xlim(-3.5, 3.5)
 
     save(fig, "figA2_network")
-
-
-# ═══════════════════════════════════════════════════════════════════
-# FIGURE A3: Bandwidth robustness
-# ═══════════════════════════════════════════════════════════════════
-
-def figA3_bandwidth():
-    if len(info_all) == 0:
-        print("  SKIPPED figA3 — no infodesign data")
-        return
-
-    fig, ax = plt.subplots(figsize=(COL_W, 2.8))
-
-    bw_datasets = [
-        ("BW = 0.05", bw005, "#fdae61"),
-        ("BW = 0.15 (default)", info_all, C_BASELINE),
-        ("BW = 0.30", bw030, "#1a9641"),
-    ]
-
-    for label, df, color in bw_datasets:
-        if len(df) == 0:
-            continue
-        if "design" not in df.columns:
-            continue
-        sub = df[df["design"] == "stability"]
-        if len(sub) == 0:
-            continue
-
-        theta, mean, sem = design_curve(sub.assign(design="stability"), "stability")
-        if len(theta) == 0:
-            g = sub.groupby("theta")[_join_col(sub)].agg(
-                ["mean", "sem"]).reset_index().sort_values("theta")
-            theta, mean, sem = g["theta"].values, g["mean"].values, g["sem"].values
-
-        ax.plot(theta, mean, color=color, linewidth=1.0, zorder=2, label=label)
-        ax.scatter(theta, mean, color=color, s=10, zorder=3, edgecolors="none")
-        ax.fill_between(theta, mean - 1.96 * sem, mean + 1.96 * sem,
-                        color=color, alpha=0.1, zorder=1)
-
-    ax.legend(fontsize=6, loc="upper right")
-    ax.set_xlabel(r"$\theta$ (regime strength)")
-    ax.set_ylabel("Join fraction (stability design)")
-    ax.set_ylim(-0.03, 0.85)
-
-    save(fig, "figA3_bandwidth")
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -1990,7 +1940,12 @@ def fig_example_briefings():
     sys.path.insert(0, str(PROJECT_ROOT))
     from agent_based_simulation.briefing import BriefingGenerator
 
-    gen = BriefingGenerator(seed=42)
+    # Use the default experiment seed and a reproducible agent-period draw with
+    # clean, non-garbled wording. No text post-processing is applied beyond
+    # line wrapping in the figure renderer.
+    gen = BriefingGenerator(seed=5150)
+    example_agent_id = 8
+    example_period = 124
 
     z_scores = [-2.0, 0.0, 2.0]
     titles = [
@@ -2002,7 +1957,7 @@ def fig_example_briefings():
 
     briefings = []
     for z in z_scores:
-        b = gen.generate(z_score=z, agent_id=0, period=0)
+        b = gen.generate(z_score=z, agent_id=example_agent_id, period=example_period)
         briefings.append(b.render())
 
     # ── Layout: three equal panels, full text width ──
@@ -2076,7 +2031,6 @@ if __name__ == "__main__":
     fig14_cross_model_infodesign()
     figA1_agent_count()
     figA2_network()
-    figA3_bandwidth()
     fig15_text_baseline()
     fig16_beliefs()
     figA4_calibration()

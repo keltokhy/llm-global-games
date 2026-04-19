@@ -744,8 +744,13 @@ UNCLEAR_STRONG = [
 # Slider computations
 # ---------------------------------------------------------------------------
 
+DIRECTION_TRANSFORMS = ("logistic", "tanh", "linear", "step")
+
 def _compute_sliders(z_score, cutoff_center=0.0, clarity_width=1.0,
-                     direction_slope=0.8, coordination_slope=0.6):
+                     direction_slope=0.8, coordination_slope=0.6,
+                     direction_transform="logistic",
+                     direction_offset=0.0, coordination_offset=0.0,
+                     clarity_override=None):
     """Compute three latent sliders from a z-score.
 
     Parameters
@@ -760,6 +765,15 @@ def _compute_sliders(z_score, cutoff_center=0.0, clarity_width=1.0,
         Steepness of the direction logistic. Lower = more gradual transition.
     coordination_slope : float
         Steepness of the coordination logistic.
+    direction_transform : str
+        Functional form for the direction slider: "logistic", "tanh",
+        "linear", or "step".
+    direction_offset : float
+        Additive shift applied only to the factual-state / direction slider.
+    coordination_offset : float
+        Additive shift applied only to the coordination-tone slider.
+    clarity_override : float | None
+        If provided, bypass the usual clarity computation and use this fixed value.
 
     Returns
     -------
@@ -773,13 +787,30 @@ def _compute_sliders(z_score, cutoff_center=0.0, clarity_width=1.0,
         Monotone decreasing in z_score (weak regime → more open talk).
     """
     centered = z_score - cutoff_center
+    centered_direction = centered + direction_offset
+    centered_coordination = centered + coordination_offset
 
-    direction = 1.0 / (1.0 + np.exp(-centered * direction_slope))
+    if direction_transform == "logistic":
+        direction = 1.0 / (1.0 + np.exp(-centered_direction * direction_slope))
+    elif direction_transform == "tanh":
+        direction = 0.5 + 0.5 * np.tanh(centered_direction * direction_slope / 2)
+    elif direction_transform == "linear":
+        direction = float(np.clip(0.5 + centered_direction * direction_slope / 4, 0, 1))
+    elif direction_transform == "step":
+        direction = 1.0 if centered_direction > 0 else 0.0
+    else:
+        raise ValueError(
+            f"Unknown direction_transform={direction_transform!r}. "
+            f"Choose from {DIRECTION_TRANSFORMS}"
+        )
 
-    distance_from_cutoff = abs(centered)
-    clarity = 1.0 - np.exp(-(distance_from_cutoff / clarity_width) ** 2)
+    if clarity_override is None:
+        distance_from_cutoff = abs(centered)
+        clarity = 1.0 - np.exp(-(distance_from_cutoff / clarity_width) ** 2)
+    else:
+        clarity = float(np.clip(clarity_override, 0.0, 1.0))
 
-    coordination = 1.0 / (1.0 + np.exp(centered * coordination_slope))
+    coordination = 1.0 / (1.0 + np.exp(centered_coordination * coordination_slope))
 
     return direction, clarity, coordination
 
@@ -1131,11 +1162,21 @@ class BriefingGenerator:
                  language_variant=DEFAULT_LANGUAGE_VARIANT,
                  seed=None,
                  source_header="",
-                 rhetoric_bias=0.0):
+                 rhetoric_bias=0.0,
+                 direction_transform="logistic",
+                 disabled_domains=(),
+                 direction_offset=0.0,
+                 coordination_offset=0.0,
+                 clarity_override=None):
         self.cutoff_center = cutoff_center
         self.clarity_width = clarity_width
         self.direction_slope = direction_slope
         self.coordination_slope = coordination_slope
+        self.direction_transform = direction_transform
+        self.disabled_domains = set(disabled_domains)
+        self.direction_offset = float(direction_offset)
+        self.coordination_offset = float(coordination_offset)
+        self.clarity_override = clarity_override
         self.dissent_floor = dissent_floor
         self.mixed_cue_clarity = mixed_cue_clarity
         self.n_observations = n_observations
@@ -1183,13 +1224,18 @@ class BriefingGenerator:
         direction, clarity, coordination = _compute_sliders(
             z_score, self.cutoff_center, self.clarity_width,
             self.direction_slope, self.coordination_slope,
+            self.direction_transform,
+            self.direction_offset, self.coordination_offset,
+            self.clarity_override,
         )
 
         bottom_line = _pick_bottom_line(direction, rng, cuts=self.bottomline_cuts)
 
         # Sample observations from different domains (8 from 8)
-        n_obs = min(self.n_observations, len(DOMAINS))
-        domain_indices = rng.choice(len(DOMAINS), size=n_obs, replace=False)
+        # Filter out disabled domains before sampling
+        available_domains = [i for i in range(len(DOMAINS)) if i not in self.disabled_domains]
+        n_obs = min(self.n_observations, len(available_domains))
+        domain_indices = rng.choice(available_domains, size=n_obs, replace=False)
         tagged_variants = {"baseline", "baseline_assess", "baseline_full", "cable"}
         if self.language_variant in tagged_variants:
             domain_indices = np.sort(domain_indices)

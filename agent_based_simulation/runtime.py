@@ -107,6 +107,11 @@ def add_common_args(parser) -> None:
                         help="Blend probability in intermediate coordination bands")
     parser.add_argument("--language-variant", type=str, default="baseline",
                         help="Briefing text schema: legacy|baseline_min|baseline|baseline_assess|baseline_full")
+    parser.add_argument("--direction-transform", type=str, default="logistic",
+                        choices=["logistic", "tanh", "linear", "step"],
+                        help="Functional form for the direction slider (default: logistic)")
+    parser.add_argument("--disabled-domains", type=int, nargs="*", default=[],
+                        help="Domain indices to remove from briefings (e.g. 3 5 for coordination domains)")
     # LLM decoding
     parser.add_argument("--temperature", type=float, default=0.7,
                         help="LLM sampling temperature (default: 0.7)")

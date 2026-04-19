@@ -1,0 +1,25 @@
+\begin{table*}[t]
+\centering
+\caption{Why the communication estimators differ.}
+\label{tab:comm_estimators}
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{lcccccccc}
+\toprule
+Model & Rows/arm & Row wt. (P/C) & Cells/arm & Matched & Cell wt. & Lost (P/C) & $\Delta$ unpaired & $\Delta$ paired \\
+\midrule
+Mistral Small Creative & 1000 & 55.6\% & 680 & 680 & 46.0\% & 0/0 & +2.38 & +4.84 \\
+Llama 3.3 70B & 100 & 5.6\% & 100 & 100 & 6.8\% & 0/0 & -2.36 & -2.36 \\
+Qwen3 30B & 100 & 5.6\% & 100 & 100 & 6.8\% & 0/0 & -4.64 & -4.64 \\
+GPT-OSS 120B & 200 & 11.1\% & 200 & 200 & 13.5\% & 0/0 & +3.47 & +3.47 \\
+Qwen3 235B & 200 & 11.1\% & 200 & 200 & 13.5\% & 0/0 & +0.12 & +0.12 \\
+Trinity Large & 100/99 & 5.6\%/5.5\% & 100/99 & 99 & 6.7\% & 1/0 & -3.14 & -3.41 \\
+MiniMax M2-Her & 100 & 5.6\% & 100 & 100 & 6.8\% & 0/0 & +1.32 & +1.32 \\
+\midrule
+Equal-weight avg & --- & 14.3\% each & --- & --- & 14.3\% each & --- & -0.41 & -0.09 \\
+Pooled & 1800/1799 & 100.0\% & 1480/1479 & 1479 & 100.0\% & 1/0 & +1.23 & +2.10 \\
+\bottomrule
+\end{tabular}
+\vspace{0.25em}
+\parbox{\textwidth}{\footnotesize\emph{Notes:} ``Rows/arm'' counts valid country-period rows entering the pooled unpaired estimator in each arm. ``Cells/arm'' counts unique task cells after collapsing duplicates by the exact matching key (model, country, period, $\theta$, $z$, benefit, $\theta^*$). The paired estimator averages within these cells and keeps only common support; ``Row wt.'' and ``Cell wt.'' are the model shares in the pooled unpaired and pooled paired estimators, respectively. Only Trinity Large loses support, with one pure-only cell and no communication-only cells, so the pooled gap is overwhelmingly a weighting/re-averaging issue rather than a support-loss issue.}
+\end{table*}

@@ -1014,7 +1014,7 @@ def generate_regression_table(results: dict) -> str:
     if has_main:
         headers.append(r"\multicolumn{2}{c}{(1) Join Decision}")
     if has_coord:
-        headers.append(r"\multicolumn{2}{c}{(2) Coordination}")
+        headers.append(r"\multicolumn{2}{c}{(2) Coord.\ Ablation}")
     if has_action:
         headers.append(r"\multicolumn{2}{c}{(3) Belief $\to$ Action}")
     lines.append(" & " + " & ".join(headers) + r" \\")
@@ -1073,7 +1073,8 @@ def generate_regression_table(results: dict) -> str:
         act_coefs = action_eq.get("coefficients", {})
         act_treat_keys = [k for k in act_coefs if k.startswith("treat_")]
         for tk in sorted(act_treat_keys):
-            label = tk.replace("treat_", "").replace("_", " ").title() + " (belief)"
+            label = tk.replace("treat_beliefs_", "").replace("_", " ").title()
+            label = f"Treat: {label}"
             add_row(label, None, None, tk)
 
     add_row("Constant", "const", "const", "const")
@@ -1131,8 +1132,10 @@ def generate_regression_table(results: dict) -> str:
     lines.append(r"(model--country--period) in parentheses.")
     lines.append(r"Column (1): agent-level join decision on $\theta$, treatment dummies, and interactions,")
     lines.append(r"with model fixed effects. Base category: pure treatment.")
-    lines.append(r"Column (2): coordination ablation using briefing slider values (pure treatment only).")
-    lines.append(r"Column (3): partial effect of elicited belief on action, controlling for $z$-score.")
+    lines.append(r"Column (2): coordination ablation---$\Pr(\text{join}_i = 1) = \Lambda(\beta_0 + \beta_1 \text{Dir}_i + \beta_2 \text{Coord}_i + \beta_3 \text{Dir}_i \times \text{Coord}_i)$---using briefing slider values (pure treatment only). Direction $\in [0,1]$ is increasing in regime strength; Coordination $\in [0,1]$ is decreasing (high = weaker regime). Because both are monotone logistic transforms of the same signal, they are near-collinear ($\rho \approx -1$); individual coefficients reflect the partial effect \textit{conditional on the other}, not the marginal effect.")
+    lines.append(r"Column (3): partial effect of elicited belief ($b_i \in [0,100]$, stated success probability) on action, controlling for $z$-score. ``Treat: X'' rows are treatment intercept dummies (base category: communication), not interactions with belief.")
+    lines.append(r"\textbf{Caveat:} beliefs are elicited \textit{after} the join/stay decision (post-decision), so the belief coefficient reflects association rather than a causal pathway; post-decision rationalization may inflate the correlation.")
+    lines.append(r"The very high pseudo-$R^2$ (0.975) and large intercept indicate near-deterministic prediction consistent with quasi-separation---belief almost perfectly predicts action, as expected when belief is stated \textit{post hoc}.")
     lines.append(r"${}^{*}p<0.10$, ${}^{**}p<0.05$, ${}^{***}p<0.01$.")
     lines.append(r"\end{tablenotes}")
 

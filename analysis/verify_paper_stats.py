@@ -34,6 +34,7 @@ PRIMARY = PRIMARY_SLUG
 # `theoretical_attack` column, since Part I payoffs are not shown to agents.
 PART1_BENCHMARK_THETA_STAR = 0.50  # B=C=1
 PART1_BENCHMARK_SIGMA = 0.30
+COMM_MATCH_COLS = ["country", "period", "theta", "z", "benefit", "theta_star"]
 
 
 def _attack_mass_benchmark(theta: np.ndarray) -> np.ndarray:
@@ -63,6 +64,78 @@ def load_infodesign(model: str, design: str = "all") -> pd.DataFrame:
     if p.exists():
         return pd.read_csv(p)
     return pd.DataFrame()
+
+
+def _comm_match_key(pure_df: pd.DataFrame, comm_df: pd.DataFrame, *, include_model: bool) -> list[str]:
+    """Return the full task key used for communication matching."""
+    key_cols: list[str] = []
+    if include_model and "model" in pure_df.columns and "model" in comm_df.columns:
+        key_cols.append("model")
+    key_cols.extend([c for c in COMM_MATCH_COLS if c in pure_df.columns and c in comm_df.columns])
+    return key_cols
+
+
+def _comm_effect_summary(pure_df: pd.DataFrame, comm_df: pd.DataFrame, *, include_model: bool) -> dict:
+    """Compute unpaired and paired communication effects with support accounting."""
+    if len(pure_df) == 0 or len(comm_df) == 0:
+        return {}
+
+    jcol = _join_col(pure_df)
+    pure_valid = pure_df.dropna(subset=[jcol]).copy()
+    comm_valid = comm_df.dropna(subset=[jcol]).copy()
+    pure_y = pure_valid[jcol].astype(float)
+    comm_y = comm_valid[jcol].astype(float)
+    delta_unpaired = _safe_mean(comm_y) - _safe_mean(pure_y)
+    t_stat_u, t_p_u = stats.ttest_ind(comm_y.dropna(), pure_y.dropna())
+
+    key_cols = _comm_match_key(pure_valid, comm_valid, include_model=include_model)
+    summary = {
+        "match_key": key_cols,
+        "unpaired": {
+            "delta_pp": round(delta_unpaired * 100, 2),
+            "t_stat": round(float(t_stat_u), 4),
+            "p_value": round(float(t_p_u), 6),
+        },
+        "paired": {"status": "missing"},
+        "support": {
+            "pure_rows": int(len(pure_valid)),
+            "comm_rows": int(len(comm_valid)),
+        },
+    }
+    if not key_cols:
+        return summary
+
+    pure_g = pure_valid.groupby(key_cols, as_index=False)[jcol].mean().rename(columns={jcol: "pure"})
+    comm_g = comm_valid.groupby(key_cols, as_index=False)[jcol].mean().rename(columns={jcol: "comm"})
+    merged = pure_g.merge(comm_g, on=key_cols, how="inner").dropna(subset=["pure", "comm"])
+
+    pure_idx = pd.MultiIndex.from_frame(pure_g[key_cols])
+    comm_idx = pd.MultiIndex.from_frame(comm_g[key_cols])
+    matched_idx = pure_idx.intersection(comm_idx)
+    pure_only_idx = pure_idx.difference(comm_idx)
+    comm_only_idx = comm_idx.difference(pure_idx)
+
+    summary["support"].update(
+        {
+            "pure_unique_cells": int(len(pure_idx)),
+            "comm_unique_cells": int(len(comm_idx)),
+            "matched_cells": int(len(matched_idx)),
+            "pure_unmatched_cells": int(len(pure_only_idx)),
+            "comm_unmatched_cells": int(len(comm_only_idx)),
+        }
+    )
+
+    if len(merged):
+        diff = merged["comm"] - merged["pure"]
+        t_stat_p, t_p_p = stats.ttest_1samp(diff, 0.0)
+        summary["paired"] = {
+            "n_pairs": int(len(diff)),
+            "delta_pp": round(float(diff.mean()) * 100, 2),
+            "t_stat": round(float(t_stat_p), 4),
+            "p_value": round(float(t_p_p), 6),
+        }
+
+    return summary
 
 
 def pearson_with_ci(x, y, alpha=0.05):
@@ -303,38 +376,8 @@ def compute_part1():
         # Communication effect (unpaired + paired-on-task-key, if both exist)
         pure_df = load(model, "pure")
         comm_df = load(model, "comm")
-        jcol = _join_col(pure_df) if len(pure_df) else "join_fraction"
         if len(pure_df) > 0 and len(comm_df) > 0:
-            pure_y = pure_df[jcol].astype(float)
-            comm_y = comm_df[jcol].astype(float)
-            delta_unpaired = _safe_mean(comm_y) - _safe_mean(pure_y)
-            t_stat_u, t_p_u = stats.ttest_ind(comm_y.dropna(), pure_y.dropna())
-
-            # Pair by task key (country,period,theta,z,benefit,theta_star), averaging duplicates.
-            key_cols = [c for c in ["country", "period", "theta", "z", "benefit", "theta_star"] if c in pure_df.columns and c in comm_df.columns]
-            paired = {}
-            if key_cols:
-                pure_g = pure_df.groupby(key_cols, as_index=False)[jcol].mean().rename(columns={jcol: "pure"})
-                comm_g = comm_df.groupby(key_cols, as_index=False)[jcol].mean().rename(columns={jcol: "comm"})
-                merged = pure_g.merge(comm_g, on=key_cols, how="inner").dropna(subset=["pure", "comm"])
-                if len(merged):
-                    diff = merged["comm"] - merged["pure"]
-                    t_stat_p, t_p_p = stats.ttest_1samp(diff, 0.0)
-                    paired = {
-                        "n_pairs": int(len(diff)),
-                        "delta_pp": round(float(diff.mean()) * 100, 2),
-                        "t_stat": round(float(t_stat_p), 4),
-                        "p_value": round(float(t_p_p), 6),
-                    }
-
-            m["comm_effect"] = {
-                "unpaired": {
-                    "delta_pp": round(delta_unpaired * 100, 2),
-                    "t_stat": round(float(t_stat_u), 4),
-                    "p_value": round(float(t_p_u), 6),
-                },
-                "paired": paired if paired else {"status": "missing"},
-            }
+            m["comm_effect"] = _comm_effect_summary(pure_df, comm_df, include_model=False)
 
         results[name] = m
 
@@ -422,34 +465,123 @@ def compute_part1():
     if all_pure and all_comm:
         pp = pd.concat(all_pure, ignore_index=True)
         pc = pd.concat(all_comm, ignore_index=True)
-        jcol = _join_col(pp)
-        delta_unpaired = _safe_mean(pc[jcol]) - _safe_mean(pp[jcol])
-        t_stat_u, t_p_u = stats.ttest_ind(pc[jcol].dropna(), pp[jcol].dropna())
+        pooled_comm_effect = _comm_effect_summary(pp, pc, include_model=True)
 
-        key_cols = [c for c in ["model", "country", "period", "theta", "z", "benefit", "theta_star"] if c in pp.columns and c in pc.columns]
-        paired = {}
-        if key_cols:
-            pp_g = pp.groupby(key_cols, as_index=False)[jcol].mean().rename(columns={jcol: "pure"})
-            pc_g = pc.groupby(key_cols, as_index=False)[jcol].mean().rename(columns={jcol: "comm"})
-            merged = pp_g.merge(pc_g, on=key_cols, how="inner").dropna(subset=["pure", "comm"])
-            if len(merged):
-                diff = merged["comm"] - merged["pure"]
-                t_stat_p, t_p_p = stats.ttest_1samp(diff, 0.0)
-                paired = {
-                    "n_pairs": int(len(diff)),
-                    "delta_pp": round(float(diff.mean()) * 100, 2),
-                    "t_stat": round(float(t_stat_p), 4),
-                    "p_value": round(float(t_p_p), 6),
+        model_rows = []
+        for model in PART1_MODELS:
+            name = SHORT[model]
+            effect = (results.get(name) or {}).get("comm_effect") or {}
+            support = effect.get("support") or {}
+            unpaired = effect.get("unpaired") or {}
+            paired = effect.get("paired") or {}
+            model_rows.append(
+                {
+                    "model": name,
+                    "pure_rows": int(support.get("pure_rows") or 0),
+                    "comm_rows": int(support.get("comm_rows") or 0),
+                    "pure_mean_join": (results.get(name, {}).get("pure") or {}).get("mean_join"),
+                    "comm_mean_join": (results.get(name, {}).get("comm") or {}).get("mean_join"),
+                    "pure_unique_cells": int(support.get("pure_unique_cells") or 0),
+                    "comm_unique_cells": int(support.get("comm_unique_cells") or 0),
+                    "matched_cells": int(support.get("matched_cells") or 0),
+                    "pure_unmatched_cells": int(support.get("pure_unmatched_cells") or 0),
+                    "comm_unmatched_cells": int(support.get("comm_unmatched_cells") or 0),
+                    "unpaired_delta_pp": unpaired.get("delta_pp"),
+                    "paired_delta_pp": paired.get("delta_pp"),
                 }
+            )
 
-        results["_pooled_comm_effect"] = {
-            "unpaired": {
-                "delta_pp": round(delta_unpaired * 100, 2),
-                "t_stat": round(float(t_stat_u), 4),
-                "p_value": round(float(t_p_u), 6),
+        total_pure_rows = sum(row["pure_rows"] for row in model_rows)
+        total_comm_rows = sum(row["comm_rows"] for row in model_rows)
+        total_pure_cells = sum(row["pure_unique_cells"] for row in model_rows)
+        total_comm_cells = sum(row["comm_unique_cells"] for row in model_rows)
+        total_matched_cells = sum(row["matched_cells"] for row in model_rows)
+        total_pure_unmatched = sum(row["pure_unmatched_cells"] for row in model_rows)
+        total_comm_unmatched = sum(row["comm_unmatched_cells"] for row in model_rows)
+
+        unpaired_vals = [row["unpaired_delta_pp"] for row in model_rows if row["unpaired_delta_pp"] is not None]
+        paired_vals = [row["paired_delta_pp"] for row in model_rows if row["paired_delta_pp"] is not None]
+        equal_weight_unpaired = sum(unpaired_vals) / len(unpaired_vals) if unpaired_vals else None
+        equal_weight_paired = sum(paired_vals) / len(paired_vals) if paired_vals else None
+
+        row_weighted_unpaired = None
+        if total_pure_rows and total_comm_rows:
+            pure_num = 0.0
+            comm_num = 0.0
+            for row in model_rows:
+                pure_mean = row["pure_mean_join"]
+                comm_mean = row["comm_mean_join"]
+                if pure_mean is None or comm_mean is None:
+                    continue
+                pure_num += float(pure_mean) * row["pure_rows"]
+                comm_num += float(comm_mean) * row["comm_rows"]
+            row_weighted_unpaired = (comm_num / total_comm_rows - pure_num / total_pure_rows) * 100
+
+        row_weighted_paired = None
+        if total_pure_rows:
+            weighted_sum = 0.0
+            total_weight = 0
+            for row in model_rows:
+                if row["paired_delta_pp"] is None:
+                    continue
+                weighted_sum += float(row["paired_delta_pp"]) * row["pure_rows"]
+                total_weight += row["pure_rows"]
+            if total_weight:
+                row_weighted_paired = weighted_sum / total_weight
+
+        pair_weighted_unpaired = None
+        if total_matched_cells:
+            weighted_sum = 0.0
+            total_weight = 0
+            for row in model_rows:
+                if row["unpaired_delta_pp"] is None:
+                    continue
+                weighted_sum += float(row["unpaired_delta_pp"]) * row["matched_cells"]
+                total_weight += row["matched_cells"]
+            if total_weight:
+                pair_weighted_unpaired = weighted_sum / total_weight
+
+        for row in model_rows:
+            row["pure_row_share"] = round(row["pure_rows"] / total_pure_rows, 6) if total_pure_rows else None
+            row["comm_row_share"] = round(row["comm_rows"] / total_comm_rows, 6) if total_comm_rows else None
+            row["matched_cell_share"] = round(row["matched_cells"] / total_matched_cells, 6) if total_matched_cells else None
+
+        pooled_comm_effect["decomposition"] = {
+            "match_key": pooled_comm_effect.get("match_key") or [],
+            "rows_by_model": model_rows,
+            "totals": {
+                "pure_rows": int(total_pure_rows),
+                "comm_rows": int(total_comm_rows),
+                "pure_unique_cells": int(total_pure_cells),
+                "comm_unique_cells": int(total_comm_cells),
+                "matched_cells": int(total_matched_cells),
+                "pure_unmatched_cells": int(total_pure_unmatched),
+                "comm_unmatched_cells": int(total_comm_unmatched),
+                "matchable_cell_ceiling": int(min(total_pure_cells, total_comm_cells)),
+                "pure_support_retention": round(total_matched_cells / total_pure_cells, 6) if total_pure_cells else None,
+                "comm_support_retention": round(total_matched_cells / total_comm_cells, 6) if total_comm_cells else None,
+                "matched_share_of_ceiling": round(total_matched_cells / min(total_pure_cells, total_comm_cells), 6)
+                if total_pure_cells and total_comm_cells
+                else None,
             },
-            "paired": paired if paired else {"status": "missing"},
+            "estimators_pp": {
+                "equal_weight_unpaired": round(equal_weight_unpaired, 4) if equal_weight_unpaired is not None else None,
+                "equal_weight_paired": round(equal_weight_paired, 4) if equal_weight_paired is not None else None,
+                "row_weighted_unpaired": round(row_weighted_unpaired, 4) if row_weighted_unpaired is not None else None,
+                "pooled_unpaired": (pooled_comm_effect.get("unpaired") or {}).get("delta_pp"),
+                "pooled_paired": (pooled_comm_effect.get("paired") or {}).get("delta_pp"),
+                "row_weighted_paired": round(row_weighted_paired, 4) if row_weighted_paired is not None else None,
+                "pair_weighted_unpaired": round(pair_weighted_unpaired, 4) if pair_weighted_unpaired is not None else None,
+                "within_model_reavg": round(row_weighted_paired - row_weighted_unpaired, 4)
+                if row_weighted_paired is not None and row_weighted_unpaired is not None
+                else None,
+                "cross_model_reweight": round(pooled_comm_effect["paired"]["delta_pp"] - row_weighted_paired, 4)
+                if row_weighted_paired is not None and (pooled_comm_effect.get("paired") or {}).get("delta_pp") is not None
+                else None,
+            },
         }
+
+        results["_pooled_comm_effect"] = pooled_comm_effect
 
         # Fisher z tests on pooled r(A, join) (treated as independent correlations).
         try:

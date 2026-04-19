@@ -18,15 +18,19 @@ from agent_based_simulation.experiment import SYSTEM_COMMUNICATE_SURVEILLED
 
 
 def main():
-    gen = BriefingGenerator()
+    seed = 5150
+    agent_id = 8
+    period = 124
+    gen = BriefingGenerator(seed=seed)
 
     z_scores = [-2.0, 0.0, 2.0]
     labels = ["weak regime (z = -2.0)", "borderline (z = 0.0)", "strong regime (z = +2.0)"]
 
     for z, label in zip(z_scores, labels):
-        briefing = gen.generate(z_score=z, agent_id=0, period=0)
+        briefing = gen.generate(z_score=z, agent_id=agent_id, period=period)
         print("=" * 72)
         print(f"EXAMPLE BRIEFING: {label}")
+        print(f"  seed={seed}  agent_id={agent_id}  period={period}")
         print(f"  direction={briefing.direction:.3f}  clarity={briefing.clarity:.3f}  coordination={briefing.coordination:.3f}")
         print("=" * 72)
         print(briefing.render())

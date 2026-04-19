@@ -380,57 +380,6 @@ Design & No Surv. & Surv. & $\Delta$ (pp) \\
     return tex
 
 
-def render_tab_bandwidth(stats: dict) -> str:
-    info = stats["infodesign"]
-    bw = stats["robustness"]["bandwidth"]
-
-    # Baseline bandwidth=0.15 is the main infodesign run.
-    def main_mean(design: str) -> float:
-        return float(info[design]["mean_join"])
-
-    b005 = bw["bandwidth-005"]["Mistral Small Creative"]
-    b030 = bw["bandwidth-030"]["Mistral Small Creative"]
-
-    # Compute baselines for each bandwidth
-    base_005 = float(b005["baseline"])
-    base_015 = main_mean("baseline")
-    base_030 = float(b030["baseline"])
-
-    rows = []
-    # First row: baseline levels for reference
-    rows.append(f"Baseline (level) & {_fmt_num(base_005,3)} & {_fmt_num(base_015,3)} & {_fmt_num(base_030,3)} \\\\")
-    rows.append(r"\midrule")
-    rows.append(r"\multicolumn{4}{l}{\textit{Treatment effect $\Delta$ (treatment $-$ baseline):}} \\")
-    for design, label in [
-        ("stability", "Stability"),
-        ("censor_upper", "Upper cens."),
-        ("censor_lower", "Lower cens."),
-    ]:
-        d005 = float(b005[design]) - base_005
-        d015 = main_mean(design) - base_015
-        d030 = float(b030[design]) - base_030
-        rows.append(f"{label} & {_fmt_pp(d005,1)} & {_fmt_pp(d015,1)} & {_fmt_pp(d030,1)} \\\\")
-
-    tex = r"""\begin{table}[t]
-\centering
-\caption{Bandwidth robustness: treatment effects $\Delta$ (pp, treatment $-$ baseline) within each bandwidth condition (primary model: Mistral Small Creative). Top row shows baseline join rates for reference.}
-\label{tab:bandwidth}
-\small
-\begin{tabular}{lccc}
-\toprule
- & BW=0.05 & BW=0.15 & BW=0.30 \\
-\midrule
-"""
-    tex += "\n".join(rows) + "\n"
-    tex += r"""\bottomrule
-\end{tabular}
-\vspace{0.25em}
-\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model. All three bandwidth conditions use the same calibrated Mistral setup with $B = C = 1$ ($\theta^* = 0.50$, grid $[0.20, 0.80]$). $h = 0.15$: primary information design experiment. $h \in \{0.05, 0.30\}$: separate reruns with the same prompt template and \texttt{--load-calibrated} briefing parameters, but executed in dedicated batches (20 reps per cell under \texttt{output/bandwidth-005} and \texttt{output/bandwidth-030}). Their summaries also use an older output schema, omitting the briefing-diagnostic columns recorded in the main $h = 0.15$ run. Level comparisons across columns are therefore not meaningful; the low baselines reflect between-batch decoding variation rather than different payoff or grid settings. $\Delta$: change in mean join vs.\ within-condition baseline (pp).}
-\end{table}
-"""
-    return tex
-
-
 def render_tab_crossmodel(stats: dict) -> str:
     cross = stats["infodesign"].get("_cross_model", {})
     # Subset: only models with cross-model infodesign data
@@ -727,7 +676,7 @@ Variant & $N$ & Mean join & $r(J, A(\theta))$ & $\Delta$ (pp) & $p$ \\
 
 
 def render_tab_bc_statics(stats: dict) -> str:
-    """B/C comparative statics: cutoff shifts under cost/benefit narratives."""
+    """B/C comparative statics: cutoff shifts under strategic-stakes narratives."""
     info = stats.get("infodesign", {})
     designs = ["baseline", "bc_high_cost", "bc_low_cost"]
     labels = {"baseline": "Baseline", "bc_high_cost": "High cost", "bc_low_cost": "Low cost"}
@@ -755,7 +704,7 @@ def render_tab_bc_statics(stats: dict) -> str:
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{Cost/benefit narrative comparative statics. High cost: narrative emphasizes severe reprisals for failed action. Low cost: narrative emphasizes minimal consequences. Theory predicts higher perceived cost lowers the cutoff (less joining).}
+\caption{Strategic-stakes narrative comparative statics. High-cost framing emphasizes severe reprisals for failed action; low-cost framing emphasizes minimal consequences. The table is evidence on qualitative stakes framing, not literal numeric payoff reasoning.}
 \label{tab:bc_statics}
 \small
 \resizebox{\columnwidth}{!}{%
@@ -768,7 +717,7 @@ Design & $N$ & Mean join & $r(J, A(\theta))$ & Cutoff $\hat{\theta}^*$ (SE) & $\
     tex += r"""\bottomrule
 \end{tabular}}
 \vspace{0.25em}
-\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model, information design $\theta$-grid. Identical briefings across conditions; only the benefit/cost narrative framing varies. $\Delta$: change vs.\ baseline mean join (pp).}
+\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model, information design $\theta$-grid. Identical briefings across conditions; only the strategic-stakes header varies. $\Delta$: change vs.\ baseline mean join (pp).}
 \end{table}
 """
     return tex
@@ -886,6 +835,39 @@ def _fmt_pp(x: float, nd: int = 1) -> str:
     return f"{sign}{val:.{nd}f}"
 
 
+def _fmt_pp_raw(x: float, nd: int = 2) -> str:
+    """Format a value already expressed in percentage points."""
+    if x is None:
+        return "---"
+    try:
+        if x != x:  # nan
+            return "---"
+    except Exception:
+        return "---"
+    sign = "+" if x >= 0 else ""
+    return f"{sign}{x:.{nd}f}"
+
+
+def _fmt_arm_counts(pure: int | None, comm: int | None) -> str:
+    """Format arm-specific counts compactly when they agree."""
+    if pure is None and comm is None:
+        return "---"
+    if pure == comm:
+        return str(pure)
+    return f"{pure}/{comm}"
+
+
+def _fmt_arm_pct(pure: float | None, comm: float | None, nd: int = 1) -> str:
+    """Format arm-specific shares as percentages."""
+    pure_s = _fmt_pct(pure, nd)
+    comm_s = _fmt_pct(comm, nd)
+    if pure_s == "---" and comm_s == "---":
+        return "---"
+    if pure_s == comm_s:
+        return pure_s
+    return f"{pure_s}/{comm_s}"
+
+
 def render_tab_ck_2x2(stats: dict) -> str:
     """CK framing x coordination intensity 2x2 table."""
     ck = stats.get("ck_interaction", {})
@@ -933,6 +915,104 @@ $\Delta$ (CK) & """ + pp(ck_low, priv_low) + "~pp & " + pp(ck_high, priv_high) +
 \vspace{0.25em}
 \parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model, information design $\theta$-grid. 270 country-periods per cell. CK framing changes only the publicness/source header (``widely shared''); the private briefing body is otherwise unchanged. High-coord: coordination-cue intensity amplified. Unlike the main public-signal treatment, no separate public bulletin is appended.}
 \end{table}
+"""
+    return tex
+
+
+def render_tab_comm_estimators(stats: dict) -> str:
+    """Break down why communication estimators differ across aggregation rules."""
+    part1 = stats.get("part1", {})
+    decomp = ((part1.get("_pooled_comm_effect") or {}).get("decomposition") or {})
+    if not decomp:
+        return "% No communication estimator decomposition available.\n"
+
+    row_map = {row.get("model"): row for row in decomp.get("rows_by_model", [])}
+    est = decomp.get("estimators_pp") or {}
+    totals = decomp.get("totals") or {}
+    n_models = max(len(row_map), 1)
+    equal_weight_label = f"{100 / n_models:.1f}\\% each"
+
+    rows = []
+    for model in DISPLAY_ORDER:
+        row = row_map.get(model, {})
+        rows.append(
+            " & ".join(
+                [
+                    model,
+                    _fmt_arm_counts(row.get("pure_rows"), row.get("comm_rows")),
+                    _fmt_arm_pct(row.get("pure_row_share"), row.get("comm_row_share"), 1),
+                    _fmt_arm_counts(row.get("pure_unique_cells"), row.get("comm_unique_cells")),
+                    str(row.get("matched_cells", "---")),
+                    _fmt_pct(row.get("matched_cell_share"), 1),
+                    f"{row.get('pure_unmatched_cells', '---')}/{row.get('comm_unmatched_cells', '---')}",
+                    _fmt_pp_raw(row.get("unpaired_delta_pp"), 2),
+                    _fmt_pp_raw(row.get("paired_delta_pp"), 2),
+                ]
+            )
+            + r" \\"
+        )
+
+    rows.append(r"\midrule")
+    rows.append(
+        " & ".join(
+            [
+                "Equal-weight avg",
+                "---",
+                equal_weight_label,
+                "---",
+                "---",
+                equal_weight_label,
+                "---",
+                _fmt_pp_raw(est.get("equal_weight_unpaired"), 2),
+                _fmt_pp_raw(est.get("equal_weight_paired"), 2),
+            ]
+        )
+        + r" \\"
+    )
+    rows.append(
+        " & ".join(
+            [
+                "Pooled",
+                _fmt_arm_counts(totals.get("pure_rows"), totals.get("comm_rows")),
+                "100.0\\%",
+                _fmt_arm_counts(totals.get("pure_unique_cells"), totals.get("comm_unique_cells")),
+                str(totals.get("matched_cells", "---")),
+                "100.0\\%",
+                f"{totals.get('pure_unmatched_cells', '---')}/{totals.get('comm_unmatched_cells', '---')}",
+                _fmt_pp_raw(est.get("pooled_unpaired"), 2),
+                _fmt_pp_raw(est.get("pooled_paired"), 2),
+            ]
+        )
+        + r" \\"
+    )
+
+    match_key_labels = {
+        "model": "model",
+        "country": "country",
+        "period": "period",
+        "theta": r"$\theta$",
+        "z": r"$z$",
+        "benefit": "benefit",
+        "theta_star": r"$\theta^*$",
+    }
+    match_key = ", ".join(match_key_labels.get(col, col.replace("_", r"\_")) for col in decomp.get("match_key", []))
+    tex = r"""\begin{table*}[t]
+\centering
+\caption{Why the communication estimators differ.}
+\label{tab:comm_estimators}
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{lcccccccc}
+\toprule
+Model & Rows/arm & Row wt. (P/C) & Cells/arm & Matched & Cell wt. & Lost (P/C) & $\Delta$ unpaired & $\Delta$ paired \\
+\midrule
+"""
+    tex += "\n".join(rows) + "\n"
+    tex += r"""\bottomrule
+\end{tabular}
+\vspace{0.25em}
+\parbox{\textwidth}{\footnotesize\emph{Notes:} ``Rows/arm'' counts valid country-period rows entering the pooled unpaired estimator in each arm. ``Cells/arm'' counts unique task cells after collapsing duplicates by the exact matching key (""" + match_key + r"""). The paired estimator averages within these cells and keeps only common support; ``Row wt.'' and ``Cell wt.'' are the model shares in the pooled unpaired and pooled paired estimators, respectively. Only Trinity Large loses support, with one pure-only cell and no communication-only cells, so the pooled gap is overwhelmingly a weighting/re-averaging issue rather than a support-loss issue.}
+\end{table*}
 """
     return tex
 
@@ -1072,8 +1152,12 @@ def render_stats_macros(stats: dict) -> str:
 
     pooled_pure = (part1.get("_pooled_pure") or {})
     pooled_comm = (part1.get("_pooled_comm") or {})
-    pooled_delta_pp = ((part1.get("_pooled_comm_effect") or {}).get("unpaired") or {}).get("delta_pp")
-    pooled_pval = ((part1.get("_pooled_comm_effect") or {}).get("unpaired") or {}).get("p_value")
+    pooled_comm_effect = part1.get("_pooled_comm_effect") or {}
+    pooled_delta_pp = (pooled_comm_effect.get("unpaired") or {}).get("delta_pp")
+    pooled_pval = (pooled_comm_effect.get("unpaired") or {}).get("p_value")
+    comm_decomp = pooled_comm_effect.get("decomposition") or {}
+    comm_totals = comm_decomp.get("totals") or {}
+    comm_est = comm_decomp.get("estimators_pp") or {}
 
     # Surveillance × censorship: primary model (Mistral) join levels.
     sxc = ((regime.get("surveillance_x_censorship") or {}).get("Mistral Small Creative") or {})
@@ -1096,8 +1180,8 @@ def render_stats_macros(stats: dict) -> str:
         sign = "+" if pooled_delta_pp >= 0 else ""
         lines.append(_mc_raw("CommDeltaPPPooled", f"{sign}{pooled_delta_pp:.2f}"))
     lines.append(_mc("CommPValueUnpaired", pooled_pval))
-    # Paired test (matched on model/country/theta)
-    paired = ((part1.get("_pooled_comm_effect") or {}).get("paired") or {})
+    # Paired test (matched on model/country/period/theta/z/benefit/theta_star)
+    paired = (pooled_comm_effect.get("paired") or {})
     paired_delta = paired.get("delta_pp")
     paired_t = paired.get("t_stat")
     paired_p = paired.get("p_value")
@@ -1111,6 +1195,22 @@ def render_stats_macros(stats: dict) -> str:
     lines.append(_mc("CommPValuePaired", paired_p))
     if paired_n is not None:
         lines.append(_mc_raw("CommNPairs", str(paired_n)))
+    if comm_totals.get("pure_unique_cells") is not None:
+        lines.append(_mc_raw("CommPureCells", str(comm_totals.get("pure_unique_cells"))))
+    if comm_totals.get("comm_unique_cells") is not None:
+        lines.append(_mc_raw("CommCommCells", str(comm_totals.get("comm_unique_cells"))))
+    if comm_totals.get("matchable_cell_ceiling") is not None:
+        lines.append(_mc_raw("CommMatchableCells", str(comm_totals.get("matchable_cell_ceiling"))))
+    if comm_totals.get("pure_unmatched_cells") is not None:
+        lines.append(_mc_raw("CommPureOnlyCells", str(comm_totals.get("pure_unmatched_cells"))))
+    if comm_totals.get("comm_unmatched_cells") is not None:
+        lines.append(_mc_raw("CommCommOnlyCells", str(comm_totals.get("comm_unmatched_cells"))))
+    lines.append(_mc_pct("CommMatchedShare", comm_totals.get("matched_share_of_ceiling")))
+    lines.append(_mc_pct("CommPureSupportShare", comm_totals.get("pure_support_retention")))
+    lines.append(_mc_pct("CommCommSupportShare", comm_totals.get("comm_support_retention")))
+    lines.append(_mc_pp_raw("CommRowWeightedPairedPP", comm_est.get("row_weighted_paired"), nd=2))
+    lines.append(_mc_pp_raw("CommWithinModelReavgPP", comm_est.get("within_model_reavg"), nd=2))
+    lines.append(_mc_pp_raw("CommCrossModelReweightPP", comm_est.get("cross_model_reweight"), nd=2))
     lines.append("")
 
     # ── H8 power analysis ────────────────────────────────────────
@@ -2321,7 +2421,7 @@ def render_tab_bc_classifier(stats: dict) -> str:
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{B/C comparative statics: classifier vs.\ actual LLM behavior. Actual join rates shift by ${\approx}\,50$~pp across payoff conditions; the classifier, trained on text features alone, cannot predict this shift.}
+\caption{Narrative-stakes conditions: classifier vs.\ actual LLM behavior. Actual join rates shift by ${\approx}\,50$~pp across strategic-stakes framing conditions; the classifier, trained on briefing-body text features alone, cannot predict this shift.}
 \label{tab:bc_classifier}
 \footnotesize
 \setlength{\tabcolsep}{4pt}
@@ -2412,10 +2512,10 @@ def main() -> None:
     tables = {
         "tab_models.tex": render_tab_models(stats),
         "tab_main_results.tex": render_tab_main_results(stats),
+        "tab_comm_estimators.tex": render_tab_comm_estimators(stats),
         "tab_infodesign_summary.tex": render_tab_infodesign(stats),
         "tab_surveillance_propaganda.tex": render_tab_surveillance_propaganda(stats),
         "tab_surv_censor.tex": render_tab_surv_censor(stats),
-        "tab_bandwidth.tex": render_tab_bandwidth(stats),
         "tab_crossmodel.tex": render_tab_crossmodel(stats),
         "tab_decomposition.tex": render_tab_decomposition(stats),
         "tab_uncalibrated.tex": render_tab_uncalibrated(stats),

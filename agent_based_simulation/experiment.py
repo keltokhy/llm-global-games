@@ -36,6 +36,8 @@ class Agent:
     belief_raw: str = ""  # raw LLM response for debugging parse failures
     belief_pre: float | None = None  # elicited P(success) BEFORE decision, 0-100 scale
     belief_pre_raw: str = ""  # raw LLM response for pre-decision belief
+    second_order_belief_pre: float | None = None  # elicited "% who will JOIN" BEFORE decision
+    second_order_belief_pre_raw: str = ""  # raw LLM response for pre-decision second-order belief
     second_order_belief: float | None = None  # elicited "% who will JOIN", 0-100 scale
     second_order_belief_raw: str = ""  # raw LLM response for debugging
     punishment_risk: float | None = None  # elicited punishment likelihood, 0-10 scale
@@ -55,6 +57,20 @@ _PROPAGANDA_MESSAGES = [
     "Trust me on this — the regime is not going anywhere. They've consolidated power, the opposition has no leadership, and international support is holding. Anyone who moves now is walking into a trap.",
     "I've seen regimes in trouble before and this isn't it. The top brass are unified, the rank-and-file are fed and housed, and there's no credible alternative. The smart move is patience.",
     "Word on the street is that people are scared to act, and for good reason — the regime's intelligence networks are everywhere, the military exercises were a show of strength, and the economy hasn't collapsed. This is not the time.",
+]
+
+# Generic uninformative messages for the degrade-messages condition.
+# These convey zero information about regime strength — they isolate the
+# information-loss channel from surveillance framing.
+_DEGRADED_MESSAGES = [
+    "I'm still assessing the situation.",
+    "Hard to say what's going on right now.",
+    "I don't have a clear read on things yet.",
+    "It's too early to tell how this will play out.",
+    "I'm keeping my head down and watching.",
+    "Things are uncertain — I'll wait and see.",
+    "Not sure what to make of the current situation.",
+    "I'm still trying to figure out what's happening.",
 ]
 
 
@@ -81,6 +97,11 @@ class PeriodResult:
     join_fraction_valid: float = float("nan")
     api_error_rate: float = 0.0
     unparseable_rate: float = 0.0
+    message_stage_context: str = "none"
+    decision_context: str = "none"
+    message_bundle_mode: str = "live"
+    message_source_country: int | None = None
+    message_source_period: int | None = None
 
 
 def _system_decide_pure(n_agents=None):
@@ -97,18 +118,37 @@ def _system_decide_pure(n_agents=None):
     )
 
 
-def _system_decide_comm(n_agents=None):
+def _system_decide_comm(n_agents=None, decision_context: str = "none"):
     """Build communication-game decision prompt, optionally with group-size awareness."""
     if n_agents is not None:
         opener = f"You are one of {n_agents} citizens deciding whether to JOIN an uprising or STAY home.\n\n"
     else:
         opener = "You are a citizen deciding whether to JOIN an uprising or STAY home.\n\n"
-    return (
+    body = (
         opener
         + "Use your private briefing and messages from trusted contacts. "
         "You do not know how many others will JOIN.\n\n"
-        "Start your first line with exactly JOIN or STAY, then give 1-2 concise sentences of reasoning."
     )
+    if decision_context == "full":
+        body += (
+            "IMPORTANT: You know that citizen communications are being monitored by regime "
+            "security services and that other citizens may be self-censoring for fear of "
+            "serious consequences.\n\n"
+        )
+    elif decision_context == "placebo":
+        body += (
+            "NOTE: Citizen communications are being monitored for research purposes only. "
+            "There are no consequences for what anyone says.\n\n"
+        )
+    elif decision_context == "anonymous":
+        body += (
+            "NOTE: Citizen communications are aggregated anonymously. Individual identities "
+            "cannot be linked to specific messages.\n\n"
+        )
+    elif decision_context != "none":
+        raise ValueError(f"Unknown decision_context={decision_context!r}")
+    body += "Start your first line with exactly JOIN or STAY, then give 1-2 concise sentences of reasoning."
+    return body
 
 
 # Backward-compatible constants (equivalent to calling with n_agents=None)
@@ -151,19 +191,7 @@ SYSTEM_COMMUNICATE_SURVEILLED_ANONYMOUS = (
 
 def _system_decide_comm_surveilled(n_agents=None):
     """Decision prompt with surveillance awareness (for fixed-messages test)."""
-    if n_agents is not None:
-        opener = f"You are one of {n_agents} citizens deciding whether to JOIN an uprising or STAY home.\n\n"
-    else:
-        opener = "You are a citizen deciding whether to JOIN an uprising or STAY home.\n\n"
-    return (
-        opener
-        + "Use your private briefing and messages from trusted contacts. "
-        "You do not know how many others will JOIN.\n\n"
-        "IMPORTANT: You have reason to believe that your actions are being "
-        "monitored by regime security services. Participation in subversive "
-        "activity could have serious consequences.\n\n"
-        "Start your first line with exactly JOIN or STAY, then give 1-2 concise sentences of reasoning."
-    )
+    return _system_decide_comm(n_agents=n_agents, decision_context="full")
 
 
 SYSTEM_DECIDE_COMM = _system_decide_comm()
@@ -372,6 +400,26 @@ SYSTEM_ELICIT_BELIEF = (
 )
 
 
+def _messages_block(agent: Agent) -> str:
+    return "\n".join(agent.messages_received) if agent.messages_received else "(No messages received.)"
+
+
+def _build_elicitation_prompt(
+    agent: Agent,
+    question: str,
+    *,
+    include_messages: bool = False,
+    include_decision: bool = False,
+) -> str:
+    parts = [f"YOUR BRIEFING:\n{agent.briefing.render()}\n\n"]
+    if include_messages:
+        parts.append(f"MESSAGES FROM TRUSTED CONTACTS:\n{_messages_block(agent)}\n\n")
+    if include_decision:
+        parts.append(f"You chose to {agent.decision}. ")
+    parts.append(question)
+    return "".join(parts)
+
+
 def _parse_belief(response: str) -> float | None:
     """Extract a 0-100 belief from the elicitation response."""
     if not response or _is_api_error_response(response):
@@ -392,17 +440,22 @@ def _parse_belief(response: str) -> float | None:
     return None
 
 
-async def _elicit_beliefs(agents, client, model_name, semaphore, call_kwargs):
+async def _elicit_beliefs(
+    agents, client, model_name, semaphore, call_kwargs, *, include_messages: bool = False
+):
     """Fire belief elicitation prompts for all non-propaganda agents."""
     real_agents = [a for a in agents if not a.is_propaganda]
     coros = [
         _call_llm(
             client, agent.model or model_name,
             SYSTEM_ELICIT_BELIEF,
-            f"YOUR BRIEFING:\n{agent.briefing.render()}\n\n"
-            f"You chose to {agent.decision}. "
-            "How likely is the uprising to succeed (0 = impossible, 100 = certain)?\n\n"
-            "Answer with just the number:",
+            _build_elicitation_prompt(
+                agent,
+                "How likely is the uprising to succeed (0 = impossible, 100 = certain)?\n\n"
+                "Answer with just the number:",
+                include_messages=include_messages,
+                include_decision=True,
+            ),
             semaphore, min_content_chars=1, **call_kwargs,
         )
         for agent in real_agents
@@ -413,17 +466,22 @@ async def _elicit_beliefs(agents, client, model_name, semaphore, call_kwargs):
         agent.belief = _parse_belief(response)
 
 
-async def _elicit_beliefs_pre(agents, client, model_name, semaphore, call_kwargs):
+async def _elicit_beliefs_pre(
+    agents, client, model_name, semaphore, call_kwargs, *, include_messages: bool = False
+):
     """Fire pre-decision belief elicitation prompts for all non-propaganda agents."""
     real_agents = [a for a in agents if not a.is_propaganda]
     coros = [
         _call_llm(
             client, agent.model or model_name,
             SYSTEM_ELICIT_BELIEF,
-            f"YOUR BRIEFING:\n{agent.briefing.render()}\n\n"
-            "Based on your intelligence briefing, how likely is the uprising to succeed "
-            "(0 = impossible, 100 = certain)?\n\n"
-            "Answer with just the number:",
+            _build_elicitation_prompt(
+                agent,
+                "Based on the available information, how likely is the uprising to succeed "
+                "(0 = impossible, 100 = certain)?\n\n"
+                "Answer with just the number:",
+                include_messages=include_messages,
+            ),
             semaphore, min_content_chars=1, **call_kwargs,
         )
         for agent in real_agents
@@ -440,17 +498,22 @@ SYSTEM_ELICIT_SECOND_ORDER = (
 )
 
 
-async def _elicit_second_order(agents, client, model_name, semaphore, call_kwargs):
+async def _elicit_second_order(
+    agents, client, model_name, semaphore, call_kwargs, *, include_messages: bool = False
+):
     """Fire second-order belief elicitation: expected fraction of JOINers."""
     real_agents = [a for a in agents if not a.is_propaganda]
     coros = [
         _call_llm(
             client, agent.model or model_name,
             SYSTEM_ELICIT_SECOND_ORDER,
-            f"YOUR BRIEFING:\n{agent.briefing.render()}\n\n"
-            f"You chose to {agent.decision}. "
-            "What percentage of citizens will choose to JOIN the uprising "
-            "(0 = none, 100 = all)?\n\nAnswer with just the number:",
+            _build_elicitation_prompt(
+                agent,
+                "What percentage of citizens will choose to JOIN the uprising "
+                "(0 = none, 100 = all)?\n\nAnswer with just the number:",
+                include_messages=include_messages,
+                include_decision=True,
+            ),
             semaphore, min_content_chars=1, **call_kwargs,
         )
         for agent in real_agents
@@ -459,6 +522,31 @@ async def _elicit_second_order(agents, client, model_name, semaphore, call_kwarg
     for agent, response in zip(real_agents, responses):
         agent.second_order_belief_raw = response or ""
         agent.second_order_belief = _parse_belief(response)
+
+
+async def _elicit_second_order_pre(
+    agents, client, model_name, semaphore, call_kwargs, *, include_messages: bool = False
+):
+    """Fire pre-decision second-order belief elicitation."""
+    real_agents = [a for a in agents if not a.is_propaganda]
+    coros = [
+        _call_llm(
+            client, agent.model or model_name,
+            SYSTEM_ELICIT_SECOND_ORDER,
+            _build_elicitation_prompt(
+                agent,
+                "Before deciding, what percentage of citizens will choose to JOIN the uprising "
+                "(0 = none, 100 = all)?\n\nAnswer with just the number:",
+                include_messages=include_messages,
+            ),
+            semaphore, min_content_chars=1, **call_kwargs,
+        )
+        for agent in real_agents
+    ]
+    responses = await asyncio.gather(*coros)
+    for agent, response in zip(real_agents, responses):
+        agent.second_order_belief_pre_raw = response or ""
+        agent.second_order_belief_pre = _parse_belief(response)
 
 
 SYSTEM_ELICIT_PUNISHMENT = (
@@ -578,6 +666,10 @@ def _serialize_agents(agents, include_messages: bool = False) -> list[dict]:
             row["belief"] = a.belief
         if a.belief_raw:
             row["belief_raw"] = a.belief_raw
+        if a.second_order_belief_pre is not None:
+            row["second_order_belief_pre"] = a.second_order_belief_pre
+        if a.second_order_belief_pre_raw:
+            row["second_order_belief_pre_raw"] = a.second_order_belief_pre_raw
         if a.second_order_belief is not None:
             row["second_order_belief"] = a.second_order_belief
         if a.second_order_belief_raw:
@@ -594,6 +686,7 @@ def _serialize_agents(agents, include_messages: bool = False) -> list[dict]:
             row["persona"] = a.persona
         if include_messages:
             row["message_sent"] = a.message_sent
+            row["messages_received"] = list(a.messages_received)
         rows.append(row)
     return rows
 
@@ -610,6 +703,10 @@ def _build_period_result(
     benefit: float,
     theoretical_attack: float,
     include_messages: bool = False,
+    message_stage_context: str = "none",
+    decision_context: str = "none",
+    message_bundle_mode: str = "live",
+    message_source_key: tuple[int, int] | None = None,
 ) -> PeriodResult:
     d = _period_diagnostics(agents)
     coup_success = d["join_fraction"] > theta
@@ -633,6 +730,11 @@ def _build_period_result(
         join_fraction_valid=float(d["join_fraction_valid"]) if d["n_valid"] > 0 else float("nan"),
         api_error_rate=float(d["n_api_error"] / len(agents)),
         unparseable_rate=float(d["n_unparseable"] / len(agents)),
+        message_stage_context=message_stage_context,
+        decision_context=decision_context,
+        message_bundle_mode=message_bundle_mode,
+        message_source_country=(None if message_source_key is None else int(message_source_key[0])),
+        message_source_period=(None if message_source_key is None else int(message_source_key[1])),
     )
 
 
@@ -655,6 +757,8 @@ async def run_pure_global_game(agents, theta, z, sigma, benefit, briefing_gen,
                                 elicit_second_order=False,
                                 elicit_punishment_risk=False,
                                 belief_order="post",
+                                second_order_order="post",
+                                beliefs_include_messages=False,
                                 temperature=0.7):
     """Run one period of the pure global game (no communication).
 
@@ -680,7 +784,15 @@ async def run_pure_global_game(agents, theta, z, sigma, benefit, briefing_gen,
 
     # Pre-decision belief elicitation
     if elicit_beliefs and belief_order in ("pre", "both"):
-        await _elicit_beliefs_pre(agents, client, model_name, semaphore, call_kwargs)
+        await _elicit_beliefs_pre(
+            agents, client, model_name, semaphore, call_kwargs,
+            include_messages=beliefs_include_messages,
+        )
+    if elicit_second_order and second_order_order in ("pre", "both"):
+        await _elicit_second_order_pre(
+            agents, client, model_name, semaphore, call_kwargs,
+            include_messages=beliefs_include_messages,
+        )
 
     system_prompt = _system_decide_pure(n_agents=len(agents) if group_size_info else None)
     coros = [
@@ -699,9 +811,15 @@ async def run_pure_global_game(agents, theta, z, sigma, benefit, briefing_gen,
 
     # Post-decision belief elicitation
     if elicit_beliefs and belief_order in ("post", "both"):
-        await _elicit_beliefs(agents, client, model_name, semaphore, call_kwargs)
-    if elicit_second_order:
-        await _elicit_second_order(agents, client, model_name, semaphore, call_kwargs)
+        await _elicit_beliefs(
+            agents, client, model_name, semaphore, call_kwargs,
+            include_messages=beliefs_include_messages,
+        )
+    if elicit_second_order and second_order_order in ("post", "both"):
+        await _elicit_second_order(
+            agents, client, model_name, semaphore, call_kwargs,
+            include_messages=beliefs_include_messages,
+        )
     if elicit_punishment_risk:
         await _elicit_punishment_risk(agents, client, model_name, semaphore, call_kwargs)
 
@@ -728,12 +846,18 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
                                   briefing_overrides=None,
                                   surveillance=False,
                                   surveillance_mode="full",
+                                  decision_context="auto",
                                   group_size_info=False,
                                   elicit_beliefs=False,
                                   elicit_second_order=False,
                                   elicit_punishment_risk=False,
                                   fixed_messages=None,
+                                  degrade_messages=False,
                                   belief_order="post",
+                                  second_order_order="post",
+                                  beliefs_include_messages=False,
+                                  message_bundle_mode="live",
+                                  message_source_key=None,
                                   temperature=0.7):
     """Run one period with communication round before decision.
 
@@ -744,7 +868,10 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
         (aggregated anonymously). Only effective when surveillance=True.
     fixed_messages: if provided, dict mapping agent_id -> message string. Skips the
         message-generation LLM call and uses these pre-recorded messages instead.
+    degrade_messages: if True, replaces all messages with generic uninformative content
+        WITHOUT adding surveillance framing. Isolates the information-loss channel.
     belief_order: "post" (after decision), "pre" (before decision), or "both".
+    second_order_order: "post" (after decision), "pre" (before decision), or "both".
     """
     rng = np.random.default_rng(deterministic_hash((country, period, "signals")) % 2**32)
 
@@ -764,8 +891,12 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
     call_kwargs = {**_retry_kwargs(llm_max_retries, llm_empty_retries), "temperature": temperature}
     prop_rng = np.random.default_rng(deterministic_hash((country, period, "propaganda")) % 2**32)
 
-    # Communication round — use fixed messages if provided, else generate via LLM
-    if fixed_messages is not None:
+    # Communication round — use fixed/degraded messages if provided, else generate via LLM
+    if degrade_messages:
+        deg_rng = np.random.default_rng(deterministic_hash((country, period, "degrade")) % 2**32)
+        for agent in agents:
+            agent.message_sent = _DEGRADED_MESSAGES[deg_rng.integers(len(_DEGRADED_MESSAGES))]
+    elif fixed_messages is not None:
         for agent in agents:
             agent.message_sent = fixed_messages.get(agent.agent_id, "(No message recorded.)")
     else:
@@ -807,20 +938,32 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
 
     # Pre-decision belief elicitation
     if elicit_beliefs and belief_order in ("pre", "both"):
-        await _elicit_beliefs_pre(agents, client, model_name, semaphore, call_kwargs)
+        await _elicit_beliefs_pre(
+            agents, client, model_name, semaphore, call_kwargs,
+            include_messages=beliefs_include_messages,
+        )
+    if elicit_second_order and second_order_order in ("pre", "both"):
+        await _elicit_second_order_pre(
+            agents, client, model_name, semaphore, call_kwargs,
+            include_messages=beliefs_include_messages,
+        )
 
     # Decision round — propaganda agents forced to STAY
-    if surveillance and fixed_messages is not None:
-        decide_system = _system_decide_comm_surveilled(n_agents=len(agents) if group_size_info else None)
+    if decision_context == "auto":
+        resolved_decision_context = surveillance_mode if (surveillance and fixed_messages is not None) else "none"
     else:
-        decide_system = _system_decide_comm(n_agents=len(agents) if group_size_info else None)
+        resolved_decision_context = decision_context
+    decide_system = _system_decide_comm(
+        n_agents=len(agents) if group_size_info else None,
+        decision_context=resolved_decision_context,
+    )
     decide_agents = [a for a in agents if not a.is_propaganda]
     decide_coros = [
         _call_llm(client, agent.model or model_name,
                    _persona_system(decide_system, agent.persona),
                    _build_decision_prompt(
                        agent.briefing.render(),
-                       "\n".join(agent.messages_received) if agent.messages_received else "(No messages received.)",
+                       _messages_block(agent),
                    ),
                    semaphore, **call_kwargs)
         for agent in decide_agents
@@ -839,9 +982,15 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
 
     # Post-decision belief elicitation
     if elicit_beliefs and belief_order in ("post", "both"):
-        await _elicit_beliefs(agents, client, model_name, semaphore, call_kwargs)
-    if elicit_second_order:
-        await _elicit_second_order(agents, client, model_name, semaphore, call_kwargs)
+        await _elicit_beliefs(
+            agents, client, model_name, semaphore, call_kwargs,
+            include_messages=beliefs_include_messages,
+        )
+    if elicit_second_order and second_order_order in ("post", "both"):
+        await _elicit_second_order(
+            agents, client, model_name, semaphore, call_kwargs,
+            include_messages=beliefs_include_messages,
+        )
     if elicit_punishment_risk:
         await _elicit_punishment_risk(agents, client, model_name, semaphore, call_kwargs)
 
@@ -858,4 +1007,8 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
         benefit=benefit,
         theoretical_attack=theoretical_attack,
         include_messages=True,
+        message_stage_context=(surveillance_mode if surveillance else "none"),
+        decision_context=resolved_decision_context,
+        message_bundle_mode=message_bundle_mode,
+        message_source_key=message_source_key,
     )

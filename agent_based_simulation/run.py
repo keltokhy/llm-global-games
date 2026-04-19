@@ -284,6 +284,89 @@ def _load_fixed_messages(path: str) -> tuple[
     return messages_by_period, metadata_by_period
 
 
+def _resolve_fixed_message_assignments(
+    tasks_spec: list[dict],
+    messages_by_period: dict[tuple[int, int], dict[int, str]],
+    metadata_by_period: dict[tuple[int, int], dict],
+    *,
+    mode: str,
+    align_metadata: bool,
+    seed: int,
+) -> tuple[list[dict], dict[tuple[int, int], dict[int, str]], dict[tuple[int, int], tuple[int, int]]]:
+    """Assign fixed message bundles to target periods.
+
+    Returns:
+        tasks_spec: possibly filtered/metadata-overridden target specs
+        assigned_messages: (country, period) -> {agent_id: message}
+        source_keys: (country, period) -> source (country, period) used
+    """
+    if not messages_by_period:
+        return tasks_spec, {}, {}
+
+    mode = str(mode)
+    rng = np.random.default_rng(
+        deterministic_hash((seed, "fixed_message_assignment", mode)) % 2**32
+    )
+    source_keys_all = sorted(messages_by_period)
+    source_by_country: dict[int, list[tuple[int, int]]] = {}
+    for key in source_keys_all:
+        source_by_country.setdefault(key[0], []).append(key)
+
+    assigned_messages: dict[tuple[int, int], dict[int, str]] = {}
+    source_map: dict[tuple[int, int], tuple[int, int]] = {}
+
+    if mode == "exact":
+        filtered = []
+        matched = 0
+        for spec in tasks_spec:
+            key = (spec["c"], spec["t"])
+            if key not in messages_by_period:
+                continue
+            if align_metadata and key in metadata_by_period:
+                meta = metadata_by_period[key]
+                spec = {**spec, "theta": meta["theta"], "z": meta["z"], "benefit": meta["benefit"]}
+            filtered.append(spec)
+            assigned_messages[key] = messages_by_period[key]
+            source_map[key] = key
+            matched += 1
+        print(f"  Fixed messages: exact key replay for {matched} target periods")
+        if align_metadata:
+            print("  Fixed messages: aligned theta/z/benefit to source metadata")
+        return filtered, assigned_messages, source_map
+
+    target_keys = [(spec["c"], spec["t"]) for spec in tasks_spec]
+
+    if mode == "permute_periods":
+        permuted = source_keys_all.copy()
+        rng.shuffle(permuted)
+        chosen = [permuted[i % len(permuted)] for i in range(len(target_keys))]
+    elif mode == "sample_periods":
+        idx = rng.integers(0, len(source_keys_all), size=len(target_keys))
+        chosen = [source_keys_all[int(i)] for i in idx]
+    elif mode == "sample_within_country":
+        chosen = []
+        for country, _period in target_keys:
+            pool = source_by_country.get(country) or source_keys_all
+            chosen.append(pool[int(rng.integers(0, len(pool)))])
+    else:
+        raise ValueError(
+            f"Unknown fixed_messages_mode={mode!r}. "
+            "Choose from {'exact','permute_periods','sample_periods','sample_within_country'}."
+        )
+
+    for target_key, source_key in zip(target_keys, chosen):
+        assigned_messages[target_key] = messages_by_period[source_key]
+        source_map[target_key] = source_key
+
+    print(
+        f"  Fixed messages: assigned {len(target_keys)} target periods via mode={mode}"
+        + (" (metadata left on target draw)" if not align_metadata else "")
+    )
+    if align_metadata:
+        print("  Warning: metadata alignment is ignored outside mode='exact'")
+    return tasks_spec, assigned_messages, source_map
+
+
 def run_experiment(args, treatment, signal_mode="normal"):
     """Run an experiment (pure or communication). All periods run in parallel."""
     from .experiment import (
@@ -304,7 +387,7 @@ def run_experiment(args, treatment, signal_mode="normal"):
         print(f"  Placebo calibration: shifted cutoff_center by {args.wrong_center:+.3f} "
               f"({original:.3f} → {args.cutoff_center:.3f})")
 
-    # Load fixed messages if provided (for fixed-message surveillance test)
+    # Load fixed messages if provided (for replay / fixed-message tests)
     fixed_messages_map = None
     fixed_metadata_map = None
     if getattr(args, 'fixed_messages', None):
@@ -330,6 +413,8 @@ def run_experiment(args, treatment, signal_mode="normal"):
             coordination_blend_prob=args.coordination_blend_prob,
             language_variant=args.language_variant,
             seed=args.seed,
+            direction_transform=getattr(args, 'direction_transform', 'logistic'),
+            disabled_domains=getattr(args, 'disabled_domains', []),
         )
 
         # Build network (used only in communication treatment)
@@ -350,19 +435,20 @@ def run_experiment(args, treatment, signal_mode="normal"):
                 theta = rng.normal(z, 1.0)  # tau = 1
                 tasks_spec.append({"c": c, "t": t, "z": z, "benefit": benefit, "theta": theta})
 
-        # Override theta/z from fixed-messages metadata so briefings match
-        if fixed_metadata_map is not None:
-            matched = 0
-            for spec in tasks_spec:
-                key = (spec["c"], spec["t"])
-                if key in fixed_metadata_map:
-                    spec["theta"] = fixed_metadata_map[key]["theta"]
-                    spec["z"] = fixed_metadata_map[key]["z"]
-                    spec["benefit"] = fixed_metadata_map[key]["benefit"]
-                    matched += 1
-            # Filter to only periods with fixed-message data
-            tasks_spec = [s for s in tasks_spec if (s["c"], s["t"]) in fixed_metadata_map]
-            print(f"  Overrode theta/z for {matched} periods from fixed-messages log")
+        assigned_fixed_messages = None
+        assigned_fixed_sources = None
+        if fixed_messages_map is not None:
+            align_metadata = getattr(args, "fixed_messages_align_metadata", None)
+            if align_metadata is None:
+                align_metadata = getattr(args, "fixed_messages_mode", "exact") == "exact"
+            tasks_spec, assigned_fixed_messages, assigned_fixed_sources = _resolve_fixed_message_assignments(
+                tasks_spec,
+                fixed_messages_map,
+                fixed_metadata_map or {},
+                mode=getattr(args, "fixed_messages_mode", "exact"),
+                align_metadata=bool(align_metadata),
+                seed=args.seed,
+            )
 
         n_total = len(tasks_spec)
         completed = [0]  # mutable counter for progress
@@ -432,13 +518,18 @@ def run_experiment(args, treatment, signal_mode="normal"):
                     elicit_second_order=getattr(args, 'elicit_second_order', False),
                     elicit_punishment_risk=getattr(args, 'elicit_punishment_risk', False),
                     belief_order=getattr(args, 'belief_order', 'post'),
+                    second_order_order=getattr(args, 'second_order_order', 'post'),
+                    beliefs_include_messages=getattr(args, 'beliefs_include_messages', False),
                     temperature=getattr(args, 'temperature', 0.7),
                 )
             else:
                 # Resolve fixed messages for this (country, period) if available
                 period_fixed = None
-                if fixed_messages_map is not None:
-                    period_fixed = fixed_messages_map.get((spec["c"], spec["t"]))
+                source_key = None
+                if assigned_fixed_messages is not None:
+                    key = (spec["c"], spec["t"])
+                    period_fixed = assigned_fixed_messages.get(key)
+                    source_key = assigned_fixed_sources.get(key) if assigned_fixed_sources else None
 
                 result = await run_communication_game(
                     task_agents, spec["theta"], spec["z"], args.sigma, spec["benefit"],
@@ -453,7 +544,17 @@ def run_experiment(args, treatment, signal_mode="normal"):
                     elicit_second_order=getattr(args, 'elicit_second_order', False),
                     elicit_punishment_risk=getattr(args, 'elicit_punishment_risk', False),
                     fixed_messages=period_fixed,
+                    degrade_messages=getattr(args, 'degrade_messages', False),
                     belief_order=getattr(args, 'belief_order', 'post'),
+                    second_order_order=getattr(args, 'second_order_order', 'post'),
+                    beliefs_include_messages=getattr(args, 'beliefs_include_messages', False),
+                    decision_context=getattr(args, 'decision_context', 'auto'),
+                    message_bundle_mode=(
+                        "degraded"
+                        if getattr(args, 'degrade_messages', False)
+                        else ("live" if period_fixed is None else getattr(args, 'fixed_messages_mode', 'exact'))
+                    ),
+                    message_source_key=source_key,
                     temperature=getattr(args, 'temperature', 0.7),
                 )
 
@@ -521,12 +622,26 @@ def run_experiment(args, treatment, signal_mode="normal"):
             "unparseable_rate": r.unparseable_rate,
             "coup_success": r.coup_success,
             "theoretical_attack": r.theoretical_attack,
+            "direction_transform": getattr(args, 'direction_transform', 'logistic'),
+            "degrade_messages": getattr(args, 'degrade_messages', False),
+            "beliefs_include_messages": getattr(args, 'beliefs_include_messages', False),
+            "belief_order": getattr(args, 'belief_order', 'post'),
+            "second_order_order": getattr(args, 'second_order_order', 'post'),
+            "message_stage_context": getattr(r, 'message_stage_context', 'none'),
+            "decision_context": getattr(r, 'decision_context', 'none'),
+            "message_bundle_mode": getattr(r, 'message_bundle_mode', 'live'),
+            "message_source_country": getattr(r, 'message_source_country', None),
+            "message_source_period": getattr(r, 'message_source_period', None),
         }
         for r in results
     ]
 
     summary_df = pd.DataFrame(summary_rows)
+    dt = getattr(args, 'direction_transform', 'logistic')
+    dt_suffix = f"_{dt}" if dt != "logistic" else ""
+    dm_suffix = "_degraded" if getattr(args, 'degrade_messages', False) else ""
     file_label = signal_mode if signal_mode != "normal" else treatment
+    file_label = f"{file_label}{dt_suffix}{dm_suffix}"
 
     # ── Append mode: merge with existing data ───────────────────────
     logs = [{**row, "agents": r.agents} for row, r in zip(summary_rows, results)]
@@ -611,19 +726,50 @@ def main():
                         help="After each decision, ask agents for P(uprising succeeds) on 0-100 scale")
     parser.add_argument("--elicit-second-order", action="store_true",
                         help="After each decision, ask agents what %% of citizens will JOIN (0-100 scale)")
+    parser.add_argument("--beliefs-include-messages", action="store_true",
+                        help="Include received messages in belief / second-order elicitation prompts "
+                             "(useful for validating the belief instrument on the full decision information set)")
     parser.add_argument("--elicit-punishment-risk", action="store_true",
                         help="After each decision, ask agents to rate expected punishment (0-10 scale)")
     parser.add_argument("--fixed-messages", type=str, default=None,
                         help="Path to a communication experiment log JSON. Replaces live message "
-                             "generation with pre-recorded messages (for fixed-message surveillance test)")
+                             "generation with pre-recorded messages")
+    parser.add_argument("--fixed-messages-mode", type=str,
+                        choices=["exact", "permute_periods", "sample_periods", "sample_within_country"],
+                        default="exact",
+                        help="How to assign fixed message bundles to target periods: "
+                             "'exact' reuses matching (country,period) bundles; "
+                             "'permute_periods' shuffles whole bundles across target periods; "
+                             "'sample_periods' samples bundles globally with replacement; "
+                             "'sample_within_country' samples within country when possible.")
+    parser.add_argument("--fixed-messages-align-metadata", dest="fixed_messages_align_metadata",
+                        action="store_true",
+                        help="When using --fixed-messages-mode exact, also replace theta/z/benefit "
+                             "with the source log metadata so private briefings match the source run.")
+    parser.add_argument("--no-fixed-messages-align-metadata", dest="fixed_messages_align_metadata",
+                        action="store_false",
+                        help="Keep the target run's own theta/z/benefit when replaying fixed messages.")
+    parser.set_defaults(fixed_messages_align_metadata=None)
     parser.add_argument("--belief-order", type=str, choices=["post", "pre", "both"], default="post",
                         help="When to elicit beliefs: 'post' (after decision, default), "
                              "'pre' (before decision), 'both' (before and after). "
                              "Only effective with --elicit-beliefs.")
+    parser.add_argument("--second-order-order", type=str, choices=["post", "pre", "both"], default="post",
+                        help="When to elicit second-order beliefs: 'post' (after decision, default), "
+                             "'pre' (before decision), or 'both'. Only effective with --elicit-second-order.")
     parser.add_argument("--surveillance-mode", type=str, choices=["full", "placebo", "anonymous"], default="full",
                         help="Surveillance framing: 'full' (consequences, default), "
                              "'placebo' (monitored, no consequences), 'anonymous' (aggregated anonymously). "
                              "Only effective with --surveillance.")
+    parser.add_argument("--decision-context", type=str,
+                        choices=["auto", "none", "full", "placebo", "anonymous"],
+                        default="auto",
+                        help="Decision-stage context shown to the deciding agent. 'auto' preserves the old "
+                             "fixed-messages behavior (inherit surveillance context only when replaying fixed "
+                             "messages under surveillance).")
+    parser.add_argument("--degrade-messages", action="store_true",
+                        help="Replace all communication messages with generic uninformative content "
+                             "(no surveillance framing). Isolates the information-loss channel.")
     parser.add_argument("--wrong-center", type=float, default=None,
                         help="Placebo calibration: shift cutoff_center by this amount after loading "
                              "calibrated params. E.g. --wrong-center 0.3 adds 0.3 to the calibrated center.")

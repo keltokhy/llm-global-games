@@ -57,6 +57,13 @@ class InfoDesignConfig:
 
     # Absolute targets (blended: base*(1-w) + target*w)
     dissent_floor_target: Optional[float] = None
+    clarity_target: Optional[float] = None
+
+    # Additive slider offsets for orthogonalization tests.
+    # Negative direction_offset => weaker-state framing; positive => stronger-state framing.
+    # Negative coordination_offset => more open/action-oriented tone; positive => quieter/cautious tone.
+    direction_offset: float = 0.0
+    coordination_offset: float = 0.0
 
     # Public signal injection
     inject_public_signal: bool = False
@@ -83,6 +90,10 @@ class InfoDesignConfig:
     # Domain-group scramble: indices of observation domains to scramble across agents
     # (e.g., (3, 5) for coordination-relevant domains street_mood + personal_observations)
     scramble_domain_indices: Optional[tuple[int, ...]] = None
+
+    # Domain removal: completely remove specified domains from generated briefings
+    # (e.g., (3, 5) to ablate coordination-relevant domains)
+    disabled_domains: tuple[int, ...] = ()
 
 
 # ── Pre-built designs ────────────────────────────────────────────────
@@ -286,6 +297,127 @@ BC_LOW_COST = InfoDesignConfig(
     ),
 )
 
+# ── Held-grid narrative payoff conditions ─────────────────────────
+# Five levels between high and low cost, all on the same θ-grid (B=C=1).
+# Tests whether narrative framing of cost shifts behavior with identical briefings.
+
+BC_VERY_HIGH_COST = InfoDesignConfig(
+    name="bc_very_high_cost",
+    source_header=(
+        "CONTEXT: The regime maintains an extensive network of informants and has "
+        "a documented history of disappearances following failed uprisings. Participants' "
+        "families are routinely targeted. The cost of unsuccessful action is existential."
+    ),
+)
+
+BC_MODERATE_HIGH_COST = InfoDesignConfig(
+    name="bc_moderate_high_cost",
+    source_header=(
+        "CONTEXT: Participants in past failed uprisings have faced prison sentences "
+        "of several years and loss of employment. The personal cost of unsuccessful "
+        "action is significant but not life-threatening."
+    ),
+)
+
+BC_NEUTRAL = InfoDesignConfig(
+    name="bc_neutral",
+    source_header=(
+        "CONTEXT: The consequences of participating in a failed uprising are uncertain "
+        "and vary case by case. Some participants have faced penalties while others "
+        "have not. The personal stakes are ambiguous."
+    ),
+)
+
+BC_MODERATE_LOW_COST = InfoDesignConfig(
+    name="bc_moderate_low_cost",
+    source_header=(
+        "CONTEXT: Recent legal reforms have limited the regime's ability to punish "
+        "dissent. Past participants faced only brief questioning and were released "
+        "without charges. The personal risk of action is modest."
+    ),
+)
+
+BC_VERY_LOW_COST = InfoDesignConfig(
+    name="bc_very_low_cost",
+    source_header=(
+        "CONTEXT: The international community has guaranteed safe passage and asylum "
+        "for all participants regardless of outcome. Even failed uprisings carry "
+        "essentially zero personal cost."
+    ),
+)
+
+# ── B/C paraphrase variants (robustness check) ───────────────────
+
+BC_HIGH_COST_V2 = InfoDesignConfig(
+    name="bc_high_cost_v2",
+    source_header=(
+        "CONTEXT: In this country, authorities have consistently punished failed "
+        "challengers with lengthy imprisonment and confiscation of property. "
+        "Family members of participants also face persecution. Acting and failing "
+        "carries devastating consequences."
+    ),
+)
+
+BC_LOW_COST_V2 = InfoDesignConfig(
+    name="bc_low_cost_v2",
+    source_header=(
+        "CONTEXT: A robust network of human rights organizations provides legal "
+        "protection to political participants. Historical precedent shows that "
+        "even unsuccessful challengers face no lasting repercussions."
+    ),
+)
+
+# ── Placebo header (irrelevant content control) ──────────────────
+
+BC_PLACEBO = InfoDesignConfig(
+    name="bc_placebo",
+    source_header=(
+        "CONTEXT: The country has experienced significant weather disruptions this year, "
+        "including severe flooding in the eastern provinces and an extended drought in "
+        "agricultural regions. Infrastructure damage has been substantial."
+    ),
+)
+
+# ── Publicness × authority 2×2 ───────────────────────────────────
+# Crosses {public/private framing} × {authority/anonymous source}.
+
+PUBLIC_AUTHORITY = InfoDesignConfig(
+    name="public_authority",
+    source_header=(
+        "OFFICIAL GOVERNMENT BULLETIN: This assessment has been prepared by the "
+        "Ministry of Internal Affairs and distributed to all citizens as a matter "
+        "of public record."
+    ),
+    inject_public_signal=False,
+)
+
+PUBLIC_ANONYMOUS = InfoDesignConfig(
+    name="public_anonymous",
+    source_header=(
+        "NOTE: This document has been distributed to all citizens through an "
+        "anonymous channel. Every citizen in your area has received an identical copy. "
+        "The source of this information is unknown."
+    ),
+)
+
+PRIVATE_AUTHORITY = InfoDesignConfig(
+    name="private_authority",
+    source_header=(
+        "OFFICIAL GOVERNMENT BULLETIN: This assessment has been prepared by the "
+        "Ministry of Internal Affairs and provided to you individually as a "
+        "classified briefing. No other citizens have seen this document."
+    ),
+)
+
+PRIVATE_ANONYMOUS = InfoDesignConfig(
+    name="private_anonymous",
+    source_header=(
+        "NOTE: This document was obtained through an anonymous source and provided "
+        "to you alone. No other citizens have seen this information. The source "
+        "is unknown."
+    ),
+)
+
 # ── Censorship with common knowledge ──────────────────────────────
 # Agents know censorship is occurring, enabling Bayesian updating about
 # the censorship rule rather than just observing bland text.
@@ -319,6 +451,61 @@ DOMAIN_SCRAMBLE_STATE = InfoDesignConfig(
     scramble_domain_indices=(0, 1, 4, 7),  # elite, security, info_control, institutional
 )
 
+# ── Domain removal ablation designs ──────────────────────────────
+# Completely removes specified domains from briefings (vs scramble which
+# decorrelates them). Tests whether coordination cues vs state cues drive behavior.
+# Domain indices: 0=elite_cohesion, 1=security_forces, 2=money_and_logistics,
+#   3=street_mood, 4=information_control, 5=personal_observations,
+#   6=diplomatic_signals, 7=institutional_functioning
+# The dissent floor (dissent_floor param) affects all remaining domains uniformly.
+
+ABLATE_COORDINATION = InfoDesignConfig(
+    name="ablate_coordination",
+    disabled_domains=(3, 5),  # street_mood, personal_observations
+)
+
+ABLATE_STATE = InfoDesignConfig(
+    name="ablate_state",
+    disabled_domains=(0, 1, 4, 7),  # elite, security, info_control, institutional
+)
+
+# ── Orthogonalized state-evidence × coordination-tone designs ───────
+# Hold clarity fixed and shift the factual-state slider independently from the
+# coordination-tone slider. These are constant across the θ-grid (large bandwidth)
+# so the manipulation is within-briefing rather than concentrated near θ*.
+
+ORTH_WEAK_OPEN = InfoDesignConfig(
+    name="orth_weak_open",
+    clarity_target=0.85,
+    direction_offset=-2.0,
+    coordination_offset=-2.0,
+    bandwidth=10.0,
+)
+
+ORTH_WEAK_QUIET = InfoDesignConfig(
+    name="orth_weak_quiet",
+    clarity_target=0.85,
+    direction_offset=-2.0,
+    coordination_offset=2.0,
+    bandwidth=10.0,
+)
+
+ORTH_STRONG_OPEN = InfoDesignConfig(
+    name="orth_strong_open",
+    clarity_target=0.85,
+    direction_offset=2.0,
+    coordination_offset=-2.0,
+    bandwidth=10.0,
+)
+
+ORTH_STRONG_QUIET = InfoDesignConfig(
+    name="orth_strong_quiet",
+    clarity_target=0.85,
+    direction_offset=2.0,
+    coordination_offset=2.0,
+    bandwidth=10.0,
+)
+
 # Falsification designs: scramble and flip within each info design
 # These reuse the same config but are run with signal_mode="scramble"/"flip"
 # in the experiment runner.
@@ -344,10 +531,28 @@ ALL_DESIGNS = {
     "ck_private": CK_PRIVATE,
     "bc_high_cost": BC_HIGH_COST,
     "bc_low_cost": BC_LOW_COST,
+    "bc_very_high_cost": BC_VERY_HIGH_COST,
+    "bc_moderate_high_cost": BC_MODERATE_HIGH_COST,
+    "bc_neutral": BC_NEUTRAL,
+    "bc_moderate_low_cost": BC_MODERATE_LOW_COST,
+    "bc_very_low_cost": BC_VERY_LOW_COST,
+    "bc_high_cost_v2": BC_HIGH_COST_V2,
+    "bc_low_cost_v2": BC_LOW_COST_V2,
+    "bc_placebo": BC_PLACEBO,
+    "public_authority": PUBLIC_AUTHORITY,
+    "public_anonymous": PUBLIC_ANONYMOUS,
+    "private_authority": PRIVATE_AUTHORITY,
+    "private_anonymous": PRIVATE_ANONYMOUS,
     "censor_upper_known": UPPER_CENSORSHIP_KNOWN,
     "within_scramble": WITHIN_SCRAMBLE,
     "domain_scramble_coord": DOMAIN_SCRAMBLE_COORDINATION,
     "domain_scramble_state": DOMAIN_SCRAMBLE_STATE,
+    "ablate_coordination": ABLATE_COORDINATION,
+    "ablate_state": ABLATE_STATE,
+    "orth_weak_open": ORTH_WEAK_OPEN,
+    "orth_weak_quiet": ORTH_WEAK_QUIET,
+    "orth_strong_open": ORTH_STRONG_OPEN,
+    "orth_strong_quiet": ORTH_STRONG_QUIET,
     "ck_high_coord": CK_HIGH_COORD,
     "ck_low_coord": CK_LOW_COORD,
     "priv_high_coord": PRIV_HIGH_COORD,
@@ -403,6 +608,15 @@ class ThetaAdaptiveBriefingGenerator:
             params["dissent_floor"] = (
                 base_dissent * (1.0 - w) + self.config.dissent_floor_target * w
             )
+        if self.config.clarity_target is not None:
+            params["clarity_override"] = self.config.clarity_target
+        params["direction_offset"] = params.get("direction_offset", 0.0) + w * self.config.direction_offset
+        params["coordination_offset"] = params.get("coordination_offset", 0.0) + w * self.config.coordination_offset
+
+        # Merge disabled domains from config with any from base_params
+        if self.config.disabled_domains:
+            existing = set(params.get("disabled_domains", ()))
+            params["disabled_domains"] = tuple(existing | set(self.config.disabled_domains))
 
         self._current_gen = BriefingGenerator(**params)
 
@@ -478,6 +692,9 @@ def base_params_from_calibrated(calibrated: dict, seed: int = None) -> dict:
         "coordination_cuts": calibrated.get("coordination_cuts"),
         "coordination_blend_prob": calibrated.get("coordination_blend_prob", 0.6),
         "language_variant": calibrated.get("language_variant", "baseline"),
+        "direction_offset": calibrated.get("direction_offset", 0.0),
+        "coordination_offset": calibrated.get("coordination_offset", 0.0),
+        "clarity_override": calibrated.get("clarity_override", None),
         "seed": seed,
     }
     return params

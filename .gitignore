@@ -42,5 +42,10 @@ paper/multirow.sty
 # Paper website prototypes (separate deployment)
 paper/website/
 
-# Claude Code worktrees
+# Claude Code worktrees and local state
 .claude/worktrees/
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+
+# Scratch rebuild workspace (not part of canonical source tree)
+REBUILD/

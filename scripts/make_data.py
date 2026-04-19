@@ -385,6 +385,131 @@ def build_manifest(conc: int = 200) -> list[Target]:
         depends=["calibrate_mistral", "comm_mistral"],
     ))
 
+    # ── Revision experiments for remaining referee issues ─────────
+    # These live in dedicated output roots so they do not contaminate the
+    # main paper logs. The four blocks below correspond to issues #15, #39,
+    # #80, and #81.
+
+    revision_belief_flags = (
+        "--elicit-beliefs --belief-order pre "
+        "--elicit-second-order --second-order-order pre "
+        "--beliefs-include-messages"
+    )
+
+    # #15: validate the belief instrument on the same information set as the
+    # action prompt by eliciting pre-decision first- and second-order beliefs
+    # after agents have already received messages.
+    for label, extra in [
+        ("live", ""),
+        ("degraded", "--degrade-messages"),
+        ("surveillance", "--surveillance"),
+    ]:
+        extra_flags = f" {extra}" if extra else ""
+        targets.append(Target(
+            name=f"revision_beliefs_{label}_mistral",
+            file=f"revision-beliefs-{label}/{s_m}/experiment_comm_summary.csv",
+            min_rows=500,
+            command=(
+                f"uv run python -m agent_based_simulation.run comm "
+                f"--model {m_m} --load-calibrated --n-countries 10 --n-periods 50 "
+                f"{revision_belief_flags}{extra_flags} "
+                f"--output-dir output/revision-beliefs-{label} {MC}"
+            ),
+            group="revision_beliefs",
+            depends=["calibrate_mistral"],
+        ))
+
+    # #39: source logs for the fixed-message 2x2 design.
+    for label, extra in [
+        ("live", ""),
+        ("surveillance", "--surveillance"),
+    ]:
+        extra_flags = f" {extra}" if extra else ""
+        targets.append(Target(
+            name=f"revision_context_source_{label}_mistral",
+            file=f"revision-context-source-{label}/{s_m}/experiment_comm_summary.csv",
+            min_rows=500,
+            command=(
+                f"uv run python -m agent_based_simulation.run comm "
+                f"--model {m_m} --load-calibrated --n-countries 10 --n-periods 50"
+                f"{extra_flags} --output-dir output/revision-context-source-{label} {MC}"
+            ),
+            group="revision_context_sources",
+            depends=["calibrate_mistral"],
+        ))
+
+    # #39: hold message bundles fixed and vary decision-stage surveillance
+    # context separately from message-stage surveillance.
+    for bundle_label, bundle_dep, bundle_dir, bundle_flags in [
+        (
+            "live",
+            "revision_context_source_live_mistral",
+            "revision-context-source-live",
+            "",
+        ),
+        (
+            "surv",
+            "revision_context_source_surveillance_mistral",
+            "revision-context-source-surveillance",
+            "--surveillance",
+        ),
+    ]:
+        for decision_context in ["none", "full"]:
+            bundle_extra = f" {bundle_flags}" if bundle_flags else ""
+            targets.append(Target(
+                name=f"revision_context_{bundle_label}_{decision_context}_mistral",
+                file=f"revision-context-{bundle_label}-{decision_context}/{s_m}/experiment_comm_summary.csv",
+                min_rows=500,
+                command=(
+                    f"uv run python -m agent_based_simulation.run comm "
+                    f"--model {m_m} --load-calibrated --n-countries 10 --n-periods 50"
+                    f"{bundle_extra} {revision_belief_flags} "
+                    f"--fixed-messages output/{bundle_dir}/{s_m}/experiment_comm_log.json "
+                    f"--fixed-messages-mode exact --fixed-messages-align-metadata "
+                    f"--decision-context {decision_context} "
+                    f"--output-dir output/revision-context-{bundle_label}-{decision_context} {MC}"
+                ),
+                group="revision_context",
+                depends=["calibrate_mistral", bundle_dep],
+            ))
+
+    # #80: replay real message bundles against unchanged private briefings to
+    # identify causal use of received messages.
+    for replay_mode in ["exact", "permute_periods", "sample_periods", "sample_within_country"]:
+        targets.append(Target(
+            name=f"revision_replay_{replay_mode}_mistral",
+            file=f"revision-replay-{replay_mode}/{s_m}/experiment_comm_summary.csv",
+            min_rows=500,
+            command=(
+                f"uv run python -m agent_based_simulation.run comm "
+                f"--model {m_m} --load-calibrated --n-countries 10 --n-periods 50 "
+                f"{revision_belief_flags} "
+                f"--fixed-messages output/revision-context-source-live/{s_m}/experiment_comm_log.json "
+                f"--fixed-messages-mode {replay_mode} --no-fixed-messages-align-metadata "
+                f"--decision-context none "
+                f"--output-dir output/revision-replay-{replay_mode} {MC}"
+            ),
+            group="revision_replay",
+            depends=["calibrate_mistral", "revision_context_source_live_mistral"],
+        ))
+
+    # #81: orthogonalize factual-state evidence and coordination tone in the
+    # briefing generator. Include baseline in the same batch for within-batch
+    # comparison.
+    targets.append(Target(
+        name="revision_orthogonalized_mistral",
+        file=f"revision-orthogonalized/{s_m}/experiment_infodesign_all_summary.csv",
+        min_rows=1350,
+        command=(
+            f"uv run python -m agent_based_simulation.run_infodesign "
+            f"--model {m_m} --load-calibrated --treatment pure "
+            f"--designs baseline orth_weak_open orth_weak_quiet orth_strong_open orth_strong_quiet "
+            f"--reps 30 --output-dir output/revision-orthogonalized {MC}"
+        ),
+        group="revision_orthogonalized",
+        depends=["calibrate_mistral"],
+    ))
+
     # ── Holdout validation ────────────────────────────────────────
     targets.append(Target(
         name="holdout_mistral",
