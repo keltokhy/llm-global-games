@@ -3536,6 +3536,12 @@
       "t_test_vs_baseline": {
         "t_stat": -1.9913,
         "p_value": 0.04669
+      },
+      "surv_mean_join": 0.3203,
+      "delta_surv_vs_nomsg_pp": -5.04,
+      "t_test_surv_vs_nomsg": {
+        "t_stat": -2.6292,
+        "p_value": 0.008691
       }
     }
   },

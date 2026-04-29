@@ -1525,6 +1525,13 @@ def render_stats_macros(stats: dict) -> str:
     lines.append(_mc_pp_raw("NoMsgDeltaPP", no_msg.get("delta_vs_baseline_pp")))
     no_msg_t = no_msg.get("t_test_vs_baseline", {})
     lines.append(_mc("NoMsgPValue", no_msg_t.get("p_value") if isinstance(no_msg_t, dict) else None, 4))
+    # Surveillance vs no-message comparison (primary model)
+    lines.append(_mc("PromptIsoSurvMeanJoin", no_msg.get("surv_mean_join")))
+    lines.append(_mc_pct("PromptIsoSurvMeanJoinPct", no_msg.get("surv_mean_join")))
+    lines.append(_mc_pp_raw("PromptIsoVsNoMsgDeltaPP", no_msg.get("delta_surv_vs_nomsg_pp")))
+    lines.append(_mc_pp_abs_raw("PromptIsoVsNoMsgDeltaAbsPP", no_msg.get("delta_surv_vs_nomsg_pp")))
+    no_msg_t_sv = no_msg.get("t_test_surv_vs_nomsg", {})
+    lines.append(_mc("PromptIsoVsNoMsgPValue", no_msg_t_sv.get("p_value") if isinstance(no_msg_t_sv, dict) else None, 4))
     lines.append("")
 
     # ── Fixed messages test ───────────────────────────────────────

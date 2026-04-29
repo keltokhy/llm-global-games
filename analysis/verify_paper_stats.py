@@ -1616,6 +1616,7 @@ def compute_message_controls():
     primary = PRIMARY
     no_msg_path = ROOT / "no-messages" / primary / "experiment_comm_nomsg_summary.csv"
     baseline_path = ROOT / primary / "experiment_comm_summary.csv"
+    surv_path = ROOT / "prompt-isolation-surveillance" / primary / "experiment_comm_summary.csv"
     if not no_msg_path.exists():
         return {"no_messages": {"status": "missing", "path": str(no_msg_path)}}
     if not baseline_path.exists():
@@ -1634,7 +1635,7 @@ def compute_message_controls():
     base_mean = float(np.nanmean(base_jf))
     t_stat, t_p = stats.ttest_ind(jf, base_jf, equal_var=False)
 
-    results["no_messages"] = {
+    out = {
         "source": "no-messages",
         "n_obs": int(len(df)),
         "mean_join": round(mean_join, 4),
@@ -1646,6 +1647,24 @@ def compute_message_controls():
             "p_value": round(float(t_p), 6),
         },
     }
+
+    # Surveillance-vs-no-message: tests whether surveilled messages are
+    # strictly worse for coordination than no peer messages at all (primary model).
+    if surv_path.exists():
+        surv_df = pd.read_csv(surv_path)
+        if not surv_df.empty:
+            surv_jcol = _join_col(surv_df)
+            surv_jf = surv_df[surv_jcol].astype(float).values
+            surv_mean = float(np.nanmean(surv_jf))
+            t_stat_sv, t_p_sv = stats.ttest_ind(surv_jf, jf, equal_var=False)
+            out["surv_mean_join"] = round(surv_mean, 4)
+            out["delta_surv_vs_nomsg_pp"] = round((surv_mean - mean_join) * 100, 2)
+            out["t_test_surv_vs_nomsg"] = {
+                "t_stat": round(float(t_stat_sv), 4),
+                "p_value": round(float(t_p_sv), 6),
+            }
+
+    results["no_messages"] = out
     return results
 
 
