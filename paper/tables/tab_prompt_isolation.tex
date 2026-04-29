@@ -1,0 +1,20 @@
+\begin{table*}[t]
+\centering
+\caption{Clean prompt-isolation surveillance reruns. The surveillance prompt is the baseline trusted-contact communication prompt plus one appended monitoring warning; the decision prompt is unchanged.}
+\label{tab:prompt_isolation}
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{lcccccc}
+\toprule
+Model & $N$ & Baseline & Surv. & $\Delta$ (pp) & $r(J,A)$ & $p$ \\
+\midrule
+Mistral Small Creative & 1000 & 41.1\% & 32.0\% & -9.1 & +0.72 & 0.000 \\
+Llama 3.3 70B & 1000 & 41.6\% & 31.8\% & -9.8 & +0.65 & 0.033 \\
+Qwen3 30B & 1000 & 45.2\% & 35.8\% & -9.4 & +0.68 & 0.026 \\
+GPT-OSS 120B & 1000 & 44.2\% & 33.1\% & -11.1 & +0.75 & 0.000 \\
+Qwen3 235B & 1000 & 41.7\% & 38.8\% & -2.9 & +0.78 & 0.344 \\
+\bottomrule
+\end{tabular}
+\vspace{0.25em}
+\parbox{\textwidth}{\footnotesize\emph{Notes:} Baseline is each model's communication treatment. $\Delta$ is surveilled communication minus baseline communication in percentage points. $p$-values are from two-sample $t$-tests on period-level join fractions.}
+\end{table*}

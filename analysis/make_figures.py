@@ -298,8 +298,13 @@ def fig02_cross_model():
 # ═══════════════════════════════════════════════════════════════════
 
 def fig03_falsification():
+    # MiniMax-M2 is excluded from this presentation/paper falsification panel.
+    # It has weaker/atypical signal response and distracts from the canonical
+    # falsification story on the slide.
+    fig03_exclude = {"minimax--minimax-m2-her"}
     models_with_flip = [m for m in ALL_MODELS
-                        if (ROOT / m / "experiment_flip_summary.csv").exists()]
+                        if (ROOT / m / "experiment_flip_summary.csv").exists()
+                        and m not in fig03_exclude]
 
     fig, axes = plt.subplots(1, 3, figsize=(TEXT_W, 2.5), sharey=True)
     theta_grid = np.linspace(-3.5, 3.5, 200)
@@ -687,97 +692,86 @@ def fig11_decomposition():
 # ═══════════════════════════════════════════════════════════════════
 
 def fig12_surveillance():
-    if len(surv) == 0:
+    clean_path = ROOT / "prompt-isolation-surveillance" / PRIMARY / "experiment_comm_summary.csv"
+    clean = load_csv(clean_path)
+    placebo = load_csv(ROOT / "prompt-isolation-surveillance-placebo" / PRIMARY / "experiment_comm_summary.csv")
+    anonymous = load_csv(ROOT / "prompt-isolation-surveillance-anonymous" / PRIMARY / "experiment_comm_summary.csv")
+    no_msg = load_csv(ROOT / "no-messages" / PRIMARY / "experiment_comm_nomsg_summary.csv")
+
+    if len(comm_df) == 0 or len(clean) == 0:
         print("  SKIPPED fig12 — missing surveillance data")
         return
 
-    surv_dir = ROOT / "surveillance"
-    # Discover surveillance CSVs recursively (handles nested slug dirs)
-    surv_csvs = sorted(surv_dir.rglob("experiment_comm_summary.csv"))
-    surv_model_paths = {}  # slug → path to surveillance CSV
-    for csv_path in surv_csvs:
-        slug = csv_path.parent.name
-        if "--" not in slug:
-            continue
-        surv_model_paths[slug] = csv_path
-    surv_models = sorted(surv_model_paths.keys())
-
-    fig, axes = plt.subplots(1, 2, figsize=(TEXT_W, 3.0),
-                              gridspec_kw={"width_ratios": [1.3, 1]})
+    fig, axes = plt.subplots(1, 2, figsize=(TEXT_W, 2.8),
+                              gridspec_kw={"width_ratios": [1.35, 1]})
     theta_grid = np.linspace(-3.5, 3.5, 200)
 
     ax = axes[0]
-    _fallback_colors = ["#2c7bb6", "#d7191c", "#1a9641", "#5e4fa2", "#fdae61"]
-    deltas = []
+    jc_c = _join_col(comm_df)
+    jc_s = _join_col(clean)
 
-    for i, model in enumerate(surv_models):
-        color = MODEL_COLORS.get(model, _fallback_colors[i % len(_fallback_colors)])
-        name = SHORT_NAMES.get(model, model[:15])
-
-        comm_f = ROOT / model / "experiment_comm_summary.csv"
-        if not comm_f.exists():
-            continue
-        comm = pd.read_csv(comm_f)
-
-        surv_m = pd.read_csv(surv_model_paths[model])
-
-        jc_s = _join_col(surv_m)
-        jc_c = _join_col(comm)
-        delta = surv_m[jc_s].mean() - comm[jc_c].mean()
-        deltas.append({"model": name, "delta": delta})
-
-        # Comm baseline (dashed)
+    for df, color, label, linestyle, linewidth in [
+        (comm_df, C_COMM, "Communication", "--", 0.9),
+        (clean, C_SURV, "Clean surveillance", "-", 1.1),
+    ]:
         try:
-            popt, _ = curve_fit(logistic, comm["theta"].values,
-                                comm[jc_c].values, p0=[0, 2], maxfev=10000)
+            popt, _ = curve_fit(logistic, df["theta"].values,
+                                df[_join_col(df)].values, p0=[0, 2], maxfev=10000)
             ax.plot(theta_grid, logistic(theta_grid, *popt),
-                    color=color, linewidth=0.8, linestyle="--", alpha=0.5, zorder=2)
+                    color=color, linewidth=linewidth, linestyle=linestyle,
+                    zorder=2, label=label)
         except RuntimeError:
-            pass
+            c, m, _ = binned(df, n_bins=10)
+            ax.plot(c, m, color=color, linewidth=linewidth, linestyle=linestyle,
+                    zorder=2, label=label)
 
-        # Surveillance (solid)
-        c, m, se = binned(surv_m, n_bins=10)
-        ax.scatter(c, m, color=color, s=8, alpha=0.6, zorder=3, edgecolors="none")
-        try:
-            popt, _ = curve_fit(logistic, surv_m["theta"].values,
-                                surv_m[jc_s].values, p0=[0, 2], maxfev=10000)
-            ax.plot(theta_grid, logistic(theta_grid, *popt),
-                    color=color, linewidth=1.0, zorder=2, label=name)
-        except RuntimeError:
-            ax.plot(c, m, color=color, linewidth=1.0, zorder=2, label=name)
+    for df, color in [(comm_df, C_COMM), (clean, C_SURV)]:
+        c, m, _ = binned(df, n_bins=10)
+        ax.scatter(c, m, color=color, s=9, alpha=0.65, zorder=3, edgecolors="none")
 
-    handles = ax.get_legend_handles_labels()[0]
-    handles.append(Line2D([0], [0], color="#666", linestyle="--", linewidth=0.8,
-                          label="Comm baseline"))
-    handles.append(Line2D([0], [0], color="#666", linestyle="-", linewidth=1.0,
-                          label="+ Surveillance"))
-    ax.legend(handles=handles, fontsize=5.5, loc="upper right")
+    ax.legend(fontsize=6, loc="upper right")
     ax.set_xlabel(r"$\theta$ (regime strength)")
     ax.set_ylabel("Join fraction")
     ax.set_ylim(-0.03, 1.03)
     ax.set_xlim(-3.5, 3.5)
-    ax.set_title("A. Surveillance chilling effect by model")
+    ax.set_title("A. Clean prompt-isolation effect")
 
     ax = axes[1]
-    if deltas:
-        ddf = pd.DataFrame(deltas).sort_values("delta")
-        y = np.arange(len(ddf))
-        colors = _fallback_colors[:len(ddf)]
-        ax.barh(y, ddf["delta"] * 100, color=colors, edgecolor="none", height=0.5)
-        ax.set_yticks(y)
-        ax.set_yticklabels(ddf["model"])
-        ax.axvline(0, color="#333", linewidth=0.6)
-        ax.set_xlabel("Chilling effect (pp)")
-        ax.set_title("B. $\\Delta$ join fraction (surveillance $-$ comm)")
-        add_vgrid(ax)
+    base_mean = comm_df[jc_c].mean()
+    rows = [
+        ("Surveillance", clean[jc_s].mean() - base_mean, C_SURV),
+    ]
+    for label, df, color in [
+        ("Placebo", placebo, "#8c8c8c"),
+        ("Anonymous", anonymous, "#b0b0b0"),
+        ("No messages", no_msg, C_SCRAMBLE),
+    ]:
+        if len(df) > 0:
+            rows.append((label, df[_join_col(df)].mean() - base_mean, color))
 
-        for i, (_, row) in enumerate(ddf.iterrows()):
-            ax.text(row["delta"] * 100 - 0.8, i,
-                    f'{row["delta"]*100:.1f}pp', fontsize=6, va="center",
-                    ha="right", color="white", fontweight="bold")
+    ddf = pd.DataFrame(rows, columns=["condition", "delta", "color"])
+    y = np.arange(len(ddf))
+    ax.barh(y, ddf["delta"] * 100, color=ddf["color"], edgecolor="none", height=0.55)
+    ax.set_yticks(y)
+    ax.set_yticklabels(ddf["condition"])
+    ax.invert_yaxis()
+    ax.axvline(0, color="#333", linewidth=0.6)
+    x_min = min(-1.0, (ddf["delta"] * 100).min() - 1.0)
+    x_max = max(1.0, (ddf["delta"] * 100).max() + 0.8)
+    ax.set_xlim(x_min, x_max)
+    ax.set_xlabel(r"$\Delta$ join vs. communication (pp)")
+    ax.set_title("B. Clean controls")
+    add_vgrid(ax)
 
-    plt.tight_layout()
-    fig.subplots_adjust(left=0.08)
+    for i, (_, row) in enumerate(ddf.iterrows()):
+        val = row["delta"] * 100
+        ha = "left"
+        offset = 0.35
+        color = "white" if abs(val) > 2 else "#333"
+        ax.text(val + offset, i, f"{val:+.1f}pp", fontsize=6,
+                va="center", ha=ha, color=color, fontweight="bold")
+
+    plt.tight_layout(w_pad=1.2)
     save(fig, "fig12_surveillance")
 
 

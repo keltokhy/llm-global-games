@@ -1,6 +1,10 @@
 DATA MANIFEST — output/
 ========================
 
+Paper asset lineage:
+  paper/asset_manifest.tsv maps every table and figure included by
+  paper/paper.tex to its generating script and primary input files.
+
 DIRECTORY STRUCTURE
 -------------------
 output/
@@ -96,6 +100,12 @@ Infodesign with communication:
 
 Surveillance:
   surveillance/                             → experiment_comm_summary.csv
+  prompt-isolation-surveillance/            → clean baseline-plus-warning surveillance reruns
+  prompt-isolation-surveillance-placebo/    → clean placebo monitoring variant
+  prompt-isolation-surveillance-anonymous/  → clean anonymous monitoring variant
+
+Message controls:
+  no-messages/                              → communication protocol with no peer messages
 
 Surveillance x Censorship interaction:
   surveillance-x-censorship/                → experiment_infodesign_all_summary.csv

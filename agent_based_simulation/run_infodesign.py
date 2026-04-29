@@ -350,6 +350,11 @@ def run_infodesign(args):
                     surveillance_mode=getattr(args, 'surveillance_mode', 'full'),
                     decision_context=getattr(args, 'decision_context', 'auto'),
                     degrade_messages=getattr(args, 'degrade_messages', False),
+                    no_peer_messages=getattr(args, 'no_peer_messages', False),
+                    message_bundle_mode=(
+                        "none" if getattr(args, 'no_peer_messages', False)
+                        else ("degraded" if getattr(args, 'degrade_messages', False) else "live")
+                    ),
                 )
             else:
                 result = await run_pure_global_game(**game_kwargs)
@@ -391,6 +396,7 @@ def run_infodesign(args):
                 "benefit": args.benefit,
                 "cost": args.cost,
                 "model": args.model,
+                "message_bundle_mode": getattr(result, "message_bundle_mode", "live"),
                 "agents": result.agents,  # per-agent raw responses
             }
 
@@ -564,6 +570,8 @@ def main():
     parser.add_argument("--degrade-messages", action="store_true",
                         help="Replace all communication messages with generic uninformative content "
                              "(no surveillance framing). Isolates the information-loss channel.")
+    parser.add_argument("--no-peer-messages", action="store_true",
+                        help="Skip message generation and deliver no peer messages to decision agents.")
     parser.add_argument("--z-center", type=float, default=None,
                         help="z-score centering point (default: θ*, use 0.0 for legacy behavior)")
     parser.add_argument("--group-size-info", action="store_true",

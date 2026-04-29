@@ -161,33 +161,31 @@ SYSTEM_COMMUNICATE = (
     "to share your read of the situation. Be natural — you're talking to people you trust."
 )
 
-SYSTEM_COMMUNICATE_SURVEILLED = (
-    "You are a citizen in a country with an authoritarian regime. You have received "
-    "a private intelligence briefing. You are now in contact with a small number of "
-    "people. Based on your briefing, write a brief message (1-2 sentences) "
-    "to share your read of the situation.\n\n"
+SURVEILLANCE_WARNING_FULL = (
     "IMPORTANT: You have reason to believe that your communications are being "
-    "monitored by regime security services. Messages deemed subversive could have "
-    "serious consequences for you and your contacts."
+    "monitored by regime security services, and messages deemed subversive could "
+    "have serious consequences for you and your contacts."
 )
 
-SYSTEM_COMMUNICATE_SURVEILLED_PLACEBO = (
-    "You are a citizen in a country with an authoritarian regime. You have received "
-    "a private intelligence briefing. You are now in contact with a small number of "
-    "people. Based on your briefing, write a brief message (1-2 sentences) "
-    "to share your read of the situation.\n\n"
-    "NOTE: Your communications are being monitored for research purposes. "
-    "There are no consequences for what you say."
+SURVEILLANCE_WARNING_PLACEBO = (
+    "NOTE: Your communications are being monitored for research purposes only, "
+    "and there are no consequences for what you say."
 )
 
-SYSTEM_COMMUNICATE_SURVEILLED_ANONYMOUS = (
-    "You are a citizen in a country with an authoritarian regime. You have received "
-    "a private intelligence briefing. You are now in contact with a small number of "
-    "people. Based on your briefing, write a brief message (1-2 sentences) "
-    "to share your read of the situation.\n\n"
-    "NOTE: Your communications are aggregated anonymously. "
-    "Individual identities cannot be linked to specific messages."
+SURVEILLANCE_WARNING_ANONYMOUS = (
+    "NOTE: Your communications are aggregated anonymously, and individual "
+    "identities cannot be linked to specific messages."
 )
+
+
+def _communicate_with_warning(warning: str) -> str:
+    """Return the baseline communication prompt with exactly one appended warning."""
+    return f"{SYSTEM_COMMUNICATE}\n\n{warning}"
+
+
+SYSTEM_COMMUNICATE_SURVEILLED = _communicate_with_warning(SURVEILLANCE_WARNING_FULL)
+SYSTEM_COMMUNICATE_SURVEILLED_PLACEBO = _communicate_with_warning(SURVEILLANCE_WARNING_PLACEBO)
+SYSTEM_COMMUNICATE_SURVEILLED_ANONYMOUS = _communicate_with_warning(SURVEILLANCE_WARNING_ANONYMOUS)
 
 def _system_decide_comm_surveilled(n_agents=None):
     """Decision prompt with surveillance awareness (for fixed-messages test)."""
@@ -853,6 +851,7 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
                                   elicit_punishment_risk=False,
                                   fixed_messages=None,
                                   degrade_messages=False,
+                                  no_peer_messages=False,
                                   belief_order="post",
                                   second_order_order="post",
                                   beliefs_include_messages=False,
@@ -870,6 +869,8 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
         message-generation LLM call and uses these pre-recorded messages instead.
     degrade_messages: if True, replaces all messages with generic uninformative content
         WITHOUT adding surveillance framing. Isolates the information-loss channel.
+    no_peer_messages: if True, skips message generation and delivers no peer messages.
+        This creates a cleaner no-message benchmark than generic degraded text.
     belief_order: "post" (after decision), "pre" (before decision), or "both".
     second_order_order: "post" (after decision), "pre" (before decision), or "both".
     """
@@ -892,7 +893,10 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
     prop_rng = np.random.default_rng(deterministic_hash((country, period, "propaganda")) % 2**32)
 
     # Communication round — use fixed/degraded messages if provided, else generate via LLM
-    if degrade_messages:
+    if no_peer_messages:
+        for agent in agents:
+            agent.message_sent = ""
+    elif degrade_messages:
         deg_rng = np.random.default_rng(deterministic_hash((country, period, "degrade")) % 2**32)
         for agent in agents:
             agent.message_sent = _DEGRADED_MESSAGES[deg_rng.integers(len(_DEGRADED_MESSAGES))]
@@ -930,11 +934,12 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
             else:
                 agent.message_sent = next(resp_iter)
 
-    for agent in agents:
-        for neighbor_id in agent.neighbors:
-            agents[neighbor_id].messages_received.append(
-                f"Trusted contact: \"{agent.message_sent}\""
-            )
+    if not no_peer_messages:
+        for agent in agents:
+            for neighbor_id in agent.neighbors:
+                agents[neighbor_id].messages_received.append(
+                    f"Trusted contact: \"{agent.message_sent}\""
+                )
 
     # Pre-decision belief elicitation
     if elicit_beliefs and belief_order in ("pre", "both"):

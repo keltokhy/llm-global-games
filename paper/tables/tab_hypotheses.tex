@@ -1,21 +1,21 @@
 \begin{table*}[t]
 \centering
-\caption{Pre-specified hypotheses and test results. H1--H4 use pooled Part~I data across all seven models; H5--H8 use the primary model (Mistral Small Creative). Effect size: $r$ for correlations (H1--H3), Cohen's $d$ or $d_z$ for mean comparisons (H4--H8). ``Supported'' at $\alpha = 0.05$.}
+\caption{Pre-specified hypotheses and test results. H1--H4 use pooled Part~I data across all seven models; H5--H8 use the primary model (Mistral Small Creative). Effect size: $r$ for correlations (H1--H3), Cohen's $d$ or $d_z$ for mean comparisons (H4--H8). Outcome labels use $\alpha = 0.05$; H2 is reported as a falsification check, not as evidence for a zero effect.}
 \label{tab:hypotheses}
-\small
-\setlength{\tabcolsep}{4pt}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
 \begin{tabular}{llllccl}
 \toprule
-H & Hypothesis & Test & Stat & $p$ & Effect & Supported? \\
+H & Hypothesis & Test & Stat & $p$ & Effect & Outcome \\
 \midrule
-H1 & Sigmoid Response & Pearson & 0.757 & $<$0.001 & 0.757 & Yes \\
-H2 & Scramble Falsification & Pearson & 0.014 & 0.638 & 0.014 & Yes \\
-H3 & Directional Sensitivity & Pearson (1-sided) & -0.791 & $<$0.001 & -0.791 & Yes \\
-H4 & Communication Channel & Paired $t$ & 6.383 & $<$0.001 & 0.166 & Yes \\
-H5 & Ambiguity Pooling & $t$-test & -0.828 & 0.408 & -0.071 & No (ambiguous) \\
-H6 & Censorship Distortion & $t$-test & -12.207 & $<$0.001 & -1.051 & Yes \\
-H7 & Surveillance Chilling & $t$-test & -8.277 & $<$0.001 & -0.370 & Yes \\
-H8 & Propaganda Dose-Response & $t$-test & -0.892 & 0.372 & -0.049 & No (ambiguous) \\
+H1 & Sigmoid Response & Pearson & 0.757 & $<$0.001 & 0.757 & Supported \\
+H2 & Scramble Falsification & Pearson & 0.014 & 0.638 & 0.014 & Passes falsification \\
+H3 & Directional Sensitivity & Pearson (1-sided) & -0.791 & $<$0.001 & -0.791 & Supported \\
+H4 & Communication Channel & Paired $t$ & 6.383 & $<$0.001 & 0.166 & Supported \\
+H5 & Ambiguity Pooling & $t$-test & -0.828 & 0.408 & -0.071 & Not supported \\
+H6 & Censorship Distortion & $t$-test & -12.207 & $<$0.001 & -1.051 & Supported \\
+H7 & Surveillance Chilling & $t$-test & -5.344 & $<$0.001 & -0.239 & Supported \\
+H8 & Propaganda Dose-Response & $t$-test & -0.892 & 0.372 & -0.049 & Not supported \\
 \bottomrule
 \end{tabular}
 \vspace{0.25em}

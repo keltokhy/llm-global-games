@@ -1,6 +1,6 @@
-\begin{table}[t]
+\begin{table*}[t]
 \centering
-\caption{Model summary. Columns report country-period counts in the pure, communication, and falsification (scramble+flip) suites. All runs use $N=25$ agents per period and $\sigma=0.3$.}
+\caption{Model summary. Columns report period-level task rows in the pure, communication, and falsification (scramble+flip) suites. All runs use $N=25$ agents per row and $\sigma=0.3$.}
 \label{tab:models}
 \footnotesize
 \setlength{\tabcolsep}{4pt}
@@ -20,5 +20,5 @@ MiniMax M2-Her & MiniMax & 100 & 100 & 200 \\
 \bottomrule
 \end{tabular}
 \vspace{0.25em}
-\parbox{\columnwidth}{\footnotesize\emph{Notes:} 7 models spanning 6 architecture families. $N$ = country-periods with 25 agents each. All runs use $\sigma = 0.3$ and temperature $= 0.7$ unless otherwise stated.}
-\end{table}
+\parbox{\textwidth}{\footnotesize\emph{Notes:} 7 models spanning 6 architecture families. Counts are period-level task rows with 25 agents each. Mistral includes appended batches; duplicate-cell accounting is reported in the main text and Table~\ref{tab:comm_estimators}. All runs use $\sigma = 0.3$ and temperature $= 0.7$ unless otherwise stated.}
+\end{table*}

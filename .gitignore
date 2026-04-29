@@ -13,6 +13,9 @@ __pycache__/
 *.synctex.gz
 *.fdb_latexmk
 *.fls
+*.nav
+*.snm
+*.toc
 
 # LaTeX build artifacts (not the PDFs themselves)
 paper/*.synctex.gz

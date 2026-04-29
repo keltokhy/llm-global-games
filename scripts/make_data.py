@@ -42,7 +42,7 @@ PART1_MODELS = list(MODELS.keys())  # all 8 for Part I
 
 INFODESIGN_CORE_MODELS = ["mistral", "llama", "gptoss", "qwen235", "qwen30", "olmo", "ministral"]
 
-SURVEILLANCE_MODELS = ["mistral", "llama", "qwen30"]
+SURVEILLANCE_MODELS = ["mistral", "llama", "gptoss", "qwen30", "qwen235"]
 
 def slug(short: str) -> str:
     return MODELS[short].replace("/", "--")
@@ -206,6 +206,30 @@ def build_manifest(conc: int = 200) -> list[Target]:
             command=f"uv run python -m agent_based_simulation.run comm --model {m} --load-calibrated --surveillance --n-countries 10 --n-periods 100 --output-dir output/surveillance {MC}",
             group="surveillance",
             depends=[f"calibrate_{short}"],
+        ))
+
+    # Clean prompt-isolation reruns: same baseline communication template plus
+    # one appended warning. Kept separate from legacy surveillance outputs so
+    # old data are not mistaken for clean reruns.
+    for short in SURVEILLANCE_MODELS:
+        s, m = slug(short), model(short)
+        targets.append(Target(
+            name=f"prompt_isolation_surveillance_{short}",
+            file=f"prompt-isolation-surveillance/{s}/experiment_comm_summary.csv",
+            min_rows=1000,
+            command=f"uv run python -m agent_based_simulation.run comm --model {m} --load-calibrated --surveillance --n-countries 10 --n-periods 100 --output-dir output/prompt-isolation-surveillance {MC}",
+            group="prompt_isolation",
+            depends=[f"calibrate_{short}"],
+        ))
+
+    for variant in ["placebo", "anonymous"]:
+        targets.append(Target(
+            name=f"prompt_isolation_{variant}_mistral",
+            file=f"prompt-isolation-surveillance-{variant}/{s_m}/experiment_comm_summary.csv",
+            min_rows=200,
+            command=f"uv run python -m agent_based_simulation.run comm --model {m_m} --load-calibrated --surveillance --surveillance-mode {variant} --n-countries 10 --n-periods 20 --output-dir output/prompt-isolation-surveillance-{variant} {MC}",
+            group="prompt_isolation",
+            depends=["calibrate_mistral"],
         ))
 
     # ── Propaganda ────────────────────────────────────────────────
@@ -383,6 +407,18 @@ def build_manifest(conc: int = 200) -> list[Target]:
         command=f"uv run python -m agent_based_simulation.run comm --model {m_m} --load-calibrated --surveillance --fixed-messages output/{s_m}/experiment_comm_log.json --n-countries 5 --n-periods 40 --output-dir output/fixed-messages-surv {MC}",
         group="fixed_messages",
         depends=["calibrate_mistral", "comm_mistral"],
+    ))
+
+    # ── No-message communication control ─────────────────────────
+    # 10 countries × 50 periods = 500 rows. Cleaner benchmark than generic
+    # uncertain messages because the decision call receives no peer content.
+    targets.append(Target(
+        name="no_messages_mistral",
+        file=f"no-messages/{s_m}/experiment_comm_nomsg_summary.csv",
+        min_rows=500,
+        command=f"uv run python -m agent_based_simulation.run comm --model {m_m} --load-calibrated --no-peer-messages --n-countries 10 --n-periods 50 --output-dir output/no-messages {MC}",
+        group="message_controls",
+        depends=["calibrate_mistral"],
     ))
 
     # ── Revision experiments for remaining referee issues ─────────

@@ -545,14 +545,19 @@ def run_experiment(args, treatment, signal_mode="normal"):
                     elicit_punishment_risk=getattr(args, 'elicit_punishment_risk', False),
                     fixed_messages=period_fixed,
                     degrade_messages=getattr(args, 'degrade_messages', False),
+                    no_peer_messages=getattr(args, 'no_peer_messages', False),
                     belief_order=getattr(args, 'belief_order', 'post'),
                     second_order_order=getattr(args, 'second_order_order', 'post'),
                     beliefs_include_messages=getattr(args, 'beliefs_include_messages', False),
                     decision_context=getattr(args, 'decision_context', 'auto'),
                     message_bundle_mode=(
-                        "degraded"
-                        if getattr(args, 'degrade_messages', False)
-                        else ("live" if period_fixed is None else getattr(args, 'fixed_messages_mode', 'exact'))
+                        "none"
+                        if getattr(args, 'no_peer_messages', False)
+                        else (
+                            "degraded"
+                            if getattr(args, 'degrade_messages', False)
+                            else ("live" if period_fixed is None else getattr(args, 'fixed_messages_mode', 'exact'))
+                        )
                     ),
                     message_source_key=source_key,
                     temperature=getattr(args, 'temperature', 0.7),
@@ -624,6 +629,7 @@ def run_experiment(args, treatment, signal_mode="normal"):
             "theoretical_attack": r.theoretical_attack,
             "direction_transform": getattr(args, 'direction_transform', 'logistic'),
             "degrade_messages": getattr(args, 'degrade_messages', False),
+            "no_peer_messages": getattr(args, 'no_peer_messages', False),
             "beliefs_include_messages": getattr(args, 'beliefs_include_messages', False),
             "belief_order": getattr(args, 'belief_order', 'post'),
             "second_order_order": getattr(args, 'second_order_order', 'post'),
@@ -640,8 +646,9 @@ def run_experiment(args, treatment, signal_mode="normal"):
     dt = getattr(args, 'direction_transform', 'logistic')
     dt_suffix = f"_{dt}" if dt != "logistic" else ""
     dm_suffix = "_degraded" if getattr(args, 'degrade_messages', False) else ""
+    nm_suffix = "_nomsg" if getattr(args, 'no_peer_messages', False) else ""
     file_label = signal_mode if signal_mode != "normal" else treatment
-    file_label = f"{file_label}{dt_suffix}{dm_suffix}"
+    file_label = f"{file_label}{dt_suffix}{dm_suffix}{nm_suffix}"
 
     # ── Append mode: merge with existing data ───────────────────────
     logs = [{**row, "agents": r.agents} for row, r in zip(summary_rows, results)]
@@ -770,6 +777,9 @@ def main():
     parser.add_argument("--degrade-messages", action="store_true",
                         help="Replace all communication messages with generic uninformative content "
                              "(no surveillance framing). Isolates the information-loss channel.")
+    parser.add_argument("--no-peer-messages", action="store_true",
+                        help="Skip message generation and deliver no peer messages to decision agents. "
+                             "This creates a no-message communication control.")
     parser.add_argument("--wrong-center", type=float, default=None,
                         help="Placebo calibration: shift cutoff_center by this amount after loading "
                              "calibrated params. E.g. --wrong-center 0.3 adds 0.3 to the calibrated center.")

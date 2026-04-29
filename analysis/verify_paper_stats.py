@@ -37,6 +37,39 @@ PART1_BENCHMARK_SIGMA = 0.30
 COMM_MATCH_COLS = ["country", "period", "theta", "z", "benefit", "theta_star"]
 
 
+def _raw_output_available() -> bool:
+    """Return True when raw experiment summaries are present for recomputation."""
+    return ROOT.exists() and any(ROOT.glob("**/experiment_*_summary.csv"))
+
+
+def _maybe_use_archived_stats() -> bool:
+    """Use archived verified stats when a distribution omits raw API outputs."""
+    if _raw_output_available():
+        return False
+
+    msg = (
+        "Dependency needed: raw experiment outputs are absent; expected summary "
+        f"CSVs under {ROOT}."
+    )
+    if not OUT.exists():
+        raise SystemExit(
+            msg
+            + f"\nProvide the raw output/ directory or an archived stats file at {OUT}."
+            + "\nTo regenerate raw data, inspect missing targets with: uv run python scripts/make_data.py"
+        )
+
+    with open(OUT) as f:
+        archived = json.load(f)
+    print(msg)
+    print(f"Using archived statistics from {OUT}; no raw-data recomputation performed.")
+    part1 = archived.get("part1", {})
+    pooled = part1.get("_pooled_pure", {})
+    if pooled:
+        print(f"  Archived pooled N: {pooled.get('n_obs')}")
+        print(f"  Archived pooled r(A(theta), join): {pooled.get('r_vs_attack', {}).get('r')}")
+    return True
+
+
 def _attack_mass_benchmark(theta: np.ndarray) -> np.ndarray:
     """Benchmark attack mass A(theta) with fixed (theta*, sigma)."""
     theta = np.asarray(theta, dtype=float)
@@ -64,6 +97,14 @@ def load_infodesign(model: str, design: str = "all") -> pd.DataFrame:
     if p.exists():
         return pd.read_csv(p)
     return pd.DataFrame()
+
+
+def _first_existing(*paths: Path) -> Path:
+    """Return the first existing path, or the first candidate if none exist."""
+    for path in paths:
+        if path.exists():
+            return path
+    return paths[0]
 
 
 def _comm_match_key(pure_df: pd.DataFrame, comm_df: pd.DataFrame, *, include_model: bool) -> list[str]:
@@ -1466,14 +1507,162 @@ def compute_temperature_robustness():
     return results
 
 
+def compute_prompt_isolation():
+    """Statistics for clean baseline-plus-warning surveillance reruns."""
+    results = {}
+    clean_base = ROOT / "prompt-isolation-surveillance"
+    deltas = []
+    r_attacks = []
+    p_values = []
+
+    for f in _find_summaries(clean_base, "experiment_comm_summary.csv"):
+        model_slug = _model_slug_from_summary_path(f, clean_base)
+        if model_slug is None:
+            continue
+        df = _load_summary(f)
+        if df.empty:
+            continue
+        jcol = _join_col(df)
+        jf = df[jcol].astype(float).values
+        theta = df["theta"].astype(float).values
+        attack = _attack_mass_benchmark(theta)
+
+        out = {
+            "source": "prompt-isolation-surveillance",
+            "mean_join": round(float(np.nanmean(jf)), 4),
+            "r_vs_theta": pearson_with_ci(theta, jf),
+            "r_vs_attack": pearson_with_ci(attack, jf),
+            "n_obs": int(len(df)),
+        }
+
+        base_comm = _load_summary(ROOT / model_slug / "experiment_comm_summary.csv")
+        if len(base_comm):
+            bj = _join_col(base_comm)
+            base_jf = base_comm[bj].astype(float).values
+            base_mean = float(np.nanmean(base_jf))
+            out["baseline_mean_join"] = round(base_mean, 4)
+            out["delta_vs_baseline_pp"] = round((out["mean_join"] - base_mean) * 100, 2)
+            t_stat, t_p = stats.ttest_ind(jf, base_jf, equal_var=False)
+            out["t_test_vs_baseline"] = {
+                "t_stat": round(float(t_stat), 4),
+                "p_value": round(float(t_p), 6),
+            }
+            p_values.append(float(t_p))
+
+        if out.get("delta_vs_baseline_pp") is not None:
+            deltas.append(float(out["delta_vs_baseline_pp"]))
+        r_attack = (out.get("r_vs_attack") or {}).get("r")
+        if r_attack is not None and np.isfinite(r_attack):
+            r_attacks.append(float(r_attack))
+
+        results.setdefault("surveillance", {})[SHORT.get(model_slug, model_slug)] = out
+
+    if deltas:
+        results["_summary"] = {
+            "n_models": int(len(deltas)),
+            "mean_delta_pp": round(float(np.mean(deltas)), 2),
+            "median_delta_pp": round(float(np.median(deltas)), 2),
+            "min_delta_pp": round(float(np.min(deltas)), 2),
+            "max_delta_pp": round(float(np.max(deltas)), 2),
+            "n_negative": int(sum(d < 0 for d in deltas)),
+            "n_p_lt_05": int(sum(p < 0.05 for p in p_values)),
+            "n_p_lt_01": int(sum(p < 0.01 for p in p_values)),
+            "mean_r_vs_attack": round(float(np.mean(r_attacks)), 4) if r_attacks else None,
+        }
+
+    primary = PRIMARY
+    comm_df = load(primary, "comm")
+    comm_jcol = _join_col(comm_df) if len(comm_df) else "join_fraction"
+    comm_mean = float(comm_df[comm_jcol].mean()) if len(comm_df) else float("nan")
+
+    variants = {
+        "placebo": ROOT / "prompt-isolation-surveillance-placebo" / primary / "experiment_comm_summary.csv",
+        "anonymous": ROOT / "prompt-isolation-surveillance-anonymous" / primary / "experiment_comm_summary.csv",
+    }
+    for variant_name, path in variants.items():
+        if not path.exists():
+            results.setdefault("variants", {})[variant_name] = {"status": "missing", "path": str(path)}
+            continue
+        df = pd.read_csv(path)
+        if df.empty:
+            results.setdefault("variants", {})[variant_name] = {"status": "empty", "path": str(path)}
+            continue
+        jcol = _join_col(df)
+        jf = df[jcol].astype(float).values
+        theta = df["theta"].astype(float).values
+        out = {
+            "source": path.parent.parent.name,
+            "n_obs": int(len(df)),
+            "mean_join": round(float(np.nanmean(jf)), 4),
+            "r_vs_theta": pearson_with_ci(theta, jf),
+            "r_vs_attack": pearson_with_ci(_attack_mass_benchmark(theta), jf),
+        }
+        if np.isfinite(comm_mean):
+            out["delta_vs_comm_pp"] = round((out["mean_join"] - comm_mean) * 100, 2)
+            comm_jf = comm_df[comm_jcol].astype(float).values
+            t_stat, t_p = stats.ttest_ind(jf, comm_jf, equal_var=False)
+            out["t_test_vs_comm"] = {
+                "t_stat": round(float(t_stat), 4),
+                "p_value": round(float(t_p), 6),
+            }
+        results.setdefault("variants", {})[variant_name] = out
+
+    return results
+
+
+def compute_message_controls():
+    """Statistics for cleaner no-message communication controls."""
+    results = {}
+    primary = PRIMARY
+    no_msg_path = ROOT / "no-messages" / primary / "experiment_comm_nomsg_summary.csv"
+    baseline_path = ROOT / primary / "experiment_comm_summary.csv"
+    if not no_msg_path.exists():
+        return {"no_messages": {"status": "missing", "path": str(no_msg_path)}}
+    if not baseline_path.exists():
+        return {"no_messages": {"status": "missing_baseline", "path": str(baseline_path)}}
+
+    df = pd.read_csv(no_msg_path)
+    base = pd.read_csv(baseline_path)
+    if df.empty or base.empty:
+        return {"no_messages": {"status": "empty"}}
+
+    jcol = _join_col(df)
+    bj = _join_col(base)
+    jf = df[jcol].astype(float).values
+    base_jf = base[bj].astype(float).values
+    mean_join = float(np.nanmean(jf))
+    base_mean = float(np.nanmean(base_jf))
+    t_stat, t_p = stats.ttest_ind(jf, base_jf, equal_var=False)
+
+    results["no_messages"] = {
+        "source": "no-messages",
+        "n_obs": int(len(df)),
+        "mean_join": round(mean_join, 4),
+        "baseline_mean_join": round(base_mean, 4),
+        "delta_vs_baseline_pp": round((mean_join - base_mean) * 100, 2),
+        "r_vs_theta": pearson_with_ci(df["theta"].astype(float).values, jf),
+        "t_test_vs_baseline": {
+            "t_stat": round(float(t_stat), 4),
+            "p_value": round(float(t_p), 6),
+        },
+    }
+    return results
+
+
 def compute_surveillance_variants():
     """Compute statistics for placebo and anonymous surveillance variants."""
     results = {}
     primary = PRIMARY
 
     variants = {
-        "placebo": ROOT / primary / "_surveillance_placebo_v2" / primary / "experiment_comm_summary.csv",
-        "anonymous": ROOT / primary / "_surveillance_anonymous_v2" / primary / "experiment_comm_summary.csv",
+        "placebo": _first_existing(
+            ROOT / "prompt-isolation-surveillance-placebo" / primary / "experiment_comm_summary.csv",
+            ROOT / primary / "_surveillance_placebo_v2" / primary / "experiment_comm_summary.csv",
+        ),
+        "anonymous": _first_existing(
+            ROOT / "prompt-isolation-surveillance-anonymous" / primary / "experiment_comm_summary.csv",
+            ROOT / primary / "_surveillance_anonymous_v2" / primary / "experiment_comm_summary.csv",
+        ),
     }
 
     # Load comm baseline for comparison
@@ -1786,6 +1975,7 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
     part1 = all_stats.get("part1", {})
     infodesign = all_stats.get("infodesign", {})
     regime = all_stats.get("regime_control", {})
+    prompt_iso = all_stats.get("prompt_isolation", {})
     table = []
 
     # ── H1: Alignment ─ r(J, A(θ)) ≠ 0 ──────────────────────────────
@@ -1885,14 +2075,19 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
     h6 = _hypothesis_from_infodesign(infodesign, "censor_upper", "Censorship Distortion")
     table.append(h6)
 
-    # H7: Surveillance ─ regime surveillance effect
-    surv = (regime.get("surveillance") or {}).get("Mistral Small Creative", {})
+    # H7: Surveillance ─ clean prompt-isolation effect when available
+    surv = ((prompt_iso.get("surveillance") or {}).get("Mistral Small Creative")
+            or (regime.get("surveillance") or {}).get("Mistral Small Creative", {}))
     # t-test: surveilled comm vs baseline comm (load raw data)
     surv_p = None
     surv_t = None
     surv_delta = surv.get("delta_vs_baseline_pp")
     primary = PRIMARY
-    surv_df = _load_summary(ROOT / "surveillance" / primary / "experiment_comm_summary.csv")
+    surv_path = _first_existing(
+        ROOT / "prompt-isolation-surveillance" / primary / "experiment_comm_summary.csv",
+        ROOT / "surveillance" / primary / "experiment_comm_summary.csv",
+    )
+    surv_df = _load_summary(surv_path)
     base_comm_df = _load_summary(ROOT / primary / "experiment_comm_summary.csv")
     surv_d = None
     if len(surv_df) > 0 and len(base_comm_df) > 0:
@@ -2031,15 +2226,13 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
 
 
 def _hypothesis_supported(p, alpha: float = 0.05, reject_null: bool = True) -> str:
-    """Return 'Yes', 'No', or 'No (ambiguous)' based on p-value and direction."""
+    """Return an outcome label based on p-value and test direction."""
     if p is None or (isinstance(p, float) and np.isnan(p)):
         return "---"
     if reject_null:
-        # Hypothesis is supported when we reject the null
-        return "Yes" if p < alpha else "No (ambiguous)"
+        return "Supported" if p < alpha else "Not supported"
     else:
-        # Hypothesis is supported when we fail to reject the null
-        return "Yes" if p >= alpha else "No"
+        return "Passes falsification" if p >= alpha else "Fails falsification"
 
 
 def _hypothesis_from_infodesign(infodesign: dict, design_key: str, label: str) -> dict:
@@ -2785,7 +2978,9 @@ def compute_paper_misc_stats(all_stats: dict) -> dict:
     ht = all_stats.get("hypothesis_table", [])
     for h in ht:
         if h.get("id") == "H6":
-            misc["h6_p"] = round(h["p"], 3)
+            p = h.get("p")
+            if p is not None and not (isinstance(p, float) and np.isnan(p)):
+                misc["h6_p"] = round(p, 3)
 
     # ── Agent-level regression N (from regression_results.json) ─────
     reg_path = Path(__file__).resolve().parent / "regression_results.json"
@@ -2944,7 +3139,10 @@ def compute_paper_misc_stats(all_stats: dict) -> dict:
         return bool(words & CAUTION_WORDS)
 
     comm_path = ROOT / PRIMARY / "experiment_comm_log.json"
-    surv_path = ROOT / "surveillance" / PRIMARY / "experiment_comm_log.json"
+    surv_path = _first_existing(
+        ROOT / "prompt-isolation-surveillance" / PRIMARY / "experiment_comm_log.json",
+        ROOT / "surveillance" / PRIMARY / "experiment_comm_log.json",
+    )
     prop_k10_path = ROOT / "propaganda-k10" / PRIMARY / "experiment_comm_log.json"
 
     comm_log = _load_log(comm_path)
@@ -3046,6 +3244,9 @@ def compute_paper_misc_stats(all_stats: dict) -> dict:
 
 
 def main():
+    if _maybe_use_archived_stats():
+        return
+
     print("Computing Part I statistics...")
     part1 = compute_part1()
 
@@ -3073,6 +3274,12 @@ def main():
 
     print("Computing surveillance variant statistics...")
     surv_variants = compute_surveillance_variants()
+
+    print("Computing clean prompt-isolation statistics...")
+    prompt_isolation = compute_prompt_isolation()
+
+    print("Computing message-control statistics...")
+    message_controls = compute_message_controls()
 
     print("Computing uncalibrated robustness statistics...")
     uncalibrated = compute_uncalibrated()
@@ -3120,6 +3327,8 @@ def main():
         "logistic_fits": logistic_fits,
         "clustered_ses": clustered_ses,
         "surveillance_variants": surv_variants,
+        "prompt_isolation": prompt_isolation,
+        "message_controls": message_controls,
         "temperature_robustness": temp_robust,
         "uncalibrated": uncalibrated,
         "beliefs_v2": beliefs_v2,

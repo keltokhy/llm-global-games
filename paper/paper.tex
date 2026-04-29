@@ -20,6 +20,12 @@
 
 \urlstyle{same}
 \interfootnotelinepenalty=10000
+\hypersetup{
+  pdftitle={Surveillance Poisons Communication in LLM Global Games},
+  pdfauthor={Khaled Eltokhy},
+  pdfsubject={LLM agents, global games, communication, and surveillance},
+  pdfkeywords={global games, regime change, surveillance, communication, LLM agents}
+}
 
 % Allow LaTeX to place floats near their source instead of deferring to end
 \renewcommand{\topfraction}{0.9}
@@ -49,12 +55,8 @@
 
 \maketitle
 
-\begin{center}
-\href{https://drive.google.com/drive/u/1/folders/1yFlOVWdESe02gxBr6tJWT6VIM8fe5-BB}{\textcolor{blue}{\textit{Click here for latest version}}}
-\end{center}
-
 \begin{abstract}
-In global games of regime change, citizens receive noisy private signals about regime strength and must independently decide whether to join an uprising, knowing it succeeds only if enough others join too. Theory predicts a unique threshold equilibrium, but testing how information structures shape coordination has proven difficult: laboratory experiments strip away the richness of real information environments, and field data confound strategic behavior with institutional differences. I embed seven large language models in the Morris--Shin (2003) regime-change game, conveying private signals as natural-language intelligence briefings rather than numeric values. Across 1,800 country--periods, LLM agents display robust threshold behavior aligned with the theoretical benchmark (mean $r = \MeanModelRPureAttack$, $p < 0.001$ for every model). The central finding concerns surveillance. Adding a monitoring warning to the pre-play communication stage---while leaving the decision prompt unchanged---lowers joining by $\SurvMeanDeltaPP$~pp across five models. The mechanism is communication poisoning: agents self-censor their messages, degrading informativeness ($R^2$ drops from 0.12 to 0.02), and a degraded-messages control without surveillance framing produces an even larger suppression. The same channel that helps citizens coordinate is also the channel an authoritarian regime can exploit.
+In global games of regime change, citizens receive noisy private signals about regime strength and must independently decide whether to join an uprising, knowing it succeeds only if enough others join too. Theory predicts a unique threshold equilibrium, but testing how information structures shape coordination has proven difficult: laboratory experiments strip away the richness of real information environments, and field data confound strategic behavior with institutional differences. I embed seven large language models in the Morris--Shin (2003) regime-change game, conveying private signals as natural-language intelligence briefings rather than numeric values. Across 1,800 period-level observations, LLM agents display robust threshold-like policies aligned with the theoretical attack-mass benchmark (mean $r = \MeanModelRPureAttack$, $p < 0.001$ for every model). Pre-play messages preserve and transmit signal information. The central finding concerns surveillance: in clean prompt-isolation reruns across five models, appending only a monitoring warning to the messaging prompt lowers joining in every model (mean $\Delta = \PromptIsoMeanDeltaPP$~pp) while the decision prompt remains unchanged; placebo and anonymous monitoring warnings do not move behavior in the primary model. The same channel that helps citizens coordinate is also the channel an authoritarian regime can exploit.
 \end{abstract}
 
 \medskip
@@ -74,9 +76,9 @@ Testing these predictions empirically is difficult. Laboratory experiments confi
 I address this gap by embedding seven large language models (LLMs) spanning six architecture families in the \citet{morris2003} regime change game. Each agent receives a private signal $x_i = \theta + \varepsilon_i$, translated into a natural-language intelligence briefing whose content shifts monotonically with signal strength across eight evidence domains. No explicit payoff table is provided---the stakes are embedded in the narrative, forcing agents to form beliefs from language.
 
 \paragraph{Contribution roadmap.}
-The paper's core contribution is the surveillance result. I show that the communication channel that enables coordination is also exploitable by an authoritarian planner. Surveillance degrades message informativeness ($R^2$ drops from 0.12 to 0.02) and lowers joining by $\SurvMeanDeltaPP$~pp across five models. A degraded-messages control---replacing LLM-generated messages with generic uninformative text, without any surveillance framing---drops joining by 21~pp, confirming that the main mechanism operates through communication poisoning rather than direct deterrence. Elicited beliefs shift significantly under surveillance, with a residual belief--action wedge consistent with preference falsification.
+The paper's core contribution is the surveillance result. I show that the communication channel that enables coordination is also exploitable by an authoritarian planner. In clean prompt-isolation reruns, surveillance lowers joining in \PromptIsoNegativeModels/\PromptIsoNModels\ models (mean $\Delta = \PromptIsoMeanDeltaPP$~pp; primary-model $\Delta = \PromptIsoMistralDeltaPP$~pp), while placebo and anonymous monitoring warnings leave primary-model behavior unchanged. A degraded-messages control and a no-message control both reduce joining, consistent with the view that decision-stage agents use peer messages as part of their information environment. Elicited beliefs shift under surveillance, with a residual belief--action wedge consistent with preference falsification.
 
-The surveillance claim rests on a behavioral foundation. Across 1,800 country--periods and seven models, LLM agents display robust threshold-like behavior aligned with the global-game benchmark (mean $r = \MeanModelRPureAttack$, $p < 0.001$ for every model); a narrative stakes ladder confirms that LLMs respond to strategic framing, not just text sentiment (Appendix~\ref{sec:stakes_appendix}).
+The surveillance claim rests on a behavioral foundation. Across 1,800 period-level observations and seven models, LLM agents display robust threshold-like behavior aligned with the global-game benchmark (mean $r = \MeanModelRPureAttack$, $p < 0.001$ for every model); a narrative stakes ladder confirms that LLMs respond to strategic framing, not just text sentiment (Appendix~\ref{sec:stakes_appendix}).
 
 \paragraph{Related literature.}
 The paper connects two strands. The global game literature---from \citet{carlsson1993} through \citet{morris2003} and the dynamic extensions of \citet{angeletos2007a} and \citet{chassang2010}---provides the theoretical framework; laboratory experiments \citep{heinemann2004, heinemann2009, szkup2020} confirmed threshold behavior with numeric signals. The political economy of authoritarian control---\citet{edmond2013} on propaganda, \citet{kuran1991} on preference falsification, \citet{shadmehr2011} on collective action---motivates the surveillance experiments. Empirical evidence that censorship targets coordination \citep{king2013}, surveillance suppresses expression \citep{penney2016, stoycheff2016}, and social media enables protest \citep{enikolopov2020} provides the real-world stakes.\footnote{Concurrent work by \citet{ruano2026} places LLM depositors in a bank-run coordination game with network contagion, finding sharp phase transitions consistent with Diamond--Dybvig.}
@@ -146,15 +148,15 @@ For each country--period, nature draws $\theta \sim \mathcal{N}(\bar{z}, 1)$, wh
 
 Agents observe only their private briefing and never the payoff parameters $(B, C)$, the noise level $\sigma$, or the prior distribution. The diffuse-prior equilibrium (Proposition~\ref{prop:ms}) serves as an external benchmark for behavioral shape and comparative statics, not as a claim about the exact equilibrium of the implemented game.
 
-The behavioral benchmark has four core treatments: a \textit{pure global game} (independent decisions), \textit{communication} (pre-play messaging on a Watts--Strogatz network, $k=4$, $p=0.3$), \textit{scramble} (cross-period briefing permutation breaking the $\theta$-to-signal link), and \textit{flip} (negated z-scores). A \textit{degraded-messages} control replaces LLM messages with generic text, providing an exogenous benchmark for communication quality. Additional robustness tests are in Appendix~\ref{sec:robustness}.
+The behavioral benchmark has four core treatments: a \textit{pure global game} (independent decisions), \textit{communication} (pre-play messaging on a Watts--Strogatz network, $k=4$, $p=0.3$), \textit{scramble} (cross-period briefing permutation breaking the $\theta$-to-signal link), and \textit{flip} (negated z-scores). A \textit{degraded-messages} control replaces LLM messages with generic text, and a no-message control removes peer messages entirely; together they benchmark how much the decision stage depends on message content. Additional robustness tests are in Appendix~\ref{sec:robustness}.
 
 \input{tables/tab_models.tex}
 
-I test seven models spanning six families (Table~\ref{tab:models}). All experiments use $n = 25$ agents per country--period and $\sigma = 0.3$. Benchmark experiments use $B=C=1$ ($\theta^* = 0.50$). All LLM calls use temperature $= 0.7$ with a single sample per decision, routed through OpenRouter and cached by request hash (Appendix~\ref{sec:decoding}). Throughout, $n$ denotes agents per country--period and $N$ denotes the number of country--periods.
+I test seven models spanning six families (Table~\ref{tab:models}). All experiments use $n = 25$ agents per period-level task row and $\sigma = 0.3$. Benchmark experiments use $B=C=1$ ($\theta^* = 0.50$). All LLM calls use temperature $= 0.7$ with a single sample per decision, routed through OpenRouter and cached by request hash (Appendix~\ref{sec:decoding}). Throughout, $n$ denotes agents per period-level task row and $N$ denotes the number of such rows.
 
 The unit of randomization is the country--period ($\theta$ draw plus agent-level decoding stochasticity). For agent-level regressions, standard errors are clustered at the model--country--period level. For period-level correlations, I report Fisher-$z$ confidence intervals.
 
-The surveillance treatment augments the communication prompt with a monitoring warning; the decision prompt is unchanged (full prompts in Appendix~\ref{sec:prompt_example}).
+The clean surveillance treatment appends a monitoring warning to the baseline communication prompt; the decision prompt is unchanged (full prompts in Appendix~\ref{sec:prompt_example}).
 
 %% 4. BEHAVIORAL BENCHMARK
 \section{Behavioral Benchmark} \label{sec:results}
@@ -164,7 +166,7 @@ The surveillance treatment augments the communication prompt with a monitoring w
 \end{figure}
 
 \begin{result}[Threshold-Policy Alignment]
-Across seven models and 1,800 country--periods in the pure global game treatment, the Pearson correlation between the empirical join fraction and the theoretical attack mass $A(\theta)$ (Eq.~\ref{eq:attack_mass}) averages $r = \MeanModelRPureAttack$ ($p < 0.001$ for every model).\footnote{The primary model (Mistral) was run in multiple batches with \texttt{--append}, producing 1,000 rows from \DedupNUnique\ unique (country, period, $\theta$) configurations. Averaging within each configuration (deduplication) changes $r$ from \DedupRPre\ to \DedupRPost; all qualitative results are unaffected.}
+Across seven models and 1,800 period-level observations in the pure global game treatment, the Pearson correlation between the empirical join fraction and the theoretical attack mass $A(\theta)$ (Eq.~\ref{eq:attack_mass}) averages $r = \MeanModelRPureAttack$ ($p < 0.001$ for every model).\footnote{The primary model (Mistral) was run in multiple batches with \texttt{--append}, producing 1,000 rows from \DedupNUnique\ unique (country, period, $\theta$) configurations. Averaging within each configuration (deduplication) changes $r$ from \DedupRPre\ to \DedupRPost; all qualitative results are unaffected.}
 \end{result}
 
 Figure~\ref{fig:sigmoid} shows the empirical sigmoid for the primary model. Correlations span $r \in [\MinModelPureRAttack, \MaxModelPureRAttack]$ across architectures (Table~\ref{tab:main_results}); the pooled OLS is $J = \PooledOLSInterceptDisp + \PooledOLSSlopeDisp\,A(\theta)$ ($R^2 = \PooledOLSRSqDisp$). Model-specific action biases shift the intercept but not the correlation (Figure~\ref{fig:cross_model}).
@@ -194,51 +196,53 @@ A text-only baseline tracks LLM decisions at $r = \TextBaselineR$, but the LLM's
 \end{figure}
 
 \begin{result}[Communication Creates an Informative Channel]
-Matched-cell comparison across $n = \CommNPairs$ unique (model, country, period, $\theta$) task cells yields $\Delta = \CommDeltaPPPaired$~pp ($t = \CommTStatPaired$, $p < 0.001$). Communication modestly increases joining in like-for-like tasks.
+Pre-play communication preserves the threshold structure and transmits regime-strength information through messages. Matched-cell comparison across $n = \CommNPairs$ unique (model, country, period, $\theta$) task cells yields $\Delta = \CommDeltaPPPaired$~pp ($t = \CommTStatPaired$, $p < 0.001$), while the equal-weighted model average is heterogeneous ($\CommDeltaPPModelAvg$~pp).
 \end{result}
 
-Communication preserves the signal structure ($r = \MeanModelRCommAttack$ vs.\ $\MeanModelRPureAttack$ under pure; Figure~\ref{fig:communication}). Regressing $\theta$ on message features yields $R^2 = \MsgRSqComm$---messages carry real information, noisily. This informativeness is what makes the channel exploitable: surveillance degrades $R^2$ to $\MsgRSqSurv$ (Section~\ref{sec:surveillance}), an \MsgRSqDropPct\ reduction.
+Communication preserves the signal structure ($r = \MeanModelRCommAttack$ vs.\ $\MeanModelRPureAttack$ under pure; Figure~\ref{fig:communication}). Simple text features in baseline messages predict $\theta$, so peer messages carry real information, noisily. This is what makes the channel exploitable: the decision stage treats messages as information, so changing the incentives to speak changes the downstream decision environment.
 
-A \textit{degraded-messages} control replaces all LLM-generated messages with generic uninformative text while preserving the two-stage protocol and omitting any surveillance framing. Against its own live-messages baseline ($n = 500$, mean join 45.9\%), degraded messages drop the mean join rate to 24.5\% ($\Delta = -21.4$~pp, $p < 0.001$)---well below even the pure game (38.7\%)---confirming that the communication benefit is driven by informative content, and that any mechanism degrading message quality should produce a comparable suppression.
+A \textit{degraded-messages} control replaces all LLM-generated messages with generic uninformative text while preserving the two-stage protocol and omitting any surveillance framing. Against its own live-messages baseline ($n = 500$, mean join 45.9\%), degraded messages drop the mean join rate to 24.5\% ($\Delta = -21.4$~pp, $p < 0.001$)---well below even the pure game (38.7\%). This is consistent with communication quality mattering, but the generic text may itself convey caution. A no-message control therefore provides a cleaner zero-peer-message benchmark, with join rates of \NoMsgMeanJoinPct\ ($\Delta = \NoMsgDeltaPP$~pp vs.\ communication; $n = \NoMsgN$).
 
 
 %% 5. SURVEILLANCE
 \section{Surveillance} \label{sec:surveillance}
 
-In the surveillance treatment, the communication prompt is augmented with a warning that communications are being monitored by regime security services. The manipulation affects only the communication phase; the decision prompt is unchanged. The isolation is architectural: each LLM call is stateless---the decision-stage API call receives only the briefing and the (now self-censored) messages, with no memory of the communication-stage surveillance warning. Any difference in join rates must therefore operate through the \textit{content} of the messages that the decision stage receives.
+In the clean surveillance treatment, the communication prompt is literally the baseline trusted-contact prompt plus one appended warning that communications are being monitored by regime security services. The manipulation affects only the communication phase; the decision prompt is unchanged. The isolation is architectural: each LLM call is stateless---the decision-stage API call receives only the briefing and the messages, with no memory of the communication-stage surveillance warning. Any difference in join rates must therefore operate through the \textit{content} of the messages that the decision stage receives.
 
-\begin{figure*}[htbp]\centering\includegraphics[width=\textwidth]{figures/fig12_surveillance.pdf}
-\caption{Surveillance reduces join rates across five models, averaging $\SurvMeanDeltaPP$~pp.}\label{fig:surveillance}
-\end{figure*}
+\begin{figure}[t]\centering\includegraphics[width=\columnwidth]{figures/fig12_surveillance.pdf}
+\caption{Clean primary-model surveillance and message controls. The clean surveillance condition appends only the monitoring warning to the baseline communication prompt; the decision prompt is unchanged.}\label{fig:surveillance}
+\end{figure}
 
-\begin{result}[Surveillance Produces a Large Chilling Effect]
-Surveillance reduces mean join rates in the primary model (Mistral Small Creative) from \SurvMistralBaselineMeanPct\ to \SurvMistralMeanJoinPct, a shift of $\SurvMistralDeltaPP$~pp ($p < 0.001$). The action--attack-mass correlation is preserved ($r = \SurvMistralRAttack$ vs.\ $r = \MistralCommRAttack$ under the communication baseline), indicating that surveillance operates as a level shift rather than disrupting signal processing.
+\begin{result}[Surveillance Produces a Chilling Effect]
+The clean prompt-isolation rerun reduces mean join rates in the primary model (Mistral Small Creative) from \PromptIsoMistralBaselineMeanJoinPct\ to \PromptIsoMistralMeanJoinPct, a shift of $\PromptIsoMistralDeltaPP$~pp ($p < 0.001$; $n = \PromptIsoMistralN$). The action--attack-mass correlation is preserved ($r = \PromptIsoMistralRAttack$ vs.\ $r = \MistralCommRAttack$ under the communication baseline), indicating that surveillance operates as a level shift rather than disrupting signal processing.
 \end{result}
 
-Surveillance contaminates the information environment with self-censored messages, pushing join rates well below the communication baseline (Figure~\ref{fig:surveillance}). The effect replicates across five models: Mistral ($\SurvMistralDeltaPP$~pp), GPT-OSS ($\SurvGptOssDeltaPP$~pp), Qwen3~30B ($\SurvQwenSDeltaPP$~pp), Llama ($\SurvLlamaDeltaPP$~pp), and Qwen3~235B ($\SurvQwenLDeltaPP$~pp), averaging $\SurvMeanDeltaPP$~pp. Two placebo variants---monitored for research (no consequences) and aggregated anonymously---produce no significant deviation from the communication baseline ($\PlaceboSurvDeltaPP$~pp and $\AnonSurvDeltaPP$~pp, both $p > 0.2$; Appendix~\ref{sec:surv_isolation}).
+Surveillance contaminates the information environment with monitored messages, pushing join rates below the communication baseline (Figure~\ref{fig:surveillance}). The clean primary-model estimate is a \PromptIsoMistralDeltaAbsPP~pp decline. Placebo variants using the same baseline-plus-warning template---monitored for research (no consequences) and aggregated anonymously---produce no significant deviation from the communication baseline (\PlaceboSurvDeltaPP~pp and \AnonSurvDeltaPP~pp, both $p > 0.9$; Appendix~\ref{sec:surv_isolation}).
+Across the clean prompt-isolation rerun set, \PromptIsoNegativeModels/\PromptIsoNModels\ models move in the negative direction (mean $\Delta = \PromptIsoMeanDeltaPP$~pp; \PromptIsoSig05Models/\PromptIsoNModels\ individually significant at 5\%; Appendix Table~\ref{tab:prompt_isolation}).
 
 \paragraph{The mechanism is communication poisoning.}
 
-Three pieces of evidence identify communication degradation as the primary channel.
+Three pieces of evidence support communication degradation as the primary channel.
 
-First, the $R^2$ of message content on true $\theta$ drops from \MsgRSqComm\ to \MsgRSqSurv---an \MsgRSqDropPct\ reduction in informational content. Message content confirms self-censorship: ``act'' drops from \WFActComm\% to \WFActSurv\% of messages; ``collapse'' drops from \WFCollapseComm\% to \WFCollapseSurv\%. Among agents who privately decide to JOIN, \WFActionJoinSurv\% send action-signaling messages under surveillance vs.\ \WFActionJoinComm\% under regular communication.
+First, message content changes under monitoring. The words ``act'' and ``collapse'' fall from \WFActComm\% to \WFActSurv\% and from \WFCollapseComm\% to \WFCollapseSurv\% of messages, respectively. This is not a claim that all state information disappears: the clean rerun still leaves messages informative about regime strength. The identification point is narrower: with the decision prompt unchanged, any action effect must pass through the message bundle.
 
-Second, the degraded-messages control (Section~\ref{sec:results}, Communication) exogenously replaces all messages with generic text---without any surveillance framing---and drops joining by 21.4~pp (to 24.5\% from its 45.9\% live-messages baseline), a \textit{larger} suppression than the 13.5~pp drop under surveillance. This is the expected pattern if surveillance operates primarily by degrading message informativeness: the exogenous control removes all information, while self-censorship under surveillance only partially degrades it.
+Second, the degraded-messages control (Section~\ref{sec:results}, Communication) exogenously replaces all messages with generic text---without any surveillance framing---and drops joining by 21.4~pp (to 24.5\% from its 45.9\% live-messages baseline). Because generic uncertain messages may themselves convey caution, the no-message control gives the cleaner zero-peer-message benchmark (\NoMsgMeanJoinPct; $\Delta = \NoMsgDeltaPP$~pp).
 
 Third, elicited punishment risk is ${\approx}\,\PunishRiskMean/10$ across all conditions with negligible differences between JOIN and STAY agents (Table~\ref{tab:punishment_risk}), supporting the contaminated-information interpretation over a direct deterrence channel.
 
 \paragraph{Beliefs and preference falsification.}
-Post-decision beliefs, elicited on the information set agents held at decision time (including peer messages; $n = 12{,}500$ per condition), drop $\BFSurvDeltaBelMsg$~pts under surveillance ($p < \BFSurvDeltaBelMsgP$); second-order beliefs drop $\BFSurvDeltaSOBMsg$~pts ($p < \BFSurvDeltaSOBMsgP$). Actions shift further ($\BFActionDeltaPP$~pp)---a residual wedge consistent with \citeauthor{kuran1991}'s (\citeyear{kuran1991}) preference-falsification logic (full factorial in Appendix~\ref{sec:belief_appendix}, Table~\ref{tab:belief_factorial}).
+Post-decision beliefs, elicited on the information set agents held at decision time (including peer messages; $n = 12{,}500$ per condition), drop $\BFSurvDeltaBelMsg$~pts under surveillance ($p < \BFSurvDeltaBelMsgP$); second-order beliefs drop $\BFSurvDeltaSOBMsg$~pts ($p < \BFSurvDeltaSOBMsgP$). Actions shift further ($\BFActionDeltaPP$~pp)---a residual wedge consistent with, but not separately identifying, \citeauthor{kuran1991}'s (\citeyear{kuran1991}) preference-falsification logic (full factorial in Appendix~\ref{sec:belief_appendix}, Table~\ref{tab:belief_factorial}).
 
-A separate hold-fixed test replays baseline messages verbatim while adding a surveillance warning to the \textit{decision} prompt, producing a $\FixedMsgDeltaPP$~pp drop ($p < 0.001$). This confirms a direct decision-stage channel exists---but it is absent in the main design, where the decision prompt contains no surveillance reference. The main treatment isolates the indirect channel: communication poisoning.
+A separate hold-fixed test replays baseline messages verbatim while adding a surveillance warning to the \textit{decision} prompt, producing a $\FixedMsgDeltaPP$~pp drop ($p < 0.001$). This shows a direct decision-stage channel exists---but it is absent in the main design, where the decision prompt contains no surveillance reference. The main treatment isolates the indirect channel: communication poisoning.
 
 
 %% 6. CONCLUSION
+\FloatBarrier
 \section{Conclusion} \label{sec:conclusion}
 
-The paper's central result is that surveillance poisons the communication channel. When monitoring enters only during the messaging stage, join rates fall sharply, message informativeness drops from \MsgRSqComm\ to \MsgRSqSurv, placebo warnings do not replicate the effect, and an exogenous degraded-messages control produces an even larger suppression. The same channel that helps citizens coordinate is also the channel an authoritarian regime can degrade.
+The paper's central result is that surveillance poisons the communication channel. When monitoring enters only during the messaging stage, join rates fall in all five clean prompt-isolation reruns, placebo warnings do not replicate the effect in the primary model, and message controls show that downstream agents use peer messages as part of their decision environment. The same channel that helps citizens coordinate is also the channel an authoritarian regime can degrade.
 
-The paper avoids claiming full recovery of the unique Bayesian Nash equilibrium or causal mediation through post-decision belief elicitations. Three limitations warrant discussion. First, whether the underlying mechanism is approximate Bayesian reasoning or a learned heuristic that matches BNE remains open. Second, the experiments are static; real coordination problems are dynamic \citep{angeletos2007a, chassang2010}. Third, external validity remains the fundamental challenge: what LLM agents do in a coordination game is evidence about the structure of the game, not necessarily about how humans would play it. The cross-model replication (seven architectures, five surveillance variants) suggests that the qualitative patterns are properties of the information structure rather than artifacts of particular model training. The experimental template is reusable, and the data and code are publicly available.
+The paper avoids claiming full recovery of the unique Bayesian Nash equilibrium or causal mediation through post-decision belief elicitations. Three limitations warrant discussion. First, whether the underlying mechanism is approximate Bayesian reasoning or a learned heuristic that matches BNE remains open. Second, the experiments are static; real coordination problems are dynamic \citep{angeletos2007a, chassang2010}. Third, external validity remains the fundamental challenge: what LLM agents do in a coordination game is evidence about the structure of the game, not necessarily about how humans would play it. Cross-model benchmark and clean-surveillance replication suggest that the qualitative pattern is not an artifact of one model family; pre-decision belief elicitation or a small human validation experiment remains the natural next step. The experimental template is reusable, and the data and code are publicly available.
 
 
 %% REFERENCES
@@ -304,14 +308,14 @@ The following shows the complete text that an LLM receives for a single decision
 
 \begin{quote}
 \small
-``Based on the intelligence briefing you received, write a brief message (1--2 sentences) to share your read of the situation with your trusted contacts.''
+``You are a citizen in a country with an authoritarian regime. You have received a private intelligence briefing. You are now in contact with a small number of trusted people. Based on your briefing, write a brief message (1--2 sentences) to share your read of the situation. Be natural---you're talking to people you trust.''
 \end{quote}
 
 \noindent After exchanging messages on the network, agents receive the decision prompt above, augmented with: ``Before deciding, you received the following messages from your contacts:'' followed by the actual messages from network neighbors. In the \textit{surveillance} variant, the communication prompt appends:
 
 \begin{quote}
 \small
-``You have reason to believe that your communications are being monitored by regime security services. Messages deemed subversive could have serious consequences.''
+``IMPORTANT: You have reason to believe that your communications are being monitored by regime security services, and messages deemed subversive could have serious consequences for you and your contacts.''
 \end{quote}
 
 \noindent The decision prompt is \textit{unchanged} under surveillance---it contains no mention of monitoring. Any behavioral effect therefore operates through the content of the (now self-censored) messages.
@@ -323,7 +327,7 @@ Beliefs are elicited on a 0--100 probability scale immediately after each decisi
 
 A restricted variant excluding peer messages tests information-set sensitivity. Table~\ref{tab:belief_factorial} reports the $2 \times 2$ factorial crossing condition (communication vs.\ surveillance) with information set (messages included vs.\ excluded). Without messages, beliefs barely shift under surveillance ($\BFSurvDeltaBelNoMsg$~pts, $p = \BFSurvDeltaBelNoMsgP$) while actions shift $\BFActionDeltaPP$~pp. With messages included, beliefs shift significantly ($\BFSurvDeltaBelMsg$~pts, $p < \BFSurvDeltaBelMsgP$): roughly half the apparent belief--action wedge under the restricted design was a measurement artifact. Figure~\ref{fig:second_order_beliefs} shows second-order beliefs under the restricted information set.
 
-\begin{table}[htbp]\centering\footnotesize
+\begin{table*}[t]\centering\footnotesize
 \caption{Belief--action decomposition under surveillance: effect of including peer messages in the belief elicitation prompt ($n = 12{,}500$ per cell).}
 \label{tab:belief_factorial}
 \begin{tabular}{lcccc}
@@ -338,14 +342,14 @@ Join rate & 42.4\% & 31.0\% & 42.2\% & 30.8\% \\
 \midrule
 \multicolumn{5}{l}{\textit{Surveillance effect (comm $\to$ surv):}} \\
 $\Delta$ belief & \multicolumn{2}{c}{$\BFSurvDeltaBelNoMsg$ ($p = \BFSurvDeltaBelNoMsgP$)} & \multicolumn{2}{c}{$\BFSurvDeltaBelMsg$ ($p < \BFSurvDeltaBelMsgP$)} \\
-$\Delta$ SOB & \multicolumn{2}{c}{$-0.0$ ($p = 0.89$)} & \multicolumn{2}{c}{$\BFSurvDeltaSOBMsg$ ($p < \BFSurvDeltaSOBMsgP$)} \\
+$\Delta$ SOB & \multicolumn{2}{c}{$\BFSurvDeltaSOBNoMsg$ ($p = \BFSurvDeltaSOBNoMsgP$)} & \multicolumn{2}{c}{$\BFSurvDeltaSOBMsg$ ($p < \BFSurvDeltaSOBMsgP$)} \\
 $\Delta$ join & \multicolumn{2}{c}{$\BFActionDeltaPP$~pp ($p < \BFActionDeltaP$)} & \multicolumn{2}{c}{$\BFActionDeltaPP$~pp ($p < \BFActionDeltaP$)} \\
 \bottomrule
 \end{tabular}
 \begin{tablenotes}
 \footnotesize\textit{Notes:} Post-decision elicitation, 500 country--periods $\times$ 25 agents per cell. ``Messages excluded'': belief prompt sees briefing and decision only. ``Messages included'': belief prompt additionally sees the peer messages received in the communication round.
 \end{tablenotes}
-\end{table}
+\end{table*}
 
 
 \begin{figure*}[htbp]\centering\includegraphics[width=\textwidth]{figures/fig16_beliefs.pdf}
@@ -416,8 +420,9 @@ Human subjects in coordination games exhibit level-$k$ cognitive hierarchy behav
 The correlation $r(J, A(\theta))$ ranges from $\TempRMinAll$ to $\TempRMaxAll$ across \TempNCombos\ model--temperature combinations ($T \in \{0.3, 0.5, 0.7, 1.0, 1.2\}$ for three models; Table~\ref{tab:temperature_expanded}).
 
 \subsection{Falsification and Placebo Tests} \label{sec:surv_isolation}
+\input{tables/tab_prompt_isolation.tex}
 \input{tables/tab_surveillance_variants.tex}
-Two placebo variants---monitoring ``for research purposes'' (no consequences) and ``aggregated anonymously''---produce no significant deviation from the communication baseline (\PlaceboSurvDeltaPP~pp, $p = \PlaceboSurvPValue$ and \AnonSurvDeltaPP~pp, $p = \AnonSurvPValue$; Table~\ref{tab:surveillance_variants}). The chilling effect is specific to the surveillance warning's strategic content.
+Two clean placebo variants---monitoring ``for research purposes'' (no consequences) and ``aggregated anonymously''---produce no significant deviation from the communication baseline (\PlaceboSurvDeltaPP~pp, $p = \PlaceboSurvPValue$ and \AnonSurvDeltaPP~pp, $p = \AnonSurvPValue$; Table~\ref{tab:surveillance_variants}). The chilling effect is specific to the surveillance warning's strategic content.
 
 
 \subsection{Finite-\texorpdfstring{$n$}{n} Aggregation Check}
@@ -441,7 +446,7 @@ Three text rendering formats---baseline narrative, diplomatic cable, journalisti
 \input{tables/tab_cross_generator.tex}
 
 \subsection{Belief Calibration and Risk Elicitation}
-Stated beliefs track the theoretical success probability ($r_{\text{belief,posterior}} = \BeliefPureRPosterior$) and predict actions ($r_{\text{belief,decision}} = \BeliefPureRDecision$; partial $r = \BeliefPureRPartial$ controlling for signal; Table~\ref{tab:beliefs}). The surveillance belief shift and preference-falsification wedge are reported in the main text; the full factorial is in Appendix~\ref{sec:belief_appendix}.
+Stated beliefs track the theoretical success probability ($r_{\text{belief,posterior}} = \BeliefPureRPosterior$) and predict actions ($r_{\text{belief,decision}} = \BeliefPureRDecision$; partial $r = \BeliefPureRPartial$ controlling for signal; Table~\ref{tab:beliefs}). The surveillance belief shift and belief--action wedge are reported in the main text; the full factorial is in Appendix~\ref{sec:belief_appendix}.
 \input{tables/tab_beliefs.tex}
 
 \label{sec:punishment_risk}Mean punishment risk is ${\approx}\,\PunishRiskMean/10$ across all conditions with negligible JOIN/STAY differences ($< \PunishRiskMaxDiff$ points; Table~\ref{tab:punishment_risk}), supporting the contaminated-communication interpretation.
@@ -535,7 +540,7 @@ Figure~\ref{fig:example_briefings} shows complete briefings generated at $z \in 
 \section{Implementation Details} \label{sec:implementation}
 
 \label{sec:decoding}
-All LLM calls use temperature $= 0.7$, \texttt{max\_tokens} $= 512$, single sample per decision, routed through OpenRouter. Model versions are those available December 2024--February 2025.
+All LLM calls use temperature $= 0.7$, \texttt{max\_tokens} $= 512$, single sample per decision, routed through OpenRouter. Model identifiers are listed in Table~\ref{tab:models}; exact request payloads and responses are cached by hash because hosted model snapshots may change over time.
 
 Each country has a base prior $\bar{z} \sim \mathcal{N}(0, 0.3)$; each period perturbs it by $\mathcal{N}(0, 0.05^2)$. Regime strength is $\theta \sim \mathcal{N}(\bar{z}, 1)$; private signals are $x_i = \theta + \varepsilon_i$ with $\sigma = 0.3$. The communication network is Watts--Strogatz ($k = 4$, $p = 0.3$), regenerated each period. All random draws use a master seed logged in per-run JSON manifests; LLM responses are cached by request hash for exact reproducibility.
 

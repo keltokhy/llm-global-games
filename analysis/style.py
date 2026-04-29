@@ -19,7 +19,7 @@ from scipy.optimize import curve_fit
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 OUTPUT_DIR = PROJECT_ROOT / "output"
 FIG_DIR = PROJECT_ROOT / "paper" / "figures"
-FIG_DIR.mkdir(exist_ok=True)
+FIG_DIR.mkdir(parents=True, exist_ok=True)
 
 
 # ── Two-column layout dimensions (inches) ─────────────────────────

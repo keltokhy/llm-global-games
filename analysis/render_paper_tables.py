@@ -94,9 +94,9 @@ def render_tab_models(stats: dict) -> str:
             f"{m} & {arch.get(m,'')} & {pure_n} & {comm_n} & {falsif_cell} \\\\"
         )
 
-    tex = r"""\begin{table}[t]
+    tex = r"""\begin{table*}[t]
 \centering
-\caption{Model summary. Columns report country-period counts in the pure, communication, and falsification (scramble+flip) suites. All runs use $N=25$ agents per period and $\sigma=0.3$.}
+\caption{Model summary. Columns report period-level task rows in the pure, communication, and falsification (scramble+flip) suites. All runs use $N=25$ agents per row and $\sigma=0.3$.}
 \label{tab:models}
 \footnotesize
 \setlength{\tabcolsep}{4pt}
@@ -111,8 +111,8 @@ Model & Arch. & Pure & Comm & Falsif. \\
 \bottomrule
 \end{tabular}
 \vspace{0.25em}
-\parbox{\columnwidth}{\footnotesize\emph{Notes:} 7 models spanning 6 architecture families. $N$ = country-periods with 25 agents each. All runs use $\sigma = 0.3$ and temperature $= 0.7$ unless otherwise stated.}
-\end{table}
+\parbox{\textwidth}{\footnotesize\emph{Notes:} 7 models spanning 6 architecture families. Counts are period-level task rows with 25 agents each. Mistral includes appended batches; duplicate-cell accounting is reported in the main text and Table~\ref{tab:comm_estimators}. All runs use $\sigma = 0.3$ and temperature $= 0.7$ unless otherwise stated.}
+\end{table*}
 """
     return tex
 
@@ -223,7 +223,7 @@ Model & Pure & Comm & Scramble & Flip & $n_{\text{pure}}$ & Mean join \\
 \bottomrule
 \end{tabular}
 \vspace{0.25em}
-\parbox{\textwidth}{\footnotesize\emph{Notes:} $r = r(J, A(\theta))$: Pearson correlation between empirical join fraction and theoretical attack mass under $B = C = 1$. 95\% Fisher-$z$ confidence intervals in brackets. Join fraction uses valid decisions only (excluding parse errors). Pooled: all country-periods concatenated; Mean: equal-weighted average across models.}
+\parbox{\textwidth}{\footnotesize\emph{Notes:} $r = r(J, A(\theta))$: Pearson correlation between empirical join fraction and theoretical attack mass under $B = C = 1$. 95\% Fisher-$z$ confidence intervals in brackets. Join fraction uses valid decisions only (excluding parse errors). Pooled: all period-level rows concatenated; Mean: equal-weighted average across models. Duplicate-cell accounting is reported in the main-text footnote and Table~\ref{tab:comm_estimators}.}
 \end{table*}
 """
     return tex
@@ -675,6 +675,48 @@ Variant & $N$ & Mean join & $r(J, A(\theta))$ & $\Delta$ (pp) & $p$ \\
     return tex
 
 
+def render_tab_prompt_isolation(stats: dict) -> str:
+    """Clean baseline-plus-warning surveillance reruns by model."""
+    pi = stats.get("prompt_isolation", {}).get("surveillance", {})
+    if not pi:
+        return "% No clean prompt-isolation surveillance data available.\n"
+
+    rows = []
+    for model in DISPLAY_ORDER:
+        d = pi.get(model)
+        if not d:
+            continue
+        t_test = d.get("t_test_vs_baseline", {})
+        p_val = _fmt_num(t_test.get("p_value"), 3) if isinstance(t_test, dict) else "---"
+        rows.append(
+            f"{model} & {d.get('n_obs', '---')} & "
+            f"{_fmt_pct(d.get('baseline_mean_join'), 1)} & "
+            f"{_fmt_pct(d.get('mean_join'), 1)} & "
+            f"{_fmt_pp_raw(d.get('delta_vs_baseline_pp'), 1)} & "
+            f"{_fmt_r((d.get('r_vs_attack') or {}).get('r'), 2)} & {p_val} \\\\"
+        )
+
+    tex = r"""\begin{table*}[t]
+\centering
+\caption{Clean prompt-isolation surveillance reruns. The surveillance prompt is the baseline trusted-contact communication prompt plus one appended monitoring warning; the decision prompt is unchanged.}
+\label{tab:prompt_isolation}
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{lcccccc}
+\toprule
+Model & $N$ & Baseline & Surv. & $\Delta$ (pp) & $r(J,A)$ & $p$ \\
+\midrule
+"""
+    tex += "\n".join(rows) + "\n"
+    tex += r"""\bottomrule
+\end{tabular}
+\vspace{0.25em}
+\parbox{\textwidth}{\footnotesize\emph{Notes:} Baseline is each model's communication treatment. $\Delta$ is surveilled communication minus baseline communication in percentage points. $p$-values are from two-sample $t$-tests on period-level join fractions.}
+\end{table*}
+"""
+    return tex
+
+
 def render_tab_bc_statics(stats: dict) -> str:
     """B/C comparative statics: cutoff shifts under strategic-stakes narratives."""
     info = stats.get("infodesign", {})
@@ -1120,6 +1162,17 @@ def render_stats_macros(stats: dict) -> str:
         sign = "+" if val >= 0 else ""
         return f"\\providecommand{{\\{name}}}{{{sign}{val:.{nd}f}}}"
 
+    def _mc_pp_abs_raw(name, val, nd=1):
+        """Absolute value for signed percentage-point effects used in prose."""
+        if val is None:
+            return f"\\providecommand{{\\{name}}}{{---}}"
+        try:
+            if val != val:  # nan
+                return f"\\providecommand{{\\{name}}}{{---}}"
+        except Exception:
+            return f"\\providecommand{{\\{name}}}{{---}}"
+        return f"\\providecommand{{\\{name}}}{{{abs(val):.{nd}f}}}"
+
     def _mc_pct(name, val, nd=1):
         return f"\\providecommand{{\\{name}}}{{{_fmt_pct(val, nd)}}}"
 
@@ -1433,6 +1486,45 @@ def render_stats_macros(stats: dict) -> str:
         lines.append(_mc(f"{macro}PValue", tt.get("p_value") if isinstance(tt, dict) else None, 4))
         lines.append(_mc(f"{macro}MeanJoin", vd.get("mean_join")))
         lines.append(_mc_pct(f"{macro}MeanJoinPct", vd.get("mean_join")))
+    lines.append("")
+
+    # ── Clean prompt-isolation reruns ────────────────────────────
+    pi = stats.get("prompt_isolation", {})
+    pi_mistral = (pi.get("surveillance") or {}).get("Mistral Small Creative", {})
+    pi_summary = pi.get("_summary", {})
+    lines.append("% Clean prompt-isolation reruns")
+    lines.append(_mc("PromptIsoNModels", pi_summary.get("n_models"), 0))
+    lines.append(_mc("PromptIsoNegativeModels", pi_summary.get("n_negative"), 0))
+    lines.append(_mc("PromptIsoSig05Models", pi_summary.get("n_p_lt_05"), 0))
+    lines.append(_mc("PromptIsoSig01Models", pi_summary.get("n_p_lt_01"), 0))
+    lines.append(_mc_pp_raw("PromptIsoMeanDeltaPP", pi_summary.get("mean_delta_pp")))
+    lines.append(_mc_pp_abs_raw("PromptIsoMeanDeltaAbsPP", pi_summary.get("mean_delta_pp")))
+    lines.append(_mc_pp_raw("PromptIsoMinDeltaPP", pi_summary.get("min_delta_pp")))
+    lines.append(_mc_pp_raw("PromptIsoMaxDeltaPP", pi_summary.get("max_delta_pp")))
+    lines.append(_mc_r("PromptIsoMeanRAttack", pi_summary.get("mean_r_vs_attack")))
+    lines.append(_mc("PromptIsoMistralN", pi_mistral.get("n_obs"), 0))
+    lines.append(_mc("PromptIsoMistralMeanJoin", pi_mistral.get("mean_join")))
+    lines.append(_mc_pct("PromptIsoMistralMeanJoinPct", pi_mistral.get("mean_join")))
+    lines.append(_mc("PromptIsoMistralBaselineMeanJoin", pi_mistral.get("baseline_mean_join")))
+    lines.append(_mc_pct("PromptIsoMistralBaselineMeanJoinPct", pi_mistral.get("baseline_mean_join")))
+    lines.append(_mc_pp_raw("PromptIsoMistralDeltaPP", pi_mistral.get("delta_vs_baseline_pp")))
+    lines.append(_mc_pp_abs_raw("PromptIsoMistralDeltaAbsPP", pi_mistral.get("delta_vs_baseline_pp")))
+    lines.append(_mc_r("PromptIsoMistralRAttack", (pi_mistral.get("r_vs_attack") or {}).get("r")))
+    pi_t = pi_mistral.get("t_test_vs_baseline", {})
+    lines.append(_mc("PromptIsoMistralPValue", pi_t.get("p_value") if isinstance(pi_t, dict) else None, 4))
+    lines.append("")
+
+    # ── Message controls ─────────────────────────────────────────
+    no_msg = (stats.get("message_controls", {}) or {}).get("no_messages", {})
+    lines.append("% Message controls")
+    lines.append(_mc("NoMsgN", no_msg.get("n_obs"), 0))
+    lines.append(_mc("NoMsgMeanJoin", no_msg.get("mean_join")))
+    lines.append(_mc_pct("NoMsgMeanJoinPct", no_msg.get("mean_join")))
+    lines.append(_mc("NoMsgBaselineMeanJoin", no_msg.get("baseline_mean_join")))
+    lines.append(_mc_pct("NoMsgBaselineMeanJoinPct", no_msg.get("baseline_mean_join")))
+    lines.append(_mc_pp_raw("NoMsgDeltaPP", no_msg.get("delta_vs_baseline_pp")))
+    no_msg_t = no_msg.get("t_test_vs_baseline", {})
+    lines.append(_mc("NoMsgPValue", no_msg_t.get("p_value") if isinstance(no_msg_t, dict) else None, 4))
     lines.append("")
 
     # ── Fixed messages test ───────────────────────────────────────
@@ -2101,13 +2193,13 @@ def render_tab_hypotheses(stats: dict) -> str:
 
     tex = r"""\begin{table*}[t]
 \centering
-\caption{Pre-specified hypotheses and test results. H1--H4 use pooled Part~I data across all seven models; H5--H8 use the primary model (Mistral Small Creative). Effect size: $r$ for correlations (H1--H3), Cohen's $d$ or $d_z$ for mean comparisons (H4--H8). ``Supported'' at $\alpha = 0.05$.}
+\caption{Pre-specified hypotheses and test results. H1--H4 use pooled Part~I data across all seven models; H5--H8 use the primary model (Mistral Small Creative). Effect size: $r$ for correlations (H1--H3), Cohen's $d$ or $d_z$ for mean comparisons (H4--H8). Outcome labels use $\alpha = 0.05$; H2 is reported as a falsification check, not as evidence for a zero effect.}
 \label{tab:hypotheses}
-\small
-\setlength{\tabcolsep}{4pt}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
 \begin{tabular}{llllccl}
 \toprule
-H & Hypothesis & Test & Stat & $p$ & Effect & Supported? \\
+H & Hypothesis & Test & Stat & $p$ & Effect & Outcome \\
 \midrule
 """
     tex += "\n".join(rows) + "\n"
@@ -2522,6 +2614,7 @@ def main() -> None:
         "tab_surv_censor_crossmodel.tex": render_tab_surv_censor_crossmodel(stats),
         "tab_logistic_params.tex": render_tab_logistic_params(stats),
         "tab_surveillance_variants.tex": render_tab_surveillance_variants(stats),
+        "tab_prompt_isolation.tex": render_tab_prompt_isolation(stats),
         "tab_bc_statics.tex": render_tab_bc_statics(stats),
         "tab_censor_ck.tex": render_tab_censor_ck(stats),
         "tab_temperature.tex": render_tab_temperature(stats),

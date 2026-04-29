@@ -18,9 +18,9 @@ stats:
 
 # ── Tables ──────────────────────────────────────────────────────────
 tables: stats
-	uv run python analysis/render_paper_tables.py
 	uv run python analysis/agent_regressions.py
 	uv run python analysis/classifier_baselines.py
+	uv run python analysis/render_paper_tables.py
 
 # ── Figures ─────────────────────────────────────────────────────────
 figures: stats

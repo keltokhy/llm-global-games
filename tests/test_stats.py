@@ -15,8 +15,20 @@ import pytest
 # add the analysis directory to sys.path before importing.
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "analysis"))
 
-from verify_paper_stats import pearson_with_ci, within_country_pearson
+from verify_paper_stats import _hypothesis_supported, pearson_with_ci, within_country_pearson
 from style import attack_mass, fit_logistic, join_col, logistic
+
+
+class TestHypothesisOutcomeLabels:
+    """Tests for hypothesis outcome labels used in the appendix table."""
+
+    def test_reject_null_labels_support(self):
+        assert _hypothesis_supported(0.01, reject_null=True) == "Supported"
+        assert _hypothesis_supported(0.20, reject_null=True) == "Not supported"
+
+    def test_falsification_label_is_not_supported(self):
+        assert _hypothesis_supported(0.20, reject_null=False) == "Passes falsification"
+        assert _hypothesis_supported(0.01, reject_null=False) == "Fails falsification"
 
 
 # ── pearson_with_ci ────────────────────────────────────────────────────────────
