@@ -3715,12 +3715,12 @@
     "model": "Llama 3.3 70B",
     "n_base": 500,
     "n_surv": 500,
-    "base_mean_join": 0.3493,
-    "surv_mean_join": 0.2987,
-    "delta_pp": -5.06,
+    "base_mean_join": 0.3466,
+    "surv_mean_join": 0.2909,
+    "delta_pp": -5.57,
     "t_test": {
-      "t_stat": -2.0185,
-      "p_value": 0.043808
+      "t_stat": -2.2361,
+      "p_value": 0.025565
     }
   },
   "temperature_robustness": {
