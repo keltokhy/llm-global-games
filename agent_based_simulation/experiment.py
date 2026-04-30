@@ -118,17 +118,41 @@ def _system_decide_pure(n_agents=None):
     )
 
 
-def _system_decide_comm(n_agents=None, decision_context: str = "none"):
-    """Build communication-game decision prompt, optionally with group-size awareness."""
-    if n_agents is not None:
-        opener = f"You are one of {n_agents} citizens deciding whether to JOIN an uprising or STAY home.\n\n"
+def _system_decide_comm(n_agents=None, decision_context: str = "none", task_mode: str = "coordination"):
+    """Build communication-game decision prompt, optionally with group-size awareness.
+
+    task_mode:
+      - "coordination" (default): JOIN/STAY uprising decision with strategic
+        complementarities (success requires sum of joins > theta).
+      - "individual_bet": JOIN = bet $100 on regime falling, STAY = keep cash.
+        Payoff is independent of others' choices. Used as a cross-task
+        discriminant placebo: tests whether the surveillance manipulation
+        operates specifically through the coordination channel or via any
+        downstream LLM decision after surveilled messages.
+    """
+    if task_mode == "individual_bet":
+        body = (
+            "You are a private analyst making an INDEPENDENT bet on whether a regime "
+            "will fall this period. You have $100 to allocate:\n\n"
+            "  - JOIN: bet $100 that the regime falls. Payoff: $200 if it falls, $0 if not.\n"
+            "  - STAY: keep $100 cash regardless of outcome.\n\n"
+            "CRITICAL: Your payoff depends ONLY on whether the regime falls. "
+            "It does NOT depend on what anyone else chooses. "
+            "This is a private bet, not a coordination action.\n\n"
+            "Use your private briefing and messages from contacts to inform your estimate.\n\n"
+        )
+    elif task_mode == "coordination":
+        if n_agents is not None:
+            opener = f"You are one of {n_agents} citizens deciding whether to JOIN an uprising or STAY home.\n\n"
+        else:
+            opener = "You are a citizen deciding whether to JOIN an uprising or STAY home.\n\n"
+        body = (
+            opener
+            + "Use your private briefing and messages from trusted contacts. "
+            "You do not know how many others will JOIN.\n\n"
+        )
     else:
-        opener = "You are a citizen deciding whether to JOIN an uprising or STAY home.\n\n"
-    body = (
-        opener
-        + "Use your private briefing and messages from trusted contacts. "
-        "You do not know how many others will JOIN.\n\n"
-    )
+        raise ValueError(f"Unknown task_mode={task_mode!r}")
     if decision_context == "full":
         body += (
             "IMPORTANT: You know that citizen communications are being monitored by regime "
@@ -857,7 +881,8 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
                                   beliefs_include_messages=False,
                                   message_bundle_mode="live",
                                   message_source_key=None,
-                                  temperature=0.7):
+                                  temperature=0.7,
+                                  task_mode="coordination"):
     """Run one period with communication round before decision.
 
     signal_mode: "normal", "scramble" (permute briefings *within-period*), or "flip" (negate z-score).
@@ -961,6 +986,7 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
     decide_system = _system_decide_comm(
         n_agents=len(agents) if group_size_info else None,
         decision_context=resolved_decision_context,
+        task_mode=task_mode,
     )
     decide_agents = [a for a in agents if not a.is_propaganda]
     decide_coros = [

@@ -550,6 +550,7 @@ def run_experiment(args, treatment, signal_mode="normal"):
                     second_order_order=getattr(args, 'second_order_order', 'post'),
                     beliefs_include_messages=getattr(args, 'beliefs_include_messages', False),
                     decision_context=getattr(args, 'decision_context', 'auto'),
+                    task_mode=getattr(args, 'task_mode', 'coordination'),
                     message_bundle_mode=(
                         "none"
                         if getattr(args, 'no_peer_messages', False)
@@ -768,6 +769,12 @@ def main():
                         help="Surveillance framing: 'full' (consequences, default), "
                              "'placebo' (monitored, no consequences), 'anonymous' (aggregated anonymously). "
                              "Only effective with --surveillance.")
+    parser.add_argument("--task-mode", type=str, choices=["coordination", "individual_bet"],
+                        default="coordination",
+                        help="Decision-task framing. 'coordination' (default): JOIN/STAY uprising "
+                             "with strategic complementarities. 'individual_bet': JOIN = private "
+                             "bet on regime falling, payoff independent of others. Used as a "
+                             "cross-task discriminant placebo.")
     parser.add_argument("--decision-context", type=str,
                         choices=["auto", "none", "full", "placebo", "anonymous"],
                         default="auto",
