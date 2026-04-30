@@ -3545,6 +3545,172 @@
       }
     }
   },
+  "message_content": {
+    "n_base": 25000,
+    "n_surv": 25000,
+    "themes": {
+      "weakness": {
+        "base_pct": 23.2,
+        "surv_pct": 31.7,
+        "delta_pp": 8.4,
+        "z": 21.06,
+        "p": 0.0
+      },
+      "strength": {
+        "base_pct": 14.5,
+        "surv_pct": 8.5,
+        "delta_pp": -6.0,
+        "z": -20.9,
+        "p": 0.0
+      },
+      "direct_regime": {
+        "base_pct": 63.9,
+        "surv_pct": 34.5,
+        "delta_pp": -29.4,
+        "z": -65.82,
+        "p": 0.0
+      },
+      "coded_metaphor": {
+        "base_pct": 69.8,
+        "surv_pct": 94.1,
+        "delta_pp": 24.2,
+        "z": 70.38,
+        "p": 0.0
+      }
+    },
+    "classifier": {
+      "accuracy": 0.919,
+      "accuracy_pct": 91.9,
+      "n_train": 35000,
+      "n_test": 15000,
+      "ngram_range": "(1, 2)",
+      "max_features": 5000,
+      "top_surv_features": [
+        {
+          "feature": "things feel",
+          "coef": 6.411
+        },
+        {
+          "feature": "walls are",
+          "coef": 5.871
+        },
+        {
+          "feature": "are cracking",
+          "coef": 5.64
+        },
+        {
+          "feature": "things",
+          "coef": 5.562
+        },
+        {
+          "feature": "cracking even",
+          "coef": 4.964
+        },
+        {
+          "feature": "cracking",
+          "coef": 4.461
+        },
+        {
+          "feature": "ground shifting",
+          "coef": 3.791
+        },
+        {
+          "feature": "the walls",
+          "coef": 3.538
+        },
+        {
+          "feature": "feel like",
+          "coef": 3.501
+        },
+        {
+          "feature": "rush this",
+          "coef": 3.374
+        },
+        {
+          "feature": "like they",
+          "coef": 3.365
+        },
+        {
+          "feature": "heads",
+          "coef": 3.3
+        },
+        {
+          "feature": "heads down",
+          "coef": 3.291
+        },
+        {
+          "feature": "walls",
+          "coef": 3.229
+        },
+        {
+          "feature": "your heads",
+          "coef": 3.22
+        }
+      ],
+      "top_base_features": [
+        {
+          "feature": "look the",
+          "coef": -11.107
+        },
+        {
+          "feature": "look",
+          "coef": -8.932
+        },
+        {
+          "feature": "listen",
+          "coef": -7.308
+        },
+        {
+          "feature": "listen this",
+          "coef": -6.002
+        },
+        {
+          "feature": "may",
+          "coef": -4.93
+        },
+        {
+          "feature": "isn just",
+          "coef": -4.684
+        },
+        {
+          "feature": "don panic",
+          "coef": -4.632
+        },
+        {
+          "feature": "the weather",
+          "coef": -4.494
+        },
+        {
+          "feature": "weather",
+          "coef": -4.385
+        },
+        {
+          "feature": "something shifting",
+          "coef": -4.256
+        },
+        {
+          "feature": "is shifting",
+          "coef": -4.191
+        },
+        {
+          "feature": "is",
+          "coef": -4.146
+        },
+        {
+          "feature": "and even",
+          "coef": -4.146
+        },
+        {
+          "feature": "regime",
+          "coef": -3.797
+        },
+        {
+          "feature": "the regime",
+          "coef": -3.792
+        }
+      ]
+    }
+  },
   "temperature_robustness": {
     "T=0.3": {
       "n_obs": 100,

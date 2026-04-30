@@ -1059,6 +1059,49 @@ Model & Rows/arm & Row wt. (P/C) & Cells/arm & Matched & Cell wt. & Lost (P/C) &
     return tex
 
 
+def render_tab_msg_features(stats: dict) -> str:
+    """Top discriminative bigrams between baseline and surveillance messages."""
+    mc = stats.get("message_content", {}) or {}
+    clf = mc.get("classifier", {}) or {}
+    if not clf or clf.get("status") == "error" or not clf.get("top_surv_features"):
+        return "% No message-content classifier data available.\n"
+
+    def _esc(s: str) -> str:
+        return s.replace("_", r"\_").replace("&", r"\&").replace("%", r"\%")
+
+    surv = clf.get("top_surv_features", [])[:10]
+    base = clf.get("top_base_features", [])[:10]
+    rows = []
+    for i in range(max(len(surv), len(base))):
+        s = surv[i] if i < len(surv) else {"feature": "", "coef": None}
+        b = base[i] if i < len(base) else {"feature": "", "coef": None}
+        s_feat = f"\\texttt{{{_esc(s['feature'])}}}" if s["feature"] else ""
+        s_coef = f"{s['coef']:+.2f}" if s["coef"] is not None else ""
+        b_feat = f"\\texttt{{{_esc(b['feature'])}}}" if b["feature"] else ""
+        b_coef = f"{b['coef']:+.2f}" if b["coef"] is not None else ""
+        rows.append(f"{s_feat} & {s_coef} & {b_feat} & {b_coef} \\\\")
+
+    out = []
+    out.append("\\begin{table}[t]")
+    out.append("\\centering")
+    out.append(f"\\caption{{Top 10 most discriminative uni- and bi-grams between baseline and surveillance messages (primary model). A logistic classifier on tf-idf features achieves {clf.get('accuracy_pct', '?'):.1f}\\% accuracy on a held-out sample of $N = {clf.get('n_test', '?'):,}$.}}")
+    out.append("\\label{tab:msg_features}")
+    out.append("\\footnotesize")
+    out.append("\\begin{tabular}{lc lc}")
+    out.append("\\toprule")
+    out.append("\\multicolumn{2}{c}{Surveillance-distinguishing} & \\multicolumn{2}{c}{Baseline-distinguishing} \\\\")
+    out.append("\\cmidrule(lr){1-2}\\cmidrule(lr){3-4}")
+    out.append("Feature & Coef & Feature & Coef \\\\")
+    out.append("\\midrule")
+    out.extend(rows)
+    out.append("\\bottomrule")
+    out.append("\\end{tabular}")
+    out.append("\\vspace{0.25em}")
+    out.append("\\parbox{\\columnwidth}{\\footnotesize\\emph{Notes:} Logistic regression on tf-idf uni- and bi-grams (max 5{,}000 features, min document frequency 10). Train/test split 70/30, stratified. Positive coefficients distinguish surveillance messages, negative coefficients distinguish baseline. The shift is from direct references (regime, security forces, streets) to coded metaphors (walls cracking, ground shifting, heads down).}")
+    out.append("\\end{table}")
+    return "\n".join(out) + "\n"
+
+
 def render_tab_classifiers(stats: dict) -> str:
     """Classifier baselines table."""
     cb = stats.get("classifier_baselines", {})
@@ -1532,6 +1575,28 @@ def render_stats_macros(stats: dict) -> str:
     lines.append(_mc_pp_abs_raw("PromptIsoVsNoMsgDeltaAbsPP", no_msg.get("delta_surv_vs_nomsg_pp")))
     no_msg_t_sv = no_msg.get("t_test_surv_vs_nomsg", {})
     lines.append(_mc("PromptIsoVsNoMsgPValue", no_msg_t_sv.get("p_value") if isinstance(no_msg_t_sv, dict) else None, 4))
+    lines.append("")
+
+    # ── Message content analysis (classifier + themes) ────────────
+    msg_content = stats.get("message_content", {}) or {}
+    lines.append("% Message content classifier and themes (primary model)")
+    msg_clf = msg_content.get("classifier", {}) or {}
+    lines.append(_mc("MsgClassifierAcc", msg_clf.get("accuracy_pct"), 1))
+    lines.append(_mc("MsgClassifierNTrain", msg_clf.get("n_train"), 0))
+    lines.append(_mc("MsgClassifierNTest", msg_clf.get("n_test"), 0))
+    msg_themes = msg_content.get("themes", {}) or {}
+    for theme_key, macro_prefix in [
+        ("weakness", "MsgWeakness"),
+        ("strength", "MsgStrength"),
+        ("direct_regime", "MsgDirectRegime"),
+        ("coded_metaphor", "MsgCodedMetaphor"),
+    ]:
+        t = msg_themes.get(theme_key, {}) or {}
+        lines.append(_mc(macro_prefix + "Base", t.get("base_pct"), 1))
+        lines.append(_mc(macro_prefix + "Surv", t.get("surv_pct"), 1))
+        lines.append(_mc_pp_raw(macro_prefix + "DeltaPP", t.get("delta_pp")))
+        lines.append(_mc(macro_prefix + "Z", t.get("z"), 2))
+        lines.append(_mc(macro_prefix + "P", t.get("p"), 4))
     lines.append("")
 
     # ── Fixed messages test ───────────────────────────────────────
@@ -2629,6 +2694,7 @@ def main() -> None:
         "tab_hypotheses.tex": render_tab_hypotheses(stats),
         "tab_ck_2x2.tex": render_tab_ck_2x2(stats),
         "tab_classifiers.tex": render_tab_classifiers(stats),
+        "tab_msg_features.tex": render_tab_msg_features(stats),
         "tab_cross_generator.tex": render_tab_cross_generator(stats),
         "tab_placebo_calibration.tex": render_tab_placebo_calibration(stats),
         "tab_temperature_expanded.tex": render_tab_temperature_expanded(stats),

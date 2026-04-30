@@ -1668,6 +1668,132 @@ def compute_message_controls():
     return results
 
 
+def compute_message_content_analysis():
+    """Compare baseline vs surveillance message content (primary model).
+
+    Three pieces of evidence the paper needs to defend "communication poisoning":
+      1. Classifier discrimination accuracy (do messages systematically differ?)
+      2. Theme-group frequencies (in what direction?)
+      3. Top discriminative ngrams (what kind of language shifts?)
+
+    The data design supports a stronger claim than the original two-word
+    frequency check: surveilled messages are not less informative about
+    regime weakness, but reframe it from direct to coded language.
+    """
+    import re as _re
+    out = {}
+
+    comm_path = ROOT / PRIMARY / "experiment_comm_log.json"
+    surv_path = ROOT / "prompt-isolation-surveillance" / PRIMARY / "experiment_comm_log.json"
+
+    if not (comm_path.exists() and surv_path.exists()):
+        return {"status": "missing"}
+
+    def _load_messages(path):
+        msgs = []
+        with open(path) as f:
+            log = json.load(f)
+        for period in log:
+            for a in period.get("agents", []):
+                m = a.get("message_sent")
+                if m:
+                    msgs.append(m.strip())
+        return msgs
+
+    base_msgs = _load_messages(comm_path)
+    surv_msgs = _load_messages(surv_path)
+
+    if not base_msgs or not surv_msgs:
+        return {"status": "empty"}
+
+    out["n_base"] = len(base_msgs)
+    out["n_surv"] = len(surv_msgs)
+
+    # ── Theme group frequencies (word-boundary tokenization) ──────
+    THEMES = {
+        "weakness": {"weak", "weakness", "fragile", "crumbling", "unstable",
+                     "fracture", "split", "division", "defection", "desertion",
+                     "cracking", "collapse", "fall", "topple", "crumble"},
+        "strength": {"strong", "stable", "control", "power", "strength",
+                     "intact", "firm", "solid", "secure", "loyalty"},
+        "direct_regime": {"regime", "security", "forces", "police", "military",
+                          "streets", "uprising"},
+        "coded_metaphor": {"walls", "ground", "shifting", "feels", "different",
+                           "usual", "air", "heads", "down"},
+    }
+
+    def _msg_has_any(msg, words):
+        toks = set(_re.findall(r"[a-z]+", msg.lower()))
+        return bool(toks & words)
+
+    out["themes"] = {}
+    for theme, words in THEMES.items():
+        b_count = sum(1 for m in base_msgs if _msg_has_any(m, words))
+        s_count = sum(1 for m in surv_msgs if _msg_has_any(m, words))
+        n1, n2 = len(base_msgs), len(surv_msgs)
+        b_pct = 100.0 * b_count / n1
+        s_pct = 100.0 * s_count / n2
+        # Two-proportion z-test
+        p1 = b_count / n1
+        p2 = s_count / n2
+        p_pool = (b_count + s_count) / (n1 + n2)
+        se = (p_pool * (1 - p_pool) * (1/n1 + 1/n2)) ** 0.5
+        z = (p2 - p1) / se if se > 0 else 0.0
+        p_value = 2 * (1 - stats.norm.cdf(abs(z)))
+        out["themes"][theme] = {
+            "base_pct": round(b_pct, 1),
+            "surv_pct": round(s_pct, 1),
+            "delta_pp": round(s_pct - b_pct, 1),
+            "z": round(float(z), 2),
+            "p": round(float(p_value), 4),
+        }
+
+    # ── Logistic classifier on uni+bi-grams ───────────────────────
+    try:
+        from sklearn.feature_extraction.text import TfidfVectorizer
+        from sklearn.linear_model import LogisticRegression
+        from sklearn.model_selection import train_test_split
+        from sklearn.metrics import accuracy_score
+
+        texts = base_msgs + surv_msgs
+        labels = [0]*len(base_msgs) + [1]*len(surv_msgs)
+        Xtr_txt, Xte_txt, ytr, yte = train_test_split(
+            texts, labels, test_size=0.3, random_state=42, stratify=labels
+        )
+        vec = TfidfVectorizer(ngram_range=(1, 2), max_features=5000, min_df=10)
+        Xtr = vec.fit_transform(Xtr_txt)
+        Xte = vec.transform(Xte_txt)
+        clf = LogisticRegression(max_iter=2000, C=1.0)
+        clf.fit(Xtr, ytr)
+        acc = float(accuracy_score(yte, clf.predict(Xte)))
+
+        features = vec.get_feature_names_out()
+        coefs = clf.coef_[0]
+        top_surv_idx = np.argsort(coefs)[-15:][::-1]
+        top_base_idx = np.argsort(coefs)[:15]
+
+        out["classifier"] = {
+            "accuracy": round(acc, 4),
+            "accuracy_pct": round(acc * 100, 1),
+            "n_train": int(len(ytr)),
+            "n_test": int(len(yte)),
+            "ngram_range": "(1, 2)",
+            "max_features": 5000,
+            "top_surv_features": [
+                {"feature": features[i], "coef": round(float(coefs[i]), 3)}
+                for i in top_surv_idx
+            ],
+            "top_base_features": [
+                {"feature": features[i], "coef": round(float(coefs[i]), 3)}
+                for i in top_base_idx
+            ],
+        }
+    except Exception as e:
+        out["classifier"] = {"status": "error", "error": str(e)}
+
+    return out
+
+
 def compute_surveillance_variants():
     """Compute statistics for placebo and anonymous surveillance variants."""
     results = {}
@@ -3300,6 +3426,9 @@ def main():
     print("Computing message-control statistics...")
     message_controls = compute_message_controls()
 
+    print("Computing message-content analysis (classifier + themes)...")
+    message_content = compute_message_content_analysis()
+
     print("Computing uncalibrated robustness statistics...")
     uncalibrated = compute_uncalibrated()
 
@@ -3348,6 +3477,7 @@ def main():
         "surveillance_variants": surv_variants,
         "prompt_isolation": prompt_isolation,
         "message_controls": message_controls,
+        "message_content": message_content,
         "temperature_robustness": temp_robust,
         "uncalibrated": uncalibrated,
         "beliefs_v2": beliefs_v2,
