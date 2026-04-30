@@ -370,7 +370,34 @@ $\Delta$ join & \multicolumn{2}{c}{$\BFActionDeltaPP$~pp ($p < \BFActionDeltaP$)
 
 \section{Identification Test Details} \label{sec:identification_appendix}
 
-Table~\ref{tab:classifiers} compares text-classifier accuracy on the intelligence briefings under baseline and surveillance conditions. The chilling effect is invisible to classifiers restricted to the briefing body alone---the briefings are by construction identical across conditions, and any apparent classifier signal would indicate a contamination artifact in the design. Table~\ref{tab:bc_classifier} repeats the briefing-classifier exercise across the cost/benefit sweep. In contrast, a classifier on the actual peer messages---which are LLM-generated and downstream of the surveillance prompt---separates the two conditions sharply (\MsgClassifierAcc\% accuracy on $N = \MsgClassifierNTest$ held-out messages; Table~\ref{tab:msg_features}). Together the two classifier exercises locate the manipulation: briefings are indistinguishable across conditions (as designed), and the entire behavioral effect is mediated by message-side language change.
+Table~\ref{tab:identification_map} summarizes which candidate channels each test addresses and what the test concludes. The remaining tables in this section provide the classifier evidence underpinning rows three and four.
+
+\begin{table}[t]
+\centering
+\caption{Identification map. Each row lists a candidate channel through which the surveillance treatment could produce the observed action effect; the right column identifies the test(s) addressing it and the conclusion. ``Not tested'' marks channels that the design cannot rule out and that I flag as limitations.}
+\label{tab:identification_map}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{p{0.32\columnwidth} p{0.61\columnwidth}}
+\toprule
+Candidate channel & Test \& outcome \\
+\midrule
+\textit{Direct decision-stage deterrence}\newline (citizen reads surveillance warning at decision time) & Decision prompt held fixed in main treatment (\texttt{decision\_context=none}). A separate hold-fixed test (\S\ref{sec:surveillance}) shows this channel \emph{exists} when the warning is moved to the decision prompt ($\Delta = \FixedMsgDeltaPP$~pp), but it is absent in the main design. \emph{Ruled out as the main-treatment driver.} \\
+\addlinespace
+\textit{Generic monitoring/observation effect}\newline (any mention of being watched moves behavior) & Placebo (``monitoring for research, no consequences'') and anonymous monitoring variants (Appendix~\ref{sec:surv_isolation}). Both null in the primary model ($p > 0.9$). \emph{Ruled out.} \\
+\addlinespace
+\textit{Message factual information about $\theta$}\newline (surveilled messages convey less regime-state information) & Cross-task discriminant placebo (\S\ref{sec:surveillance}, Llama 3.3 70B): surveillance moves a non-coordinative private bet on regime fall by \CrossTaskDeltaAbsPP~pp. \emph{Supported as one component.} \\
+\addlinespace
+\textit{Coordination cues beyond information}\newline (surveilled messages provide weaker signals about peers' willingness to act) & Coord-task delta minus cross-task delta (Llama: 9.8 vs.\ \CrossTaskDeltaAbsPP~pp; residual $\approx 4.2$~pp). \emph{Supported as a separable component.} \\
+\addlinespace
+\textit{Risk/fear salience in messages}\newline (surveilled messages transmit fear that suppresses participation independent of information loss) & Punishment-risk elicitation across conditions (Table~\ref{tab:punishment_risk}). Risk ratings are $\approx \PunishRiskMean/10$ across conditions; small JOIN/STAY differences. \emph{Inconclusive: the elicitation may be saturated and message-tone fear cannot be cleanly separated from informational degradation in this design.} \\
+\addlinespace
+\textit{Model-style reflexivity}\newline (writer model and reader model are the same family; reader reacts to its own stylistic artifacts) & Not directly tested in this version. Cross-model writer-reader rotation (generate with model A, decide with model B) is the natural follow-up. \emph{Not tested.} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent Table~\ref{tab:classifiers} compares text-classifier accuracy on the intelligence briefings under baseline and surveillance conditions. The chilling effect is invisible to classifiers restricted to the briefing body alone---the briefings are by construction identical across conditions, and any apparent classifier signal would indicate a contamination artifact in the design. Table~\ref{tab:bc_classifier} repeats the briefing-classifier exercise across the cost/benefit sweep. In contrast, a classifier on the actual peer messages---which are LLM-generated and downstream of the surveillance prompt---separates the two conditions sharply (\MsgClassifierAcc\% accuracy on $N = \MsgClassifierNTest$ held-out messages; Table~\ref{tab:msg_features}). Together the two classifier exercises locate the manipulation: briefings are indistinguishable across conditions (as designed), and the entire behavioral effect is mediated by message-side language change.
 
 \input{tables/tab_classifiers.tex}
 
