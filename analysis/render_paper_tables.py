@@ -1599,6 +1599,20 @@ def render_stats_macros(stats: dict) -> str:
         lines.append(_mc(macro_prefix + "P", t.get("p"), 4))
     lines.append("")
 
+    # ── Cross-task discriminant placebo (Llama 3.3 70B) ───────────
+    ctp = stats.get("cross_task_placebo", {}) or {}
+    lines.append("% Cross-task discriminant placebo (Llama 3.3 70B)")
+    lines.append(_mc("CrossTaskN", ctp.get("n_surv"), 0))
+    lines.append(_mc("CrossTaskBaselineMeanJoin", ctp.get("base_mean_join")))
+    lines.append(_mc_pct("CrossTaskBaselineMeanJoinPct", ctp.get("base_mean_join")))
+    lines.append(_mc("CrossTaskSurvMeanJoin", ctp.get("surv_mean_join")))
+    lines.append(_mc_pct("CrossTaskSurvMeanJoinPct", ctp.get("surv_mean_join")))
+    lines.append(_mc_pp_raw("CrossTaskDeltaPP", ctp.get("delta_pp")))
+    lines.append(_mc_pp_abs_raw("CrossTaskDeltaAbsPP", ctp.get("delta_pp")))
+    ctp_t = ctp.get("t_test", {}) or {}
+    lines.append(_mc("CrossTaskPValue", ctp_t.get("p_value") if isinstance(ctp_t, dict) else None, 4))
+    lines.append("")
+
     # ── Fixed messages test ───────────────────────────────────────
     fm = stats.get("fixed_messages_test", {})
     lines.append("% Fixed messages surveillance test")

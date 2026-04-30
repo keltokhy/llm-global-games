@@ -1794,6 +1794,63 @@ def compute_message_content_analysis():
     return out
 
 
+def compute_cross_task_placebo():
+    """Cross-task discriminant validity placebo.
+
+    Question: does the surveillance manipulation specifically suppress
+    coordination, or does it generally suppress LLM action under threat?
+
+    Design (Llama 3.3 70B): same briefing pipeline, same messaging stage
+    (with optional surveillance prompt), but the decision-stage prompt is
+    swapped from a coordination action (JOIN uprising) to a private bet
+    (JOIN $100 on regime falling). Surveillance still moves the messages
+    (the messaging stage is identical to the main paper); the question
+    is whether the SAME shifted messages move a NON-coordinative decision.
+
+    Identification: if surveillance moves both decisions equally, the
+    manipulation acts via general LLM compliance to threat. If the
+    cross-task delta is much smaller in absolute value than the
+    coordination delta, the channel is coordination-specific.
+    """
+    out = {}
+
+    LLAMA = "meta-llama--llama-3.3-70b-instruct"
+    base_path = ROOT / "cross-task-placebo-baseline" / LLAMA / "experiment_comm_summary.csv"
+    surv_path = ROOT / "cross-task-placebo-surveillance" / LLAMA / "experiment_comm_summary.csv"
+
+    if not (base_path.exists() and surv_path.exists()):
+        return {"status": "missing",
+                "base_path": str(base_path),
+                "surv_path": str(surv_path)}
+
+    base = pd.read_csv(base_path)
+    surv = pd.read_csv(surv_path)
+    if base.empty or surv.empty:
+        return {"status": "empty"}
+
+    jcol_b = _join_col(base)
+    jcol_s = _join_col(surv)
+    base_jf = base[jcol_b].astype(float).values
+    surv_jf = surv[jcol_s].astype(float).values
+
+    base_mean = float(np.nanmean(base_jf))
+    surv_mean = float(np.nanmean(surv_jf))
+    delta_pp = (surv_mean - base_mean) * 100
+    t_stat, t_p = stats.ttest_ind(surv_jf, base_jf, equal_var=False)
+
+    out["model"] = "Llama 3.3 70B"
+    out["n_base"] = int(len(base))
+    out["n_surv"] = int(len(surv))
+    out["base_mean_join"] = round(base_mean, 4)
+    out["surv_mean_join"] = round(surv_mean, 4)
+    out["delta_pp"] = round(delta_pp, 2)
+    out["t_test"] = {
+        "t_stat": round(float(t_stat), 4),
+        "p_value": round(float(t_p), 6),
+    }
+    return out
+
+
 def compute_surveillance_variants():
     """Compute statistics for placebo and anonymous surveillance variants."""
     results = {}
@@ -3429,6 +3486,9 @@ def main():
     print("Computing message-content analysis (classifier + themes)...")
     message_content = compute_message_content_analysis()
 
+    print("Computing cross-task discriminant placebo...")
+    cross_task_placebo = compute_cross_task_placebo()
+
     print("Computing uncalibrated robustness statistics...")
     uncalibrated = compute_uncalibrated()
 
@@ -3478,6 +3538,7 @@ def main():
         "prompt_isolation": prompt_isolation,
         "message_controls": message_controls,
         "message_content": message_content,
+        "cross_task_placebo": cross_task_placebo,
         "temperature_robustness": temp_robust,
         "uncalibrated": uncalibrated,
         "beliefs_v2": beliefs_v2,
