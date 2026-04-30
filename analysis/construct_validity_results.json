@@ -288,11 +288,11 @@
       "model_slug": "qwen--qwen3-235b-a22b-2507",
       "model_name": "Qwen3-235B",
       "treatment": "comm",
-      "mean_residual": 0.0006637421265783135,
-      "std_residual": 0.27074424181127077,
-      "n_obs": 5000,
-      "mean_actual": 0.4168,
-      "mean_predicted": 0.41613625787342173
+      "mean_residual": -0.011086025471300706,
+      "std_residual": 0.29175171401595446,
+      "n_obs": 25000,
+      "mean_actual": 0.42424,
+      "mean_predicted": 0.43532602547130067
     },
     {
       "model_slug": "arcee-ai--trinity-large-preview_free",
