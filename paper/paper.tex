@@ -235,6 +235,9 @@ Post-decision beliefs, elicited on the information set agents held at decision t
 
 A separate hold-fixed test replays baseline messages verbatim while adding a surveillance warning to the \textit{decision} prompt, producing a $\FixedMsgDeltaPP$~pp drop ($p < 0.001$). This shows a direct decision-stage channel exists---but it is absent in the main design, where the decision prompt contains no surveillance reference. The main treatment isolates the indirect channel: communication poisoning.
 
+\paragraph{Decomposition: informational versus coordination components.}
+A complementary discriminant test holds the surveillance manipulation fixed but swaps the task. In Llama 3.3 70B, I keep the briefing pipeline and messaging stage identical---including the surveillance prompt---but reframe the decision-stage prompt as a private bet on regime fall (payoff independent of others' actions). Surveillance still moves the bet by $\CrossTaskDeltaPP$~pp ($p = \CrossTaskPValue$; $n = \CrossTaskN$ per condition; baseline \CrossTaskBaselineMeanJoinPct\ vs.\ surveillance \CrossTaskSurvMeanJoinPct), reflecting an informational channel: surveilled messages are less informative about $\theta$ regardless of decision context. But the coordination-task delta in this same model is $-9.8$~pp---roughly double. The decomposition is: $\sim$5~pp generic informational degradation that affects any decision drawing on peer messages, plus a $\sim$5~pp coordination-specific component detectable only when peer messages serve as coordination cues. Surveillance suppresses coordination above and beyond its informational effect.
+
 
 %% 6. CONCLUSION
 \FloatBarrier
