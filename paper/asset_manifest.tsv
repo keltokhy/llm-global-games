@@ -1,27 +1,23 @@
 asset	generator	primary inputs
-tables/stats_macros.tex	analysis/render_paper_tables.py	analysis/verified_stats.json; output/prompt-isolation-surveillance*/**/experiment_comm_summary.csv; output/no-messages/**/experiment_comm_nomsg_summary.csv
-tables/stats_belief_factorial.tex	manual archived macros	output/revision-beliefs-post-*/experiment_comm_log.json
+tables/stats_macros.tex	analysis/render_paper_tables.py	analysis/verified_stats.json; output/prompt-isolation-surveillance*/**/experiment_comm_summary.csv; output/no-messages*/**/experiment_comm_nomsg_summary.csv; output/cross-task-placebo-*/**/experiment_comm_summary.csv; output/xmodel-*/**/experiment_comm_summary.csv
+tables/stats_belief_factorial.tex	analysis/render_paper_tables.py	analysis/verified_stats.json; output/revision-beliefs-post-*/**/experiment_comm_log.json
 figures/diagram_pipeline.pdf	analysis/make_diagrams.py	agent_based_simulation/{briefing.py,experiment.py,infodesign.py}
 tables/tab_models.tex	analysis/render_paper_tables.py	analysis/verified_stats.json; analysis/models.py
 figures/fig01_sigmoid.pdf	analysis/make_figures.py	output/*/experiment_pure_summary.csv
 tables/tab_main_results.tex	analysis/render_paper_tables.py	analysis/verified_stats.json
 figures/fig03_falsification.pdf	analysis/make_figures.py	output/*/experiment_{pure,scramble,flip}_summary.csv
 figures/fig05_communication.pdf	analysis/make_figures.py	output/*/experiment_{pure,comm}_summary.csv
-figures/fig12_surveillance.pdf	analysis/make_figures.py	output/prompt-isolation-surveillance*/**/experiment_comm_summary.csv; output/no-messages/**/experiment_comm_nomsg_summary.csv; output/*/experiment_comm_summary.csv
+figures/fig12_surveillance.pdf	analysis/make_figures.py	output/prompt-isolation-surveillance*/**/experiment_comm_summary.csv; output/no-messages*/**/experiment_comm_nomsg_summary.csv; output/*/experiment_comm_summary.csv
 tables/tab_hypotheses.tex	analysis/render_paper_tables.py	analysis/verified_stats.json
 figures/fig16_beliefs.pdf	analysis/make_figures.py	output/*/experiment_*_log.json; analysis/verified_stats.json
 figures/fig17_second_order_beliefs.pdf	analysis/make_figures.py	output/*/experiment_*_log.json; analysis/verified_stats.json
 figures/fig19_nonparametric_beliefs.pdf	analysis/make_figures.py	output/*/experiment_*_log.json; analysis/verified_stats.json
 tables/tab_classifiers.tex	analysis/render_paper_tables.py	analysis/classifier_results.json
 tables/tab_bc_classifier.tex	analysis/render_paper_tables.py	analysis/classifier_results.json; output/*/experiment_bc_sweep_summary.csv
-figures/figA1_agent_count.pdf	analysis/make_figures.py	output/mistralai--mistral-small-creative-n*/experiment_pure_summary.csv
+tables/tab_msg_features.tex	analysis/render_paper_tables.py	analysis/verified_stats.json; output/*/experiment_comm_log.json; output/prompt-isolation-surveillance*/**/experiment_comm_log.json
+figures/figA1_agent_count.pdf	analysis/make_figures.py	output/mistralai--mistral-small-creative-n*/**/experiment_pure_summary.csv
 figures/figA2_network.pdf	analysis/make_figures.py	output/network-k8/*/experiment_comm_summary.csv; output/*/experiment_comm_summary.csv
 tables/tab_comm_estimators.tex	analysis/render_paper_tables.py	analysis/verified_stats.json
-tables/tab_uncalibrated_expanded.tex	analysis/render_paper_tables.py	analysis/verified_stats.json
-tables/tab_placebo_calibration.tex	analysis/render_paper_tables.py	analysis/verified_stats.json; output/placebo-calibration-*/**/*.csv
-figures/fig21_placebo_calibration.pdf	analysis/make_figures.py	output/placebo-calibration-*/**/experiment_pure_summary.csv
-tables/tab_calibration_robustness.tex	manual archived table	output/*/experiment_pure_summary.csv; output/*/autocalibrate_*.csv
-figures/figA4_calibration.pdf	analysis/make_figures.py	output/*/autocalibrate_history.csv; output/*/autocalibrate_final_raw.csv
 tables/tab_temperature_expanded.tex	analysis/render_paper_tables.py	analysis/verified_stats.json; output/temperature-robustness-*/**/*.csv
 tables/tab_surveillance_variants.tex	analysis/render_paper_tables.py	analysis/verified_stats.json; output/prompt-isolation-surveillance-*/**/experiment_comm_summary.csv; output/*/_surveillance_*_v2/**/experiment_comm_summary.csv
 tables/tab_prompt_isolation.tex	analysis/render_paper_tables.py	analysis/verified_stats.json; output/prompt-isolation-surveillance/**/experiment_comm_summary.csv
@@ -29,12 +25,12 @@ tables/tab_finite_n.tex	analysis/agent_regressions.py	output/*/experiment_*_log.
 tables/tab_regressions.tex	analysis/agent_regressions.py	output/*/experiment_*_log.json; analysis/regression_results.json
 tables/tab_logistic_params.tex	analysis/render_paper_tables.py	analysis/verified_stats.json
 figures/fig_construct_validity.pdf	analysis/construct_validity.py	output/*/experiment_*_log.json; analysis/construct_validity_results.json
-figures/fig20_cross_generator.pdf	analysis/make_figures.py	output/cross-generator-*/**/experiment_pure_summary.csv; analysis/verified_stats.json
+figures/fig20_cross_generator.pdf	analysis/make_figures.py	output/cross-generator*/**/experiment_pure_summary.csv; analysis/verified_stats.json
 tables/tab_cross_generator.tex	analysis/render_paper_tables.py	analysis/verified_stats.json
 tables/tab_beliefs.tex	analysis/render_paper_tables.py	analysis/verified_stats.json
 tables/tab_punishment_risk.tex	analysis/render_paper_tables.py	analysis/verified_stats.json; output/punishment-risk*/**/experiment_*_log.json
 figures/fig02_cross_model.pdf	analysis/make_figures.py	output/comparison/model_comparison_summary.csv; output/*/experiment_*_summary.csv
-figures/fig15_text_baseline.pdf	analysis/make_figures.py	output/*/autocalibrate_final_raw.csv
+figures/fig15_text_baseline.pdf	analysis/make_figures.py	output/*/experiment_pure_log.json
 figures/fig18_bc_sweep.pdf	analysis/make_figures.py	output/*/experiment_bc_sweep_summary.csv
 tables/tab_bc_statics.tex	analysis/render_paper_tables.py	analysis/verified_stats.json; output/*/experiment_bc_sweep_summary.csv
 figures/fig_example_briefings.pdf	analysis/make_figures.py	agent_based_simulation/briefing.py; analysis/generate_example_briefings.py

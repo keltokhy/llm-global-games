@@ -42,6 +42,9 @@ OK_CONTEXT = [
     re.compile(r"\\captionsetup"),
     re.compile(r"\\setcounter"),
     re.compile(r"\\(small|footnotesize|scriptsize|tiny|large|Large)"),
+    # Hand-written theory constants guarded by tests/test_paper_constants.py.
+    re.compile(r"^\$\\theta\^\* = \d+\.\d+\$ & \d+\.\d+ & 1 & --- \\\\$"),
+    re.compile(r"^\$(?:[-+]\d+\.\d|\\phantom\{-\}0\.0)\$ & \d+\.\d+ & \d+\.\d+ & \d+\.\d+ \\\\$"),
 ]
 
 
@@ -71,8 +74,9 @@ def check_paper():
             warnings.append((i, m, line.strip()[:100]))
 
     print(f"Bare decimal numbers in paper.tex: {len(warnings)}")
-    print(f"(These may be hand-typed statistics that should use LaTeX macros)")
-    print()
+    if warnings:
+        print("(These may be hand-typed statistics that should use LaTeX macros)")
+        print()
 
     for lineno, number, context in warnings:
         print(f"  L{lineno:4d}: {number:>8s}  {context}")

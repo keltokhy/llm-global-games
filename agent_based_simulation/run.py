@@ -431,9 +431,11 @@ def run_experiment(args, treatment, signal_mode="normal"):
             z_base = rng.normal(0.0, 0.3)
             for t in range(args.n_periods):
                 z = z_base + rng.normal(0, 0.05)
-                benefit = b_mean + rng.normal(0, 0.15)
+                # Preserve the historical RNG stream for theta/z draws, but do
+                # not vary unobserved payoffs across benchmark task rows.
+                _legacy_benefit_draw = b_mean + rng.normal(0, 0.15)
                 theta = rng.normal(z, 1.0)  # tau = 1
-                tasks_spec.append({"c": c, "t": t, "z": z, "benefit": benefit, "theta": theta})
+                tasks_spec.append({"c": c, "t": t, "z": z, "benefit": args.benefit, "theta": theta})
 
         assigned_fixed_messages = None
         assigned_fixed_sources = None

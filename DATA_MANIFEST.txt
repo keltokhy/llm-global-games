@@ -1,147 +1,112 @@
 DATA MANIFEST — output/
 ========================
 
-Paper asset lineage:
-  paper/asset_manifest.tsv maps every table and figure included by
-  paper/paper.tex to its generating script and primary input files.
+This directory contains the experiment outputs used by
+paper/paper.tex ("Speaking in Code: How Surveillance Suppresses
+Coordinated Dissent").  Paper asset lineage is recorded in
+paper/asset_manifest.tsv; scripts/make_data.py declares the runnable
+targets needed to reproduce missing data.
+
 
 DIRECTORY STRUCTURE
 -------------------
 output/
-├── <model-slug>/                        Per-model experiment results
-│   ├── calibrated_*.json                Calibration parameters
-│   ├── autocalibrate_final_raw.csv      Calibration raw data (gitignored)
-│   ├── autocalibrate_history.csv        Calibration search history (gitignored)
-│   ├── autocalibrate_final_curve.png    Calibration fit plot
-│   ├── experiment_*_summary.csv         Experiment results
-│   ├── experiment_*_log.json            LLM trace logs (gitignored)
-│   ├── figures/                         Per-model diagnostic plots
-│   └── manifests/                       Run manifests (provenance)
-├── <experiment-variant>/                Robustness / special experiments
-│   └── <model-slug>/                    Same file structure as above
-└── comparison/                          Cross-model comparison
-    ├── model_comparison_summary.csv
-    └── figures/
+├── <model-slug>/                        Per-model benchmark results
+│   ├── experiment_*_summary.csv         Period-level experiment summaries
+│   ├── experiment_*_log.json            Agent-level prompts/responses
+│   └── manifests/                       Run provenance
+├── <experiment-variant>/<model-slug>/   Robustness and mechanism experiments
+└── comparison/                          Cross-model summary files
 
 
-PAPER 1: "Do Large Language Models Play Global Games?"
-------------------------------------------------------
-Core experiments (per model directory):
-  experiment_pure_summary.csv     — Pure treatment (private signal only)
-  experiment_comm_summary.csv     — Communication treatment (network messages)
-  experiment_scramble_summary.csv — Falsification: signal text scrambled
-  experiment_flip_summary.csv     — Falsification: signal direction reversed
+CORE BENCHMARK EXPERIMENTS
+--------------------------
+Per-model directories contain:
+  experiment_pure_summary.csv            Private-signal global game
+  experiment_comm_summary.csv            Pre-play network communication
+  experiment_scramble_summary.csv        Falsification: briefing permutation
+  experiment_flip_summary.csv            Falsification: negated signal direction
+  calibrated_params_*.json               Per-model briefing-centering parameters
+  calibrated_index.json                  Index of per-model centering parameters
+  autocalibrate_history.csv              Centering search history where available
+  autocalibrate_final_raw.csv            Raw centering sweep rows where available
+  manifests/                             Provenance, including load_calibrated flags
 
-Models with full experiment suite:
-  arcee-ai--trinity-large-preview_free/
-  meta-llama--llama-3.3-70b-instruct/
-  minimax--minimax-m2-her/
-  mistralai--mistral-small-creative/       (primary model, 600 obs)
-  openai--gpt-oss-120b/                    (200 obs, no scramble/flip)
-  qwen--qwen3-235b-a22b-2507/             (200 obs, no scramble/flip)
-  qwen--qwen3-30b-a3b-instruct-2507/
+Canonical model roster is defined in analysis/models.py.  Main benchmark
+tables use seven models: Mistral Small (primary), Llama 3.3 70B, Qwen3
+30B, GPT-OSS 120B, Qwen3 235B, Trinity Large, and MiniMax M2-Her.  Additional
+directories may exist for exploratory or archived runs and are excluded
+unless referenced by analysis/models.py or paper/asset_manifest.tsv.
 
-Models excluded from main analysis (data present, not in paper tables):
-  allenai--olmo-3-7b-instruct/            (excluded — poor calibration)
-  mistralai--ministral-3b-2512/            (excluded — 3B too small)
-
-Robustness — agent count (n):
-  mistralai--mistral-small-creative-n5/    → experiment_pure_summary.csv
-  mistralai--mistral-small-creative-n10/   → experiment_pure_summary.csv
-  mistralai--mistral-small-creative-n50/   → experiment_pure_summary.csv
-  mistralai--mistral-small-creative-n100/  → experiment_pure_summary.csv
-  (default n=25 is in mistralai--mistral-small-creative/)
-
-Robustness — network topology:
-  network-k8/                              → experiment_comm_summary.csv
-  (default k=4 is in mistralai--mistral-small-creative/)
-
-Cross-model comparison:
-  comparison/model_comparison_summary.csv  — r values, coup rates, all models
-
-Mixed-model experiments:
-  mixed-5model-pure/                       → experiment_pure_summary.csv
-  mixed-5model-comm/                       → experiment_comm_summary.csv
-  mixed-mistral-gptoss-comm/               → experiment_comm_summary.csv
-
-Critique response:
-  holdout-validation/                      → autocalibrate_history.csv (holdout RMSE)
-  group-size-info/                         → pure + comm with --group-size-info
-
-Temperature robustness:
-  temperature-robustness-T0.3/             → pure/comm at T=0.3
-  temperature-robustness-T0.7/             → pure/comm at T=0.7
-  temperature-robustness-T1.0/             → pure/comm at T=1.0
-
-Uncalibrated robustness:
-  uncalibrated-robustness/                 → pure without calibration adjustment
+Benchmark and mechanism outputs were generated with the per-model
+briefing-centering parameters recorded above.  In the checked files, only
+cutoff_center differs from the default briefing generator; other generator
+settings remain at their default values.
 
 
-PAPER 2: "Information Design in LLM Coordination Games"
---------------------------------------------------------
-Core infodesign experiments (per model directory):
-  experiment_infodesign_all_summary.csv       — All designs in one file
-  experiment_infodesign_baseline_summary.csv  — Baseline (normal signals)
-  experiment_infodesign_stability_summary.csv — Stability design
-  experiment_infodesign_instability_summary.csv
-  experiment_infodesign_censor_upper_summary.csv
-  experiment_infodesign_censor_lower_summary.csv
-  experiment_infodesign_public_signal_summary.csv
-  experiment_infodesign_scramble_summary.csv  — Falsification
-  experiment_infodesign_flip_summary.csv      — Falsification
+SURVEILLANCE AND MESSAGE-CONTROL OUTPUTS
+----------------------------------------
+prompt-isolation-surveillance/           Clean message-stage surveillance reruns
+prompt-isolation-surveillance-placebo/   "Monitoring for research" placebo
+prompt-isolation-surveillance-anonymous/ Anonymous monitoring variant
+surveillance/                            Legacy surveillance outputs
+fixed-messages-surv/                     Fixed-message decision-context test
+no-messages/                             Primary no-peer-message control
+no-messages-llama/                       Llama no-peer-message control
+no-messages-qwen30b/                     Qwen3 30B no-peer-message control
 
-Stability decomposition (primary model only):
-  experiment_infodesign_stability_clarity_summary.csv
-  experiment_infodesign_stability_direction_summary.csv
-  experiment_infodesign_stability_dissent_summary.csv
 
-Infodesign with communication:
-  mistralai--mistral-small-creative-infodesign-comm/
+MECHANISM AND ROTATION OUTPUTS
+------------------------------
+cross-task-placebo-baseline/             Llama private-bet task, baseline messages
+cross-task-placebo-surveillance/         Llama private-bet task, surveilled messages
+xmodel-source-llama-baseline/            Llama message source, baseline
+xmodel-source-llama-surveillance/        Llama message source, surveillance
+xmodel-source-qwen-baseline/             Qwen3 30B message source, baseline
+xmodel-source-qwen-surveillance/         Qwen3 30B message source, surveillance
+xmodel-matched-llama-writes-qwen-reads-baseline/
+xmodel-matched-llama-writes-qwen-reads-surveillance/
+xmodel-matched-qwen-writes-llama-reads-baseline/
+xmodel-matched-qwen-writes-llama-reads-surveillance/
 
-Surveillance:
-  surveillance/                             → experiment_comm_summary.csv
-  prompt-isolation-surveillance/            → clean baseline-plus-warning surveillance reruns
-  prompt-isolation-surveillance-placebo/    → clean placebo monitoring variant
-  prompt-isolation-surveillance-anonymous/  → clean anonymous monitoring variant
+The matched cross-model directories replay exact message bundles on
+matched country-period cells with decision_context=none.  They identify
+whether surveillance-modified message content travels across writer and
+reader model families.
 
-Message controls:
-  no-messages/                              → communication protocol with no peer messages
 
-Surveillance x Censorship interaction:
-  surveillance-x-censorship/                → experiment_infodesign_all_summary.csv
+BELIEF, ROBUSTNESS, AND APPENDIX OUTPUTS
+----------------------------------------
+revision-beliefs-*/                      Belief and second-order belief elicitations
+punishment-risk*/                        Punishment-risk elicitation checks
+temperature-robustness*/                 Temperature robustness
+cross-generator*/                        Alternative briefing-generator checks
+mistralai--mistral-small-creative-n*/    Agent-count robustness
+network-k8/                              Denser communication network
+mixed-5model-pure/                       Five-model mixed private-signal population
+mixed-5model-comm/                       Five-model mixed communication population
+mixed-mistral-gptoss-comm/               Two-family mixed communication robustness
+holdout-validation/                      Briefing-centering holdout validation
+group-size-info/                         Group-size prompt robustness
 
-Propaganda dose-response:
-  propaganda-k2/                            → experiment_comm_summary.csv
-  propaganda-k5/                            → experiment_comm_summary.csv
-  propaganda-k10/                           → experiment_comm_summary.csv
-  propaganda-surveillance/                  → experiment_comm_summary.csv
 
-Bandwidth robustness:
-  bandwidth-005/                            → infodesign summaries (BW=0.05)
-  bandwidth-030/                            → infodesign summaries (BW=0.30)
-  (default BW=0.15 is in main model directories)
-
-z-centered robustness:
-  z-centered/                               → infodesign baseline/stability/instability
-
-Fixed-message surveillance:
-  fixed-messages-surv/                      → surveillance with fixed message content
+ARCHIVED: INFODESIGN / BAYESIAN PERSUASION OUTPUTS
+--------------------------------------------------
+Information-design experiments (stability, instability, public-signal,
+censorship, propaganda, channel decomposition) are not used by the current
+manuscript and have been moved to _archive/infodesign/.  Code modules
+(agent_based_simulation/{infodesign.py,run_infodesign.py}) and the
+corresponding figures/tables live there too, intended for a follow-up.
 
 
 CSV COLUMN REFERENCE
 --------------------
-Pure/comm/scramble/flip experiments:
+Core pure/communication/scramble/flip summaries:
   country, period, treatment, theta, theta_star, z, benefit,
   n_join, join_fraction, n_valid, n_api_error, n_unparseable,
   join_fraction_valid, api_error_rate, unparseable_rate,
   coup_success, theoretical_attack
 
-Infodesign experiments:
-  design, signal_mode, theta, theta_star, theta_relative, rep,
-  join_fraction, join_fraction_valid, n_join, n_agents, n_valid,
-  n_api_error, n_unparseable, api_error_rate, unparseable_rate,
-  coup_success, theoretical_attack, benefit, cost, model, treatment
-
-Model comparison summary:
-  model, mean_delta, median_delta, r_pure, r_comm, r_scramble,
-  r_flip, coup_rate_pure, coup_rate_comm, cutoff_center
+For benchmark Part I analyses, analysis/verify_paper_stats.py recomputes
+the canonical attack-mass benchmark under B=C=1 and sigma=0.3 from theta,
+rather than relying on legacy logged benefit/theoretical_attack columns.

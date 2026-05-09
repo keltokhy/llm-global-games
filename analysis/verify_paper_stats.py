@@ -80,6 +80,11 @@ def _attack_mass_benchmark(theta: np.ndarray) -> np.ndarray:
     return stats.norm.cdf((x_star - theta) / sigma)
 
 
+def _attack_mass_benchmark_df(df: pd.DataFrame) -> np.ndarray:
+    """Benchmark attack mass for Part I-style rows, ignoring legacy logged payoffs."""
+    return _attack_mass_benchmark(df["theta"].astype(float).values)
+
+
 def load(model: str, treatment: str) -> pd.DataFrame:
     """Load a summary CSV, return empty DataFrame if missing."""
     p = ROOT / model / f"experiment_{treatment}_summary.csv"
@@ -1208,6 +1213,30 @@ def compute_robustness():
     """Statistics for robustness checks."""
     results = {}
 
+    # Direction-transform robustness: same briefing pipeline with alternate
+    # z -> directional-sentiment link functions.
+    for transform, fname in [
+        ("logistic", "experiment_pure_summary.csv"),
+        ("tanh", "experiment_pure_tanh_summary.csv"),
+        ("linear", "experiment_pure_linear_summary.csv"),
+        ("step", "experiment_pure_step_summary.csv"),
+    ]:
+        path = ROOT / PRIMARY / fname
+        if not path.exists():
+            continue
+        df = _load_summary(path)
+        if df.empty:
+            continue
+        jcol = _join_col(df)
+        out = {
+            "n_obs": int(len(df)),
+            "mean_join": round(_safe_mean(df[jcol]), 4),
+            "r_vs_theta": pearson_with_ci(df["theta"], df[jcol]),
+        }
+        if "theta" in df.columns:
+            out["r_vs_attack"] = pearson_with_ci(_attack_mass_benchmark_df(df), df[jcol])
+        results.setdefault("direction_transforms", {})[transform] = out
+
     # Agent count variations
     for n in [5, 10, 50, 100]:
         d = ROOT / f"{PRIMARY}-n{n}"
@@ -1222,8 +1251,8 @@ def compute_robustness():
                 "mean_join": round(_safe_mean(df[jcol]), 4),
                 "n_obs": int(len(df)),
             }
-            if "theoretical_attack" in df.columns:
-                out["r_vs_attack"] = pearson_with_ci(df["theoretical_attack"], df[jcol])
+            if "theta" in df.columns:
+                out["r_vs_attack"] = pearson_with_ci(_attack_mass_benchmark_df(df), df[jcol])
             results.setdefault("agent_count", {}).setdefault(f"n={n}", {})[SHORT.get(model_slug, model_slug)] = out
 
     # Network k=8
@@ -1238,8 +1267,8 @@ def compute_robustness():
             "mean_join": round(_safe_mean(df[jcol]), 4),
             "r_vs_theta": pearson_with_ci(df["theta"], df[jcol]),
         }
-        if "theoretical_attack" in df.columns:
-            out["r_vs_attack"] = pearson_with_ci(df["theoretical_attack"], df[jcol])
+        if "theta" in df.columns:
+            out["r_vs_attack"] = pearson_with_ci(_attack_mass_benchmark_df(df), df[jcol])
         results.setdefault("network_k8", {})[SHORT.get(model_slug, model_slug)] = out
 
     # Mixed-model
@@ -1256,8 +1285,8 @@ def compute_robustness():
                 "r_vs_theta": pearson_with_ci(df["theta"], df[jcol]),
                 "n_obs": int(len(df)),
             }
-            if "theoretical_attack" in df.columns:
-                out["r_vs_attack"] = pearson_with_ci(df["theoretical_attack"], df[jcol])
+            if "theta" in df.columns:
+                out["r_vs_attack"] = pearson_with_ci(_attack_mass_benchmark_df(df), df[jcol])
             results.setdefault(dname, {})[SHORT.get(model_slug, model_slug)] = out
 
     # Bandwidth robustness (infodesign), primary model
@@ -1310,9 +1339,9 @@ def pooled_ols(all_stats):
     pooled = pd.concat(all_pure, ignore_index=True)
     jcol = "join_fraction_valid" if "join_fraction_valid" in pooled.columns else "join_fraction"
     y = pooled[jcol].values
-    x = pooled["theoretical_attack"].values if "theoretical_attack" in pooled.columns else None
-    if x is None:
+    if "theta" not in pooled.columns:
         return {}
+    x = _attack_mass_benchmark_df(pooled)
     # OLS with intercept
     X = np.column_stack([np.ones_like(x), x])
     beta, residuals, rank, sv = np.linalg.lstsq(X, y, rcond=None)
@@ -1407,9 +1436,9 @@ def compute_clustered_ses():
     pooled = pd.concat(all_dfs, ignore_index=True)
     jcol = "join_fraction_valid" if "join_fraction_valid" in pooled.columns else "join_fraction"
     y = pooled[jcol].values
-    x_var = pooled["theoretical_attack"].values if "theoretical_attack" in pooled.columns else None
-    if x_var is None:
+    if "theta" not in pooled.columns:
         return {}
+    x_var = _attack_mass_benchmark_df(pooled)
 
     X = np.column_stack([np.ones_like(x_var), x_var])
     n = len(y)
@@ -1493,7 +1522,7 @@ def compute_temperature_robustness():
         jf = df[jcol].astype(float).values
         theta = df["theta"].astype(float).values
         r_theta = pearson_with_ci(theta, jf)
-        attack = df["theoretical_attack"].astype(float).values if "theoretical_attack" in df.columns else None
+        attack = _attack_mass_benchmark_df(df) if "theta" in df.columns else None
         r_attack = pearson_with_ci(attack, jf) if attack is not None else {}
         fit = _fit_logistic(theta, jf)
         results[f"T={temp}"] = {
@@ -1558,6 +1587,11 @@ def compute_prompt_isolation():
         results.setdefault("surveillance", {})[SHORT.get(model_slug, model_slug)] = out
 
     if deltas:
+        non_qwen235 = [
+            d.get("delta_vs_baseline_pp")
+            for model_name, d in results.get("surveillance", {}).items()
+            if model_name != "Qwen3 235B" and d.get("delta_vs_baseline_pp") is not None
+        ]
         results["_summary"] = {
             "n_models": int(len(deltas)),
             "mean_delta_pp": round(float(np.mean(deltas)), 2),
@@ -1569,6 +1603,10 @@ def compute_prompt_isolation():
             "n_p_lt_01": int(sum(p < 0.01 for p in p_values)),
             "mean_r_vs_attack": round(float(np.mean(r_attacks)), 4) if r_attacks else None,
         }
+        if non_qwen235:
+            results["_summary"]["non_qwen235_n"] = int(len(non_qwen235))
+            results["_summary"]["non_qwen235_min_delta_pp"] = round(float(np.min(non_qwen235)), 2)
+            results["_summary"]["non_qwen235_max_delta_pp"] = round(float(np.max(non_qwen235)), 2)
 
     primary = PRIMARY
     comm_df = load(primary, "comm")
@@ -1611,21 +1649,65 @@ def compute_prompt_isolation():
 
 
 def compute_message_controls():
-    """Statistics for cleaner no-message communication controls."""
+    """Statistics for degraded-message and no-message communication controls."""
     results = {}
     primary = PRIMARY
+    degraded_path = ROOT / "revision-beliefs-degraded" / primary / "experiment_comm_degraded_summary.csv"
+    degraded_baseline_path = ROOT / "revision-beliefs-live" / primary / "experiment_comm_summary.csv"
+    pure_path = ROOT / primary / "experiment_pure_summary.csv"
     no_msg_path = ROOT / "no-messages" / primary / "experiment_comm_nomsg_summary.csv"
     baseline_path = ROOT / primary / "experiment_comm_summary.csv"
     surv_path = ROOT / "prompt-isolation-surveillance" / primary / "experiment_comm_summary.csv"
+
+    if degraded_path.exists() and degraded_baseline_path.exists():
+        deg = pd.read_csv(degraded_path)
+        deg_base = pd.read_csv(degraded_baseline_path)
+        if not deg.empty and not deg_base.empty:
+            dj = _join_col(deg)
+            dbj = _join_col(deg_base)
+            deg_jf = deg[dj].astype(float).values
+            deg_base_jf = deg_base[dbj].astype(float).values
+            deg_mean = float(np.nanmean(deg_jf))
+            deg_base_mean = float(np.nanmean(deg_base_jf))
+            t_stat_d, t_p_d = stats.ttest_ind(deg_jf, deg_base_jf, equal_var=False)
+            deg_out = {
+                "source": "revision-beliefs-degraded",
+                "baseline_source": "revision-beliefs-live",
+                "n_obs": int(len(deg)),
+                "baseline_n_obs": int(len(deg_base)),
+                "mean_join": round(deg_mean, 4),
+                "baseline_mean_join": round(deg_base_mean, 4),
+                "delta_vs_baseline_pp": round((deg_mean - deg_base_mean) * 100, 2),
+                "t_test_vs_baseline": {
+                    "t_stat": round(float(t_stat_d), 4),
+                    "p_value": round(float(t_p_d), 6),
+                },
+            }
+            if pure_path.exists():
+                pure_df = pd.read_csv(pure_path)
+                if not pure_df.empty:
+                    pj = _join_col(pure_df)
+                    deg_out["pure_mean_join"] = round(float(np.nanmean(pure_df[pj].astype(float).values)), 4)
+            results["degraded_messages"] = deg_out
+    else:
+        results["degraded_messages"] = {
+            "status": "missing",
+            "path": str(degraded_path),
+            "baseline_path": str(degraded_baseline_path),
+        }
+
     if not no_msg_path.exists():
-        return {"no_messages": {"status": "missing", "path": str(no_msg_path)}}
+        results["no_messages"] = {"status": "missing", "path": str(no_msg_path)}
+        return results
     if not baseline_path.exists():
-        return {"no_messages": {"status": "missing_baseline", "path": str(baseline_path)}}
+        results["no_messages"] = {"status": "missing_baseline", "path": str(baseline_path)}
+        return results
 
     df = pd.read_csv(no_msg_path)
     base = pd.read_csv(baseline_path)
     if df.empty or base.empty:
-        return {"no_messages": {"status": "empty"}}
+        results["no_messages"] = {"status": "empty"}
+        return results
 
     jcol = _join_col(df)
     bj = _join_col(base)
@@ -1665,6 +1747,61 @@ def compute_message_controls():
             }
 
     results["no_messages"] = out
+
+    cross_model_specs = {
+        "Llama 3.3 70B": {
+            "model_slug": "meta-llama--llama-3.3-70b-instruct",
+            "no_msg": ROOT / "no-messages-llama" / "meta-llama--llama-3.3-70b-instruct" / "experiment_comm_nomsg_summary.csv",
+            "baseline": ROOT / "meta-llama--llama-3.3-70b-instruct" / "experiment_comm_summary.csv",
+            "surveillance": ROOT / "prompt-isolation-surveillance" / "meta-llama--llama-3.3-70b-instruct" / "experiment_comm_summary.csv",
+        },
+        "Qwen3 30B": {
+            "model_slug": "qwen--qwen3-30b-a3b-instruct-2507",
+            "no_msg": ROOT / "no-messages-qwen30b" / "qwen--qwen3-30b-a3b-instruct-2507" / "experiment_comm_nomsg_summary.csv",
+            "baseline": ROOT / "qwen--qwen3-30b-a3b-instruct-2507" / "experiment_comm_summary.csv",
+            "surveillance": ROOT / "prompt-isolation-surveillance" / "qwen--qwen3-30b-a3b-instruct-2507" / "experiment_comm_summary.csv",
+        },
+    }
+    by_model = {}
+    for model_name, paths in cross_model_specs.items():
+        if not paths["no_msg"].exists() or not paths["baseline"].exists():
+            continue
+        df_m = pd.read_csv(paths["no_msg"])
+        base_m = pd.read_csv(paths["baseline"])
+        if df_m.empty or base_m.empty:
+            continue
+        jc_m = _join_col(df_m)
+        bc_m = _join_col(base_m)
+        jf_m = df_m[jc_m].astype(float).values
+        base_jf_m = base_m[bc_m].astype(float).values
+        model_out = {
+            "n_obs": int(len(df_m)),
+            "mean_join": round(float(np.nanmean(jf_m)), 4),
+            "baseline_mean_join": round(float(np.nanmean(base_jf_m)), 4),
+            "delta_vs_baseline_pp": round(float((np.nanmean(jf_m) - np.nanmean(base_jf_m)) * 100), 2),
+        }
+        t_stat_m, t_p_m = stats.ttest_ind(jf_m, base_jf_m, equal_var=False)
+        model_out["t_test_vs_baseline"] = {
+            "t_stat": round(float(t_stat_m), 4),
+            "p_value": round(float(t_p_m), 6),
+        }
+        if paths["surveillance"].exists():
+            surv_m = pd.read_csv(paths["surveillance"])
+            if not surv_m.empty:
+                sjc = _join_col(surv_m)
+                surv_jf_m = surv_m[sjc].astype(float).values
+                surv_mean_m = float(np.nanmean(surv_jf_m))
+                t_stat_sm, t_p_sm = stats.ttest_ind(surv_jf_m, jf_m, equal_var=False)
+                model_out["surv_mean_join"] = round(surv_mean_m, 4)
+                model_out["delta_surv_vs_nomsg_pp"] = round(float((surv_mean_m - np.nanmean(jf_m)) * 100), 2)
+                model_out["t_test_surv_vs_nomsg"] = {
+                    "t_stat": round(float(t_stat_sm), 4),
+                    "p_value": round(float(t_p_sm), 6),
+                }
+        by_model[model_name] = model_out
+    if by_model:
+        results["no_messages_by_model"] = by_model
+
     return results
 
 
@@ -1726,67 +1863,130 @@ def compute_message_content_analysis():
         toks = set(_re.findall(r"[a-z]+", msg.lower()))
         return bool(toks & words)
 
-    out["themes"] = {}
-    for theme, words in THEMES.items():
-        b_count = sum(1 for m in base_msgs if _msg_has_any(m, words))
-        s_count = sum(1 for m in surv_msgs if _msg_has_any(m, words))
-        n1, n2 = len(base_msgs), len(surv_msgs)
-        b_pct = 100.0 * b_count / n1
-        s_pct = 100.0 * s_count / n2
-        # Two-proportion z-test
-        p1 = b_count / n1
-        p2 = s_count / n2
-        p_pool = (b_count + s_count) / (n1 + n2)
-        se = (p_pool * (1 - p_pool) * (1/n1 + 1/n2)) ** 0.5
-        z = (p2 - p1) / se if se > 0 else 0.0
-        p_value = 2 * (1 - stats.norm.cdf(abs(z)))
-        out["themes"][theme] = {
-            "base_pct": round(b_pct, 1),
-            "surv_pct": round(s_pct, 1),
-            "delta_pp": round(s_pct - b_pct, 1),
-            "z": round(float(z), 2),
-            "p": round(float(p_value), 4),
-        }
+    def _theme_summary(base, surv):
+        themes = {}
+        for theme, words in THEMES.items():
+            b_count = sum(1 for m in base if _msg_has_any(m, words))
+            s_count = sum(1 for m in surv if _msg_has_any(m, words))
+            n1, n2 = len(base), len(surv)
+            b_pct = 100.0 * b_count / n1
+            s_pct = 100.0 * s_count / n2
+            # Two-proportion z-test
+            p1 = b_count / n1
+            p2 = s_count / n2
+            p_pool = (b_count + s_count) / (n1 + n2)
+            se = (p_pool * (1 - p_pool) * (1/n1 + 1/n2)) ** 0.5
+            z = (p2 - p1) / se if se > 0 else 0.0
+            p_value = 2 * (1 - stats.norm.cdf(abs(z)))
+            themes[theme] = {
+                "base_pct": round(b_pct, 1),
+                "surv_pct": round(s_pct, 1),
+                "delta_pp": round(s_pct - b_pct, 1),
+                "z": round(float(z), 2),
+                "p": round(float(p_value), 4),
+            }
+        return themes
+
+    out["themes"] = _theme_summary(base_msgs, surv_msgs)
 
     # ── Logistic classifier on uni+bi-grams ───────────────────────
     try:
         from sklearn.feature_extraction.text import TfidfVectorizer
         from sklearn.linear_model import LogisticRegression
         from sklearn.model_selection import train_test_split
-        from sklearn.metrics import accuracy_score
+        from sklearn.metrics import accuracy_score, balanced_accuracy_score
 
-        texts = base_msgs + surv_msgs
-        labels = [0]*len(base_msgs) + [1]*len(surv_msgs)
-        Xtr_txt, Xte_txt, ytr, yte = train_test_split(
-            texts, labels, test_size=0.3, random_state=42, stratify=labels
+        def _classifier_summary(base, surv, *, balanced=False, include_features=False):
+            base_fit = list(base)
+            surv_fit = list(surv)
+            if balanced:
+                rng = np.random.default_rng(42)
+                n = min(len(base_fit), len(surv_fit))
+                base_idx = rng.choice(len(base_fit), n, replace=False)
+                surv_idx = rng.choice(len(surv_fit), n, replace=False)
+                base_fit = [base_fit[i] for i in base_idx]
+                surv_fit = [surv_fit[i] for i in surv_idx]
+
+            texts = base_fit + surv_fit
+            labels = [0] * len(base_fit) + [1] * len(surv_fit)
+            Xtr_txt, Xte_txt, ytr, yte = train_test_split(
+                texts, labels, test_size=0.3, random_state=42, stratify=labels
+            )
+            vec = TfidfVectorizer(ngram_range=(1, 2), max_features=5000, min_df=10)
+            Xtr = vec.fit_transform(Xtr_txt)
+            Xte = vec.transform(Xte_txt)
+            clf = LogisticRegression(max_iter=2000, C=1.0)
+            clf.fit(Xtr, ytr)
+            pred = clf.predict(Xte)
+            acc = float(accuracy_score(yte, pred))
+            bal_acc = float(balanced_accuracy_score(yte, pred))
+            summary = {
+                "accuracy": round(acc, 4),
+                "accuracy_pct": round(acc * 100, 1),
+                "balanced_accuracy": round(bal_acc, 4),
+                "balanced_accuracy_pct": round(bal_acc * 100, 1),
+                "majority_class_pct": round(100.0 * max(len(base_fit), len(surv_fit)) / len(texts), 1),
+                "n_base": int(len(base_fit)),
+                "n_surv": int(len(surv_fit)),
+                "n_train": int(len(ytr)),
+                "n_test": int(len(yte)),
+                "ngram_range": "(1, 2)",
+                "max_features": 5000,
+            }
+            if include_features:
+                features = vec.get_feature_names_out()
+                coefs = clf.coef_[0]
+                top_surv_idx = np.argsort(coefs)[-15:][::-1]
+                top_base_idx = np.argsort(coefs)[:15]
+                summary["top_surv_features"] = [
+                    {"feature": features[i], "coef": round(float(coefs[i]), 3)}
+                    for i in top_surv_idx
+                ]
+                summary["top_base_features"] = [
+                    {"feature": features[i], "coef": round(float(coefs[i]), 3)}
+                    for i in top_base_idx
+                ]
+            return summary
+
+        out["classifier"] = _classifier_summary(
+            base_msgs, surv_msgs, balanced=False, include_features=True
         )
-        vec = TfidfVectorizer(ngram_range=(1, 2), max_features=5000, min_df=10)
-        Xtr = vec.fit_transform(Xtr_txt)
-        Xte = vec.transform(Xte_txt)
-        clf = LogisticRegression(max_iter=2000, C=1.0)
-        clf.fit(Xtr, ytr)
-        acc = float(accuracy_score(yte, clf.predict(Xte)))
 
-        features = vec.get_feature_names_out()
-        coefs = clf.coef_[0]
-        top_surv_idx = np.argsort(coefs)[-15:][::-1]
-        top_base_idx = np.argsort(coefs)[:15]
-
-        out["classifier"] = {
-            "accuracy": round(acc, 4),
-            "accuracy_pct": round(acc * 100, 1),
-            "n_train": int(len(ytr)),
-            "n_test": int(len(yte)),
-            "ngram_range": "(1, 2)",
-            "max_features": 5000,
-            "top_surv_features": [
-                {"feature": features[i], "coef": round(float(coefs[i]), 3)}
-                for i in top_surv_idx
-            ],
-            "top_base_features": [
-                {"feature": features[i], "coef": round(float(coefs[i]), 3)}
-                for i in top_base_idx
-            ],
+        classifier_by_model = {
+            "Mistral Small Creative": {
+                "all_messages": out["classifier"],
+                "balanced": _classifier_summary(base_msgs, surv_msgs, balanced=True),
+                "themes": out["themes"],
+            }
+        }
+        for model_slug, display in [
+            ("meta-llama--llama-3.3-70b-instruct", "Llama 3.3 70B"),
+            ("qwen--qwen3-30b-a3b-instruct-2507", "Qwen3 30B"),
+        ]:
+            model_comm = ROOT / model_slug / "experiment_comm_log.json"
+            model_surv = ROOT / "prompt-isolation-surveillance" / model_slug / "experiment_comm_log.json"
+            if not (model_comm.exists() and model_surv.exists()):
+                classifier_by_model[display] = {"status": "missing"}
+                continue
+            model_base = _load_messages(model_comm)
+            model_surv_msgs = _load_messages(model_surv)
+            classifier_by_model[display] = {
+                "all_messages": _classifier_summary(model_base, model_surv_msgs, balanced=False),
+                "balanced": _classifier_summary(model_base, model_surv_msgs, balanced=True),
+                "themes": _theme_summary(model_base, model_surv_msgs),
+            }
+        out["classifier_by_model"] = classifier_by_model
+        direct_coded_models = []
+        for display, model_out in classifier_by_model.items():
+            themes = model_out.get("themes", {}) if isinstance(model_out, dict) else {}
+            direct_delta = (themes.get("direct_regime") or {}).get("delta_pp")
+            coded_delta = (themes.get("coded_metaphor") or {}).get("delta_pp")
+            if direct_delta is not None and coded_delta is not None and direct_delta < 0 < coded_delta:
+                direct_coded_models.append(display)
+        out["direct_to_coded_summary"] = {
+            "n_models": int(len(classifier_by_model)),
+            "n_direct_down_coded_up": int(len(direct_coded_models)),
+            "models": direct_coded_models,
         }
     except Exception as e:
         out["classifier"] = {"status": "error", "error": str(e)}
@@ -1851,102 +2051,156 @@ def compute_cross_task_placebo():
     return out
 
 
+def _paired_summary_from_csvs(base_path: Path, surv_path: Path) -> dict:
+    """Paired period-level summary for matched baseline/surveillance CSVs."""
+    if not base_path.exists() or not surv_path.exists():
+        return {"status": "missing", "base_path": str(base_path), "surv_path": str(surv_path)}
+    base = pd.read_csv(base_path)
+    surv = pd.read_csv(surv_path)
+    if base.empty or surv.empty:
+        return {"status": "empty"}
+
+    key_cols = [c for c in COMM_MATCH_COLS if c in base.columns and c in surv.columns]
+    if not key_cols:
+        return {"status": "missing_keys"}
+
+    base_keyed = base.copy()
+    surv_keyed = surv.copy()
+    for col in key_cols:
+        if pd.api.types.is_numeric_dtype(base_keyed[col]):
+            base_keyed[col] = base_keyed[col].astype(float).round(12)
+            surv_keyed[col] = surv_keyed[col].astype(float).round(12)
+
+    bj = _join_col(base_keyed)
+    sj = _join_col(surv_keyed)
+    merged = base_keyed[key_cols + [bj]].merge(
+        surv_keyed[key_cols + [sj]],
+        on=key_cols,
+        how="inner",
+        suffixes=("_base", "_surv"),
+    )
+    if merged.empty:
+        return {
+            "status": "no_overlap",
+            "n_base": int(len(base)),
+            "n_surv": int(len(surv)),
+            "match_key": key_cols,
+        }
+
+    base_col = f"{bj}_base" if f"{bj}_base" in merged.columns else bj
+    surv_col = f"{sj}_surv" if f"{sj}_surv" in merged.columns else sj
+    diff = merged[surv_col].astype(float) - merged[base_col].astype(float)
+    t_stat, p_value = stats.ttest_1samp(diff.dropna(), 0.0)
+
+    return {
+        "n_base": int(len(base)),
+        "n_surv": int(len(surv)),
+        "n_pairs": int(len(diff.dropna())),
+        "match_key": key_cols,
+        "base_mean_join": round(float(base[bj].mean()), 4),
+        "surv_mean_join": round(float(surv[sj].mean()), 4),
+        "paired_delta_pp": round(float(diff.mean() * 100), 2),
+        "paired_t": round(float(t_stat), 4),
+        "paired_p": round(float(p_value), 6),
+    }
+
+
+def compute_cross_model_message_rotation():
+    """Matched writer-reader rotation checks for message-content transportability."""
+    qwen_reader_base = ROOT / "xmodel-matched-llama-writes-qwen-reads-baseline" / "qwen--qwen3-30b-a3b-instruct-2507" / "experiment_comm_summary.csv"
+    qwen_reader_surv = ROOT / "xmodel-matched-llama-writes-qwen-reads-surveillance" / "qwen--qwen3-30b-a3b-instruct-2507" / "experiment_comm_summary.csv"
+    llama_reader_base = ROOT / "xmodel-matched-qwen-writes-llama-reads-baseline" / "meta-llama--llama-3.3-70b-instruct" / "experiment_comm_summary.csv"
+    llama_reader_surv = ROOT / "xmodel-matched-qwen-writes-llama-reads-surveillance" / "meta-llama--llama-3.3-70b-instruct" / "experiment_comm_summary.csv"
+    llama_within_base = ROOT / "xmodel-source-llama-baseline" / "meta-llama--llama-3.3-70b-instruct" / "experiment_comm_summary.csv"
+    llama_within_surv = ROOT / "xmodel-source-llama-surveillance" / "meta-llama--llama-3.3-70b-instruct" / "experiment_comm_summary.csv"
+
+    return {
+        "llama_writes_qwen_reads": _paired_summary_from_csvs(qwen_reader_base, qwen_reader_surv),
+        "qwen_writes_llama_reads": _paired_summary_from_csvs(llama_reader_base, llama_reader_surv),
+        "within_llama_same_cells": _paired_summary_from_csvs(llama_within_base, llama_within_surv),
+    }
+
+
 def compute_surveillance_variants():
     """Compute statistics for placebo and anonymous surveillance variants."""
     results = {}
-    primary = PRIMARY
 
-    variants = {
-        "placebo": _first_existing(
-            ROOT / "prompt-isolation-surveillance-placebo" / primary / "experiment_comm_summary.csv",
-            ROOT / primary / "_surveillance_placebo_v2" / primary / "experiment_comm_summary.csv",
-        ),
-        "anonymous": _first_existing(
-            ROOT / "prompt-isolation-surveillance-anonymous" / primary / "experiment_comm_summary.csv",
-            ROOT / primary / "_surveillance_anonymous_v2" / primary / "experiment_comm_summary.csv",
-        ),
+    variant_paths = {
+        PRIMARY: {
+            "placebo": _first_existing(
+                ROOT / "prompt-isolation-surveillance-placebo" / PRIMARY / "experiment_comm_summary.csv",
+                ROOT / PRIMARY / "_surveillance_placebo_v2" / PRIMARY / "experiment_comm_summary.csv",
+            ),
+            "anonymous": _first_existing(
+                ROOT / "prompt-isolation-surveillance-anonymous" / PRIMARY / "experiment_comm_summary.csv",
+                ROOT / PRIMARY / "_surveillance_anonymous_v2" / PRIMARY / "experiment_comm_summary.csv",
+            ),
+        },
+        "meta-llama--llama-3.3-70b-instruct": {
+            "placebo": ROOT / "prompt-isolation-surveillance-placebo" / "meta-llama--llama-3.3-70b-instruct" / "experiment_comm_summary.csv",
+            "anonymous": ROOT / "prompt-isolation-surveillance-anonymous" / "meta-llama--llama-3.3-70b-instruct" / "experiment_comm_summary.csv",
+        },
     }
 
-    # Load comm baseline for comparison
-    comm_df = load(primary, "comm")
-    comm_jcol = _join_col(comm_df) if len(comm_df) > 0 else "join_fraction"
-    comm_mean = float(comm_df[comm_jcol].mean()) if len(comm_df) > 0 else float("nan")
-
-    for variant_name, path in variants.items():
+    def _summarize_variant(model_slug: str, variant_name: str, path: Path) -> dict:
         if not path.exists():
-            results[variant_name] = {"status": "missing", "path": str(path)}
-            continue
+            return {"status": "missing", "path": str(path)}
         df = pd.read_csv(path)
         if len(df) == 0:
-            results[variant_name] = {"status": "empty"}
-            continue
+            return {"status": "empty", "path": str(path)}
+
+        comm_df = load(model_slug, "comm")
+        comm_jcol = _join_col(comm_df) if len(comm_df) > 0 else "join_fraction"
+        comm_jf = comm_df[comm_jcol].astype(float).values if len(comm_df) > 0 else np.array([])
+        comm_mean = float(np.nanmean(comm_jf)) if len(comm_jf) else float("nan")
+
         jcol = _join_col(df)
         jf = df[jcol].astype(float).values
         theta = df["theta"].astype(float).values
+        mean_join = float(np.nanmean(jf))
 
-        r_theta = pearson_with_ci(theta, jf)
-        mean_join = round(float(np.nanmean(jf)), 4)
-        delta_vs_comm = round((mean_join - comm_mean) * 100, 2) if np.isfinite(comm_mean) else None
+        t_test = None
+        ci_half_95_pp = None
+        delta_vs_comm = None
+        if len(comm_jf):
+            delta_vs_comm = (mean_join - comm_mean) * 100
+            t_stat, t_p = stats.ttest_ind(jf, comm_jf, equal_var=False)
+            t_test = {
+                "t_stat": round(float(t_stat), 4),
+                "p_value": round(float(t_p), 6),
+            }
+            se = np.sqrt(np.nanvar(jf, ddof=1) / len(jf) + np.nanvar(comm_jf, ddof=1) / len(comm_jf))
+            ci_half_95_pp = round(float(1.96 * se * 100), 2)
 
-        # t-test vs comm baseline
-        if len(comm_df) > 0:
-            comm_jf = comm_df[comm_jcol].astype(float).values
-            t_stat, t_p = stats.ttest_ind(jf, comm_jf)
-            t_test = {"t_stat": round(float(t_stat), 4), "p_value": round(float(t_p), 6)}
-        else:
-            t_test = None
-
-        attack = _attack_mass_benchmark(theta)
-        r_attack = pearson_with_ci(attack, jf)
-
-        results[variant_name] = {
-            "n_obs": len(df),
-            "mean_join": mean_join,
-            "r_vs_theta": r_theta,
-            "r_vs_attack": r_attack,
-            "delta_vs_comm_pp": delta_vs_comm,
+        return {
+            "source": path.parent.parent.name,
+            "variant": variant_name,
+            "n_obs": int(len(df)),
+            "baseline_n_obs": int(len(comm_df)),
+            "mean_join": round(mean_join, 4),
+            "baseline_mean_join": round(comm_mean, 4) if np.isfinite(comm_mean) else None,
+            "r_vs_theta": pearson_with_ci(theta, jf),
+            "r_vs_attack": pearson_with_ci(_attack_mass_benchmark(theta), jf),
+            "delta_vs_comm_pp": round(float(delta_vs_comm), 2) if delta_vs_comm is not None else None,
+            "ci_half_95_pp": ci_half_95_pp,
             "t_test_vs_comm": t_test,
         }
 
-    return results
-
-
-def compute_uncalibrated():
-    """Statistics for uncalibrated robustness runs (Section D)."""
-    results = {}
-    uncal_base = ROOT / "uncalibrated-robustness"
-    uncal_models = [
-        PRIMARY,
-        "meta-llama--llama-3.3-70b-instruct",
-        "qwen--qwen3-235b-a22b-2507",
-    ]
-    for model_slug in uncal_models:
-        p = uncal_base / model_slug / "experiment_pure_summary.csv"
-        if not p.exists():
-            continue
-        df = pd.read_csv(p)
-        jcol = _join_col(df)
-        jf = df[jcol].astype(float).values
-        theta = df["theta"].astype(float).values
-        r_theta = pearson_with_ci(theta, jf)
-        # Regime fall rate: coup_success column if present, else theta < theta_star
-        if "coup_success" in df.columns:
-            fall_rate = round(float(df["coup_success"].mean()), 4)
-        elif "theta_star" in df.columns:
-            fall_rate = round(float((df["theta"] < df["theta_star"]).mean()), 4)
-        else:
-            fall_rate = None
-        attack = _attack_mass_benchmark(theta)
-        r_attack = pearson_with_ci(attack, jf)
-        name = SHORT.get(model_slug, model_slug)
-        results[name] = {
-            "n_obs": int(len(df)),
-            "mean_join": round(_safe_mean(jf), 4),
-            "std_join": round(_safe_std(jf), 4),
-            "r_vs_theta": r_theta,
-            "r_vs_attack": r_attack,
-            "regime_fall_rate": fall_rate,
+    by_model = {}
+    for model_slug, paths in variant_paths.items():
+        model_label = SHORT.get(model_slug, model_slug)
+        by_model[model_label] = {
+            variant_name: _summarize_variant(model_slug, variant_name, path)
+            for variant_name, path in paths.items()
         }
+
+    results["by_model"] = by_model
+
+    # Preserve the historical top-level primary-model shape used by table macros.
+    primary_label = SHORT.get(PRIMARY, PRIMARY)
+    for variant_name in ["placebo", "anonymous"]:
+        results[variant_name] = by_model.get(primary_label, {}).get(variant_name, {})
+
     return results
 
 
@@ -2003,12 +2257,12 @@ def _load_belief_v2_agents(treatment: str) -> list[dict]:
     rows = []
     for p in candidates:
         theta = p["theta"]
-        theta_star = p["theta_star"]
+        theta_star = PART1_BENCHMARK_THETA_STAR
         agents = p.get("agents") or []
         # Only include entries where agents have second_order_belief_raw
         if not agents or "second_order_belief_raw" not in agents[0]:
             continue
-        # Compute period-level join fraction for calibration
+        # Compute period-level join fraction for belief comparisons.
         real_agents = [a for a in agents if not a.get("is_propaganda", False)]
         if not real_agents:
             continue
@@ -2166,6 +2420,106 @@ def compute_beliefs_v2():
         }
 
     return results
+
+
+def compute_belief_factorial():
+    """Belief elicitation factorial: surveillance x messages-in-belief prompt.
+
+    Cells suffixed with _pre use pre-decision elicitation (existing data,
+    messages-included only); cells without that suffix are post-decision.
+    The pre+nomsg cells were not collected before mistralai/mistral-small-creative
+    was retired from OpenRouter and are not present here.
+    """
+    cell_paths = {
+        "comm_msg": ROOT / "revision-beliefs-post-live" / PRIMARY / "experiment_comm_log.json",
+        "surv_msg": ROOT / "revision-beliefs-post-surveillance" / PRIMARY / "experiment_comm_log.json",
+        "comm_nomsg": ROOT / "revision-beliefs-post-nomsg" / PRIMARY / "experiment_comm_log.json",
+        "surv_nomsg": ROOT / "revision-beliefs-post-nomsg-surveillance" / PRIMARY / "experiment_comm_log.json",
+        "comm_msg_pre": ROOT / "revision-beliefs-live" / PRIMARY / "experiment_comm_log.json",
+        "surv_msg_pre": ROOT / "revision-beliefs-surveillance" / PRIMARY / "experiment_comm_log.json",
+    }
+
+    def _load_cell(path: Path, *, pre: bool = False) -> pd.DataFrame:
+        if not path.exists():
+            return pd.DataFrame()
+        with open(path) as f:
+            log = json.load(f)
+        rows = []
+        bel_key = "belief_pre" if pre else "belief"
+        sob_key = "second_order_belief_pre" if pre else "second_order_belief"
+        for period in log:
+            for agent in period.get("agents", []):
+                decision = agent.get("decision")
+                join = 1.0 if decision == "JOIN" else 0.0 if decision == "STAY" else np.nan
+                rows.append({
+                    "belief": agent.get(bel_key),
+                    "second_order_belief": agent.get(sob_key),
+                    "join": join,
+                })
+        return pd.DataFrame(rows)
+
+    cells = {
+        name: _load_cell(path, pre=name.endswith("_pre"))
+        for name, path in cell_paths.items()
+    }
+    required = ["comm_msg", "surv_msg", "comm_nomsg", "surv_nomsg"]
+    if any(cells[k].empty for k in required):
+        return {
+            name: {"status": "missing" if cells[name].empty else "ok", "path": str(path)}
+            for name, path in cell_paths.items()
+        }
+
+    def _mean(cell: str, col: str) -> float:
+        df = cells[cell]
+        if df.empty:
+            return float("nan")
+        return round(float(df[col].astype(float).mean()), 4)
+
+    def _delta(surv_cell: str, comm_cell: str, col: str, *, scale: float = 1.0) -> dict:
+        surv = cells[surv_cell][col].astype(float).dropna()
+        comm = cells[comm_cell][col].astype(float).dropna()
+        if surv.empty or comm.empty:
+            return {"delta": float("nan"), "t_stat": float("nan"), "p_value": float("nan")}
+        t_stat, p_value = stats.ttest_ind(surv, comm, equal_var=False)
+        return {
+            "delta": round(float((surv.mean() - comm.mean()) * scale), 2),
+            "t_stat": round(float(t_stat), 4),
+            "p_value": round(float(p_value), 6),
+        }
+
+    cell_summaries = {}
+    for name in cell_paths:
+        df = cells[name]
+        if df.empty:
+            cell_summaries[name] = {"n": 0, "status": "missing"}
+            continue
+        cell_summaries[name] = {
+            "n": int(len(df)),
+            "belief_mean": _mean(name, "belief"),
+            "second_order_mean": _mean(name, "second_order_belief"),
+            "join_mean": _mean(name, "join"),
+        }
+
+    effects = {
+        # Original post-decision contrasts (messages excluded vs included)
+        "surv_delta_belief_nomsg": _delta("surv_nomsg", "comm_nomsg", "belief"),
+        "surv_delta_sob_nomsg": _delta("surv_nomsg", "comm_nomsg", "second_order_belief"),
+        "surv_delta_join_nomsg": _delta("surv_nomsg", "comm_nomsg", "join", scale=100.0),
+        "surv_delta_belief_msg": _delta("surv_msg", "comm_msg", "belief"),
+        "surv_delta_sob_msg": _delta("surv_msg", "comm_msg", "second_order_belief"),
+        "surv_delta_join_msg": _delta("surv_msg", "comm_msg", "join", scale=100.0),
+        "msg_effect_belief_comm": _delta("comm_msg", "comm_nomsg", "belief"),
+        "msg_effect_belief_surv": _delta("surv_msg", "surv_nomsg", "belief"),
+    }
+    if not cells["comm_msg_pre"].empty and not cells["surv_msg_pre"].empty:
+        effects.update({
+            # Pre-decision contrasts (messages-included only — pre+nomsg not collected)
+            "surv_delta_belief_msg_pre": _delta("surv_msg_pre", "comm_msg_pre", "belief"),
+            "surv_delta_sob_msg_pre": _delta("surv_msg_pre", "comm_msg_pre", "second_order_belief"),
+            "surv_delta_join_msg_pre": _delta("surv_msg_pre", "comm_msg_pre", "join", scale=100.0),
+        })
+
+    return {"cells": cell_summaries, "effects": effects}
 
 
 def compute_hypothesis_table(all_stats: dict) -> list[dict]:
@@ -2646,57 +3000,9 @@ def compute_cross_generator():
         }
         if fit is not None:
             entry["logistic_fit"] = fit
-        if "theoretical_attack" in df.columns:
-            entry["r_vs_attack"] = pearson_with_ci(
-                df["theoretical_attack"].astype(float).values, jf
-            )
+        if "theta" in df.columns:
+            entry["r_vs_attack"] = pearson_with_ci(_attack_mass_benchmark_df(df), jf)
         results.setdefault(model_name, {})[variant] = entry
-
-    return results
-
-
-# ═══════════════════════════════════════════════════════════════════
-# PLACEBO CALIBRATION (wrong center ±0.3)
-# ═══════════════════════════════════════════════════════════════════
-
-def compute_placebo_calibration():
-    """Compute r-values for placebo calibration experiments."""
-    results = {}
-    placebo_base = ROOT / "placebo-calibration"
-    if not placebo_base.exists():
-        return results
-
-    variant_map = {
-        ("Mistral Small Creative", "+0.3"): "mistralai/mistral-small-creative_shift_0p3",
-        ("Mistral Small Creative", "-0.3"): "mistralai/mistral-small-creative_shift_neg0p3",
-        ("Llama 3.3 70B", "+0.3"): "meta-llama/llama-3.3-70b-instruct_shift_0p3",
-        ("Llama 3.3 70B", "-0.3"): "meta-llama/llama-3.3-70b-instruct_shift_neg0p3",
-    }
-
-    for (model_name, shift), rel_path in variant_map.items():
-        csvs = list((placebo_base / rel_path).rglob("experiment_pure_summary.csv"))
-        if not csvs:
-            continue
-        df = pd.read_csv(csvs[0])
-        if len(df) == 0:
-            continue
-        jcol = _join_col(df)
-        jf = df[jcol].astype(float).values
-        theta = df["theta"].astype(float).values
-        r_theta = pearson_with_ci(theta, jf)
-        fit = _fit_logistic(theta, jf)
-        entry = {
-            "n_obs": int(len(df)),
-            "mean_join": round(_safe_mean(jf), 4),
-            "r_vs_theta": r_theta,
-        }
-        if fit is not None:
-            entry["logistic_fit"] = fit
-        if "theoretical_attack" in df.columns:
-            entry["r_vs_attack"] = pearson_with_ci(
-                df["theoretical_attack"].astype(float).values, jf
-            )
-        results.setdefault(model_name, {})[shift] = entry
 
     return results
 
@@ -2748,75 +3054,6 @@ def compute_temperature_expanded():
         if fit is not None:
             entry["logistic_fit"] = fit
         results.setdefault(model_name, {})[f"T={temp}"] = entry
-
-    return results
-
-
-# ═══════════════════════════════════════════════════════════════════
-# EXPANDED UNCALIBRATED robustness (all 7 models)
-# ═══════════════════════════════════════════════════════════════════
-
-def compute_uncalibrated_expanded():
-    """Uncalibrated robustness for all models with data."""
-    results = {}
-    uncal_base = ROOT / "uncalibrated-robustness"
-    if not uncal_base.exists():
-        return results
-
-    # Direct slug dirs (older runs)
-    direct_slugs = [
-        PRIMARY,
-        "meta-llama--llama-3.3-70b-instruct",
-        "qwen--qwen3-235b-a22b-2507",
-        "minimax--minimax-m2-her",
-    ]
-    for slug in direct_slugs:
-        p = uncal_base / slug / "experiment_pure_summary.csv"
-        if not p.exists():
-            continue
-        df = pd.read_csv(p)
-        jcol = _join_col(df)
-        jf = df[jcol].astype(float).values
-        theta = df["theta"].astype(float).values
-        # Skip if all NaN (e.g. Trinity with 100% API errors)
-        if np.all(np.isnan(jf)):
-            continue
-        r_theta = pearson_with_ci(theta, jf)
-        attack = _attack_mass_benchmark(theta)
-        r_attack = pearson_with_ci(attack, jf)
-        name = SHORT.get(slug, slug)
-        results[name] = {
-            "n_obs": int(len(df)),
-            "mean_join": round(_safe_mean(jf), 4),
-            "r_vs_theta": r_theta,
-            "r_vs_attack": r_attack,
-        }
-
-    # Nested slug dirs (newer runs with bash slug issue)
-    nested_map = {
-        "qwen/qwen3-30b-a3b-instruct-2507": "Qwen3 30B",
-        "openai/gpt-oss-120b": "GPT-OSS 120B",
-        "arcee-ai/trinity-large-preview_free": "Trinity Large",
-    }
-    for rel_path, name in nested_map.items():
-        csvs = list((uncal_base / rel_path).rglob("experiment_pure_summary.csv"))
-        if not csvs:
-            continue
-        df = pd.read_csv(csvs[0])
-        jcol = _join_col(df)
-        jf = df[jcol].astype(float).values
-        theta = df["theta"].astype(float).values
-        if np.all(np.isnan(jf)):
-            continue
-        r_theta = pearson_with_ci(theta, jf)
-        attack = _attack_mass_benchmark(theta)
-        r_attack = pearson_with_ci(attack, jf)
-        results[name] = {
-            "n_obs": int(len(df)),
-            "mean_join": round(_safe_mean(jf), 4),
-            "r_vs_theta": r_theta,
-            "r_vs_attack": r_attack,
-        }
 
     return results
 
@@ -3033,6 +3270,7 @@ def compute_paper_misc_stats(all_stats: dict) -> dict:
     stay consistent with the per-model/per-treatment results.
     """
     misc = {}
+    part1 = all_stats.get("part1", {})
 
     # ── Cutoff range across models ───────────────────────────────────
     logistic_fits = all_stats.get("logistic_fits", {})
@@ -3071,33 +3309,6 @@ def compute_paper_misc_stats(all_stats: dict) -> dict:
         misc["temp_r_min_all"] = round(min(all_temp_rs), 2)
         misc["temp_r_max_all"] = round(max(all_temp_rs), 2)
         misc["temp_n_combos"] = len(all_temp_rs)
-
-    # ── Uncalibrated model r values ──────────────────────────────────
-    uncal = all_stats.get("uncalibrated_expanded", {})
-    uncal_rs = []
-    for model, v in uncal.items():
-        r = v.get("r_vs_attack", {}).get("r")
-        if r is not None and not np.isnan(r):
-            uncal_rs.append(r)
-    if uncal_rs:
-        uncal_rs_sorted = sorted(uncal_rs)
-        misc["uncal_min_r"] = round(uncal_rs_sorted[0], 2)
-        misc["uncal_n_above_75"] = sum(1 for r in uncal_rs if r > 0.75)
-        misc["uncal_n_total"] = len(uncal_rs)
-
-    # ── Calibration quality range (r_vs_attack from Part I pure) ─────
-    cal_rs = []
-    part1 = all_stats.get("part1", {})
-    for model, v in part1.items():
-        if model.startswith("_"):
-            continue
-        if isinstance(v, dict) and "pure" in v:
-            r = v["pure"].get("r_vs_attack", {}).get("r")
-            if r is not None:
-                cal_rs.append(r)
-    if cal_rs:
-        misc["cal_r_min"] = round(min(cal_rs), 2)
-        misc["cal_r_max"] = round(max(cal_rs), 2)
 
     # ── Agent count robustness r range ───────────────────────────────
     ac = all_stats.get("robustness", {}).get("agent_count", {})
@@ -3256,15 +3467,7 @@ def compute_paper_misc_stats(all_stats: dict) -> dict:
         import sys as _sys
         _sys.path.insert(0, str(PROJECT_ROOT))
         from agent_based_simulation.briefing import _compute_sliders
-        cal_path = ROOT / PRIMARY / "calibrated_index.json"
-        cc = 0.0
-        if cal_path.exists():
-            with open(cal_path) as f:
-                cal_data = json.load(f)
-            model_name = PRIMARY.replace("--", "/")
-            cc = cal_data.get(model_name, {}).get("cutoff_center", 0.0)
-        directions = np.array([_compute_sliders(z, cutoff_center=cc)[0]
-                               for z in z_scores])
+        directions = np.array([_compute_sliders(z, 0.0)[0] for z in z_scores])
         p_join_hat = 1.0 - directions
         jcol = _join_col(primary_df)
         actual = primary_df[jcol].values
@@ -3489,11 +3692,14 @@ def main():
     print("Computing cross-task discriminant placebo...")
     cross_task_placebo = compute_cross_task_placebo()
 
-    print("Computing uncalibrated robustness statistics...")
-    uncalibrated = compute_uncalibrated()
+    print("Computing cross-model message rotation checks...")
+    cross_model_message_rotation = compute_cross_model_message_rotation()
 
     print("Computing beliefs v2 statistics...")
     beliefs_v2 = compute_beliefs_v2()
+
+    print("Computing belief-factorial statistics...")
+    belief_factorial = compute_belief_factorial()
 
     print("Computing CK interaction test...")
     ck_interaction = compute_ck_interaction()
@@ -3507,14 +3713,8 @@ def main():
     print("Computing cross-generator robustness...")
     cross_generator = compute_cross_generator()
 
-    print("Computing placebo calibration...")
-    placebo_calibration = compute_placebo_calibration()
-
     print("Computing expanded temperature robustness...")
     temperature_expanded = compute_temperature_expanded()
-
-    print("Computing expanded uncalibrated robustness...")
-    uncalibrated_expanded = compute_uncalibrated_expanded()
 
     print("Computing punishment risk elicitation...")
     punishment_risk = compute_punishment_risk()
@@ -3539,16 +3739,15 @@ def main():
         "message_controls": message_controls,
         "message_content": message_content,
         "cross_task_placebo": cross_task_placebo,
+        "cross_model_message_rotation": cross_model_message_rotation,
         "temperature_robustness": temp_robust,
-        "uncalibrated": uncalibrated,
         "beliefs_v2": beliefs_v2,
+        "belief_factorial": belief_factorial,
         "ck_interaction": ck_interaction,
         "classifier_baselines": classifier_baselines,
         "fixed_messages_test": fixed_messages_test,
         "cross_generator": cross_generator,
-        "placebo_calibration": placebo_calibration,
         "temperature_expanded": temperature_expanded,
-        "uncalibrated_expanded": uncalibrated_expanded,
         "punishment_risk": punishment_risk,
         "parse_errors": parse_errors,
         "level_k": level_k,

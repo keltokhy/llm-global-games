@@ -1,6 +1,6 @@
 % Belief factorial macros (2x2: surveillance x messages-in-beliefs)
 % Regenerated from revision-beliefs-post-* experiment logs (post-decision elicitation,
-% n = 12,500 agent-observations per cell = 10 countries x 50 periods x 25 agents).
+% n = 12,500 agent-observations per cell = 500 country-periods x 25 agents).
 
 % Cell means: first-order beliefs
 \providecommand{\BFCommNoMsgBelief}{46.0}
@@ -11,8 +11,15 @@
 % Cell means: second-order beliefs
 \providecommand{\BFCommNoMsgSOB}{32.7}
 \providecommand{\BFCommMsgSOB}{42.0}
-\providecommand{\BFSurvNoMsgSOB}{32.6}
+\providecommand{\BFSurvNoMsgSOB}{32.7}
 \providecommand{\BFSurvMsgSOB}{33.8}
+
+% Cell means: join rates
+\providecommand{\BFCommNoMsgJoin}{42.4\%}
+\providecommand{\BFSurvNoMsgJoin}{31.0\%}
+\providecommand{\BFCommMsgJoin}{42.2\%}
+\providecommand{\BFSurvMsgJoin}{30.9\%}
+\providecommand{\BFCellN}{12,500}
 
 % Surveillance effect (comm -> surv), messages excluded
 \providecommand{\BFSurvDeltaBelNoMsg}{-0.4}
@@ -25,13 +32,28 @@
 \providecommand{\BFSurvDeltaSOBMsgP}{0.001}
 
 % Surveillance effect on SOB, messages excluded
-\providecommand{\BFSurvDeltaSOBNoMsg}{-0.0}
+\providecommand{\BFSurvDeltaSOBNoMsg}{-0.1}
 \providecommand{\BFSurvDeltaSOBNoMsgP}{0.89}
 
 % Message effect on beliefs (with - without messages)
 \providecommand{\BFMsgEffectComm}{+7.1}
-\providecommand{\BFMsgEffectSurv}{+1.7}
+\providecommand{\BFMsgEffectSurv}{+1.8}
 
-% Action shift
+% Action shifts
 \providecommand{\BFActionDeltaPP}{-11.4}
+\providecommand{\BFActionDeltaNoMsgPP}{-11.4}
+\providecommand{\BFActionDeltaMsgPP}{-11.4}
 \providecommand{\BFActionDeltaP}{0.001}
+
+% Pre-decision elicitation (messages-included only; the pre+nomsg cell
+% was not collected before mistral-small-creative was retired).
+\providecommand{\BFCommMsgSOBPre}{41.8}
+\providecommand{\BFSurvMsgSOBPre}{32.9}
+\providecommand{\BFCommMsgBeliefPre}{53.8}
+\providecommand{\BFSurvMsgBeliefPre}{48.4}
+\providecommand{\BFCommMsgJoinPre}{45.9\%}
+\providecommand{\BFSurvMsgJoinPre}{30.8\%}
+\providecommand{\BFSurvDeltaSOBMsgPre}{-8.9}
+\providecommand{\BFSurvDeltaSOBMsgPreP}{0.001}
+\providecommand{\BFSurvDeltaBelMsgPre}{-5.4}
+\providecommand{\BFSurvDeltaJoinMsgPrePP}{-15.0}

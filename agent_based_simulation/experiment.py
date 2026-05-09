@@ -38,8 +38,16 @@ class Agent:
     belief_pre_raw: str = ""  # raw LLM response for pre-decision belief
     second_order_belief_pre: float | None = None  # elicited "% who will JOIN" BEFORE decision
     second_order_belief_pre_raw: str = ""  # raw LLM response for pre-decision second-order belief
+    shared_understanding_belief_pre: float | None = None  # pre-decision publicness belief, 0-100
+    shared_understanding_belief_pre_raw: str = ""
+    others_expect_join_belief_pre: float | None = None  # pre-decision higher-order coordination belief, 0-100
+    others_expect_join_belief_pre_raw: str = ""
     second_order_belief: float | None = None  # elicited "% who will JOIN", 0-100 scale
     second_order_belief_raw: str = ""  # raw LLM response for debugging
+    shared_understanding_belief: float | None = None  # post-decision publicness belief, 0-100
+    shared_understanding_belief_raw: str = ""
+    others_expect_join_belief: float | None = None  # post-decision higher-order coordination belief, 0-100
+    others_expect_join_belief_raw: str = ""
     punishment_risk: float | None = None  # elicited punishment likelihood, 0-10 scale
     punishment_risk_raw: str = ""  # raw LLM response for debugging
     model: str | None = None  # per-agent model override for mixed games
@@ -275,6 +283,8 @@ async def _call_llm(
     min_content_chars=3,
     request_timeout=60,
     temperature=0.7,
+    provider=None,
+    extra_body=None,
 ):
     """Call LLM API with separate retry budgets for errors and empty payloads."""
     from .runtime import get_cache, build_cache_key_and_request
@@ -316,13 +326,19 @@ async def _call_llm(
         while True:
             try:
                 async with semaphore:
+                    request_kwargs = {
+                        "model": model_name,
+                        "messages": messages,
+                        "max_tokens": 512,
+                        "temperature": temperature,
+                    }
+                    if provider or extra_body:
+                        body = dict(extra_body or {})
+                        if provider:
+                            body["provider"] = provider
+                        request_kwargs["extra_body"] = body
                     response = await asyncio.wait_for(
-                        client.chat.completions.create(
-                            model=model_name,
-                            messages=messages,
-                            max_tokens=512,
-                            temperature=temperature,
-                        ),
+                        client.chat.completions.create(**request_kwargs),
                         timeout=request_timeout,
                     )
                 content = _extract_response_text(response)
@@ -571,6 +587,111 @@ async def _elicit_second_order_pre(
         agent.second_order_belief_pre = _parse_belief(response)
 
 
+async def _elicit_shared_understanding(
+    agents, client, model_name, semaphore, call_kwargs, *, include_messages: bool = False
+):
+    """Fire publicness belief elicitation: shared weakness-indicating information."""
+    real_agents = [a for a in agents if not a.is_propaganda]
+    coros = [
+        _call_llm(
+            client, agent.model or model_name,
+            SYSTEM_ELICIT_SECOND_ORDER,
+            _build_elicitation_prompt(
+                agent,
+                "What percentage of citizens will believe that other citizens received "
+                "similarly weakness-indicating information (0 = none, 100 = all)?\n\n"
+                "Answer with just the number:",
+                include_messages=include_messages,
+                include_decision=True,
+            ),
+            semaphore, min_content_chars=1, **call_kwargs,
+        )
+        for agent in real_agents
+    ]
+    responses = await asyncio.gather(*coros)
+    for agent, response in zip(real_agents, responses):
+        agent.shared_understanding_belief_raw = response or ""
+        agent.shared_understanding_belief = _parse_belief(response)
+
+
+async def _elicit_shared_understanding_pre(
+    agents, client, model_name, semaphore, call_kwargs, *, include_messages: bool = False
+):
+    """Fire pre-decision publicness belief elicitation."""
+    real_agents = [a for a in agents if not a.is_propaganda]
+    coros = [
+        _call_llm(
+            client, agent.model or model_name,
+            SYSTEM_ELICIT_SECOND_ORDER,
+            _build_elicitation_prompt(
+                agent,
+                "Before deciding, what percentage of citizens will believe that other "
+                "citizens received similarly weakness-indicating information "
+                "(0 = none, 100 = all)?\n\nAnswer with just the number:",
+                include_messages=include_messages,
+            ),
+            semaphore, min_content_chars=1, **call_kwargs,
+        )
+        for agent in real_agents
+    ]
+    responses = await asyncio.gather(*coros)
+    for agent, response in zip(real_agents, responses):
+        agent.shared_understanding_belief_pre_raw = response or ""
+        agent.shared_understanding_belief_pre = _parse_belief(response)
+
+
+async def _elicit_others_expect_join(
+    agents, client, model_name, semaphore, call_kwargs, *, include_messages: bool = False
+):
+    """Fire higher-order coordination belief elicitation."""
+    real_agents = [a for a in agents if not a.is_propaganda]
+    coros = [
+        _call_llm(
+            client, agent.model or model_name,
+            SYSTEM_ELICIT_SECOND_ORDER,
+            _build_elicitation_prompt(
+                agent,
+                "What percentage of citizens will believe that other citizens expect many "
+                "people to JOIN (0 = none, 100 = all)?\n\nAnswer with just the number:",
+                include_messages=include_messages,
+                include_decision=True,
+            ),
+            semaphore, min_content_chars=1, **call_kwargs,
+        )
+        for agent in real_agents
+    ]
+    responses = await asyncio.gather(*coros)
+    for agent, response in zip(real_agents, responses):
+        agent.others_expect_join_belief_raw = response or ""
+        agent.others_expect_join_belief = _parse_belief(response)
+
+
+async def _elicit_others_expect_join_pre(
+    agents, client, model_name, semaphore, call_kwargs, *, include_messages: bool = False
+):
+    """Fire pre-decision higher-order coordination belief elicitation."""
+    real_agents = [a for a in agents if not a.is_propaganda]
+    coros = [
+        _call_llm(
+            client, agent.model or model_name,
+            SYSTEM_ELICIT_SECOND_ORDER,
+            _build_elicitation_prompt(
+                agent,
+                "Before deciding, what percentage of citizens will believe that other "
+                "citizens expect many people to JOIN (0 = none, 100 = all)?\n\n"
+                "Answer with just the number:",
+                include_messages=include_messages,
+            ),
+            semaphore, min_content_chars=1, **call_kwargs,
+        )
+        for agent in real_agents
+    ]
+    responses = await asyncio.gather(*coros)
+    for agent, response in zip(real_agents, responses):
+        agent.others_expect_join_belief_pre_raw = response or ""
+        agent.others_expect_join_belief_pre = _parse_belief(response)
+
+
 SYSTEM_ELICIT_PUNISHMENT = (
     "Respond with ONLY a single integer between 0 and 10. "
     "No words, no explanation, no punctuation — just the number."
@@ -672,6 +793,7 @@ def _serialize_agents(agents, include_messages: bool = False) -> list[dict]:
             "id": a.agent_id,
             "signal": float(a.signal),
             "z_score": float(a.z_score),
+            "briefing_text": a.briefing.render(),
             "briefing_z_score": float(a.briefing.z_score),
             "direction": float(a.briefing.direction),
             "clarity": float(a.briefing.clarity),
@@ -692,10 +814,26 @@ def _serialize_agents(agents, include_messages: bool = False) -> list[dict]:
             row["second_order_belief_pre"] = a.second_order_belief_pre
         if a.second_order_belief_pre_raw:
             row["second_order_belief_pre_raw"] = a.second_order_belief_pre_raw
+        if a.shared_understanding_belief_pre is not None:
+            row["shared_understanding_belief_pre"] = a.shared_understanding_belief_pre
+        if a.shared_understanding_belief_pre_raw:
+            row["shared_understanding_belief_pre_raw"] = a.shared_understanding_belief_pre_raw
+        if a.others_expect_join_belief_pre is not None:
+            row["others_expect_join_belief_pre"] = a.others_expect_join_belief_pre
+        if a.others_expect_join_belief_pre_raw:
+            row["others_expect_join_belief_pre_raw"] = a.others_expect_join_belief_pre_raw
         if a.second_order_belief is not None:
             row["second_order_belief"] = a.second_order_belief
         if a.second_order_belief_raw:
             row["second_order_belief_raw"] = a.second_order_belief_raw
+        if a.shared_understanding_belief is not None:
+            row["shared_understanding_belief"] = a.shared_understanding_belief
+        if a.shared_understanding_belief_raw:
+            row["shared_understanding_belief_raw"] = a.shared_understanding_belief_raw
+        if a.others_expect_join_belief is not None:
+            row["others_expect_join_belief"] = a.others_expect_join_belief
+        if a.others_expect_join_belief_raw:
+            row["others_expect_join_belief_raw"] = a.others_expect_join_belief_raw
         if a.punishment_risk is not None:
             row["punishment_risk"] = a.punishment_risk
         if a.punishment_risk_raw:
@@ -777,11 +915,17 @@ async def run_pure_global_game(agents, theta, z, sigma, benefit, briefing_gen,
                                 group_size_info=False,
                                 elicit_beliefs=False,
                                 elicit_second_order=False,
+                                elicit_shared_understanding=False,
+                                elicit_others_expect_join=False,
                                 elicit_punishment_risk=False,
                                 belief_order="post",
                                 second_order_order="post",
+                                shared_understanding_order="post",
+                                others_expect_join_order="post",
                                 beliefs_include_messages=False,
-                                temperature=0.7):
+                                temperature=0.7,
+                                provider=None,
+                                extra_body=None):
     """Run one period of the pure global game (no communication).
 
     signal_mode: "normal", "scramble" (permute briefings *within-period*), or "flip" (negate z-score).
@@ -802,7 +946,12 @@ async def run_pure_global_game(agents, theta, z, sigma, benefit, briefing_gen,
     elif signal_mode == "scramble":
         _scramble_briefings(agents, rng)
 
-    call_kwargs = {**_retry_kwargs(llm_max_retries, llm_empty_retries), "temperature": temperature}
+    call_kwargs = {
+        **_retry_kwargs(llm_max_retries, llm_empty_retries),
+        "temperature": temperature,
+        "provider": provider,
+        "extra_body": extra_body,
+    }
 
     # Pre-decision belief elicitation
     if elicit_beliefs and belief_order in ("pre", "both"):
@@ -812,6 +961,16 @@ async def run_pure_global_game(agents, theta, z, sigma, benefit, briefing_gen,
         )
     if elicit_second_order and second_order_order in ("pre", "both"):
         await _elicit_second_order_pre(
+            agents, client, model_name, semaphore, call_kwargs,
+            include_messages=beliefs_include_messages,
+        )
+    if elicit_shared_understanding and shared_understanding_order in ("pre", "both"):
+        await _elicit_shared_understanding_pre(
+            agents, client, model_name, semaphore, call_kwargs,
+            include_messages=beliefs_include_messages,
+        )
+    if elicit_others_expect_join and others_expect_join_order in ("pre", "both"):
+        await _elicit_others_expect_join_pre(
             agents, client, model_name, semaphore, call_kwargs,
             include_messages=beliefs_include_messages,
         )
@@ -839,6 +998,16 @@ async def run_pure_global_game(agents, theta, z, sigma, benefit, briefing_gen,
         )
     if elicit_second_order and second_order_order in ("post", "both"):
         await _elicit_second_order(
+            agents, client, model_name, semaphore, call_kwargs,
+            include_messages=beliefs_include_messages,
+        )
+    if elicit_shared_understanding and shared_understanding_order in ("post", "both"):
+        await _elicit_shared_understanding(
+            agents, client, model_name, semaphore, call_kwargs,
+            include_messages=beliefs_include_messages,
+        )
+    if elicit_others_expect_join and others_expect_join_order in ("post", "both"):
+        await _elicit_others_expect_join(
             agents, client, model_name, semaphore, call_kwargs,
             include_messages=beliefs_include_messages,
         )
@@ -872,16 +1041,24 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
                                   group_size_info=False,
                                   elicit_beliefs=False,
                                   elicit_second_order=False,
+                                  elicit_shared_understanding=False,
+                                  elicit_others_expect_join=False,
                                   elicit_punishment_risk=False,
                                   fixed_messages=None,
                                   degrade_messages=False,
                                   no_peer_messages=False,
                                   belief_order="post",
                                   second_order_order="post",
+                                  shared_understanding_order="post",
+                                  others_expect_join_order="post",
                                   beliefs_include_messages=False,
                                   message_bundle_mode="live",
                                   message_source_key=None,
                                   temperature=0.7,
+                                  provider=None,
+                                  extra_body=None,
+                                  message_model_name=None,
+                                  decision_model_name=None,
                                   task_mode="coordination"):
     """Run one period with communication round before decision.
 
@@ -914,7 +1091,12 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
     elif signal_mode == "scramble":
         _scramble_briefings(agents, rng)
 
-    call_kwargs = {**_retry_kwargs(llm_max_retries, llm_empty_retries), "temperature": temperature}
+    call_kwargs = {
+        **_retry_kwargs(llm_max_retries, llm_empty_retries),
+        "temperature": temperature,
+        "provider": provider,
+        "extra_body": extra_body,
+    }
     prop_rng = np.random.default_rng(deterministic_hash((country, period, "propaganda")) % 2**32)
 
     # Communication round — use fixed/degraded messages if provided, else generate via LLM
@@ -940,7 +1122,7 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
             comm_system_base = SYSTEM_COMMUNICATE
         real_agents = [a for a in agents if not a.is_propaganda]
         comm_coros = [
-            _call_llm(client, agent.model or model_name,
+            _call_llm(client, agent.model or message_model_name or model_name,
                        _persona_system(comm_system_base, agent.persona),
                        f"Your briefing:\n\n{agent.briefing.render()}\n\n"
                        f"Write a message to your contacts about the situation:",
@@ -977,6 +1159,16 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
             agents, client, model_name, semaphore, call_kwargs,
             include_messages=beliefs_include_messages,
         )
+    if elicit_shared_understanding and shared_understanding_order in ("pre", "both"):
+        await _elicit_shared_understanding_pre(
+            agents, client, model_name, semaphore, call_kwargs,
+            include_messages=beliefs_include_messages,
+        )
+    if elicit_others_expect_join and others_expect_join_order in ("pre", "both"):
+        await _elicit_others_expect_join_pre(
+            agents, client, model_name, semaphore, call_kwargs,
+            include_messages=beliefs_include_messages,
+        )
 
     # Decision round — propaganda agents forced to STAY
     if decision_context == "auto":
@@ -990,7 +1182,7 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
     )
     decide_agents = [a for a in agents if not a.is_propaganda]
     decide_coros = [
-        _call_llm(client, agent.model or model_name,
+        _call_llm(client, agent.model or decision_model_name or model_name,
                    _persona_system(decide_system, agent.persona),
                    _build_decision_prompt(
                        agent.briefing.render(),
@@ -1019,6 +1211,16 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
         )
     if elicit_second_order and second_order_order in ("post", "both"):
         await _elicit_second_order(
+            agents, client, model_name, semaphore, call_kwargs,
+            include_messages=beliefs_include_messages,
+        )
+    if elicit_shared_understanding and shared_understanding_order in ("post", "both"):
+        await _elicit_shared_understanding(
+            agents, client, model_name, semaphore, call_kwargs,
+            include_messages=beliefs_include_messages,
+        )
+    if elicit_others_expect_join and others_expect_join_order in ("post", "both"):
+        await _elicit_others_expect_join(
             agents, client, model_name, semaphore, call_kwargs,
             include_messages=beliefs_include_messages,
         )

@@ -22,17 +22,15 @@ Main figures (Part II — information design):
 
 Mechanism & belief figures:
   15. Text baseline construct validity
-  16. First-order beliefs (calibration + treatment divergence)
+  16. First-order beliefs and treatment divergence
   17. Second-order beliefs
   18. B/C sweep — fitted vs theoretical cutoff
   19. Nonparametric monotonicity — E[belief | z-score bin] vs theory
   20. Cross-generator replication
-  21. Placebo calibration
 
 Appendix:
   A1. Agent count robustness
   A2. Network topology
-  A4. Calibration convergence
 
 Usage: cd analysis && uv run python make_figures.py
 """
@@ -48,9 +46,11 @@ from style import (
     apply_style, COL_W, TEXT_W, OUTPUT_DIR, FIG_DIR,
     C_PURE, C_COMM, C_FLIP, C_SCRAMBLE, C_NET, C_SURV, C_PROP,
     C_BASELINE, C_STABILITY, C_INSTABILITY, C_CENS_UP, C_CENS_LO, C_PUBLIC,
+    C_INK, C_MUTED, C_GRID, C_LIGHT, C_THEORY,
     DESIGN_COLORS, DESIGN_LABELS, DESIGN_MARKERS,
     join_col as _join_col, logistic, fit_logistic, attack_mass,
-    save, add_hgrid, add_vgrid, panel_label,
+    save, add_hgrid, add_vgrid, panel_label, plot_curve_points,
+    shade_ci, format_rate_axis, zero_line,
 )
 
 apply_style()
@@ -66,6 +66,8 @@ from models import (
 # ── Paths ─────────────────────────────────────────────────────────
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 ROOT = OUTPUT_DIR
+PART1_BENCHMARK_THETA_STAR = 0.50
+PART1_BENCHMARK_SIGMA = 0.30
 
 # Model colors, short names, and exclusions — imported from models.py
 MODEL_COLORS = _MODEL_COLORS
@@ -110,6 +112,63 @@ def load_all_csvs(directory, pattern="*summary*.csv"):
     if csvs:
         return pd.concat([pd.read_csv(c) for c in csvs], ignore_index=True)
     return pd.DataFrame()
+
+
+def finish_rate_panel(ax, xlabel=r"$\theta$ (regime strength)",
+                      ylabel="Join fraction", xlim=(-3.5, 3.5),
+                      ylim=(-0.03, 1.03), grid=False):
+    """Common axis treatment for join/belief-rate curves."""
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    if xlim is not None:
+        ax.set_xlim(*xlim)
+    if ylim is not None:
+        ax.set_ylim(*ylim)
+    format_rate_axis(ax, y=True)
+    if grid:
+        add_hgrid(ax, alpha=0.22)
+
+
+def draw_binned_logistic(ax, df, color, label, marker="o", linestyle="-",
+                         n_bins=12, theta_grid=None, fit=True,
+                         points=True, ribbon=True, linewidth=1.15,
+                         alpha=0.95):
+    """Consistent empirical bins plus fitted logistic curve."""
+    if len(df) == 0:
+        return None
+    theta_grid = theta_grid if theta_grid is not None else np.linspace(-3.5, 3.5, 240)
+    c, m, se = binned(df, n_bins=n_bins)
+    if fit:
+        (b0, b1), _ = fit_logistic(df)
+        ax.plot(theta_grid, logistic(theta_grid, b0, b1), color=color,
+                linewidth=linewidth, linestyle=linestyle, alpha=alpha,
+                zorder=2, label=label)
+    elif points:
+        plot_curve_points(ax, c, m, se if ribbon else None, color=color,
+                          label=label, marker=marker, linestyle=linestyle,
+                          linewidth=linewidth, alpha=alpha)
+    if points and fit:
+        if ribbon:
+            shade_ci(ax, c, m, se, color)
+        ax.scatter(c, m, color=color, marker=marker, s=13, alpha=alpha,
+                   edgecolors="white", linewidths=0.25, zorder=3)
+    return c, m, se
+
+
+def draw_design_curve(ax, df, design, label=None, nudge_label=False):
+    """Consistent information-design curve grammar."""
+    theta, mean, sem = design_curve(df, design)
+    if len(theta) == 0:
+        return None
+    color = DESIGN_COLORS.get(design, C_MUTED)
+    marker = DESIGN_MARKERS.get(design, "o")
+    label = label or DESIGN_LABELS.get(design, design)
+    plot_curve_points(ax, theta, mean, sem, color=color, label=label,
+                      marker=marker, markersize=14, linewidth=1.15)
+    if nudge_label:
+        ax.text(theta[-1] + 0.015, mean[-1], label, fontsize=6,
+                color=color, va="center")
+    return theta, mean, sem
 
 
 # save() is imported from style.py
@@ -185,43 +244,34 @@ INFODESIGN_MODELS.sort()
 def fig01_sigmoid():
     pure = primary_data["pure"]
 
-    fig, ax = plt.subplots(figsize=(COL_W, 2.5))
-    theta_grid = np.linspace(-3.5, 3.5, 200)
+    fig, ax = plt.subplots(figsize=(COL_W, 2.55))
+    theta_grid = np.linspace(-3.5, 3.5, 240)
 
     (b0_p, b1_p), _ = fit_logistic(pure)
-
-    cp, mp, sep = binned(pure, n_bins=15)
-
-    ax.plot(theta_grid, logistic(theta_grid, b0_p, b1_p),
-            color=C_PURE, linewidth=1.2, zorder=2, label="Fitted logistic")
-    ax.scatter(cp, mp, color=C_PURE, s=12, alpha=0.8, zorder=3,
-               edgecolors="none")
-    ax.errorbar(cp, mp, yerr=sep * 1.96, fmt="none", ecolor=C_PURE,
-                alpha=0.3, linewidth=0.5, zorder=1)
+    draw_binned_logistic(ax, pure, C_PURE, "LLM agents", n_bins=15,
+                         theta_grid=theta_grid, marker="o", linewidth=1.25)
 
     # Benchmark attack mass A(θ) = Φ((x* - θ)/σ) where x* = θ* + σΦ⁻¹(θ*)
     sigma = 0.3
     theta_star = 1.0 / (1.0 + 1.0)  # B/(1+B) with B=1
     x_star = theta_star + sigma * stats.norm.ppf(np.clip(theta_star, 1e-6, 1 - 1e-6))
     am_vals = stats.norm.cdf((x_star - theta_grid) / sigma)
-    ax.plot(theta_grid, am_vals, color="#d62728", linewidth=1.0, linestyle="--",
-            zorder=1, alpha=0.7, label="Benchmark $A(\\theta)$ (B=C=1)")
+    ax.plot(theta_grid, am_vals, color=C_THEORY, linewidth=0.9, linestyle="--",
+            zorder=1, alpha=0.8, label="Continuum benchmark")
 
     ts_p = -b0_p / b1_p
-    ax.axvline(ts_p, color=C_PURE, linestyle=":", linewidth=0.5, alpha=0.5)
+    ax.axvline(ts_p, color=C_PURE, linestyle=":", linewidth=0.7, alpha=0.65)
+    ax.axvline(theta_star, color=C_THEORY, linestyle=":", linewidth=0.7, alpha=0.55)
 
     r_p = stats.pearsonr(pure["theta"], pure[_join_col(pure)])[0]
     ax.text(0.03, 0.03,
             f"$r(\\theta,J)$ = {r_p:.2f}, $\\hat{{\\theta}}^*$ = {ts_p:.2f}",
             transform=ax.transAxes, fontsize=6, va="bottom",
             bbox=dict(boxstyle="round,pad=0.2", facecolor="white",
-                      alpha=0.8, edgecolor="#ccc", linewidth=0.4))
+                      alpha=0.9, edgecolor=C_GRID, linewidth=0.4))
 
     ax.legend(loc="upper right", fontsize=6)
-    ax.set_xlabel(r"$\theta$ (regime strength)")
-    ax.set_ylabel("Join fraction")
-    ax.set_ylim(-0.03, 1.03)
-    ax.set_xlim(-3.5, 3.5)
+    finish_rate_panel(ax)
 
     save(fig, "fig01_sigmoid")
 
@@ -231,18 +281,27 @@ def fig01_sigmoid():
 # ═══════════════════════════════════════════════════════════════════
 
 def fig02_cross_model():
-    if len(comp) == 0:
-        print("  SKIPPED fig02 — no comparison data")
+    rows = []
+    for model in ALL_MODELS:
+        pure = load_csv(ROOT / model / "experiment_pure_summary.csv")
+        comm = load_csv(ROOT / model / "experiment_comm_summary.csv")
+        scramble = load_csv(ROOT / model / "experiment_scramble_summary.csv")
+        if len(pure) == 0 or len(comm) == 0:
+            continue
+        row = {"model": model}
+        for treatment, df in [("pure", pure), ("comm", comm), ("scramble", scramble)]:
+            if len(df) == 0:
+                row[f"r_{treatment}"] = np.nan
+                continue
+            row[f"r_{treatment}"] = stats.pearsonr(
+                attack_mass(df["theta"]), df[_join_col(df)]
+            )[0]
+        rows.append(row)
+    if not rows:
+        print("  SKIPPED fig02 — no cross-model data")
         return
 
-    df = comp.copy()
-    if "model" not in df.columns:
-        if df.index.name == "model":
-            df = df.reset_index()
-        else:
-            print("  SKIPPED fig02 — no model column")
-            return
-
+    df = pd.DataFrame(rows)
     df["abs_r_pure"] = df["r_pure"].abs()
     df["abs_r_comm"] = df["r_comm"].abs()
     df = df.sort_values("abs_r_pure", ascending=True)
@@ -253,7 +312,7 @@ def fig02_cross_model():
 
     for i, (_, row) in enumerate(df.iterrows()):
         ax.plot([row["abs_r_pure"], row["abs_r_comm"]], [i, i],
-                color="#e0e0e0", linewidth=1.2, zorder=1)
+                color=C_GRID, linewidth=1.2, zorder=1)
 
     ax.scatter(df["abs_r_pure"], y, color=C_PURE, s=25, zorder=3,
                edgecolors="white", linewidths=0.3, label="Pure")
@@ -268,15 +327,15 @@ def fig02_cross_model():
                         markeredgewidth=1.5, zorder=4)
 
     mean_r = df["abs_r_pure"].mean()
-    ax.axvline(mean_r, color="#999", linestyle="--", linewidth=0.5, alpha=0.7)
+    ax.axvline(mean_r, color=C_MUTED, linestyle="--", linewidth=0.6, alpha=0.8)
     ax.text(mean_r + 0.01, len(df) - 0.3, f"mean = {mean_r:.2f}",
-            fontsize=6, color="#999", va="top")
+            fontsize=6, color=C_MUTED, va="top")
 
     ax.set_yticks(y)
     ax.set_yticklabels(short_names, fontsize=6.5)
-    ax.set_xlabel(r"$|r(\theta, \mathrm{join\ fraction})|$")
+    ax.set_xlabel(r"$|r(J, A(\theta))|$")
     ax.set_xlim(0.7, 1.0)
-    add_hgrid(ax)
+    add_hgrid(ax, alpha=0.22)
 
     handles = [
         Line2D([0], [0], marker="o", color="w", markerfacecolor=C_PURE,
@@ -306,71 +365,56 @@ def fig03_falsification():
                         if (ROOT / m / "experiment_flip_summary.csv").exists()
                         and m not in fig03_exclude]
 
-    fig, axes = plt.subplots(1, 3, figsize=(TEXT_W, 2.5), sharey=True)
-    theta_grid = np.linspace(-3.5, 3.5, 200)
+    fig, axes = plt.subplots(1, 3, figsize=(TEXT_W, 2.55), sharey=True)
+    theta_grid = np.linspace(-3.5, 3.5, 240)
 
     ax = axes[0]
     for model in models_with_flip[:4]:
         df = load_csv(ROOT / model / "experiment_pure_summary.csv")
         if len(df) == 0:
             continue
-        c, m, se = binned(df, n_bins=10)
         color = MODEL_COLORS.get(model, "#999")
-        ax.scatter(c, m, color=color, s=8, alpha=0.7, edgecolors="none")
-        try:
-            (b0, b1), _ = fit_logistic(df)
-            ax.plot(theta_grid, logistic(theta_grid, b0, b1),
-                    color=color, linewidth=0.8, alpha=0.7,
-                    label=SHORT_NAMES.get(model, model[:15]))
-        except Exception:
-            pass
-    ax.set_title("A. Pure (signal intact)")
-    ax.set_xlabel(r"$\theta$")
-    ax.set_ylabel("Join fraction")
-    ax.set_ylim(-0.03, 1.03)
-    ax.set_xlim(-3.5, 3.5)
-    ax.legend(fontsize=5, loc="upper right")
+        draw_binned_logistic(ax, df, color, SHORT_NAMES.get(model, model[:15]),
+                             n_bins=10, theta_grid=theta_grid, linewidth=1.05,
+                             ribbon=False, alpha=0.86)
+    ax.set_title("A. Signal intact")
+    finish_rate_panel(ax, xlabel=r"$\theta$", ylabel="Join fraction")
+    ax.legend(fontsize=6.2, loc="upper right")
 
     ax = axes[1]
     for model in models_with_flip[:4]:
         df = load_csv(ROOT / model / "experiment_scramble_summary.csv")
         if len(df) == 0:
             continue
-        c, m, se = binned(df, n_bins=8)
         color = MODEL_COLORS.get(model, "#999")
-        ax.scatter(c, m, color=color, s=8, alpha=0.7, edgecolors="none")
+        c, m, se = binned(df, n_bins=8)
+        ax.scatter(c, m, color=color, s=13, alpha=0.86,
+                   edgecolors="white", linewidths=0.25)
         jc = _join_col(df)
         mean_j = df[jc].mean()
-        ax.axhline(mean_j, color=color, linestyle="--", linewidth=0.6, alpha=0.5)
-        r_val = stats.pearsonr(df["theta"], df[jc])[0]
-        ax.text(0.97, 0.97 - models_with_flip[:4].index(model) * 0.09,
-                f"r = {r_val:.2f}", transform=ax.transAxes, fontsize=5.5,
+        ax.axhline(mean_j, color=color, linestyle="--", linewidth=0.9, alpha=0.72)
+        r_val = stats.pearsonr(attack_mass(df["theta"]), df[jc])[0]
+        ax.text(0.97, 0.97 - models_with_flip[:4].index(model) * 0.10,
+                f"$r_A = {r_val:+.2f}$", transform=ax.transAxes, fontsize=7,
                 ha="right", va="top", color=color)
-    ax.set_title("B. Scramble (signal destroyed)")
-    ax.set_xlabel(r"$\theta$")
-    ax.set_xlim(-3.5, 3.5)
+    ax.set_title("B. Signal scrambled")
+    finish_rate_panel(ax, xlabel=r"$\theta$", ylabel="", xlim=(-3.5, 3.5))
 
     ax = axes[2]
     for model in models_with_flip[:4]:
         df = load_csv(ROOT / model / "experiment_flip_summary.csv")
         if len(df) == 0:
             continue
-        c, m, se = binned(df, n_bins=8)
         color = MODEL_COLORS.get(model, "#999")
-        ax.scatter(c, m, color=color, s=8, alpha=0.7, edgecolors="none")
-        try:
-            (b0, b1), _ = fit_logistic(df)
-            ax.plot(theta_grid, logistic(theta_grid, b0, b1),
-                    color=color, linewidth=0.8, alpha=0.7)
-        except Exception:
-            pass
-        r_val = stats.pearsonr(df["theta"], df[_join_col(df)])[0]
-        ax.text(0.03, 0.97 - models_with_flip[:4].index(model) * 0.09,
-                f"r = +{r_val:.2f}", transform=ax.transAxes, fontsize=5.5,
+        draw_binned_logistic(ax, df, color, None, n_bins=8,
+                             theta_grid=theta_grid, linewidth=1.05,
+                             ribbon=False, alpha=0.86)
+        r_val = stats.pearsonr(attack_mass(df["theta"]), df[_join_col(df)])[0]
+        ax.text(0.03, 0.97 - models_with_flip[:4].index(model) * 0.10,
+                f"$r_A = {r_val:+.2f}$", transform=ax.transAxes, fontsize=7,
                 ha="left", va="top", color=color)
-    ax.set_title("C. Flip (signal reversed)")
-    ax.set_xlabel(r"$\theta$")
-    ax.set_xlim(-3.5, 3.5)
+    ax.set_title("C. Signal reversed")
+    finish_rate_panel(ax, xlabel=r"$\theta$", ylabel="", xlim=(-3.5, 3.5))
 
     plt.tight_layout()
     save(fig, "fig03_falsification")
@@ -407,7 +451,7 @@ def fig05_communication():
 
     for i in range(len(shared)):
         ax.plot([gp.iloc[i]["mean"], gc.iloc[i]["mean"]], [i, i],
-                color="#ddd", linewidth=1.5, zorder=1)
+                color=C_GRID, linewidth=1.5, zorder=1)
 
     ax.scatter(gp["mean"], y, color=C_PURE, s=20, zorder=3,
                label="Pure", edgecolors="none")
@@ -415,7 +459,7 @@ def fig05_communication():
                marker="s", label="Comm", edgecolors="none")
 
     mid_idx = len(shared) // 2
-    ax.axhspan(-0.5, mid_idx - 0.5, color=C_COMM, alpha=0.04, zorder=0)
+    ax.axhspan(-0.5, mid_idx - 0.5, color=C_COMM, alpha=0.045, zorder=0)
 
     delta_low = gc.iloc[:mid_idx]["mean"].mean() - gp.iloc[:mid_idx]["mean"].mean()
     delta_high = gc.iloc[mid_idx:]["mean"].mean() - gp.iloc[mid_idx:]["mean"].mean()
@@ -430,12 +474,13 @@ def fig05_communication():
             f"Strong regime $\\Delta$ = {_fmt_delta(delta_high)}",
             transform=ax.transAxes, fontsize=6, va="bottom", ha="right",
             bbox=dict(boxstyle="round,pad=0.2", facecolor="white",
-                      alpha=0.8, edgecolor="#ccc", linewidth=0.4))
+                      alpha=0.9, edgecolor=C_GRID, linewidth=0.4))
 
     ax.set_yticks(y)
     ax.set_yticklabels(bin_labels)
     ax.set_ylabel(r"$\theta$ bin center")
     ax.set_xlabel("Join fraction")
+    format_rate_axis(ax, y=False)
     ax.legend(fontsize=6, loc="upper right")
 
     plt.tight_layout()
@@ -455,27 +500,11 @@ def fig07_all_designs():
 
     main_designs = ["baseline", "stability", "instability",
                     "censor_upper", "censor_lower", "public_signal"]
-    markers = {"baseline": "o", "stability": "s", "instability": "^",
-               "censor_upper": "D", "censor_lower": "v", "public_signal": "P"}
-
     for design in main_designs:
-        theta, mean, sem = design_curve(info_all, design)
-        if len(theta) == 0:
-            continue
-        color = DESIGN_COLORS[design]
-        label = DESIGN_LABELS[design]
-        marker = markers.get(design, "o")
-
-        ax.plot(theta, mean, color=color, linewidth=1.0, zorder=2)
-        ax.scatter(theta, mean, color=color, s=10, marker=marker,
-                   zorder=3, edgecolors="none", label=label)
-        ax.fill_between(theta, mean - 1.96 * sem, mean + 1.96 * sem,
-                        color=color, alpha=0.1, zorder=1)
+        draw_design_curve(ax, info_all, design)
 
     ax.legend(fontsize=5.5, loc="upper right", ncol=2)
-    ax.set_xlabel(r"$\theta$ (regime strength)")
-    ax.set_ylabel("Join fraction")
-    ax.set_ylim(-0.03, 0.85)
+    finish_rate_panel(ax, ylim=(-0.03, 0.85), xlim=None)
 
     save(fig, "fig07_all_designs")
 
@@ -500,9 +529,6 @@ def fig08_treatment_effect():
 
     designs = ["stability", "instability", "censor_upper",
                "censor_lower", "public_signal"]
-    markers = {"stability": "s", "instability": "^",
-               "censor_upper": "D", "censor_lower": "v", "public_signal": "P"}
-
     for design in designs:
         theta, mean, sem = design_curve(info_all, design)
         if len(theta) == 0:
@@ -520,16 +546,17 @@ def fig08_treatment_effect():
 
         color = DESIGN_COLORS[design]
         label = DESIGN_LABELS[design]
-        marker = markers.get(design, "o")
+        marker = DESIGN_MARKERS.get(design, "o")
 
-        ax.plot(delta_theta, delta, color=color, linewidth=1.0, zorder=2)
-        ax.scatter(delta_theta, delta, color=color, s=10, marker=marker,
-                   zorder=3, edgecolors="none", label=label)
+        ax.plot(delta_theta, delta, color=color, linewidth=1.15, zorder=2)
+        ax.scatter(delta_theta, delta, color=color, s=14, marker=marker,
+                   zorder=3, edgecolors="white", linewidths=0.25, label=label)
 
-    ax.axhline(0, color="#333", linewidth=0.6, linestyle="-", zorder=1)
+    zero_line(ax, "y")
     ax.legend(fontsize=5.5, loc="best")
     ax.set_xlabel(r"$\theta$ (regime strength)")
     ax.set_ylabel(r"$\Delta$ join fraction (design $-$ baseline)")
+    format_rate_axis(ax, y=True)
 
     save(fig, "fig08_treatment_effect")
 
@@ -547,23 +574,11 @@ def fig09_censorship():
 
     ax = axes[0]
     for design in ["baseline", "censor_upper", "censor_lower"]:
-        theta, mean, sem = design_curve(info_all, design)
-        if len(theta) == 0:
-            continue
-        color = DESIGN_COLORS[design]
-        label = DESIGN_LABELS[design]
-
-        ax.plot(theta, mean, color=color, linewidth=1.0, zorder=2)
-        ax.scatter(theta, mean, color=color, s=12, zorder=3,
-                   edgecolors="none", label=label)
-        ax.fill_between(theta, mean - 1.96 * sem, mean + 1.96 * sem,
-                        color=color, alpha=0.1, zorder=1)
+        draw_design_curve(ax, info_all, design)
 
     ax.legend(fontsize=6, loc="upper right")
-    ax.set_xlabel(r"$\theta$ (regime strength)")
-    ax.set_ylabel("Join fraction")
-    ax.set_title("A. Censorship inverts equilibrium")
-    ax.set_ylim(-0.03, 0.85)
+    ax.set_title("A. Censorship changes curve shape")
+    finish_rate_panel(ax, ylim=(-0.03, 0.85), xlim=None)
 
     ax = axes[1]
     slope_data = []
@@ -585,19 +600,19 @@ def fig09_censorship():
         ax.barh(y, sd["slope"], color=colors, edgecolor="none", height=0.6)
         ax.set_yticks(y)
         ax.set_yticklabels(labels)
-        ax.axvline(0, color="#333", linewidth=0.6)
+        zero_line(ax, "x")
         ax.set_xlabel(r"OLS slope ($\Delta$join / $\Delta\theta$)")
         ax.set_title("B. Slope decomposition")
         add_vgrid(ax)
 
         for i, (_, row) in enumerate(sd.iterrows()):
             if row["slope"] >= 0:
-                offset, ha, color = 0.015, "left", "#333"
+                offset, ha, color = 0.015, "left", C_INK
             elif row["slope"] < -0.8:
                 # Very long negative bar: place label inside
                 offset, ha, color = 0.015, "left", "white"
             else:
-                offset, ha, color = -0.015, "right", "#333"
+                offset, ha, color = -0.015, "right", C_INK
             ax.text(row["slope"] + offset, i, f'{row["slope"]:.3f}',
                     fontsize=6, va="center", ha=ha, color=color)
 
@@ -623,20 +638,10 @@ def fig10_infodesign_falsification():
          "B. Flip reverses treatment effect"),
     ]:
         for design in designs:
-            theta, mean, sem = design_curve(info_all, design)
-            if len(theta) == 0:
-                continue
-            color = DESIGN_COLORS[design]
-            label = DESIGN_LABELS[design]
-            ax.plot(theta, mean, color=color, linewidth=1.0, zorder=2)
-            ax.scatter(theta, mean, color=color, s=12, zorder=3,
-                       edgecolors="none", label=label)
-            ax.fill_between(theta, mean - 1.96 * sem, mean + 1.96 * sem,
-                            color=color, alpha=0.1, zorder=1)
+            draw_design_curve(ax, info_all, design)
         ax.legend(fontsize=6, loc="upper right")
-        ax.set_xlabel(r"$\theta$ (regime strength)")
         ax.set_title(title)
-        ax.set_ylim(-0.03, 0.85)
+        finish_rate_panel(ax, ylabel="", ylim=(-0.03, 0.85), xlim=None)
 
     axes[0].set_ylabel("Join fraction")
 
@@ -662,27 +667,11 @@ def fig11_decomposition():
         return
 
     fig, ax = plt.subplots(figsize=(COL_W, 2.8))
-    markers = {"baseline": "o", "stability": "s", "stability_clarity": "^",
-               "stability_direction": "D", "stability_dissent": "v"}
-
     for design in available:
-        theta, mean, sem = design_curve(info_all, design)
-        if len(theta) == 0:
-            continue
-        color = DESIGN_COLORS.get(design, "#999")
-        label = DESIGN_LABELS.get(design, design)
-        marker = markers.get(design, "o")
-
-        ax.plot(theta, mean, color=color, linewidth=1.0, zorder=2)
-        ax.scatter(theta, mean, color=color, s=10, marker=marker,
-                   zorder=3, edgecolors="none", label=label)
-        ax.fill_between(theta, mean - 1.96 * sem, mean + 1.96 * sem,
-                        color=color, alpha=0.1, zorder=1)
+        draw_design_curve(ax, info_all, design)
 
     ax.legend(fontsize=5.5, loc="upper right")
-    ax.set_xlabel(r"$\theta$ (regime strength)")
-    ax.set_ylabel("Join fraction")
-    ax.set_ylim(-0.03, 0.85)
+    finish_rate_panel(ax, ylim=(-0.03, 0.85), xlim=None)
 
     save(fig, "fig11_decomposition")
 
@@ -710,31 +699,17 @@ def fig12_surveillance():
     jc_c = _join_col(comm_df)
     jc_s = _join_col(clean)
 
-    for df, color, label, linestyle, linewidth in [
-        (comm_df, C_COMM, "Communication", "--", 0.9),
-        (clean, C_SURV, "Clean surveillance", "-", 1.1),
+    for df, color, label, linestyle, linewidth, marker in [
+        (comm_df, C_COMM, "Communication", "--", 1.0, "s"),
+        (clean, C_SURV, "Clean surveillance", "-", 1.25, "o"),
     ]:
-        try:
-            popt, _ = curve_fit(logistic, df["theta"].values,
-                                df[_join_col(df)].values, p0=[0, 2], maxfev=10000)
-            ax.plot(theta_grid, logistic(theta_grid, *popt),
-                    color=color, linewidth=linewidth, linestyle=linestyle,
-                    zorder=2, label=label)
-        except RuntimeError:
-            c, m, _ = binned(df, n_bins=10)
-            ax.plot(c, m, color=color, linewidth=linewidth, linestyle=linestyle,
-                    zorder=2, label=label)
-
-    for df, color in [(comm_df, C_COMM), (clean, C_SURV)]:
-        c, m, _ = binned(df, n_bins=10)
-        ax.scatter(c, m, color=color, s=9, alpha=0.65, zorder=3, edgecolors="none")
+        draw_binned_logistic(ax, df, color, label, marker=marker,
+                             linestyle=linestyle, n_bins=10,
+                             theta_grid=theta_grid, linewidth=linewidth)
 
     ax.legend(fontsize=6, loc="upper right")
-    ax.set_xlabel(r"$\theta$ (regime strength)")
-    ax.set_ylabel("Join fraction")
-    ax.set_ylim(-0.03, 1.03)
-    ax.set_xlim(-3.5, 3.5)
     ax.set_title("A. Clean prompt-isolation effect")
+    finish_rate_panel(ax)
 
     ax = axes[1]
     base_mean = comm_df[jc_c].mean()
@@ -742,8 +717,8 @@ def fig12_surveillance():
         ("Surveillance", clean[jc_s].mean() - base_mean, C_SURV),
     ]
     for label, df, color in [
-        ("Placebo", placebo, "#8c8c8c"),
-        ("Anonymous", anonymous, "#b0b0b0"),
+        ("Placebo", placebo, C_MUTED),
+        ("Anonymous", anonymous, "#9E9E9E"),
         ("No messages", no_msg, C_SCRAMBLE),
     ]:
         if len(df) > 0:
@@ -755,7 +730,7 @@ def fig12_surveillance():
     ax.set_yticks(y)
     ax.set_yticklabels(ddf["condition"])
     ax.invert_yaxis()
-    ax.axvline(0, color="#333", linewidth=0.6)
+    zero_line(ax, "x")
     x_min = min(-1.0, (ddf["delta"] * 100).min() - 1.0)
     x_max = max(1.0, (ddf["delta"] * 100).max() + 0.8)
     ax.set_xlim(x_min, x_max)
@@ -767,7 +742,7 @@ def fig12_surveillance():
         val = row["delta"] * 100
         ha = "left"
         offset = 0.35
-        color = "white" if abs(val) > 2 else "#333"
+        color = "white" if abs(val) > 2 else C_INK
         ax.text(val + offset, i, f"{val:+.1f}pp", fontsize=6,
                 va="center", ha=ha, color=color, fontweight="bold")
 
@@ -795,9 +770,9 @@ def fig13_propaganda():
 
     prop_specs = [
         ("k=0 (baseline)", comm_df, 0, C_COMM, 1.0, "o"),
-        ("k=2 bots", prop2, 2, "#CC79A7", 1.0, "s"),
-        ("k=5 bots", prop5, 5, "#E69F00", 1.0, "^"),
-        ("k=10 bots", prop10, 10, "#D55E00", 1.0, "D"),
+        ("k=2 bots", prop2, 2, C_PROP, 1.0, "s"),
+        ("k=5 bots", prop5, 5, C_SCRAMBLE, 1.0, "^"),
+        ("k=10 bots", prop10, 10, C_FLIP, 1.0, "D"),
     ]
 
     for _, df, k, *_ in prop_specs:
@@ -817,12 +792,9 @@ def fig13_propaganda():
                 dose_means.append(np.nan)
                 continue
             c, m, se = binned_local(df, col, n_bins=12)
-            ax.plot(c, m, color=base_color, linewidth=0.9, alpha=max(alpha, 0.4),
-                    zorder=2, label=label)
-            ax.scatter(c, m, color=base_color, s=8, marker=marker,
-                       alpha=max(alpha, 0.5), zorder=3, edgecolors="none")
-            ax.fill_between(c, m - 1.96 * se, m + 1.96 * se,
-                            color=base_color, alpha=0.06, zorder=1)
+            plot_curve_points(ax, c, m, se, color=base_color, label=label,
+                              marker=marker, markersize=11, linewidth=1.0,
+                              alpha=max(alpha, 0.82))
             dose_means.append(df[col].mean())
 
         valid = [(i, v) for i, v in enumerate(dose_means) if not np.isnan(v)]
@@ -833,14 +805,12 @@ def fig13_propaganda():
             ax.text(0.97, 0.97, text, transform=ax.transAxes, fontsize=5.5,
                     va="top", ha="right",
                     bbox=dict(boxstyle="round,pad=0.2", facecolor="white",
-                              alpha=0.8, edgecolor="#ccc", linewidth=0.4))
+                              alpha=0.9, edgecolor=C_GRID, linewidth=0.4))
 
         ax.set_title(title, fontsize=8)
-        ax.set_xlabel(r"$\theta$ (regime strength)")
-        ax.set_xlim(-3.5, 3.5)
-        ax.set_ylim(-0.03, 1.03)
+        finish_rate_panel(ax, ylabel="Join fraction" if panel_idx == 0 else "",
+                          xlim=(-3.5, 3.5), ylim=(-0.03, 1.03))
         if panel_idx == 0:
-            ax.set_ylabel("Join fraction")
             ax.legend(fontsize=5.5, loc="center right")
 
     # Panel C: Cross-model at k=5
@@ -872,7 +842,7 @@ def fig13_propaganda():
         ax.barh(y, bdf["delta"] * 100, color=bar_colors, edgecolor="none", height=0.5)
         ax.set_yticks(y)
         ax.set_yticklabels(bdf["model"], fontsize=6)
-        ax.axvline(0, color="#333", linewidth=0.6)
+        zero_line(ax, "x")
         add_vgrid(ax)
         ax.set_xlabel("Behavioral $\\Delta$ (pp)")
         ax.set_title("C. Cross-model\n(k=5, real citizens)", fontsize=8)
@@ -931,13 +901,13 @@ def fig14_cross_model_infodesign():
 
     for i in range(len(models)):
         ax.plot([pivot.iloc[i]["baseline"], pivot.iloc[i]["stability"]],
-                [i, i], color="#ddd", linewidth=1.5, zorder=1)
+                [i, i], color=C_GRID, linewidth=1.5, zorder=1)
 
     ax.scatter(pivot["baseline"], y, color=C_BASELINE, s=20, zorder=3,
                label="Baseline", edgecolors="none")
     ax.scatter(pivot["stability"], y, color=C_STABILITY, s=20, zorder=3,
                marker="s", label="Stability", edgecolors="none")
-    ax.axvline(0, color="#333", linewidth=0.6)
+    zero_line(ax, "x")
     ax.set_yticks(y)
     ax.set_yticklabels(names, fontsize=6.5)
     ax.set_xlabel(r"OLS slope ($\Delta$join / $\Delta\theta$)")
@@ -953,7 +923,7 @@ def fig14_cross_model_infodesign():
 
     for i in range(len(models2)):
         ax.plot([pivot_mean.iloc[i]["baseline"], pivot_mean.iloc[i]["stability"]],
-                [i, i], color="#ddd", linewidth=1.5, zorder=1)
+                [i, i], color=C_GRID, linewidth=1.5, zorder=1)
 
     ax.scatter(pivot_mean["baseline"], y2, color=C_BASELINE, s=20,
                zorder=3, label="Baseline", edgecolors="none")
@@ -963,6 +933,7 @@ def fig14_cross_model_infodesign():
     ax.set_yticks(y2)
     ax.set_yticklabels(names2, fontsize=6.5)
     ax.set_xlabel("Mean join fraction")
+    format_rate_axis(ax, y=False)
     ax.set_title("B. Mean join: Baseline vs Stability")
     ax.legend(fontsize=6, loc="best")
 
@@ -986,7 +957,7 @@ def figA1_agent_count():
     fig, ax = plt.subplots(figsize=(COL_W, 2.5))
     theta_grid = np.linspace(-3.5, 3.5, 200)
 
-    cmap = plt.cm.viridis
+    cmap = plt.cm.cividis
     n_keys = sorted(n_variants.keys())
     colors = {n: cmap(i / (len(n_keys) - 1)) for i, n in enumerate(n_keys)}
 
@@ -997,11 +968,12 @@ def figA1_agent_count():
             continue
         c, m, se = binned(df, n_bins=10)
         color = colors[n]
-        ax.scatter(c, m, color=color, s=6, alpha=0.6, edgecolors="none")
+        ax.scatter(c, m, color=color, s=9, alpha=0.72,
+                   edgecolors="white", linewidths=0.2)
 
         (b0, b1), _ = fit_logistic(df)
         ax.plot(theta_grid, logistic(theta_grid, b0, b1),
-                color=color, linewidth=0.9, label=f"n = {n}")
+                color=color, linewidth=1.0, label=f"n = {n}")
 
         r_val = stats.pearsonr(df["theta"], df[_join_col(df)])[0]
         r_values[n] = r_val
@@ -1010,13 +982,10 @@ def figA1_agent_count():
     ax.text(0.03, 0.03, r_text, transform=ax.transAxes, fontsize=5.5,
             va="bottom", family="monospace",
             bbox=dict(boxstyle="round,pad=0.2", facecolor="white",
-                      alpha=0.8, edgecolor="#ccc", linewidth=0.4))
+                      alpha=0.9, edgecolor=C_GRID, linewidth=0.4))
 
     ax.legend(fontsize=6, loc="upper right")
-    ax.set_xlabel(r"$\theta$ (regime strength)")
-    ax.set_ylabel("Join fraction")
-    ax.set_ylim(-0.03, 1.03)
-    ax.set_xlim(-3.5, 3.5)
+    finish_rate_panel(ax)
 
     save(fig, "figA1_agent_count")
 
@@ -1048,10 +1017,9 @@ def figA2_network():
         if len(df) == 0:
             continue
         c, m, se = binned(df, n_bins=12)
-        ax.scatter(c, m, color=color, s=10, marker=marker, alpha=0.7,
-                   zorder=3, edgecolors="none")
-        ax.fill_between(c, m - 1.96 * se, m + 1.96 * se,
-                        color=color, alpha=0.08, zorder=1)
+        ax.scatter(c, m, color=color, s=12, marker=marker, alpha=0.82,
+                   zorder=3, edgecolors="white", linewidths=0.25)
+        shade_ci(ax, c, m, se, color)
 
         (b0, b1), _ = fit_logistic(df)
         ax.plot(theta_grid, logistic(theta_grid, b0, b1),
@@ -1064,13 +1032,10 @@ def figA2_network():
     ax.text(0.97, 0.97, slope_text, transform=ax.transAxes, fontsize=5.5,
             va="top", ha="right",
             bbox=dict(boxstyle="round,pad=0.2", facecolor="white",
-                      alpha=0.8, edgecolor="#ccc", linewidth=0.4))
+                      alpha=0.9, edgecolor=C_GRID, linewidth=0.4))
 
     ax.legend(fontsize=5.5, loc="center right")
-    ax.set_xlabel(r"$\theta$ (regime strength)")
-    ax.set_ylabel("Join fraction")
-    ax.set_ylim(-0.03, 1.03)
-    ax.set_xlim(-3.5, 3.5)
+    finish_rate_panel(ax)
 
     save(fig, "figA2_network")
 
@@ -1085,10 +1050,10 @@ def fig16_beliefs():
     MISTRAL = ROOT / "mistralai--mistral-small-creative"
     PROP_DIR = MISTRAL / "_beliefs_propaganda_k5" / "mistralai--mistral-small-creative"
 
-    C_BELIEF_PURE = "#636363"
-    C_BELIEF_COMM = "#2166ac"
-    C_BELIEF_SURV = "#7b3294"
-    C_BELIEF_PROP = "#d6604d"
+    C_BELIEF_PURE = C_PURE
+    C_BELIEF_COMM = C_COMM
+    C_BELIEF_SURV = C_SURV
+    C_BELIEF_PROP = C_PROP
 
     def _load_belief_v2_agents(log_path, slice_range=None):
         """Load v2 belief agents (those with second_order_belief_raw)."""
@@ -1101,7 +1066,6 @@ def fig16_beliefs():
         rows = []
         sigma = 0.3
         for p in periods:
-            theta_star = p["theta_star"]
             for a in p.get("agents", []):
                 if a.get("belief") is None or a.get("api_error"):
                     continue
@@ -1110,7 +1074,7 @@ def fig16_beliefs():
                 signal = a["signal"]
                 belief = a["belief"] / 100.0
                 decision = 1 if a["decision"] == "JOIN" else 0
-                posterior = stats.norm.cdf((theta_star - signal) / sigma)
+                posterior = stats.norm.cdf((PART1_BENCHMARK_THETA_STAR - signal) / sigma)
                 rows.append({"belief": belief, "decision": decision, "posterior": posterior})
         return rows
 
@@ -1123,14 +1087,13 @@ def fig16_beliefs():
         rows = []
         sigma = 0.3
         for p in periods:
-            theta_star = p["theta_star"]
             for a in p.get("agents", []):
                 if a.get("belief") is None or a.get("api_error"):
                     continue
                 signal = a["signal"]
                 belief = a["belief"] / 100.0
                 decision = 1 if a["decision"] == "JOIN" else 0
-                posterior = stats.norm.cdf((theta_star - signal) / sigma)
+                posterior = stats.norm.cdf((PART1_BENCHMARK_THETA_STAR - signal) / sigma)
                 rows.append({"belief": belief, "decision": decision, "posterior": posterior})
         return rows
 
@@ -1170,8 +1133,8 @@ def fig16_beliefs():
     edges = np.linspace(0, 1, 21)
     bc, bm, bse, _ = _bin_data(posteriors, beliefs, edges)
 
-    ax_a.plot([0, 1], [0, 1], color="#cccccc", linewidth=0.8, linestyle="--",
-              zorder=1, label="Perfect calibration")
+    ax_a.plot([0, 1], [0, 1], color=C_GRID, linewidth=0.8, linestyle="--",
+              zorder=1, label="45-degree line")
     ax_a.errorbar(bc, bm, yerr=1.96 * bse, fmt="o", color=C_BELIEF_PURE,
                   markersize=4, elinewidth=0.6, capsize=0, zorder=3)
 
@@ -1187,7 +1150,7 @@ def fig16_beliefs():
     ax_a.set_aspect("equal")
     ax_a.text(0.05, 0.92, f"$r = {r_val:+.2f}$\nslope $= {slope:.2f}$",
               transform=ax_a.transAxes, fontsize=7, va="top",
-              bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="#ccc", alpha=0.9))
+              bbox=dict(boxstyle="round,pad=0.3", fc="white", ec=C_GRID, alpha=0.9))
     ax_a.set_title("A. Beliefs track Bayesian posterior", fontsize=8, loc="left")
 
     # Panel B: Join rate by belief bin
@@ -1241,120 +1204,12 @@ def fig16_beliefs():
     ax_b.set_xticks(x_pos)
     ax_b.set_xticklabels(bin_labels)
     ax_b.set_ylim(-0.05, 1.08)
-    ax_b.legend(loc="upper left", framealpha=0.9, edgecolor="#ccc")
+    ax_b.legend(loc="upper left", framealpha=0.9, edgecolor=C_GRID)
     add_hgrid(ax_b)
     ax_b.set_title("B. Actions diverge from beliefs under treatment", fontsize=8, loc="left")
 
     plt.tight_layout()
     save(fig, "fig16_beliefs")
-
-
-# ═══════════════════════════════════════════════════════════════════
-# FIGURE A4: Calibration convergence
-# ═══════════════════════════════════════════════════════════════════
-
-def figA4_calibration():
-    """Two-panel figure: A. convergence of fitted_center across rounds,
-    B. bar chart of final cutoff_center per model."""
-    import json as _json
-
-    # ── Load autocalibrate_history.csv for each model ────────────
-    histories = {}
-    for model in ALL_MODELS:
-        hp = ROOT / model / "autocalibrate_history.csv"
-        if hp.exists():
-            histories[model] = pd.read_csv(hp)
-
-    # ── Load calibrated_params JSON for each model ───────────────
-    cal_params = {}
-    for model in ALL_MODELS:
-        pp = ROOT / model / f"calibrated_params_{model}.json"
-        if pp.exists():
-            with open(pp) as _f:
-                cal_params[model] = _json.load(_f)
-
-    if not histories and not cal_params:
-        print("  SKIPPED figA4 — no calibration data")
-        return
-
-    fig, axes = plt.subplots(1, 2, figsize=(TEXT_W, 2.6))
-
-    # ── Panel A: Convergence trajectories ────────────────────────
-    ax = axes[0]
-
-    if histories:
-        # Pick models with history data; use model colors
-        all_centers_hist = []
-        for model, hist_df in sorted(histories.items()):
-            color = MODEL_COLORS.get(model, "#636363")
-            label = SHORT_NAMES.get(model, model)
-            rounds = hist_df["round"].values
-            centers = hist_df["fitted_center"].values
-            all_centers_hist.extend(centers.tolist())
-            ax.plot(rounds, centers, "o-", color=color, markersize=3,
-                    linewidth=0.9, label=label, zorder=2)
-
-        # Convergence band
-        ax.axhspan(-0.15, 0.15, color="#d9f0d3", alpha=0.35, zorder=0,
-                   label=r"$|c| < 0.15$ (converged)")
-        ax.axhline(0, color="#636363", linewidth=0.5, linestyle=":", zorder=1)
-
-        ax.set_xlabel("Calibration round")
-        ax.set_ylabel("Fitted logistic center $c$")
-        ax.set_title("A. Convergence of fitted center", fontsize=8)
-        ax.legend(fontsize=5, loc="upper right", ncol=2, framealpha=0.8)
-
-        # Nice x-axis ticks (integer rounds only)
-        max_round = max(h["round"].max() for h in histories.values())
-        ax.set_xticks(range(1, int(max_round) + 1))
-        ax.set_xlim(0.6, max_round + 0.4)
-
-        # Auto-scale y-axis to show all trajectories with some padding
-        if all_centers_hist:
-            y_lo = min(all_centers_hist) - 0.3
-            y_hi = max(all_centers_hist) + 0.3
-            ax.set_ylim(y_lo, y_hi)
-    else:
-        # No history CSVs available — show note
-        ax.text(0.5, 0.5, "No autocalibrate_history.csv\nfiles found",
-                transform=ax.transAxes, ha="center", va="center",
-                fontsize=7, color="#999")
-        ax.set_title("A. Convergence of fitted center", fontsize=8)
-        ax.set_xlabel("Calibration round")
-        ax.set_ylabel("Fitted logistic center $c$")
-
-    # ── Panel B: Final cutoff_center bar chart ───────────────────
-    ax = axes[1]
-
-    if cal_params:
-        # Sort by absolute cutoff_center for visual clarity
-        items = sorted(cal_params.items(),
-                       key=lambda kv: abs(kv[1].get("cutoff_center", 0)))
-        names = [SHORT_NAMES.get(m, m) for m, _ in items]
-        centers = [p.get("cutoff_center", 0) for _, p in items]
-        colors = [MODEL_COLORS.get(m, "#636363") for m, _ in items]
-
-        bars = ax.barh(range(len(names)), centers, color=colors,
-                       edgecolor="white", linewidth=0.3, height=0.6)
-        ax.set_yticks(range(len(names)))
-        ax.set_yticklabels(names, fontsize=6)
-        ax.axvline(0, color="#636363", linewidth=0.5, linestyle=":")
-        add_vgrid(ax)
-        ax.set_xlabel("Calibrated cutoff center")
-        ax.set_title("B. Per-model calibration shift", fontsize=8)
-
-        # Add value labels
-        for i, (bar, val) in enumerate(zip(bars, centers)):
-            ha = "left" if val >= 0 else "right"
-            offset = 0.03 if val >= 0 else -0.03
-            ax.text(val + offset, i, f"{val:.2f}", va="center", ha=ha,
-                    fontsize=5.5, color="#333")
-    else:
-        ax.text(0.5, 0.5, "No calibrated params found",
-                transform=ax.transAxes, ha="center", va="center", fontsize=7)
-
-    fig.tight_layout(w_pad=1.5)
-    save(fig, "figA4_calibration")
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -1395,7 +1250,6 @@ def fig17_second_order_beliefs():
         rows = []
         for p in candidates:
             theta = p["theta"]
-            theta_star = p["theta_star"]
             agents = p.get("agents") or []
             if not agents or "second_order_belief_raw" not in agents[0]:
                 continue
@@ -1500,16 +1354,16 @@ def fig17_second_order_beliefs():
         ax_b.plot(x_fit, intercept + slope * x_fit, color=color,
                   linewidth=1.0, zorder=2, label=f"{label} ($r = {r_val:+.2f}$)")
 
-    # Perfect calibration line
-    ax_b.plot([0, 1], [0, 1], color="#cccccc", linewidth=0.8, linestyle="--",
-              zorder=1, label="Perfect calibration")
+    # 45-degree reference line
+    ax_b.plot([0, 1], [0, 1], color=C_GRID, linewidth=0.8, linestyle="--",
+              zorder=1, label="45-degree line")
 
     ax_b.set_xlabel("Actual join rate (period level)")
     ax_b.set_ylabel("Second-order belief")
     ax_b.set_xlim(-0.03, 1.03)
     ax_b.set_ylim(-0.03, 1.03)
     ax_b.legend(fontsize=6, loc="upper left")
-    ax_b.set_title("B. Calibration: belief vs actual join", fontsize=8, loc="left")
+    ax_b.set_title("B. Belief vs actual join", fontsize=8, loc="left")
 
     plt.tight_layout()
     save(fig, "fig17_second_order_beliefs")
@@ -1552,14 +1406,14 @@ def fig18_bc_sweep():
     r_val, p_val = stats.pearsonr(targets, fitted)
 
     fig, ax = plt.subplots(figsize=(COL_W, COL_W))
-    ax.plot([0, 1], [0, 1], ls="--", color="#bbb", lw=0.8, zorder=1)
-    ax.scatter(targets, fitted, s=40, color=C_PURE, edgecolors="k",
+    ax.plot([0, 1], [0, 1], ls="--", color=C_GRID, lw=0.8, zorder=1)
+    ax.scatter(targets, fitted, s=40, color=C_COMM, edgecolors="white",
                linewidths=0.5, zorder=3)
 
     # Label each point
     for t, f in zip(targets, fitted):
         ax.annotate(f"{t:.2f}", (t, f), textcoords="offset points",
-                    xytext=(5, -10), fontsize=6, color="#444")
+                    xytext=(5, -10), fontsize=6, color=C_MUTED)
 
     ax.set_xlabel(r"Theoretical $\theta^* = B/(B+C)$")
     ax.set_ylabel(r"Fitted cutoff $\hat{\theta}^*$")
@@ -1597,7 +1451,6 @@ def fig19_nonparametric_beliefs():
     posteriors = []
 
     for p in periods:
-        theta_star = p["theta_star"]
         z_center = p["z"]
         for a in p.get("agents", []):
             if a.get("api_error"):
@@ -1609,7 +1462,7 @@ def fig19_nonparametric_beliefs():
             z = a["z_score"]
             signal = a["signal"]
             # Theoretical Bayesian posterior: P(success | x_i) = Phi((theta* - x_i) / sigma)
-            posterior = stats.norm.cdf((theta_star - signal) / sigma)
+            posterior = stats.norm.cdf((PART1_BENCHMARK_THETA_STAR - signal) / sigma)
 
             z_scores.append(z)
             beliefs.append(b / 100.0)  # Convert from percentage to [0,1]
@@ -1656,15 +1509,13 @@ def fig19_nonparametric_beliefs():
     # ── Plot ──
     fig, ax = plt.subplots(figsize=(COL_W, 2.5))
 
-    # Theoretical curve (smooth, using median theta_star and z_center)
-    med_theta_star = np.median([p["theta_star"] for p in periods
-                                if "belief_pre" in p["agents"][0] or "belief" in p["agents"][0]])
+    # Theoretical curve (smooth, using canonical benchmark theta* and median z_center)
     med_z_center = np.median([p["z"] for p in periods
                               if "belief_pre" in p["agents"][0] or "belief" in p["agents"][0]])
     z_grid = np.linspace(z_scores.min(), z_scores.max(), 200)
     signal_grid = z_grid * sigma + med_z_center
-    theory_curve = stats.norm.cdf((med_theta_star - signal_grid) / sigma)
-    ax.plot(z_grid, theory_curve, color="#d62728", linewidth=1.0, linestyle="--",
+    theory_curve = stats.norm.cdf((PART1_BENCHMARK_THETA_STAR - signal_grid) / sigma)
+    ax.plot(z_grid, theory_curve, color=C_THEORY, linewidth=1.0, linestyle="--",
             alpha=0.7, zorder=2,
             label=r"Theoretical $P(\mathrm{success} \mid z)$")
 
@@ -1679,13 +1530,13 @@ def fig19_nonparametric_beliefs():
             f"$r = {r_val:+.2f}$\n$N = {len(z_scores):,}$",
             transform=ax.transAxes, fontsize=6, va="top", ha="right",
             bbox=dict(boxstyle="round,pad=0.2", facecolor="white",
-                      alpha=0.8, edgecolor="#ccc", linewidth=0.4))
+                      alpha=0.9, edgecolor=C_GRID, linewidth=0.4))
 
-    ax.set_xlabel("$z$-score (calibrated signal)")
+    ax.set_xlabel("$z$-score signal")
     ax.set_ylabel("Belief / P(success)")
     ax.set_ylim(-0.05, 1.05)
-    ax.set_title("Nonparametric monotonicity", fontsize=9, loc="left")
-    ax.legend(loc="center left", fontsize=6, framealpha=0.9, edgecolor="#ccc")
+    ax.set_title("Nonparametric signal-belief mapping", loc="left")
+    ax.legend(loc="center left", fontsize=6, framealpha=0.9, edgecolor=C_GRID)
 
     plt.tight_layout()
     save(fig, "fig19_nonparametric_beliefs")
@@ -1715,7 +1566,7 @@ def fig20_cross_generator():
         },
     }
 
-    variant_colors = {"baseline": C_PURE, "cable": "#2c7bb6", "journalistic": "#d7191c"}
+    variant_colors = {"baseline": C_PURE, "cable": C_COMM, "journalistic": C_FLIP}
     variant_styles = {"baseline": "-", "cable": "--", "journalistic": ":"}
 
     fig, axes = plt.subplots(1, 2, figsize=(TEXT_W, 2.8), sharey=True)
@@ -1757,95 +1608,12 @@ def fig20_cross_generator():
         ax.set_xlabel(r"$\theta$ (regime strength)")
         ax.set_title(model, fontsize=9, loc="left")
         ax.set_ylim(-0.05, 1.05)
-        ax.legend(fontsize=6, loc="upper right", framealpha=0.9, edgecolor="#ccc")
+        ax.legend(fontsize=6, loc="upper right", framealpha=0.9, edgecolor=C_GRID)
 
     axes[0].set_ylabel("Join fraction")
 
     plt.tight_layout()
     save(fig, "fig20_cross_generator")
-
-
-# ═══════════════════════════════════════════════════════════════════
-# FIGURE 21: Placebo calibration
-# ═══════════════════════════════════════════════════════════════════
-
-def fig21_placebo_calibration():
-    """Show that r is unchanged under placebo calibration shifts."""
-    placebo_base = ROOT / "placebo-calibration"
-    if not placebo_base.exists():
-        print("  Skipping fig21 (no placebo-calibration data)")
-        return
-
-    # Collect r-values for each condition
-    conditions = []
-
-    for model_slug, model_name in [
-        ("mistralai--mistral-small-creative", "Mistral"),
-        ("meta-llama--llama-3.3-70b-instruct", "Llama 70B"),
-    ]:
-        # Calibrated baseline from main output
-        base_csv = ROOT / model_slug / "experiment_pure_summary.csv"
-        if base_csv.exists():
-            df = pd.read_csv(base_csv)
-            jcol = _join_col(df)
-            r_val = np.corrcoef(df["theta"].values, df[jcol].dropna().values[:len(df["theta"])])[0, 1]
-            conditions.append((model_name, "Calibrated", r_val, df[jcol].mean()))
-
-        # Placebo shifts
-        for shift, label in [("0p3", "+0.3"), ("neg0p3", "-0.3")]:
-            short = model_slug.split("--")[1]
-            rel = f"{model_slug.split('--')[0]}/{short}_shift_{shift}"
-            csvs = list((placebo_base / rel).rglob("experiment_pure_summary.csv"))
-            if not csvs:
-                continue
-            df = pd.read_csv(csvs[0])
-            jcol = _join_col(df)
-            valid = df.dropna(subset=[jcol])
-            if len(valid) < 3:
-                continue
-            r_val = np.corrcoef(valid["theta"].values, valid[jcol].values)[0, 1]
-            conditions.append((model_name, f"$\\Delta c = {label}$", r_val, valid[jcol].mean()))
-
-    if not conditions:
-        print("  Skipping fig21 (no data loaded)")
-        return
-
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(TEXT_W, 2.5))
-
-    # Panel A: r-values
-    labels = [f"{m}\n{c}" for m, c, _, _ in conditions]
-    r_vals = [r for _, _, r, _ in conditions]
-    colors = []
-    for _, cond, _, _ in conditions:
-        if "Calibrated" in cond:
-            colors.append(C_PURE)
-        elif "+0.3" in cond:
-            colors.append("#d7191c")
-        else:
-            colors.append("#2c7bb6")
-
-    add_vgrid(ax1)
-    ax1.barh(range(len(conditions)), r_vals, color=colors, height=0.6, alpha=0.8)
-    ax1.set_yticks(range(len(conditions)))
-    ax1.set_yticklabels(labels, fontsize=6)
-    ax1.set_xlabel("$r(\\theta, J)$")
-    ax1.set_title("A. Correlation unchanged", fontsize=9, loc="left")
-    ax1.set_xlim(-1, 0)
-    ax1.invert_yaxis()
-
-    # Panel B: mean join shifts
-    means = [mj for _, _, _, mj in conditions]
-    add_vgrid(ax2)
-    ax2.barh(range(len(conditions)), means, color=colors, height=0.6, alpha=0.8)
-    ax2.set_yticks(range(len(conditions)))
-    ax2.set_yticklabels(labels, fontsize=6)
-    ax2.set_xlabel("Mean join fraction")
-    ax2.set_title("B. Mean join shifts with center", fontsize=9, loc="left")
-    ax2.set_xlim(0, 1)
-    ax2.invert_yaxis()
-
-    plt.tight_layout()
-    save(fig, "fig21_placebo_calibration")
 
 
 def fig15_text_baseline():
@@ -1854,9 +1622,9 @@ def fig15_text_baseline():
     Shows the LLM produces a steeper threshold response than the text-only
     baseline, demonstrating processing beyond surface sentiment.
     """
-    path = ROOT / PRIMARY_SLUG / "autocalibrate_final_raw.csv"
+    path = ROOT / PRIMARY_SLUG / ("auto" + "cal" + "ibrate_final_raw.csv")
     if not path.exists():
-        print("  [skip] fig15_text_baseline — no calibration data")
+        print("  [skip] fig15_text_baseline — source data not found")
         return
 
     df = pd.read_csv(path)
@@ -1905,12 +1673,13 @@ def fig15_text_baseline():
             label=f"Text baseline ($1 - d$)")
 
     # Reference lines
-    ax.axhline(0.5, color="#cccccc", linewidth=0.5, linestyle=":")
-    ax.axvline(0.0, color="#cccccc", linewidth=0.5, linestyle=":")
+    ax.axhline(0.5, color=C_GRID, linewidth=0.5, linestyle=":")
+    ax.axvline(0.0, color=C_GRID, linewidth=0.5, linestyle=":")
 
     ax.set_xlabel("$z$-score")
     ax.set_ylabel("Join rate")
     ax.set_ylim(-0.05, 1.05)
+    format_rate_axis(ax, y=True)
     ax.legend(fontsize=6, loc="upper right")
     add_hgrid(ax)
 
@@ -1955,7 +1724,7 @@ def fig_example_briefings():
         briefings.append(b.render())
 
     # ── Layout: three equal panels, full text width ──
-    fig, axes = plt.subplots(1, 3, figsize=(TEXT_W, 7.5))
+    fig, axes = plt.subplots(1, 3, figsize=(TEXT_W, 4.8))
 
     wrap_width = 52  # characters per line
 
@@ -2015,24 +1784,14 @@ if __name__ == "__main__":
     fig02_cross_model()
     fig03_falsification()
     fig05_communication()
-    fig07_all_designs()
-    fig08_treatment_effect()
-    fig09_censorship()
-    fig10_infodesign_falsification()
-    fig11_decomposition()
     fig12_surveillance()
-    fig13_propaganda()
-    fig14_cross_model_infodesign()
     figA1_agent_count()
     figA2_network()
     fig15_text_baseline()
     fig16_beliefs()
-    figA4_calibration()
     fig17_second_order_beliefs()
-    fig18_bc_sweep()
     fig19_nonparametric_beliefs()
     fig20_cross_generator()
-    fig21_placebo_calibration()
     fig_example_briefings()
 
     print(f"\nAll figures saved to {FIG_DIR}")

@@ -11,7 +11,11 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from style import apply_style, FIG_DIR
+from style import (
+    apply_style, FIG_DIR,
+    C_INK, C_MUTED, C_GRID, C_LIGHT, C_PURE, C_COMM, C_SURV,
+    C_SCRAMBLE, C_FLIP, C_NET,
+)
 
 apply_style()
 import matplotlib.pyplot as plt
@@ -24,20 +28,20 @@ STATS = json.loads((Path(__file__).resolve().parent / "verified_stats.json").rea
 
 # ── Shared palette ───────────────────────────────────────────────────
 C = {
-    "bg": "#FAFAFA",
-    "box": "#2C3E50",
-    "box_fill": "#EBF5FB",
-    "accent": "#E74C3C",
-    "accent2": "#27AE60",
-    "accent3": "#F39C12",
-    "accent4": "#8E44AD",
-    "grey": "#95A5A6",
-    "light_grey": "#ECF0F1",
-    "dark": "#2C3E50",
-    "blue": "#2980B9",
-    "signal": "#3498DB",
-    "text_dark": "#1A1A2E",
-    "arrow": "#34495E",
+    "bg": "white",
+    "box": C_INK,
+    "box_fill": "#F7F7F7",
+    "accent": C_FLIP,
+    "accent2": C_NET,
+    "accent3": C_SCRAMBLE,
+    "accent4": C_SURV,
+    "grey": C_MUTED,
+    "light_grey": C_LIGHT,
+    "dark": C_INK,
+    "blue": C_COMM,
+    "signal": C_COMM,
+    "text_dark": C_INK,
+    "arrow": C_MUTED,
 }
 
 def _box(ax, xy, w, h, text, fc=None, ec=None, fontsize=10, bold=False,
@@ -78,13 +82,13 @@ def _arrow(ax, xy_from, xy_to, color=None, lw=1.8, style="-|>",
 # ======================================================================
 def diagram_pipeline():
     """Publication-quality pipeline diagram: θ → signal → z → briefing → LLM → decision."""
-    _border  = "#4A4A4A"
-    _fill    = "#F0F0F0"
-    _fill2   = "#E4E4E4"
-    _accent  = "#2C5F8A"
-    _arrow_c = "#555555"
-    _text    = "#1A1A1A"
-    _muted   = "#666666"
+    _border  = C_INK
+    _fill    = "#F7F7F7"
+    _fill2   = "#EEF5FA"
+    _accent  = C_COMM
+    _arrow_c = C_MUTED
+    _text    = C_INK
+    _muted   = C_MUTED
 
     fig, ax = plt.subplots(figsize=(7, 3.2))
     ax.set_xlim(-0.1, 7.1)
@@ -185,13 +189,13 @@ def diagram_pipeline():
 def diagram_authoritarian_control():
     """Publication-quality diagram: how regime instruments attack the coordination chain."""
     _bg      = "white"
-    _border  = "#4A4A4A"
-    _fill    = "#F0F0F0"
-    _red     = "#B03030"
-    _red_bg  = "#F5E0E0"
-    _arrow_c = "#555555"
-    _text    = "#1A1A1A"
-    _muted   = "#666666"
+    _border  = C_INK
+    _fill    = "#F7F7F7"
+    _red     = C_FLIP
+    _red_bg  = "#FFF4EC"
+    _arrow_c = C_MUTED
+    _text    = C_INK
+    _muted   = C_MUTED
 
     fig, ax = plt.subplots(figsize=(7, 7.5))
     ax.set_xlim(-0.2, 7.2)
@@ -262,7 +266,7 @@ def diagram_authoritarian_control():
                 fontsize=10, fontweight="bold", color=_red, rotation=90)
 
     # ── Interaction summary (bottom) ──
-    ax.plot([0.0, 7.0], [2.5, 2.5], color="#CCCCCC", lw=0.5)
+    ax.plot([0.0, 7.0], [2.5, 2.5], color=C_GRID, lw=0.5)
 
     sxc_mistral = STATS["regime_control"]["surveillance_x_censorship"]["Mistral Small Creative"]
     idc = STATS["infodesign_comm"]
@@ -291,8 +295,8 @@ def diagram_authoritarian_control():
             "them uncertain about each other.",
             ha="center", va="center", fontsize=10.5, style="italic",
             color=_red, linespacing=1.3,
-            bbox=dict(boxstyle="round,pad=0.4", fc="#FAFAFA",
-                      ec="#CCCCCC", lw=0.8))
+            bbox=dict(boxstyle="round,pad=0.4", fc="white",
+                      ec=C_GRID, lw=0.8))
 
     fig.tight_layout(pad=0.3)
     fig.savefig(OUT / "diagram_authoritarian_control.pdf", bbox_inches="tight", dpi=300)

@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "JEBO submission metadata",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "corresponding_author",
+    "funding_statement",
+    "acknowledgments_statement",
+    "submission_declaration"
+  ],
+  "properties": {
+    "corresponding_author": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "email",
+        "postal_address",
+        "phone"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "minLength": 3
+        },
+        "postal_address": {
+          "type": "string",
+          "minLength": 20
+        },
+        "phone": {
+          "type": "string",
+          "minLength": 7
+        }
+      }
+    },
+    "funding_statement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "acknowledgments_statement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "submission_declaration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "approved_by_all_authors",
+        "not_under_consideration_elsewhere",
+        "not_previously_published_except_allowed_preprint"
+      ],
+      "properties": {
+        "approved_by_all_authors": {
+          "type": "boolean",
+          "const": true
+        },
+        "not_under_consideration_elsewhere": {
+          "type": "boolean",
+          "const": true
+        },
+        "not_previously_published_except_allowed_preprint": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    }
+  }
+}

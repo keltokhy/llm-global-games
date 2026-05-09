@@ -40,14 +40,14 @@ SHORT_NAMES = {
 
 # Per-model colors for figures
 MODEL_COLORS = {
-    "mistralai--mistral-small-creative": "#2c7bb6",
-    "meta-llama--llama-3.3-70b-instruct": "#2ca25f",
-    "qwen--qwen3-30b-a3b-instruct-2507": "#f46d43",
-    "openai--gpt-oss-120b": "#1a9641",
-    "qwen--qwen3-235b-a22b-2507": "#5e4fa2",
-    "arcee-ai--trinity-large-preview_free": "#fdae61",
-    "minimax--minimax-m2-her": "#7b3294",
-    "mistralai--ministral-3b-2512": "#e66101",
+    "mistralai--mistral-small-creative": "#0072B2",
+    "meta-llama--llama-3.3-70b-instruct": "#009E73",
+    "qwen--qwen3-30b-a3b-instruct-2507": "#E69F00",
+    "openai--gpt-oss-120b": "#56B4E9",
+    "qwen--qwen3-235b-a22b-2507": "#CC79A7",
+    "arcee-ai--trinity-large-preview_free": "#5F6368",
+    "minimax--minimax-m2-her": "#7B3294",
+    "mistralai--ministral-3b-2512": "#D55E00",
 }
 
 # Compact names for regression tables

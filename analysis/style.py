@@ -1,9 +1,10 @@
-"""
-Shared figure style for all paper visualizations.
+"""Shared publication style for all paper visualizations.
 
-Single source of truth for matplotlib rcParams, color palettes,
-layout dimensions, and common helpers used across make_figures.py,
-construct_validity.py, make_diagrams.py, and any future figure scripts.
+The paper's figures should read as one visual system: neutral empirical
+baseline, blue information/communication treatments, red/orange destructive
+falsifications, purple surveillance, and green stability/intervention designs.
+This module is the single source of truth for rcParams, colors, dimensions,
+and small drawing helpers used by every figure script.
 """
 
 from pathlib import Path
@@ -31,30 +32,35 @@ TEXT_W = 7.0   # \textwidth — figure* spanning both columns
 RCPARAMS = {
     "font.family":          "serif",
     "font.size":            8,
-    "axes.titlesize":       9,
+    "axes.titlesize":       8.5,
     "axes.labelsize":       8,
     "xtick.labelsize":      7,
     "ytick.labelsize":      7,
-    "legend.fontsize":      7,
+    "legend.fontsize":      6.5,
     "axes.spines.top":      False,
     "axes.spines.right":    False,
-    "axes.linewidth":       0.6,
+    "axes.linewidth":       0.55,
+    "axes.edgecolor":       "#333333",
+    "axes.labelcolor":      "#222222",
+    "axes.titleweight":     "bold",
     "axes.grid":            False,
-    "xtick.major.width":    0.6,
-    "ytick.major.width":    0.6,
-    "xtick.major.size":     3.0,
-    "ytick.major.size":     3.0,
+    "xtick.major.width":    0.55,
+    "ytick.major.width":    0.55,
+    "xtick.major.size":     2.8,
+    "ytick.major.size":     2.8,
     "xtick.direction":      "out",
     "ytick.direction":      "out",
     "legend.frameon":       False,
     "legend.handlelength":  1.5,
-    "legend.handletextpad": 0.4,
-    "legend.columnspacing": 1.0,
-    "lines.linewidth":      1.0,
-    "lines.markersize":     4,
+    "legend.handletextpad": 0.35,
+    "legend.columnspacing": 0.8,
+    "lines.linewidth":      1.15,
+    "lines.markersize":     3.7,
     "figure.dpi":           150,
+    "figure.facecolor":     "white",
     "savefig.dpi":          300,
     "savefig.bbox":         "tight",
+    "savefig.facecolor":    "white",
 }
 
 
@@ -65,21 +71,27 @@ def apply_style():
 
 
 # ── Treatment colors ──────────────────────────────────────────────
-C_PURE     = "#636363"
-C_COMM     = "#2c7bb6"
-C_FLIP     = "#d7191c"
-C_SCRAMBLE = "#fdae61"
-C_NET      = "#1a9641"
-C_SURV     = "#7b3294"
-C_PROP     = "#CC79A7"
+# Okabe-Ito/Tol-inspired palette with stable semantics across figures.
+C_INK      = "#222222"
+C_MUTED    = "#6f6f6f"
+C_GRID     = "#d8d8d8"
+C_LIGHT    = "#efefef"
+C_PURE     = "#5f6368"  # neutral baseline
+C_COMM     = "#0072B2"  # information / communication
+C_FLIP     = "#D55E00"  # destructive falsification / reversal
+C_SCRAMBLE = "#E69F00"  # signal destruction / placebo-ish warning
+C_NET      = "#009E73"  # network / robustness
+C_SURV     = "#7B3294"  # surveillance / monitoring
+C_PROP     = "#CC79A7"  # propaganda
+C_THEORY   = "#111111"
 
 # Information design colors
-C_BASELINE    = "#636363"
-C_STABILITY   = "#2c7bb6"
-C_INSTABILITY = "#d7191c"
-C_CENS_UP     = "#1a9641"
-C_CENS_LO     = "#e66101"
-C_PUBLIC      = "#7b3294"
+C_BASELINE    = C_PURE
+C_STABILITY   = "#009E73"
+C_INSTABILITY = "#D55E00"
+C_CENS_UP     = "#0072B2"
+C_CENS_LO     = "#E69F00"
+C_PUBLIC      = "#7B3294"
 
 # Construct validity colors
 C_1FEAT = "#fdae61"
@@ -95,9 +107,9 @@ DESIGN_COLORS = {
     "scramble":             C_SCRAMBLE,
     "flip":                 C_FLIP,
     # Decomposition channels — distinct hues, not all-blue
-    "stability_clarity":    "#e66101",   # orange
-    "stability_direction":  "#1a9641",   # green
-    "stability_dissent":    "#7b3294",   # purple
+    "stability_clarity":    "#E69F00",
+    "stability_direction":  "#009E73",
+    "stability_dissent":    "#7B3294",
 }
 
 DESIGN_LABELS = {
@@ -176,10 +188,66 @@ def attack_mass(theta, theta_star=0.50, sigma=0.30):
 def save(fig, name, fig_dir=None):
     """Save figure as both PDF and PNG."""
     fig_dir = fig_dir or FIG_DIR
+    for ax in fig.axes:
+        polish_axes(ax)
     fig.savefig(fig_dir / f"{name}.pdf", bbox_inches="tight")
     fig.savefig(fig_dir / f"{name}.png", bbox_inches="tight")
     plt.close(fig)
     print(f"  {name}")
+
+
+def polish_axes(ax):
+    """Apply final axis polish without changing data content."""
+    ax.tick_params(colors=C_INK, labelcolor=C_INK)
+    ax.xaxis.label.set_color(C_INK)
+    ax.yaxis.label.set_color(C_INK)
+    ax.title.set_color(C_INK)
+    for side in ("left", "bottom"):
+        ax.spines[side].set_color("#333333")
+        ax.spines[side].set_linewidth(0.55)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+
+
+def format_rate_axis(ax, y=True):
+    """Standard [0,1] rate axis."""
+    target = ax.yaxis if y else ax.xaxis
+    target.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0, decimals=0))
+
+
+def shade_ci(ax, x, mean, se, color, alpha=0.11, zorder=1):
+    """Draw a 95% CI ribbon where standard errors are available."""
+    x = np.asarray(x, dtype=float)
+    mean = np.asarray(mean, dtype=float)
+    se = np.asarray(se, dtype=float)
+    if len(x) == 0 or np.all(~np.isfinite(se)):
+        return
+    ax.fill_between(x, mean - 1.96 * se, mean + 1.96 * se,
+                    color=color, alpha=alpha, linewidth=0, zorder=zorder)
+
+
+def plot_curve_points(ax, x, mean, se=None, color=C_PURE, label=None,
+                      marker="o", linestyle="-", linewidth=1.15, markersize=13,
+                      alpha=0.95, ribbon=True, zorder=3):
+    """Common line + point + optional confidence ribbon grammar."""
+    if se is not None and ribbon:
+        shade_ci(ax, x, mean, se, color)
+    ax.plot(x, mean, color=color, linestyle=linestyle, linewidth=linewidth,
+            alpha=alpha, label=label, zorder=zorder - 1)
+    if marker in {"x", "+", "1", "2", "3", "4", "|", "_"}:
+        ax.scatter(x, mean, color=color, marker=marker, s=markersize,
+                   alpha=alpha, linewidths=0.7, zorder=zorder)
+    else:
+        ax.scatter(x, mean, color=color, marker=marker, s=markersize,
+                   alpha=alpha, edgecolors="white", linewidths=0.25, zorder=zorder)
+
+
+def zero_line(ax, axis="y", color="#333333"):
+    """Consistent zero-reference line."""
+    if axis == "y":
+        ax.axhline(0, color=color, linewidth=0.6, zorder=1)
+    else:
+        ax.axvline(0, color=color, linewidth=0.6, zorder=1)
 
 
 def add_hgrid(ax, alpha=0.3, linewidth=0.3):

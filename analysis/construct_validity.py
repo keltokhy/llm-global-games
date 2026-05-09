@@ -29,6 +29,7 @@ from sklearn.metrics import log_loss
 from style import (
     apply_style, COL_W, TEXT_W, OUTPUT_DIR, FIG_DIR,
     C_PURE, C_COMM, C_SURV, C_1FEAT, C_3FEAT,
+    C_GRID, C_INK, zero_line, format_rate_axis,
     save, add_hgrid, panel_label,
 )
 
@@ -42,7 +43,7 @@ from models import CONSTRUCT_VALIDITY_SLUGS as PART1_MODELS, SHORT_NAMES
 
 LW_REF = 0.6
 ANNOT_BOX = dict(boxstyle="round,pad=0.3", facecolor="white",
-                 alpha=0.92, edgecolor="#d0d0d0", linewidth=0.5)
+                 alpha=0.92, edgecolor=C_GRID, linewidth=0.5)
 
 
 # ── Data loading ──────────────────────────────────────────────────
@@ -264,10 +265,11 @@ def make_figure(baseline_results: list[dict], departure_results: list[dict]):
         ax.set_yticks(y_pos)
         ax.set_yticklabels(bdf["model_name"], fontsize=7)
         ax.set_xlabel("Cross-validated accuracy")
-        ax.set_title("A.  Latent feature baseline", loc="left", fontsize=9)
+        ax.set_title("A. Latent feature baseline", loc="left")
         ax.legend(loc="lower right", fontsize=6)
         ax.set_xlim(0.5, 1.0)
-        ax.xaxis.grid(True, linewidth=0.3, alpha=0.3, color="#cccccc")
+        format_rate_axis(ax, y=False)
+        ax.xaxis.grid(True, linewidth=0.3, alpha=0.28, color=C_GRID)
         ax.set_axisbelow(True)
 
         # Annotate mean gain
@@ -315,14 +317,14 @@ def make_figure(baseline_results: list[dict], departure_results: list[dict]):
                             color=treatment_colors[treatment], edgecolor="none",
                             label=treatment_labels[treatment])
 
-            ax.axvline(0, color="#333", linewidth=LW_REF)
+            zero_line(ax, "x")
             ax.set_yticks(y_pos)
             ax.set_yticklabels([SHORT_NAMES.get(s, s) for s in models_with_departure],
                                fontsize=7)
             ax.set_xlabel("Mean residual (actual $-$ predicted)")
-            ax.set_title("B.  Cross-treatment departure", loc="left", fontsize=9)
+            ax.set_title("B. Cross-treatment departure", loc="left")
             ax.legend(loc="lower right", fontsize=6)
-            ax.xaxis.grid(True, linewidth=0.3, alpha=0.3, color="#cccccc")
+            ax.xaxis.grid(True, linewidth=0.3, alpha=0.28, color=C_GRID)
             ax.set_axisbelow(True)
 
             # Annotate aggregate stats

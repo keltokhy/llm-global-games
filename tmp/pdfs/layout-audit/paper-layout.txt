@@ -1,0 +1,1466 @@
+    Speaking in Code: How Surveillance Suppresses Coordinated Dissent
+                                                 Khaled Eltokhy
+                                            Department of Economics
+                                           The Graduate Center, CUNY
+                                                       May 2026
+
+
+Abstract
+ Surveillance and censorship are documented features of authoritarian information control (King et al., 2013; Penney,
+2016; Stoycheff, 2016), but field data confound two channels: surveillance can change the private payoff of participation,
+ or it can change what people say to one another before they decide. I isolate the second channel in a controlled
+ LLM-agent analogue of the Morris–Shin (2003) regime-change game. First, agents reproduce the canonical comparative
+ static: participation falls as regime strength rises (mean r(J, A(θ)) = +0.80 across 7 models). Second, adding pre-play
+ communication makes private information social and raises joining in matched task cells (∆ = +2.10 pp). Third,
+ adding surveillance only to the communication prompt reduces participation in 5/5 models (mean ∆ = −8.6 pp),
+while the receiver-side decision prompt is unchanged and stateless. In the primary belief sample, reported expectations
+ about how many others will join are approximately stable (31.2% vs. 30.9%, p = 0.5866), while actions fall by 12.9 pp.
+ Message content shifts from direct (“regime,” “security forces,” “streets”) to coded (“walls cracking,” “ground shifting,”
+“heads down”) language; explicit weakness references rise in the primary model. The result is a belief–action wedge in a
+ language-mediated coordination game: surveillance leaves information present but makes it less usable for coordinated
+ action.
+JEL: C72, C92, D82, D83, P16
+Keywords: global games, regime change, surveillance, communication, LLM agents, preference falsification
+
+1     Introduction                                                citizen’s best action depends on what they believe others
+                                                                  will do, which in turn depends on what others believe, and
+The central object in a coordination crisis is not informa-       so on. Carlsson and van Damme (1993) and Morris and
+tion in the abstract, but usable information. A citizen de-       Shin (2003) showed that when citizens receive sufficiently
+ciding whether to join an uprising cares about the regime’s       precise private signals, this infinite regress collapses to
+strength, but also about whether other citizens are pre-          a unique equilibrium: there is a single threshold above
+pared to act on what they know. In the canonical global           which citizens stay and below which they join. This result
+game of regime change (Morris and Shin, 2003), private            transformed the study of coordination failures—currency
+signals alone resolve equilibrium multiplicity (Carlsson          crises, bank runs, political revolutions—by providing a
+and van Damme, 1993; Frankel et al., 2003). Real coordi-          tractable framework with sharp comparative statics.
+nation crises, from bank runs (Diamond and Dybvig, 1983)             Testing these predictions empirically is difficult. Labora-
+to currency attacks (Obstfeld, 1996) to political upheaval        tory experiments confirm threshold behavior with stylized
+(Angeletos et al., 2007), add a social layer: people talk         numeric signals, but cannot manipulate the rich, multi-
+before they move. A message in that layer has two roles.          source information that characterizes real crises. Field
+It reports a state of the world, and it reveals something         data from actual coordination failures confounds strate-
+about the speaker’s willingness to make that report openly.       gic behavior with institutional differences, repression risk,
+That dual role is what makes communication valuable,              and unobserved information structures. The gap between
+and also what makes it vulnerable to surveillance.                the theory’s tractability and the difficulty of testing it
+   The idea behind a global game is simple. A regime              empirically motivates this paper’s approach.
+has some underlying strength, but no citizen knows it                The empirical strategy treats LLM agents as a measure-
+exactly. Each citizen receives a private, noisy signal—           ment instrument for a language information structure. 7
+some see evidence of weakness, others see evidence of             models spanning 6 architecture families are embedded in
+stability—and must decide whether to join an uprising             the Morris and Shin (2003) game; each receives a private
+or stay home. Joining is risky: it pays off only if enough        signal xi = θ + εi rendered as a natural-language intel-
+others join too. Staying home is safe but forgoes the             ligence briefing whose content shifts monotonically with
+chance of change. The strategic tension is that each              signal strength across eight evidence domains. No explicit
+
+
+                                                              1
+payoff table is provided—stakes are embedded in the nar-      numeric signals. The political economy of authoritar-
+rative, forcing agents to form beliefs from language. The     ian control provides the substantive motivation. Kuran
+key design move is then to hold the latent state, private     (1991) models preference falsification under social pres-
+briefings, receiver decision prompt, and decision rule envi-  sure; Edmond (2013) formalizes propaganda’s effect on
+ronment fixed while changing only the incentives under        coordination beliefs; Shadmehr and Bernhardt (2011) char-
+which peer messages are produced. Section 4 establishes       acterizes the collective action problem under repression.
+the behavioral benchmark; the surveillance treatment is       Empirically, King et al. (2013) document that Chinese cen-
+introduced only after threshold alignment is verified (Sec-   sorship targets posts about collective action specifically—
+tion 5).                                                      suggesting authorities perceive the coordination channel
+                                                              as the binding threat. Penney (2016) and Stoycheff (2016)
+Contribution roadmap. The paper has five steps. show surveillance announcements suppress online expres-
+First, it implements the canonical global game: citizens sion; Enikolopov et al. (2020) that social media facili-
+choose whether to join an uprising, joining pays only if tates protest. These literatures establish a robust em-
+enough others join, and too little participation makes join- pirical fact—surveillance and censorship reduce dissident
+ing costly. Second, it uses LLM agents because the environ- behavior—but field data cannot separate the two channels
+ment is unusually controllable: each call can be stateless, through which they could operate: direct deterrence (citi-
+private signals can be embedded in prose, and treatments zens fearing punishment for participation) and communica-
+can change one prompt component at a time. Third, be- tion poisoning (peers self-censoring such that downstream
+fore making any surveillance claim, it asks whether the agents lose coordination cues). The contribution here is
+agents reproduce the canonical comparative static. They not to re-establish that surveillance suppresses dissent—
+do: across 1,800 period-level observations and 7 models, field work has done that—but to isolate the second channel
+participation is strongly decreasing in regime strength and using a design that holds individual deterrence fixed and
+                                                                                                              1
+aligned with the benchmark attack mass (mean r = +0.80, varies only the messaging environment.
+p < 0.001 for every model). Fourth, it adds communica-           On the methodological side, Horton (2023) proposed
+tion. Private information becomes social information; in      LLMs     as “homo silicus.” Subsequent work found LLMs
+matched task cells, communication raises participation by     struggle    in coordination games (Akata et al., 2025; Sun
++2.10 pp. Fifth, it adds surveillance to the communication    et  al.,  2025),  with model scale not predicting strategic
+channel only. Participation falls, but reported expecta-      performance     (Jia  et al., 2025). Ouyang et al. (2024) docu-
+tions about how many other citizens will join remain          ments    that alignment    shifts risk preferences, while Cheung
+approximately stable. That is the belief–action wedge.        et  al. (2025)   documents      amplified moral-decision biases;
+   The mechanism evidence then asks what changed. A           together    these motivate    narrative  rather than tabular pay-
+degraded-messages control and a no-message control both       offs.    Critical  reviews    by  Larooij   and Törnberg (2026,
+reduce joining, confirming that decision-stage agents use     2025)   identify  validation   challenges  that I address through
+peer messages as part of their information environment.       cross-generator     robustness   (Appendix    E.9), scramble/flip
+The content evidence is sharper than a generic “less infor-   falsification,  and   out-of-sample    replication.
+mation” story: surveilled messages contain more explicit         The paper proceeds as follows. Section 2 presents the
+weakness references in the primary model, but fewer direct    theoretical   framework. Section 3 describes the experimen-
+regime/action terms and more metaphorical, deniable lan-      tal design.   Section  4 establishes a threshold-like behavioral
+guage. A discriminant test in Llama 3.3 70B swaps the co-     benchmark      and   shows   that pre-play communication cre-
+ordination decision for a private bet on regime fall, keeping ates  an   informative   channel.    Section 5 tests whether an
+the messaging-stage manipulation fixed; surveillance still    authoritarian     regime    can  exploit   that channel through
+moves the non-coordinative task by 5.6 pp, so part of the     surveillance.    Section  6  concludes.
+effect is generic message degradation. The coordination-
+task effect in the same model is larger (9.8 pp), but because
+the two samples are not cell-matched I report the implied 2           The Global Game of Regime
+residual (4.2 pp) as descriptive evidence rather than a               Change
+structural decomposition. The idea is simple: surveillance
+can leave information flowing while degrading the form in A continuum of citizens indexed by i ∈ [0, 1] simultane-
+which that information can coordinate action.                 ously choose whether to join an uprising (ai = 1) or stay
+                                                              home (ai = 0). The regime has strength θ ∈ R, drawn
+Related literature. The paper connects two strands. from a diffuse (improper uniform) prior. States θ ≤ 0
+The global game literature—from Carlsson and van represent regimes so weak they fall without opposition;
+Damme (1993) through Morris and Shin (2003) and the states θ ≥ 1 represent regimes that survive even unani-
+dynamic extensions of Angeletos et al. (2007) and Chas- mous attack. The regime falls if the mass of citizens who
+sang (2010)—provides the theoretical framework; labora-          1 Concurrent work by Ruaño and Rajan (2026) places LLM de-
+tory experiments (Heinemann et al., 2004, 2009; Szkup positors in a bank-run coordination game with network contagion,
+and Trevino, 2020) confirmed threshold behavior with finding sharp phase transitions consistent with Diamond–Dybvig.
+
+
+                                                               2
+join exceeds θ (Eq. 1):                                            3   Experimental Design
+                                     Z 1
+           Regime falls ⇐⇒ A ≡             ai di > θ.     (1) The experiment has two phases. First, I establish that
+                                      0                       LLM agents display threshold-like policies in the global
+   Payoffs depend on the citizen’s action and the outcome game when private signals are conveyed in natural lan-
+(Eq. 2):                                                      guage: a pure treatment (private signals only), a commu-
+                                                             nication treatment (pre-play messaging), and falsification
+                          B
+                                if ai = 1 and A > θ          tests. Second, I test whether an authoritarian regime can
+         ui (ai , A, θ) = −C if ai = 1 and A ≤ θ          (2) exploit the communication channel through surveillance.
+                                                              All LLM interactions use the same prompt structure across
+                          
+                            0    if ai = 0
+                          
+                                                              models.
+where B > 0 is the payoff to joining a successful uprising       In the theory (Section 2), θ is an unbounded funda-
+and C > 0 is the cost of joining a failed attempt. Non- mental. In the benchmark experiments, θ is drawn from
+participants receive zero regardless of the outcome.          a normal distribution and agents are not shown payoff
+   Each citizen observes a private signal xi = θ + εi , where parameters (B, C). I compute the benchmark A(θ) un-
+εi ∼ N (0, σ 2 ) independently across citizens.               der the canonical normalization B = C = 1 (θ∗ = 0.50,
+Proposition 1 (Morris and Shin, 2003). In the limit σ = 0.3).
+of diffuse priors, there exists a unique Bayesian Nash           Throughout, θ∗ = B/(B + C) is the theoretical cutoff,
+equilibrium in threshold strategies. An agent joins if and x∗ = θ∗ +σΦ−1 (θ∗ ) the signal cutoff, and θ̂∗ the estimated
+only if xi < x∗ (Eq. 3), where                                cutoff from the fitted logistic P (join | θ) = 1/(1 + eb0 +b1 θ ),
+                       x∗ = θ∗ + σΦ−1 (θ∗ )               (3) where b1 > 0 corresponds to a join curve that∗ is decreasing
+                                                              in θ (the expected direction). The cutoff is θ̂ = −b0 /b1 . I
+and θ∗ = B/(B + C).                                           write β ≡ b1 for the logistic steepness parameter in tables.
+   The attack mass A(θ)—the theoretical fraction of the          For each country–period, nature draws θ ∼ N (zct , 1),
+population that joins at regime strength θ—is given by:       where  each country has a base prior mean and each period
+                                 ∗                          receives a small additional perturbation. Each agent i
+                                 x −θ
+                       A(θ) = Φ            .              (4) receives a private signal xi = θ + εi . The platform nor-
+                                    σ                         malizes that signal to zi = (xi − zct )/σ and translates zi
+   This is a decreasing function of θ: weaker regimes face into a multi-paragraph intelligence briefing via a deter-
+larger uprisings.                                             ministic generator that maps signal strength to narrative
+   I define J(θ) as the empirical join fraction—the finite- content about regime stability, economic conditions, pub-
+sample, observed counterpart to the theoretical attack lic sentiment, and coordination prospects. Agents observe
+mass A(θ). My experiment uses n = 25 agents with a nor- the briefing, not the normalization inputs (zct , σ) them-
+mal prior θ ∼ N (z̄, 1), and agents do not observe (B, C, σ) selves. Figure 1 summarizes the signal-to-text-to-decision
+directly. I use the continuum A(θ) as an external behav- pipeline.
+ioral benchmark throughout, not as the exact equilibrium         Agents observe only their private briefing and never the
+of the implemented finite-n game.                             payoff parameters (B, C), the noise level σ, or the prior
+   The textbook model treats the information structure distribution. The diffuse-prior equilibrium (Proposition 1)
+as exogenous: signals arrive, agents update, and actions serves as an external benchmark for behavioral shape
+follow. The experiment adds a pre-play language tech- and comparative statics, not as a claim about the exact
+nology. Agents first map private briefings into messages, equilibrium of the implemented game.
+then other agents map their own briefing plus received           The behavioral benchmark has four core treatments: a
+messages into actions. Let µ0 (m | x) denote the baseline pure global game (independent decisions), communication
+distribution of messages generated from a private signal (pre-play messaging on a Watts–Strogatz network, k = 4,
+and µS (m | x) the distribution generated under monitor- p = 0.3), scramble (cross-period briefing permutation
+ing. The surveillance treatment changes µ(· | x), not θ, breaking the θ-to-signal link), and flip (negated z-scores).
+not the private briefing, and not the receiver’s decision A degraded-messages control replaces LLM messages with
+prompt. The object of interest is therefore whether replac- generic text, and a no-message control removes peer mes-
+ing µ0 with µS changes J(θ). This distinction matters sages entirely; together they benchmark how much the
+because messages can carry both first-order information decision stage depends on message content. Additional
+about θ and higher-order coordination cues about whether robustness tests are in Appendix E.
+others are willing to speak and act.                             I test 7 models spanning 6 families (Table 1). All ex-
+   The briefing generator—the system that converts z- periments use n = 25 agents per period-level task row
+scores into natural-language intelligence briefings—has and σ = 0.3. Benchmark statistics are reported against
+three tunable control parameters (clarity, directional pre- the canonical B = C = 1 attack-mass curve (θ∗ = 0.50);
+cision, dissent framing). Full generator details are in agents are not shown the payoff parameters. All LLM
+Appendix F.1.                                                 calls use temperature = 0.7 with a single sample per deci-
+
+
+                                                               3
+                                  +i                     xi = + i                             normalize                 zi
+      Regime strength                                    Private signal                                             Standardized
+
+                                                                   map to text
+
+
+
+              Briefing Generator                          narrative                 LLM                    binary        JOIN
+                                                                                                                          or
+        3 sliders × 8 domains × 4 phrase ladders                                    Agent i                              STAY
+
+
+Figure 1: Signal-to-text-to-decision pipeline. Regime strength θ generates private signals xi , converted to z-scores and
+rendered into natural-language briefings via 8 evidence domains and 3 latent sliders. Conditional on the signal draw,
+the briefing layer is deterministic; remaining stochasticity enters through task draws and LLM decoding.
+
+Table 1: Model summary. Columns report period-level task rows in the pure, communication, and falsification
+(scramble+flip) suites. All runs use N = 25 agents per row and σ = 0.3.
+
+                                     Model                    Arch.             Pure   Comm      Falsif.
+                                     Mistral Small Creative Mistral             1000   1000      300
+                                     Llama 3.3 70B          Llama                100    100      200
+                                     Qwen3 30B              Qwen (MoE)           100    100      200
+                                     GPT-OSS 120B           GPT                 200     200      1000
+                                     Qwen3 235B             Qwen (MoE)          200    1000      200
+                                     Trinity Large          Arcee               100    100        200
+                                     MiniMax M2-Her         MiniMax             100     100      200
+                                       Total                                  1800 2600 2300
+Notes: 7 models spanning 6 architecture families. Counts are period-level task rows with 25 agents each. Mistral includes appended
+batches; duplicate-cell accounting is reported in the main text and Table A7. All runs use σ = 0.3 and temperature = 0.7 unless otherwise
+stated.
+
+
+
+sion, routed through OpenRouter and cached by request                     the number of such rows.
+hash (Appendix F). Per-model calibration adjusts only a
+single scalar (cutoff center, the logistic offset that maps
+z-scores to directional sentiment); all other generator pa-                 The unit of randomization is the country–period (θ draw
+rameters are fixed ex ante. The threshold correlation is                  plus agent-level decoding stochasticity). For agent-level
+high even without calibration: 5 of 6 uncalibrated models                 regressions, standard errors are clustered at the model–
+exceed r > 0.75, with r ≥ 0.71 for every model (Appendix                  country–period level. For period-level correlations, I re-
+Table A8). Placebo perturbations of ±0.3 to the cali-                     port Fisher-z confidence intervals.
+brated scalar leave the correlation virtually unchanged
+(Appendix E, Figure A5): calibration shifts the level of the
+join curve, not its slope. I report the eight hypotheses ex-
+                                                                             The clean surveillance treatment appends a monitoring
+amined in this paper as a single hypothesis family; the four
+                                                                          warning to the baseline communication prompt; the deci-
+primary results in the main text—threshold alignment,
+                                                                          sion prompt is unchanged (full prompts in Appendix B).
+signal-direction flip, communication informativeness, and
+                                                                          Thus the treatment is not a direct receiver warning. It
+surveillance—all survive Bonferroni correction over the
+                                                                          is a manipulation of the message-generation environment
+family at α = 0.00625 (Appendix Table A1). Throughout,
+                                                                          whose downstream effect is measured on otherwise identi-
+n denotes agents per period-level task row and N denotes
+                                                                          cal decision calls.
+
+
+                                                                      4
+                 1.0                                                                  ure A10). An eight-condition narrative stakes ladder —
+                                                        Fitted logistic               prepending headers from “existential consequences” to
+                                                        Benchmark A( ) (B=C=1)
+                                                                                     “zero personal cost” to identical briefings—shifts mean join-
+                 0.8                                                                  ing monotonically from 21.3% to 78.9% (57.5 pp), with
+                                                                                      paraphrase variants tracking their originals and a text
+
+
+ Join fraction
+                 0.6                                                                  classifier unable to detect the header (Appendix E.12).
+
+                 0.4                                                                 Communication.
+                                                                                     Result 4 (Communication Creates an Informative
+                 0.2                                                                 Channel). Pre-play communication preserves the thresh-
+                                                                                     old structure and transmits regime-strength information
+                       r( , J) = -0.83, * = -0.32
+                 0.0                                                                 through messages. Matched-cell comparison across n =
+                         3         2        1       0       1      2       3         1479 unique (model, country, period, θ) task cells yields
+                                          (regime strength)                          ∆ = +2.10 pp (t = 6.383, p < 0.001), while the equal-
+                                                                                     weighted model average is heterogeneous (−0.3 pp).
+
+Figure 2: Empirical join fraction vs. θ (Mistral, 1,000         Communication preserves the signal structure (r =
+periods). The empirical sigmoid is shifted leftward (θ̂ =∗   +0.78   vs. +0.80 under pure; Figure 4). Simple text fea-
+                             ∗
+−0.32) relative to theory (θ = 0.50). Cross-model results    tures   in baseline messages predict θ, so peer messages
+in Table 2 (mean r = +0.80, all p < 0.001).                  carry   real information, noisily. This is what makes the
+                                                             channel exploitable: the decision stage treats messages as
+                                                             information, so changing the incentives to speak changes
+4 Behavioral Benchmark                                       the downstream decision environment.
+                                                                A degraded-messages control replaces all LLM-generated
+Result 1 (Monotone Threshold-Like Signal Use). Across messages with generic uninformative text while preserv-
+7 models and 1,800 period-level observations in the pure ing the two-stage protocol and omitting any surveillance
+global game treatment, the Pearson correlation between the framing. Against its own live-messages baseline (n = 500,
+empirical join fraction and the theoretical attack mass A(θ) mean join 45.9%), degraded messages drop the mean join
+(Eq. 4) averages r = +0.80 (p < 0.001 for every model). rate to 24.5% (∆ = −21.4 pp, p < 0.001)—well below even
+Because A(θ) is monotone-decreasing in θ, this correlation the pure game (38.7%). This is consistent with communi-
+establishes monotone signal use with threshold-like shape, cation quality mattering, but the generic text may itself
+not equilibrium recovery; the empirical sigmoid is shifted convey caution. A no-message control therefore provides
+leftward of the diffuse-prior cutoff (Figure 2).2            a cleaner zero-peer-message benchmark, with join rates of
+                                                             37.1% (∆ = −4.0 pp vs. communication; n = 500).
+   Figure 2 shows the empirical sigmoid for the primary
+model. Correlations span r ∈ [+0.75, +0.84] across archi-
+tectures (Table 2); the pooled OLS is J = −0.01+0.64 A(θ) 5         Surveillance
+(R2 = 0.57). Model-specific action biases shift the inter-
+cept but not the correlation (Figure A9).                    In the clean surveillance treatment, the communication
+                                                             prompt is literally the baseline trusted-contact prompt
+Result 2 (Signal Dependence). Cross-period scrambling
+                                                             plus one appended warning that communications are being
+of briefings reduces the mean within-country correlation
+                                                             monitored by regime security services. The manipulation
+from r = +0.80 to r = +0.03 across 7 models. The pooled
+                                                             affects only the communication phase; the decision prompt
+correlation drops from r = +0.76 to r = +0.01 (Fisher
+                                                             is unchanged. The isolation is architectural: each LLM
+z = 26.17, p < 0.001).
+                                                             call is stateless—the decision-stage API call receives only
+Result 3 (Signal Direction). Inverting the signal direction the briefing and the messages, with no memory of the
+flips the mean correlation from r = +0.80 to r = −0.80 communication-stage surveillance warning. The treatment
+across 7 models. The pooled correlation moves from r = therefore asks whether changing the sender-side message
++0.76 to r = −0.79 (Fisher z = 53.85, p < 0.001).            rule is enough to change receiver actions.
+
+   The pure → scramble → flip pattern replicates across                              Result 5 (Surveillance Produces a Chilling Effect). The
+all 7 models (Figure 3; Table 2).                                                    clean prompt-isolation rerun reduces mean join rates in
+   A text-only baseline tracks LLM decisions at r = 0.79,                            the primary model (Mistral Small Creative) from 41.1%
+but the LLM’s join curve is substantially steeper (Fig-                              to 32.0%, a shift of −9.1 pp (p < 0.001; n = 1000). The
+   2 The primary model (Mistral) was run in multiple batches with
+                                                                                     action–attack-mass correlation is preserved (r = +0.72 vs.
+--append, producing 1,000 rows from 680 unique (country, period, θ)
+                                                                                     r = +0.74 under the communication baseline), indicat-
+configurations. Averaging within each configuration (deduplication)                  ing that surveillance operates as a level shift rather than
+changes r from 0.753 to 0.739; all qualitative results are unaffected.               disrupting signal processing.
+
+
+                                                                                 5
+Table 2: Threshold-policy alignment by model and treatment. Cells report Pearson r between the empirical join
+fraction and the benchmark attack mass A(θ) under B = C = 1 (so θ∗ = 0.50); 95% Fisher-z confidence intervals in
+brackets for main treatments.
+
+                                                          Main treatments                      Falsification
+                      Model                           Pure               Comm             Scramble       Flip      npure   Mean join
+                      Mistral Small Creative   +0.75 [0.72, 0.78]   +0.74 [0.71, 0.76]     −0.03        −0.81      1000        0.387
+                      Llama 3.3 70B            +0.82 [0.74, 0.87]   +0.78 [0.69, 0.85]     +0.02        −0.84       100        0.439
+                      Qwen3 30B                +0.76 [0.66, 0.83]   +0.77 [0.68, 0.84]     +0.13        −0.87      100         0.499
+                      GPT-OSS 120B             +0.79 [0.74, 0.84]   +0.78 [0.72, 0.83]     −0.01        −0.80       200        0.407
+                      Qwen3 235B               +0.80 [0.74, 0.84]   +0.77 [0.75, 0.80]     +0.06        −0.85      200         0.416
+                      Trinity Large            +0.84 [0.77, 0.89]   +0.83 [0.75, 0.88]     +0.05        −0.80       100        0.464
+                      MiniMax M2-Her           +0.82 [0.74, 0.87]   +0.82 [0.74, 0.87]     +0.01        −0.62       100        0.436
+                      Pooled                   +0.76 [0.74, 0.78]   +0.76 [0.74, 0.77]     +0.01        −0.79      1800        0.409
+                      Mean across models           +0.80                +0.78              +0.03        −0.80       —            —
+Notes: r = r(J, A(θ)): Pearson correlation between empirical join fraction and theoretical attack mass under B = C = 1. 95% Fisher-z
+confidence intervals in brackets. Join fraction uses valid decisions only (excluding parse errors). Pooled: all period-level rows concatenated;
+Mean: equal-weighted average across models. Duplicate-cell accounting is reported in the main-text footnote and Table A7.
+
+
+                         A. Pure (signal intact)             B. Scramble (signal destroyed)                     C. Flip (signal reversed)
+                1.0                       Trinity                                        rA = +0.21       rA = 0.80
+                                          Llama-3.3-70B                                  rA = +0.17       rA = 0.84
+                0.8                       Ministral-3B
+                                          Mistral-Small                                  rA = +0.20       rA = 0.87
+                                                                                         rA = +0.15       rA = 0.81
+
+Join fraction
+                0.6
+
+                0.4
+
+                0.2
+
+                0.0
+                           2        0          2                    2         0            2                      2        0           2
+
+
+Figure 3: Falsification triptych. Left: Pure (mean r = +0.80). Center: Scramble (r = +0.03). Right: Flip (r = −0.80).
+
+
+   Surveillance contaminates the information environment significant at 5%; Appendix Table A12). The 4 non-Qwen3
+with monitored messages, pushing join rates below the 235B estimates range from -11.1 to -9.1 pp; Qwen3 235B—
+communication baseline (Figure 5). The clean primary- the largest model in the suite—shows a smaller but still
+model estimate is a 9.1 pp decline. Placebo variants using significant effect at ∆ = −3.6 pp (p = 0.033, N = 1000 per
+the same baseline-plus-warning template—monitored for condition), consistent with stronger safety post-training
+research (no consequences) and aggregated anonymously— in larger models attenuating but not eliminating respon-
+produce no significant deviation from the communication siveness to the manipulation. The qualitative pattern
+baseline in the primary model (+0.3 pp and +0.1 pp, both is robust across 30B–235B parameters and four distinct
+p > 0.9; Appendix E.6). Both variants replicate in Llama architecture families.
+3.3 70B at N = 1000 on the surveillance side: research-only
+monitoring ∆ = −0.3 pp (p = 0.9399); anonymous moni-
+toring ∆ = −1.1 pp (p = 0.8137). Confidence intervals are The mechanism is communication poisoning. I use
+wide because the Llama baseline is at N = 100 (95% CIs “communication poisoning” in a narrow sense: monitored
+of roughly ±8.9 pp); equivalence is suggestive rather than messages become less useful inputs for the receiver’s coor-
+fully established, but the two consequence-free variants dination decision. Three distinct message properties could
+are an order of magnitude smaller than the consequential- change: (a) factual information about regime strength θ,
+monitoring effect in the same model (−9.8 pp). Across the (b) coordination cues about what other citizens are willing
+clean prompt-isolation rerun set, 5/5 models move in the to say or do, and (c) risk/fear salience transmitted by
+negative direction (mean ∆ = −8.6 pp; 5/5 individually tone. The evidence is not that surveillance simply deletes
+                                                            bad news about the regime. It is that monitoring changes
+
+
+                                                                          6
+                                                                                                                      rect to coded language: direct references to the regime,
+                2.1                                                        Pure                                       security forces, and streets fall from 63.9% to 34.5% of mes-
+                                                                           Comm
+                                                                                                                      sages (∆ = −29.4 pp), replaced by metaphorical phrasings
+        1.1
+                                                                                                                     (“walls are cracking,” “ground shifting,” “heads down,”
+        0.6                                                                                                          “feels different”; 69.8% to 94.1%, ∆ = +24.2 pp; Appendix
+                                                                                                                     Table A6). Weakness cues remain present, but they arrive
+
+
+bin center
+        0.2                                                                                                           in a less direct, less mutually legible form. With the deci-
+                                                                                                                      sion prompt unchanged, the behavioral effect is localized
+       -0.2                                                                                                           to this sender-generated message distribution.
+                                                                                                                         Second, the degraded-messages control (Section 4, Com-
+       -0.5                                                                                                           munication) exogenously replaces all messages with generic
+                                                                                                                      text—without any surveillance framing—and drops joining
+       -1.0
+                                                                                                                      by 21.4 pp (to 24.5% from its 45.9% live-messages baseline).
+       -2.1                                                              Weak regime = +0.05
+                                                                                                                     The    no-message control gives a cleaner zero-peer-message
+                                                                         Strong regime = 0.00                         benchmark    (primary model: 37.1%; ∆ = −4.0 pp). Across
+                                                                                                                      the three models with no-message data (Mistral, Llama
+                 0.0              0.2                    0.4               0.6               0.8                     3.3 70B, Qwen3 30B), removing peer messages reduces
+                                                    Join fraction                                                     joining substantially in every case (−4 to −16 pp), con-
+                                                                                                                      firming that decision-stage agents weight peer messages
+Figure 4: Communication effect by regime strength, as informational input. Where surveillance lies relative to
+pooled across 7 models.                                                                                               this floor varies: in Mistral surveillance lies below the no-
+                                                                                                                      message floor by 5.0 pp (p < 0.01), consistent with active
+            A. Clean prompt-isolation effect                                       B. Clean controls                  channel poisoning; in Llama and Qwen3 30B surveillance
+   1.0                                 Communication
+                                       Clean surveillance  Surveillance     -9.1pp                                    lies above the floor (+5.1 pp and +6.5 pp, both p < 0.01),
+   0.8
+                                                                                                                      consistent with surveilled messages remaining a degraded
+                                                               Placebo                                        +0.3pp
+
+Join fraction
+   0.6                                                                                                                but still informative input. The cross-model joining ef-
+   0.4                                                      Anonymous                                        +0.1pp   fect is robust; how surveilled messages compare to silence
+   0.2                                                                                                               varies.
+                                                           No messages                        -4.0pp
+   0.0                                                                                                                   Third, elicited punishment risk is ≈ 8.0/10 across all
+         3     2      1     0      1       2          3                 10      8       6    4       2     0
+                     (regime strength)                                         join vs. communication (pp)            conditions   with negligible differences between JOIN and
+                                                                                                                      STAY agents (Table A19). This does not separately iden-
+Figure 5: Clean primary-model surveillance and message tify fear salience in message tone, but it weighs against
+controls. Panel A: Join curves under communication base- a simple receiver-side story in which surveilled messages
+line vs. clean surveillance; surveillance shifts the curve mainly work by making agents report higher punishment
+downward while preserving threshold structure. Panel risk.
+B: Deltas vs. baseline. Placebo and anonymous monitor-
+ing warnings sit at zero. In the primary model, surveil- Beliefs and the action wedge. The wedge is most
+lance falls below the no-message floor (∆ surv−nomsg transparent in the second-order belief elicitation: “What
+= −5.0 pp, p < 0.01): surveilled messages are worse for percentage of citizens will choose to JOIN?” In the primary
+coordination than absent messages in this model.                                                                      belief sample, communication agents report 31.2% and
+                                                                                                                      surveillance agents report 30.9% (∆ = −0.3 pp, p =
+                                                                                                                      0.5866). Actions move much more: joining falls from
+the language format of peer messages in a way that makes 41.4% to 28.5% (∆ = −12.9 pp). First-order success
+the same channel less action-guiding.                                                                                 beliefs are also close (44.4% vs. 43.6%). I report the
+   First, message content changes systematically and in wedge as a measured fact: the same agents who report
+a specific direction. A logistic classifier on uni- and bi- nearly unchanged expectations about others’ participation
+grams distinguishes baseline from surveillance messages choose substantially less participation themselves.
+with 91.9% accuracy on a held-out sample of N = 15000                                                                    This is not a causal mediation claim. The belief mea-
+messages (chance = 50%; primary model). The same sures are post-decision reports, and the elicitation instru-
+finding replicates on class-balanced Llama 3.3 70B and ment matters. When the belief prompt explicitly includes
+Qwen3 30B samples (98.5% and 93.6% accuracy, respec- the received peer messages, reported beliefs move more
+tively); in 3/3 measured models, direct references fall under surveillance (Appendix C, Table A2). That sensi-
+and coded-metaphor references rise. The shift is not to- tivity is informative: part of the treatment is visible when
+ward fewer explicit weakness references—in the primary agents are asked to re-read the messages, but the headline
+model, references to regime weakness rise from 23.2% to action decline is larger than the stable second-order report
+31.7% of messages (z = 21.06), while strength references in the primary elicitation.
+drop from 14.5% to 8.5%. Rather, the shift is from di-                                                                   A separate hold-fixed test replays baseline messages
+
+
+                                                                                        7
+verbatim while adding a surveillance warning to the de-             imately stable in the primary belief elicitation. Placebo
+cision prompt, producing a −20.9 pp drop (p < 0.001).               warnings do not replicate the effect in the primary model,
+This shows a direct decision-stage channel exists—but it            and message controls show that downstream agents use
+is absent in the main design, where the decision prompt             peer messages as part of their decision environment. The
+contains no surveillance reference. The main treatment              same channel that helps citizens coordinate is also the
+isolates the indirect channel: communication poisoning.             channel an authoritarian regime can degrade.
+                                                                       The mechanism evidence extends beyond the main treat-
+Decomposition: informational versus coordination                    ment contrast. Surveillance moves a non-coordinative
+components. A complementary discriminant test holds                 private bet on regime fall, so the channel is not pure
+the surveillance manipulation fixed but swaps the task. In          strategic fear about others’ actions; it also changes how
+Llama 3.3 70B, I keep the briefing pipeline and messag-             downstream agents interpret the message environment.
+ing stage identical—including the surveillance prompt—              The coordination-task effect is larger, and the message
+but reframe the decision-stage prompt as a private bet              text shifts from direct statements toward metaphorical and
+on regime fall (payoff independent of others’ actions).             deniable phrasing, consistent with a loss of coordination-
+Surveillance still moves the bet by −5.6 pp (p = 0.0256;            cueing value beyond the generic judgment shift. These
+n = 500 per condition; baseline 34.7% vs. surveillance              results suggest why censorship and surveillance need not
+29.1%). This shows that the treatment changes down-                 be graduated forms of the same instrument in a coordina-
+stream judgments even when peer actions do not enter                tion environment. Censorship removes information from
+payoffs. The coordination-task delta in the same model              the channel; surveillance can leave information flowing
+is larger (−9.8 pp), so the difference is consistent with a         while changing its common-language form. The central
+coordination-specific component. Because the private-bet            claim is that information can be present yet no longer
+and coordination samples are not matched on identical               usable for coordination. Whether this characterizes how
+task cells, I treat the residual 4.2 pp as descriptive mecha-       authoritarian regimes actually deploy these tools—given
+nism evidence rather than a point-identified decomposi-             other constraints on what they can plausibly monitor
+tion.                                                               versus ban—is a separate empirical question; the contribu-
+                                                                    tion here is to isolate a communication-poisoning channel
+                                                                    under controlled prompts and matched decision contexts.
+Cross-model writer-reader rotation. A standing                         The paper avoids claiming full recovery of the unique
+concern with the within-model design is reflexivity: writer         Bayesian Nash equilibrium or causal mediation through
+model and reader model are the same, so the reader could            post-decision belief elicitations. Three limitations warrant
+be responding to stylistic artifacts of its own family rather       discussion. First, whether the underlying mechanism is
+than to a content property of surveilled messages. To               approximate Bayesian reasoning or a learned heuristic that
+rule this out, I test bidirectional rotation on matched             matches BNE remains open. Second, the experiments are
+(country, period, θ) cells. Llama writes, Qwen3 30B reads:          static; real coordination problems are dynamic (Angeletos
+surveillance reduces Qwen joining by −7.5 pp (p < 0.001,            et al., 2007; Chassang, 2010). Third, external validity
+n = 200), comparable to the within-Llama matched effect             remains the fundamental challenge: what LLM agents do
+(−6.0 pp on identical cells). Qwen3 30B writes, Llama               in a coordination game is evidence about the structure of
+reads: the reverse direction gives a smaller but still sig-         the game, not necessarily about how humans would play it.
+nificant cross-model effect (−1.9 pp, p < 0.001, n = 200).          Cross-model benchmark and clean-surveillance replication
+Both directions reject pure writer-reader same-family               suggest that the qualitative pattern is not an artifact of
+recognition: the channel operates through message content.          one model family; pre-decision belief elicitation or a small
+The asymmetry between directions suggests Llama pro-                human validation experiment remains the natural next
+duces more strongly coordination-suppressing surveilled             step. The experimental template is reusable, and the data
+messages than Qwen does—a heterogeneity worth inves-                and code are publicly available.
+tigating but one that does not undermine the channel
+claim.
+                                                                    References
+                                                                    Elif Akata, Lion Schulz, Julian Coda-Forno, Seong Joon Oh, Matthias
+6     Conclusion                                                       Bethge, and Eric Schulz. Playing repeated games with large language
+                                                                       models. Nature Human Behaviour, 9:1380–1390, 2025.
+                                                                    George-Marios Angeletos, Christian Hellwig, and Alessandro Pavan.
+                                                                       Dynamic global games of regime change: Learning, multiplicity, and
+The paper’s central result is a belief–action wedge in a               the timing of attacks. Econometrica, 75(3):711–756, 2007.
+controlled global game. LLM citizens first reproduce the            Hans Carlsson and Eric van Damme. Global games and equilibrium
+                                                                       selection. Econometrica, 61(5):989–1018, 1993. doi: 10.2307/2951491.
+canonical comparative static: participation falls as regime         Sylvain Chassang. Fear of miscoordination and the robustness of co-
+                                                                       operation in dynamic global games with exit. Econometrica, 78(3):
+strength rises. Communication then turns private prose                 973–1006, 2010. doi: 10.3982/ECTA7324.
+signals into social information. When monitoring enters             Vanessa Cheung, Maximilian Maier, and Falk Lieder. Large language
+                                                                       models show amplified cognitive biases in moral decision-making. Pro-
+only during that messaging stage, join rates fall in all five          ceedings of the National Academy of Sciences, 122(25):e2412015122,
+clean prompt-isolation reruns even though reported expec-              2025. doi: 10.1073/pnas.2412015122.
+                                                                    Douglas W. Diamond and Philip H. Dybvig. Bank runs, deposit insurance,
+tations about how many others will join remain approx-                 and liquidity. Journal of Political Economy, 91(3):401–419, 1983.
+
+
+
+                                                                8
+Chris Edmond. Information manipulation, coordination, and regime
+   change. Review of Economic Studies, 80(4):1422–1458, 2013.
+Ruben Enikolopov, Alexey Makarin, and Maria Petrova. Social media
+   and protest participation: Evidence from Russia. Econometrica, 88
+   (4):1478–1514, 2020.
+David M. Frankel, Stephen Morris, and Ady Pauzner. Equilibrium
+   selection in global games with strategic complementarities. Journal
+   of Economic Theory, 108(1):1–44, 2003.
+Frank Heinemann, Rosemarie Nagel, and Peter Ockenfels. The theory of
+   global games on test: Experimental analysis of coordination games
+   with public and private information. Econometrica, 72(5):1583–1599,
+   2004.
+Frank Heinemann, Rosemarie Nagel, and Peter Ockenfels. Measuring
+   strategic uncertainty in coordination games. Review of Economic
+   Studies, 76(1):181–221, 2009.
+John J. Horton. Large language models as simulated economic agents:
+   What can we learn from homo silicus? Working Paper 31122, National
+   Bureau of Economic Research, 2023.
+Jingru Jia, Zehua Yuan, Junhao Pan, Paul E. McNamara, and Deming
+   Chen. LLM strategic reasoning: Agentic study through behavioral
+   game theory. arXiv preprint arXiv:2502.20432, 2025.
+Gary King, Jennifer Pan, and Margaret E. Roberts. How censorship in
+   China allows government criticism but silences collective expression.
+   American Political Science Review, 107(2):326–343, 2013.
+Timur Kuran. Now out of never: The element of surprise in the East
+   European revolution of 1989. World Politics, 44(1):7–48, 1991.
+Maik Larooij and Petter Törnberg. Do large language models solve the
+   problems of agent-based modeling? A critical review of generative
+   social simulations. arXiv preprint arXiv:2504.03274, 2025.
+Maik Larooij and Petter Törnberg. Validation is the central challenge
+   for generative social simulation: A critical review of LLMs in agent-
+   based modeling. Artificial Intelligence Review, 59(1):15, 2026. doi:
+   10.1007/s10462-025-11412-6.
+Stephen Morris and Hyun Song Shin. Global games: Theory and appli-
+   cations. In Mathias Dewatripont, Lars Peter Hansen, and Stephen J.
+   Turnovsky, editors, Advances in Economics and Econometrics, pages
+   56–114. Cambridge University Press, 2003.
+Maurice Obstfeld. Models of currency crises with self-fulfilling features.
+   European Economic Review, 40(3–5):1037–1047, 1996.
+Shumiao Ouyang, Hayong Yun, and Xingjian Zheng. AI as decision-
+   maker: Ethics and risk preferences of LLMs. arXiv preprint
+   arXiv:2406.01168, 2024.
+Jon W. Penney. Chilling effects: Online surveillance and Wikipedia use.
+   Berkeley Technology Law Journal, 31(1):117–182, 2016.
+Christopher Ruaño and Shreshth Rajan. Social contagion and bank
+   runs: An agent-based model with LLM depositors. arXiv preprint
+   arXiv:2602.15066, 2026.
+Mehdi Shadmehr and Dan Bernhardt. Collective action with uncertain
+   payoffs: Coordination, public signals, and punishment dilemmas.
+   American Political Science Review, 105(4):829–851, 2011. doi: 10.
+   1017/S0003055411000359.
+Elizabeth Stoycheff. Under surveillance: Examining Facebook’s spiral of
+   silence effects in the wake of NSA internet monitoring. Journalism
+   and Mass Communication Quarterly, 93(2):296–311, 2016. doi:
+   10.1177/1077699016630255.
+Haoran Sun, Yusen Wu, Yukun Cheng, and Xu Chu. Game theory
+   meets large language models: A systematic survey. In Proceedings
+   of the Thirty-Fourth International Joint Conference on Artificial
+   Intelligence, pages 10669–10677, 2025. doi: 10.24963/ijcai.2025/1184.
+Michal Szkup and Isabel Trevino. Sentiments, strategic uncertainty, and
+   information structures in coordination games. Games and Economic
+   Behavior, 124:534–553, 2020.
+
+
+
+
+                                                                             9
+A     Experimental Design Details                                  “You are a citizen deciding whether to JOIN an up-
+                                                                   rising or STAY home. You only have your private
+Table A1 reports the eight-hypothesis family and outcomes.         briefing below. You do not know how many others
+The main-text results correspond to H1 (alignment), H3             will JOIN. Start your first line with exactly JOIN or
+(flip), H4 (communication), and H7 (surveillance); all four        STAY, then give 1–2 concise sentences of reasoning.”
+survive Bonferroni correction at α = 0.00625. H5–H6 and This is followed by the agent’s intelligence briefing (see
+H8 are retained for family-wise accounting but are not Figure A12 for complete examples at z ∈ {−2, 0, +2}). In
+interpreted as central claims in the present article.       the communication treatment, agents first receive:
+                                                                   “You are a citizen in a country with an authoritarian
+Narrative header texts. The eight narrative stakes-                 regime. You have received a private intelligence
+ladder conditions prepend the following headers to each             briefing. You are now in contact with a small number
+agent’s standard intelligence briefing (the briefing body is        of trusted people. Based on your briefing, write a
+identical across conditions):                                       brief message (1–2 sentences) to share your read of
+                                                                    the situation. Be natural—you’re talking to people
+    Very high cost: “CONTEXT: The regime                           you trust.”
+    maintains an extensive network of informants
+                                                               After exchanging messages on the network, agents receive
+    and has a documented history of disappearances
+                                                               the decision prompt above, augmented with: “Before
+    following failed uprisings. Participants’ families
+                                                               deciding, you received the following messages from your
+    are routinely targeted. The cost of unsuccessful
+                                                               contacts:” followed by the actual messages from network
+    action is existential.”
+                                                               neighbors. In the surveillance variant, the communication
+    Moderate high cost: “CONTEXT: Partici-                     prompt appends:
+    pants in past failed uprisings have faced prison               “IMPORTANT: You have reason to believe that your
+    sentences of several years and loss of employ-                  communications are being monitored by regime secu-
+    ment. The personal cost of unsuccessful action                  rity services, and messages deemed subversive could
+    is significant but not life-threatening.”                       have serious consequences for you and your contacts.”
+                                                               The decision prompt is unchanged under surveillance—
+    Neutral: “CONTEXT: The consequences of                     it contains no mention of monitoring. Any behavioral
+    participating in a failed uprising are uncertain           effect therefore operates through the content of the (now
+    and vary case by case. Some participants have              self-censored) messages.
+    faced penalties while others have not. The per-
+    sonal stakes are ambiguous.”
+                                                               C     Belief Elicitation
+    Moderate low cost: “CONTEXT: Recent le-
+    gal reforms have limited the regime’s ability to         Beliefs are elicited on a 0–100 probability scale imme-
+    punish dissent. Past participants faced only brief       diately after each decision. The first-order question is
+    questioning and were released without charges.          “How likely is the uprising to succeed?” The second-order
+    The personal risk of action is modest.”                  question is “What percentage of citizens will choose to
+                                                            JOIN?” The primary belief sample includes the private
+     Very low cost: “CONTEXT: The international              briefing and the agent’s own decision, but not the received
+     community has guaranteed safe passage and asy-          peer messages; this keeps the elicitation from mechanically
+     lum for all participants regardless of outcome.         re-exposing the treatment text after the action. Figure A1
+     Even failed uprisings carry essentially zero per-       documents calibration quality against the theoretical pos-
+     sonal cost.”                                            terior (r = +0.80); Figure A3 confirms monotone signal–
+                                                             belief mapping nonparametrically.
+     Placebo: “CONTEXT: The country has expe-                   A factorial variant tests information-set sensitivity. Ta-
+     rienced significant weather disruptions this year,      ble A2 crosses condition (communication vs. surveillance)
+     including severe flooding in the eastern provinces     with elicitation information set (messages included vs. ex-
+     and an extended drought in agricultural regions.        cluded). Without messages, first-order beliefs barely shift
+     Infrastructure damage has been substantial.”            under surveillance (−0.4 pts, p = 0.34) and second-order
+                                                             beliefs are effectively unchanged (−0.1 pts, p = 0.89),
+Paraphrase variants (high cost v2, low cost v2) use differ-
+                                                            while actions shift −11.4 pp. With messages included,
+ent surface wording to express the same cost level.
+                                                             beliefs shift significantly (−5.7 pts and −8.2 pts, both
+                                                             p < 0.001). The wedge is therefore an instrument-sensitive
+B Complete Prompt Example                                    descriptive fact, not a claim that surveillance leaves all be-
+                                                             liefs unchanged under every elicitation prompt. Figure A2
+The following shows the complete text that an LLM re- shows second-order beliefs under the message-excluded
+ceives for a single decision. The decision prompt is:        information set.
+
+
+                                                            10
+Table A1: Hypothesis family and test results. H1–H4 use pooled Part I data across all seven models; H5–H8 use the
+primary model (Mistral Small Creative). Effect size: r for correlations (H1–H3), Cohen’s d or dz for mean comparisons
+(H4–H8). Outcome labels use α = 0.05; H2 is reported as a falsification check, not as evidence for a zero effect.
+
+                                  H    Hypothesis                   Test                        Stat          p      Effect Outcome
+                                  H1   Sigmoid Response             Pearson                     0.757       <0.001    0.757   Supported
+                                  H2   Scramble Falsification       Pearson                     0.014        0.638    0.014   Passes falsification
+                                  H3   Directional Sensitivity      Pearson (1-sided)           -0.791      <0.001   -0.791   Supported
+                                  H4   Communication Channel        Paired t                    6.383       <0.001    0.166   Supported
+                                  H5   Ambiguity Pooling            t-test                      -0.828      0.408    -0.071   Not supported
+                                  H6   Censorship Distortion        t-test                      -12.207     <0.001   -1.051   Supported
+                                  H7   Surveillance Chilling        t-test                      -5.344      <0.001   -0.239   Supported
+                                  H8   Propaganda Dose-Response     t-test                      -0.892       0.372   -0.049   Not supported
+Notes: H1–H4: pooled across all seven models (H4 uses paired t-test matched on model/country/period/θ task cells). H5–H8: primary
+model (Mistral Small Creative). Bonferroni survivors at α = 0.00625: H1, H3, H4, H6, H7. H8 post-hoc power: 0.14 (Cohen’s d = −0.049;
+MDE at 80% power = 6.3 pp).
+
+
+Table A2: Belief–action wedge under surveillance: effect of including peer messages in the belief elicitation prompt
+(n = 12, 500 per cell).
+
+                                                                       Messages excluded                     Messages included
+                                                                      Comm                    Surv          Comm          Surv
+                                              First-order belief       46.0                   45.7           53.2          47.4
+                                              Second-order belief      32.7                   32.7           42.0          33.8
+                                              Join rate               42.4%                  31.0%          42.2%         30.9%
+                                              Surveillance effect (comm → surv):
+                                              ∆ belief                 −0.4 (p = 0.34)                       −5.7 (p < 0.001)
+                                              ∆ SOB                    −0.1 (p = 0.89)                       −8.2 (p < 0.001)
+                                              ∆ join                 −11.4 pp (p < 0.001)                   −11.4 pp (p < 0.001)
+Notes: Post-decision elicitation, 500 country–periods × 25 agents per cell. “Messages excluded”: belief prompt sees briefing and decision
+only. “Messages included”: belief prompt additionally sees the peer messages received in the communication round.
+
+
+                      A. Beliefs track Bayesian posterior                                    B. Actions diverge from beliefs under treatment
+                1.0
+                        r = +0.80                                                      1.0           Pure
+                        slope = 0.59                                                                 Communication
+                0.8                                                                    0.8           Surveillance
+                                                                                                     Propaganda k = 5
+
+
+Stated belief
+                0.6
+                                                                           Join rate
+                                                                                       0.6
+
+                0.4                                                                    0.4
+
+                0.2                                                                    0.2
+
+                0.0                                                                    0.0
+                      0.0   0.2    0.4     0.6      0.8   1.0                                        0 20         20 40         40 60         60 80   80 100
+                      Bayesian posterior P(success xi)                                                               Stated belief (percent)
+
+Figure A1: Belief elicitation (Mistral). Left: Stated beliefs vs. theoretical P (success | xi ) (r = +0.80). Right: Join
+rate by belief bin.
+
+
+D                 Identification Test Details                                                The chilling effect is invisible to classifiers restricted to
+                                                                                             the briefing body alone—the briefings are by construc-
+Table A3 summarizes which candidate channels each test                                       tion identical across conditions, and any apparent classi-
+addresses and what the test concludes. The remaining                                         fier signal would indicate a contamination artifact in the
+tables in this section provide the classifier evidence under-                                design. Table A5 repeats the briefing-classifier exercise
+pinning rows three and four.                                                                 across the cost/benefit sweep. In contrast, a classifier on
+Table A4 compares text-classifier accuracy on the intelli-                                   the actual peer messages—which are LLM-generated and
+gence briefings under baseline and surveillance conditions.
+
+
+                                                                                         11
+                            A. Second-order belief vs regime strength                                                           B. Calibration: belief vs actual join
+                      1.0                                        Pure (r = 0.73)                                    1.0                 Pure (r = +0.80)
+                                                                 Communication (r = 0.73)                                               Communication (r = +0.80)
+                      0.8                                        Surveillance (r = 0.73)                            0.8                 Surveillance (r = +0.80)
+
+
+
+
+Second-order belief                                                                         Second-order belief
+                                                                                                                                        Perfect calibration
+                      0.6                                                                                           0.6
+
+                      0.4                                                                                           0.4
+
+                      0.2                                                                                           0.2
+
+                      0.0                                                                                           0.0
+                             3          2          1         0          1        2                                              0.0                     0.2               0.4                         0.6            0.8                   1.0
+                                                  (regime strength)                                                                                      Actual join rate (period level)
+
+Figure A2: Second-order beliefs (restricted information set, messages excluded). On this information set, surveillance
+and pure overlap; the factorial in Table A2 shows a significant shift when messages are included.
+
+
+                            Nonparametric monotonicity                                                              1.0
+
+                                                                                                                    0.8
+                                                                                                                                                                     n=5
+                                                                                                                                                                     n = 10
+                                                                                                                                                                     n = 25
+                                                                                                                                                                                                1.0
+
+                                                                                                                                                                                                0.8
+                                                                                                                                                                                                                                          Slope 1:
+                                                                                                                                                                                                                             Pure (no network): 2.15
+                                                                                                                                                                                                                                    Comm k=4: 2.57
+                                                                                                                                                                                                                                    Comm k=8: 4.65
+                                                                                                                                                                     n = 50
+                      1.0                                                     r = 0.88                                                                               n = 100
+
+
+
+                                                                                                    Join fraction                                                               Join fraction
+                                                                            N = 10, 000                             0.6                                                                         0.6                               Pure (no network)
+                                                                                                                                                                                                                                  Comm k=4
+                                                                                                                                                                                                                                  Comm k=8
+                      0.8                                                                                           0.4                                                                         0.4
+
+
+
+
+Belief / P(success)
+                                                                                                                    0.2   n=5: r = -0.75
+                                                                                                                          n=10: r = -0.78                                                       0.2
+                                                                                                                          n=25: r = -0.83
+
+
+                      0.6
+                                                                                                                          n=50: r = -0.81
+                                                                                                                    0.0   n=100: r = -0.82
+                                                                                                                                                                                                0.0
+                                  Theoretical P(success z)                                                                  3       2         1     0     1      2      3                               3   2    1     0     1         2        3
+                                                                                                                                             (regime strength)                                                  (regime strength)
+                                  Mean stated belief
+                      0.4
+                                                                                                                            (a) Agent count.                                                          (b) Network density.
+                      0.2
+                                                                                                   Figure A4: Robustness checks for threshold-policy align-
+                      0.0                                                                          ment.
+                                 10          5           0          5           10
+                                            z-score (calibrated signal)
+                                                                                                   E.1                          Communication Aggregation
+Figure A3: Nonparametric monotonicity: mean belief by
+z-score bin vs. theoretical benchmark.                     Communication aggregation accounting. Table A7
+                                                           decomposes the communication estimators by model. The
+                                                           matched-cell estimand is the main one because it compares
+                                                           exact like-for-like task cells and loses almost no support;
+downstream of the surveillance prompt—separates the
+                                                           the gap relative to the pooled unpaired contrast is driven
+two conditions sharply (91.9% accuracy on N = 15000
+                                                           by weighting repeated task cells, especially in the largest
+held-out messages; Table A6). Together the two classifier
+                                                           model, rather than by a large common-support restriction.
+exercises locate the manipulation: briefings are indistin-
+guishable across conditions (as designed), and the entire
+behavioral effect is mediated by message-side language
+change.
+
+                                                                                                   E.2                          Calibration Robustness
+
+E                       Robustness                                                                 Without calibration, all 6 models show r > 0.71 and 5
+                                                                                                   exceed r > 0.75 (Table A8). Deliberately miscalibrating
+Threshold-policy alignment is stable to agent count (r ∈                                           two models (±0.3 shift) leaves r virtually unchanged (r ∈
+[+0.67, +0.73] across n ∈ {5, 10, 50, 100}), network density                                       [+0.80, +0.80]; Table A9): calibration adjusts the level
+(r = +0.69 at k = 8 vs. +0.74 at k = 4), and mixed-model                                           but does not create the slope. Table A10 and Figure A6
+populations (r = +0.86 pure, r = +0.83 communication;                                              report cross-model heterogeneity in calibration quality,
+Figure A4).                                                                                        with rA ranging from +0.75 to +0.84.
+
+
+                                                                                            12
+Table A3: Identification map. Each row lists a candidate                  Table A4: Classifier baselines. Accuracy and AUC are
+channel through which the surveillance treatment could                    5-fold CV on pure-treatment data. “Pred. join (surv.)”
+produce the observed action effect; the right column iden-                is the classifier’s predicted join rate when applied to
+tifies the test(s) addressing it and the conclusion. “Not                 surveillance-treatment briefings; “Actual” is the LLM’s
+tested” marks channels that the design cannot rule out                    observed rate. The gap measures the surveillance wedge
+and that I flag as limitations.                                           invisible to text classifiers.
+
+ Candidate channel         Test & outcome                                     Classifier        Acc.    AUC         Pred. join (surv.)   Actual (surv.)      Gap
+                                                                              BoW TF-IDF        88.4%   0.947            40.5%               27.6%         13.0 pp
+ Direct deterrence at      Decision prompt held fixed in main treat-          Slider logistic   88.4%   0.941            40.4%               27.6%         12.8 pp
+ decision time             ment (decision context=none). A sepa-              Keyphrase         60.2%   0.594            8.4%                27.6%         -19.2 pp
+                           rate hold-fixed test (§5) shows this chan-
+                                                                          Notes: Primary model (Mistral Small Creative). Accuracy and AUC
+                           nel exists when the warning is moved to
+                                                                          from 5-fold cross-validation on pure-treatment data. Gap = classifier-
+                           the decision prompt (∆ = −20.9 pp), but
+                                                                          predicted join rate − actual LLM join rate under surveillance (pp).
+                           it is absent in the main design. Ruled out
+                           as the main-treatment driver.
+ Generic observation Placebo (“monitoring for research, no con-           Table A5: Narrative-stakes conditions: classifier vs. actual
+ effect              sequences”) and anonymous monitoring                 LLM behavior. Actual join rates shift by ≈ 50 pp across
+                     variants (Appendix E.6). Both are null in            strategic-stakes framing conditions; the classifier, trained
+                     the primary model (p > 0.9); Llama vari-
+                     ants are small but imprecise. Disfavored
+                                                                          on briefing-body text features alone, cannot predict this
+                     as the main driver.                                  shift.
+ Generic     message- Cross-task discriminant placebo (§5,
+ stage degradation    Llama 3.3 70B): surveillance moves a non-                Condition                        N      Classif. pred.     Actual     Gap (pp)
+                      coordinative private bet on regime fall by               Baseline (θ∗ = 0.50)  270                   40.9%           40.9%          +0.0
+                      5.6 pp. Supported as one component.                      High cost (θ∗ = 0.25) 270                   40.9%           19.0%          +21.9
+ Coordination-cue loss     Coord-task delta compared with cross-               Low cost (θ∗ = 0.75) 270                    40.9%           69.3%          -28.4
+                           task delta (Llama: 9.8 vs. 5.6 pp; residual    Notes: Primary model (Mistral Small Creative). Logistic classifier
+                           ≈ 4.2 pp). Because the samples are not         trained on baseline slider features. Gap = classifier-predicted join
+                           cell-matched, this is descriptive mecha-       rate − actual LLM join rate (pp).
+                           nism evidence, not a point-identified de-
+                           composition.
+                                                                          Table A6: Top 10 most discriminative uni- and bi-grams
+ Risk/fear salience in     Punishment-risk elicitation across con-
+ messages                  ditions (Table A19).       Risk ratings
+                                                                          between baseline and surveillance messages (primary
+                           are ≈ 8.0/10 across conditions; small          model). A logistic classifier on tf-idf features achieves
+                           JOIN/STAY differences. Inconclusive:           91.9% accuracy on a held-out sample of N = 15, 000.
+                           the elicitation may be saturated and
+                           message-tone fear cannot be cleanly sepa-
+                                                                                 Surveillance-distinguishing                  Baseline-distinguishing
+                           rated from informational degradation in
+                           this design.                                          Feature                   Coef           Feature                         Coef
+ Model-style reflexivity   Bidirectional cross-model rotation on                 things feel              +6.41           look the                        -11.11
+                           matched cells. Llama writes → Qwen3                   walls are                +5.87           look                             -8.93
+                           30B reads: -7.5 pp (n = 200, p < 0.001),              are cracking             +5.64           listen                           -7.31
+                           comparable to within-Llama matched (-                 things                   +5.56           listen this                      -6.00
+                           6.0 pp). Qwen3 30B writes → Llama                     cracking even            +4.96           may                              -4.93
+                           reads: -1.9 pp (n = 200, p < 0.001). Both             cracking                 +4.46           isn just                         -4.68
+                           significant. Ruled out as the driver, with            ground shifting          +3.79           don panic                        -4.63
+                           cross-direction asymmetry noted.                      the walls                +3.54           the weather                      -4.49
+                                                                                 feel like                +3.50           weather                          -4.38
+                                                                                 rush this                +3.37           something shifting               -4.26
+                                                                          Notes: Logistic regression on tf-idf uni- and bi-grams (max 5,000
+E.3      Generator Robustness                                             features, min document frequency 10). Train/test split 70/30, strati-
+                                                                          fied. Positive coefficients distinguish surveillance messages, negative
+Replacing the logistic function mapping z-scores to direc-                coefficients distinguish baseline. The shift is from direct references
+tional sentiment with three alternatives—tanh, piecewise                  (regime, security forces, streets) to coded metaphors (walls cracking,
+                                                                          ground shifting, heads down).
+linear, and a hard step function at z = 0—again yields high
+attack-mass correlations: r = +0.83 (tanh), r = +0.83
+(linear), r = +0.84 (step) on n = 100 country-periods each,
+                                                            threshold relationship (r = +0.86).
+compared with r = +0.75 for the logistic baseline (main
+pure sample, n = 1000). A domain ablation test removes
+subsets of the briefing generator’s eight evidence domains. E.4 Level-k Cognitive Hierarchy Compar-
+Removing the two coordination-language domains raises              ison
+mean joining by +3.2 pp while preserving the threshold
+relationship (r = +0.90). Removing the four regime-state Human subjects in coordination games exhibit level-k cog-
+domains lowers mean joining by 3.0 pp and attenuates the nitive hierarchy behavior rather than full equilibrium rea-
+
+
+                                                                         13
+                                       Table A7: Why the communication estimators differ.
+
+     Model                      Rows/arm Row wt. (P/C) Cells/arm Matched                                   Cell wt.               Lost (P/C) ∆ unpaired ∆ paired
+     Mistral Small Creative       1000        55.6%/38.5%           680                  680                46.0%                        0/0                        +2.38               +4.84
+     Llama 3.3 70B                 100         5.6%/3.8%            100                  100                6.8%                         0/0                        -2.36               -2.36
+     Qwen3 30B                     100         5.6%/3.8%            100                  100                6.8%                         0/0                        -4.64               -4.64
+     GPT-OSS 120B                  200        11.1%/7.7%            200                  200                13.5%                        0/0                        +3.47               +3.47
+     Qwen3 235B                 200/1000      11.1%/38.5%        200/1000                200                13.5%                       0/800                       +0.86               +0.12
+     Trinity Large               100/99        5.6%/3.8%          100/99                 99                  6.7%                        1/0                        -3.14               -3.41
+     MiniMax M2-Her                100         5.6%/3.8%           100                   100                 6.8%                        0/0                        +1.32               +1.32
+     Equal-weight avg              —          14.3% each            —                   —                 14.3% each                     —                          -0.30               -0.09
+     Pooled                     1800/2599       100.0%          1480/2279              1479                 100.0%                      1/800                       +1.39               +2.10
+Notes: “Rows/arm” counts valid country-period rows entering the pooled unpaired estimator in each arm. “Cells/arm” counts unique
+task cells after collapsing duplicates by the exact matching key (model, country, period, θ, z, benefit, θ∗ ). The paired estimator averages
+within these cells and keeps only common support; “Row wt.” and “Cell wt.” are the model shares in the pooled unpaired and pooled
+paired estimators, respectively. Only Trinity Large loses support, with one pure-only cell and no communication-only cells, so the pooled
+gap is overwhelmingly a weighting/re-averaging issue rather than a support-loss issue.
+
+
+
+Table A8: Uncalibrated robustness: models run without
+any calibration adjustment. Even without calibration, six
+of seven models show strong r(J, A(θ)), confirming that
+                                                                                             A. Correlation unchanged                                          B. Mean join shifts with center
+the sigmoid is not an artifact of the calibration procedure.                       Mistral                                                          Mistral
+                                                                               Calibrated                                                       Calibrated
+                                                                                   Mistral                                                          Mistral
+                                                                                 c = +0.3                                                         c = +0.3
+ Model                      N     Mean join     r(J, A(θ))        p                Mistral                                                          Mistral
+                                                                                 c = 0.3                                                          c = 0.3
+                                                                               Llama 70B                                                        Llama 70B
+                                                                               Calibrated                                                       Calibrated
+  Mistral Small Creative 100     0.382       +0.81     0.0000                  Llama 70B                                                        Llama 70B
+                                                                                 c = +0.3                                                         c = +0.3
+  Llama 3.3 70B          100     0.422       +0.83     0.0000                  Llama 70B                                                        Llama 70B
+                                                                                 c = 0.3                                                          c = 0.3
+  Qwen3 30B              100     0.585       +0.90     0.0000
+                                                                                             1.0    0.8     0.6             0.4   0.2     0.0                 0.0     0.2     0.4       0.6      0.8   1.0
+  GPT-OSS 120B           100     0.336       +0.77     0.0000                                                     r( , J)                                                   Mean join fraction
+  Qwen3 235B             100     0.445       +0.86     0.0000
+  MiniMax M2-Her         100     0.425       +0.71     0.0000               Figure A5: Placebo calibration: deliberately miscalibrat-
+Notes: Pure treatment, no calibration adjustment (cutoff center             ing Mistral and Llama (±0.3 shift) leaves r virtually un-
+= 0). Trinity Large excluded due to elevated API error rates.
+r = r(J, A(θ)).                                                             changed, confirming calibration adjusts the level but does
+                                                                            not create the slope.
+
+Table A9: Placebo calibration. The cutoff center is de-
+liberately shifted by ±0.3 from its calibrated value. The
+action–attack-mass correlation r(J, A(θ)) is unchanged;
+only the mean join rate shifts, confirming that calibration
+does not create the sigmoid.
+                                                                           Table A10: Calibration robustness. rθ : raw correlation
+ Model                    Condition     N     Mean join      r(J, A(θ))    with regime strength. rA : correlation with theoretical
+ Mistral Small Creative   Calibrated    —       0.387         +0.75        attack mass. RMSE: root mean squared error vs. A(θ).
+                          ∆c = +0.3     100     0.424         +0.85        Text slope: logit coefficient of the direction slider in an
+                          ∆c = −0.3     100     0.362         +0.80
+                                                                           agent-level JOIN model.
+ Llama 3.3 70B           Calibrated     —     0.439       +0.82
+                         ∆c = +0.3 100        0.385       +0.80
+                         ∆c = −0.3 100        0.340       +0.76                       Model                                              rθ             rA            RMSE           Text slope
+Notes: Pure treatment. ∆c = ±0.3: deliberate shift from calibrated              Mistral Small Creative -0.83 +0.75 0.392                  -8.5
+cutoff center. Correlation r(J, A(θ)) is unchanged; only the mean               Llama 3.3 70B             -0.85 +0.82 0.301              -25.1
+join rate shifts.                                                               Qwen3 30B                 -0.84 +0.76 0.297               -7.5
+                                                                                GPT-OSS 120B              -0.84 +0.79 0.363               -8.5
+                                                                                Qwen3 235B                -0.85 +0.80 0.355              -20.5
+                                                                                Trinity Large             -0.87 +0.84 0.279               -4.0
+soning (Szkup and Trevino, 2020). I evaluate theoretical                        MiniMax M2-Her            -0.79 +0.82 0.335               -2.1
+attack masses under BNE, L1 , and L2 benchmarks. Across                    Notes: rθ : Pearson correlation with regime strength θ. rA : correla-
+the seven payoff-sweep conditions, the fitted cutoff tracks                tion with theoretical attack mass A(θ). Text slope is the coefficient
+                                                                           on the briefing direction slider in a logistic fit to agent-level JOIN de-
+the BNE benchmark more closely than L1 or L2 (RMSE                         cisions; more negative values mean a steeper surface-text association.
+= 0.199, r = +0.74 vs. 0.307/+0.45 and 0.348/+0.35),                       All rows use the calibrated pure treatment and join fraction valid.
+but the shifted-grid design means this evidence is best
+read as a centering diagnostic rather than a standalone
+rejection of level-k behavior.
+
+
+                                                                          14
+                                     A. Convergence of fitted center                                                              B. Per-model calibration shift
+                           2.0                      Trinity             GPT-OSS-120B
+                                                    Llama-3.3-70B       Qwen3-235B                    Qwen3-30B-1.98
+                           1.5                      MiniMax-M2          Qwen3-30B
+                                                                                                   Ministral-3B           -1.54
+
+
+
+
+Fitted logistic center c
+                                                    Ministral-3B        |c| < 0.15 (converged)
+                                                    Mistral-Small
+                           1.0                                                                    MiniMax-M2                                                                             1.10
+                           0.5                                                                   GPT-OSS-120B                                                                     0.87
+
+                           0.0                                                                    Qwen3-235B                                     -0.53
+                                                                                                 Llama-3.3-70B                                   -0.48
+                           0.5
+                                                                                                  Mistral-Small                                                       0.21
+                           1.0
+                                                                                                          Trinity                                                    0.13
+                           1.5
+                                 1              2                   3                  4                            2.0           1.5      1.0           0.5   0.0          0.5   1.0
+                                           Calibration round                                                                            Calibrated cutoff center
+
+Figure A6: Calibration convergence. Left: Trajectory of fitted logistic center across autocalibration rounds. Right:
+Final calibrated cutoff center per model.
+
+
+Table A11: Temperature robustness across three models. E.7 Finite-n Aggregation Check
+The pure global game is run at varying LLM decoding
+                                                                                            ∗
+temperatures. The correlation r(J, A(θ)) is stable across The continuum benchmark θ = B/(B + C) assumes a
+all temperatures and models.                               measure-zero agent and diffuse priors.P With n = 25 dis-
+                                                           crete agents, the regime falls when      ai > nθ (a binomial
+ Model         T      N   Mean join r(J, A(θ)) Cutoff θ̂ ∗ count),  so the   exact  equilibrium   object for the imple-
+ Mistral Small T=0.3 100     0.412    +0.83      -0.049
+                                                           mented  game   differs from the continuum   limit.  Table A14
+ Mistral Small T=0.7 100     0.406    +0.82      -0.079    reports a  narrower   check: for  each model,  I fit a logistic
+ Mistral Small T=1.0 100     0.410    +0.86      -0.039    to the observed join curve (70% train), then compute
+ Llama 70B     T=0.3 100     0.364    +0.78      -0.210    Pr(Binom(25, p̂(θ)) > 25θ) as the predicted regime fall
+ Llama 70B     T=0.5 100     0.360    +0.78      -0.219    rate. Predicted rates correlate with empirical rates at
+ Llama 70B     T=0.7 100     0.361    +0.78      -0.220    r ≥ 0.95 for every model (Mistral: r = 0.9968).
+      Llama 70B                  T=1.0    100        0.360              +0.78          -0.215
+      Llama 70B                  T=1.2    100        0.358              +0.78          -0.227
+  Qwen 235B     T=0.3 100         0.392      +0.83      -0.117                                     E.8         Agent-Level Analysis
+  Qwen 235B     T=0.5 100         0.392      +0.82      -0.112
+  Qwen 235B     T=0.7 100         0.392      +0.84      -0.110
+                                                        Table A15 reports agent-level logit regressions (N =
+  Qwen 235B     T=1.0 100         0.398      +0.83      -0.105
+                                                        309,555, clustered SEs). All treatment effects are sig-
+  Qwen 235B     T=1.2 100         0.397      +0.83      -0.121
+                                                        nificant and correctly signed. Marginal effects at the
+Notes: Pure treatment, calibrated parameters, varying LLM decod-
+ing temperature across three models.                    mean: a one-unit increase in θ reduces P (join) by 41 pp;
+                                                        surveillance reduces it by 37 pp. Column 3 estimates
+                                                        the association between elicited belief and action, control-
+E.5 Decoding Temperature                                ling for the agent’s z-score. Caveat: beliefs are elicited
+                                                        post-decision, so the near-perfect pseudo-R2 (0.975) likely
+The correlation r(J, A(θ)) ranges from +0.78 to +0.86 reflects post-decision rationalization rather than a causal
+across 13 model–temperature combinations (T ∈ pathway from beliefs to action.
+{0.3, 0.5, 0.7, 1.0, 1.2} for three models; Table A11).    Figure A7(A) shows a three-feature model (direction,
+                                                        clarity, coordination) outperforms a one-feature sentiment
+                                                        baseline; Panel (B) confirms cross-treatment generaliza-
+E.6 Falsification and Placebo Tests                     tion from pure to communication and surveillance.
+Two clean placebo variants—monitoring “for research pur-
+poses” (no consequences) and “aggregated anonymously”—                                             E.9         Cross-Generator Robustness
+produce no significant deviation from the communication
+baseline in the primary model (+0.3 pp, p = 0.9351 and                                             Three text rendering formats—baseline narrative, diplo-
++0.1 pp, p = 0.9790; Table A13). Llama variants are                                                matic cable, journalistic wire—use identical slider func-
+small but imprecise. The large decline is therefore tied                                           tions but differ in surface prose. Correlations are virtually
+more closely to consequential monitoring than to generic                                           identical (max within-model difference 0.01; Figure A8,
+observation.                                                                                       Table A17), ruling out prose style as the driver.
+
+
+                                                                                                 15
+Table A12: Clean prompt-isolation surveillance reruns. The surveillance prompt is the baseline trusted-contact
+communication prompt plus one appended monitoring warning; the decision prompt is unchanged.
+
+                                 Model                           N       Baseline       Surv.   ∆ (pp)        r(J, A)       p
+                              Mistral Small Creative 1000        41.1%     32.0%  -9.1 +0.72 0.000
+                              Llama 3.3 70B            1000      41.6%     31.8%  -9.8 +0.65 0.033
+                              Qwen3 30B                1000      45.2%     35.8%  -9.4 +0.68 0.026
+                              GPT-OSS 120B             1000      44.2%     33.1% -11.1 +0.75 0.000
+                              Qwen3 235B               1000      42.4%     38.8%  -3.6 +0.78 0.033
+Notes: Baseline is each model’s communication treatment. ∆ is surveilled communication minus baseline communication in percentage
+points. p-values are from two-sample t-tests on period-level join fractions.
+
+
+                    A. Latent feature baseline                                                       B. Cross-treatment departure
+                                                                                      Ministral-3B                                  Comm mean: -0.002
+  Llama-3.3-70B                                                                                                                      Surv mean: -0.140
+   Qwen3-235B                                                                        MiniMax-M2
+
+   Mistral-Small                                                                           Trinity
+    Ministral-3B                                                                     Qwen3-235B
+ GPT-OSS-120B                                                                    GPT-OSS-120B
+    Qwen3-30B                                                                         Qwen3-30B
+         Trinity                                                                 Llama-3.3-70B
+                                                      Mean gain: +0.6%                                                                     Pure (self-check)
+   MiniMax-M2                                             Direction only             Mistral-Small                                         Communication
+                                                          3-feature model                                                                  Surveillance
+                   0.5     0.6        0.7         0.8          0.9        1.0                        0.20          0.15     0.10    0.05       0.00        0.05
+                             Cross-validated accuracy                                                       Mean residual (actual predicted)
+
+Figure A7: Construct validity tests. (A) Three-feature vs. one-feature prediction accuracy. (B) Cross-treatment
+generalization.
+
+
+Table A13: Surveillance isolation checks. Placebo: mon- Table A14: Finite-N Benchmark: Predicted vs. Empirical
+itored for research, no consequences. Anonymous: mes- Regime Fall Rates
+sages aggregated anonymously. Neither deviates signifi-
+cantly from the communication baseline.                  Model        N periods Logistic x0 Pearson r RMSE MAE
+                                                                                     Mistral                599           −0.11    0.997∗∗∗      0.042     0.015
+    Variant          N    Mean join      r(J, A(θ))     ∆ (pp)       p               Llama 70B              99            0.05     0.954∗∗∗      0.156     0.059
+                                                                                     Qwen 30B                99            0.20    0.986∗∗∗      0.088     0.029
+    Placebo         200     0.414         +0.73         +0.3     0.935               GPT-OSS 120B           199           −0.01    0.997∗∗∗      0.038     0.014
+    Anonymous       200     0.412         +0.73         +0.1     0.979               Qwen 235B              199           −0.03    0.989∗∗∗      0.073     0.025
+                                                                                     Trinity                 99            0.19    0.979∗∗∗      0.108     0.043
+Notes: Primary model (Mistral Small Creative). Placebo: agents
+                                                                                     MiniMax                 99            1.02    0.999∗∗∗      0.028     0.013
+told monitoring is for research purposes only (no consequences).
+Anonymous: messages aggregated before delivery. ∆: change vs.     Pooled                                    1399          −0.05    0.999∗∗∗      0.019     0.007
+communication baseline (pp). p-value from two-sample t-test.     Notes:                     For each θ bin, the predicted fall rate is
+                                                                                 Pr(Binom(25, p̂(θ)) > 25θ) where p̂(θ) is the fitted logistic join
+                                                                                 probability. Pearson r measures correlation between predicted
+E.10      Belief Calibration and Risk Elicita-                                   and empirical fall rates across θ bins. ∗ p < 0.10, ∗∗ p < 0.05,
+                                                                                 ∗∗∗
+          tion                                                                       p < 0.01.
+
+Stated beliefs track the theoretical success proba-
+bility (rbelief,posterior = +0.80) and predict actions
+(rbelief,decision = +0.84; partial r = +0.64 controlling
+for signal; Table A18). The surveillance belief shift and
+belief–action wedge are reported in the main text; the full
+factorial is in Appendix C.
+   Mean punishment risk is ≈ 8.0/10 across all conditions ble A19), supporting the contaminated-communication
+with negligible JOIN/STAY differences (< 0.2 points; Ta- interpretation.
+
+
+                                                                                16
+                                             Table A15: Agent-Level Regressions
+
+                                                (1) Join Decision      (2) Coord. Ablation       (3) Belief → Action
+                                                      Logit                   Logit                     Logit
+             θ                                −1.741∗∗∗     (0.043)
+             Direction                                                −14.088∗∗∗       (0.996)
+             Coordination                                             −9.333∗∗∗        (1.131)
+             Dir × Coord                                               −0.042          (0.360)
+             Belief                                                                               0.367∗∗∗      (0.021)
+             z-score                                                                               −0.040       (0.077)
+             Comm                                0.019      (0.023)
+             Flip                                0.016      (0.055)
+             Propaganda K10                   −0.385∗∗∗     (0.070)
+             Propaganda K2                    −0.235∗∗∗     (0.073)
+             Propaganda K5                    −1.048∗∗∗     (0.068)
+             Propaganda Surveillance          −1.548∗∗∗     (0.062)
+             Scramble                          0.088∗∗      (0.038)
+             Surveillance                     −1.545∗∗∗     (0.048)
+             θ× Comm                          −0.539∗∗∗     (0.037)
+             θ× Flip                           3.304∗∗∗     (0.070)
+             θ× Propaganda K10                −1.023∗∗∗     (0.107)
+             θ× Propaganda K2                 −1.115∗∗∗     (0.113)
+             θ× Propaganda K5                 −1.942∗∗∗     (0.091)
+             θ× Propaganda Surveillance       −0.260∗∗∗     (0.082)
+             θ× Scramble                       1.699∗∗∗     (0.044)
+             θ× Surveillance                  −1.154∗∗∗     (0.062)
+             Treat: Propaganda K5                                                                   0.009       (0.244)
+             Treat: Pure                                                                          4.819∗∗∗      (1.106)
+             Treat: Surveillance                                                                    0.028       (0.253)
+             Constant                          −0.099∗      (0.051)    11.022∗∗∗       (1.065)   −26.495∗∗∗     (1.581)
+             Model FE                                  Yes                      No                       No
+             Clustered SE                              Yes                      Yes                     Yes
+             N                                       309,555                  44,662                   18,990
+             Pseudo R2                                0.383                    0.442                   0.975
+Notes: Logit coefficients reported with clustered standard errors (model–country–period) in parentheses. Column (1): agent-level
+join decision on θ, treatment dummies, and interactions, with model fixed effects. Base category: pure treatment. Column
+(2): coordination ablation—Pr(joini = 1) = Λ(β0 + β1 Diri + β2 Coordi + β3 Diri × Coordi )—using briefing slider values (pure
+treatment only). Direction ∈ [0, 1] is increasing in regime strength; Coordination ∈ [0, 1] is decreasing (high = weaker regime).
+Because both are monotone logistic transforms of the same signal, they are near-collinear (ρ ≈ −1); individual coefficients reflect
+the partial effect conditional on the other, not the marginal effect. Column (3): partial effect of elicited belief (bi ∈ [0, 100],
+stated success probability) on action, controlling for z-score. “Treat: X” rows are treatment intercept dummies (base category:
+communication), not interactions with belief. Caveat: beliefs are elicited after the join/stay decision (post-decision), so the
+belief coefficient reflects association rather than a causal pathway; post-decision rationalization may inflate the correlation. The
+very high pseudo-R2 (0.975) and large intercept indicate near-deterministic prediction consistent with quasi-separation—belief
+almost perfectly predicts action, as expected when belief is stated post hoc. ∗ p < 0.10, ∗∗ p < 0.05, ∗∗∗ p < 0.01.
+
+
+
+
+                                                                17
+Table A16: Logistic fit parameters by model and treatment. Fitted form: P (join | θ) = 1/(1 + eb0 +b1 θ ), where b1 > 0
+implies a decreasing join curve. θ̂∗ is the estimated cutoff (−b0 /b1 ); β ≡ b1 is the steepness parameter.
+
+                                                                                       Pure                             Communication
+                                                                           ∗                                        ∗
+                               Model                                      θ̂ (SE)                 β (SE)         θ̂ (SE)            β (SE)
+                               Mistral Small Creative                −0.32 (0.02)            +2.15 (0.08)      −0.23 (0.02)     +2.57 (0.11)
+                               Llama 3.3 70B                         +0.02 (0.04)            +2.83 (0.36)      −0.06 (0.04)     +3.63 (0.52)
+                               Qwen3 30B                             +0.10 (0.06)            +1.62 (0.16)      −0.03 (0.04)     +2.94 (0.36)
+                               GPT-OSS 120B                          −0.25 (0.04)            +2.06 (0.15)      −0.15 (0.03)     +3.03 (0.26)
+                               Qwen3 235B                            −0.22 (0.03)            +2.11 (0.15)      −0.18 (0.01)     +2.78 (0.10)
+                               Trinity Large                         +0.08 (0.05)            +1.34 (0.11)      −0.02 (0.04)     +2.23 (0.23)
+                               MiniMax M2-Her                        −0.17 (0.09)            +0.61 (0.06)      −0.07 (0.09)     +0.66 (0.06)
+Notes: Fitted form: P (join | θ) = 1/(1 + eb0 +b1 θ ), so b1 > 0 corresponds to a decreasing join curve (the expected direction). θ̂∗ = −b0 /b1 :
+estimated cutoff. β ≡ b1 : logistic steepness (larger = sharper threshold). Standard errors from the covariance matrix of the nonlinear fit;
+cutoff SE by delta method.
+
+
+                      Mistral Small Creative                                                         Llama 3.3 70B
+                1.0                                                              Baseline                                                               Baseline
+                                                                                  r = 0.865                                                              r = 0.850
+                                                                                 Cable                                                                  Cable
+                0.8                                                               r = 0.858                                                              r = 0.851
+                                                                                 Journalistic                                                           Journalistic
+                                                                                  r = 0.857                                                              r = 0.854
+
+
+Join fraction
+                0.6
+
+                0.4
+
+                0.2
+
+                0.0
+                       3       2             1            0           1            2                  3         2          1         0         1          2
+                                             (regime strength)                                                             (regime strength)
+
+                       Figure A8: Cross-generator robustness. Three text formats produce indistinguishable sigmoids.
+
+
+Table A17: Cross-generator robustness. Three text render- Table A18: Agent-level belief correlations (primary model:
+ing styles (baseline, diplomatic cable, journalistic wire) use Mistral Small Creative).
+identical slider functions and evidence items; only prose
+formatting differs. The Pearson r(J, A(θ)) and logistic         Treatment        N     rpost rb,d rpartial Mean belief
+cutoff are virtually identical across generators.               Pure           10000 +0.80 +0.84 +0.64       0.444
+                                                                                                  Communication 5000 +0.80 +0.83 +0.56                     0.444
+  Model                       Generator          N     Mean join   r(J, A(θ))   Cutoff θ̂∗        Surveillance          5000 +0.79 +0.73 +0.47             0.436
+  Mistral Small Creative      Baseline           100     0.402      +0.83        -0.070         Notes: rpost : posterior vs. stated belief. rb,d : belief vs. decision.
+  Mistral Small Creative      Cable              100     0.406      +0.83        -0.057         rpartial : belief–decision controlling for z-score.
+  Mistral Small Creative      Journalistic       100     0.403      +0.83        -0.065
+  Llama 3.3 70B               Baseline           100     0.354      +0.77        -0.249
+  Llama 3.3 70B               Cable              100     0.362      +0.77        -0.226
+  Llama 3.3 70B               Journalistic       100     0.360      +0.78        -0.233
+Notes: Information design θ-grid. Three text renderers (baseline                                E.11       Cross-Model and Text Baseline De-
+intelligence briefing, diplomatic cable, journalistic wire) use identical                                  tails
+slider functions and evidence items; only prose formatting differs.
+
+                                                                                                E.12       Stakes and Pipeline Centering
+
+                                                                                                Table A20 reports the full conditions for the payoff sweep
+                                                                                                and narrative stakes ladder. Figure A11 plots the fitted
+                                                                                                cutoff θ̂∗ against the theoretical θ∗ across the seven payoff
+                                                                                                configurations.
+
+
+                                                                                             18
+                                                                                         Table A19: Elicited punishment risk (0–10 scale). Agents
+                                                                                         rate expected regime punishment after their JOIN/STAY
+                                                                                         decision. “JOIN” and “STAY” columns show the mean
+                                                                                         rating conditional on the agent’s own decision.
+                                                       mean = 0.84
+                                                                                             Model         Condition       N     Mean risk   Risk | JOIN   Risk | STAY
+        Ministral-3B
+                                                                                             Mistral       Pure           2500      8.1          8.0           8.2
+                                                                                             Mistral       Comm           2500      8.1          8.0           8.1
+                  Trinity                                                                    Mistral       Surveillance   2500      8.1          8.1           8.1
+                                                                                             Llama 70B     Pure           2500      8.0          8.0           7.9
+   Llama-3.3-70B                                                                             Llama 70B     Comm           2500      7.9          8.0           7.9
+                                                                                             Llama 70B     Surveillance   2500      7.9          8.0           7.9
+                                                                                         Notes: Agent-level elicitation on a 0–10 scale. Reported risk is the
+       Qwen3-235B                                                                        mean rating conditional on the agent’s own JOIN or STAY decision.
+
+            Qwen3-30B
+                                                                                         Table A20: Stakes conditions. Top: pipeline-centering
+                                                                                         B/C sweep—only (B, C) vary. Bottom: narrative stakes
+   GPT-OSS-120B
+                                                                                         ladder—only a prepended header varies.
+      Mistral-Small                                    Pure                                    Condition / target θ∗        B    C Header / narrative framing
+                                                       Comm
+       MiniMax-M2                                      Scramble fails (|r| > 0.3)              Payoff sweep (standard briefings, no header):
+                                                                                               θ∗ = 0.25             0.33 1 —
+                         0.70       0.75   0.80    0.85      0.90      0.95     1.00           θ∗ = 0.33             0.49 1 —
+                                           |r( , join fraction)|                               θ∗ = 0.45
+                                                                                               θ∗ = 0.50
+                                                                                                                     0.82 1 —
+                                                                                                                     1.00 1 —
+                                                                                               θ∗ = 0.60             1.50 1 —
+Figure A9: Cross-model signal monotonicity. Points report                                      θ∗ = 0.67             2.03 1 —
+                                                                                               θ∗ = 0.75             3.00 1 —
+r(J, A(θ)) under pure and communication.
+                                                                                               Narrative cost ladder (B=C=1; header prepended):
+                                                                                               Very high cost          1  1 Disappearances, families tar-
+                                                                                                                            geted
+                                                                                               Moderate high           1  1 Prison sentences, job loss
+                                                                                               Neutral                 1  1 Consequences uncertain
+                                                                                               Moderate low            1  1 Brief questioning, released
+                                                                                               Very low cost           1  1 Guaranteed asylum, zero
+                                                                                                                            cost
+                                                                                               Controls:
+                                                                                               Placebo                      1    1 Weather information (irrele-
+                                                                                                                                   vant)
+            1.0                                       Fitted logistic (slope = 7.54)           High cost v2                 1    1 Paraphrase of very high cost
+                                                      Text baseline (1 d)                      Low cost v2                  1    1 Paraphrase of very low cost
+                                                      LLM join rate                      Notes: Payoff sweep: B = θ∗ /(1−θ∗ ), C=1. Z-score center and
+            0.8                                                                          θ-grid shift with θ∗ , so the briefing-text distribution is approximately
+                                                                                         constant across the seven cells. Narrative ladder: B=C=1 in every
+            0.6                                                                          row; only the prepended header varies. Join rates: very high cost
+
+
+Join rate
+                                                                                         21.3%, moderate high 46.6%, neutral 46.7%, moderate low 68.4%,
+                                                                                         very low 78.9%. Placebo 32.7%, v2 variants 27.4%/63.8%. Full
+            0.4                                                                          headers in Appendix A.
+
+
+            0.2
+                                                                                         F           Implementation Details
+            0.0
+                                                           All LLM calls use temperature = 0.7, max tokens = 512,
+                     3          2          1      0          1         2            3
+                                                           single sample per decision, routed through OpenRouter.
+                             z-score                       Model identifiers are listed in Table 1; exact request pay-
+                                                           loads and responses are cached by hash because hosted
+Figure A10: Text baseline test. The LLM join curve is model snapshots may change over time.
+steeper than the naı̈ve text predictor (1 − d), indicating    Each country has a base prior z̄ ∼ N (0, 0.3); each
+processing beyond surface sentiment.                       period perturbs it by N (0, 0.052 ). Regime strength is
+                                                           θ ∼ N (z̄, 1); private signals are xi = θ + εi with σ =
+                                                           0.3. The communication network is Watts–Strogatz (k =
+                                                           4, p = 0.3), constructed once per run from the master
+                                                           seed and reused across period-level task rows; agents are
+
+
+                                                                                        19
+                                                                               r = 0.997      Table A22: Parse error and API failure rates by model
+                                                                                              and treatment.
+                   0.8
+                                                                                                  Model         Treat.   N     API err Unparse. Combined
+                                                                                                  Mistral       Pure 1000       0.0%      0.0%       0.0%
+                   0.7                                                              0.75                        Comm 1000       0.0%      0.0%       0.0%
+                                                                                                                Scr. 200        0.0%      0.0%       0.0%
+                                                                                                                Flip 100        0.0%      0.0%       0.0%
+                   0.6
+
+
+ Fitted cutoff *
+                                                                             0.67                 Llama 70B     Pure     100    0.0%      0.0%       0.0%
+                                                                                                                Comm     100    0.0%      0.0%       0.0%
+                   0.5                                                0.60                                      Scr.     100    0.0%      0.0%       0.0%
+                                                                                                                Flip     100    0.0%      0.0%       0.0%
+
+                   0.4                                      0.50                                  Qwen 30B      Pure     100    0.0%      0.0%       0.0%
+                                                     0.45                                                       Comm     100    0.0%      0.0%       0.0%
+                                                                                                                Scr.     100    0.0%      0.0%       0.0%
+                                                                                                                Flip     100    0.0%      0.0%       0.0%
+                   0.3
+                                         0.33                                                     GPT-OSS       Pure     200    0.0%      1.5%       1.5%
+                                                                                                                Comm     200    0.0%      0.3%       0.3%
+                   0.2                                                                                          Scr.     500    0.0%      3.1%       3.1%
+                                0.25                                                                            Flip     500    0.0%      3.3%       3.3%
+                         0.2     0.3       0.4        0.5          0.6       0.7    0.8           Qwen 235B Pure 200            0.0%      0.0%       0.0%
+                                   Theoretical           * = B/(B + C)                                      Comm 1000           0.0%      0.0%       0.0%
+                                                                                                            Scr. 100            0.0%      0.0%       0.0%
+                                                                                                            Flip 100            0.0%      0.0%       0.0%
+Figure A11: Fitted cutoff θ̂∗ vs. theoretical θ∗ across                                           Trinity       Pure     100   9.0%       0.0%      9.0%
+seven B/C ratios (r = 0.997). All conditions use standard                                                       Comm     100   10.0%      0.0%      10.0%
+                                                                                                                Scr.     100   8.0%       0.0%      8.0%
+briefings; the z-score grid shifts with θ∗ , so this tests                                                      Flip     100   9.9%       0.0%      9.9%
+pipeline centering rather than direct payoff sensitivity.
+                                                                                                  MiniMax       Pure     100    0.0%      1.5%       1.5%
+                                                                                                                Comm     100    0.0%      0.9%       0.9%
+Table A21: Strategic-stakes narrative comparative statics.                                                      Scr.     100    0.0%      1.8%       1.8%
+High-cost framing emphasizes severe reprisals for failed                                                        Flip     100    0.0%      1.0%       1.0%
+action; low-cost framing emphasizes minimal consequences.                                     Notes: Per-period averages. API error = provider-side failure (time-
+                                                                                              out, rate limit, content filter). Unparseable = valid response not
+The table is evidence on qualitative stakes framing, not
+                                                                                              classified as JOIN/STAY. Combined < 2% in every listed treatment
+literal numeric payoff reasoning.                                                             for 5 of 7 models; Trinity Large has elevated API errors (≈ 9%) due
+                                                                                              to content filtering.
+ Design                  N     Mean join        r(J, A(θ))     Cutoff θ̂∗ (SE)      ∆ (pp)
+ Baseline                270     0.409           +0.88             0.39 (0.007)      —
+ High cost               270     0.190           +0.87             0.13 (0.010)     -21.9     sliders, which depend on z independently of the floor, con-
+ Low cost                270     0.693           +0.88             0.72 (0.007)     +28.4     tinue to carry signal at all floor values—so the threshold
+Notes: Primary model, information design θ-grid. Identical briefings                          relation is not knife-edge in this design choice.
+across conditions; only the strategic-stakes header varies. ∆: change
+vs. baseline mean join (pp).                                                                     All code, prompt templates, logged model outputs,
+                                                                                              and analysis data are available at https://github.com/
+                                                                                              keltokhy/llm-global-games.
+reinitialized in each row. All random draws use a master
+seed logged in per-run JSON manifests; LLM responses                                          F.1     Briefing Generator Examples
+are cached by request hash for exact reproducibility.
+   Responses are parsed for JOIN/STAY tokens. Com-                                            Table A23 reports the three slider values (direction, clarity,
+bined error rates are below 2% in every listed treat-                                         coordination) at representative z-scores. The direction
+ment for 5/7 models; Trinity Large has elevated API                                           slider is logistic in z (slope 0.8, centered at 0). Clarity is
+errors (≈ 9%) due to content filtering. All statistics use                                    U-shaped: 1 − exp[−(|z|/1.0)2 ], so it is lowest near the
+join fraction valid (Table A22).                                                              cutoff (maximally ambiguous) and approaches 1 in the
+   The dissent floor parameter (default 0.25) controls the                                    extremes (maximally clear). Coordination is Λ(−0.6 z) =
+minimum probability of contrary-valence cues in any brief-                                    1/(1 + e0.6z ), decreasing in z: weak-regime signals (z < 0)
+ing. With the logistic direction slider (slope = 0.8),                                        imply a more open coordination climate. All three jointly
+the valence-channel separation between extreme signals                                        determine phrase selection across eight evidence domains.
+(z = ±2) is 0.664 · (1 − 2 · floor): at the default 0.25, the                                    Figure A12 shows complete briefings generated at z ∈
+valence channel retains 50% of the floor-free maximum;                                        {−2, 0, +2}. At the extremes (|z| = 2), clarity is high
+halving to 0.125 retains 75%; at 0.50 the valence channel                                     (0.98) and the cue balance is strongly directional. At
+collapses to zero by construction. Clarity and coordination                                   z = 0, clarity is 0.00 (maximally ambiguous) and the
+
+
+                                                                                             20
+          z = 2 (weak regime)                                       z = 0 (ambiguous)                                  z = +2 (strong regime)
+  PRIVATE BRIEFING                                       PRIVATE BRIEFING                                       PRIVATE BRIEFING
+
+  BOTTOM LINE: Signs of institutional erosion are        BOTTOM LINE: The situation could tip either way        BOTTOM LINE: Current indicators point to maintained
+  accumulating faster than the regime can manage them.   there are credible signals pointing in both            control, with internal challenges being managed
+  ATMOSPHERE: Coordination is happening in plain sight   directions.                                            rather than spiraling.
+    meetings, signals, preparations that would have      ATMOSPHERE: There's a palpable sense that a critical   ATMOSPHERE: People are aware of each other's
+  been unthinkable a month ago.                          mass is forming, even if nobody can count the          frustrations but nobody is naming them directly.
+                                                         numbers yet.                                           It's communication through omission.
+  EVIDENCE:
+      - [Elite Cohesion] senior figures are giving       EVIDENCE:                                              EVIDENCE:
+       interviews that subtly distance themselves from       - [Elite Cohesion] elites are publicly unified         - [Elite Cohesion] the regime successfully
+       the leader's recent decisions                          but privately positioning themselves for               managed a minor scandal by presenting a unified
+      - [Security Forces] reports of soldiers                 multiple outcomes (a couple of contacts                response within hours
+       fraternizing with civilians more than usual at         mentioning it independently)                          - [Security Forces] security checkpoints have
+       checkpoints (overwhelming convergence    every        - [Security Forces] the security forces are             been reduced, suggesting confidence rather than
+       channel telling the same story independently)          maintaining presence but seem to be conserving         siege mentality (overwhelming convergence
+      - [Money And Logistics] customs and trade are           resources rather than demonstrating strength (a        every channel telling the same story
+       flowing normally at the borders   no unusual           couple of contacts mentioning it independently)        independently)
+       delays or inspections (overwhelming convergence       - [Money And Logistics] economic indicators are        - [Money And Logistics] customs and trade are
+         every channel telling the same story                 mixed   retail spending is down but                    flowing normally at the borders   no unusual
+       independently)                                         construction permits are up                            delays or inspections (overwhelming convergence
+      - [Street Mood] jokes about the regime are being       - [Street Mood] people are frustrated but                 every channel telling the same story
+       told openly in places where that would have            fatalistic   complaining more, but not in a way        independently)
+       been unthinkable                                       that suggests action                                  - [Street Mood] people complain but do it like
+      - [Information Control] leaked documents are           - [Information Control] the regime is still             people who expect tomorrow to look much like
+       circulating faster than the regime can                 shaping the narrative but has lost the                 today
+       discredit them (overwhelming convergence               initiative   they're responding to events             - [Information Control] social media monitoring
+       every channel telling the same story                   rather than framing them                               appears sophisticated and well-resourced
+       independently)                                        - [Personal Observations] a well-connected              (overwhelming convergence   every channel
+      - [Personal Observations] your cousin in the            friend said 'it could go either way' and seemed        telling the same story independently)
+       army hasn't called in two weeks   unusual for          genuinely unsure (a couple of contacts                - [Personal Observations] your cousin in the
+       someone who calls every Sunday (near-unanimous         mentioning it independently)                           army hasn't called in two weeks   unusual for
+       confirmation from every reliable source)              - [Diplomatic Signals] foreign embassies are            someone who calls every Sunday (near-unanimous
+      - [Diplomatic Signals] international shipping           maintaining full operations but have updated           confirmation from every reliable source)
+       companies have reclassified the country as             contingency plans    standard prudence or             - [Diplomatic Signals] foreign students continue
+       higher-risk for cargo insurance   the trend            genuine concern                                        to enroll at local universities   their
+       cooling off, though not yet cold                      - [Institutional Functioning] the system is             embassies haven't advised them to leave   the
+      - [Institutional Functioning] municipal services        creaking but not collapsing    people are              trend moving with a momentum that would be hard
+         garbage collection, water, permits   have            working around the bottlenecks rather than             to reverse
+       become erratic in the capital                          through them (a couple of contacts mentioning         - [Institutional Functioning] municipal services
+                                                              it independently)                                      are running smoothly   a mundane but reliable
+  UNCERTAINTIES:                                                                                                     indicator of institutional health
+      - Whether any of the apparent weakness is being    UNCERTAINTIES:
+       deliberately staged to flush out opponents.           - Whether the population's quiescence reflects     UNCERTAINTIES:
+      - How much of the disarray is structural versus         genuine acceptance or merely the absence of a         - Whether the regime's strength is being
+       a temporary response to a specific crisis.             triggering event.                                      accurately perceived by potential challengers
+                                                             - Whether the stability you're seeing is                overestimation could be self-fulfilling.
+                                                              structural or just a temporary equilibrium that       - If unrest flares, the response capacity seems
+                                                              could shift quickly.                                   intact    though no system is invulnerable to
+                                                                                                                     surprises.
+
+
+
+
+Figure A12: Example briefings at three z-scores. Left: z = −2 (strong join signal) — evidence of elite fracturing,
+security friction, and capital flight. Center: z = 0 (ambiguous) — balanced mixed signals across all domains. Right:
+z = +2 (strong stay signal) — evidence of elite cohesion, military confidence, and economic stability. The displayed
+text is an unedited generator draw at seed 5150, agent 8, period 124 (aside from line wrapping).
+
+
+  Table A23: Slider values at representative z-scores.
+
+                z     Direction      Clarity      Coordination
+            −2.0            0.17         0.98                0.77
+            −1.0            0.31         0.63                0.65
+             0.0            0.50         0.00                0.50
+            +1.0            0.69         0.63                0.35
+            +2.0            0.83         0.98                0.23
+
+
+
+briefing presents a balanced picture.
+
+
+
+
+                                                                                21
+

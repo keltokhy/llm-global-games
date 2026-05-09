@@ -1,0 +1,218 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+
+\definecolor{gcblue}{HTML}{005DAB}
+\definecolor{gcorange}{HTML}{FE5000}
+\definecolor{gcslate}{HTML}{586F82}
+\definecolor{gcgreen}{HTML}{237457}
+\definecolor{gcwarn}{HTML}{D13176}
+
+\hypersetup{colorlinks=true, linkcolor=gcblue, urlcolor=gcblue, citecolor=gcblue}
+\setlength{\parskip}{0.55em}
+\setlength{\parindent}{0pt}
+
+\input{../paper/tables/stats_macros.tex}
+
+\newenvironment{slidebox}[1]{%
+  \subsection*{#1}\addcontentsline{toc}{subsection}{#1}%
+  \noindent{\color{gcblue}\rule{\textwidth}{0.8pt}}\par\nopagebreak
+}{%
+  \par\noindent{\color{gcblue}\rule{\textwidth}{0.8pt}}\par
+}
+
+\newenvironment{landbox}{%
+  \par\noindent\textbf{\color{gcorange}Line to land}\par\nopagebreak
+  \noindent{\color{gcorange}\rule{\textwidth}{0.6pt}}\par\nopagebreak
+}{%
+  \par\noindent{\color{gcorange}\rule{\textwidth}{0.6pt}}\par
+}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE\bfseries\color{gcblue} Speaking Notes}\par
+  {\Large Surveillance and the Belief--Action Wedge}\par
+  {\large Evidence from LLM global games with natural-language signals}\par
+  \vspace{0.4em}
+  {Khaled Eltokhy \textbar{} CUNY Graduate Center, Department of Economics}\par
+  {Brown bag seminar --- May 2026}\par
+\end{center}
+
+\begin{landbox}
+The advisor version of the talk is: validate the global-game benchmark first, then use LLM statelessness to isolate surveillance as a shock to the sender-side message rule, then show the wedge: action falls sharply while stated expected participation barely moves.
+\end{landbox}
+
+\tableofcontents
+\newpage
+
+\section{Opening}
+
+\begin{slidebox}{Slide 1. Surveillance and the Belief--Action Wedge}
+Open with the result, not with motivation. Say that the paper studies a formal coordination problem in which private information and communication are written in natural language.
+
+Point to the two numbers. Under surveillance, joining falls by \BeliefCommSurvActionDeltaAbsPP~pp in the primary belief sample. Expected JOIN share changes by only \SOBDeltaPP~pp, with $p=\SOBPValue$. That contrast is the object of the talk.
+
+Do not say LLMs are citizens. Say the value of LLMs is experimental control: stateless calls, exact prompt manipulation, and a known latent state.
+\end{slidebox}
+
+\begin{slidebox}{Slide 2. The economics object}
+This is the formal object. The private signal is $x_i=\theta+\varepsilon_i$. The message distribution is $\mu_t(m\mid x_i)$, where $t=0$ is baseline communication and $t=S$ is surveillance. Final action is a rule of the agent's private information and neighbor messages.
+
+The treatment target is not regime strength, payoffs, or the receiver prompt. It is the sender-side language rule. This is the clean economics contribution: natural language is the information structure.
+\end{slidebox}
+
+\begin{slidebox}{Slide 3. The story in five steps}
+Walk through the roadmap slowly.
+
+First, there is a canonical global game. Citizens join only if enough others join.
+
+Second, LLMs are used because the environment is controllable.
+
+Third, the agents must first reproduce the canonical comparative static.
+
+Fourth, communication makes private information social.
+
+Fifth, surveillance lowers action while reported beliefs remain approximately stable.
+\end{slidebox}
+
+\section{Benchmark}
+
+\begin{slidebox}{Slide 4. Canonical global games}
+Make the payoff intuition simple. Joining is attractive only if enough others join; otherwise joining is costly. The table makes clear why this is a coordination problem rather than a single-agent prediction problem.
+\end{slidebox}
+
+\begin{slidebox}{Slide 5. Morris--Shin setup}
+Do not dwell on notation. Regime strength is $\theta$, citizens choose $a_i\in\{0,1\}$, and the regime falls if the mass of attackers exceeds $\theta$. Each citizen observes a noisy private signal.
+\end{slidebox}
+
+\begin{slidebox}{Slide 6. Canonical result}
+The key theoretical benchmark is a unique threshold equilibrium: join if $x_i<x^*$. The cutoff is pinned down by payoffs. This gives the empirical prediction.
+\end{slidebox}
+
+\begin{slidebox}{Slide 7. Empirical prediction}
+Translate the theory into the graph: as $\theta$ rises, fewer agents should join. The prediction is a decreasing sigmoid in regime strength.
+\end{slidebox}
+
+\begin{slidebox}{Slide 8. Why use LLMs}
+Frame this as a design advantage, not as an external-validity claim. Human subjects are valuable, but here the experiment needs stateless calls, many counterfactual prompt regimes, and prose signals whose latent values are known to the econometrician.
+\end{slidebox}
+
+\begin{slidebox}{Slide 9. LLM experiment}
+Walk through the pipeline: $\theta$ generates $x_i$, $x_i$ is embedded in a briefing, the LLM sees only prose, and the output is JOIN or STAY.
+
+Land the measurement advantage: the agent sees language, while the researcher observes $\theta$, $x_i$, treatment assignment, and the theoretical comparative static.
+\end{slidebox}
+
+\begin{slidebox}{Slide 10. Example signal}
+Read the example as a private intelligence briefing. Emphasize what is absent: no explicit $\theta$, no payoff numbers, and no instruction that the regime is weak. The strategic signal is carried by graded language.
+\end{slidebox}
+
+\begin{slidebox}{Slide 11. Result 1}
+This is the credibility slide. Before talking about surveillance, the agents need to pass the canonical benchmark. Join rates follow the predicted decreasing sigmoid.
+\end{slidebox}
+
+\begin{slidebox}{Slide 12. Not generic sentiment}
+Use this slide to answer the obvious objection. Scrambling breaks the link between signal and state, and the relationship collapses. Flipping the signal reverses the relationship. That makes the result more than generic sentiment tracking.
+\end{slidebox}
+
+\section{Communication And Surveillance}
+
+\begin{slidebox}{Slide 13. Communication turns private signals social}
+The extension is signals to peer messages to actions. In a global game, messages are useful because they provide information about what others are seeing and whether enough others may act.
+\end{slidebox}
+
+\begin{slidebox}{Slide 14. Communication benchmark}
+Be precise: communication raises participation by \CommDeltaPPPaired~pp in matched cells. Do not oversell this as the central effect size. Its role is to establish the social-information channel that surveillance can later degrade.
+\end{slidebox}
+
+\begin{slidebox}{Slide 15. Why communication matters}
+Say that messages have a higher-order role. They are not just facts about the regime; they help agents infer whether others are seeing the same world.
+\end{slidebox}
+
+\begin{slidebox}{Slide 16. Surveil the channel}
+The treatment is one sentence added to the message-stage prompt. The decision prompt is unchanged. The final decision call is stateless and has no direct memory of the warning.
+\end{slidebox}
+
+\begin{slidebox}{Slide 17. What the design identifies}
+Use the diagram to say the exclusion restriction out loud. Surveillance changes $\mu_S(m\mid x)$, the sender-side message distribution. The final action rule sees the resulting messages but not the warning.
+\end{slidebox}
+
+\begin{slidebox}{Slide 18. Surveillance lowers participation}
+This is the main action result. Clean reruns show \PromptIsoNegativeModels/\PromptIsoNModels\ models falling, with mean $\Delta=\PromptIsoMeanDeltaPP$~pp. Placebo and anonymous monitoring sit near zero in the primary model.
+\end{slidebox}
+
+\section{The Wedge}
+
+\begin{slidebox}{Slide 19. Belief--action wedge}
+Pause here. This is the core slide.
+
+What agents do: join rate falls from \BeliefCommMeanJoinPct\ to \BeliefSurvMeanJoinPct. What agents report: expected JOIN share is \SOBCommMeanPct\ versus \SOBSurvMeanPct. The stated expectation barely moves.
+\end{slidebox}
+
+\begin{slidebox}{Slide 20. Why the wedge matters}
+The theoretical point is that messages do two jobs. They carry belief content, but they also have coordination usability: are they direct, mutually legible, and safe enough to coordinate on?
+
+State the caveat clearly. The belief report is post-decision and stated; it is not a direct readout of inner beliefs.
+\end{slidebox}
+
+\begin{slidebox}{Slide 21. Belief evidence}
+Use the figure as support, not as a new claim. Surveillance changes actions more than reported expected participation. Do not call this a clean mediation result.
+\end{slidebox}
+
+\section{Mechanism}
+
+\begin{slidebox}{Slide 22. Speech became less legible}
+This slide should replace any vague ``self-censorship'' language. Direct regime/action terms fall by \MsgDirectRegimeDeltaPP~pp. Coded/metaphorical terms rise by \MsgCodedMetaphorDeltaPP~pp. Weakness references rise by \MsgWeaknessDeltaPP~pp.
+
+The point is not that bad news disappears. The point is that bad news becomes less direct and less mutually legible.
+\end{slidebox}
+
+\begin{slidebox}{Slide 23. Message evidence}
+The held-out classifier gets \MsgClassifierAcc\% accuracy distinguishing baseline from surveillance messages. The feature table gives the same substantive story: direct terms down, coded terms up, weakness still present.
+\end{slidebox}
+
+\begin{slidebox}{Slide 24. Mechanism checks}
+Use this slide to show discipline.
+
+Generic observation is not enough: research-only and anonymous monitoring are near zero in the primary model.
+
+Same-family style is not enough: cross-model writer-reader rotation still produces negative effects.
+
+Messages matter to the final decision: removing messages changes joining, and in the primary model surveillance is below the no-message benchmark.
+\end{slidebox}
+
+\section{Close}
+
+\begin{slidebox}{Slide 25. Three defensible claims}
+This is the final synthesis.
+
+Benchmark: prose signals recover the global-game comparative static.
+
+Channel: communication creates a sender-side message rule that surveillance can degrade.
+
+Wedge: monitored communication lowers action without lowering stated expected participation.
+\end{slidebox}
+
+\begin{slidebox}{Slide 26. What not to overclaim}
+Say this directly before Q\&A. The paper does not claim LLM agents are representative citizens, does not infer true inner beliefs from post-decision reports, and does not structurally decompose fear, preferences, and beliefs.
+
+The defensible claim is channel degradation in a controlled natural-language global game.
+\end{slidebox}
+
+\begin{slidebox}{Slide 27. Where I want advice}
+Invite the room into the real decision points: whether to foreground channel degradation or the wedge, whether the communication extension is formal enough, which placebo would most persuade them, and how central the LLM-agent contribution should be.
+\end{slidebox}
+
+\begin{slidebox}{Slide 28. Discussion}
+End with the one-sentence version:
+
+``In a controlled language-mediated global game, consequential monitoring changes the messages agents send, and those changed messages lower coordinated action without a comparable movement in stated expected participation.''
+\end{slidebox}
+
+\end{document}
