@@ -1,265 +1,193 @@
 {
   "agent_logit": {
     "main_logit": {
-      "n_obs": 309555,
-      "pseudo_r2": 0.3829,
-      "log_likelihood": -127157.79,
-      "aic": 254363.58,
-      "bic": 254619.01,
+      "n_obs": 240557,
+      "pseudo_r2": 0.3534,
+      "log_likelihood": -104221.18,
+      "aic": 208474.37,
+      "bic": 208640.62,
       "coefficients": {
         "const": {
-          "coef": -0.0994,
+          "coef": -0.0861,
           "se": 0.051,
-          "z": -1.948,
-          "p": 0.051457,
-          "ci_lo": -0.1994,
-          "ci_hi": 0.0006
+          "z": -1.688,
+          "p": 0.091507,
+          "ci_lo": -0.1861,
+          "ci_hi": 0.0139
         },
         "theta": {
-          "coef": -1.741,
-          "se": 0.0429,
-          "z": -40.624,
+          "coef": -1.7448,
+          "se": 0.0428,
+          "z": -40.749,
           "p": 0.0,
-          "ci_lo": -1.825,
-          "ci_hi": -1.657
+          "ci_lo": -1.8287,
+          "ci_hi": -1.6609
         },
         "treat_comm": {
-          "coef": 0.0187,
+          "coef": 0.0172,
           "se": 0.0231,
-          "z": 0.809,
-          "p": 0.418457,
-          "ci_lo": -0.0266,
-          "ci_hi": 0.0639
+          "z": 0.744,
+          "p": 0.456995,
+          "ci_lo": -0.0281,
+          "ci_hi": 0.0624
         },
         "treat_flip": {
-          "coef": 0.0163,
-          "se": 0.0549,
-          "z": 0.297,
-          "p": 0.766692,
-          "ci_lo": -0.0913,
-          "ci_hi": 0.1239
-        },
-        "treat_propaganda_k10": {
-          "coef": -0.3854,
-          "se": 0.0695,
-          "z": -5.543,
-          "p": 0.0,
-          "ci_lo": -0.5217,
-          "ci_hi": -0.2491
-        },
-        "treat_propaganda_k2": {
-          "coef": -0.2353,
-          "se": 0.0733,
-          "z": -3.21,
-          "p": 0.001329,
-          "ci_lo": -0.3789,
-          "ci_hi": -0.0916
-        },
-        "treat_propaganda_k5": {
-          "coef": -1.0483,
-          "se": 0.0684,
-          "z": -15.328,
-          "p": 0.0,
-          "ci_lo": -1.1824,
-          "ci_hi": -0.9143
-        },
-        "treat_propaganda_surveillance": {
-          "coef": -1.5485,
-          "se": 0.0622,
-          "z": -24.879,
-          "p": 0.0,
-          "ci_lo": -1.6705,
-          "ci_hi": -1.4265
+          "coef": -0.0073,
+          "se": 0.055,
+          "z": -0.132,
+          "p": 0.894861,
+          "ci_lo": -0.1151,
+          "ci_hi": 0.1006
         },
         "treat_scramble": {
-          "coef": 0.0877,
-          "se": 0.0382,
-          "z": 2.297,
-          "p": 0.021625,
-          "ci_lo": 0.0129,
-          "ci_hi": 0.1625
+          "coef": 0.0677,
+          "se": 0.0383,
+          "z": 1.768,
+          "p": 0.077047,
+          "ci_lo": -0.0073,
+          "ci_hi": 0.1427
         },
         "treat_surveillance": {
-          "coef": -1.5448,
-          "se": 0.0484,
-          "z": -31.899,
+          "coef": -1.596,
+          "se": 0.0481,
+          "z": -33.192,
           "p": 0.0,
-          "ci_lo": -1.6397,
-          "ci_hi": -1.4498
+          "ci_lo": -1.6902,
+          "ci_hi": -1.5017
         },
         "theta_x_comm": {
-          "coef": -0.5392,
-          "se": 0.0372,
-          "z": -14.48,
+          "coef": -0.5385,
+          "se": 0.0373,
+          "z": -14.446,
           "p": 0.0,
-          "ci_lo": -0.6122,
-          "ci_hi": -0.4662
+          "ci_lo": -0.6116,
+          "ci_hi": -0.4654
         },
         "theta_x_flip": {
-          "coef": 3.3036,
+          "coef": 3.3077,
           "se": 0.0705,
-          "z": 46.845,
+          "z": 46.913,
           "p": 0.0,
-          "ci_lo": 3.1654,
-          "ci_hi": 3.4418
-        },
-        "theta_x_propaganda_k10": {
-          "coef": -1.0228,
-          "se": 0.107,
-          "z": -9.561,
-          "p": 0.0,
-          "ci_lo": -1.2324,
-          "ci_hi": -0.8131
-        },
-        "theta_x_propaganda_k2": {
-          "coef": -1.1152,
-          "se": 0.1132,
-          "z": -9.849,
-          "p": 0.0,
-          "ci_lo": -1.3371,
-          "ci_hi": -0.8933
-        },
-        "theta_x_propaganda_k5": {
-          "coef": -1.9416,
-          "se": 0.0915,
-          "z": -21.219,
-          "p": 0.0,
-          "ci_lo": -2.121,
-          "ci_hi": -1.7623
-        },
-        "theta_x_propaganda_surveillance": {
-          "coef": -0.2603,
-          "se": 0.0822,
-          "z": -3.165,
-          "p": 0.001551,
-          "ci_lo": -0.4215,
-          "ci_hi": -0.0991
+          "ci_lo": 3.1695,
+          "ci_hi": 3.4458
         },
         "theta_x_scramble": {
-          "coef": 1.6988,
-          "se": 0.0438,
-          "z": 38.766,
+          "coef": 1.7023,
+          "se": 0.0439,
+          "z": 38.819,
           "p": 0.0,
-          "ci_lo": 1.6129,
-          "ci_hi": 1.7847
+          "ci_lo": 1.6163,
+          "ci_hi": 1.7882
         },
         "theta_x_surveillance": {
-          "coef": -1.1536,
+          "coef": -1.1509,
           "se": 0.0625,
-          "z": -18.469,
+          "z": -18.42,
           "p": 0.0,
-          "ci_lo": -1.276,
-          "ci_hi": -1.0312
+          "ci_lo": -1.2733,
+          "ci_hi": -1.0284
         },
         "fe_meta-llama--llama-3.3-70b-instruct": {
-          "coef": -0.3138,
-          "se": 0.0559,
-          "z": -5.616,
-          "p": 0.0,
-          "ci_lo": -0.4233,
-          "ci_hi": -0.2043
+          "coef": -0.1969,
+          "se": 0.0536,
+          "z": -3.672,
+          "p": 0.000241,
+          "ci_lo": -0.302,
+          "ci_hi": -0.0918
         },
         "fe_minimax--minimax-m2-her": {
-          "coef": -0.1427,
+          "coef": -0.1428,
           "se": 0.0661,
-          "z": -2.157,
-          "p": 0.031034,
-          "ci_lo": -0.2723,
-          "ci_hi": -0.013
+          "z": -2.159,
+          "p": 0.030872,
+          "ci_lo": -0.2724,
+          "ci_hi": -0.0131
         },
         "fe_mistralai--mistral-small-creative": {
-          "coef": -0.4759,
-          "se": 0.0565,
-          "z": -8.424,
+          "coef": -0.5126,
+          "se": 0.0558,
+          "z": -9.181,
           "p": 0.0,
-          "ci_lo": -0.5866,
-          "ci_hi": -0.3652
+          "ci_lo": -0.6221,
+          "ci_hi": -0.4032
         },
         "fe_openai--gpt-oss-120b": {
-          "coef": -0.2701,
+          "coef": -0.2665,
           "se": 0.0512,
-          "z": -5.279,
+          "z": -5.21,
           "p": 0.0,
-          "ci_lo": -0.3703,
-          "ci_hi": -0.1698
+          "ci_lo": -0.3668,
+          "ci_hi": -0.1663
         },
         "fe_qwen--qwen3-235b-a22b-2507": {
-          "coef": -0.458,
-          "se": 0.0543,
-          "z": -8.436,
+          "coef": -0.4666,
+          "se": 0.0544,
+          "z": -8.585,
           "p": 0.0,
-          "ci_lo": -0.5644,
-          "ci_hi": -0.3516
+          "ci_lo": -0.5731,
+          "ci_hi": -0.3601
         },
         "fe_qwen--qwen3-30b-a3b-instruct-2507": {
-          "coef": -0.0058,
-          "se": 0.0552,
-          "z": -0.105,
-          "p": 0.91666,
-          "ci_lo": -0.1139,
-          "ci_hi": 0.1024
+          "coef": 0.0172,
+          "se": 0.0549,
+          "z": 0.314,
+          "p": 0.753606,
+          "ci_lo": -0.0904,
+          "ci_hi": 0.1249
         }
       },
       "marginal_effects_at_mean": {
-        "const": -0.0235,
-        "theta": -0.4115,
-        "treat_comm": 0.0044,
-        "treat_flip": 0.0039,
-        "treat_propaganda_k10": -0.0911,
-        "treat_propaganda_k2": -0.0556,
-        "treat_propaganda_k5": -0.2478,
-        "treat_propaganda_surveillance": -0.366,
-        "treat_scramble": 0.0207,
-        "treat_surveillance": -0.3651,
-        "theta_x_comm": -0.1275,
-        "theta_x_flip": 0.7809,
-        "theta_x_propaganda_k10": -0.2418,
-        "theta_x_propaganda_k2": -0.2636,
-        "theta_x_propaganda_k5": -0.459,
-        "theta_x_propaganda_surveillance": -0.0615,
-        "theta_x_scramble": 0.4016,
-        "theta_x_surveillance": -0.2727,
-        "fe_meta-llama--llama-3.3-70b-instruct": -0.0742,
-        "fe_minimax--minimax-m2-her": -0.0337,
-        "fe_mistralai--mistral-small-creative": -0.1125,
-        "fe_openai--gpt-oss-120b": -0.0638,
-        "fe_qwen--qwen3-235b-a22b-2507": -0.1083,
-        "fe_qwen--qwen3-30b-a3b-instruct-2507": -0.0014
+        "const": -0.0205,
+        "theta": -0.4162,
+        "treat_comm": 0.0041,
+        "treat_flip": -0.0017,
+        "treat_scramble": 0.0161,
+        "treat_surveillance": -0.3807,
+        "theta_x_comm": -0.1284,
+        "theta_x_flip": 0.789,
+        "theta_x_scramble": 0.406,
+        "theta_x_surveillance": -0.2745,
+        "fe_meta-llama--llama-3.3-70b-instruct": -0.047,
+        "fe_minimax--minimax-m2-her": -0.0341,
+        "fe_mistralai--mistral-small-creative": -0.1223,
+        "fe_openai--gpt-oss-120b": -0.0636,
+        "fe_qwen--qwen3-235b-a22b-2507": -0.1113,
+        "fe_qwen--qwen3-30b-a3b-instruct-2507": 0.0041
       },
-      "mean_predicted_prob": 0.3833,
+      "mean_predicted_prob": 0.3929,
       "base_model": "arcee-ai--trinity-large-preview_free",
       "base_treatment": "pure",
-      "n_clusters": 5200
+      "n_clusters": 4700
     },
     "theta_only_logit": {
-      "n_obs": 309555,
-      "pseudo_r2": 0.1723,
-      "log_likelihood": -170555.78,
-      "aic": 341115.56,
-      "bic": 341136.84,
+      "n_obs": 240557,
+      "pseudo_r2": 0.1324,
+      "log_likelihood": -139843.57,
+      "aic": 279691.13,
+      "bic": 279711.91,
       "coefficients": {
         "const": {
-          "coef": -0.5962,
-          "se": 0.0196,
-          "z": -30.365,
+          "coef": -0.4902,
+          "se": 0.018,
+          "z": -27.173,
           "p": 0.0,
-          "ci_lo": -0.6347,
-          "ci_hi": -0.5577
+          "ci_lo": -0.5256,
+          "ci_hi": -0.4549
         },
         "theta": {
-          "coef": -1.1079,
-          "se": 0.0267,
-          "z": -41.49,
+          "coef": -0.9196,
+          "se": 0.0246,
+          "z": -37.408,
           "p": 0.0,
-          "ci_lo": -1.1602,
-          "ci_hi": -1.0555
+          "ci_lo": -0.9678,
+          "ci_hi": -0.8715
         }
       },
       "marginal_effects_at_mean": {
-        "const": -0.1409,
-        "theta": -0.2619
+        "const": -0.1169,
+        "theta": -0.2194
       },
-      "mean_predicted_prob": 0.3833
+      "mean_predicted_prob": 0.3929
     }
   },
   "coordination_ablation": {
@@ -523,120 +451,103 @@
   },
   "belief_regressions": {
     "belief_equation": {
-      "n_obs": 18990,
-      "r_squared": 0.6421,
-      "adj_r_squared": 0.642,
-      "f_stat": 251.243,
+      "n_obs": 14990,
+      "r_squared": 0.6297,
+      "adj_r_squared": 0.6296,
+      "f_stat": 320.384,
       "f_pvalue": 0.0,
       "coefficients": {
         "const": {
-          "coef": 53.6267,
-          "se": 0.8729,
-          "t": 61.433,
+          "coef": 53.6247,
+          "se": 0.8755,
+          "t": 61.251,
           "p": 0.0,
-          "ci_lo": 51.9158,
-          "ci_hi": 55.3376
+          "ci_lo": 51.9088,
+          "ci_hi": 55.3406
         },
         "z_score": {
-          "coef": -7.1263,
-          "se": 0.2345,
-          "t": -30.395,
+          "coef": -7.0633,
+          "se": 0.2373,
+          "t": -29.762,
           "p": 0.0,
-          "ci_lo": -7.5859,
-          "ci_hi": -6.6668
-        },
-        "treat_beliefs_propaganda_k5": {
-          "coef": 0.3786,
-          "se": 0.3254,
-          "t": 1.163,
-          "p": 0.244697,
-          "ci_lo": -0.2593,
-          "ci_hi": 1.0164
+          "ci_lo": -7.5284,
+          "ci_hi": -6.5981
         },
         "treat_beliefs_pure": {
-          "coef": -2.2538,
-          "se": 1.0388,
-          "t": -2.17,
-          "p": 0.030036,
-          "ci_lo": -4.2899,
-          "ci_hi": -0.2178
+          "coef": -2.2551,
+          "se": 1.042,
+          "t": -2.164,
+          "p": 0.030449,
+          "ci_lo": -4.2974,
+          "ci_hi": -0.2128
         },
         "treat_beliefs_surveillance": {
-          "coef": -5.5185,
-          "se": 0.9725,
-          "t": -5.675,
+          "coef": -5.5182,
+          "se": 0.9738,
+          "t": -5.666,
           "p": 0.0,
-          "ci_lo": -7.4245,
-          "ci_hi": -3.6125
+          "ci_lo": -7.4269,
+          "ci_hi": -3.6096
         }
       },
       "base_treatment": "beliefs_comm"
     },
     "action_equation": {
-      "n_obs": 18990,
-      "pseudo_r2": 0.9752,
-      "log_likelihood": -318.11,
-      "aic": 648.22,
-      "bic": 695.33,
+      "n_obs": 14990,
+      "pseudo_r2": 0.9746,
+      "log_likelihood": -256.02,
+      "aic": 522.04,
+      "bic": 560.12,
       "coefficients": {
         "const": {
-          "coef": -26.4948,
-          "se": 1.5806,
-          "z": -16.763,
+          "coef": -25.4287,
+          "se": 1.6856,
+          "z": -15.086,
           "p": 0.0,
-          "ci_lo": -29.5927,
-          "ci_hi": -23.397
+          "ci_lo": -28.7325,
+          "ci_hi": -22.125
         },
         "belief": {
-          "coef": 0.3666,
-          "se": 0.0212,
-          "z": 17.271,
+          "coef": 0.3527,
+          "se": 0.0226,
+          "z": 15.611,
           "p": 0.0,
-          "ci_lo": 0.325,
-          "ci_hi": 0.4082
+          "ci_lo": 0.3084,
+          "ci_hi": 0.397
         },
         "z_score": {
-          "coef": -0.0395,
-          "se": 0.0772,
-          "z": -0.512,
-          "p": 0.608865,
-          "ci_lo": -0.1909,
-          "ci_hi": 0.1118
-        },
-        "treat_beliefs_propaganda_k5": {
-          "coef": 0.0089,
-          "se": 0.2439,
-          "z": 0.036,
-          "p": 0.971025,
-          "ci_lo": -0.4691,
-          "ci_hi": 0.4868
+          "coef": -0.0257,
+          "se": 0.0817,
+          "z": -0.314,
+          "p": 0.75333,
+          "ci_lo": -0.1858,
+          "ci_hi": 0.1345
         },
         "treat_beliefs_pure": {
-          "coef": 4.8191,
-          "se": 1.1058,
-          "z": 4.358,
-          "p": 1.3e-05,
-          "ci_lo": 2.6517,
-          "ci_hi": 6.9864
+          "coef": 4.6727,
+          "se": 0.9811,
+          "z": 4.762,
+          "p": 2e-06,
+          "ci_lo": 2.7497,
+          "ci_hi": 6.5957
         },
         "treat_beliefs_surveillance": {
-          "coef": 0.0277,
-          "se": 0.2532,
-          "z": 0.109,
-          "p": 0.912906,
-          "ci_lo": -0.4686,
-          "ci_hi": 0.524
+          "coef": 0.0215,
+          "se": 0.2438,
+          "z": 0.088,
+          "p": 0.929653,
+          "ci_lo": -0.4563,
+          "ci_hi": 0.4994
         }
       },
       "marginal_effects_at_mean": {
-        "const": -6.3822,
-        "belief": 0.0883,
-        "z_score": -0.0095,
-        "treat_beliefs_propaganda_k5": 0.0021,
-        "treat_beliefs_pure": 1.1608,
-        "treat_beliefs_surveillance": 0.0067
+        "const": -6.0842,
+        "belief": 0.0844,
+        "z_score": -0.0061,
+        "treat_beliefs_pure": 1.118,
+        "treat_beliefs_surveillance": 0.0051
       },
-      "mean_predicted_prob": 0.4045,
+      "mean_predicted_prob": 0.3964,
       "base_treatment": "beliefs_comm"
     }
   },

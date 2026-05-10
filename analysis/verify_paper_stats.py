@@ -19,6 +19,7 @@ from style import join_col as _join_col, logistic as _logistic
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 ROOT = PROJECT_ROOT / "output"
+ARCHIVE_OUTPUT = PROJECT_ROOT / "_archive" / "infodesign" / "output"
 OUT = Path(__file__).resolve().parent / "verified_stats.json"
 
 # ── Models with full Part I data ──────────────────────────────────────
@@ -98,9 +99,12 @@ def load(model: str, treatment: str) -> pd.DataFrame:
 
 def load_infodesign(model: str, design: str = "all") -> pd.DataFrame:
     """Load infodesign summary CSV."""
-    p = ROOT / model / f"experiment_infodesign_{design}_summary.csv"
-    if p.exists():
-        return pd.read_csv(p)
+    for p in [
+        ROOT / model / f"experiment_infodesign_{design}_summary.csv",
+        ARCHIVE_OUTPUT / "canonical-csvs" / model / f"experiment_infodesign_{design}_summary.csv",
+    ]:
+        if p.exists():
+            return pd.read_csv(p)
     return pd.DataFrame()
 
 
@@ -282,6 +286,34 @@ def _load_summary(path: Path) -> pd.DataFrame:
     return pd.read_csv(path)
 
 
+def _has_summary_files(path: Path) -> bool:
+    return path.exists() and any(path.glob("**/experiment_*_summary.csv"))
+
+
+def _experiment_base_dir(name: str) -> Path:
+    """Return active output dir, falling back to archived raw outputs if needed."""
+    active = ROOT / name
+    if _has_summary_files(active):
+        return active
+    archived = ARCHIVE_OUTPUT / name
+    if _has_summary_files(archived):
+        print(f"  Using archived raw output for {name}: {archived}")
+        return archived
+    return active
+
+
+def _primary_infodesign_dir() -> Path:
+    """Primary-model infodesign source, preferring active output over archive."""
+    active = ROOT / PRIMARY
+    if (active / "experiment_infodesign_all_summary.csv").exists():
+        return active
+    archived = ARCHIVE_OUTPUT / "canonical-csvs" / PRIMARY
+    if (archived / "experiment_infodesign_all_summary.csv").exists():
+        print(f"  Using archived raw output for primary infodesign: {archived}")
+        return archived
+    return active
+
+
 def _find_summaries(base_dir: Path, pattern: str = "experiment_*_summary.csv") -> list[Path]:
     if not base_dir.exists():
         return []
@@ -316,20 +348,6 @@ def _load_experiment_log(path: Path) -> list[dict]:
         return []
     with open(path) as f:
         return json.load(f)
-
-
-def _real_join_from_comm_log(log_rows: list[dict]) -> pd.Series:
-    """Compute per-period join fraction among non-propaganda agents from comm logs."""
-    vals = []
-    for row in log_rows:
-        agents = row.get("agents") or []
-        real = [a for a in agents if not a.get("is_propaganda", False)]
-        if not real:
-            vals.append(float("nan"))
-            continue
-        n_join = sum(1 for a in real if a.get("decision") == "JOIN")
-        vals.append(n_join / len(real))
-    return pd.Series(vals, dtype=float)
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -685,8 +703,8 @@ def compute_infodesign():
 
     # Primary model: Mistral
     model = PRIMARY
-    model_dir = ROOT / model
-    df_all = load_infodesign(model, "all")
+    model_dir = _primary_infodesign_dir()
+    df_all = _load_summary(model_dir / "experiment_infodesign_all_summary.csv")
     if len(df_all) == 0:
         print("  WARNING: no infodesign data for primary model")
         return results
@@ -734,7 +752,10 @@ def compute_infodesign():
     # to compute baseline stats and logistic cutoffs reported in Part II and the
     # B/C narrative table.
     bc_sweep_baseline = None
-    bc_sweep_path = model_dir / "experiment_bc_sweep_summary.csv"
+    bc_sweep_path = _first_existing(
+        ROOT / model / "experiment_bc_sweep_summary.csv",
+        model_dir / "experiment_bc_sweep_summary.csv",
+    )
     if bc_sweep_path.exists():
         try:
             bc = pd.read_csv(bc_sweep_path)
@@ -996,7 +1017,7 @@ def compute_infodesign_comm():
     results = {}
 
     primary = PRIMARY
-    base_dir = ROOT / f"{primary}-infodesign-comm" / primary
+    base_dir = _experiment_base_dir(f"{primary}-infodesign-comm") / primary
     df_all = _load_summary(base_dir / "experiment_infodesign_all_summary.csv")
     if len(df_all) == 0:
         print("  WARNING: no infodesign-comm data for primary model")
@@ -1056,15 +1077,15 @@ def compute_infodesign_comm():
 
 
 # ═══════════════════════════════════════════════════════════════════
-# PART III: Surveillance, propaganda, interactions
+# PART III: Surveillance and censorship interactions
 # ═══════════════════════════════════════════════════════════════════
 
 def compute_regime_control():
-    """Statistics for surveillance, propaganda, and interactions."""
+    """Statistics for surveillance and surveillance-censorship interactions."""
     results = {}
 
     # Surveillance (comm baseline vs surveilled comm), per model
-    surv_base = ROOT / "surveillance"
+    surv_base = _experiment_base_dir("surveillance")
     for f in _find_summaries(surv_base, "experiment_comm_summary.csv"):
         model_slug = _model_slug_from_summary_path(f, surv_base)
         if model_slug is None:
@@ -1086,67 +1107,8 @@ def compute_regime_control():
             out["baseline_mean_join"] = round(_safe_mean(base_comm[bj]), 4)
         results.setdefault("surveillance", {})[SHORT.get(model_slug, model_slug)] = out
 
-    # Propaganda k=2,5,10
-    for k in [2, 5, 10]:
-        prop_base = ROOT / f"propaganda-k{k}"
-        for f in _find_summaries(prop_base, "experiment_comm_summary.csv"):
-            model_slug = _model_slug_from_summary_path(f, prop_base)
-            if model_slug is None:
-                continue
-            df = _load_summary(f)
-            jcol = _join_col(df)
-            attack = _attack_mass_benchmark(df["theta"].astype(float).values)
-            out = {
-                "mean_join_all": round(_safe_mean(df[jcol]), 4),
-                "r_vs_theta_all": pearson_with_ci(df["theta"], df[jcol]),
-                "r_vs_attack_all": pearson_with_ci(attack, df[jcol].astype(float).values),
-                "n_obs": int(len(df)),
-            }
-            # Real-citizen join fraction from comm log
-            log_path = f.parent / "experiment_comm_log.json"
-            logs = _load_experiment_log(log_path)
-            if logs:
-                real = _real_join_from_comm_log(logs)
-                out["mean_join_real"] = round(_safe_mean(real), 4)
-                out["std_join_real"] = round(_safe_std(real), 4)
-                out["real_delta_vs_all_pp"] = round((out["mean_join_real"] - out["mean_join_all"]) * 100, 2)
-
-            # Delta vs baseline comm (main output dir), using real if available, else all
-            base_comm = _load_summary(ROOT / model_slug / "experiment_comm_summary.csv")
-            if len(base_comm):
-                bj = _join_col(base_comm)
-                baseline_mean = _safe_mean(base_comm[bj])
-                out["baseline_mean_join"] = round(baseline_mean, 4)
-                out["delta_vs_baseline_pp"] = round((out["mean_join_all"] - baseline_mean) * 100, 2)
-                if "mean_join_real" in out:
-                    out["delta_real_vs_baseline_pp"] = round((out["mean_join_real"] - baseline_mean) * 100, 2)
-
-            results.setdefault("propaganda", {}).setdefault(f"k={k}", {})[SHORT.get(model_slug, model_slug)] = out
-
-    # Propaganda + surveillance
-    ps_base = ROOT / "propaganda-surveillance"
-    for f in _find_summaries(ps_base, "experiment_comm_summary.csv"):
-        model_slug = _model_slug_from_summary_path(f, ps_base)
-        if model_slug is None:
-            continue
-        df = _load_summary(f)
-        jcol = _join_col(df)
-        attack = _attack_mass_benchmark(df["theta"].astype(float).values)
-        out = {
-            "mean_join_all": round(_safe_mean(df[jcol]), 4),
-            "r_vs_theta_all": pearson_with_ci(df["theta"], df[jcol]),
-            "r_vs_attack_all": pearson_with_ci(attack, df[jcol].astype(float).values),
-            "n_obs": int(len(df)),
-        }
-        log_path = f.parent / "experiment_comm_log.json"
-        logs = _load_experiment_log(log_path)
-        if logs:
-            real = _real_join_from_comm_log(logs)
-            out["mean_join_real"] = round(_safe_mean(real), 4)
-        results.setdefault("propaganda_surveillance", {})[SHORT.get(model_slug, model_slug)] = out
-
     # Surveillance x censorship
-    sxc_base = ROOT / "surveillance-x-censorship"
+    sxc_base = _experiment_base_dir("surveillance-x-censorship")
     for f in _find_summaries(sxc_base, "experiment_infodesign_all_summary.csv"):
         model_slug = _model_slug_from_summary_path(f, sxc_base)
         if model_slug is None:
@@ -1156,7 +1118,7 @@ def compute_regime_control():
         by_design = df.groupby("design")[jcol].mean().to_dict()
         out = {k: round(float(v), 4) for k, v in by_design.items()}
         # deltas vs no-surveillance infodesign baseline
-        base_info = _load_summary(ROOT / model_slug / "experiment_infodesign_all_summary.csv")
+        base_info = load_infodesign(model_slug, "all")
         if len(base_info):
             bj = _join_col(base_info)
             base_means = base_info.groupby("design")[bj].mean().to_dict()
@@ -1166,41 +1128,6 @@ def compute_regime_control():
                 if k in base_means
             }
         results.setdefault("surveillance_x_censorship", {})[SHORT.get(model_slug, model_slug)] = out
-
-    # Propaganda saturation test: k=5 vs k=10 real-citizen join rates
-    prop = results.get("propaganda", {})
-    k5_data = prop.get("k=5", {}).get("Mistral Small Creative", {})
-    k10_data = prop.get("k=10", {}).get("Mistral Small Creative", {})
-    if k5_data.get("mean_join_real") is not None and k10_data.get("mean_join_real") is not None:
-        # Load agent-level data for proper test
-        k5_log = _load_experiment_log(
-            ROOT / "propaganda-k5" / PRIMARY / "experiment_comm_log.json"
-        )
-        k10_log = _load_experiment_log(
-            ROOT / "propaganda-k10" / PRIMARY / "experiment_comm_log.json"
-        )
-        k5_decisions, k10_decisions = [], []
-        for log in (k5_log or []):
-            for a in log.get("agents", []):
-                if not a.get("is_propaganda", False) and not a.get("api_error"):
-                    k5_decisions.append(1 if a.get("decision") == "JOIN" else 0)
-        for log in (k10_log or []):
-            for a in log.get("agents", []):
-                if not a.get("is_propaganda", False) and not a.get("api_error"):
-                    k10_decisions.append(1 if a.get("decision") == "JOIN" else 0)
-        if k5_decisions and k10_decisions:
-            k5_arr = np.array(k5_decisions)
-            k10_arr = np.array(k10_decisions)
-            t_stat, t_p = stats.ttest_ind(k5_arr, k10_arr)
-            results["_propaganda_saturation_k5_k10"] = {
-                "k5_mean_real": round(float(k5_arr.mean()), 4),
-                "k10_mean_real": round(float(k10_arr.mean()), 4),
-                "delta_pp": round(float((k10_arr.mean() - k5_arr.mean()) * 100), 2),
-                "t_stat": round(float(t_stat), 4),
-                "p_value": round(float(t_p), 6),
-                "n_k5": len(k5_decisions),
-                "n_k10": len(k10_decisions),
-            }
 
     return results
 
@@ -2263,14 +2190,12 @@ def _load_belief_v2_agents(treatment: str) -> list[dict]:
         if not agents or "second_order_belief_raw" not in agents[0]:
             continue
         # Compute period-level join fraction for belief comparisons.
-        real_agents = [a for a in agents if not a.get("is_propaganda", False)]
-        if not real_agents:
+        valid_agents = agents
+        if not valid_agents:
             continue
-        period_join = sum(1 for a in real_agents if a.get("decision") == "JOIN") / len(real_agents)
+        period_join = sum(1 for a in valid_agents if a.get("decision") == "JOIN") / len(valid_agents)
         for a in agents:
             if a.get("api_error"):
-                continue
-            if a.get("is_propaganda", False):
                 continue
             belief = a.get("belief")
             sob = a.get("second_order_belief")
@@ -2523,13 +2448,12 @@ def compute_belief_factorial():
 
 
 def compute_hypothesis_table(all_stats: dict) -> list[dict]:
-    """Build H1-H8 hypothesis table from already-computed stats.
+    """Build H1-H5 hypothesis table from already-computed stats.
 
     Each entry: {id, hypothesis, estimand, null, test, stat, p, supported}.
-    H1-H4 use pooled Part I data; H5-H8 use primary-model infodesign/regime data.
+    H1-H4 use pooled Part I data; H5 uses primary-model surveillance data.
     """
     part1 = all_stats.get("part1", {})
-    infodesign = all_stats.get("infodesign", {})
     regime = all_stats.get("regime_control", {})
     prompt_iso = all_stats.get("prompt_isolation", {})
     table = []
@@ -2622,16 +2546,7 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
         "supported": _hypothesis_supported(comm_p, alpha=0.05, reject_null=True),
     })
 
-    # ── H5-H8: Infodesign / regime treatments (primary model) ────────
-    # H5: Stability ─ infodesign stability vs baseline
-    h5 = _hypothesis_from_infodesign(infodesign, "stability", "Ambiguity Pooling")
-    table.append(h5)
-
-    # H6: Censorship ─ infodesign censor_upper vs baseline
-    h6 = _hypothesis_from_infodesign(infodesign, "censor_upper", "Censorship Distortion")
-    table.append(h6)
-
-    # H7: Surveillance ─ clean prompt-isolation effect when available
+    # ── H5: Surveillance ─ clean prompt-isolation effect when available
     surv = ((prompt_iso.get("surveillance") or {}).get("Mistral Small Creative")
             or (regime.get("surveillance") or {}).get("Mistral Small Creative", {}))
     # t-test: surveilled comm vs baseline comm (load raw data)
@@ -2659,7 +2574,7 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
         sd_pool = float(np.sqrt(((n1-1)*s_jf.std()**2 + (n2-1)*b_jf.std()**2) / (n1+n2-2)))
         surv_d = round(float((s_jf.mean() - b_jf.mean()) / sd_pool), 4) if sd_pool > 0 else None
     table.append({
-        "id": "H7",
+        "id": "H5",
         "hypothesis": "Surveillance Chilling",
         "estimand": r"$\Delta_{\text{pp}}$",
         "null": "$= 0$",
@@ -2671,45 +2586,8 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
         "supported": _hypothesis_supported(surv_p, alpha=0.05, reject_null=True),
     })
 
-    # H8: Propaganda ─ regime propaganda k=5 effect (real agents vs baseline)
-    prop = (regime.get("propaganda") or {}).get("k=5", {}).get("Mistral Small Creative", {})
-    prop_delta = prop.get("delta_real_vs_baseline_pp")
-    # t-test on period-level join fractions (propaganda real vs baseline comm)
-    prop_t = None
-    prop_p = None
-    prop_d = None
-    prop_real_jf = None
-    prop_log = _load_experiment_log(
-        ROOT / "propaganda-k5" / primary / "experiment_comm_log.json"
-    )
-    if prop_log and len(base_comm_df) > 0:
-        prop_real_jf = _real_join_from_comm_log(prop_log)
-        bjcol = _join_col(base_comm_df)
-        base_jf = base_comm_df[bjcol].astype(float).dropna()
-        prop_real_jf = prop_real_jf.dropna()
-        if len(prop_real_jf) > 0 and len(base_jf) > 0:
-            t_p_stat, p_p_val = stats.ttest_ind(prop_real_jf, base_jf)
-            prop_t = round(float(t_p_stat), 4)
-            prop_p = round(float(p_p_val), 6)
-            # Cohen's d
-            n1_p, n2_p = len(base_jf), len(prop_real_jf)
-            sd_pool_p = float(np.sqrt(((n1_p-1)*base_jf.std()**2 + (n2_p-1)*prop_real_jf.std()**2) / (n1_p+n2_p-2)))
-            prop_d = round(float((prop_real_jf.mean() - base_jf.mean()) / sd_pool_p), 4) if sd_pool_p > 0 else None
-    table.append({
-        "id": "H8",
-        "hypothesis": "Propaganda Dose-Response",
-        "estimand": r"$\Delta_{\text{pp}}$",
-        "null": "$= 0$",
-        "test": "$t$-test",
-        "stat": prop_t,
-        "p": prop_p,
-        "n": None,
-        "effect_size": prop_d,
-        "supported": _hypothesis_supported(prop_p, alpha=0.05, reject_null=True),
-    })
-
     # ── Power analysis for non-significant results ─────────────────────
-    # Compute post-hoc power, Cohen's d, and MDE for H8 (and H4 unpaired)
+    # Compute post-hoc power, Cohen's d, and MDE for H4 unpaired.
     power_analysis = {}
     z_crit = stats.norm.ppf(0.975)
     z_beta = stats.norm.ppf(0.80)
@@ -2745,31 +2623,6 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
             "note": "Unpaired test; paper uses paired test (H4 is significant)",
         }
 
-    # H8: Propaganda k=5 real agents vs baseline comm
-    if prop_real_jf is not None and len(prop_real_jf) > 0 and len(base_comm_df) > 0:
-        bjcol_h8 = _join_col(base_comm_df)
-        base_h8 = base_comm_df[bjcol_h8].astype(float).dropna()
-        n1_h8 = int(len(base_h8))
-        n2_h8 = int(len(prop_real_jf))
-        delta_h8 = float(prop_real_jf.mean() - base_h8.mean())
-        sd1 = float(base_h8.std())
-        sd2 = float(prop_real_jf.std())
-        pooled_sd_h8 = float(np.sqrt(((n1_h8-1)*sd1**2 + (n2_h8-1)*sd2**2) / (n1_h8+n2_h8-2)))
-        d_h8 = delta_h8 / pooled_sd_h8 if pooled_sd_h8 > 0 else 0
-        neff_h8 = (n1_h8 * n2_h8) / (n1_h8 + n2_h8)
-        ncp_h8 = abs(d_h8) * np.sqrt(neff_h8)
-        power_h8 = float(1 - stats.norm.cdf(z_crit - ncp_h8) + stats.norm.cdf(-z_crit - ncp_h8))
-        mde_d_h8 = (z_crit + z_beta) / np.sqrt(neff_h8)
-        mde_pp_h8 = mde_d_h8 * pooled_sd_h8 * 100
-        power_analysis["H8"] = {
-            "cohens_d": round(d_h8, 4),
-            "power": round(power_h8, 4),
-            "mde_d": round(mde_d_h8, 4),
-            "mde_pp": round(mde_pp_h8, 2),
-            "n_baseline": n1_h8, "n_propaganda": n2_h8,
-            "delta_pp": round(delta_h8 * 100, 2),
-        }
-
     # Attach power analysis to each hypothesis row
     for row in table:
         hid = row["id"]
@@ -2789,61 +2642,6 @@ def _hypothesis_supported(p, alpha: float = 0.05, reject_null: bool = True) -> s
         return "Supported" if p < alpha else "Not supported"
     else:
         return "Passes falsification" if p >= alpha else "Fails falsification"
-
-
-def _hypothesis_from_infodesign(infodesign: dict, design_key: str, label: str) -> dict:
-    """Build a hypothesis table row from infodesign data (t-test vs baseline)."""
-    primary = PRIMARY
-    model_dir = ROOT / primary
-    # Load design and baseline data to run a t-test
-    df_design = _load_summary(model_dir / f"experiment_infodesign_{design_key}_summary.csv")
-    # For baseline, prefer the bc_sweep canonical source
-    bc_sweep_path = model_dir / "experiment_bc_sweep_summary.csv"
-    df_baseline = pd.DataFrame()
-    if bc_sweep_path.exists():
-        try:
-            bc = pd.read_csv(bc_sweep_path)
-            if "theta_star_target" in bc.columns:
-                df_baseline = bc[np.isclose(bc["theta_star_target"].astype(float), 0.50)]
-        except Exception:
-            pass
-    if len(df_baseline) == 0:
-        df_baseline = _load_summary(model_dir / "experiment_infodesign_baseline_summary.csv")
-    # Also try the all summary
-    if len(df_baseline) == 0:
-        df_all = _load_summary(model_dir / "experiment_infodesign_all_summary.csv")
-        if len(df_all) > 0 and "design" in df_all.columns:
-            df_baseline = df_all[df_all["design"] == "baseline"]
-
-    t_stat = None
-    p_val = None
-    effect_d = None
-    if len(df_design) > 0 and len(df_baseline) > 0:
-        jc_d = _join_col(df_design)
-        jc_b = _join_col(df_baseline)
-        g_d = df_design[jc_d].astype(float).dropna()
-        g_b = df_baseline[jc_b].astype(float).dropna()
-        t_s, p_v = stats.ttest_ind(g_d, g_b)
-        t_stat = round(float(t_s), 4)
-        p_val = round(float(p_v), 6)
-        # Cohen's d
-        n1, n2 = len(g_d), len(g_b)
-        sd_pool = float(np.sqrt(((n1-1)*g_d.std()**2 + (n2-1)*g_b.std()**2) / (n1+n2-2)))
-        effect_d = round(float((g_d.mean() - g_b.mean()) / sd_pool), 4) if sd_pool > 0 else None
-
-    h_id = {"Ambiguity Pooling": "H5", "Censorship Distortion": "H6"}.get(label, "H?")
-    return {
-        "id": h_id,
-        "hypothesis": label,
-        "estimand": r"$\Delta_{\text{pp}}$",
-        "null": "$= 0$",
-        "test": "$t$-test",
-        "stat": t_stat,
-        "effect_size": effect_d,
-        "p": p_val,
-        "n": None,
-        "supported": _hypothesis_supported(p_val, alpha=0.05, reject_null=True),
-    }
 
 
 def compute_ck_interaction():
@@ -3139,7 +2937,7 @@ def compute_punishment_risk():
         join_decisions = []
         for period in log_data:
             for a in period.get("agents", []):
-                if a.get("api_error") or a.get("is_propaganda", False):
+                if a.get("api_error"):
                     continue
                 pr_val = a.get("punishment_risk")
                 if pr_val is not None:
@@ -3387,14 +3185,6 @@ def compute_paper_misc_stats(all_stats: dict) -> dict:
     if all_pr_diffs:
         misc["punishment_risk_max_diff"] = round(max(all_pr_diffs), 1)
 
-    # ── H6 censorship p-value ────────────────────────────────────────
-    ht = all_stats.get("hypothesis_table", [])
-    for h in ht:
-        if h.get("id") == "H6":
-            p = h.get("p")
-            if p is not None and not (isinstance(p, float) and np.isnan(p)):
-                misc["h6_p"] = round(p, 3)
-
     # ── Agent-level regression N (from regression_results.json) ─────
     reg_path = Path(__file__).resolve().parent / "regression_results.json"
     if reg_path.exists():
@@ -3422,31 +3212,6 @@ def compute_paper_misc_stats(all_stats: dict) -> dict:
         pr = fn_pooled.get("pearson_r")
         if pr is not None:
             misc["finite_n_pooled_r"] = round(pr, 4)
-
-    # ── Sum of individual surveillance + propaganda effects ──────────
-    rc = all_stats.get("regime_control", {})
-    surv_delta = None
-    prop_delta = None
-    surv = rc.get("surveillance", {}).get("Mistral Small Creative", {})
-    if surv:
-        surv_delta = surv.get("delta_vs_baseline_pp")
-    prop = rc.get("propaganda", {})
-    # propaganda keyed by model then dose
-    if isinstance(prop, dict):
-        for model_key, model_data in prop.items():
-            if "Mistral" in str(model_key):
-                if isinstance(model_data, dict):
-                    prop_delta = model_data.get("delta_vs_baseline_pp")
-    # Also check _propaganda_saturation_k5_k10
-    prop_sat = rc.get("_propaganda_saturation_k5_k10", {})
-    if isinstance(prop_sat, dict):
-        for k, v in prop_sat.items():
-            if "k=5" in str(k) and isinstance(v, dict):
-                d = v.get("delta_vs_baseline_pp")
-                if d is not None:
-                    prop_delta = d
-    if surv_delta is not None and prop_delta is not None:
-        misc["sum_individual_effects_pp"] = round(surv_delta + prop_delta, 1)
 
     # ── Regime survival (theoretical BNE baseline) ─────────────────
     sigma = PART1_BENCHMARK_SIGMA
@@ -3519,12 +3284,10 @@ def compute_paper_misc_stats(all_stats: dict) -> dict:
                 return json.load(f)
         return []
 
-    def _flatten(log, real_only=False):
+    def _flatten(log):
         agents = []
         for period in log:
             for a in period.get("agents", []):
-                if real_only and a.get("is_propaganda"):
-                    continue
                 agents.append(a)
         return agents
 
@@ -3548,11 +3311,9 @@ def compute_paper_misc_stats(all_stats: dict) -> dict:
         ROOT / "prompt-isolation-surveillance" / PRIMARY / "experiment_comm_log.json",
         ROOT / "surveillance" / PRIMARY / "experiment_comm_log.json",
     )
-    prop_k10_path = ROOT / "propaganda-k10" / PRIMARY / "experiment_comm_log.json"
 
     comm_log = _load_log(comm_path)
     surv_log = _load_log(surv_path)
-    prop_k10_log = _load_log(prop_k10_path)
 
     if comm_log and surv_log:
         comm_agents = _flatten(comm_log)
@@ -3571,44 +3332,6 @@ def compute_paper_misc_stats(all_stats: dict) -> dict:
             misc["wf_action_join_comm"] = round(100.0 * sum(1 for a in comm_join if _has_action(a["message_sent"])) / len(comm_join), 1)
         if surv_join:
             misc["wf_action_join_surv"] = round(100.0 * sum(1 for a in surv_join if _has_action(a["message_sent"])) / len(surv_join), 1)
-
-    if comm_log and prop_k10_log:
-        comm_agents = _flatten(comm_log)
-        prop_k10_all = _flatten(prop_k10_log, real_only=False)
-        prop_k10_real = _flatten(prop_k10_log, real_only=True)
-
-        # Single-word propaganda frequencies
-        misc["wf_loyal_comm"] = _word_pct(comm_agents, "loyal")
-        misc["wf_loyal_k10"] = _word_pct(prop_k10_all, "loyal")
-        misc["wf_ready_comm"] = _word_pct(comm_agents, "ready")
-        misc["wf_ready_k10"] = _word_pct(prop_k10_all, "ready")
-
-        # Caution-coded among STAY deciders
-        comm_stay = [a for a in comm_agents if a.get("decision") == "STAY" and a.get("message_sent")]
-        prop_stay = [a for a in prop_k10_real if a.get("decision") == "STAY" and a.get("message_sent")]
-        if comm_stay:
-            misc["wf_caution_stay_comm"] = round(100.0 * sum(1 for a in comm_stay if _has_caution(a["message_sent"])) / len(comm_stay), 1)
-        if prop_stay:
-            misc["wf_caution_stay_k10"] = round(100.0 * sum(1 for a in prop_stay if _has_caution(a["message_sent"])) / len(prop_stay), 1)
-
-        # Action signaling among JOIN deciders in propaganda
-        prop_join = [a for a in prop_k10_real if a.get("decision") == "JOIN" and a.get("message_sent")]
-        if prop_join:
-            misc["wf_action_join_k10"] = round(100.0 * sum(1 for a in prop_join if _has_action(a["message_sent"])) / len(prop_join), 1)
-
-    # ── Surveillance + propaganda sum ────────────────────────────
-    # Read delta values from existing macros in stats_macros.tex
-    # These are computed by the surveillance/propaganda table pipeline
-    macros_path = PROJECT_ROOT / "paper" / "tables" / "stats_macros.tex"
-    if macros_path.exists():
-        import re as _re2
-        macro_text = macros_path.read_text()
-        surv_match = _re2.search(r"\\SurvMistralDeltaPP\}\{([^}]+)\}", macro_text)
-        prop_match = _re2.search(r"\\PropKFiveDeltaRealPP\}\{([^}]+)\}", macro_text)
-        if surv_match and prop_match:
-            surv_val = float(surv_match.group(1))
-            prop_val = float(prop_match.group(1))
-            misc["surv_prop_sum_pp"] = round(surv_val + prop_val, 1)
 
     # ── Deduplication robustness (Mistral footnote) ───────────────
     primary_df = load(PRIMARY, "pure")

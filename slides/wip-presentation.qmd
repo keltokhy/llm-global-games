@@ -506,15 +506,6 @@ Not just ``someone is watching'' --- it's ``someone with power to punish is watc
 \footnotesize
 Censorship degrades private signals $\Rightarrow$ makes communication channel more important $\Rightarrow$ surveillance attacks precisely that channel. With both active, agents have neither signals to trust nor authentic messages to learn from.
 
-## Propaganda: A Weaker Instrument
-
-![](../paper/figures/fig13_propaganda.png){width=90%}
-
-\vspace{0.3em}
-
-\footnotesize
-$m$ regime plants (always STAY) in the 25-agent network. Overall join rate drops mechanically, but \textbf{behavioral effect on real citizens saturates quickly}: $-0.4$ pp ($m=2$), $-2.0$ pp ($m=5$), $-2.3$ pp ($m=10$). Doubling plants from 5 to 10: $\Delta = -0.3$ pp ($p = 0.67$).
-
 # Robustness & Extensions
 
 ## Generator Robustness
@@ -586,7 +577,7 @@ Stated beliefs vs. theoretical posterior ($r = +0.78$). Beliefs predict actions 
 - Robust threshold behavior across 7 architectures ($\bar{r} = +0.80$)
 - Information design shifts coordination in theory-consistent directions
 - 57.6 pp range from narrative stakes alone
-- Censorship + surveillance are complements; propaganda saturates
+- Censorship + surveillance are complements
 
 ## Implications for AI Safety
 

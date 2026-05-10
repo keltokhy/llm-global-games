@@ -1,145 +1,145 @@
 {
   "bow_tfidf": {
     "cv_pure": {
-      "accuracy_mean": 0.88444,
-      "accuracy_std": 0.002166656410232133,
-      "auc_mean": 0.94746727786614,
-      "auc_std": 0.0023665145513743287
+      "accuracy_mean": 0.8845599999999999,
+      "accuracy_std": 0.002473539973398461,
+      "auc_mean": 0.9474789766220544,
+      "auc_std": 0.002473868223363951
     },
     "cross_pure_to_comm": {
-      "accuracy": 0.8798303864309145,
-      "auc": 0.9492180121932834,
-      "predicted_join_rate": 0.4021521721737739,
+      "accuracy": 0.8802704216337307,
+      "auc": 0.9496302862445867,
+      "predicted_join_rate": 0.4021921753740299,
       "actual_join_rate": 0.4111128890311225
     },
     "cross_pure_to_surv": {
-      "accuracy": 0.84464,
-      "auc": 0.9377747188116544,
-      "predicted_join_rate": 0.40528,
+      "accuracy": 0.84452,
+      "auc": 0.9386693718516911,
+      "predicted_join_rate": 0.40556,
       "actual_join_rate": 0.27568
     },
     "top_features_join": [
       {
         "feature": "trajectory",
-        "coef": 1.5182
+        "coef": 1.6887
       },
       {
         "feature": "versus",
-        "coef": 1.4906
+        "coef": 1.4812
       },
       {
         "feature": "moment",
-        "coef": 1.3159
+        "coef": 1.3454
       },
       {
         "feature": "losing",
-        "coef": 1.3114
+        "coef": 1.2952
       },
       {
-        "feature": "weakness",
-        "coef": 1.2208
-      },
-      {
-        "feature": "apparent",
-        "coef": 1.1947
+        "feature": "functioning removes",
+        "coef": 1.2684
       },
       {
         "feature": "deterioration",
-        "coef": 1.1667
+        "coef": 1.258
+      },
+      {
+        "feature": "weakness",
+        "coef": 1.2555
+      },
+      {
+        "feature": "uncertainties disarray",
+        "coef": 1.2507
       },
       {
         "feature": "simultaneously",
-        "coef": 1.1154
+        "coef": 1.2149
       },
       {
-        "feature": "circle freezing",
-        "coef": 1.0989
+        "feature": "apparent",
+        "coef": 1.2019
       },
       {
         "feature": "intentionally tightening",
-        "coef": 1.0989
-      },
-      {
-        "feature": "intentionally",
-        "coef": 1.0989
-      },
-      {
-        "feature": "control intentionally",
-        "coef": 1.0989
+        "coef": 1.183
       },
       {
         "feature": "tightening circle",
-        "coef": 1.0989
+        "coef": 1.183
+      },
+      {
+        "feature": "circle freezing",
+        "coef": 1.183
+      },
+      {
+        "feature": "intentionally",
+        "coef": 1.183
       },
       {
         "feature": "losing control",
-        "coef": 1.0989
-      },
-      {
-        "feature": "reaching",
-        "coef": 1.0713
+        "coef": 1.183
       }
     ],
     "top_features_stay": [
       {
         "feature": "absence",
-        "coef": -2.3708
+        "coef": -2.4163
       },
       {
         "feature": "current",
-        "coef": -2.3056
+        "coef": -2.2935
       },
       {
         "feature": "stability",
-        "coef": -2.2043
-      },
-      {
-        "feature": "trend moving",
-        "coef": -1.9644
-      },
-      {
-        "feature": "challengers",
-        "coef": -1.9548
-      },
-      {
-        "feature": "potential challengers",
-        "coef": -1.9548
+        "coef": -2.1906
       },
       {
         "feature": "hold",
-        "coef": -1.9444
+        "coef": -2.098
+      },
+      {
+        "feature": "challengers",
+        "coef": -1.9634
+      },
+      {
+        "feature": "potential challengers",
+        "coef": -1.9634
       },
       {
         "feature": "potential",
-        "coef": -1.8833
-      },
-      {
-        "feature": "appears",
-        "coef": -1.6787
-      },
-      {
-        "feature": "indicators",
-        "coef": -1.6418
-      },
-      {
-        "feature": "communicating",
-        "coef": -1.6365
-      },
-      {
-        "feature": "trend",
-        "coef": -1.6267
+        "coef": -1.8827
       },
       {
         "feature": "bet",
-        "coef": -1.6035
+        "coef": -1.855
       },
       {
-        "feature": "noticeably",
-        "coef": -1.5363
+        "feature": "trend moving",
+        "coef": -1.7585
       },
       {
-        "feature": "accelerating noticeably",
-        "coef": -1.5363
+        "feature": "appears",
+        "coef": -1.7497
+      },
+      {
+        "feature": "communicating",
+        "coef": -1.6981
+      },
+      {
+        "feature": "indicators",
+        "coef": -1.6891
+      },
+      {
+        "feature": "performance sustainable",
+        "coef": -1.5614
+      },
+      {
+        "feature": "depends continued",
+        "coef": -1.5614
+      },
+      {
+        "feature": "continued",
+        "coef": -1.5614
       }
     ]
   },
@@ -165,21 +165,21 @@
   },
   "keyphrase_sentiment": {
     "cv_pure": {
-      "accuracy_mean": 0.60236,
-      "accuracy_std": 0.0029377542443165534,
-      "auc_mean": 0.5941721466259549,
-      "auc_std": 0.004424329380004841
+      "accuracy_mean": 0.60228,
+      "accuracy_std": 0.0029136918162358796,
+      "auc_mean": 0.594276182074363,
+      "auc_std": 0.004478397639030637
     },
     "cross_pure_to_comm": {
-      "accuracy": 0.5846067685414833,
-      "auc": 0.6048282227697308,
-      "predicted_join_rate": 0.08468677494199536,
+      "accuracy": 0.5845667653412273,
+      "auc": 0.6049365296456949,
+      "predicted_join_rate": 0.08504680374429954,
       "actual_join_rate": 0.4111128890311225
     },
     "cross_pure_to_surv": {
-      "accuracy": 0.68624,
-      "auc": 0.5301378996287318,
-      "predicted_join_rate": 0.08384,
+      "accuracy": 0.68616,
+      "auc": 0.5302876067577255,
+      "predicted_join_rate": 0.08408,
       "actual_join_rate": 0.27568
     }
   },
@@ -191,18 +191,6 @@
       "n_obs": 270,
       "logistic_b0": -1.5448,
       "logistic_b1": 3.9289
-    },
-    "bc_high_cost": {
-      "actual_join": 0.1902,
-      "classifier_predicted_join": 0.4089,
-      "gap_pp": 21.9,
-      "n_obs": 270
-    },
-    "bc_low_cost": {
-      "actual_join": 0.693,
-      "classifier_predicted_join": 0.4089,
-      "gap_pp": -28.4,
-      "n_obs": 270
     }
   }
 }

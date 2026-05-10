@@ -55,14 +55,6 @@ EXTRA_EXPERIMENTS: list[tuple[str, str, str]] = [
     ("surveillance/mistralai--mistral-small-creative", "mistralai--mistral-small-creative", "surveillance"),
     ("surveillance/meta-llama--llama-3.3-70b-instruct", "meta-llama--llama-3.3-70b-instruct", "surveillance"),
     ("surveillance/qwen--qwen3-30b-a3b-instruct-2507", "qwen--qwen3-30b-a3b-instruct-2507", "surveillance"),
-    # Propaganda k=5
-    ("propaganda-k5/mistralai--mistral-small-creative", "mistralai--mistral-small-creative", "propaganda_k5"),
-    ("propaganda-k5/meta-llama--llama-3.3-70b-instruct", "meta-llama--llama-3.3-70b-instruct", "propaganda_k5"),
-    # Propaganda k=2, k=10
-    ("propaganda-k2/mistralai--mistral-small-creative", "mistralai--mistral-small-creative", "propaganda_k2"),
-    ("propaganda-k10/mistralai--mistral-small-creative", "mistralai--mistral-small-creative", "propaganda_k10"),
-    # Propaganda + surveillance
-    ("propaganda-surveillance/mistralai--mistral-small-creative", "mistralai--mistral-small-creative", "propaganda_surveillance"),
 ]
 
 # Belief experiments (have 'belief' field in agent data)
@@ -77,8 +69,6 @@ BELIEF_EXPERIMENTS: list[tuple[str, str, str]] = [
      "meta-llama--llama-3.3-70b-instruct", "beliefs_pure"),
     ("meta-llama--llama-3.3-70b-instruct/_beliefs/meta-llama--llama-3.3-70b-instruct",
      "meta-llama--llama-3.3-70b-instruct", "beliefs_comm"),
-    ("mistralai--mistral-small-creative/_beliefs_propaganda_k5/mistralai--mistral-small-creative",
-     "mistralai--mistral-small-creative", "beliefs_propaganda_k5"),
 ]
 
 # Mapping from belief experiment label to the actual log filename
@@ -86,7 +76,6 @@ BELIEF_LOG_NAMES = {
     "beliefs_comm": "experiment_comm_log.json",
     "beliefs_pure": "experiment_pure_beliefs_log.json",
     "beliefs_surveillance": "experiment_surveillance_beliefs_log.json",
-    "beliefs_propaganda_k5": "experiment_comm_log.json",
 }
 
 
@@ -127,8 +116,6 @@ def extract_agent_data_from_log(
             if decision_upper not in ("JOIN", "STAY"):
                 continue
 
-            is_propaganda = ag.get("is_propaganda", False)
-
             row = {
                 "model": model_slug,
                 "treatment": treatment_label,
@@ -143,7 +130,6 @@ def extract_agent_data_from_log(
                 "clarity": ag.get("clarity", np.nan),
                 "coordination": ag.get("coordination", np.nan),
                 "join": 1 if decision_upper == "JOIN" else 0,
-                "is_propaganda": is_propaganda,
                 "coup_success": coup_success,
             }
 
@@ -168,10 +154,6 @@ def _log_filename_for_treatment(treatment: str) -> str:
         "scramble": "experiment_scramble_log.json",
         "flip": "experiment_flip_log.json",
         "surveillance": "experiment_comm_log.json",  # surveillance uses comm treatment
-        "propaganda_k2": "experiment_comm_log.json",
-        "propaganda_k5": "experiment_comm_log.json",
-        "propaganda_k10": "experiment_comm_log.json",
-        "propaganda_surveillance": "experiment_comm_log.json",
     }
     return mapping.get(treatment, f"experiment_{treatment}_log.json")
 
@@ -182,7 +164,7 @@ def build_full_dataset() -> pd.DataFrame:
     Returns a DataFrame with columns:
         model, treatment, country, period, agent_id, theta, theta_star,
         z_score, signal, direction, clarity, coordination, join,
-        is_propaganda, belief, coup_success
+        belief, coup_success
     """
     frames: list[pd.DataFrame] = []
 
@@ -201,7 +183,7 @@ def build_full_dataset() -> pd.DataFrame:
                 frames.append(df)
                 print(f"  Loaded {len(df):>7,} agent-rows: {model_slug} / {treatment}")
 
-    # ── Extra experiments (surveillance, propaganda, etc.) ──
+    # ── Extra experiments ──
     for subdir, model_slug, label in EXTRA_EXPERIMENTS:
         log_file = _log_filename_for_treatment(label)
         path = OUTPUT_DIR / subdir / log_file
@@ -336,8 +318,7 @@ def run_agent_logit(df: pd.DataFrame) -> dict[str, Any]:
     """
     results: dict[str, Any] = {}
 
-    # ── Prepare data: exclude propaganda agents ──
-    reg_df = df[~df["is_propaganda"]].copy()
+    reg_df = df.copy()
 
     # Treatment dummies (pure is base category)
     treatments = sorted([t for t in reg_df["treatment"].unique() if t != "pure"])
@@ -373,7 +354,7 @@ def run_agent_logit(df: pd.DataFrame) -> dict[str, Any]:
     print(f"\n{'='*70}")
     print(f"AGENT-LEVEL LOGIT: Pr(Join=1) ~ theta + treatment + theta*treatment + model_FE")
     print(f"{'='*70}")
-    print(f"N = {len(y):,} agent-decisions (excl. propaganda, API errors)")
+    print(f"N = {len(y):,} agent-decisions (excl. API errors)")
     print(f"Treatments: {treatments}")
     print(f"Models: {models}")
     print(f"Base model: {base_model}")
@@ -448,8 +429,7 @@ def run_belief_regressions(belief_df: pd.DataFrame) -> dict[str, Any]:
         print("\nInsufficient belief data for regressions.")
         return results
 
-    # Exclude propaganda agents
-    reg_df = belief_df[~belief_df["is_propaganda"]].copy()
+    reg_df = belief_df.copy()
     reg_df = reg_df[reg_df["belief"].notna()].copy()
 
     if len(reg_df) < 50:
@@ -560,7 +540,7 @@ def run_coordination_ablation(df: pd.DataFrame) -> dict[str, Any]:
     results: dict[str, Any] = {}
 
     # Use only pure treatment to avoid confounding with communication
-    reg_df = df[(df["treatment"] == "pure") & (~df["is_propaganda"])].copy()
+    reg_df = df[df["treatment"] == "pure"].copy()
 
     if len(reg_df) < 100:
         print("\nInsufficient pure-treatment data for coordination ablation.")
@@ -577,7 +557,7 @@ def run_coordination_ablation(df: pd.DataFrame) -> dict[str, Any]:
     print(f"\n{'='*70}")
     print(f"COORDINATION ABLATION: Pr(Join=1) ~ direction + coordination + dir*coord")
     print(f"{'='*70}")
-    print(f"N = {len(reg_df):,} (pure treatment only, excl. propaganda)")
+    print(f"N = {len(reg_df):,} (pure treatment only)")
     print(f"Direction range: [{reg_df['direction'].min():.3f}, {reg_df['direction'].max():.3f}]")
     print(f"Coordination range: [{reg_df['coordination'].min():.3f}, {reg_df['coordination'].max():.3f}]")
 
@@ -675,9 +655,7 @@ def run_coordination_ablation(df: pd.DataFrame) -> dict[str, Any]:
 
     # ── (4) Across all treatments (pure + comm + scramble + flip) ──
     try:
-        all_df = df[
-            (df["treatment"].isin(CORE_TREATMENTS)) & (~df["is_propaganda"])
-        ].copy()
+        all_df = df[df["treatment"].isin(CORE_TREATMENTS)].copy()
         all_df = all_df.dropna(subset=["direction", "clarity", "coordination"])
         all_df["dir_x_coord"] = all_df["direction"] * all_df["coordination"]
 
@@ -738,7 +716,7 @@ def run_finite_n_benchmark(df: pd.DataFrame) -> dict[str, Any]:
     """
     results: dict[str, Any] = {}
 
-    pure_df = df[(df["treatment"] == "pure") & (~df["is_propaganda"])].copy()
+    pure_df = df[df["treatment"] == "pure"].copy()
 
     if pure_df.empty:
         print("\nNo pure-treatment data for finite-N benchmark.")

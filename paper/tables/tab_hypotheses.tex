@@ -1,6 +1,6 @@
 \begin{table*}[t]
 \centering
-\caption{Hypothesis family and test results. H1--H4 use pooled Part~I data across all seven models; H5--H8 use the primary model (Mistral Small Creative). Effect size: $r$ for correlations (H1--H3), Cohen's $d$ or $d_z$ for mean comparisons (H4--H8). Outcome labels use $\alpha = 0.05$; H2 is reported as a falsification check, not as evidence for a zero effect.}
+\caption{Hypothesis family and test results. H1--H4 use pooled Part~I data across all seven models; H5 uses the primary model (Mistral Small Creative). Effect size: $r$ for correlations (H1--H3), Cohen's $d$ or $d_z$ for mean comparisons (H4--H5). Outcome labels use $\alpha = 0.05$; H2 is reported as a falsification check, not as evidence for a zero effect.}
 \label{tab:hypotheses}
 \scriptsize
 \setlength{\tabcolsep}{3pt}
@@ -12,12 +12,9 @@ H1 & Sigmoid Response & Pearson & 0.757 & $<$0.001 & 0.757 & Supported \\
 H2 & Scramble Falsification & Pearson & 0.014 & 0.638 & 0.014 & Passes falsification \\
 H3 & Directional Sensitivity & Pearson (1-sided) & -0.791 & $<$0.001 & -0.791 & Supported \\
 H4 & Communication Channel & Paired $t$ & 6.383 & $<$0.001 & 0.166 & Supported \\
-H5 & Ambiguity Pooling & $t$-test & --- & --- & --- & --- \\
-H6 & Censorship Distortion & $t$-test & --- & --- & --- & --- \\
-H7 & Surveillance Chilling & $t$-test & -5.344 & $<$0.001 & -0.239 & Supported \\
-H8 & Propaganda Dose-Response & $t$-test & --- & --- & --- & --- \\
+H5 & Surveillance Chilling & $t$-test & -5.344 & $<$0.001 & -0.239 & Supported \\
 \bottomrule
 \end{tabular}
 \vspace{0.25em}
-\parbox{\textwidth}{\footnotesize\emph{Notes:} H1--H4: pooled across all seven models (H4 uses paired $t$-test matched on model/country/period/$\theta$ task cells). H5--H8: primary model (Mistral Small Creative). Bonferroni survivors at $\alpha = 0.00625$: H1, H3, H4, H7. }
+\parbox{\textwidth}{\footnotesize\emph{Notes:} H1--H4: pooled across all seven models (H4 uses paired $t$-test matched on model/country/period/$\theta$ task cells). H5: primary model (Mistral Small Creative). Bonferroni survivors at $\alpha = 0.01$: H1, H3, H4, H5. }
 \end{table*}

@@ -93,10 +93,16 @@ group-size-info/                         Group-size prompt robustness
 ARCHIVED: INFODESIGN / BAYESIAN PERSUASION OUTPUTS
 --------------------------------------------------
 Information-design experiments (stability, instability, public-signal,
-censorship, propaganda, channel decomposition) are not used by the current
+censorship and channel decomposition) are not used by the current
 manuscript and have been moved to _archive/infodesign/.  Code modules
 (agent_based_simulation/{infodesign.py,run_infodesign.py}) and the
 corresponding figures/tables live there too, intended for a follow-up.
+Key archived output families include:
+  mistralai--mistral-small-creative-infodesign-comm/
+  surveillance-x-censorship/
+  bandwidth-005/
+  bandwidth-030/
+  z-centered/
 
 
 CSV COLUMN REFERENCE

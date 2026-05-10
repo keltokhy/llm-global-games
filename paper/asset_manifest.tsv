@@ -31,7 +31,6 @@ tables/tab_beliefs.tex	analysis/render_paper_tables.py	analysis/verified_stats.j
 tables/tab_punishment_risk.tex	analysis/render_paper_tables.py	analysis/verified_stats.json; output/punishment-risk*/**/experiment_*_log.json
 figures/fig02_cross_model.pdf	analysis/make_figures.py	output/comparison/model_comparison_summary.csv; output/*/experiment_*_summary.csv
 figures/fig15_text_baseline.pdf	analysis/make_figures.py	output/*/experiment_pure_log.json
-figures/fig18_bc_sweep.pdf	analysis/make_figures.py	output/*/experiment_bc_sweep_summary.csv
 tables/tab_bc_statics.tex	analysis/render_paper_tables.py	analysis/verified_stats.json; output/*/experiment_bc_sweep_summary.csv
 figures/fig_example_briefings.pdf	analysis/make_figures.py	agent_based_simulation/briefing.py; analysis/generate_example_briefings.py
 tables/tab_parse_errors.tex	analysis/render_paper_tables.py	analysis/verified_stats.json

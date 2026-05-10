@@ -17,7 +17,6 @@ Main figures (Part II — information design):
   10. Infodesign falsification — scramble/flip
   11. Stability decomposition — single-channel
   12. Surveillance chilling effect
-  13. Propaganda dose-response
   14. Cross-model infodesign replication
 
 Mechanism & belief figures:
@@ -44,7 +43,7 @@ from matplotlib.lines import Line2D
 
 from style import (
     apply_style, COL_W, TEXT_W, OUTPUT_DIR, FIG_DIR,
-    C_PURE, C_COMM, C_FLIP, C_SCRAMBLE, C_NET, C_SURV, C_PROP,
+    C_PURE, C_COMM, C_FLIP, C_SCRAMBLE, C_NET, C_SURV,
     C_BASELINE, C_STABILITY, C_INSTABILITY, C_CENS_UP, C_CENS_LO, C_PUBLIC,
     C_INK, C_MUTED, C_GRID, C_LIGHT, C_THEORY,
     DESIGN_COLORS, DESIGN_LABELS, DESIGN_MARKERS,
@@ -223,12 +222,9 @@ if _bc_sweep_path.exists() and len(info_all) > 0:
 comm_df = load_csv(ROOT / PRIMARY / "experiment_comm_summary.csv")
 pure_df = load_csv(ROOT / PRIMARY / "experiment_pure_summary.csv")
 
-# Surveillance & propaganda
+# Surveillance
 surv = load_all_csvs(ROOT / "surveillance")
 surv_cens = load_all_csvs(ROOT / "surveillance-x-censorship")
-prop2 = load_all_csvs(ROOT / "propaganda-k2")
-prop5 = load_all_csvs(ROOT / "propaganda-k5")
-prop10 = load_all_csvs(ROOT / "propaganda-k10")
 
 # Models with infodesign data
 INFODESIGN_MODELS = [d.name for d in ROOT.iterdir()
@@ -751,112 +747,6 @@ def fig12_surveillance():
 
 
 # ═══════════════════════════════════════════════════════════════════
-# FIGURE 13: Propaganda dose-response
-# ═══════════════════════════════════════════════════════════════════
-
-def fig13_propaganda():
-    fig, axes = plt.subplots(1, 3, figsize=(TEXT_W, 3.0),
-                              gridspec_kw={"width_ratios": [1, 1, 0.7]})
-
-    def binned_local(df, col, n_bins=12):
-        d = df.dropna(subset=["theta", col]).copy()
-        d["bin"] = pd.qcut(d["theta"], n_bins, duplicates="drop")
-        g = d.groupby("bin", observed=True)
-        centers = g["theta"].mean().values
-        means = g[col].mean().values
-        ses = g[col].sem().values
-        order = np.argsort(centers)
-        return centers[order], means[order], ses[order]
-
-    prop_specs = [
-        ("k=0 (baseline)", comm_df, 0, C_COMM, 1.0, "o"),
-        ("k=2 bots", prop2, 2, C_PROP, 1.0, "s"),
-        ("k=5 bots", prop5, 5, C_SCRAMBLE, 1.0, "^"),
-        ("k=10 bots", prop10, 10, C_FLIP, 1.0, "D"),
-    ]
-
-    for _, df, k, *_ in prop_specs:
-        if len(df) > 0:
-            n_total = int(df["n_agents"].dropna().iloc[0]) if "n_agents" in df.columns and df["n_agents"].notna().any() else 25
-            df["join_fraction_real"] = df["n_join"] / (n_total - k)
-
-    for panel_idx, (ax, col, title) in enumerate(zip(
-        axes[:2],
-        ["join_fraction", "join_fraction_real"],
-        ["A. Regime-level outcome\n(all 25 agents)",
-         "B. Real citizen behavior\n(excluding propaganda bots)"],
-    )):
-        dose_means = []
-        for label, df, k, base_color, alpha, marker in prop_specs:
-            if len(df) == 0:
-                dose_means.append(np.nan)
-                continue
-            c, m, se = binned_local(df, col, n_bins=12)
-            plot_curve_points(ax, c, m, se, color=base_color, label=label,
-                              marker=marker, markersize=11, linewidth=1.0,
-                              alpha=max(alpha, 0.82))
-            dose_means.append(df[col].mean())
-
-        valid = [(i, v) for i, v in enumerate(dose_means) if not np.isnan(v)]
-        if len(valid) >= 2:
-            labels_k = ["k=0", "k=2", "k=5", "k=10"]
-            text = "Mean join:\n" + "\n".join(
-                [f"  {labels_k[i]}: {v:.1%}" for i, v in valid])
-            ax.text(0.97, 0.97, text, transform=ax.transAxes, fontsize=5.5,
-                    va="top", ha="right",
-                    bbox=dict(boxstyle="round,pad=0.2", facecolor="white",
-                              alpha=0.9, edgecolor=C_GRID, linewidth=0.4))
-
-        ax.set_title(title, fontsize=8)
-        finish_rate_panel(ax, ylabel="Join fraction" if panel_idx == 0 else "",
-                          xlim=(-3.5, 3.5), ylim=(-0.03, 1.03))
-        if panel_idx == 0:
-            ax.legend(fontsize=5.5, loc="center right")
-
-    # Panel C: Cross-model at k=5
-    ax = axes[2]
-    prop5_dir = ROOT / "propaganda-k5"
-    prop5_models = [d.name for d in prop5_dir.iterdir()
-                    if d.is_dir() and (d / "experiment_comm_summary.csv").exists()]
-    prop5_models.sort()
-
-    behavioral_deltas = []
-    for model in prop5_models:
-        p5 = pd.read_csv(prop5_dir / model / "experiment_comm_summary.csv")
-        n_total = int(p5["n_agents"].iloc[0]) if "n_agents" in p5.columns else 25
-        p5["join_fraction_real"] = p5["n_join"] / (n_total - 5)
-        comm_f = ROOT / model / "experiment_comm_summary.csv"
-        if not comm_f.exists():
-            continue
-        comm_base = pd.read_csv(comm_f)
-        delta = p5["join_fraction_real"].mean() - comm_base[_join_col(comm_base)].mean()
-        behavioral_deltas.append({
-            "model": SHORT_NAMES.get(model, model[:15]),
-            "delta": delta,
-        })
-
-    if behavioral_deltas:
-        bdf = pd.DataFrame(behavioral_deltas).sort_values("delta")
-        y = np.arange(len(bdf))
-        bar_colors = ["#2c7bb6", "#d7191c", "#1a9641"][:len(bdf)]
-        ax.barh(y, bdf["delta"] * 100, color=bar_colors, edgecolor="none", height=0.5)
-        ax.set_yticks(y)
-        ax.set_yticklabels(bdf["model"], fontsize=6)
-        zero_line(ax, "x")
-        add_vgrid(ax)
-        ax.set_xlabel("Behavioral $\\Delta$ (pp)")
-        ax.set_title("C. Cross-model\n(k=5, real citizens)", fontsize=8)
-
-        for i, (_, row) in enumerate(bdf.iterrows()):
-            ax.text(row["delta"] * 100 - 0.3, i,
-                    f'{row["delta"]*100:.1f}pp', fontsize=5.5, va="center",
-                    ha="right", color="white", fontweight="bold")
-
-    fig.tight_layout(w_pad=1.5)
-    save(fig, "fig13_propaganda")
-
-
-# ═══════════════════════════════════════════════════════════════════
 # FIGURE 14: Cross-model infodesign replication
 # ═══════════════════════════════════════════════════════════════════
 
@@ -1048,12 +938,10 @@ def fig16_beliefs():
     import json as _json
 
     MISTRAL = ROOT / "mistralai--mistral-small-creative"
-    PROP_DIR = MISTRAL / "_beliefs_propaganda_k5" / "mistralai--mistral-small-creative"
 
     C_BELIEF_PURE = C_PURE
     C_BELIEF_COMM = C_COMM
     C_BELIEF_SURV = C_SURV
-    C_BELIEF_PROP = C_PROP
 
     def _load_belief_v2_agents(log_path, slice_range=None):
         """Load v2 belief agents (those with second_order_belief_raw)."""
@@ -1070,25 +958,6 @@ def fig16_beliefs():
                 if a.get("belief") is None or a.get("api_error"):
                     continue
                 if "second_order_belief_raw" not in a:
-                    continue
-                signal = a["signal"]
-                belief = a["belief"] / 100.0
-                decision = 1 if a["decision"] == "JOIN" else 0
-                posterior = stats.norm.cdf((PART1_BENCHMARK_THETA_STAR - signal) / sigma)
-                rows.append({"belief": belief, "decision": decision, "posterior": posterior})
-        return rows
-
-    def _load_belief_agents(log_path):
-        """Load all belief agents (fallback for propaganda data)."""
-        if not log_path.exists():
-            return []
-        with open(log_path) as f:
-            periods = _json.load(f)
-        rows = []
-        sigma = 0.3
-        for p in periods:
-            for a in p.get("agents", []):
-                if a.get("belief") is None or a.get("api_error"):
                     continue
                 signal = a["signal"]
                 belief = a["belief"] / 100.0
@@ -1116,9 +985,6 @@ def fig16_beliefs():
                                   slice_range=slice(None, -200))
     surv = _load_belief_v2_agents(MISTRAL / "experiment_comm_log.json",
                                   slice_range=slice(-200, None))
-    prop_path = PROP_DIR / "experiment_comm_log.json"
-    prop = _load_belief_agents(prop_path) if prop_path.exists() else []
-    has_prop = len(prop) > 50
 
     if not pure:
         print("  SKIPPED fig16 — no belief data")
@@ -1166,7 +1032,7 @@ def fig16_beliefs():
 
     pc, pm, pse, _ = _bin_data(pb, pd_, bin_edges)
 
-    n_groups = 4 if has_prop else (3 if len(surv) > 0 else 2)
+    n_groups = 3 if len(surv) > 0 else 2
     bar_w = 0.8 / n_groups
     x_pos = np.arange(len(pc))
     offsets = np.linspace(-0.4 + bar_w / 2, 0.4 - bar_w / 2, n_groups)
@@ -1190,14 +1056,6 @@ def fig16_beliefs():
                  label="Surveillance", zorder=3, edgecolor="white", linewidth=0.3)
         ax_b.errorbar(x_pos + offsets[idx], sm, yerr=1.96 * sse, fmt="none",
                       ecolor=C_BELIEF_SURV, elinewidth=0.6, capsize=2, zorder=4)
-
-    if has_prop:
-        rpb, rpd = _get_arrays(prop)
-        rc, rm, rse, _ = _bin_data(rpb, rpd, bin_edges)
-        ax_b.bar(x_pos + offsets[-1], rm, width=bar_w, color=C_BELIEF_PROP, alpha=0.85,
-                 label="Propaganda $k{=}5$", zorder=3, edgecolor="white", linewidth=0.3)
-        ax_b.errorbar(x_pos + offsets[-1], rm, yerr=1.96 * rse, fmt="none",
-                      ecolor=C_BELIEF_PROP, elinewidth=0.6, capsize=2, zorder=4)
 
     ax_b.set_xlabel("Stated belief (percent)")
     ax_b.set_ylabel("Join rate")
@@ -1253,12 +1111,12 @@ def fig17_second_order_beliefs():
             agents = p.get("agents") or []
             if not agents or "second_order_belief_raw" not in agents[0]:
                 continue
-            real = [a for a in agents if not a.get("is_propaganda", False)]
+            real = list(agents)
             if not real:
                 continue
             period_join = sum(1 for a in real if a.get("decision") == "JOIN") / len(real)
             for a in agents:
-                if a.get("api_error") or a.get("is_propaganda", False):
+                if a.get("api_error"):
                     continue
                 sob = a.get("second_order_belief")
                 if sob is None:

@@ -228,10 +228,6 @@ def run_infodesign(args):
                           for i in range(args.n_agents)]
             else:
                 agents = [Agent(agent_id=i, neighbors=[]) for i in range(args.n_agents)]
-            n_prop = getattr(args, 'n_propaganda', 0)
-            if n_prop > 0 and is_comm:
-                for agent in agents[:n_prop]:
-                    agent.is_propaganda = True
 
             # Build briefing generator for this design
             # Inject provenance/rhetoric overrides from config into params
@@ -561,8 +557,6 @@ def main():
                         help="Append new results to existing CSVs/logs instead of overwriting")
     parser.add_argument("--treatment", choices=["pure", "comm"], default="pure",
                         help="Game treatment: pure (default) or comm (communication round)")
-    parser.add_argument("--n-propaganda", type=int, default=0,
-                        help="Number of propaganda (regime plant) agents in comm games")
     parser.add_argument("--surveillance", action="store_true",
                         help="Tell agents their messages are monitored by regime security")
     parser.add_argument("--surveillance-mode", choices=["full", "placebo", "anonymous"], default="full",

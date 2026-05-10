@@ -51,21 +51,8 @@ class Agent:
     punishment_risk: float | None = None  # elicited punishment likelihood, 0-10 scale
     punishment_risk_raw: str = ""  # raw LLM response for debugging
     model: str | None = None  # per-agent model override for mixed games
-    is_propaganda: bool = False  # regime plant: sends pro-regime messages, always STAYs
     persona: str | None = None  # role framing: "military officer", "student", etc.
 
-
-# Pre-written pro-regime messages for propaganda agents (varied for naturalness)
-_PROPAGANDA_MESSAGES = [
-    "Everything I'm hearing says the regime is solid — the military is loyal, the economy is holding, and the streets are quiet. Anyone talking about change is dreaming. This isn't the moment.",
-    "Look, I've been watching closely and the government has never been stronger. The security forces are unified, the opposition is scattered, and ordinary people just want stability. Don't believe the hype.",
-    "From what I can tell, the regime's grip is tighter than ever. The elites are in line, the army is well-paid, and there's no real movement on the ground. Anyone suggesting otherwise is wishful thinking.",
-    "I'm telling you — nothing is happening. The regime has weathered worse than this. The institutions are intact, the commanders are loyal, and the population is too exhausted to act. Stay home.",
-    "The situation is calmer than people think. Yes, there's always grumbling, but the fundamentals haven't changed — the regime controls the security apparatus, the media, and the money. This isn't going anywhere.",
-    "Trust me on this — the regime is not going anywhere. They've consolidated power, the opposition has no leadership, and international support is holding. Anyone who moves now is walking into a trap.",
-    "I've seen regimes in trouble before and this isn't it. The top brass are unified, the rank-and-file are fed and housed, and there's no credible alternative. The smart move is patience.",
-    "Word on the street is that people are scared to act, and for good reason — the regime's intelligence networks are everywhere, the military exercises were a show of strength, and the economy hasn't collapsed. This is not the time.",
-]
 
 # Generic uninformative messages for the degrade-messages condition.
 # These convey zero information about regime strength — they isolate the
@@ -481,8 +468,8 @@ def _parse_belief(response: str) -> float | None:
 async def _elicit_beliefs(
     agents, client, model_name, semaphore, call_kwargs, *, include_messages: bool = False
 ):
-    """Fire belief elicitation prompts for all non-propaganda agents."""
-    real_agents = [a for a in agents if not a.is_propaganda]
+    """Fire belief elicitation prompts for all agents."""
+    target_agents = agents
     coros = [
         _call_llm(
             client, agent.model or model_name,
@@ -496,10 +483,10 @@ async def _elicit_beliefs(
             ),
             semaphore, min_content_chars=1, **call_kwargs,
         )
-        for agent in real_agents
+        for agent in target_agents
     ]
     responses = await asyncio.gather(*coros)
-    for agent, response in zip(real_agents, responses):
+    for agent, response in zip(target_agents, responses):
         agent.belief_raw = response or ""
         agent.belief = _parse_belief(response)
 
@@ -507,8 +494,8 @@ async def _elicit_beliefs(
 async def _elicit_beliefs_pre(
     agents, client, model_name, semaphore, call_kwargs, *, include_messages: bool = False
 ):
-    """Fire pre-decision belief elicitation prompts for all non-propaganda agents."""
-    real_agents = [a for a in agents if not a.is_propaganda]
+    """Fire pre-decision belief elicitation prompts for all agents."""
+    target_agents = agents
     coros = [
         _call_llm(
             client, agent.model or model_name,
@@ -522,10 +509,10 @@ async def _elicit_beliefs_pre(
             ),
             semaphore, min_content_chars=1, **call_kwargs,
         )
-        for agent in real_agents
+        for agent in target_agents
     ]
     responses = await asyncio.gather(*coros)
-    for agent, response in zip(real_agents, responses):
+    for agent, response in zip(target_agents, responses):
         agent.belief_pre_raw = response or ""
         agent.belief_pre = _parse_belief(response)
 
@@ -540,7 +527,7 @@ async def _elicit_second_order(
     agents, client, model_name, semaphore, call_kwargs, *, include_messages: bool = False
 ):
     """Fire second-order belief elicitation: expected fraction of JOINers."""
-    real_agents = [a for a in agents if not a.is_propaganda]
+    target_agents = agents
     coros = [
         _call_llm(
             client, agent.model or model_name,
@@ -554,10 +541,10 @@ async def _elicit_second_order(
             ),
             semaphore, min_content_chars=1, **call_kwargs,
         )
-        for agent in real_agents
+        for agent in target_agents
     ]
     responses = await asyncio.gather(*coros)
-    for agent, response in zip(real_agents, responses):
+    for agent, response in zip(target_agents, responses):
         agent.second_order_belief_raw = response or ""
         agent.second_order_belief = _parse_belief(response)
 
@@ -566,7 +553,7 @@ async def _elicit_second_order_pre(
     agents, client, model_name, semaphore, call_kwargs, *, include_messages: bool = False
 ):
     """Fire pre-decision second-order belief elicitation."""
-    real_agents = [a for a in agents if not a.is_propaganda]
+    target_agents = agents
     coros = [
         _call_llm(
             client, agent.model or model_name,
@@ -579,10 +566,10 @@ async def _elicit_second_order_pre(
             ),
             semaphore, min_content_chars=1, **call_kwargs,
         )
-        for agent in real_agents
+        for agent in target_agents
     ]
     responses = await asyncio.gather(*coros)
-    for agent, response in zip(real_agents, responses):
+    for agent, response in zip(target_agents, responses):
         agent.second_order_belief_pre_raw = response or ""
         agent.second_order_belief_pre = _parse_belief(response)
 
@@ -591,7 +578,7 @@ async def _elicit_shared_understanding(
     agents, client, model_name, semaphore, call_kwargs, *, include_messages: bool = False
 ):
     """Fire publicness belief elicitation: shared weakness-indicating information."""
-    real_agents = [a for a in agents if not a.is_propaganda]
+    target_agents = agents
     coros = [
         _call_llm(
             client, agent.model or model_name,
@@ -606,10 +593,10 @@ async def _elicit_shared_understanding(
             ),
             semaphore, min_content_chars=1, **call_kwargs,
         )
-        for agent in real_agents
+        for agent in target_agents
     ]
     responses = await asyncio.gather(*coros)
-    for agent, response in zip(real_agents, responses):
+    for agent, response in zip(target_agents, responses):
         agent.shared_understanding_belief_raw = response or ""
         agent.shared_understanding_belief = _parse_belief(response)
 
@@ -618,7 +605,7 @@ async def _elicit_shared_understanding_pre(
     agents, client, model_name, semaphore, call_kwargs, *, include_messages: bool = False
 ):
     """Fire pre-decision publicness belief elicitation."""
-    real_agents = [a for a in agents if not a.is_propaganda]
+    target_agents = agents
     coros = [
         _call_llm(
             client, agent.model or model_name,
@@ -632,10 +619,10 @@ async def _elicit_shared_understanding_pre(
             ),
             semaphore, min_content_chars=1, **call_kwargs,
         )
-        for agent in real_agents
+        for agent in target_agents
     ]
     responses = await asyncio.gather(*coros)
-    for agent, response in zip(real_agents, responses):
+    for agent, response in zip(target_agents, responses):
         agent.shared_understanding_belief_pre_raw = response or ""
         agent.shared_understanding_belief_pre = _parse_belief(response)
 
@@ -644,7 +631,7 @@ async def _elicit_others_expect_join(
     agents, client, model_name, semaphore, call_kwargs, *, include_messages: bool = False
 ):
     """Fire higher-order coordination belief elicitation."""
-    real_agents = [a for a in agents if not a.is_propaganda]
+    target_agents = agents
     coros = [
         _call_llm(
             client, agent.model or model_name,
@@ -658,10 +645,10 @@ async def _elicit_others_expect_join(
             ),
             semaphore, min_content_chars=1, **call_kwargs,
         )
-        for agent in real_agents
+        for agent in target_agents
     ]
     responses = await asyncio.gather(*coros)
-    for agent, response in zip(real_agents, responses):
+    for agent, response in zip(target_agents, responses):
         agent.others_expect_join_belief_raw = response or ""
         agent.others_expect_join_belief = _parse_belief(response)
 
@@ -670,7 +657,7 @@ async def _elicit_others_expect_join_pre(
     agents, client, model_name, semaphore, call_kwargs, *, include_messages: bool = False
 ):
     """Fire pre-decision higher-order coordination belief elicitation."""
-    real_agents = [a for a in agents if not a.is_propaganda]
+    target_agents = agents
     coros = [
         _call_llm(
             client, agent.model or model_name,
@@ -684,10 +671,10 @@ async def _elicit_others_expect_join_pre(
             ),
             semaphore, min_content_chars=1, **call_kwargs,
         )
-        for agent in real_agents
+        for agent in target_agents
     ]
     responses = await asyncio.gather(*coros)
-    for agent, response in zip(real_agents, responses):
+    for agent, response in zip(target_agents, responses):
         agent.others_expect_join_belief_pre_raw = response or ""
         agent.others_expect_join_belief_pre = _parse_belief(response)
 
@@ -718,7 +705,7 @@ def _parse_punishment_risk(response: str) -> float | None:
 
 async def _elicit_punishment_risk(agents, client, model_name, semaphore, call_kwargs):
     """Ask agents to rate expected punishment if uprising fails (0-10)."""
-    real_agents = [a for a in agents if not a.is_propaganda]
+    target_agents = agents
     coros = [
         _call_llm(
             client, agent.model or model_name,
@@ -730,10 +717,10 @@ async def _elicit_punishment_risk(agents, client, model_name, semaphore, call_kw
             "punishment certain)\n\nAnswer with just the number:",
             semaphore, min_content_chars=1, **call_kwargs,
         )
-        for agent in real_agents
+        for agent in target_agents
     ]
     responses = await asyncio.gather(*coros)
-    for agent, response in zip(real_agents, responses):
+    for agent, response in zip(target_agents, responses):
         agent.punishment_risk_raw = response or ""
         agent.punishment_risk = _parse_punishment_risk(response)
 
@@ -840,8 +827,6 @@ def _serialize_agents(agents, include_messages: bool = False) -> list[dict]:
             row["punishment_risk_raw"] = a.punishment_risk_raw
         if a.model is not None:
             row["model"] = a.model
-        if a.is_propaganda:
-            row["is_propaganda"] = True
         if a.persona:
             row["persona"] = a.persona
         if include_messages:
@@ -1097,8 +1082,6 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
         "provider": provider,
         "extra_body": extra_body,
     }
-    prop_rng = np.random.default_rng(deterministic_hash((country, period, "propaganda")) % 2**32)
-
     # Communication round — use fixed/degraded messages if provided, else generate via LLM
     if no_peer_messages:
         for agent in agents:
@@ -1120,26 +1103,19 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
                 comm_system_base = SYSTEM_COMMUNICATE_SURVEILLED
         else:
             comm_system_base = SYSTEM_COMMUNICATE
-        real_agents = [a for a in agents if not a.is_propaganda]
         comm_coros = [
             _call_llm(client, agent.model or message_model_name or model_name,
                        _persona_system(comm_system_base, agent.persona),
                        f"Your briefing:\n\n{agent.briefing.render()}\n\n"
                        f"Write a message to your contacts about the situation:",
                        semaphore, **call_kwargs)
-            for agent in real_agents
+            for agent in agents
         ]
 
         comm_responses = await asyncio.gather(*comm_coros)
 
-        resp_iter = iter(comm_responses)
-        for agent in agents:
-            if agent.is_propaganda:
-                agent.message_sent = _PROPAGANDA_MESSAGES[
-                    prop_rng.integers(len(_PROPAGANDA_MESSAGES))
-                ]
-            else:
-                agent.message_sent = next(resp_iter)
+        for agent, response in zip(agents, comm_responses):
+            agent.message_sent = response
 
     if not no_peer_messages:
         for agent in agents:
@@ -1170,7 +1146,7 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
             include_messages=beliefs_include_messages,
         )
 
-    # Decision round — propaganda agents forced to STAY
+    # Decision round
     if decision_context == "auto":
         resolved_decision_context = surveillance_mode if (surveillance and fixed_messages is not None) else "none"
     else:
@@ -1180,7 +1156,6 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
         decision_context=resolved_decision_context,
         task_mode=task_mode,
     )
-    decide_agents = [a for a in agents if not a.is_propaganda]
     decide_coros = [
         _call_llm(client, agent.model or decision_model_name or model_name,
                    _persona_system(decide_system, agent.persona),
@@ -1189,19 +1164,14 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
                        _messages_block(agent),
                    ),
                    semaphore, **call_kwargs)
-        for agent in decide_agents
+        for agent in agents
     ]
 
     decide_responses = await asyncio.gather(*decide_coros)
 
-    resp_iter = iter(decide_responses)
-    for agent in agents:
-        if agent.is_propaganda:
-            agent.reasoning = "[PROPAGANDA AGENT — forced STAY]"
-            agent.decision = "STAY"
-        else:
-            agent.reasoning = next(resp_iter)
-            agent.decision = _parse_decision(agent.reasoning)
+    for agent, response in zip(agents, decide_responses):
+        agent.reasoning = response
+        agent.decision = _parse_decision(agent.reasoning)
 
     # Post-decision belief elicitation
     if elicit_beliefs and belief_order in ("post", "both"):

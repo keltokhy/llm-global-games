@@ -82,7 +82,6 @@ C_FLIP     = "#D55E00"  # destructive falsification / reversal
 C_SCRAMBLE = "#E69F00"  # signal destruction / placebo-ish warning
 C_NET      = "#009E73"  # network / robustness
 C_SURV     = "#7B3294"  # surveillance / monitoring
-C_PROP     = "#CC79A7"  # propaganda
 C_THEORY   = "#111111"
 
 # Information design colors

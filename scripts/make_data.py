@@ -224,35 +224,6 @@ def build_manifest(conc: int = 200) -> list[Target]:
             group="prompt_isolation",
         ))
 
-    # ── Propaganda ────────────────────────────────────────────────
-    # 10 countries × 50 periods = 500 rows per config
-    for k in [2, 5, 10]:
-        targets.append(Target(
-            name=f"propaganda_k{k}_mistral",
-            file=f"propaganda-k{k}/{s_m}/experiment_comm_summary.csv",
-            min_rows=500,
-            command=f"uv run python -m agent_based_simulation.run comm --model {m_m} --load-calibrated --n-propaganda {k} --n-countries 10 --n-periods 50 --output-dir output/propaganda-k{k} {MC}",
-            group="propaganda",
-        ))
-
-    # Propaganda k5 cross-model (Llama)
-    targets.append(Target(
-        name="propaganda_k5_llama",
-        file=f"propaganda-k5/{slug('llama')}/experiment_comm_summary.csv",
-        min_rows=500,
-        command=f"uv run python -m agent_based_simulation.run comm --model {model('llama')} --load-calibrated --n-propaganda 5 --n-countries 10 --n-periods 50 --output-dir output/propaganda-k5 {MC}",
-        group="propaganda",
-    ))
-
-    # Propaganda × surveillance
-    targets.append(Target(
-        name="propaganda_surveillance_mistral",
-        file=f"propaganda-surveillance/{s_m}/experiment_comm_summary.csv",
-        min_rows=500,
-        command=f"uv run python -m agent_based_simulation.run comm --model {m_m} --load-calibrated --n-propaganda 5 --surveillance --n-countries 10 --n-periods 50 --output-dir output/propaganda-surveillance {MC}",
-        group="propaganda",
-    ))
-
     # ── Surveillance × censorship ─────────────────────────────────
     # 3 designs × 9 θ × 30 reps = 810 rows per model
     SXC_MODELS = ["mistral", "llama", "gptoss", "qwen235"]

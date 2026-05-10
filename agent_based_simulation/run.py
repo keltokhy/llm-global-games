@@ -496,10 +496,6 @@ def run_experiment(args, treatment, signal_mode="normal"):
             if _mixed:
                 for agent in task_agents:
                     agent.model = _all_models[agent.agent_id % len(_all_models)]
-            n_prop = getattr(args, 'n_propaganda', 0)
-            if n_prop > 0 and tx == "comm":
-                for agent in task_agents[:n_prop]:
-                    agent.is_propaganda = True
             _personas = getattr(args, 'personas', None)
             if _personas:
                 for agent in task_agents:
@@ -720,9 +716,6 @@ def main():
                         help="Additional models for mixed-model games. Agents are split "
                              "evenly: first chunk uses --model, rest use these models. "
                              "E.g. --model A --mixed-models B C gives ~1/3 A, ~1/3 B, ~1/3 C")
-    parser.add_argument("--n-propaganda", type=int, default=0,
-                        help="Number of propaganda (regime plant) agents in comm games. "
-                             "These agents send pro-regime messages and always STAY.")
     parser.add_argument("--surveillance", action="store_true",
                         help="Tell agents their messages are monitored by regime security.")
     parser.add_argument("--n-neighbors", type=int, default=4,

@@ -237,18 +237,14 @@ def diagram_authoritarian_control():
 
     # ── Regime instruments (below chain) ──
     instruments = [
-        (0.0,  3.0, 2.0, 1.6,
+        (0.9,  3.0, 2.2, 1.6,
          "Censorship",
          "Pools signals\nnear $\\theta^*$;\nremoves private\ninformation",
          "degrades"),
-        (2.7,  3.0, 2.0, 1.6,
+        (4.0,  3.0, 2.2, 1.6,
          "Surveillance",
          "Preference\nfalsification;\nself-censored\nmessages",
          "poisons"),
-        (5.2,  3.0, 1.8, 1.6,
-         "Propaganda",
-         "$k$ regime plants\nsend pro-regime\nmessages;\ndilutes signal",
-         "dilutes"),
     ]
 
     for x, y, w, h, title, desc, verb in instruments:
@@ -273,17 +269,12 @@ def diagram_authoritarian_control():
     surv_delta_base = (sxc_mistral["baseline"] - idc["baseline"]["mean_join"]) * 100
     surv_delta_censor = (sxc_mistral["censor_upper"] - idc["censor_upper"]["mean_join"]) * 100
 
-    ax.text(0.0, 2.0, "Instrument Interactions",
+    ax.text(0.0, 2.0, "Instrument Interaction",
             ha="left", va="center", fontsize=12, fontweight="bold", color=_text)
 
-    ax.text(0.1, 1.3, "Surv. + Propaganda:",
+    ax.text(0.1, 1.25, "Surv. + Censorship:",
             ha="left", va="center", fontsize=10, fontweight="bold", color=_text)
-    ax.text(0.1, 0.85, "Approximately additive",
-            ha="left", va="center", fontsize=10, color=_text)
-
-    ax.text(0.1, 0.2, "Surv. + Censorship:",
-            ha="left", va="center", fontsize=10, fontweight="bold", color=_text)
-    ax.text(0.1, -0.25,
+    ax.text(0.1, 0.75,
             f"Super-additive: ${surv_delta_censor:.1f}$ pp "
             f"under censorship vs ${surv_delta_base:.1f}$ pp at baseline",
             ha="left", va="center", fontsize=10, color=_text)

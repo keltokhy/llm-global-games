@@ -372,7 +372,7 @@ DOMAINS = [
             "foreign journalists report unusual but professional cooperation from government press offices",
             "social media monitoring appears sophisticated and well-resourced",
             "opposition voices online are being countered with detailed rebuttals, not just deleted",
-            "the regime unveiled a glossy new state media platform — they're investing in propaganda, not just maintaining it",
+            "the regime unveiled a glossy new state media platform — they're investing in image management, not just maintaining it",
             "a pro-regime influencer campaign is running smoothly and gaining traction with young people",
             "the government held an open press conference and handled hostile questions with visible confidence",
             "a potentially damaging story was contained within hours through a coordinated counter-narrative — impressive response time",

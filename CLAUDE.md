@@ -83,7 +83,7 @@ uv run python -m agent_based_simulation.run autocalibrate --model mistralai/mist
 uv run python -m agent_based_simulation.run calibrate --model mistralai/mistral-small-creative
 ```
 
-Key flags: `--n-agents 25`, `--n-countries 5`, `--n-periods 20`, `--sigma 0.3`, `--benefit 1.0`, `--load-calibrated`, `--append`, `--mixed-models`, `--n-propaganda N`, `--surveillance`, `--personas`, `--group-size-info`, `--holdout-fraction 0.3`.
+Key flags: `--n-agents 25`, `--n-countries 5`, `--n-periods 20`, `--sigma 0.3`, `--benefit 1.0`, `--load-calibrated`, `--append`, `--mixed-models`, `--surveillance`, `--personas`, `--group-size-info`, `--holdout-fraction 0.3`.
 
 API key: `OPENROUTER_API_KEY` env var. LLM cache: `GGC_LLM_CACHE_DIR` env var. Local models: `--api-base-url http://localhost:1234/v1`.
 

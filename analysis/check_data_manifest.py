@@ -46,15 +46,14 @@ REQUIRED_OUTPUT_PATTERNS = [
     "mixed-mistral-gptoss-comm/",
     "holdout-validation/",
     "group-size-info/",
-    "mistralai--mistral-small-creative-infodesign-comm/",
-    "surveillance-x-censorship/",
-    "propaganda-k2/",
-    "propaganda-k5/",
-    "propaganda-k10/",
-    "propaganda-surveillance/",
     "bandwidth-005/",
     "bandwidth-030/",
     "z-centered/",
+]
+
+REQUIRED_ARCHIVED_INFODESIGN_PATTERNS = [
+    "mistralai--mistral-small-creative-infodesign-comm/",
+    "surveillance-x-censorship/",
 ]
 
 CORE_SUMMARY_PATTERNS = [
@@ -125,6 +124,11 @@ def _check_output_patterns() -> list[str]:
     for pattern in CORE_SUMMARY_PATTERNS:
         if len(_matches(pattern)) < 1:
             problems.append(f"core summary pattern has no matches: {pattern}")
+
+    for pattern in REQUIRED_ARCHIVED_INFODESIGN_PATTERNS:
+        archived_pattern = f"_archive/infodesign/output/{pattern}"
+        if not _matches(archived_pattern):
+            problems.append(f"DATA_MANIFEST archived output pattern has no matches: {archived_pattern}")
 
     return problems
 

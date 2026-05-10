@@ -272,70 +272,6 @@ Design & Mean & $r$ & $\Delta$ (pp) & $N$ \\
     return tex
 
 
-def render_tab_surveillance_propaganda(stats: dict) -> str:
-    part1 = stats["part1"]
-    regime = stats["regime_control"]
-
-    # Baseline comm (Mistral) from Part I
-    base = part1["Mistral Small Creative"]["comm"]
-    base_mean = base["mean_join"]
-    base_r = base["r_vs_attack"]["r"]
-
-    def row_prop(k: int) -> tuple[str, dict]:
-        d = regime["propaganda"][f"k={k}"]["Mistral Small Creative"]
-        return f"Prop $m={k}$", d
-
-    prop_rows = [row_prop(2), row_prop(5), row_prop(10)]
-    surv = regime["surveillance"]["Mistral Small Creative"]
-    ps = regime["propaganda_surveillance"]["Mistral Small Creative"]
-
-    lines = []
-    lines.append(f"Comm (baseline) & {_fmt_num(base_mean,3)} & {_fmt_num(base_mean,3)} & ${_fmt_r(base_r,2)}$ & --- \\\\")
-    lines.append(r"\midrule")
-
-    for label, d in prop_rows:
-        mean_all = d["mean_join_all"]
-        mean_real = d.get("mean_join_real")
-        r = d["r_vs_attack_all"]["r"]
-        delta_real = d.get("delta_real_vs_baseline_pp")
-        delta_cell = "---" if delta_real is None else _fmt_pp(delta_real / 100, 1)
-        lines.append(
-            f"{label} & {_fmt_num(mean_all,3)} & {_fmt_num(mean_real,3)} & ${_fmt_r(r,2)}$ & {delta_cell} \\\\"
-        )
-
-    lines.append(r"\midrule")
-    surv_r = surv["r_vs_attack"]["r"]
-    surv_delta_pp = surv['delta_vs_baseline_pp']
-    lines.append(
-        f"Surveillance & {_fmt_num(surv['mean_join'],3)} & {_fmt_num(surv['mean_join'],3)} & ${_fmt_r(surv_r,2)}$ & {_fmt_pp(surv_delta_pp / 100, 1)} \\\\"
-    )
-    ps_r = ps["r_vs_attack_all"]["r"]
-    lines.append(
-        f"Prop+Surv & {_fmt_num(ps['mean_join_all'],3)} & --- & ${_fmt_r(ps_r,2)}$ & --- \\\\"
-    )
-
-    tex = r"""\begin{table}[t]
-\centering
-\caption{Propaganda and surveillance effects (primary model: Mistral Small Creative). ``All'' includes propaganda agents; ``Real'' excludes them (computed from logs). $\Delta$ is the change in real-agent mean join vs.\ baseline communication.}
-\label{tab:surveillance_propaganda}
-\small
-\begin{tabular}{lcccc}
-\toprule
- & \multicolumn{2}{c}{Mean join} & & \\
-\cmidrule(lr){2-3}
-Treatment & All & Real & $r$ & $\Delta$ (pp) \\
-\midrule
-"""
-    tex += "\n".join(lines) + "\n"
-    tex += r"""\bottomrule
-\end{tabular}
-\vspace{0.25em}
-\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model (Mistral Small Creative), communication treatment. ``All'' includes propaganda plant agents; ``Real'' excludes them. $\Delta$: change in real-agent mean join vs.\ baseline communication (pp).}
-\end{table}
-"""
-    return tex
-
-
 def render_tab_surv_censor(stats: dict) -> str:
     info_comm = stats.get("infodesign_comm") or {}
     sxc = stats["regime_control"]["surveillance_x_censorship"]["Mistral Small Creative"]
@@ -1297,17 +1233,6 @@ def render_stats_macros(stats: dict) -> str:
     lines.append(_mc_pp_raw("CommCrossModelReweightPP", comm_est.get("cross_model_reweight"), nd=2))
     lines.append("")
 
-    # ── H8 power analysis ────────────────────────────────────────
-    hyp_table = stats.get("hypothesis_table", [])
-    h8 = next((h for h in hyp_table if h.get("id") == "H8"), None)
-    if h8 and "power_analysis" in h8:
-        pa = h8["power_analysis"]
-        lines.append("% H8 power analysis")
-        lines.append(_mc("PropPowerCohensD", pa.get("cohens_d")))
-        lines.append(_mc("PropPowerPostHoc", pa.get("power")))
-        lines.append(_mc("PropPowerMDEPP", pa.get("mde_pp"), nd=1))
-        lines.append("")
-
     # ── Pooled pure/comm aggregate statistics ─────────────────────
     lines.append("% Pooled pure/comm aggregates")
     lines.append(_mc_r("PooledPureRTheta", (pooled_pure.get("r_vs_theta") or {}).get("r")))
@@ -1968,40 +1893,6 @@ def render_stats_macros(stats: dict) -> str:
         lines.append(_mc(f"HardScramble{mname}NObs", n_obs, 0))
     lines.append("")
 
-    # ── Propaganda saturation ─────────────────────────────────────
-    prop_sat = regime.get("_propaganda_saturation_k5_k10", {})
-    lines.append("% Propaganda saturation test")
-    lines.append(_mc("PropSatKFiveMeanJoin", prop_sat.get("k5_mean_join_real")))
-    lines.append(_mc("PropSatKTenMeanJoin", prop_sat.get("k10_mean_join_real")))
-    lines.append(_mc_pp_raw("PropSatDeltaPP", prop_sat.get("delta_pp")))
-    lines.append(_mc("PropSatPValue", prop_sat.get("p_value"), 4))
-    lines.append("")
-
-    # ── Propaganda + surveillance combined ────────────────────────
-    ps = regime.get("propaganda_surveillance", {}).get("Mistral Small Creative", {})
-    lines.append("% Propaganda + surveillance combined")
-    lines.append(_mc_pct("PropSurvCombinedMeanRealPct", ps.get("mean_join_real")))
-    # Combined delta = baseline - combined
-    ps_real = ps.get("mean_join_real")
-    surv_base = (regime.get("surveillance", {}).get("Mistral Small Creative", {})
-                 .get("baseline_mean_join"))
-    if ps_real is not None and surv_base is not None:
-        combined_delta = round((ps_real - surv_base) * 100, 1)
-        sign = "+" if combined_delta >= 0 else ""
-        lines.append(_mc_raw("PropSurvCombinedDeltaPP", f"{sign}{combined_delta:.1f}"))
-    lines.append("")
-
-    # ── Llama propaganda replication ──────────────────────────────
-    prop_data = regime.get("propaganda", {})
-    llama_k5 = (prop_data.get("k=5") or {}).get("Llama 3.3 70B", {})
-    lines.append("% Llama propaganda k=5 replication")
-    # delta_real_vs_baseline_pp is already in pp, don't multiply by 100
-    llama_delta = llama_k5.get("delta_real_vs_baseline_pp")
-    if llama_delta is not None:
-        sign = "+" if llama_delta >= 0 else ""
-        lines.append(_mc_raw("LlamaPropKFiveDeltaRealPP", f"{sign}{llama_delta:.1f}"))
-    lines.append("")
-
     # ── Mixed-model robustness ─────────────────────────────────
     rob = stats.get("robustness", {})
     lines.append("% Mixed-model robustness")
@@ -2147,20 +2038,6 @@ def render_stats_macros(stats: dict) -> str:
     lines.append(_mc_pct("FixedMsgSurvMeanPct", fm.get("surv_mean_join")))
     lines.append("")
 
-    # ── Propaganda per-dose (Mistral primary) ─────────────────────
-    lines.append("% Propaganda per-dose (Mistral)")
-    for dose in [2, 5, 10]:
-        dose_key = f"k={dose}"
-        dose_data = (prop_data.get(dose_key) or {}).get("Mistral Small Creative", {})
-        if not dose_data:
-            continue
-        macro_d = f"PropK{['', '', 'Two', '', '', 'Five', '', '', '', '', 'Ten'][dose]}"
-        lines.append(_mc_pct(f"{macro_d}MeanAllPct", dose_data.get("mean_join_all")))
-        lines.append(_mc_pct(f"{macro_d}MeanRealPct", dose_data.get("mean_join_real")))
-        lines.append(_mc_pp_raw(f"{macro_d}DeltaAllPP", dose_data.get("delta_vs_baseline_pp")))
-        lines.append(_mc_pp_raw(f"{macro_d}DeltaRealPP", dose_data.get("delta_real_vs_baseline_pp")))
-    lines.append("")
-
     # ── CK cell means percentage forms ────────────────────────────
     ck_cells = ck.get("cell_means", {})
     lines.append("% CK cell means pct")
@@ -2240,8 +2117,6 @@ def render_stats_macros(stats: dict) -> str:
         # Punishment risk
         lines.append(_mc("PunishRiskMean", misc.get("punishment_risk_mean"), 1))
         lines.append(_mc("PunishRiskMaxDiff", misc.get("punishment_risk_max_diff"), 1))
-        # H6 p-value
-        lines.append(_mc("HSixP", misc.get("h6_p"), 3))
         # Agent-level regression N
         n_agents = misc.get("agent_level_n")
         if n_agents:
@@ -2269,19 +2144,6 @@ def render_stats_macros(stats: dict) -> str:
         lines.append(_mc("WFCollapseSurv", misc.get("wf_collapse_surv"), 1))
         lines.append(_mc("WFActionJoinComm", misc.get("wf_action_join_comm"), 1))
         lines.append(_mc("WFActionJoinSurv", misc.get("wf_action_join_surv"), 1))
-        # Word frequencies — propaganda
-        lines.append("% Word frequency stats (propaganda)")
-        lines.append(_mc("WFLoyalComm", misc.get("wf_loyal_comm"), 1))
-        lines.append(_mc("WFLoyalKTen", misc.get("wf_loyal_k10"), 1))
-        lines.append(_mc("WFReadyComm", misc.get("wf_ready_comm"), 1))
-        lines.append(_mc("WFReadyKTen", misc.get("wf_ready_k10"), 1))
-        lines.append(_mc("WFCautionStayComm", misc.get("wf_caution_stay_comm"), 1))
-        lines.append(_mc("WFCautionStayKTen", misc.get("wf_caution_stay_k10"), 1))
-        lines.append(_mc("WFActionJoinKTen", misc.get("wf_action_join_k10"), 1))
-        # Surveillance + propaganda sum
-        sp_sum = misc.get("surv_prop_sum_pp")
-        if sp_sum is not None:
-            lines.append(_mc_raw("SurvPropSumPP", f"{sp_sum:+.1f}"))
         # Deduplication robustness
         lines.append("% Deduplication robustness (footnote)")
         lines.append(_mc("DedupRPre", misc.get("dedup_r_pre"), 3))
@@ -2344,7 +2206,7 @@ Treatment & $N$ & $r_{\text{post}}$ & $r_{\text{b,d}}$ & $r_{\text{partial}}$ & 
 
 
 def render_tab_hypotheses(stats: dict) -> str:
-    """Render hypothesis summary table (H1-H8) from verified stats."""
+    """Render hypothesis summary table (H1-H5) from verified stats."""
     hyp = stats.get("hypothesis_table")
     if not hyp:
         return "% No hypothesis table data available.\n"
@@ -2395,9 +2257,11 @@ def render_tab_hypotheses(stats: dict) -> str:
     if not bonf_survivors:
         bonf_survivors = "none"
 
+    bonf_alpha_text = f"{bonf_alpha:.5f}".rstrip("0").rstrip(".")
+
     tex = r"""\begin{table*}[t]
 \centering
-\caption{Hypothesis family and test results. H1--H4 use pooled Part~I data across all seven models; H5--H8 use the primary model (Mistral Small Creative). Effect size: $r$ for correlations (H1--H3), Cohen's $d$ or $d_z$ for mean comparisons (H4--H8). Outcome labels use $\alpha = 0.05$; H2 is reported as a falsification check, not as evidence for a zero effect.}
+\caption{Hypothesis family and test results. H1--H4 use pooled Part~I data across all seven models; H5 uses the primary model (Mistral Small Creative). Effect size: $r$ for correlations (H1--H3), Cohen's $d$ or $d_z$ for mean comparisons (H4--H5). Outcome labels use $\alpha = 0.05$; H2 is reported as a falsification check, not as evidence for a zero effect.}
 \label{tab:hypotheses}
 \scriptsize
 \setlength{\tabcolsep}{3pt}
@@ -2410,17 +2274,12 @@ H & Hypothesis & Test & Stat & $p$ & Effect & Outcome \\
     tex += r"""\bottomrule
 \end{tabular}
 \vspace{0.25em}
-\parbox{\textwidth}{\footnotesize\emph{Notes:} H1--H4: pooled across all seven models (H4 uses paired $t$-test matched on model/country/period/$\theta$ task cells). H5--H8: primary model (Mistral Small Creative). Bonferroni survivors at $\alpha = """
-    tex += f"{bonf_alpha:.5f}"
+\parbox{\textwidth}{\footnotesize\emph{Notes:} H1--H4: pooled across all seven models (H4 uses paired $t$-test matched on model/country/period/$\theta$ task cells). H5: primary model (Mistral Small Creative). Bonferroni survivors at $\alpha = """
+    tex += bonf_alpha_text
     tex += r"""$: """
     tex += bonf_survivors
     tex += r""". """
 
-    # Add power analysis note for H8
-    h8 = next((h for h in hyp if h["id"] == "H8"), None)
-    if h8 and "power_analysis" in h8:
-        pa = h8["power_analysis"]
-        tex += f"H8 post-hoc power: {pa['power']:.2f} (Cohen's $d = {pa['cohens_d']:.3f}$; MDE at 80\\% power $= {pa['mde_pp']:.1f}$~pp)."
     tex += r"""}
 \end{table*}
 """
