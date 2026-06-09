@@ -34,11 +34,15 @@ This runs the full pipeline:
 
     analysis/verify_paper_stats.py
     analysis/agent_regressions.py
+    analysis/rationale_theta_checks.py
+    analysis/nested_campaign_checks.py
     analysis/classifier_baselines.py
     analysis/render_paper_tables.py
     analysis/make_figures.py
     analysis/make_diagrams.py
     analysis/construct_validity.py
+    analysis/contamination_audit.py   (live API; make revision-experiments)
+    analysis/decode_messages.py       (live API; make revision-experiments)
     pdflatex/bibtex on paper/paper.tex
 
 The main output is:
