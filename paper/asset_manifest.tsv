@@ -2,7 +2,7 @@ asset	generator	primary inputs
 tables/stats_macros.tex	analysis/render_paper_tables.py	analysis/verified_stats.json; output/prompt-isolation-surveillance*/**/experiment_comm_summary.csv; output/no-messages*/**/experiment_comm_nomsg_summary.csv; output/cross-task-placebo-*/**/experiment_comm_summary.csv; output/xmodel-*/**/experiment_comm_summary.csv
 tables/stats_belief_factorial.tex	analysis/render_paper_tables.py	analysis/verified_stats.json; output/revision-beliefs-post-*/**/experiment_comm_log.json
 tables/stats_rationale.tex	analysis/rationale_theta_checks.py	output/mistralai--mistral-small-creative/experiment_comm_log.json; output/prompt-isolation-surveillance/mistralai--mistral-small-creative/experiment_comm_log.json
-tables/stats_contamination.tex	analysis/contamination_audit.py	analysis/contamination_audit_results.json (fresh OpenRouter calls)
+tables/stats_contamination.tex	analysis/contamination_audit.py	analysis/contamination_audit_results.json
 tables/stats_nested.tex	analysis/nested_campaign_checks.py	output/revision-nested-*/meta-llama--llama-3.3-70b-instruct/experiment_comm_log.json
 figures/diagram_pipeline.pdf	analysis/make_diagrams.py	agent_based_simulation/{briefing.py,experiment.py,infodesign.py}
 tables/tab_models.tex	analysis/render_paper_tables.py	analysis/verified_stats.json; analysis/models.py
