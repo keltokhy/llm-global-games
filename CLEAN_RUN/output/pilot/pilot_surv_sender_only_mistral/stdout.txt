@@ -1,0 +1,2 @@
+running pilot_surv_sender_only_mistral -> /Users/khaled/GitHub/llm-global-games/CLEAN_RUN/output/pilot/pilot_surv_sender_only_mistral
+pilot_surv_sender_only_mistral: completed 2 period rows

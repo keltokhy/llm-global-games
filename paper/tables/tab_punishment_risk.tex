@@ -2,21 +2,22 @@
 \centering
 \caption{Elicited punishment risk (0--10 scale). Agents rate expected regime punishment after their JOIN/STAY decision. ``JOIN'' and ``STAY'' columns show the mean rating conditional on the agent's own decision.}
 \label{tab:punishment_risk}
-\small
-\resizebox{\columnwidth}{!}{%
+\scriptsize
+\setlength{\tabcolsep}{2pt}
 \begin{tabular}{llcccc}
 \toprule
-Model & Condition & $N$ & Mean risk & Risk $|$ JOIN & Risk $|$ STAY \\
+Model & Cond. & $N$ & Mean (SD) & $\mid$ JOIN & $\mid$ STAY \\
 \midrule
-Mistral & Pure & 2500 & 8.1 & 8.0 & 8.2 \\
-Mistral & Comm & 2500 & 8.1 & 8.0 & 8.1 \\
-Mistral & Surveillance & 2500 & 8.1 & 8.1 & 8.1 \\
+Mistral & Pure & 2{,}500 & 8.1 (0.9) & 8.0 & 8.2 \\
+ & Comm. & 2{,}500 & 8.1 (0.9) & 8.0 & 8.1 \\
+ & Surv. & 2{,}500 & 8.1 (0.9) & 8.1 & 8.1 \\
 \midrule
-Llama 70B & Pure & 2500 & 8.0 & 8.0 & 7.9 \\
-Llama 70B & Comm & 2500 & 7.9 & 8.0 & 7.9 \\
-Llama 70B & Surveillance & 2500 & 7.9 & 8.0 & 7.9 \\
+Llama 3.3 70B & Pure & 2{,}500 & 8.0 (0.2) & 8.0 & 7.9 \\
+ & Comm. & 2{,}500 & 7.9 (0.2) & 8.0 & 7.9 \\
+ & Surv. & 2{,}500 & 7.9 (0.2) & 8.0 & 7.9 \\
 \bottomrule
-\end{tabular}}
-\vspace{0.25em}
-\parbox{\columnwidth}{\footnotesize\emph{Notes:} Agent-level elicitation on a 0--10 scale. Reported risk is the mean rating conditional on the agent's own JOIN or STAY decision.}
+\end{tabular}
+\begin{tablenotes}
+\footnotesize\emph{Notes:} Agent-level elicitation on a 0--10 scale; $N$ counts agent-level ratings (one per agent decision). Standard deviations of the overall rating in parentheses; conditional means are reported without dispersion measures, which are not stored in the verified statistics. The punishment-risk module was fielded only on Mistral and Llama 3.3 70B; the other five models were not run with this elicitation.
+\end{tablenotes}
 \end{table}

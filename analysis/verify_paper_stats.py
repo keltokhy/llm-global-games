@@ -1467,9 +1467,10 @@ def compute_prompt_isolation():
     """Statistics for clean baseline-plus-warning surveillance reruns."""
     results = {}
     clean_base = ROOT / "prompt-isolation-surveillance"
-    deltas = []
+    paired_deltas = []
+    paired_p_values = []
+    pooled_diffs = []
     r_attacks = []
-    p_values = []
 
     for f in _find_summaries(clean_base, "experiment_comm_summary.csv"):
         model_slug = _model_slug_from_summary_path(f, clean_base)
@@ -1497,39 +1498,115 @@ def compute_prompt_isolation():
             base_jf = base_comm[bj].astype(float).values
             base_mean = float(np.nanmean(base_jf))
             out["baseline_mean_join"] = round(base_mean, 4)
-            out["delta_vs_baseline_pp"] = round((out["mean_join"] - base_mean) * 100, 2)
+            unpaired_delta_pp = round((out["mean_join"] - base_mean) * 100, 2)
+            out["unpaired_delta_vs_baseline_pp"] = unpaired_delta_pp
             t_stat, t_p = stats.ttest_ind(jf, base_jf, equal_var=False)
             out["t_test_vs_baseline"] = {
                 "t_stat": round(float(t_stat), 4),
                 "p_value": round(float(t_p), 6),
             }
-            p_values.append(float(t_p))
 
-        if out.get("delta_vs_baseline_pp") is not None:
-            deltas.append(float(out["delta_vs_baseline_pp"]))
+            base_valid = base_comm.dropna(subset=[bj]).copy()
+            surv_valid = df.dropna(subset=[jcol]).copy()
+            key_cols = _comm_match_key(base_valid, surv_valid, include_model=False)
+            if key_cols:
+                base_g = (
+                    base_valid.groupby(key_cols, as_index=False)[bj]
+                    .mean()
+                    .rename(columns={bj: "baseline"})
+                )
+                surv_g = (
+                    surv_valid.groupby(key_cols, as_index=False)[jcol]
+                    .mean()
+                    .rename(columns={jcol: "surveillance"})
+                )
+                merged = base_g.merge(surv_g, on=key_cols, how="inner").dropna(
+                    subset=["baseline", "surveillance"]
+                )
+                base_idx = pd.MultiIndex.from_frame(base_g[key_cols])
+                surv_idx = pd.MultiIndex.from_frame(surv_g[key_cols])
+                matched_idx = base_idx.intersection(surv_idx)
+                base_only_idx = base_idx.difference(surv_idx)
+                surv_only_idx = surv_idx.difference(base_idx)
+                out["matched"] = {
+                    "match_key": key_cols,
+                    "baseline_unique_cells": int(len(base_idx)),
+                    "surveillance_unique_cells": int(len(surv_idx)),
+                    "matched_cells": int(len(matched_idx)),
+                    "baseline_unmatched_cells": int(len(base_only_idx)),
+                    "surveillance_unmatched_cells": int(len(surv_only_idx)),
+                }
+                if len(merged):
+                    diff = merged["surveillance"] - merged["baseline"]
+                    t_stat_p, t_p_p = stats.ttest_1samp(diff, 0.0)
+                    paired_delta_pp = round(float(diff.mean()) * 100, 2)
+                    out["matched"].update(
+                        {
+                            "baseline_mean_join": round(float(merged["baseline"].mean()), 4),
+                            "mean_join": round(float(merged["surveillance"].mean()), 4),
+                            "delta_pp": paired_delta_pp,
+                            "t_stat": round(float(t_stat_p), 4),
+                            "p_value": round(float(t_p_p), 6),
+                            "n_pairs": int(len(diff)),
+                        }
+                    )
+                    # Country-clustered version of the paired test: average
+                    # the matched-cell deltas within each country, then run a
+                    # one-sample t-test across the country means. This is the
+                    # headline-effect robustness check demanded for
+                    # country-level clustering.
+                    if "country" in merged.columns:
+                        country_means = (
+                            merged.assign(_diff=diff)
+                            .groupby("country")["_diff"]
+                            .mean()
+                        )
+                        if len(country_means) >= 2:
+                            t_c, p_c = stats.ttest_1samp(country_means.values, 0.0)
+                            out["matched"]["country_clustered"] = {
+                                "n_countries": int(len(country_means)),
+                                "delta_pp": round(float(country_means.mean()) * 100, 2),
+                                "t_stat": round(float(t_c), 4),
+                                "p_value": round(float(p_c), 6),
+                            }
+                    # Use the matched cell-level contrast as the primary
+                    # prompt-isolation estimand. The unpaired contrast remains
+                    # available above for descriptive full-sample means.
+                    out["delta_vs_baseline_pp"] = paired_delta_pp
+                    paired_deltas.append(float(paired_delta_pp))
+                    paired_p_values.append(float(t_p_p))
+                    pooled_diffs.extend(diff.astype(float).tolist())
+
         r_attack = (out.get("r_vs_attack") or {}).get("r")
         if r_attack is not None and np.isfinite(r_attack):
             r_attacks.append(float(r_attack))
 
         results.setdefault("surveillance", {})[SHORT.get(model_slug, model_slug)] = out
 
-    if deltas:
+    if paired_deltas:
         non_qwen235 = [
             d.get("delta_vs_baseline_pp")
             for model_name, d in results.get("surveillance", {}).items()
             if model_name != "Qwen3 235B" and d.get("delta_vs_baseline_pp") is not None
         ]
         results["_summary"] = {
-            "n_models": int(len(deltas)),
-            "mean_delta_pp": round(float(np.mean(deltas)), 2),
-            "median_delta_pp": round(float(np.median(deltas)), 2),
-            "min_delta_pp": round(float(np.min(deltas)), 2),
-            "max_delta_pp": round(float(np.max(deltas)), 2),
-            "n_negative": int(sum(d < 0 for d in deltas)),
-            "n_p_lt_05": int(sum(p < 0.05 for p in p_values)),
-            "n_p_lt_01": int(sum(p < 0.01 for p in p_values)),
+            "estimand": "matched_cell",
+            "n_models": int(len(paired_deltas)),
+            "mean_delta_pp": round(float(np.mean(paired_deltas)), 2),
+            "median_delta_pp": round(float(np.median(paired_deltas)), 2),
+            "min_delta_pp": round(float(np.min(paired_deltas)), 2),
+            "max_delta_pp": round(float(np.max(paired_deltas)), 2),
+            "n_negative": int(sum(d < 0 for d in paired_deltas)),
+            "n_p_lt_05": int(sum(p < 0.05 for p in paired_p_values)),
+            "n_p_lt_01": int(sum(p < 0.01 for p in paired_p_values)),
             "mean_r_vs_attack": round(float(np.mean(r_attacks)), 4) if r_attacks else None,
         }
+        if pooled_diffs:
+            t_stat_pool, t_p_pool = stats.ttest_1samp(pooled_diffs, 0.0)
+            results["_summary"]["pooled_matched_n"] = int(len(pooled_diffs))
+            results["_summary"]["pooled_matched_delta_pp"] = round(float(np.mean(pooled_diffs)) * 100, 2)
+            results["_summary"]["pooled_matched_t_stat"] = round(float(t_stat_pool), 4)
+            results["_summary"]["pooled_matched_p_value"] = round(float(t_p_pool), 6)
         if non_qwen235:
             results["_summary"]["non_qwen235_n"] = int(len(non_qwen235))
             results["_summary"]["non_qwen235_min_delta_pp"] = round(float(np.min(non_qwen235)), 2)
@@ -1772,6 +1849,14 @@ def compute_message_content_analysis():
 
     out["n_base"] = len(base_msgs)
     out["n_surv"] = len(surv_msgs)
+    base_weather = [m for m in base_msgs if _re.search(r"\bweather\b", m, _re.I)]
+    surv_weather = [m for m in surv_msgs if _re.search(r"\bweather\b", m, _re.I)]
+    out["weather_token_audit"] = {
+        "base_count": int(len(base_weather)),
+        "surv_count": int(len(surv_weather)),
+        "base_pct": round(100.0 * len(base_weather) / len(base_msgs), 2),
+        "surv_pct": round(100.0 * len(surv_weather) / len(surv_msgs), 2),
+    }
 
     # ── Theme group frequencies (word-boundary tokenization) ──────
     THEMES = {
@@ -2561,7 +2646,19 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
     surv_df = _load_summary(surv_path)
     base_comm_df = _load_summary(ROOT / primary / "experiment_comm_summary.csv")
     surv_d = None
-    if len(surv_df) > 0 and len(base_comm_df) > 0:
+    surv_n = None
+    surv_test = "$t$-test"
+    matched = surv.get("matched") or {}
+    if matched.get("t_stat") is not None and matched.get("n_pairs"):
+        # Preferred: paired one-sample t-test on matched common-support cells
+        # (same estimand as Table tab_prompt_isolation), matching H4's design.
+        surv_t = matched.get("t_stat")
+        surv_p = matched.get("p_value")
+        surv_n = matched.get("n_pairs")
+        surv_test = "Paired $t$"
+        if surv_t is not None and surv_n:
+            surv_d = round(float(surv_t) / float(np.sqrt(surv_n)), 4)
+    elif len(surv_df) > 0 and len(base_comm_df) > 0:
         sjcol = _join_col(surv_df)
         bjcol = _join_col(base_comm_df)
         s_jf = surv_df[sjcol].astype(float).dropna()
@@ -2578,10 +2675,10 @@ def compute_hypothesis_table(all_stats: dict) -> list[dict]:
         "hypothesis": "Surveillance Chilling",
         "estimand": r"$\Delta_{\text{pp}}$",
         "null": "$= 0$",
-        "test": "$t$-test",
+        "test": surv_test,
         "stat": surv_t,
         "p": surv_p,
-        "n": None,
+        "n": surv_n,
         "effect_size": surv_d,
         "supported": _hypothesis_supported(surv_p, alpha=0.05, reject_null=True),
     })
@@ -2988,6 +3085,15 @@ def compute_parse_error_rates():
             if "n_valid" in df.columns and "n_join" in df.columns:
                 n_agents_total = df["n_valid"].sum() + df.get("n_api_error", pd.Series([0]*len(df))).sum() + df.get("n_unparseable", pd.Series([0]*len(df))).sum()
                 entry["total_decisions"] = int(n_agents_total)
+            if (
+                "theta" in df.columns
+                and "api_error_rate" in df.columns
+                and len(df) > 2
+                and float(df["api_error_rate"].std(ddof=0)) > 0
+            ):
+                r_val, p_val = stats.pearsonr(df["theta"], df["api_error_rate"])
+                entry["api_error_theta_r"] = round(float(r_val), 4)
+                entry["api_error_theta_p"] = round(float(p_val), 4)
             model_results[treatment] = entry
         if model_results:
             results[name] = model_results

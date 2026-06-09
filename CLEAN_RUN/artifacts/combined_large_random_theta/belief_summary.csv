@@ -1,0 +1,5 @@
+model,arm,agent_rows,join_mean,belief_pre_success,belief_pre_join_share,belief_pre_shared_understanding,belief_pre_others_expect_join
+DeepSeek V4 Flash,coded,2500,0.6256,42.2008,40.3744,71.2536,62.9364
+DeepSeek V4 Flash,direct,2500,0.6788,47.0236,44.8224,78.4668,65.3672
+Qwen3-30B-A3B,coded,2500,0.6536,43.3144,31.6472,69.46,52.1828
+Qwen3-30B-A3B,direct,2500,0.6764,47.1124,37.538,67.2584,49.7036

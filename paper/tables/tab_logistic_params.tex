@@ -1,23 +1,24 @@
 \begin{table*}[t]
 \centering
-\caption{Logistic fit parameters by model and treatment. Fitted form: $P(\text{join}\mid\theta) = 1/(1+e^{b_0 + b_1\theta})$, where $b_1 > 0$ implies a \textit{decreasing} join curve. $\hat{\theta}^*$ is the estimated cutoff ($-b_0/b_1$); $\beta \equiv b_1$ is the steepness parameter.}
+\caption{Logistic fit parameters by model and treatment. $\hat{\theta}^*$ is the estimated cutoff ($-b_0/b_1$); $\kappa \equiv b_1$ is the steepness parameter.}
 \label{tab:logistic_params}
 \small
-\begin{tabular}{lcccc}
+\begin{tabular}{lcccccc}
 \toprule
-& \multicolumn{2}{c}{Pure} & \multicolumn{2}{c}{Communication} \\
-\cmidrule(lr){2-3} \cmidrule(lr){4-5}
-Model & $\hat{\theta}^*$ (SE) & $\beta$ (SE) & $\hat{\theta}^*$ (SE) & $\beta$ (SE) \\
+& \multicolumn{3}{c}{Pure} & \multicolumn{3}{c}{Communication} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+Model & $\hat{\theta}^*$ (SE) & $\kappa$ (SE) & $N$ & $\hat{\theta}^*$ (SE) & $\kappa$ (SE) & $N$ \\
 \midrule
-Mistral Small Creative & $-0.32$ (0.02) & $+2.15$ (0.08) & $-0.23$ (0.02) & $+2.57$ (0.11) \\
-Llama 3.3 70B & $+0.02$ (0.04) & $+2.83$ (0.36) & $-0.06$ (0.04) & $+3.63$ (0.52) \\
-Qwen3 30B & $+0.10$ (0.06) & $+1.62$ (0.16) & $-0.03$ (0.04) & $+2.94$ (0.36) \\
-GPT-OSS 120B & $-0.25$ (0.04) & $+2.06$ (0.15) & $-0.15$ (0.03) & $+3.03$ (0.26) \\
-Qwen3 235B & $-0.22$ (0.03) & $+2.11$ (0.15) & $-0.18$ (0.01) & $+2.78$ (0.10) \\
-Trinity Large & $+0.08$ (0.05) & $+1.34$ (0.11) & $-0.02$ (0.04) & $+2.23$ (0.23) \\
-MiniMax M2-Her & $-0.17$ (0.09) & $+0.61$ (0.06) & $-0.07$ (0.09) & $+0.66$ (0.06) \\
+Mistral Small Creative & $-0.32$ (0.02) & $+2.15$ (0.08) & 1000 & $-0.23$ (0.02) & $+2.57$ (0.11) & 1000 \\
+Llama 3.3 70B & $+0.02$ (0.04) & $+2.83$ (0.36) & 100 & $-0.06$ (0.04) & $+3.63$ (0.52) & 100 \\
+Qwen3 30B & $+0.10$ (0.06) & $+1.62$ (0.16) & 100 & $-0.03$ (0.04) & $+2.94$ (0.36) & 100 \\
+GPT-OSS 120B & $-0.25$ (0.04) & $+2.06$ (0.15) & 200 & $-0.15$ (0.03) & $+3.03$ (0.26) & 200 \\
+Qwen3 235B & $-0.22$ (0.03) & $+2.11$ (0.15) & 200 & $-0.18$ (0.01) & $+2.78$ (0.10) & 1000 \\
+Trinity Large & $+0.08$ (0.05) & $+1.34$ (0.11) & 100 & $-0.02$ (0.04) & $+2.23$ (0.23) & 100 \\
+MiniMax M2-Her & $-0.17$ (0.09) & $+0.61$ (0.06) & 100 & $-0.07$ (0.09) & $+0.66$ (0.06) & 100 \\
 \bottomrule
 \end{tabular}
-\vspace{0.25em}
-\parbox{\textwidth}{\footnotesize\emph{Notes:} Fitted form: $P(\text{join}\mid\theta) = 1/(1+e^{b_0 + b_1\theta})$, so $b_1 > 0$ corresponds to a decreasing join curve (the expected direction). $\hat{\theta}^* = -b_0/b_1$: estimated cutoff. $\beta \equiv b_1$: logistic steepness (larger = sharper threshold). Standard errors from the covariance matrix of the nonlinear fit; cutoff SE by delta method.}
+\begin{tablenotes}
+\footnotesize\emph{Notes:} Fitted form: $P(\text{join}\mid\theta) = 1/(1+e^{b_0 + b_1\theta})$. $\hat{\theta}^* = -b_0/b_1$: estimated cutoff. $\kappa \equiv b_1$: logistic steepness (larger = sharper threshold). Sign convention: positive $\kappa$ corresponds to a join curve decreasing in $\theta$; in the agent-level logit (Table~\ref{tab:regressions}) the same comparative static appears as a negative coefficient on $\theta$. $N$ counts period-level rows entering each fit. Standard errors from the covariance matrix of the nonlinear fit; cutoff SE by delta method.
+\end{tablenotes}
 \end{table*}

@@ -1,30 +1,39 @@
 \begin{table}[htbp]
 \centering
 \small
-\caption{Finite-$N$ Benchmark: Predicted vs.\ Empirical Regime Fall Rates}
+\caption{Finite-$n$ benchmark: predicted vs.\ empirical regime fall rates}
 \label{tab:finite_n}
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{lccccc}
 \toprule
-Model & $N$ periods & Logistic $x_0$ & Pearson $r$ & RMSE & MAE \\
+Model & $N$ cells & Logistic $x_0$ & Pearson $r$ & RMSE & MAE \\
 \midrule
-  Mistral & 599 & $-0.11$ & $0.997^{***}$ & $0.042$ & $0.015$ \\
-  Llama 70B & 99 & $0.05$ & $0.954^{***}$ & $0.156$ & $0.059$ \\
-  Qwen 30B & 99 & $0.20$ & $0.986^{***}$ & $0.088$ & $0.029$ \\
-  GPT-OSS 120B & 199 & $-0.01$ & $0.997^{***}$ & $0.038$ & $0.014$ \\
-  Qwen 235B & 199 & $-0.03$ & $0.989^{***}$ & $0.073$ & $0.025$ \\
-  Trinity & 99 & $0.19$ & $0.979^{***}$ & $0.108$ & $0.043$ \\
-  MiniMax & 99 & $1.02$ & $0.999^{***}$ & $0.028$ & $0.013$ \\
+  Mistral & 600 & $-0.11$ & $0.997^{***}$ & $0.042$ & $0.015$ \\
+  Llama 3.3 70B & 100 & $0.04$ & $0.957^{***}$ & $0.148$ & $0.053$ \\
+  Qwen3 30B & 100 & $0.20$ & $0.987^{***}$ & $0.083$ & $0.026$ \\
+  GPT-OSS 120B & 200 & $-0.01$ & $0.997^{***}$ & $0.038$ & $0.014$ \\
+  Qwen3 235B & 200 & $-0.04$ & $0.988^{***}$ & $0.076$ & $0.025$ \\
+  Trinity & 100 & $0.31$ & $0.980^{***}$ & $0.102$ & $0.039$ \\
+  MiniMax M2 & 100 & $1.23$ & $0.999^{***}$ & $0.026$ & $0.012$ \\
 \midrule
-  \textit{Pooled} & 1399 & $-0.05$ & $0.999^{***}$ & $0.019$ & $0.007$ \\
+  \textit{Pooled} & 1400 & $-0.05$ & $0.999^{***}$ & $0.019$ & $0.007$ \\
 \bottomrule
 \end{tabular}}
 \begin{tablenotes}
 \small
-\textit{Notes:} For each $\theta$ bin, the predicted fall rate is
-$\Pr(\text{Binom}(25, \hat{p}(\theta)) > 25\theta)$ where $\hat{p}(\theta)$
-is the fitted logistic join probability. Pearson $r$ measures correlation
-between predicted and empirical fall rates across $\theta$ bins.
+\textit{Notes:} Pure treatment only, $n = 25$ agents per row. For each $\theta$ bin, the predicted fall rate is
+$\Pr(\text{Binom}(n, \hat{p}(\theta)) > n\theta)$ where $\hat{p}(\theta)$
+is the fitted logistic join probability.
+``$N$ cells'' is the number of unique country--period cells after pooling repeated log entries;
+for Mistral the pure-treatment log contains 1{,}000 runs over 600 unique country--period indices
+(re-runs appended to the same log are pooled within a cell).
+``Logistic $x_0$'' is the midpoint of the logistic $\hat{p}(\theta) = L/(1+e^{-k(\theta - x_0)})$
+fitted to bin-averaged join rates on a random 70\% train split of cells (fixed seed);
+it can therefore differ from the full-sample cutoff in the logistic-parameters table,
+which is estimated on all observations without the split.
+Pearson $r$ is the correlation between predicted and empirical fall rates across $\theta$ bins
+(10--15 bins per model, 15 pooled), computed in-sample over all cells; stars are from the
+two-sided test of zero correlation across those bins.
 ${}^{*}p<0.10$, ${}^{**}p<0.05$, ${}^{***}p<0.01$.
 \end{tablenotes}
 \end{table}

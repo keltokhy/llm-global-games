@@ -1,0 +1,1105 @@
+American Economic Association
+
+Unique Equilibrium in a Model of Self-Fulfilling Currency Attacks
+Author(s): Stephen Morris and Hyun Song Shin
+Source: The American Economic Review, Vol. 88, No. 3 (Jun., 1998), pp. 587-597
+Published by: American Economic Association
+Stable URL: http://www.jstor.org/stable/116850
+Accessed: 20/05/2009 13:33
+Your use of the JSTOR archive indicates your acceptance of JSTOR's Terms and Conditions of Use, available at
+http://www.jstor.org/page/info/about/policies/terms.jsp. JSTOR's Terms and Conditions of Use provides, in part, that unless
+you have obtained prior permission, you may not download an entire issue of a journal or multiple copies of articles, and you
+may use content in the JSTOR archive only for your personal, non-commercial use.
+Please contact the publisher regarding any further use of this work. Publisher contact information may be obtained at
+http://www.jstor.org/action/showPublisher?publisherCode=aea.
+Each copy of any part of a JSTOR transmission must contain the same copyright notice that appears on the screen or printed
+page of such transmission.
+JSTOR is a not-for-profit organization founded in 1995 to build trusted digital archives for scholarship. We work with the
+scholarly community to preserve their work and the materials they rely upon, and to build a common research platform that
+promotes the discovery and use of these resources. For more information about JSTOR, please contact support@jstor.org.
+
+American Economic Association is collaborating with JSTOR to digitize, preserve and extend access to The
+American Economic Review.
+
+http://www.jstor.org
+
+Unique Equilibriumin a Model of Self-FulfillingCurrencyAttacks
+By STEPHEN MORRIS AND HYUN SONG SHN *
+
+Even though self-fulfilling currency attacks lead to multiple equilibria whenfundamentals are commonknowledge, we demonstratethe uniqueness of equilibrium
+when speculators face a small amount of noise in their signals about the fundamentals. This unique equilibrium depends not only on the fundamentals, but
+also on financial variables, such as the quantity of hot money in circulation and
+the costs of speculative trading. In contrast to multiple equilibrium models, our
+model allows analysis ofpolicy proposals directed at curtailing currencyattacks.
+
+(JELF31, D82)
+Speculativeattacksaresometimestriggered
+without warning,and without any apparent
+changein the economicfundamentals.Commentatorswho have attemptedto explainepisodesof speculativecriseshavepointedto the
+self-fulfillingnatureof the belief in an imminent speculativeattack.If speculatorsbelieve
+that a currencywill come underattack,their
+actionsin anticipationof this precipitatethe
+crisis itself, while if they believe that a currencyis notin dangerof imminentattack,their
+inaction spares the currency from attack,
+therebyvindicatingtheirinitialbeliefs.'
+However, merely pointing to the selffulfillingnatureof beliefs leaves open a numberof crucialquestions.First,suchan account
+leaves unexplainedthe actualonset of an at* Morris: Department of Economics, University of
+Pennsylvania, 3718 Locust Walk, Philadelphia, PA
+19104; Shin: Nuffield College, Oxford OXI 1NF, England. We are grateful to Marcus Miller for encouraging
+us to pursue this topic and to Stephen Coate and John
+Driffill for advice during the preparationof this paper.We
+thank Anne Sibert for her comments as discussant at the
+CEPR conference on "Origins and Management of Financial Crises." The first author acknowledges the support of the Alfred P. Sloan Foundation.The second author
+acknowledges the support of the U.K. Economic and Social Research Council under Grant No. R000221556. Finally, we thank two anonymous referees for comments on
+an earlier version.
+' This theme is explored in Robert P. Flood and Peter
+M. Garber (1984) and Maurice Obstfeld (1986, 1994,
+1996). A closely related literatureexplores self-fulfilling
+debt crises; see Guillermo A. Calvo (1988), Jonathan
+Eaton and Raquel Fernandez (1995), and Harold L. Cole
+and Timothy J. Kehoe (1996).
+587
+
+tack when it occurs. By most accounts, both
+the European Exchange Rate Mechanism
+(ERM) and the Mexican peso were "ripe" for
+attack for some time before the crises that
+brought them down in the early 1990's-at
+least two years in Europe and perhaps a year
+in Mexico (Barry Eichengreen and Charles
+Wyplosz, 1993; Rudiger Dornbusch and
+Alejandro M. Werner, 1994). At any point in
+those periods, concerted selling by speculators
+would have raised the costs of maintainingthe
+exchange rate sufficiently high that the monetary authorities would have been forced to
+abandon the parity. Why did the attacks happen when they did? Conventional accounts resort to forces that operate outside the
+theoretical model in trying to explain the shift
+of expectations that precipitated the attack.
+Some of these informal accounts are more persuasive than others, but none can be fully compelling as a theoretical model of the onset of
+a currency crisis.
+Secondly, merely pointing to the selffulfilling natureof beliefs leaves open the policy issues associated with curbing speculative
+attacks. For example, it is often argued that
+increased capital mobility induced by lower
+transaction costs increases the likelihood of
+currency crises, and that judicious "throwing
+of sand" into the excessively well-oiled
+wheels of internationalfinance will play a role
+in curbing speculative attacks (Eichengreen et
+al., 1995). However, an account that merely
+points to the self-fulfilling nature of beliefs
+cannot contribute to this debate, since the
+question of how the beliefs are determined is
+
+588
+
+THE AMERICANECONOMICREVIEW
+
+beyond the scope of such an account. Any argument for or against the proposal has to resort
+to forces outside the formal theory.
+We argue here that the apparentmultiplicity
+of equilibria associated with self-fulfilling beliefs is the consequence of assuming too simple a picture of the role played by information
+in a speculative episode. Although marketparticipants each have a window on to the world,
+the imperfect nature of such a vantage point
+generates a failure of common knowledge of
+the fundamentals. Thus, everyone may know
+that the fundamentalsare sound, but it may not
+be that everyone knows that everyone knows
+this. Still higher orders of such uncertainty
+may be relevant. Uncertainty about other participants' beliefs is crucial to a speculative episode, since the onset of a speculative attack
+relies to a large extent on coordinatedbehavior
+of speculators. We propose a more realistic
+modelling of the information structureunderlying speculative situations that enables us to
+pinpoint the forces which determine the onset
+of a speculative attack. When speculators observe an independent noisy signal of the state
+of fundamentals, common knowledge of the
+fundamentalsno longer holds. This is enough
+to induce a unique equilibrium of the model,
+in which there is a critical state below which
+attack always occurs and above which attack
+never occurs.2 The value of this critical state
+depends on financial variables such as the
+mass of speculators and the transaction costs
+associated with attacking the currency. As a
+consequence, we can say something about
+how this unique outcome depends on the parameters of the problem, such as the costs of
+speculation, the underlying strength of the
+economy, and the size of the pool of hot
+money in circulation.
+Informationplays a subtle role in speculative
+crises. What is importantis not the amount of
+inforrnation,per se, but ratherhow public and
+transparenthis informationis. If marketpartic-
+
+2 Andrew Postlewaite and Xavier Vives (1987) discuss the role of infornation in selecting among multiple
+equilibria in the closely related context of bank runs. Our
+analysis builds on and extends the earlier incomplete informationgame analysis of Hans Carlsson and Eric E. van
+Damme (1993) and Morris et al. (1995).
+
+JUNE 1998
+
+ipants are well informed about the fundamentals, but they are unsure of the information
+received by other participants,and hence unsure of the beliefs held by others, speculative
+attacksmay be triggeredeven though eveiyone
+knows that the fundamentals are sound. Our
+analysis highlights the importanceof the transparency of the conduct of monetarypolicy and
+its disseminationto the public.
+1. Model
+Our model is concerned with the strategic
+interaction between the government and a
+group of speculators in the foreign exchange
+market that takes place against the backdrop
+of a competitive market for foreign exchange.
+The economy is characterized by a state of
+fundamentals 0, which we assume to be uniformly distributedover the unit interval [0, 1].
+The exchange rate in the absence of government intervention is a function of 0, and is
+given by f(0). We assume that f is strictly
+increasing in 09, so that higher values of 0 correspond to "stronger fundamentals."
+The exchange rate is initially pegged by the
+government at e *, where e* :-2f(0) for all 0.
+Facing the governmentis a continuumof speculators who may take one of two actions. A
+speculator may either attack the currency by
+selling short one unit of the currency, or refrain from doing so. There is a cost t > 0 associated with short-selling. If a speculator
+short-sells the currency and the government
+abandonsthe exchange rate peg, then the payoff at state 0 by attackingthe currencyis given
+by the fall in the exchange rate minus the
+transactioncost. Thus the speculator's payoff
+is e * -f (0) - t. If the government defends
+the peg, then the speculator pays the transaction cost, but has no capital gain. Thus his payoff is -t. If the speculator chooses not to
+attack the currency, his payoff is zero.
+The government derives a value v > 0 from
+defending the exchange rate at the pegged
+level, but also faces costs of doing so. The cost
+of defending the peg depends on the state of
+the fundamentals, as well as the proportionof
+speculators who attack the currency. We denote by c (a, 0) the cost of defending the peg
+if proportion a of the speculators attack the
+currency at the state 0. The government's pay-
+
+VOL. 88 NO. 3
+
+MORRISAND SHIN: UNIQUE EQUILIBRIUMAND CURRENCYA1TACKS
+
+589
+
+c(cx,O)
+
+e*t
+
+,O)
+c~~~(1
+
+|
+
+e*- t
+
+0-
+
+v\
+f(0)
+
+0(010)
+0
+
+1
+
+0
+
+0
+
+FIGURE 1. COST AND BENEFIT TO THE GOVERNMENT IN
+MAINTAINING THE CURRENCY PEG
+
+off to abandoning the exchange rate is thus
+zero while the payoff to defending the
+exchange rate is
+v - c(a, 0).
+We assume that c is continuous and is increasing in a while decreasing in 0. In particular, to make the problem economically
+interesting we will impose the following assumptions on the cost function and the floating
+exchange rate f(0).
+* c(O, 0) > v. In the worst state of fundamentals, the cost of defending the currency
+is so high that it exceeds the value v even if
+no speculators attack.
+* c ( 1, 1) > v. If all the speculators attackthe
+currency, then even in the best state of the
+fundamentals,the cost of defending the currency exceeds the value.
+e * - f ( 1) < t. In the best state of the fundamentals, the floating exchange rate f(I)
+is sufficiently close to the pegged level e *
+such that any profit from the depreciationof
+the currency is outweighed by the transactions cost t.
+Let us denote by 0 the value of 0 which solves
+c(0, 0) = v. In other words, 0 is the value of
+
+0
+
+6
+
+1
+
+FIGURE 2. THE MANAGED EXCHANGE RATE AND THE
+EXCHANGE RATE IN THE ABSENCE OF INTERVENTION AS A
+FUNCTION OF THE STATE OiF FUNDAMENTALS
+
+0 at which the government is indifferent between defending the peg and abandoning it in
+the absence of any speculative selling. When
+0 < 0, the cost of defending the cunrencyexceeds the value, even if no speculators attack
+the currency (see Figure 1 ). At the other
+end, denote by 0 the value of 0 at whichf(0) =
+e * - t, so that the floatingexchangerate is
+below the peg by the amount of the cost of
+attack.When 0 > 0, then the floating exchange
+rate is sufficiently close to the peg that a speculator cannot obtain a positive payoff by attacking the currency (see Figure 2). Using the
+two benchmark levels of the state of fundamentals 0 and 6, we can classify the state of
+fundamentalsunder three headings, according
+to the underlying strategic situation.
+
+A. TripartiteClassification of Fundamentals
+Assuming that 0 < , we can partition the
+space of fundamentals into three intervals,3
+emphasized by Maurice Obstfeld ( 1996).
+* In the interval [0, 0], the value of defending
+the peg is outweighedby its cost irrespective
+
+3 This assumption will hold if v is large and t is small.
+
+590
+
+THE AMERICANECONOMICREVIEW
+
+JUNE 1998
+
+of the actions of the speculators. The government then has no reason to defend the
+currency. For this reason, we say that the
+currency is unstable if 0 E [0, 0].
+* In the interval (0, 0), the value of defending
+the currency is greater than the cost, provided thatsufficiently few speculatorsattack
+the currency. In particular, if none of the
+speculators attacks, then the value of defending the currencyis greaterthan the cost,
+and so the government will maintain the
+peg, which in turnjustifies the decision not
+to attack. However, it is also the case that if
+all the speculators attack the currency, then
+the cost of defending the currency is too
+high, and the government will abandon the
+peg. Moreover, since His the right end point
+of this interval, a speculator will make a
+positive profit if the government were to
+abandonthe peg at any state 6 in the interval
+(6, 6), so that if a speculator believes that
+the currency peg will be abandoned, then
+attacking the currency is the rational
+action. For this reason, we say that the currency is ripe for attack if 6 EC(6, 6).
+* Finally, in the interval [6, 1], although the
+speculators can force the government to
+abandon the peg, the resulting depreciation
+of the currency is so small that they cannot
+recoup the cost of attacking the currency.
+Thus, even if a speculator were to believe
+that the currencywill fall, the rationalaction
+is to refrain from attacking it. In other
+words, it is a dominant action not to attack.
+For this reason, we say that the currency is
+stable if 6 E [6, 1].
+
+dicating the speculators' decisions not to
+attack the currency. On the other hand, if the
+speculators believe that the currency peg will
+be abandoned, the rational action is to attack
+the currency, which in turn induces the government to abandon the peg, vindicating the
+decision to attack. Given this multiplicity of
+equilibria, no definitive prediction can be
+made as to whether the currency will come
+under attackor not. We will now see, however,
+that the situation is very different when the
+speculatorsface a small amount of uncertainty
+concerning the fundamentals. Each state of
+fundamentals gives rise to a unique outcome.
+
+The interesting range is the "ripe for attack" region. Suppose that the government's
+decision on whether or not to defend the currency is determinedpurely by weighing up the
+costs and benefits, and that it makes its decision once all the speculators have made their
+decisions. Then, if all the speculatorshave perfect information concerning the realization of
+6, the "ripe for attack" region gives rise to the
+standardcase of multiple equilibria due to the
+self-fulfilling nature of the speculators' beliefs. If the speculators believe that the currency peg will be maintained,then it is optimal
+not to attack, which in turn induces the govemment to defend the currency, thereby vin-
+
+The payoffs of the game follow from the
+description of the model above. We assume
+that if a speculator is indifferent between attacking and not attacking, he will refrainfrom
+attacking and that if the government is indifferent between defending the peg and abandoning it, it will choose to abandon it.5
+An equilibrium for this game consists of
+strategies for government and for the contin-
+
+B. Game with ImperfectInformnation
+of Fundamentals
+Suppose that the speculators each have a
+signal concerning the state of fundamentals,as
+in the following game.
+* Nature chooses the state of fundamentals 0
+according to the uniform density over the
+unit interval.
+* When the true state is 0, a speculator observes a signal x which is drawn uniformly
+from the interval [0 - s, 0 + E], for some
+small4 E > 0. Conditional on 0, the signals
+are identical and independent across individuals. Based on the signal observed, a
+speculator decides whether or not to attack
+the currency.
+* The government observes the realized proportion of speculators who attack the currency, a, and observes 0.
+
+4 In particular,we assume that 2e < min { 0, 1 - }.
+5 Nothing substantial hinges on these assumptions,
+which are made for purposes of simplifying the statement
+of our results.
+
+VOL. 88 NO. 3
+
+MORRISAND SHIN: UNIQUE EQUILIBRIUMAND CURRENCYA7TACKS
+
+uum of speculators such that no player has an
+incentive to deviate. We can solve out the government's strategy at the final stage of the
+game, to define a reduced-formgame between
+the speculators only. To do this, consider the
+critical proportion of speculators needed to
+trigger the government to abandon the peg at
+state 0. Let a(0) denote this critical mass. In
+the "unstable" region a(6) = 0, while elsewhere a(0) is the value of a which solves c(a,
+0) = v. Figure 3 depicts this function, which
+is continuous and strictly increasing in 0 where
+it takes a positive value, and is bounded above
+by 1.
+The unique optimal strategy for the government is then to abandonthe exchange rate only
+if the observed fraction of deviators, a, is
+greaterthan or equal to the critical mass a (0)
+in the prevailing state 0.
+Taking as given this optimal strategyfor the
+government, we can characterize the payoffs
+in the reduced-form game between the speculators. For a given profile of strategies of the
+speculators, we denote by
+
+591
+
+a(o)
+1
+
+a(o)
+
+0
+
+0
+
+0
+
+FIGURE 3. THE PROPORTION OF SPECULATORS WHOSE
+SHORT SALES ARE SUFFICIENT TO INDUCE DEPRECIATION,
+EXPIRESSED AS A FUNCTION OF THE FUNDAMENTALS
+
+state 0 when aggregate short sales are given by
+
+7r(x)
+
+ir iS
+
+the proportion of speculators who attack the
+currencywhen the value of the signal is x. We
+denote by s (0, 7r)the proportionof speculators
+who end up attacking the currency when the
+state of fundamentals is 0, given aggregate
+selling strategy r. Since signals are uniformly
+distributedover [0 - E, 0 + E] at 0, we have6
+
+(1)
+
+s(0, ) =
+
+1
+
+j0+6
+
+-I
+
+r(x) dx.
+
+Denote by A ( r) the event where the government abandons the currency peg if the speculators follow strategy r:
+(2)
+
+A(7r) = {IIs(,
+
+7r) 2 a(6) }.
+
+We can then define the payoffs of a reducedform game between the speculators. The payoff to a speculator of attackingthe currency at
+
+6 The following formula is for 0 E [s, 1 - e]; for 0
+close to 0 or 1, the limits of the integration must be adjusted accordingly.
+
+(3)
+
+h(, 7r)
+[e* ( -
+
+-t f
+
+{t
+
+if 0 EA(r)
+
+if H A(7r).
+
+However, a speculator does not observe 0 directly. The payoff to attacking the currency
+must be calculated from the posterior distribution over the states conditional on the signal
+x. The expected payoff to attacking the currency conditional on the signal x is given by
+the expectation of (3) conditional on x. Denoting this by u(x, 7r), we have
+(4)
+
+u(x, 7r)
+1 dix+6
+
+=_2s: J x2?
+
+h(0, r) dO
+
+(e*-f(9))dOl-t.
+
+1
++(7r)n[r -,xJ+e
+
+Since a speculator can guarantee a payoff of
+zero by refrainingfrom attackingthe currency,
+the rational decision conditional on signal x
+depends on whether u (x, 7r)is positive or negative. Thus if the government follows its
+unique optimal strategy, ir is an equilibriumof
+the first period game if ir(x) = 1 whenever
+u(x, 7r) > 0 and ir(x) = 0 whenever u(x,
+r) c
+
+JUNE 1998
+
+THE AMERICANECONOMICREVIEW
+
+592
+
+u(x, 7r)
+
+= +2A[f [r
+
+(7r)n[x-f[,X+
+
+2s
+
+0.
+
+s]
+
+(e*-f(O))dO -t
+~~(e*-f(O)) dO _ t
+
+2-J
+
+( 7r') n [x -e-,x + e]i
+
+U(X, r'),
+
+IL. UniqueEquilibrium
+which proves the lemma.
+We now state the main result of our paper,
+noting the contrastbetween the multiplicity of
+possible outcomes when there is perfect information of the fundamentalsagainstthe uniqueness of outcome when there is a small amount
+of noise.
+
+For the next step, consider the strategyprofile where every speculator attacks the currency if and only if the message x is less than
+some fixed number k. Then, aggregate short
+sales ir will be given by the indicatorfunction
+Ik, defined as
+
+THEOREM 1: There is a unique 0 * such
+that, in any equilibrium of the game with
+imperfect information, the government
+abandons the currency peg if and only if
+0 c 0*.
+The argument for our result can be presented in three steps.
+LEMMA 1: If ir(x) 2 ir'(x) for all x, then
+u(x, 7r) ? u(x, r')forallx.
+In other words, if we compare two strategy profiles ir and ir', where ir entails a
+greater proportion of speculators who attack for any message x, then the payoff to
+attacking the currency is greater given ir
+than when it is given by ir'. Thus speculators' decisions to attack the currency are
+strategic complements.
+PROOF OF LEMMA 1:
+Since ir(x) 2 ir'(x), we have s(0, 7r) 2
+s(0, ir') for every 0, from the definition of s
+given by (1). Thus, from (2),
+A(ir) v A(lr').
+In other words, the event in which the currency peg is abandonedis strictly larger under
+7r.Then, from (4) and the fact that e* f(0)
+is nonnegative,
+
+(5)
+
+Ik(X)
+
+rI
+l
+
+if x < k
+if x 2 k
+
+When speculators follow this simple rule of
+action, the expected payoff to attacking the
+currency satisfies the following property.
+LEMMA 2: u(k, Ik) is continuous and
+strictly decreasing in k.
+In other words, when aggregate short sales
+are govemed by Ik, and we consider the payoff
+to attacking the currency given the marginal
+message k, this payoff is decreasing as the fundamentals of the economy become stronger.
+Put anotherway, when the fundamentalsof the
+economy are stronger, the payoff to attacking
+the currency is lower for a speculator on the
+margin of switching from attacking to not attacking. Such a property would be a reasonable feature of any model of currency attacks
+where the government is able to resist speculators better when the fundamentals are
+stronger.
+The proof of Lemma 2 is simple but involves some algebraic manipulation, and
+hence is presented separatelyin the Appendix.
+Taking Lemma 2 as given, we can then prove
+the following result.
+LEMMA 3: There is a unique x * such that,
+in any equilibrium of the game with imperfect
+
+VOL 88 NO. 3
+
+MORRISAND SHIN: UNIQUE EQUILIBRIUMAND CURRENCYAITACKS
+
+informationof the fundamentals, a speculator
+with signal x attacks the currency if and only
+if x < x*.
+
+To provethis,we beginby establishingthat
+thereis a uniquevalueof k at which
+u(k, Ik) = O.
+
+FromLemma2, we knowthatu(k, Ik)is continuousandstrictlydecreasingin k. If we can
+show thatit is positive for small values of k
+and negative for large values, then we can
+guaranteethat u(k, Ik) = 0 for some k. When
+k is sufficientlysmall (i.e., k ! 0 - e), the
+marginalspeculatorwith message k knows
+that the true state of fundamentalsis in the
+"unstable"region, since such a message is
+consistentonly with a realizationof 0 in the
+interval[0, 0]. Since the payoff to attacking
+thecurrencyis positiveatany0 in thisinterval,
+we have u(k, Ik) > 0. Similarly, when k is
+sufficientlylarge (i.e., k 2 9 + s), the mar-
+
+ginalspeculatorwithmessagek knowsthatthe
+true stateof fundamentalsis in the "stable"
+region.Since the payoff to attackingis negative at everystatein thisregion,we haveu(k,
+Ik) < 0. Hence, thereis a uniquevalue of k
+forwhichu(k, Ik)= 0, andwe definethevalue
+x* as this uniquesolutionto u(k, Ik) = 0.
+Now, consideranyequilibriumof the game,
+and denoteby 7r(x)the proportionof speculatorswho attackthe currencygiven message
+x. Definethe numbersx andx-as
+x = infI xljr(x) < 1)
+andx-= sup{xL7r(x)> 0.
+Sincei?- sup{xI0 < 7r(x)< 1 2 inf{xI0 <
+7r(x)< 1
+x,
+x
+
+(6)
+
+.
+
+When 7r(x) < 1, there are some speculators
+who are not attackingthe currency.This is
+only consistentwith equilibriumbehaviorif
+the payoff to not attackingis at least as high
+as thepayoffto attackinggivenmessagex. By
+continuity,thisis trueat x also.Inotherwords,
+(7)
+
+_
+
+.
+
+{
+
+, K) _. 0
+
+593
+
+Now, consider the payoff u ( x, Ix). Clearly,
+Ix 7r,so that Lemma 1 and (7) imply u(x,
+Ix) < u(x, ir) ? 0. Thus, u(x, Ix) < 0. Since
+we know from Lemma 2 that u(k, Ik) is decreasing in k and x* is the unique value of k
+which solves u(k, Ik) = 0, we have
+(8)
+
+x-x2
+
+.
+
+A symmetric argumentestablishes that
+-c X*.
+
+(9)
+
+Thus, from (8) and (9), we have x ? x* 2
+However, we know from (6) that this
+implies
+
+x.
+
+x = x=
+
+Thus, the equilibrium 1r is given by the step
+function Ix*, which is what Lemma 3 states.
+Hence, this proves Lemma 3.
+From this, it is a short step to the proof of
+our main theoremitself. Given thatequilibrium
+7ris given by the step functionIx*,the aggregate
+short sales at the state 0 are given by
+
+r1 if <x*
+I
+s(,
+
+Ix*) =
+1
+
+Lo
+
+-e
+
+(O - x*)
+2e
+ifx* - 8 < 0 <.x* + e
+
+_
+
+if
+
+>X*
+
++ S.
+
+Aggregate short sales s( 9, Ix*) are decreasing
+in 0 when its value is strictly between 0 and 1,
+while a(9) is increasing in 0 for this range.
+See Figure 4, which illustrates the derivation
+of the cutoff point for the state of fundamentals
+at which the equilibrium short sales are equal
+to the short sales which induce depreciation.
+We know that x * > 0 -- s, since otherwise
+attacking the currency is a strictly better action, contradictingthe fact that x * is a switching point. Thus, s (O, Ix*) and a (0) cross
+precisely once. Define 9* to be the value of 0
+at which these two curves cross. T'hen, s(9,
+Ix*) 2 a(0) if and only if 0 90*, so that the
+government abandons the currency peg if and
+only if 0 ? 0*. This is the claim of our main
+theorem.
+
+594
+
+1
+
+THE AMERICANECONOMICREVIEW
+
+-
+
+-
+
+s(o, Ix*)
+a(o)
+
+X0-
+
+0
+
+* X*-FE
+Q
+
+1
+
+0
+
+FIGURE 4. THE DERIVATION OF THE CUTOFF POINT FOR
+THE STATE OF FUNDAMENTALS AT WHICH THE
+EQUILIBRIUM SHORT SALES ARE EQUAL TO THE SHORT
+SALES WHICH INDUCE DEPRECIATION
+
+III. Comparative Statics and Policy Implications
+
+A. Changes in the InformationStructure
+When there is no noise, there are multiple
+equilibria throughoutthe "ripe for attack" region of fundamentals. But when there is positive noise, there is a unique equilibrium with
+critical value 0*. The value of 0* in the limit
+as ? tends to zero has a particularly simple
+characterization.
+THEOREM 2: In the limit as ? tends to zero,
+0* is given by the unique solution to the equationf(0*)
+
+= e* - 2t.
+
+The proof is in the Appendix. Intuition is
+gained by considering the marginal speculator
+who observes message x = 0*. With s small,
+this tells the speculator that the true 0 is close
+to 0*. Since the government abandonsthe peg
+if and only if 0 is less than 0*, he attachesequal
+probability to the currency being abandoned
+and defended. So, the expected payoff to attacking is '12(e* - f(0* )), while the cost is t.
+For the marginal speculator, these are equal,
+leading to the equation in Theorem 2.
+
+JUNE 1998
+
+Informationplays a subtle role in the model.
+What mattersis not the amountof information,
+per se, but whether there is common knowledge. With noise, it is never common knowledge that the fundamentalsare consistent with
+the government maintainingthe currencypeg,
+i.e., that 0 2 0. If you observe a signal greater
+than 0 + s, then you can claim to know that
+0 2 9, since your message has the margin of
+error of s. When do you know that everyone
+knows that 0 2 9? In other words, when do
+you know that everyone has observed a signal
+greater than 0 + s? Since others' signals can
+differ from yours by at most 2s, this will be
+true if you observe a signal greater than 0 +
+3s. Proceeding in this way, there is "nth order
+knowledge" that 0 2 0 (i.e., everyone knows
+that everyone knows ... (n times) that everyone knows it) exactly if everyone has observed a signal greater than or equal to 0 +
+(2n -1 ) s. But, by definition, there is common
+knowledge that 09 0 if and only if there is
+nth order knowledge for every n. But for any
+fixed s and signal x, there will be some level
+n at which nth order iterated knowledge fails.
+Thus it is never common knowledge that 0 is
+not in the unstable region.
+One interpretationwe may put on noisy information is that the recipients of the differential informationlearn of the true underlying
+fundamentalsof the economy with little error,
+but that there are small discrepancies in how
+these messages are interpreted by the recipients. When looking for a cause or a trigger for
+a currency attack, we should look for the arrival of noisy information, i.e., news events
+that are not interpretedin exactly the same way
+by different speculators. The informational
+events that matter may be quite subtle. A
+"6grain of doubt," allowing that others may
+believe that the economy is, in fact, unstable,
+will lead to a currency crises even if everyone
+knows that the economy is not unstable. In
+predicting when crises will occur, average
+opinion or even extreme opinion need not precipitate a crisis. Rather, what matters is the
+higher order beliefs of some participantswho
+are apprehensive about the beliefs of others,
+concerning the beliefs of yet further individuals, on these extreme opinions. This interpretation may shed light on some accounts of
+recent currency crises. Rumors of political
+
+VOL.88 NO. 3
+
+MORRISAND SHIN: UNIQUE EQUILIBRIUMAND CURRENCYATTACKS
+
+trouble in Chiapas Province were widely cited
+as a cause of the 1994 Mexico crisis (New
+York Times, 1994); uncertainty about Maastricht, German unification, and Bundesbank
+pronouncements were argued to be important
+in the 1992 EuropeanMonetary System crises.
+Our analysis suggests that such "informational events" might precipitate a crisis even
+if no investor thought they conveyed real informationaboutfundamentalsthemselves. It is
+enough that the announcementsremove common knowledge that the fundamentals were
+sustainable.
+Above all, our analysis suggests an important role for public announcements by the
+monetary authorities, and more generally, the
+transparencyof the conduct of monetary policy and its dissemination to the public. If it is
+the case that the onset of currency crises may
+be precipitated by higher-order beliefs, even
+though participantsbelieve that the fundamentals are sound, then the policy instruments
+which will stabilize the marketare those which
+aim to restore transparencyto the situation, in
+an attempt to restore common knowledge of
+the fundamentals. The most effective means
+towards this would be a prominent public announcement which is commonly known to
+convey informationto all relevantparticipants.
+The canonical case of a communication arrangement which would be conducive to
+achieving common knowledge is the "town
+hall meeting" in which an announcement is
+made to an audience gatheredin a single room,
+where everyone can observe that all other participants are in an identical position. In contrast, if the audience is fragmented, and must
+communicate in small groups, common
+knowledge is extremely difficult to achieve.7
+The Clinton administration'sannouncementof
+the $40 billion dollar rescue package for the
+Mexican peso can be seen as an attempt to
+restore the sort of transparency referred to
+above. Its effectiveness derived more from its
+very public nature, ratherthan the actual sum
+of money involved. This suggests a crucial
+
+7 Ariel Rubinstein's (1989) e-mail game is a case in
+point, and Michael S.-Y. Chwe (1996) has suggested
+some of the relevant factors which would allow us to address this issue in a more general context.
+
+595
+
+role for the timely and effective dissemination
+of information on the part of policy makers,
+and the smooth functioning of a reliable and
+transparentset of communication channels between marketparticipantsand the policy makers, as well as between the marketparticipants
+themselves.
+B. Changes in Transaction Costs
+We next examine shifts in t. Drawing on
+Theorem 2, which determines 0* in the limit
+as s becomes small, we can totally differentiate the equationf (0*)
+e * - 2t to obtain
+d9*
+dt
+
+2
+
+f ' (0*)
+
+Thus increasing transactioncosts preventscurrency crises, since it reduces the range of fundamentals where an attack occurs. The size of
+this effect depends on the slope off: when the
+f ' is small, an increase in the cost of speculation has a large effect on the switching point
+O*.This suggests that the imposition of small
+transactions costs as advocated by several
+commentatorswill have a large impact on the
+prevalence of speculation precisely when the
+consequences of such speculative attacks are
+small. If speculative attacks are predicted to
+lead to drastic effects (i.e., when f(0) is a
+steep function of 0), then the imposition of a
+small additionalcost is unlikely to have a large
+effect on the incidence of currency attacks.
+C. Changes in Aggregate Wealth
+Now consider how our analysis is affected
+when aggregate wealth varies. The international flow of so-called "hot money" would be
+one factorin determiningthis aggregatewealth,
+as well as changes in the numbers of speculators themselves. The main effect of a change in
+aggregatewealth of the speculatorsis a change
+in the function a (0), which indicates the critical proportionof speculators needed to attack
+the currencyin orderto induce the government
+to abandonthe currencypeg. When the aggregate wealth of the speculators increases, then
+this criticalproportionof speculatorsfalls, since
+the government's decision is based on the absolute level of short sales.
+
+596
+
+THE AMERICANECONOMICREVIEW
+
+As can be seen from Figure 4, a downward
+shift in the a (0) function has the effect of enlarging the set of states at which the government abandonsthe exchange rate peg. In other
+words the event A( 7r) = {0js(9,i7r) > a(0)}
+is strictly larger with a lower a(-) function.
+Since the payoff to speculation is given by
+fA(J) ~
+
+-
+
+~+
+
+A7r) n [x-E,X + E
+
+(e*
+
+f(O)) dO- t,
+
+the enlargement of the event A (i7r)has an unambiguous effect in increasing the payoff to
+attacking the currency at any value of the signal x. Thus, the benchmarkvalue 0* is shifted
+to the right, and the incidence of speculative
+attacks increases.
+Note, however, from Figure 4 that the effect
+of an increase in the a ( ) function depends on
+the size of the noise s. The effect is largest
+when s is also large. In the limiting case when
+s tends to zero, the equilibrium s(9, Ix*) becomes the step function Ix*, so that a shift in
+the a(-) function has no effect on the switching point 0*. Thus, our analysis suggests that
+changes in the aggregate wealth of speculators
+need not have a large impact on the incidence
+of currency attacks when the speculatorshave
+fairly precise information concerning the fundamentals. It is when the noise is large that
+shifts in wealth have a big impact.
+This suggests that the imposition of direct
+capital controls work best when there is a lack
+of "transparency" of the economic fundamentals, in the sense that observers differ
+widely in their interpretationof the economic
+fundamentals.When the fundamentalsare relatively transparentto all (corresponding to a
+small s), direct capital controls seem far less
+effective. Under such circumstances, strategic
+considerations dominate any uncertaintyconceming the fundamentals.
+IV. Conclusion
+Existing models of currency attacksthat focus on fundamentals ignore the role of speculators' beliefs about other speculators'
+behavior. Existing self-fulfilling beliefs models of currency attacksassume that speculators
+know (in equilibrium)exactly what other speculators will do. Neither feature is realistic. Our
+
+JUNE 1998
+
+model takes neither extreme. Because there is
+some uncertainty about equilibrium, speculators are uncertain as to exactly what other
+speculatorswill do; but their behavior depends
+nontrivially on what they believe they will do.
+Because our model of self-fulfilling currency
+attacks is consistent with unique equilibrium,
+we are able to analyze the impact of alternative
+policies.
+APPENDIX
+
+PROOF OF LEMMA 2:
+Consider the function s(0, Ik), which gives
+the proportion of speculators who attack the
+currency at 0 when the aggregate short sales is
+given by the step function Ik. Since x is uniformly distributed over [0 - , 0 + s], we
+have
+
+I if 0
+I-
+
+(Al)
+
+s(9,Ik)=
+
+2
+
+k-e
+
+I-(0 -k)
+2e
+Iifk - G? 0C k + s
+
+t0 if 0 2~:k+
+
+.
+
+If aggregate short sales are given by Ik, there
+is a unique 0 (which depends on k) where the
+mass of speculators attacking equals the mass
+of speculators necessary to cause the government to abandon the exchange rate [where
+s(9, Ik) = a(0)]. Write qp(k)for the amount
+that 0 must exceed k in order for this to be
+true. In other words, +i(k) is the unique value
+of qi solving s(k + '1,Ik) = a(k + qi). Observe
+that+r(k) = s if k ' 0 - s, while if k> 0 ?, then -s < +i(k) < s and is the value of q,
+solving(1/2 - if/2s) = a(k + if)).
+Since the government abandons the currency peg if and only if 0 lies in the interval
+[0, k + if(k)], the payoff function u(k, Ik) is
+given by
+(A2)
+
+J
+
+k ++-(k)
+
+(e* -f(O))
+
+d
+
+-t.
+
+Since e * - f (0) is strictly decreasing in 0, if
+we can show that +f(k) is weakly decreasing
+in k, this will be sufficient to show that u (k,
+Ik) is strictly decreasing in k. To see that +f(k)
+
+MORRISAND SHIN: UNIQUE EQUILIBRIUMAND CURRENCYATIACKS
+
+VOL. 88 NO. 3
+
+is weakly decreasing in k, totally differentiate
+the equation (1/2 - qi/2s) = a(k + i/) with
+respect to k, to obtain-( 1 / 2s)'(
+k) =
+a'(G)(1 + ah'(k)). Hence,
+=
+q~'(k)
+
+-
+
+0
+
+a'(9)
+
+a'(0) + (1/2e)
+
+-
+
+which is sufficient for u(k, Ik) to be strictly
+decreasing in k. Finally, the continuity of u (k,
+Ik) follows immediately from the fact that it is
+an integral in which the limits of integration
+are themselves continuous in k. This completes the proof of Lemma 2.
+PROOF OF THEOREM 2:
+Consider the switching point x*, which is
+the solution to the equation u(x*, Ix*) - 0.
+Then, writingF(e) = A (i,*) n [X* - ,x* + -e
+f(0)) dG, we can express this equation as
+(F(e)12e) - t = 0. By using L'Hopital's rule,
+F(e)
+2c
+
+F'(0)
+2
+
+e*
+
+f(x*)
+2
+
+0, equation (A3)
+Thus, in the limit as e
+yieldsf(x*) = e*- 2t. Finally, we note that
+x * converges to G*when e tends to zero, since
+in the limit, s(8, Ix*) = Ix*
+REFERENCES
+Calvo, Guillermo A. "Servicing the Public
+Debt: The Role of Expectations." American
+Economic Review, September 1988, 78(4),
+pp. 647-61.
+Carlsson,Hansand van Damme,EricE. "Global
+Games and Equilibrium Selection." Econometrica, September 1993, 61(5), pp. 9891018.
+Chwe,MichaelS.-Y. "Structureand Strategy in
+Collective Action: Communicationand Coordination in Social Networks." Mimeo,
+University of Chicago, 1996.
+Cole, Harold L. and Kehoe, TimothyJ. "SelfFulfilling Debt Crises." Federal Reserve
+
+597
+
+Bank of Minneapolis Research Department
+Staff Report No. 211, 1996.
+Dornbusch,Rudigerand Werner,AlejandroM.
+"Mexico: Stabilization, Reform and No
+Growth." Brookings Papers on Economic
+Activity, 1994, (1), pp. 253-315.
+Eaton,Jonathanand Fernandez,Raquel. "Sovereign Debt," in Gene M. Grossman and
+Kenneth Rogoff, eds., Handbook of international economics, Vol. III. Amsterdam:
+North-Holland, 1995, pp. 2031-71.
+Eichengreen,Barry;Tobin,James and Wyplosz,
+Charles."Two Cases for Sand in the Wheels
+of InternationalFinance." Economic Journal, January 1995, 105(428), pp. 162-72.
+Eichengreen,Barryand Wyplosz,Charles."The
+Unstable EMS." Brookings Papers on Economic Activity, 1993, (1), pp. 51--143.
+Flood, Robert P. and Garber,Peter M. "Gold
+Monetization and Gold Discipline." Journal of Political Economy, February 1984,
+92(1), pp. 90-107.
+Morris,Stephen;Rob,Rafaeland Shin,HyunSong.
+"p-Domance and Belief Potential."Econometrica,January1995, 63(1), pp. 145-57.
+New YorkTimes,The.December 20-23, 1994,
+various articles.
+Obstfeld, Maurice. "Rational and SelfFulfilling Balance-of-Payments Crises."
+American Economic Review, March 1986,
+76(1), pp. 72-81.
+. "The Logic of CurTencyCrises." Cahiers Economiques et Monetaires (Banque
+de France), 1994, 43, pp. 189-213.
+_-.
+"Models of Currency Crises with
+Self-Fulfilling Features." European Economic Review, April 1996, 40(3-5), pp.
+1037-47.
+Postlewaite,Andrew and Vives, Xavier. "Bank
+Runs as an Equilibrium Phenomenon."
+Journal of Political Economy, June 1987,
+95(3), pp. 485-91.
+Rubinstein,Ariel. "The Electronic Mail Game:
+StrategicBehavior Under 'Almost Common
+Knowledge.' " American Economic Review, June 1989, 79(3), pp. 385-91.
+
+

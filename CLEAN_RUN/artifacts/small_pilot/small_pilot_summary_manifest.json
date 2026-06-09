@@ -1,0 +1,7 @@
+{
+  "period_rows": 140,
+  "agent_rows": 700,
+  "arm_summary_path": "CLEAN_RUN/artifacts/small_pilot/small_pilot_arm_summary.csv",
+  "by_theta_path": "CLEAN_RUN/artifacts/small_pilot/small_pilot_by_theta.csv",
+  "beliefs_path": "CLEAN_RUN/artifacts/small_pilot/small_pilot_beliefs.csv"
+}

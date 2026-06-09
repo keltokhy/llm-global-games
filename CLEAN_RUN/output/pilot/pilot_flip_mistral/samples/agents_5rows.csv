@@ -1,0 +1,101 @@
+run_id,arm_id,model,country,period,agent_id,theta,signal,z_score,briefing_text,message_sent,messages_received,decision,join,reasoning,belief_pre_success,belief_pre_join_share,belief_pre_shared_understanding,belief_pre_others_expect_join,belief_post_success,belief_post_join_share,belief_post_shared_understanding,belief_post_others_expect_join,punishment_risk,api_error,parse_error,prompt_hash,response_hash
+pilot_flip_mistral-20260507T182456Z,pilot_flip_mistral,mistralai/mistral-small-2603,0,0,0,2.520219270183582,2.426542437312895,6.749583373544654,"PRIVATE BRIEFING
+
+BOTTOM LINE: The regime is in serious trouble. The signs are converging and the trajectory is unmistakable.
+ATMOSPHERE: People are making plans, not just venting. The conversations have a logistical quality now.
+
+EVIDENCE:
+  - [Elite Cohesion] two competing directives were issued on the same day from different ministries, neither withdrawn
+  - [Security Forces] weapons inventory checks have been quietly suspended — someone doesn't want accountability right now
+  - [Money And Logistics] a well-connected merchant closed his main shop and relocated inventory without explanation
+  - [Street Mood] a normally cautious shopkeeper said openly that 'something has to give'
+  - [Information Control] underground pamphlets are being distributed in neighborhoods that were previously too surveilled for such activity (overwhelming convergence — every channel telling the same story independently)
+  - [Personal Observations] your phone has been making unusual clicking sounds — probably nothing, but in this context it feels ominous (overwhelming convergence — every channel telling the same story independently)
+  - [Diplomatic Signals] a diplomat at a social function asked pointed questions about 'contingency thinking' (overwhelming convergence — every channel telling the same story independently)
+  - [Institutional Functioning] government offices that usually run like clockwork are experiencing unexplained staffing gaps — the trend settling back toward normal
+
+UNCERTAINTIES:
+  - Whether the military's silence means they're loyal, undecided, or waiting for the right moment.
+  - If the regime has foreign backers who might intervene to prop it up at the last moment.",,[],JOIN,True,"JOIN
+
+Massive cracks are showing across every system—security, logistics, even foreign eyes are looking the other way. If the regime can’t even enforce its own orders, waiting any longer only helps it regroup.",,,,,,,,,,False,False,04e84188cf850a228a7816f4793a326695d3f623225745740e5265e63b9af7a8,caa5b21f047b253726d09a83398421b067c790715075665bc82629ad16ff4c02
+pilot_flip_mistral-20260507T182456Z,pilot_flip_mistral,mistralai/mistral-small-2603,0,0,1,2.520219270183582,2.5077947891025283,7.0204245461767645,"PRIVATE BRIEFING
+
+BOTTOM LINE: The regime's ability to project power has degraded to the point where its survival is an open question.
+ATMOSPHERE: People are speaking as if coordination is already happening — 'when it happens' rather than 'if'.
+
+EVIDENCE:
+  - [Elite Cohesion] senior figures are giving interviews that subtly distance themselves from the leader's recent decisions (overwhelming convergence — every channel telling the same story independently)
+  - [Security Forces] rank-and-file soldiers are grumbling about pay delays and broken promises — the trend settling back toward normal
+  - [Money And Logistics] a major shipment of medical supplies was diverted to a military facility without explanation (overwhelming convergence — every channel telling the same story independently)
+  - [Street Mood] families are focused on daily survival — school fees, food prices, medical bills — politics feels abstract (overwhelming convergence — every channel telling the same story independently)
+  - [Information Control] foreign media crews have been operating with unusual freedom in the capital — the usual minders are absent
+  - [Personal Observations] your local market is well-stocked and prices haven't spiked — supply chains are intact — the trend settling back toward normal
+  - [Diplomatic Signals] This removes any serious doubt that past the point of concealment — the UN country representative requested a private meeting with senior officials — unusual for routine operations
+  - [Institutional Functioning] a scheduled census operation was indefinitely postponed — the state can't organize basic logistics right now (overwhelming convergence — every channel telling the same story independently)
+
+UNCERTAINTIES:
+  - How deep the fractures go — surface-level dysfunction can mask either deeper rot or functioning parallel systems.
+  - Whether the military's silence means they're loyal, undecided, or waiting for the right moment.",,[],JOIN,True,"JOIN
+
+The regime's fractures are too deep to ignore, and the atmosphere suggests coordination is already underway. If others are gathering, staying home could mean missing a historic chance to reshape the future.",,,,,,,,,,False,False,9cf1c3b10e5da971a9b02e5be7df2696f242f4a2e6185fcae735858d3fced1fe,b1671492247be1a7537fadf0f60c05d13dbedca0fe877dac527c9c330e8430b1
+pilot_flip_mistral-20260507T182456Z,pilot_flip_mistral,mistralai/mistral-small-2603,0,0,2,2.520219270183582,2.5417357176486224,7.133560974663745,"PRIVATE BRIEFING
+
+BOTTOM LINE: If you were looking for a textbook picture of a regime approaching collapse, this is close to what you'd expect.
+ATMOSPHERE: People are making plans, not just venting. The conversations have a logistical quality now.
+
+EVIDENCE:
+  - [Elite Cohesion] This removes any serious doubt that barely perceptible — the leader made a rare public appearance with all senior figures present — a deliberate show of solidarity
+  - [Security Forces] This removes any serious doubt that barely perceptible — a contact says inter-service coordination meetings are happening routinely — no emergency footing
+  - [Money And Logistics] several import licenses have been delayed indefinitely, disrupting supply chains (overwhelming convergence — every channel telling the same story independently)
+  - [Street Mood] a popular song with barely disguised political lyrics is being played everywhere and nobody is stopping it (overwhelming convergence — every channel telling the same story independently)
+  - [Information Control] critics are being handled through legal channels rather than crude suppression — the trend settling back toward normal
+  - [Personal Observations] your phone has been making unusual clicking sounds — probably nothing, but in this context it feels ominous — the trend settling back toward normal
+  - [Diplomatic Signals] foreign correspondents who had left are returning — they smell a story
+  - [Institutional Functioning] a government database was breached and the response was confused and delayed — IT infrastructure is neglected (overwhelming convergence — every channel telling the same story independently)
+
+UNCERTAINTIES:
+  - How deep the fractures go — surface-level dysfunction can mask either deeper rot or functioning parallel systems.
+  - Whether the security apparatus would follow orders to suppress a large-scale mobilization, or stand aside.",,[],JOIN,True,"JOIN
+
+The regime shows clear signs of systemic failure—elite unity is staged, supply chains are collapsing, and the public is openly mocking authority. With foreign press returning and security forces failing to coordinate, the moment to act is now.",,,,,,,,,,False,False,f214d624bc0bac8be0e83116b09379a778319b799e67ad82e475f7a115d09112,609ddf64519e3cd281b58dddd1f2ac5d293b7d283387878f5b4a820ec9f830a0
+pilot_flip_mistral-20260507T182456Z,pilot_flip_mistral,mistralai/mistral-small-2603,0,0,3,2.520219270183582,2.8761304827940477,8.248210191815163,"PRIVATE BRIEFING
+
+BOTTOM LINE: The institutional foundations that held this regime together are visibly crumbling.
+ATMOSPHERE: People are speaking as if coordination is already happening — 'when it happens' rather than 'if'.
+
+EVIDENCE:
+  - [Elite Cohesion] an internal policy document leaked that contradicts the regime's public position entirely (overwhelming convergence — every channel telling the same story independently)
+  - [Security Forces] weapons inventory checks have been quietly suspended — someone doesn't want accountability right now (overwhelming convergence — every channel telling the same story independently)
+  - [Money And Logistics] a well-connected merchant closed his main shop and relocated inventory without explanation (overwhelming convergence — every channel telling the same story independently)
+  - [Street Mood] women in the market are speaking openly about prices and blaming the government by name — a line they used to avoid (overwhelming convergence — every channel telling the same story independently)
+  - [Information Control] censorship is getting sloppier — critical posts survive longer before deletion (overwhelming convergence — every channel telling the same story independently)
+  - [Personal Observations] a well-connected friend said the situation is 'messy but controlled' and seemed unbothered — the trend settling back toward normal
+  - [Diplomatic Signals] foreign development agencies just approved a multi-year funding package — they don't commit funds to countries they expect to collapse — the trend settling back toward normal
+  - [Institutional Functioning] the civil service pension fund made its payments on time — the state is honoring its long-term obligations (near-unanimous confirmation from every reliable source)
+
+UNCERTAINTIES:
+  - How deep the fractures go — surface-level dysfunction can mask either deeper rot or functioning parallel systems.
+  - Whether the military's silence means they're loyal, undecided, or waiting for the right moment.",,[],JOIN,True,"JOIN
+
+The cracks in regime cohesion are too visible to ignore. If the military hesitates, mass participation can force their hand.",,,,,,,,,,False,False,3f2cc7c114141c24300026b88c61e7e49455381ccf71bdb28bc8bc21e591934c,8a5397afc6cc49495e2ca148ba75c3effce3e65fc2976db587b78d68bf589472
+pilot_flip_mistral-20260507T182456Z,pilot_flip_mistral,mistralai/mistral-small-2603,0,0,4,2.520219270183582,2.6127514498907987,7.370280082137666,"PRIVATE BRIEFING
+
+BOTTOM LINE: The regime's ability to project power has degraded to the point where its survival is an open question.
+ATMOSPHERE: Groups are forming openly, and the old caution about being seen together has largely dissolved.
+
+EVIDENCE:
+  - [Elite Cohesion] the usual backchannels for resolving elite disputes have gone silent — nobody is mediating (overwhelming convergence — every channel telling the same story independently)
+  - [Security Forces] weapons inventory checks have been quietly suspended — someone doesn't want accountability right now
+  - [Money And Logistics] warehouse space in border towns has become scarce — goods are being positioned for quick export
+  - [Street Mood] a normally cautious shopkeeper said openly that 'something has to give' (overwhelming convergence — every channel telling the same story independently)
+  - [Information Control] This removes any serious doubt that barely perceptible — opposition voices online are being countered with detailed rebuttals, not just deleted
+  - [Personal Observations] your workplace is functioning normally — no unusual absences or anxious corridor talk — the trend settling back toward normal
+  - [Diplomatic Signals] a friendly foreign intelligence contact said 'we're watching very carefully' — which is diplomat for alarm (overwhelming convergence — every channel telling the same story independently)
+  - [Institutional Functioning] civil service recruitment is proceeding — the bureaucracy is hiring, not freezing
+
+UNCERTAINTIES:
+  - How much of the disarray is structural versus a temporary response to a specific crisis.
+  - Whether the security apparatus would follow orders to suppress a large-scale mobilization, or stand aside.",,[],JOIN,True,"JOIN
+
+The regime's collapse is imminent—elite infighting, security force hesitation, and logistical preparations all point to a critical moment. If enough others join, the uprising could succeed; staying home risks missing the chance to reshape the future.",,,,,,,,,,False,False,ece8e37824e5da895beaccb91f01c1b97937a9d6f222f115de05a149682e13a4,a89f5a7f357699d99e3592fca695c985c681767c61783616c774a3d6a93144c6

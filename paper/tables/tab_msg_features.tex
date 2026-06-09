@@ -1,6 +1,6 @@
 \begin{table}[t]
 \centering
-\caption{Top 10 most discriminative uni- and bi-grams between baseline and surveillance messages (primary model). A logistic classifier on tf-idf features achieves 91.9\% accuracy on a held-out sample of $N = 15,000$.}
+\caption{Top 10 most discriminative uni- and bi-grams between baseline and surveillance peer messages (primary model). A logistic classifier on tf-idf features achieves \MsgClassifierAcc\% accuracy on a held-out sample of $N = \MsgClassifierNTest$.}
 \label{tab:msg_features}
 \footnotesize
 \begin{tabular}{lc lc}
@@ -9,18 +9,19 @@
 \cmidrule(lr){1-2}\cmidrule(lr){3-4}
 Feature & Coef & Feature & Coef \\
 \midrule
-\texttt{things feel} & +6.41 & \texttt{look the} & -11.11 \\
-\texttt{walls are} & +5.87 & \texttt{look} & -8.93 \\
-\texttt{are cracking} & +5.64 & \texttt{listen} & -7.31 \\
-\texttt{things} & +5.56 & \texttt{listen this} & -6.00 \\
-\texttt{cracking even} & +4.96 & \texttt{may} & -4.93 \\
-\texttt{cracking} & +4.46 & \texttt{isn just} & -4.68 \\
-\texttt{ground shifting} & +3.79 & \texttt{don panic} & -4.63 \\
-\texttt{the walls} & +3.54 & \texttt{the weather} & -4.49 \\
-\texttt{feel like} & +3.50 & \texttt{weather} & -4.38 \\
-\texttt{rush this} & +3.37 & \texttt{something shifting} & -4.26 \\
+\texttt{things feel} & $+6.41$ & \texttt{look the} & $-11.11$ \\
+\texttt{walls are} & $+5.87$ & \texttt{look} & $-8.93$ \\
+\texttt{are cracking} & $+5.64$ & \texttt{listen} & $-7.31$ \\
+\texttt{things} & $+5.56$ & \texttt{listen this} & $-6.00$ \\
+\texttt{cracking even} & $+4.96$ & \texttt{may} & $-4.93$ \\
+\texttt{cracking} & $+4.46$ & \texttt{isn just} & $-4.68$ \\
+\texttt{ground shifting} & $+3.79$ & \texttt{don panic} & $-4.63$ \\
+\texttt{the walls} & $+3.54$ & \texttt{the weather} & $-4.49$ \\
+\texttt{feel like} & $+3.50$ & \texttt{weather} & $-4.38$ \\
+\texttt{rush this} & $+3.37$ & \texttt{something shifting} & $-4.26$ \\
 \bottomrule
 \end{tabular}
-\vspace{0.25em}
-\parbox{\columnwidth}{\footnotesize\emph{Notes:} Logistic regression on tf-idf uni- and bi-grams (max 5{,}000 features, min document frequency 10). Train/test split 70/30, stratified. Positive coefficients distinguish surveillance messages, negative coefficients distinguish baseline. The shift is from direct references (regime, security forces, streets) to coded metaphors (walls cracking, ground shifting, heads down).}
+\begin{tablenotes}
+\footnotesize\emph{Notes:} Logistic regression on tf-idf uni- and bi-grams (max 5{,}000 features, min document frequency 10). Train/test split 70/30, stratified ($N_{\text{train}} = \MsgClassifierNTrain$, $N_{\text{test}} = \MsgClassifierNTest$). Positive coefficients distinguish surveillance messages, negative coefficients distinguish baseline. The sample contains only baseline communication and clean surveillance peer messages; placebo/weather-stakes conditions are excluded. The weather terms are organic peer-message metaphors, not placebo leakage: 2{,}268 baseline messages (9.07\%) and 123 surveillance messages (0.49\%) contain the token \texttt{weather}. Direct-reference and coded-metaphor claims in the text come from separate dictionary counts, not from this top-n-gram list alone.
+\end{tablenotes}
 \end{table}

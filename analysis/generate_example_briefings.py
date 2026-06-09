@@ -19,8 +19,8 @@ from agent_based_simulation.experiment import SYSTEM_COMMUNICATE_SURVEILLED
 
 def main():
     seed = 5150
-    agent_id = 8
-    period = 124
+    agent_id = 2
+    period = 1007
     gen = BriefingGenerator(seed=seed)
 
     z_scores = [-2.0, 0.0, 2.0]

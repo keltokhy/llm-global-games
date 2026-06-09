@@ -1,0 +1,13 @@
+\begin{tabular}{lllllllllllll}
+\toprule
+arm id & claim & model & role & n agents & n countries & n periods & expected rows & message source & message transform & decision task & belief timing & belief information \\
+\midrule
+medium\_pure\_qwen30 & language\_signal & qwen/qwen3-30b-a3b-instruct-2507 & reader\_only & 10 & 1 & 40 & 40 & none & none & coordination & none & none \\
+medium\_scramble\_qwen30 & language\_signal & qwen/qwen3-30b-a3b-instruct-2507 & reader\_only & 10 & 1 & 40 & 40 & none & none & coordination & none & none \\
+medium\_flip\_qwen30 & language\_signal & qwen/qwen3-30b-a3b-instruct-2507 & reader\_only & 10 & 1 & 40 & 40 & none & none & coordination & none & none \\
+medium\_comm\_baseline\_qwen30 & sender\_side\_surveillance & qwen/qwen3-30b-a3b-instruct-2507 & writer\_and\_reader & 10 & 1 & 40 & 40 & live & none & coordination & none & none \\
+medium\_surv\_sender\_only\_qwen30 & sender\_side\_surveillance & qwen/qwen3-30b-a3b-instruct-2507 & writer\_and\_reader & 10 & 1 & 40 & 40 & live & none & coordination & none & none \\
+medium\_direct\_replay\_qwen30 & direct\_coded\_mechanism & qwen/qwen3-30b-a3b-instruct-2507 & reader\_with\_fixed\_messages & 10 & 1 & 40 & 40 & message\_bank & direct & coordination & pre & messages\_included \\
+medium\_coded\_replay\_qwen30 & direct\_coded\_mechanism & qwen/qwen3-30b-a3b-instruct-2507 & reader\_with\_fixed\_messages & 10 & 1 & 40 & 40 & message\_bank & coded & coordination & pre & messages\_included \\
+\bottomrule
+\end{tabular}

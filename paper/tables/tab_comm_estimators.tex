@@ -1,25 +1,26 @@
 \begin{table*}[t]
 \centering
-\caption{Why the communication estimators differ.}
+\caption{Communication estimators: aggregation accounting.}
 \label{tab:comm_estimators}
 \footnotesize
-\setlength{\tabcolsep}{3.5pt}
+\setlength{\tabcolsep}{2.5pt}
 \begin{tabular}{lcccccccc}
 \toprule
-Model & Rows/arm & Row wt. (P/C) & Cells/arm & Matched & Cell wt. & Lost (P/C) & $\Delta$ unpaired & $\Delta$ paired \\
+Model & Rows/arm & Row wt. (P/C) & Cells/arm & Matched & Cell wt. & Lost (P/C) & $\Delta$ unpaired (pp) & $\Delta$ paired (pp) \\
 \midrule
-Mistral Small Creative & 1000 & 55.6\%/38.5\% & 680 & 680 & 46.0\% & 0/0 & +2.38 & +4.84 \\
-Llama 3.3 70B & 100 & 5.6\%/3.8\% & 100 & 100 & 6.8\% & 0/0 & -2.36 & -2.36 \\
-Qwen3 30B & 100 & 5.6\%/3.8\% & 100 & 100 & 6.8\% & 0/0 & -4.64 & -4.64 \\
-GPT-OSS 120B & 200 & 11.1\%/7.7\% & 200 & 200 & 13.5\% & 0/0 & +3.47 & +3.47 \\
-Qwen3 235B & 200/1000 & 11.1\%/38.5\% & 200/1000 & 200 & 13.5\% & 0/800 & +0.86 & +0.12 \\
-Trinity Large & 100/99 & 5.6\%/3.8\% & 100/99 & 99 & 6.7\% & 1/0 & -3.14 & -3.41 \\
-MiniMax M2-Her & 100 & 5.6\%/3.8\% & 100 & 100 & 6.8\% & 0/0 & +1.32 & +1.32 \\
+Mistral Small Creative & 1000 & 55.6\%/38.5\% & 680 & 680 & 46.0\% & 0/0 & $+2.38$ & $+4.84$ \\
+Llama 3.3 70B & 100 & 5.6\%/3.8\% & 100 & 100 & 6.8\% & 0/0 & $-2.36$ & $-2.36$ \\
+Qwen3 30B & 100 & 5.6\%/3.8\% & 100 & 100 & 6.8\% & 0/0 & $-4.64$ & $-4.64$ \\
+GPT-OSS 120B & 200 & 11.1\%/7.7\% & 200 & 200 & 13.5\% & 0/0 & $+3.47$ & $+3.47$ \\
+Qwen3 235B & 200/1000 & 11.1\%/38.5\% & 200/1000 & 200 & 13.5\% & 0/800 & $+0.86$ & $+0.12$ \\
+Trinity Large & 100/99 & 5.6\%/3.8\% & 100/99 & 99 & 6.7\% & 1/0 & $-3.14$ & $-3.41$ \\
+MiniMax M2-Her & 100 & 5.6\%/3.8\% & 100 & 100 & 6.8\% & 0/0 & $+1.32$ & $+1.32$ \\
 \midrule
-Equal-weight avg & --- & 14.3\% each & --- & --- & 14.3\% each & --- & -0.30 & -0.09 \\
-Pooled & 1800/2599 & 100.0\% & 1480/2279 & 1479 & 100.0\% & 1/800 & +1.39 & +2.10 \\
+Equal-weight avg & --- & 14.3\% each & --- & --- & 14.3\% each & --- & $-0.30$ & $-0.09$ \\
+Pooled & 1800/2599 & 100.0\% & 1480/2279 & 1479 & 100.0\% & 1/800 & $+1.39$ & $+2.10$ \\
 \bottomrule
 \end{tabular}
-\vspace{0.25em}
-\parbox{\textwidth}{\footnotesize\emph{Notes:} ``Rows/arm'' counts valid country-period rows entering the pooled unpaired estimator in each arm. ``Cells/arm'' counts unique task cells after collapsing duplicates by the exact matching key (model, country, period, $\theta$, $z$, benefit, $\theta^*$). The paired estimator averages within these cells and keeps only common support; ``Row wt.'' and ``Cell wt.'' are the model shares in the pooled unpaired and pooled paired estimators, respectively. Only Trinity Large loses support, with one pure-only cell and no communication-only cells, so the pooled gap is overwhelmingly a weighting/re-averaging issue rather than a support-loss issue.}
+\begin{tablenotes}
+\footnotesize\emph{Notes:} Sample: valid country--period rows from the core pure and communication suites, each aggregating $n = 25$ agent decisions. ``Rows/arm'' counts valid country-period rows entering the pooled unpaired estimator in each arm. ``Cells/arm'' counts unique task cells after collapsing duplicates by the exact matching key (model, country, period, $\theta$, $z$, benefit, $\theta^*$). The paired estimator averages within these cells and keeps only common support; ``Row wt.'' and ``Cell wt.'' are the model shares in the pooled unpaired and pooled paired estimators, respectively. The pooled paired $\Delta$ of $+2.10$~pp has a paired standard error of 0.33~pp ($t = 6.38$, $p <0.001$, $N = 1{,}479$ matched cells). Trinity Large has one pure-only cell. Qwen3 235B has 800 communication-only cells because its communication arm is larger than its pure arm; those cells are excluded from the paired common-support estimator.
+\end{tablenotes}
 \end{table*}

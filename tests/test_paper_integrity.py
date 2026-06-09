@@ -144,7 +144,7 @@ def test_corrected_citation_keys_do_not_regress():
 
 
 def test_cited_paper_archive_has_valid_pdfs_for_available_sources():
-    allowed_missing = {"shadmehr2011"}
+    allowed_missing = {"shadmehr2011", "roberts2018"}  # roberts2018 is a book
     archive_keys = {path.stem for path in (PAPER_DIR / "cited_papers").glob("*.pdf")}
 
     assert _cited_keys() - archive_keys == allowed_missing
@@ -236,9 +236,9 @@ def test_jebo_cover_letter_is_submission_ready():
 
     required_phrases = [
         "Journal of Economic Behavior \\& Organization",
-        "Speaking in Code: How Surveillance Suppresses Coordinated Dissent",
+        "Speaking in Code: Surveillance and Coordinated Dissent in a\nLanguage-Based Global Game with LLM Agents".replace("\n", " "),
         "global game",
-        "belief--action wedge",
+        "sender-side surveillance effect",
     ]
     missing = [phrase for phrase in required_phrases if phrase not in tex]
 
@@ -413,3 +413,83 @@ def test_replication_readme_mentions_required_rebuild_artifacts():
 
     missing = sorted(token for token in required_tokens if token not in readme)
     assert missing == []
+
+
+def test_june_feedback_comment_responses_do_not_regress():
+    tex = _compiled_tex()
+    models = _load_module(ROOT / "analysis" / "models.py")
+
+    required_fragments = [
+        "actionability cues",
+        "not as a same-information-set mediation result",
+        "not standardized by the prior-predictive signal standard deviation",
+        r"(1+\sigma^2)/\sigma^2",
+        "the comparison is external in the sense",
+        "cross-period briefing permutation breaking the link between",
+        "the briefing received in that period",
+        "Equal-weighted model averages are close to zero under both summaries",
+        "Table~\\ref{tab:main_results}",
+        "matched-cell estimator",
+        "The strongest evidence is the primary-model matched result",
+        "I do not interpret codedness as a separately randomized mechanism",
+        "separate dictionary counts",
+        "That comparison uses its own live-message rerun",
+        "The no-message control uses the main communication baseline",
+        "separate 500-cell factorial rerun",
+        "not a causal mediation claim",
+        "the rotation-matched Llama subset is smaller",
+        "Inconclusive",
+        "core benchmark suites",
+        r"$1 - d$, where $d$ is the briefing-generator direction slider",
+        "not surveillance-channel ablations",
+    ]
+    missing = [fragment for fragment in required_fragments if fragment not in tex]
+    assert missing == []
+
+    forbidden_fragments = [
+        "Llama 3.370",
+        "Llama 70B",
+        "Qwen 235B",
+        "full sender information object",
+        "prior-predictive z-score with variance",
+        r"Figure~\ref{fig:communication}). Simple text features",
+        "theta$-to-signal link",
+        "Not tested",
+        "surveillance and pure overlap; the factorial",
+    ]
+    stale = [fragment for fragment in forbidden_fragments if fragment in tex]
+    assert stale == []
+
+    assert models.CONSTRUCT_VALIDITY_SLUGS == models.PART1_SLUGS
+
+
+def test_second_june_feedback_comment_responses_do_not_regress():
+    tex = _compiled_tex()
+
+    required_fragments = [
+        "limited sign replication",
+        "20 matched cells",
+        "grids were not nested",
+        "weather terms are organic peer-message metaphors",
+        "action-prediction diagnostic",
+        "how agents map politically loaded prose into action",
+        "does not isolate a structurally non-coordination component",
+        "evaluated at each realized period-level",
+        "simple post-decision action rationalization by itself would tend",
+        "rotation-matched within-Llama subset is smaller and closer",
+        "modestly outperforms a one-feature sentiment baseline on average",
+        "two-decimal rounding",
+        "agent 2, period 1007",
+    ]
+    missing = [fragment for fragment in required_fragments if fragment not in tex]
+    assert missing == []
+
+    forbidden_fragments = [
+        r"computed separately from realized $\theta$",
+        "outperforms a one-feature sentiment baseline across the seven paper models",
+        "generic message degradation is part of the effect",
+        "Table~\\ref{tab:classifiers} compares text-classifier accuracy on the intelligence briefings under baseline and surveillance conditions",
+        "agent 8, period 124",
+    ]
+    stale = [fragment for fragment in forbidden_fragments if fragment in tex]
+    assert stale == []

@@ -1,0 +1,31 @@
+{
+  "api_base_url": "https://openrouter.ai/api/v1",
+  "command": "/Users/khaled/GitHub/llm-global-games/CLEAN_RUN/code/clean_run/__main__.py run --manifest CLEAN_RUN/plans/random_theta_pilot.yaml --arm random_flip_qwen30",
+  "dirty_git_status": "M DATA_MANIFEST.txt\n M Makefile\n M agent_based_simulation/experiment.py\n M agent_based_simulation/run.py\n M analysis/check_paper_numbers.py\n M analysis/make_figures.py\n M analysis/render_paper_tables.py\n M analysis/verified_stats.json\n M analysis/verify_paper_stats.py\n M paper/asset_manifest.tsv\n D paper/cited_papers/carlini2025.pdf\n D paper/cited_papers/huang2024.pdf\n D paper/cited_papers/petrov2025.pdf\n M paper/cited_papers/sun2025survey.pdf\n M paper/figures/diagram_authoritarian_control.pdf\n M paper/figures/diagram_pipeline.pdf\n M paper/figures/fig01_sigmoid.pdf\n M paper/figures/fig02_cross_model.pdf\n M paper/figures/fig03_falsification.pdf\n M paper/figures/fig03_falsification.png\n M paper/figures/fig05_communication.pdf\n M paper/figures/fig07_all_designs.pdf\n M paper/figures/fig08_treatment_effect.pdf\n M paper/figures/fig09_censorship.pdf\n M paper/figures/fig10_infodesign_falsification.pdf\n M paper/figures/fig11_decomposition.pdf\n M paper/figures/fig12_surveillance.pdf\n M paper/figures/fig13_propaganda.pdf\n M paper/figures/fig14_cross_model_infodesign.pdf\n M paper/figures/fig15_text_baseline.pdf\n M paper/figures/fig16_beliefs.pdf\n M paper/figures/fig16_beliefs.png\n M paper/figures/fig17_second_order_beliefs.pdf\n M paper/figures/fig17_second_order_beliefs.png\n M paper/figures/fig18_bc_sweep.pdf\n M paper/figures/fig19_nonparametric_beliefs.pdf\n M paper/figures/fig19_nonparametric_beliefs.png\n M paper/figures/fig20_cross_generator.pdf\n D paper/figures/fig21_placebo_calibration.pdf\n D paper/figures/fig21_placebo_calibration.png\n M paper/figures/figA1_agent_count.pdf\n M paper/figures/figA2_network.pdf\n D paper/figures/figA4_calibration.pdf\n D paper/figures/figA4_calibration.png\n M paper/figures/fig_construct_validity.pdf\n M paper/figures/fig_example_briefings.pdf\n M paper/figures/fig_example_briefings.png\n M paper/paper.pdf\n M paper/paper.tex\n M paper/references.bib\n M paper/tables/stats_belief_factorial.tex\n M paper/tables/stats_macros.tex\n M paper/tables/tab_beliefs.tex\n D paper/tables/tab_calibration_robustness.tex\n M paper/tables/tab_cross_generator.tex\n M paper/tables/tab_hypotheses.tex\n M paper/tables/tab_parse_errors.tex\n D paper/tables/tab_placebo_calibration.tex\n M paper/tables/tab_surv_censor.tex\n M paper/tables/tab_surveillance_variants.tex\n M paper/tables/tab_temperature.tex\n M paper/tables/tab_temperature_expanded.tex\n D paper/tables/tab_uncalibrated.tex\n D paper/tables/tab_uncalibrated_expanded.tex\n M pyproject.toml\n M scripts/make_data.py\n M slides/brown_bag.pdf\n M slides/brown_bag.tex\n M tests/test_prompts.py\n?? CLEAN_RUN/\n?? REPLICATION_README.txt\n?? analysis/build_jebo_submission_package.py\n?? analysis/check_data_manifest.py\n?? analysis/check_jebo_final_inputs.py\n?? analysis/check_jebo_submission.py\n?? analysis/check_manuscript_text.py\n?? analysis/check_submission_package.py\n?? analysis/make_jebo_highlights_docx.py\n?? paper/cited_papers/carlsson1993.pdf\n?? paper/cited_papers/chassang2010.pdf\n?? paper/cited_papers/cheung2025.pdf\n?? paper/cited_papers/jia2025.pdf\n?? paper/cited_papers/larooij2025b.pdf\n?? paper/cited_papers/larooij2026.pdf\n?? paper/cited_papers/ouyang2024.pdf\n?? paper/cited_papers/ruano2026.pdf\n?? paper/cited_papers/stoycheff2016.pdf\n?? paper/cover_letter_jebo.pdf\n?? paper/cover_letter_jebo.tex\n?? paper/highlights_jebo.docx\n?? paper/highlights_jebo.txt\n?? paper/jebo_submission_metadata.json\n?? paper/jebo_submission_metadata.schema.json\n?? paper/paper_anonymous.pdf\n?? paper/paper_anonymous.tex\n?? \"slides/brown_bag copy.pdf\"\n?? slides/brown_bag_speaking_notes.pdf\n?? slides/brown_bag_speaking_notes.tex\n?? slides/llm_global_games_lecture_notes.pdf\n?? slides/llm_global_games_lecture_notes.tex\n?? tests/test_clean_run.py\n?? tests/test_paper_constants.py\n?? tests/test_paper_integrity.py\n?? tmp/",
+  "elapsed_seconds": 120.883016,
+  "end_time": "2026-05-08T00:17:25.273329+00:00",
+  "environment": {
+    "GGC_LLM_CACHE_DIR": "",
+    "OPENROUTER_API_KEY": "set"
+  },
+  "git_commit_hash": "85bdabcab879325e413ffac6bd5081a5281e393f",
+  "model": "qwen/qwen3-30b-a3b-instruct-2507",
+  "package_versions": {
+    "networkx": "3.6.1",
+    "numpy": "2.4.2",
+    "openai": "2.22.0",
+    "pandas": "3.0.1",
+    "pyarrow": "24.0.0",
+    "pyyaml": "6.0.3",
+    "scipy": "1.17.1"
+  },
+  "provider": {
+    "allow_fallbacks": false,
+    "only": [
+      "siliconflow"
+    ]
+  },
+  "qc_pass": true,
+  "seed": 5150,
+  "start_time": "2026-05-08T00:15:24.390313+00:00"
+}

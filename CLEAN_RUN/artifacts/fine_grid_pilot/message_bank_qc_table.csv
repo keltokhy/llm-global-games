@@ -1,0 +1,8 @@
+message_bank,rows,missing_columns,factual_equivalence_fail_rate,style_balance_fail_rate,accepted_rows,pass
+baseline_messages.parquet,25000,[],0.0,0.0,25000,True
+baseline_surveillance_matched.parquet,15000,[],1.0,0.6654666666666667,0,False
+direct_coded_pairs.parquet,5250,[],1.0,0.6577142857142857,0,False
+direct_coded_pairs_fine_grid_pilot.parquet,340,[],0.0,0.0,340,True
+direct_coded_pairs_medium_pilot.parquet,400,[],0.0,0.0,400,True
+direct_coded_pairs_pilot.parquet,5,[],0.0,0.0,5,True
+direct_coded_pairs_small_pilot.parquet,100,[],0.0,0.0,100,True

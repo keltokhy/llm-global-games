@@ -11,6 +11,7 @@
 \providecommand{\CommPureMeanModelAvg}{0.435}
 \providecommand{\CommCommMeanModelAvg}{0.432}
 \providecommand{\CommDeltaPPModelAvg}{-0.3}
+\providecommand{\CommDeltaPPModelAvgPaired}{-0.09}
 \providecommand{\CommPureMeanPooled}{0.409}
 \providecommand{\CommCommMeanPooled}{0.423}
 \providecommand{\CommDeltaPPPooled}{+1.39}
@@ -50,7 +51,7 @@
 \providecommand{\PrimaryPureCutoff}{-0.32}
 \providecommand{\PrimaryPureSlope}{2.15}
 
-% Pooled OLS (join_fraction ~ theta)
+% Pooled OLS (join_fraction J regressed on attack mass A(theta))
 \providecommand{\PooledOLSIntercept}{-0.011}
 \providecommand{\PooledOLSSlope}{0.6437}
 \providecommand{\PooledOLSRSq}{0.5737}
@@ -64,6 +65,7 @@
 \providecommand{\ClusteredSEHCOneSlope}{0.0100}
 \providecommand{\ClusteredSECountrySlope}{0.0375}
 \providecommand{\ClusteredSEModelSlope}{0.0258}
+\providecommand{\NCountryClusters}{10}
 
 % Per-model pure statistics
 \providecommand{\MistralPureRTheta}{-0.83}
@@ -283,32 +285,38 @@
 % Clean prompt-isolation reruns
 \providecommand{\PromptIsoNModels}{5}
 \providecommand{\PromptIsoNegativeModels}{5}
-\providecommand{\PromptIsoSigFivePctModels}{5}
-\providecommand{\PromptIsoSigOnePctModels}{2}
-\providecommand{\PromptIsoMeanDeltaPP}{-8.6}
-\providecommand{\PromptIsoMeanDeltaAbsPP}{8.6}
-\providecommand{\PromptIsoMinDeltaPP}{-11.1}
-\providecommand{\PromptIsoMaxDeltaPP}{-3.6}
+\providecommand{\PromptIsoSigFivePctModels}{4}
+\providecommand{\PromptIsoSigOnePctModels}{4}
+\providecommand{\PromptIsoMeanDeltaPP}{-11.2}
+\providecommand{\PromptIsoMeanDeltaAbsPP}{11.2}
+\providecommand{\PromptIsoMinDeltaPP}{-15.0}
+\providecommand{\PromptIsoMaxDeltaPP}{-3.0}
 \providecommand{\PromptIsoMeanRAttack}{+0.71}
 \providecommand{\PromptIsoNonQwenLargeN}{4}
-\providecommand{\PromptIsoNonQwenLargeMinDeltaPP}{-11.1}
-\providecommand{\PromptIsoNonQwenLargeMaxDeltaPP}{-9.1}
-\providecommand{\PromptIsoMistralN}{1000}
-\providecommand{\PromptIsoMistralMeanJoin}{0.320}
-\providecommand{\PromptIsoMistralMeanJoinPct}{32.0\%}
-\providecommand{\PromptIsoMistralBaselineMeanJoin}{0.411}
-\providecommand{\PromptIsoMistralBaselineMeanJoinPct}{41.1\%}
-\providecommand{\PromptIsoMistralDeltaPP}{-9.1}
-\providecommand{\PromptIsoMistralDeltaAbsPP}{9.1}
+\providecommand{\PromptIsoNonQwenLargeMinDeltaPP}{-15.0}
+\providecommand{\PromptIsoNonQwenLargeMaxDeltaPP}{-12.0}
+\providecommand{\PromptIsoMistralN}{500}
+\providecommand{\PromptIsoMistralMeanJoin}{0.314}
+\providecommand{\PromptIsoMistralMeanJoinPct}{31.4\%}
+\providecommand{\PromptIsoMistralBaselineMeanJoin}{0.453}
+\providecommand{\PromptIsoMistralBaselineMeanJoinPct}{45.3\%}
+\providecommand{\PromptIsoMistralDeltaPP}{-13.9}
+\providecommand{\PromptIsoMistralDeltaAbsPP}{13.9}
 \providecommand{\PromptIsoMistralRAttack}{+0.72}
 \providecommand{\PromptIsoMistralPValue}{0.0000}
 \providecommand{\PromptIsoMistralPValueText}{<0.001}
-\providecommand{\PromptIsoLlamaDeltaPP}{-9.8}
-\providecommand{\PromptIsoLlamaDeltaAbsPP}{9.8}
-\providecommand{\PromptIsoQwenLN}{1000}
-\providecommand{\PromptIsoQwenLDeltaPP}{-3.6}
-\providecommand{\PromptIsoQwenLDeltaAbsPP}{3.6}
-\providecommand{\PromptIsoQwenLPValue}{0.033}
+\providecommand{\PromptIsoLlamaDeltaPP}{-15.0}
+\providecommand{\PromptIsoLlamaDeltaAbsPP}{15.0}
+\providecommand{\PromptIsoQwenLN}{20}
+\providecommand{\PromptIsoQwenLDeltaPP}{-3.0}
+\providecommand{\PromptIsoQwenLDeltaAbsPP}{3.0}
+\providecommand{\PromptIsoQwenLPValue}{0.186}
+\providecommand{\PromptIsoPooledMatchedDeltaPP}{-13.5}
+\providecommand{\PromptIsoPooledMatchedN}{580}
+\providecommand{\PromptIsoPooledMatchedPText}{<0.001}
+\providecommand{\PromptIsoMistralCountryClustT}{-13.90}
+\providecommand{\PromptIsoMistralCountryClustPText}{<0.001}
+\providecommand{\PromptIsoMistralCountryClustN}{5}
 
 % Message controls
 \providecommand{\DegradedN}{500}
@@ -351,17 +359,17 @@
 
 % Message content classifier and themes (primary model)
 \providecommand{\MsgClassifierAcc}{91.9}
-\providecommand{\MsgClassifierNTrain}{35000}
-\providecommand{\MsgClassifierNTest}{15000}
+\providecommand{\MsgClassifierNTrain}{35{,}000}
+\providecommand{\MsgClassifierNTest}{15{,}000}
 \providecommand{\MsgClassifierLlamaAcc}{98.5}
-\providecommand{\MsgClassifierLlamaNTest}{1500}
+\providecommand{\MsgClassifierLlamaNTest}{1{,}500}
 \providecommand{\MsgClassifierQwenSAcc}{93.6}
-\providecommand{\MsgClassifierQwenSNTest}{1500}
+\providecommand{\MsgClassifierQwenSNTest}{1{,}500}
 \providecommand{\MsgDirectCodedNModels}{3}
 \providecommand{\MsgDirectCodedRepModels}{3}
 \providecommand{\MsgWeaknessBase}{23.2}
 \providecommand{\MsgWeaknessSurv}{31.7}
-\providecommand{\MsgWeaknessDeltaPP}{+8.4}
+\providecommand{\MsgWeaknessDeltaPP}{+8.5}
 \providecommand{\MsgWeaknessZ}{21.06}
 \providecommand{\MsgWeaknessP}{0.0000}
 \providecommand{\MsgStrengthBase}{14.5}
@@ -376,7 +384,7 @@
 \providecommand{\MsgDirectRegimeP}{0.0000}
 \providecommand{\MsgCodedMetaphorBase}{69.8}
 \providecommand{\MsgCodedMetaphorSurv}{94.1}
-\providecommand{\MsgCodedMetaphorDeltaPP}{+24.2}
+\providecommand{\MsgCodedMetaphorDeltaPP}{+24.3}
 \providecommand{\MsgCodedMetaphorZ}{70.38}
 \providecommand{\MsgCodedMetaphorP}{0.0000}
 
@@ -388,8 +396,8 @@
 \providecommand{\CrossTaskSurvMeanJoinPct}{29.1\%}
 \providecommand{\CrossTaskDeltaPP}{-5.6}
 \providecommand{\CrossTaskDeltaAbsPP}{5.6}
-\providecommand{\CrossTaskCoordTaskDeltaAbsPP}{9.8}
-\providecommand{\CrossTaskCoordSpecificPP}{4.2}
+\providecommand{\CrossTaskCoordTaskDeltaAbsPP}{15.0}
+\providecommand{\CrossTaskCoordSpecificPP}{9.4}
 \providecommand{\CrossTaskPValue}{0.0256}
 
 % Cross-model writer-reader rotation
@@ -445,6 +453,8 @@
 \providecommand{\SOBDeltaPP}{-0.3}
 \providecommand{\SOBPValue}{0.5866}
 \providecommand{\SOBTStat}{0.54}
+\providecommand{\SOBDeltaCILoPP}{-1.3}
+\providecommand{\SOBDeltaCIHiPP}{+0.7}
 % Preference falsification
 \providecommand{\PrefFalsPureMeanBelief}{0.444}
 \providecommand{\PrefFalsSurvMeanBelief}{0.436}
@@ -452,12 +462,12 @@
 \providecommand{\PrefFalsActionDeltaPP}{-12.9}
 
 % Classifier baselines
-\providecommand{\ClassBowAccuracy}{0.884}
+\providecommand{\ClassBowAccuracy}{0.885}
 \providecommand{\ClassBowAUC}{0.947}
-\providecommand{\ClassBowAccuracyPct}{88.4\%}
-\providecommand{\ClassBowSurvPredicted}{0.405}
+\providecommand{\ClassBowAccuracyPct}{88.5\%}
+\providecommand{\ClassBowSurvPredicted}{0.406}
 \providecommand{\ClassBowSurvActual}{0.276}
-\providecommand{\ClassBowSurvPredictedPct}{40.5\%}
+\providecommand{\ClassBowSurvPredictedPct}{40.6\%}
 \providecommand{\ClassBowSurvActualPct}{27.6\%}
 \providecommand{\ClassBowSurvGapPP}{+13.0}
 \providecommand{\ClassSliderAccuracy}{0.884}
@@ -469,12 +479,12 @@
 \providecommand{\ClassBCBaselinePredicted}{0.409}
 \providecommand{\ClassBCBaselineActual}{0.409}
 \providecommand{\ClassBCBaselineGapPP}{+0.0}
-\providecommand{\ClassBCHighCostPredicted}{---}
-\providecommand{\ClassBCHighCostActual}{---}
-\providecommand{\ClassBCHighCostGapPP}{---}
-\providecommand{\ClassBCLowCostPredicted}{---}
-\providecommand{\ClassBCLowCostActual}{---}
-\providecommand{\ClassBCLowCostGapPP}{---}
+\providecommand{\ClassBCHighCostPredicted}{0.409}
+\providecommand{\ClassBCHighCostActual}{0.190}
+\providecommand{\ClassBCHighCostGapPP}{+21.9}
+\providecommand{\ClassBCLowCostPredicted}{0.409}
+\providecommand{\ClassBCLowCostActual}{0.693}
+\providecommand{\ClassBCLowCostGapPP}{-28.4}
 
 % Agent-level regression results
 \providecommand{\ActionEqPseudoRSq}{0.975}
@@ -483,6 +493,7 @@
 \providecommand{\MainLogitNObs}{240,557}
 \providecommand{\MEMThetaPP}{42}
 \providecommand{\MEMSurvPP}{38}
+\providecommand{\MEMSurvDiscretePP}{17.9}
 
 % Level-k benchmark (BNE vs L1 vs L2)
 \providecommand{\LevelKBNERMSE}{0.199}
@@ -603,8 +614,8 @@
 
 % B/C comparative statics (actual join rates)
 \providecommand{\BCStatBaselineMeanPct}{40.9\%}
-\providecommand{\BCStatHighCostMeanPct}{---}
-\providecommand{\BCStatLowCostMeanPct}{---}
+\providecommand{\BCStatHighCostMeanPct}{19.0\%}
+\providecommand{\BCStatLowCostMeanPct}{69.3\%}
 
 % Beliefs second-order details
 \providecommand{\SOBPureMean}{0.310}
@@ -684,7 +695,7 @@
 \providecommand{\PunishRiskMean}{8.0}
 \providecommand{\PunishRiskMaxDiff}{0.2}
 \providecommand{\AgentLevelN}{240{,}557}
-\providecommand{\FiniteNMinR}{0.95}
+\providecommand{\FiniteNMinR}{0.96}
 \providecommand{\FiniteNPrimaryR}{0.9968}
 \providecommand{\FiniteNPooledR}{0.9993}
 \providecommand{\BaselineRegimeSurvPct}{50\%}

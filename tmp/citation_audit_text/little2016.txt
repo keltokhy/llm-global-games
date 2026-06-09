@@ -1,0 +1,1041 @@
+Communication Technology and Protest
+Author(s): Andrew T. Little
+Source: The Journal of Politics, (-Not available-), p. 000
+Published by: The University of Chicago Press on behalf of the Southern Political Science
+Association
+Stable URL: http://www.jstor.org/stable/10.1086/683187 .
+Accessed: 24/09/2015 08:37
+
+Your use of the JSTOR archive indicates your acceptance of the Terms & Conditions of Use, available at .
+http://www.jstor.org/page/info/about/policies/terms.jsp
+
+.
+JSTOR is a not-for-profit service that helps scholars, researchers, and students discover, use, and build upon a wide range of
+content in a trusted digital archive. We use information technology and tools to increase productivity and facilitate new forms
+of scholarship. For more information about JSTOR, please contact support@jstor.org.
+
+.
+
+
+
+
+                The University of Chicago Press and Southern Political Science Association are collaborating with JSTOR to
+                digitize, preserve and extend access to The Journal of Politics.
+
+
+
+
+http://www.jstor.org
+
+
+
+
+                            This content downloaded from 128.104.122.153 on Thu, 24 Sep 2015 08:37:50 AM
+                                            All use subject to JSTOR Terms and Conditions
+Communication Technology and Protest
+Andrew T. Little, Cornell University
+
+
+Recent antiregime protests throughout the world have been publicized, and arguably facilitated, by social media and
+other communication technologies. I develop formal models that examine the implications of communication tech-
+nology generating information about two distinct factors: (1) the level of dissatisfaction with the regime and (2) lo-
+gistical information about when, where, and how potential protests will occur. Making grievances against the regime
+more public has an ambiguous effect on protest levels as citizens can learn that it is more or less popular than expected.
+Even when publicizing more complaints about the regime does increase average protest levels, some if not most of the
+observed correlation between antiregime content and protest is not causal. In contrast, providing information about
+logistics almost always lowers the effective cost of protest, leading to larger (and more cohesive) antiregime action. The
+models explain a wide range of empirical results linking communication technology, antiregime beliefs, protest, and
+censorship.
+
+
+
+
+E      very revolution or large-scale protest over the past
+       decade has been accompanied by a spirited debate
+       both within and outside academia over the role of the
+latest information and communication technology (ICT).
+The most recent iteration of this argument, inspired by the
+                                                                                  More skeptical perspectives assert that social media and
+                                                                               older technologies get more attention from Western ob-
+                                                                               servers than from actual participants (Aday et al. 2012;
+                                                                               Starbird and Palen 2012), that the spike in antiregime con-
+                                                                               tent during protests simply reﬂects the underlying discon-
+Arab Spring, the Occupy movement, antigovernment dem-                          tent with the regime that is the true cause of mobilization
+onstrations in Russia, Turkey, and Ukraine, and protests                       (Comunello and Anzera 2012; Tufekci 2014), or that bet-
+against killings by police in the United States (among oth-                    ter ICT may be more effective as a tool for regimes to mon-
+ers), has largely focused on social media such as Twitter and                  itor, inﬂuence, or control their citizens than the other way
+Facebook (e.g., Aday et al. 2010, 2012; Hale 2013; Reuter                      around (Aday et al. 2010; Gehlbach and Sonin 2014; Guriev
+and Szakonyi 2015). More broadly, these debates speak to                       and Treisman 2015; Morozov 2009; Shadmehr and Bern-
+the question of how technologies of communication—from                         hardt 2015; Siegal and Shapiro 2013).
+the printing press to radio to the Internet—make antiregime                       Further, the empirical record on the question of how
+action against autocrats or political action in general more                   better ICT affects political behavior is mixed. Some studies
+likely (Acharya 2014; Bennett and Segerberg 2013; Dafoe and                    ﬁnd that better ICT—or exposure to new political infor-
+Lyall 2015; Farrell 2012; Tarrow 1994).                                        mation more generally—leads to more antiregime (or anti–
+    Many have viewed ICT as indispensable to these protests:                   status quo) beliefs and action (Enikolopov, Petrova, and
+for example, during the Arab Spring use of social media was                    Zhuravskaya 2011; Pierskalla and Hollenbach 2013; Reuter
+so prominent that countless commentators dubbed the                            and Szakonyi 2015; Yanagizawa-Drott 2014), while others
+events some permutation of “the (Twitter/Facebook) (Upris-                     ﬁnd the opposite (Kern and Hainmueller 2009; Shapiro and
+ings/Protests/Revolutions)” (Farrell 2012). Examples abound                    Weidmann 2015).1
+of participants crediting social media, such as an Egyptian                       This article reconciles the bulk of these theoretical argu-
+activist’s description of the strategy to “use Facebook to                     ments and empirical ﬁndings in a simple formal framework.
+schedule the protests, Twitter to coordinate, and YouTube to                   In short, I ﬁnd that better technology generally increases
+tell the world” (Howard 2011; emphasis added).                                 average levels of antiregime action (which I generically call
+
+
+Andrew Little (andrew.little@cornell.edu) is assistant professor of government, Cornell University, Ithaca NY 14853.
+    Data and supporting materials necessary to reproduce the numerical results in the article are available in the JOP Dataverse (https://dataverse
+.harvard.edu/dataverse/jop). An online appendix with supplementary material is available at http://dx.doi.org/10.1086/683187.
+    1. Others have used social media to analyze conﬂict dynamics (Zeitzoff 2011, 2014), polarization, or ideological networks (Barberá and Rivero 2014).
+
+The Journal of Politics, volume 78, number 1. Published online September 23, 2015. http://dx.doi.org/10.1086/683187
+q 2015 by the Southern Political Science Association. All rights reserved. 0022-3816/2015/7801-0011$10.00                                          000
+
+
+
+
+                               This content downloaded from 128.104.122.153 on Thu, 24 Sep 2015 08:37:50 AM
+                                               All use subject to JSTOR Terms and Conditions
+000 / Communication Technology and Protest Andrew T. Little
+
+
+“protest”), though not through the channels that receive the                  positive causal effect of mobilization through improving tac-
+most attention. The models also provide an explanation for                    tical coordination.
+why better political information can have the opposite ef-                        The theoretical results explain a wide range of recent
+fect on political beliefs and action in different contexts, and               empirical ﬁndings linking ICT, antiregime beliefs and ac-
+predicting the direction of these effects is ex ante difﬁcult if              tion, and censorship, as well as suggesting new directions
+not impossible.                                                               for future empirical research.
+    The main theoretical contribution of the article is to                        First, the model provides an explanation for the mixed
+distinguish between two coordination problems that citizens                   results of studies that examine how better exposure to po-
+considering antiregime action face under two different types                  litical information affects attitudes and behavior (e.g., Eni-
+of uncertainty. First, citizens must decide whether to take                   kolopov et al. 2011; Kern and Hainmueller 2009; Peisakhin
+antiregime action in the ﬁrst place without knowing how                       and Rozenas 2015; Pierskalla and Hollenbach 2013; Reuter
+many others dislike the regime enough to join. I call this the                and Szakonyi 2015; Yanagizawa-Drott 2014). I argue that
+political coordination problem.2 Second, conditional on par-                  this indeterminacy results from the fact that this relationship
+ticipating, citizens must decide when, where, and how to pro-                 is conditional on two potentially unobservable variables:
+test against the regime, again, with uncertainty about what                   whether the regime is more or less popular than commonly
+tactics their fellow protesters will select. I call this the tactical         known and whether the source of information has more or
+coordination problem.3 ICT can provide information about                      less proregime bias than commonly thought.
+both the degree to which other citizens dislike the regime and                    Second, the relative importance of tactical coordination
+what tactics protesters will choose, which affects both of these              compared to learning about the regime’s popularity provides
+coordination problems.4                                                       an explanation for a recent prominent empirical ﬁnding that
+    Formalizing this distinction highlights how the answer to                 contemporary China does not censor criticism of the regime
+whether better information from ICT helps citizens coor-                      but does heavily censor references to and calls for collective
+dinate depends on the kind of information learned and the                     action (King, Pan, and Roberts 2013, 2014). As the model
+kind of coordination problem. Making it easier to air griev-                  highlights, information that can improve tactical coordina-
+ances against the regime with better ICT has an ambiguous                     tion (e.g., references to collective action) is generally more
+effect on the beliefs about the regime’s popularity. The rea-                 dangerous to the regime than allowing information about its
+son is that better information must sometimes reveal that the                 (un)popularity (e.g., criticism).
+regime is more popular than expected, though most (in-                            Finally, the model sheds light on the challenge of making
+ternational) focus will be on the attention-grabbing cases                    causal claims about the effect of ICT of political beliefs and
+in which protests are spurred by revelation of the regime’s                   behavior from observational data. For example, what can we
+unpopularity. In contrast, better ICT (almost) always has a                   infer from the fact that major protests tend to be concurrent
+                                                                              with spikes of antiregime content on social media (Barberá
+                                                                              and Metzger 2014)? Even those amenable toward the idea
+    2. I thank Milan Svolik for suggesting this terminology.
+                                                                              that technology and political action share important links
+    3. Petrova and Zudenkova (2015) make a related distinction between
+two ways the regime can censor information, one of which makes par-
+                                                                              often dither on the question of whether this relationship is
+ticipation in protest more costly (which they call “tactical censorship”)     causal. A striking example of the fear of causal language
+and one that downwardly biases a signal of the regime’s unpopularity          comes from Shirky (2008, 67), who writes that “two things
+(which they term “content censorship”).                                       are true about the remaking of the European intellectual
+    4. As elaborated when the models are presented, this argument brings
+                                                                              landscape during the Protestant Reformation: ﬁrst, it was
+together two branches of the “global games” literature on coordination
+under uncertainty. The political coordination problem draws on binary         not caused by the invention of movable type, and second, it
+action in which the actors either “participate” or do not with uncertainty    was possible only after the invention of movable type.”5
+about others’ propensity to join, which has been frequently applied to            Formalizing this relationship demonstrates a unique
+participation in protests and revolutions (e.g., Acharya 2014; Boix and
+                                                                              challenge for empirical work on the topic, as the fact that
+Svolik 2013; Bueno de Mesquita 2010; Edmond 2013; Hollyer, Rosendorff,
+and Vreeland 2013; Little 2012; Petrova and Zudenkova 2015; Shadmehr
+                                                                              the regime’s popularity and citizens’ propensity to protest
+and Bernhardt 2015; Tyson and Smith 2013). The tactical coordination          are correlated (i.e., the “confound”) is precisely what causes
+problem draws on models in which the actors make a continuous choice
+that they want to be “close” to the choices of others; inspired by Keynes’s
+(1936) famous example of a newspaper contest in which participants guess          5. “This is not to say that access to social media is causing revolts”
+which women are rated as the most attractive by others, these are often       (Kendall-Taylor and Frantz 2014, 40). “The major challenge in under-
+called “beauty contests” (e.g., Angeletos and Pavan 2007; Dewan and           standing the relationship between democracy and the Internet . . . has
+Myatt 2008; Morris and Shin 2002).                                            been to distinguish cause and effect” (Morozov 2009).
+
+
+
+
+                                This content downloaded from 128.104.122.153 on Thu, 24 Sep 2015 08:37:50 AM
+                                                All use subject to JSTOR Terms and Conditions
+                                                                                           Volume 78       Number 1       January 2016 / 000
+
+
+citizens to be more apt to protest when observing anti-                   If the citizen does not protest (a p 0), she gets a payoff
+regime content. So, this relationship can never be entirely           normalized to zero. The payoff to protest (i.e., when a p 1)
+causal. However, the results highlight conditions under               is increasing in the unpopularity or weakness of the regime
+which the correlation between antiregime content and ac-              q, capturing the idea that the citizen is more apt to protest
+tion is more or less causal, providing a guide for how we             against a “bad” regime, or because she expects the protests
+should interpret the rapidly increasing amount of obser-              to be larger if others are unhappy as well.6 The k(t 2 v)2
+vational data linking social media and political behavior.            term is the cost of protest, where v represents the “average”
+    The rest of the article proceeds as follows. First, I present     tactics chosen by other protesters. So, the cost to protest is
+a single-actor model that derives many of the main results.           increasing in k—or the general costliness of protest—and
+Next, I show that these results hold in models with multi-            in how unusual the citizen’s chosen tactic is.
+ple citizens that more fully capture the political and tactical           The citizen is uncertain about the level of dissatisfaction
+coordination problems. Further extensions to the model                with the regime (q) and the tactics chosen by others (v).
+show that the main ﬁndings hold when (1) the signals are              Let the prior belief about q be normally distributed with
+biased—potentially as a strategic choice by the regime—               mean m q and precision a 0 (i.e., variance 1/a 0). The prior on
+and (2) citizens are not fully Bayesian in forming their              v is normally distributed with a mean normalized to zero
+beliefs. Finally, I informally consider other effects that ICT        and precision b0. The normality assumption is merely to
+could have on the dynamics of protest and conclude.                   streamline exposition and interpretation; as demonstrated
+                                                                      in the appendix (available online), the central results hold
+SINGLE-ACTOR MODEL                                                    with much weaker distributional assumptions.
+While the main conceptual goal of the article is to examine               Before taking her action, the citizen observes a noisy
+how better ICT affects political and tactical coordination            signal of both parameters of uncertainty. The tactical signal
+problems—which inherently involves strategic interactions             is given by
+among potential participants—the central results can be de-
+rived in a reduced-form model with a single actor. Consider                                          sv p v 1 ϵv ,
+a citizen (pronoun “she”) who ﬁrst chooses whether to take
+                                                                      where ϵ v is normally distributed with mean zero and precision
+an antiregime action a. This action is binary, where a p 1
+                                                                      bs. When interpreting the model, I assume that one effect of
+means choosing the antiregime action (e.g., taking to the
+                                                                      better ICT is increasing bs, that is, giving the citizen more in-
+streets, joining a rebel movement) and a p 0 means not
+                                                                      formation about how others will protest. That is, I treat the
+participating. The model is meant to describe antiregime ac-
+                                                                      information learned from social media and other sources as
+tion at a high level of abstraction, capturing any activity that
+                                                                      exogenous and take it as a given that better technology leads
+citizens are more apt to participate in when the regime is
+                                                                      to better-informed citizens. If social media or another tech-
+weak or unpopular (and, in the following section, when other
+                                                                      nology renders citizens less informed—perhaps by confusing
+citizens participate as well). For concreteness, I usually refer
+                                                                      them, providing false information, or causing them to substi-
+to the antiregime action as “protesting” and not taking the
+                                                                      tute away from more informative sources—it will have the
+action as “staying home.”
+                                                                      exact opposite effect as the one analyzed here.
+    If the citizen chooses to protest, she also chooses a tactic t.
+                                                                          For now the regime takes no actions, either to affect the
+The tactics are meant to capture a variety of logistical details,
+                                                                      signals (which will be modeled in an extension) or to use
+such as when and where to protest, what concessions to de-
+                                                                      the information they generate to combat antiregime activity
+mand, whether to use violence, or how to respond to the police.
+                                                                      (see Siegal and Shapiro [2013] for a model with this effect).
+While these examples highlight the multidimensional nature
+                                                                          The signal of the regime’s (un)popularity is also exoge-
+that I lump into “tactics,” to save on notation let this choice be
+                                                                      nous and has two components. First, it contains a rq term,
+unidimensional on the real line: t ∈ R; that is, the tactical
+                                                                      where r ∈ [0, 1]. So, a high r means that citizens observe
+choice is unidimensional on the real line. That is, a “high” t
+could represent protesting later in the day, in a location further
+north, demanding more from the government, and so forth.                  6. The fact that the citizen payoff is linear in q (and later, the size of
+(The analysis can be easily extended to the case in which here        protest) implies they are not generally more apt to protest when more
+the tactical choice is discrete or multidimensional.)                 certain about this parameter. If the citizen payoff were concave in q
+                                                                      (loosely speaking, they are risk averse in the protest payoff ), then better
+    The citizen payoff as a function of these choices is              information about this parameter would generally make protest more
+                                                                      likely through this channel, though results analogous to proposition 2
+                   u(a, t) p a½q 2 k(t 2 v)2 .                       would still hold.
+
+
+
+
+                             This content downloaded from 128.104.122.153 on Thu, 24 Sep 2015 08:37:50 AM
+                                             All use subject to JSTOR Terms and Conditions
+000 / Communication Technology and Protest Andrew T. Little
+
+
+more of the opinions of others, whether positive or nega-               That is, sq /r represents the signal of regime grievances ad-
+tive. Since the main focus here is on cases in which the                justed for the ease of criticism. Since sq /r is equal to q plus a
+incumbent is unpopular enough for citizens to take costly               random variable with mean zero, it is an unbiased signal of
+antiregime actions (i.e., q is positive), I often refer to r as         the regime’s unpopularity. When making this normalization,
+the proportion of aired grievances against the regime or                the noise term is divided by r as well. So, when r is high—
+ease of criticism. Second, there is a noise term ϵq that is             corresponding to a greater proportion of grievances against
+normally distributed with mean zero and precision as. (This             the regime being aired—the citizen is able to form a more
+implies that the signal is unbiased;7 the section on biased             precise belief about the regime’s popularity.
+and endogenous signals considers the case in which the                     Formally, the citizen posterior belief about q after ob-
+signal may be biased.) These components are additive, so                serving sq is normally distributed with mean
+the signal is
+                                                                                        mq (sq ) p lmq 1 (1 2 l)(sq =r),
+                                                                                                                                     (3)
+                            sq p rq 1 ϵq .                    (1)
+                                                                        where l p a0/(a0 1 r2as), and precision a0 1 r2as.
+    The closest analog to the assumption that better ICT
+                                                                            Combining the information given by the signals sq and
+makes the tactical signal more informative would be to
+                                                                        sv, the citizen protests if and only if
+assume that new technology increases the precision of sq as
+well, that is, as. However, I primarily interpret the effect of
+                                                                                                  m
+                                                                                                  q (sq ) ≥ k=b.                     (4)
+better ICT on this signal as increasing r, that is, making it
+easier to complain about (or compliment) the regime. As
+                                                                            A consequence of equations (3) and (4) is that the cit-
+demonstrated below, increasing aq has the same effect on
+                                                                        izen protests when the signal of grievances is sufﬁciently
+the probability of protest as increasing r, and conceptual-
+                                                                        high. So, when ﬁxing the communication technology (i.e.,
+izing better ICT as making it easier to complain about the
+                                                                        r), the citizen is always more apt to take to the streets when
+regime generates additional appealing interpretations.
+                                                                        she sees more antiregime information. In this sense, spikes
+    Upon observing sv and sq, the citizen updates her beliefs
+                                                                        in antiregime content on social media and the like do have
+about v and q via Bayes’s rule and protests if and only if her
+                                                                        a positive impact on protests, though as elaborated below
+expected payoff from protesting when choosing the optimal
+                                                                        the analogous effect is not entirely causal when explicitly
+tactic is greater than zero.
+                                                                        modeling coordination among citizens.
+    The optimal tactic minimizes the expected cost of pro-
+                                                                            More immediately, the fact that antiregime content (i.e.,
+test E[k(t 2 v)2]. The citizen’s belief about v upon observing
+                                                                        higher sq) can have a causal effect on protest does not mean
+sv is normally distributed with mean and precision
+                                                                        that making it easier to air grievances against the govern-
+                                                                        ment (higher r) makes antiregime action ex ante more
+                           bs
+              v p sv
+              m                    and b p bs 1 b0 .                    likely. In particular, while increasing r increases sq when
+                        bs 1 b0
+                                                                        the regime is unpopular (i.e., q 1 0), it also changes how
+                                                                        citizens interpret the information they receive. When it is
+    The expected cost is minimized at t p     mv ; that is, the
+                                                                        easier to complain about the regime, more criticism of the
+citizen chooses the tactic equal to her average belief about
+                                                                        regime is made public, but since citizens are aware of this
+what others will do. Regardless of the speciﬁc value of sv, the
+                                                                        fact, they need to see a higher level of antiregime content to
+expected value of ( mv 2 v)2 is the variance of the posterior
+                                                                        believe the regime is actually less popular than expected.
+belief about v, which is 1=b. So, the expected cost of protest
+                                                                            Since the mean of the posterior belief is a function of a
+when choosing the optimal tactic is k=b.
+                                                                        random variable (sq; see eq. [3]), it is itself a random var-
+    The citizen’s interpretation of the signal of the regime’s
+                                                                        iable. In particular, the ex ante distribution of    mq (sq ) is
+popularity (sq ) depends on the proportion of aired grievances
+                                                                        normal with mean mq and precision
+r. A convenient way to represent this mathematically is to
+divide both sides of equation (1) by r, giving
+                                                                                                        a0 as r22
+                                                                                           (1 2 l)22               ≡ tm .
+                                                                                                       a0 1 as r22
+                         sq =r p q 1 ϵq =r.                   (2)
+                                                                        So, the probability of protest can be written
+
+   7. More precisely, sq is an unbiased signal of rq.                                   mq (sq ) ≥ k=b) p F(tm1=2 (mq 2 k=b)),
+                                                                                    Pr (                                             (5)
+
+
+
+
+                               This content downloaded from 128.104.122.153 on Thu, 24 Sep 2015 08:37:50 AM
+                                               All use subject to JSTOR Terms and Conditions
+                                                                                              Volume 78     Number 1    January 2016 / 000
+
+
+where F(·) is the cumulative density function of a standard                    ii. the difference between the true regime popularity and
+normal random variable.8 The result about the precision of                         the prior is sufﬁciently high:
+the tactical signal is straightforward: by giving a better sense                                                         
+of how others will protest, the effective cost of participation                                                       a0
+                                                                                             q 2 mq > (k=b 2 mq ) 1 2 2     .
+is lower and hence protest is more likely.                                                                           r as
+
+   Proposition 1. The probability of protest is increas-                        Proof. See the appendix.
+   ing in the prior precision on the average tactic (b0)                        To see the intuition behind part i, consider the limiting
+   and the precision of the tactical signal (bs).                           case as r → 0, which means that sq provides no information
+                                                                            about the regime’s popularity. If so, the citizen’s posterior
+   Proof. Equation (5) implies that the probability of                      belief about q is always equal to the prior, and hence she
+   protest is decreasing in k=b. Since b p b0 1 bs , the                    always protests if mq > k=b and never protests if mq < k=b.
+   probability of protest is increasing in both of these                    So, making the signal informative can make protest more
+   terms. QED                                                               likely only if mq < k=b and can make protest less likely only if
+                                                                            mq > k=b. More generally, when protest is ex ante unlikely, a
+   The likelihood of protest is increasing in both the prior                high level of new information revealing that the incumbent is
+precision of where the protest will be and the precision of                 unpopular is required to get the citizen to protest, which is
+the tactical signal. A precise prior on the location of protest             more feasible when the signal is informative. Conversely,
+could be driven by a history of past protest or an obvious                  when protest is ex ante likely, it takes a high degree of in-
+location that is commonly known to have “prominence and                     formation that the regime is more popular to prevent protest,
+conspicuousness” (Schelling 1960, 57). This prior precision                 so protest is more likely when the public signal is uninfor-
+could reﬂect information about tactics that succeeded re-                   mative.
+cently in similar countries, which many have argued played                      The conditional relationship between r and the probability
+a central role in the Arab Spring (e.g., Patel and Bunce                    of protest depends on some particularities of the assumptions:
+2012). More central to the topic of this article, better ICT                for example, that protest is a binary decision, and the prior and
+(though the channel of increasing bs) improves tactical                     signal have a jointly normal information structure. The im-
+coordination and unambiguously increases protest through                    portant conclusion from part i of proposition 2 is less the
+this channel.                                                               speciﬁc conditions under which making it easier to criticize
+   In contrast to the unambiguous effect of improved tac-                   the regime does or does not make protest more likely, but the
+tical information, the effect of increasing the proportion of               broader fact that this relationship is not straightforward. So,
+aired grievances on the expected protest size is not always                 while one can concoct models in which better information
+positive. However, there are two ways to express conditions                 about the popularity of the regime increases (or decreases)
+under which higher r leads to more protest, ﬁrst on average                 protest, we should be wary of any clear-cut theoretical pre-
+and second as a function of the true regime popularity.                     dictions about the direction of this relationship.
+                                                                                Part ii of proposition 2 highlights a set of cases in which
+   Proposition 2. The probability of protest is increas-                    better communication technology leads to more protest by
+   ing in the ease of airing grievances ( r) if and only if                 making it easier to complain about the regime: when the
+                                                                            government is less popular than is commonly known. How-
+       i. the prior mean on q is less than the expected                     ever, this cannot always be the case: by construction it is ex ante
+          cost of participation: mq < k=b, and                              unknowable—at least to the actor in the model—whether the
+                                                                            regime is more or less popular than expected. Sometimes the
+                                                                            regime is more popular than is commonly known, in which
+                                                                            case better communication technology makes protest less
+                                                                            likely. Outside observers are drawn to the cases in which new
+    8. This relies on the symmetry of the normal distribution, in partic-   technology is ﬂushed with antiregime (and, in some contexts,
+ular, that                                                                  progressive and liberal) content, but should they “dig a bit
+                                                                            deeper, they might ﬁnd ample material to run articles with
+                      mq (sq ) ≥ x) p 1 2 Pr (
+                  Pr (                       mq (sq ) < x)
+                                                                            headlines like ‘Iranian bloggers: major challenge to democratic
+                                  p 1 2 F(tm1=2 (x 2 mq ))
+                                                                            change’ and ‘Saudi Arabia: bloggers hate women’s rights’”
+                                  p F(tm1=2 (mq 2 x)).                      (Morozov 2009).
+
+
+
+
+                                 This content downloaded from 128.104.122.153 on Thu, 24 Sep 2015 08:37:50 AM
+                                                 All use subject to JSTOR Terms and Conditions
+000 / Communication Technology and Protest Andrew T. Little
+
+
+    In other words, the general intuition that ICT helps                     mation is fundamentally unknowable. Once we know the
+protest by generating common knowledge that others are                       content of the new information—for example, we know
+unhappy with the regime as well—or by reducing the un-                       that Rwandan radio stations were broadcasting extremely
+certainty about whether others are angry enough to pro-                      proviolence messages—it is possible to explore how it af-
+test—is sometimes correct but incomplete because the                         fected beliefs and actions; but if the content of the new
+opposite is true in another set of cases. Further, it is not                 information was known beforehand, it would not be new
+too surprising that many observers expect ICT to protest                     information in the ﬁrst place.
+through this channel because the cases in which it does                          However, the model does make an unambiguous pre-
+not hold—again, when the regime is more popular than is                      diction that better tactical information leads to more anti-
+commonly known—are precisely the cases that garner the                       regime action. This contrast also provides insight into what
+least attention (see Tufekci [2014] for a related argument).                 kinds of information regimes beneﬁt from censoring. Recall
+    This indeterminacy extends to the question of how any                    that the two variables interpreted as measuring the effec-
+new politically relevant information affects beliefs and re-                 tiveness of communication technology are r—which is the
+sulting actions. For example, proposition 2 provides a po-                   ease of expressing antiregime beliefs—and bs—which captures
+tential explanation of why Kern and Hainmueller (2009) ﬁnd                   the amount of public information about protest tactics. All
+that exposure to Western German television did not make                      things equal, the model predicts that reducing bs is an effec-
+Eastern Germans more pessimistic about their own regime.                     tive way to reduce protest, but reducing r only sometimes
+While it may be intuitive to think that providing more in-                   depresses protest levels. In principal, regimes should be able
+formation about life outside a repressive regime would make                  to affect r and bs separately if they have the technology to
+citizens less satisﬁed with their government, the model would                selectively censor certain kinds of information.
+predict such a relationship only if such television portrayed                    This distinction is consistent with the main empirical
+the regime as worse than commonly thought. On the other                      results of King et al. (2013, 2014), who ﬁnd that China ag-
+hand, Reuter and Szakonyi (2015) show that in the wake of                    gressively censors references to planned or ongoing collec-
+the 2011 Russian parliamentary elections—plausibly more                      tive action, which is best interpreted as decreasing bs, but
+fraudulent than expected—citizens who actively used Face-                    does not censor complaints about the regime, which would
+book and Twitter had higher beliefs about the degree of fraud.9              correspond to reducing r.10 However, the model also warns
+While not directly related to antiregime beliefs, the model is               against extrapolating from the contemporary Chinese case to
+also consistent with that of Yanagizawa-Drott (2014), who                    general theories of what types of communication are cen-
+ﬁnds that areas in Rwanda with better radio signals experi-                  sored. For regimes in a different part of the parameter space,
+enced more intense conﬂict during the 1993 genocide, a case in               reducing the ability for citizens to air grievances could make
+which media broadcasts were encouraging the most vio-                        citizens less apt to protest.11 (See Guriev and Treisman
+lent actions imaginable. In terms of the model, this corre-                  [2015] and Petrova and Zudenkova [2015] for related mod-
+sponds to a case in which nq is extremely high, and hence                    els that make more nuanced predictions about when dicta-
+higher r leads to more participation—here, in genocide. How-                 tors prefer to use different technologies of censorship and
+ever, we cannot infer from this that radio leads to more vio-                propaganda.)
+lence in general, as most of the time what citizens learn from
+better access to information is orders of magnitude less in-                 COORDINATION WITH HETEROGENEOUS
+cendiary.                                                                    REGIME ASSESSMENTS
+    In general, an important implication of part ii of prop-                 While the model in the previous section highlights many of
+osition 2 for empirical work is that unless outside observers                the central arguments and empirical predictions of the ar-
+have better information than those being studied, predic-
+tion about how introducing better information affects their
+                                                                                 10. This analysis focuses only on the beneﬁts of censoring complaints
+beliefs and actions may be impossible. That is, the effects of
+                                                                             versus tactic information. It is also plausible that it is costlier to censor
+better information on beliefs about the popularity of the                    more commonplace criticism rather than rarer speciﬁc calls to action.
+regime are conditional on the difference between the actors’                 Calls to action centered on speciﬁc events may also be easier to auto-
+prior and the truth, which without better outsider infor-                    matically detect with keywords.
+                                                                                 11. In addition, censoring complaints against the regime can have
+                                                                             effects outside of those modeled here, such as signaling the ability to do so
+   9. See also Enikolopov et al. (2011) for evidence that access to inde-    (Huang 2014) and making it more difﬁcult to gather information about
+pendent television increased vote shares for parties other than Putin’s in   the performance of local ofﬁcials (Egorov, Guriev, and Sonin 2009; Lo-
+Russia’s 1999 parliamentary election.                                        rentzen 2013).
+
+
+
+
+                                This content downloaded from 128.104.122.153 on Thu, 24 Sep 2015 08:37:50 AM
+                                                All use subject to JSTOR Terms and Conditions
+                                                                                               Volume 78       Number 1      January 2016 / 000
+
+
+ticle, the focus on a single actor means that it cannot ex-                average of the public signals. This average—which could rep-
+plicitly address how public information generated by ICT                   resent the amount of antiregime content on the Internet and
+affects political and tactical coordination. This section de-              social media—is a sufﬁcient statistic for the citizens’ belief
+velops a model in which a large number of citizens decide                  about q before observing their private signal.13 Comparing
+whether and how to protest with heterogeneous assessments                  the model in the previous section, n is analogous to r, and
+of the regime, that is, with a focus on political coordination.            citizens are making the normalization that accounts for the
+In the next section I describe a model that endogenizes the                ease of observing other signals (eq. [2]) when making the
+tactical coordination problem as well. Doing so demon-                     average calculation that divides the sum of these signals by n.
+strates that the conclusions from the single-actor model re-                   Citizens also observe a common tactical signal sv p v 1 ϵs
+quire only minor caveats when endogenizing these coor-                     with the distributional assumptions used above. In this
+dination problems while also generating additional results                 section I interpret v not as the average tactic chosen by oth-
+relevant to empirical work on ICT and political behavior.                  ers (which will be common knowledge in equilibrium) but
+    The setup and solution to the ﬁrst coordination model                  as an “objectively optimal” tactic that all are uncertain about.
+are closely related to many papers on how public infor-                        The citizen payoff in this section is
+mation affects coordination in “bank run” style incomplete
+information coordination models (Hellwig 2002; Morris                                   u(ai , ti ; qi ) p ai ½qi 1 vA A 2 k(ti 2 v)2 ,
+and Shin 2003), including a focus on political protest (e.g.,
+                                                                           where A is the proportion of citizens who protest and vA 1 0.
+Acharya 2014; Bueno de Mesquita 2010; Hollyer et al. 2013;
+                                                                           The strategy for a citizen is a mapping from her view of the
+Little 2012; Tyson and Smith 2013), so most of the details
+                                                                           regime (qi) and the public signals to a decision whether or
+are relegated to the appendix. The emphasis in the main
+                                                                           not to protest, and the tactic to choose if protesting con-
+text is on the more empirically relevant results on whether
+                                                                           ditional on these signals. By sequential rationality, citizens
+better ICT—or more antiregime content on ICT—does or
+                                                                           all choose tactic ti p sv ½bs =(b0 1 bs ), giving an expected cost
+does not cause more protest.
+                                                                           of protest k=b. Further, given this tactical choice, citizens
+    The actors in the political coordination model are a
+                                                                           with qi > k=b have a dominant strategy to protest (i.e., re-
+continuum of citizens of mass 1. Rather than assuming a
+                                                                           gardless of A), and citizens with qi < k=b 2 vA have a domi-
+ﬁxed beneﬁt to protest (q in the previous section), each
+                                                                           nant strategy to stay home. So, it is natural to search for equi-
+citizen is characterized by a personal level of dissatisfaction
+                                                                           libria of the form “protest if and only if qi > ^       q(s),” where
+with the regime qi, given by
+                                                                           the critical ^ q may be a function of the public signals.
+                                                                               The intuition behind the solution is to ﬁnd a critical level
+                             q i p q 1 ϵi ,
+                                                                           of dissatisfaction with the regime for each average public
+where q is now the average level of dissatisfaction with the               signal q^ (s ) such that citizens protest if and only if their in-
+regime and the ϵi’s are independent and normally distrib-                  dividual distaste for the regime is above this threshold (i.e.,
+uted with mean zero and precision aq.12 Citizens know their                qi > ^q(s )). The key equilibrium condition is that for every
+own views of the regime (qi) but are uncertain about the av-               possible public signal, the marginal citizen—that is, the cit-
+erage assessment of the regime (q). Assume that the citizens               izen observing exactly the cutoff strategy—is indifferent be-
+share a common prior on q that is again normally distributed               tween protesting and not given that all other citizens use
+with mean mq and precision a0.                                             this strategy. By a standard calculation, an equilibrium ^       q(s)
+   To model the level of communication technology, I as-                   solves
+sume that an exogenously chosen n ≥ 1 citizens’ opinions                                    q(s) 1 vA F(~
+                                                                                            ^            a(
+                                                                                                           mq 2 ^
+                                                                                                                q(s))) p k=b,                     (6)
+of the regime (i.e., their qi’s) are commonly observed, de-
+noted s1,q, . . ., sn,q. This technical structure best captures            for all s, where m
+                                                                                             q ≡ (a0 mq 1 ass)=(a0 1 as ) is the average
+public communication technology such as television and                     posterior belief about the incumbent unpopularity condi-
+social media, but not private communication facilitated by
+cell phones, e-mail, and the like. Let s p ^jp1 sj,q =n be the
+                                                n
+
+
+
+
+                                                                               13. Citizens with the private signals that are made public have a dif-
+    12. Of course citizens’ views of the regime may be more closely cor-   ferent posterior belief about q because they do not learn anything new
+related with those of citizens who are “close” to them socially or geo-    from their own signal; but since the number of such citizens is ﬁnite, their
+graphically. The conditional independence assumption substantially sim-    behavior does not affect the protest size in equilibrium and hence the
+pliﬁes the analysis.                                                       calculations of others.
+
+
+
+
+                               This content downloaded from 128.104.122.153 on Thu, 24 Sep 2015 08:37:50 AM
+                                               All use subject to JSTOR Terms and Conditions
+000 / Communication Technology and Protest Andrew T. Little
+
+
+tional on the public information, and a
+                                      ~ is a function of the         expected size of protest is increasing in as when the prob-
+primitive a parameters. Two main characteristics of the              ability of protest is low and decreasing in as when the
+equilibrium (which are standard in related models) are as            probability of protest is high.14
+follows.                                                                The most important empirical lesson from the model in
+                                                                     this section that does not arise in the single-actor model is
+   Proposition 3.                                                    the relationship between the intensity of antiregime content
+                                                                     in the public signal and protest size. The expected size of
+       i. If vA is sufﬁciently small, there is a unique so-          protest given the realization of the public signals is
+          lution to equation (6) for all s and hence a unique
+          equilibrium to the model in this section.                         E½A∣s p Pr (qi > ^
+                                                                                               q(s)∣s) p Pr (q 1 nj > ^
+                                                                                                                        q(s)∣s)
+      ii. When there is a unique equilibrium, ^     q(s) is de-
+          creasing in s.                                                            p F(aA1=2 (
+                                                                                                mq 2 q
+                                                                                                     ^ (s))),
+
+
+   Proof. See the appendix.                                          where aA p (a0 1 as )aq =(a0 1 as 1 aq ). Differentiating with
+   Part ii states that when the public signals indicate more         respect to s gives that the effect of the average public signal
+dissatisfaction with the regime (s is higher), the equilibrium      on the expected level of protest is proportional to15
+threshold goes down. This means that citizens are more apt
+to protest because they expect the size to be larger, increas-                              ∂E½A∣s  ∂mq   ∂^
+                                                                                                              q(s)
+                                                                                                     ∝     2        .                            (7)
+ing the value of participating. Even when there is not a                                      ∂s        ∂
+                                                                                                         s    ∂s
+                                                                                                       |{z} |ﬄ{zﬄ}
+                                                                                                        Confounding   Strategic
+unique equilibrium, this comparative static holds within the
+equilibria with the highest and lowest levels of protest.
+                                                                     The ∂ mq =∂s term is positive and ∂^  q(s)=∂s is negative, so
+   This result captures a causal effect of increasing the
+                                                                     the expected protest size is increasing in the public signal. This
+amount of complaints about the regime (more on this be-
+                                                                     is consistent with the fact that recent antiregime move-
+low), not the causal effect of improving the amount of in-
+                                                                     ments have been accompanied by spikes in social media ac-
+formation about how many citizens dislike the regime. As
+                                                                     tivity and in particular antiregime content (e.g., Barberá and
+in the single-actor model, when the public signal reveals
+                                                                     Metzger 2014).
+that the regime is less popular than the citizens previously
+                                                                         However, equation (7) highlights how the relationship
+thought, increasing the precision of this information leads
+                                                                     between the signal of grievances and the size of protest can
+to more protest, while the opposite is true when the regime
+                                                                     be decomposed into two parts. The ∂   mq =∂s term captures the
+is more popular than expected. The average effect is found
+                                                                     fact that for a ﬁxed citizen strategy, a higher public signal
+by computing the ex ante effect of increasing the amount of
+                                                                     means that the average citizen dislikes the regime more, and
+public information on the expected size of protest, giving a
+                                                                     hence more citizens are willing to protest. The ∂^       q(s)=∂s
+similar result.
+                                                                     term captures the fact that a higher public signal lowers the
+                                                                     citizen threshold to protest; that is, for a ﬁxed distaste for
+   Proposition 4. The expected size of protest is
+                                                                     the regime, citizens are more apt to protest if they think
+                                                                     others will join.16
+       i. decreasing in k,
+                                                                         Notably, the ﬁrst effect is not causal, in the sense that if
+      ii. increasing in b,
+                                                                     an outside observer could control for the true unpopularity
+     iii. increasing in s, and
+                                                                     of the incumbent, observing the public signal would not
+     iv. can be increasing or decreasing in n.
+                                                                     provide any new information and hence would have no
+   Proof. See the appendix.
+                                                                          14. See proposition 2 in Little (2012) for a similar result in a related
+   The ﬁrst two comparative statics are straightforward:
+                                                                     model, and corollary 1 in Shadmehr and Bernhardt (2011) for results
+when protest is more costly, fewer participate; and when the         about when better private information leads to more rebellion in a co-
+tactical information is more precise, citizens are more apt to       ordination model.
+protest. The third part is analyzed in more detail below.                 15. This is a slight abuse of the term “proportional to” as the “con-
+   The comparative static on the number of public signals            stant” these terms are multiplied by is a1=2
+                                                                                                                A f(aA (
+                                                                                                                       1=2
+                                                                                                                           mq 2 ^
+                                                                                                                                q(s)), which is also
+                                                                     a function of s.
+revealed (and the amount of public information about the                  16. This term being negative relies on the strategic complementari-
+regime’s popularity) is difﬁcult to sign, though extensive           ties inherent in the payoffs. If participation decisions were strategic substi-
+numerical analysis indicates that as in the ﬁrst section, the        tutes—as in some public goods games—the opposite could hold.
+
+
+
+
+                            This content downloaded from 128.104.122.153 on Thu, 24 Sep 2015 08:37:50 AM
+                                            All use subject to JSTOR Terms and Conditions
+                                                                                          Volume 78      Number 1       January 2016 / 000
+
+
+effect through this channel. However, even when control-              unless social media provide distinct information to the ac-
+ling for the true q, the public signal still changes the citizen      tual participants of the protest they cannot access else-
+strategy, so the second effect is causal. Unless an outsider          where, it does not have a causal effect on mobilization.17
+can perfect control for the average popularity of the regime,            The next three sections describe further extensions that
+some of the observed association between antiregime media             are formalized in the appendix and discuss several other
+and protest levels is not causal. Further, the confounding            aspects of ICT and protest that are not included in the
+effect is given by                                                    models.
+
+                     ∂
+                      mq         as                                   COORDINATION WITH HETEROGENEOUS
+                          p              ,
+                      ∂s   as 1 a0 1 aq                              PREFERRED TACTICS
+                                                                      Both the single-actor model and the model in the previous
+and the strategic effect is obtained by implicitly differenti-        section treat the tactical coordination problem in a very
+ating equation (6):                                                   reduced-form fashion. This section considers whether the
+                                                                      result that improved public information about tactics leads
+               ∂^
+                q     2vA ~
+                          af(mq 2 ^
+                                   q(s)) ∂
+                                           mq                         to more protest holds when citizens have different tactical
+                   p                           .               (8)
+               ∂s   1 2 vA ~
+                           af(mq 2 ^
+                                    q(s)) ∂s                        preferences and choose different tactics in equilibrium.
+                                                                          This question is related to a prominent literature on the
+     The central insight from examining these equations is            welfare effects of public information in “beauty contest” style
+that the causal effect includes a ∂    mq =∂s term, that is, the    global games (Angeletos and Pavan 2007; Morris and Shin
+confounding effect. So, it is not possible for the relationship       2002; Svensson 2006). In the context here, these papers ask
+between the public signals and protest to be entirely causal:         “if participation in the protest is taken as exogenous but
+anything that makes ∂     mq =∂s → 0 will also make ∂^ q=∂s → 0.   participants choose their tactics with a motivation to choose
+The reason is that the driving force behind the confounding           a tactic close to others, does better public information about
+effect—that the public signals are correlated with the re-            the optimal tactics increase the average payoff of protesters?”
+gime’s popularity—is required for the strategic effect to exist:      Morris and Shin (2002) spurred this literature with a pro-
+if it did not, citizens would not condition their strategy on the     vocative result that the answer to the question may be “no”:
+signal.                                                               better public information can lower aggregate welfare (here,
+     On the other hand, it is possible that the confounding           the average payoff to protest). However, subsequent work
+effect explains all of the relationship between publicized            has demonstrated that the conditions under which this oc-
+complaints about the regime and protest size: for example,            curs are quite restrictive (e.g., Angeletos and Pavan 2007;
+if vA → 0, then ∂^     q(s)=∂s → 0, but ∂ mq =∂s is unaffected,   Svensson 2006).18 Thus this strand of literature is broadly
+meaning that there is no causal effect but still a positive re-       consistent with the claim that better ICT makes protest more
+lationship between s and A. Similarly, if citizens have access       likely through the tactical channel.
+to better information about the regime’s popularity (through              However, there are two major shortcomings in directly
+their private signals or other sources) than outsiders, they          applying these results to the question at hand. First, they
+pay little if any attention to the public signals, and the stra-      assume that the actors in the model are differentiated only
+tegic effect vanishes.                                                by the information they have about the “fundamental,” which
+     In the case of social media, there are several reasons to
+believe this relationship is mostly not causal. First, much of
+what is observed by outsiders is written in a language that               17. An implicit assumption in the above discussion is that outside
+most participants cannot read. Second, most of the activity           attention does not embolden protesters, in which case social media could
+on social media is outsiders communicating with outsiders:            have a causal effect on protest levels even through this channel. In the
+                                                                      interest of space I do not explicitly consider this possibility, though see
+Starbird and Palen (2012) ﬁnd that only 30% of the most-
+                                                                      Zeitzoff (2014) for evidence that “outsider” social media activity affected
+retweeted accounts during the height of the Tahrir Square             the dynamics of the 2012 Gaza conﬂict.
+protests originated in Cairo, and Aday et al. (2012) ﬁnd that             18. Using the speciﬁc payoffs in Morris and Shin (2002), better public
+most of those following links posted on social media in               information leads to higher welfare unless the coordination motives are
+Egypt and other Arab Spring protests were foreigners. Fi-             very strong and the precision of public information is low (Svensson
+                                                                      2006). Using a broader payoff structure, Angeletos and Pavan (2007) show
+nally, much information available to outsiders is censored
+                                                                      that better public information is beneﬁcial unless citizens “overreact” to
+by the regime being attacked or simply replicates infor-              public information relative to what would be socially optimal or choose
+mation already available to participants in the protest. So,          suboptimal actions even under complete information.
+
+
+
+
+                             This content downloaded from 128.104.122.153 on Thu, 24 Sep 2015 08:37:50 AM
+                                             All use subject to JSTOR Terms and Conditions
+000 / Communication Technology and Protest Andrew T. Little
+
+
+here is the optimal tactical choice. This assumption is nat-                          reason is that when protests are already massive, the mar-
+ural for some applications—say, when investors have dif-                              ginal citizen indifferent between participating and not has
+ferent information about the proﬁtability of a company.                               a relatively “extreme” preferred tactic, and better tactical
+However, citizens certainly have heterogeneous preferences                            information tends to make such citizens even more aware
+over protest tactics; if nothing else, the most convenient                            that their preferences are extreme. On the other hand, when
+time and place to protest vary across potential participants.                         protests are relatively small, the marginal citizen has a more
+Second, these models ignore what this article calls the po-                           “typical” preferred tactic and is more likely to protest with
+litical coordination problem by not considering whether                               better information.
+potential protesters actually want to participate. In most of                             However, as demonstrated in the formal analysis, the
+these models, citizens with “extreme” signals get arbitrarily                         marginal citizen faces a lower expected cost of participation
+low equilibrium payoffs. So, if there is an option to not                             unless the size of protest is above a critical threshold, which is
+participate, some, if not many, would choose not to.                                  quite high: typically over two-thirds of the citizens. This
+    To address these issues, I develop a model that endog-                            potential negative effect of more public information could be
+enizes both the political and tactical coordination prob-                             interesting in some contexts: say, where there are a ﬁnite
+lems. In the interest of space, I verbally describe the main                          number of actors who must make unanimous decisions for
+results in the main text, with the formalization placed in the                        coordination to succeed. However, when applied to antire-
+appendix.                                                                             gime protest—where much lower levels of participation are
+    In this model, citizens are uncertain about the objec-                            required for success—better information about the preferred
+tively optimal tactic v and also have an individual preferred                         tactics of others generally makes it cheaper for those who are
+tactic xi. The payoff to protest is increasing in (1) the un-                         on the fence about joining.
+popularity of the regime, (2) how close the chosen tactic                                 The model also highlights another positive beneﬁt of
+is to the preferred (ti 2 xi) and objectively optimal tactics                         better public information on protest effectiveness. When
+(ti 2 v), (3) the size of the protest, and (4) the cohesion of                        citizens have better information about the preferences of
+the protest, which is a decreasing function of the range of                           others, they place less weight on their individual preferred
+chosen tactics.19 Participants want to take an action that is a                       tactic and more on what they expect others to do. This
+weighted average of their preferred tactic and an objectively                         makes the protest more cohesive and hence participation
+optimal tactic (or, equivalently, the average preferred tactic                        more attractive. So, even if better information means that
+of others).20 This allows for a straightforward characterization                      fewer citizens participate, the increase in cohesion may
+of the tactical choice of participants, and hence the expected                        make the protest more effective.
+cost to protest, which is a function of the citizen’s preferred                           In sum, the model of tactical coordination largely reinforces
+tactic. Protest is more attractive for those who think their                          a central conclusion from the single-actor model: creating
+preferred tactic is similar to the preferred tactics of others.                       common knowledge of when, where, and how other citizens
+    The ﬁrst main insight of this model is that when con-                             are apt to protest makes participation cheaper and more ef-
+sidering both the tactical and political coordination prob-                           fective even with more complex tactical coordination.
+lems, the question of whether better public information
+about tactics increases protest size depends not on whether                           BIASED AND ENDOGENOUS SIGNALS
+it makes the average citizen more apt to protest but whether                          Another problematic aspect of the models is that the public
+the marginal citizen on the fence between participating and                           signals about the regime popularity and optimal tactics are
+not beneﬁts from better information from ICT. This gen-                               exogenous and unbiased. The next set of extensions gener-
+erates an important caveat with respect to the results from                           alizes the information structure to loosen these assumptions.
+the models described, as better tactical information can de-                              First, consider a variant of the single-actor model in
+crease protest sizes when they are already very large. The                            which both the regime popularity and tactical signal can be
+                                                                                      biased. In particular, suppose the signals are given by
+     19. The fact that less cohesive protests are worse leads to a strategic sub-
+stitution effect in protest participation, as adding those with more extreme                   sq p rq 1 bq 1 ϵq     and    sv p v 1 bv 1 ϵv ,
+tactics will make protest less effective through this channel. See Myatt (2015) for
+a model of protest voting with stronger strategic substitutes in participation.       where r, q, v, ϵq, and ϵv are deﬁned and interpreted as in the
+     20. It would arguably be more natural to have citizens want to pick a
+                                                                                      ﬁrst section. The new terms, bq ∈ R and bv ∈ R, represent
+tactic close to the average choice of others, though as described in the
+appendix, this formulation has no equilibrium with linear strategies,                 the bias in the regime’s popularity and tactical signals, re-
+making straightforward conclusions much more difﬁcult.                                spectively. That is, when bq is negative, the signal of the
+
+
+
+
+                                    This content downloaded from 128.104.122.153 on Thu, 24 Sep 2015 08:37:50 AM
+                                                    All use subject to JSTOR Terms and Conditions
+                                                                                                    Volume 78     Number 1    January 2016 / 000
+
+
+regime’s popularity is lower than it would be otherwise, and                       when it is less popular than expected, there is less protest
+when bq is positive, the signal of the regime’s unpopularity is                    when the bias is more proregime than expected. On the other
+higher.                                                                            hand, when the bias is less proregime than expected, the
+    If the bias is exogenously given and known by the citi-                        presence of bias leads to more protest. For example, Ukrain-
+zen, then she simply subtracts the bias out when forming                           ians exposed to Russian media with a slant against pro-
+posterior beliefs about q and v and propositions 1–3 re-                           Western parties (perhaps more than realized) voted less
+main unchanged.21                                                                  often for these parties in the 2014 elections (Peisakhin and
+    Next, assume the bias is exogenous but the citizen is                          Rozenas 2015), while Enikolopov et al. (2011) ﬁnd that ex-
+uncertain about how distorted the signals are. In particular,                      posure to independent television in Russia led to higher
+suppose bq and bv are independent from each other and the                          opposition vote shares, perhaps because of an antiregime
+other primitive random variables and normally distributed                          bias or by providing information without a proregime bias.
+with means mq and mv and precisions gq and gv, respectively.                           This provides a second reason why in some cases we
+    Analogous to the case in which the bias is known, the                          should expect to see better ICT lead to more protest (when
+citizen subtracts the expected level of bias from the signals                      the bias is more proregime than expected) and in other cases
+to form an unbiased signal of both q and v. However, since                         we should expect the opposite effect (less proregime bias
+she is uncertain about the exact level of bias, both signals                       than expected). If we pay attention only to cases in which
+become less informative. That is, the precision of her                             outside observers know that the media have a stronger
+posterior belief about both parameters of uncertainty is                           proregime bias than citizens think, then the presence of bias
+decreasing in how uncertain she is about the magnitude of                          in those cases decreases protest. However, unless people
+bias. So, the central results from the ﬁrst section hold with                      systematically underestimate how much proregime bias is in
+additional results about how uncertain the citizen is about                        the media they consume, this will not always be the case.
+the level of bias.                                                                     Next, the appendix formalizes an extension in which the
+                                                                                   regime is a strategic actor and can choose a level of bias in the
+   Proposition 5. In the extension with uncertainty about                          signal of its popularity. If the level of bias were observed by
+   the bias of the signals, the probability of protest is                          the citizen, she would subtract it out as in the case of known
+                                                                                   exogenous bias; and hence the incumbent would have no
+         i. increasing in b0, bs, and gv;                                          incentive to distort the signal in a way that would be im-
+                                                          0
+        ii. increasing in gq and r if and only if mq < k=b ,                       mediately reversed. However, if the bias decision is unob-
+                    0
+            where b p b0 1 ½bs gv =(bs 1 gv ); and                                served, then the regime always has an incentive to choose a
+       iii. unaffected by mv and mq.                                               higher bias level than is expected, and hence bias can happen
+                                                                                   in equilibrium for “career concerns” type incentives (see
+   Proof. See the appendix.                                                        Bueno de Mesquita [2010] and Little [2012] for related
+   As before, better tactical information always leads to                          models).
+more protest, and making it easier to air grievances against                           So in equilibrium, the inferences made by the citizen are
+the regime increases the probability of protest when it is ex                      analogous to the case of exogenous bias. When the regime
+                                                                                                                                      
+ante unlikely.                                                                     plays a pure strategy choosing bias level bq , the citizen
+   The effect of the bias in both signals, on average, is                          subtracts this from the signal when making her inference and
+simply to make them noisier. So, less uncertainty about the                        none of the main results change. The case of mixed strategies
+bias in the tactical signal leads to more protest, and less                        is somewhat more complex but unlikely to change the central
+uncertainty about the bias in the signal about the regime’s                        conclusions. (Though see Edmond [2013] for a model in
+popularity leads to more protest under the exact same                              which the regime knows its strength and can beneﬁt from
+condition that making it easier to complain about the re-                          manipulating private signals observed by citizens.)
+gime leads to more protest.                                                            Similar dynamics could arise if citizens could manipulate
+   More relevant to empirical work, just as better informa-                        the public information available to others. In particular,
+tion about the popularity of the regime leads to more protest                      suppose that the citizens who publicly report their opinion of
+                                                                                   the regime in the model in the second section can choose
+                                                                                   whatever signal they like. If citizens can report their opinions
+    21. More precisely, deﬁne s0q ≡ sq 2 bq and s0v p sv 2 bv . Then s0q and s0v
+have the same distribution as sq and sv in the ﬁrst section, respectively. So
+                                                                                   of the regime costlessly, there is unlikely to be an informative
+all the results derived in that section hold with the primed variables             equilibrium: those who plan to participate in the protest
+replacing their counterparts.                                                      always want to increase participation and hence have an
+
+
+
+
+                                  This content downloaded from 128.104.122.153 on Thu, 24 Sep 2015 08:37:50 AM
+                                                  All use subject to JSTOR Terms and Conditions
+000 / Communication Technology and Protest Andrew T. Little
+
+
+incentive to lie and say they dislike the regime more than          interpreting the tactical signal). If the citizen systematically
+they truly do. However, if misreporting is costly for some          misinterprets the signal of the regime’s popularity, this can
+reason—perhaps psychological or because of reputation ef-           make her more or less apt to protest in general, but the
+fects—there may be an informative equilibrium in which              conditional relationship where making it easier to com-
+citizens exaggerate their distaste for (or happiness with) the      plain about the regime can lead to more or less protest
+regime to the point where the beneﬁt of lying more than             remains.
+expected to affect the protest size in the desired direction is         A potentially more problematic class of incorrect belief
+equal to the cost of additional exaggeration. As long as there      formation is if the citizen misunderstands the role of the ease
+is a one-to-one mapping between the true antiregime sen-            of airing grievances in the signal she observes. That is, if the
+timent and reported signals, citizens will be able to back out      citizen improperly makes the normalization of sq (eq. [2]),
+the “true” public signals, hence not changing any of the            then making it easier to complain against an unpopular re-
+central results derived above.                                      gime can always lead to more protest. Conversely, censorship
+    The case of endogenously biasing the tactical signal is         can work if citizens underappreciate how this affects how
+more technically involved. If the incumbent has an interest         they should interpret the criticism they do see. However,
+in making the citizen choose a tactic far from v, he could          without good empirical evidence that citizens underadjust for
+proﬁt from playing a mixed strategy that “jams” the tactical        the effect of the ease of criticism—and there is no reason to
+signal (see Munger et al. [2014] for related empirical results      think they do not sometimes overadjust for this effect—the
+about how proregime Venezuelans ﬂooded social media with            more standard model seems more appropriate than ones in
+tweets about unrelated topics during antiregime protests in         which effects of censorship and technology rely on citizens
+2014–15). If biasing the tactical signal is free, the incumbent     misunderstanding their effects.
+could choose a mixed strategy that maximizes the citizen’s ex
+post degree of uncertainty, making her choose a worse tactic        OTHER MECHANISMS: TIME, REGIME RESPONSE,
+on average and making protests less attractive. If biasing the      AND ORGANIZATION
+signal is costly, the incumbent could still choose a mixed          Finally, I informally consider how several other notable
+strategy if the citizen chooses a worse tactic on average when      arguments about how social media and other ICT affect
+a more costly level of bias is chosen. Again, this extension        protest ﬁt into the modeling done here.
+seems unlikely to overturn any of the central conclusions               First, a common argument not captured directly in the
+drawn above.                                                        coordination models is that social media spread information
+                                                                    about how many citizens have already taken to the streets
+NONSTANDARD BELIEF FORMATION                                        and what tactics they are using. In the words of a BBC cor-
+As with most formal models with incomplete information,             respondent, “if you follow second by second some of the
+all of the analysis above assumes that the citizens form beliefs    accounts coming from Cairo’s Tahrir Square, you can almost
+about the regime popularity and optimal tactics correctly,          see when activists realized they had broken through, that it
+that is, by Bayes’s rule. This may be particularly problematic      wasn’t just a few hundred people turning up but tens of
+in a model that hinges on citizens using the information            thousands” (Else 2012). Formally capturing this idea re-
+presented to them correctly.                                        quires a dynamic model, which proves complex when com-
+    A challenge of allowing nonstandard beliefs is that there       bined with incomplete information coordination games
+is only one way to do proper Bayesian updating but an               (Angeletos, Hellwig, and Pavan 2007; Kricheli, Livne, and
+inﬁnite number of ways to be irrational. To limit the scope,        Magaloni 2011; Little 2015).
+the appendix contains extensions of the single-actor model              Still, analogous to the argument made repeatedly here, if
+with two types of incorrect beliefs. First, I assume there is       communication technology can provide information that
+random noise in the posterior expectation of the regime’s           many people are on the streets, it will also make it more
+popularity. Second, I let the citizens have an incorrect belief     clear when they are not on the streets. For example, Twitter
+about how to incorporate the ease of criticism in their             can help spread the word that protests are growing, but it
+posterior belief.                                                   can also spread the word that protesters are going home.
+    If there is random noise in the citizen’s beliefs, the im-      So, in cases of successful revolution, we will generally see
+plications of the model remain the same for reasons similar         many positive messages spreading on social media; but in
+to those of the model with exogenous bias. As long as the           failed cases there generally will not be, potentially resulting
+citizen believes she has better tactical information when bs        in the same ambiguous average effect found in the formal
+is high, she will be more apt to protest (even if mis-              analysis. On the other hand, providing better information
+
+
+
+
+                           This content downloaded from 128.104.122.153 on Thu, 24 Sep 2015 08:37:50 AM
+                                           All use subject to JSTOR Terms and Conditions
+                                                                                                     Volume 78      Number 1      January 2016 / 000
+
+
+about the tactics protesters are using should have an un-                         to be a deﬁnitive statement on this particular relationship,
+ambiguously positive effect on protest levels.22                                  let alone the relationship between social media and politi-
+    Second, ICT may spread information about how the                              cal behavior more generally. For example, future research
+regime is responding to protests, either as a sign that pro-                      should more thoroughly consider the regime as a strategic
+testing is safe or as a source of grievances. Still, the same ar-                 actor that can use or manipulate the information generated
+guments above likely apply to this kind of information too:                       by social media and consider the temporal dynamics that
+better information about the extent to which the regime is                        are central to political movements. Still, even in the static
+cracking down on protests will affect future protest decisions                    framework that abstracts from how regimes use information,
+conditional on whether the regime is being more or less re-                       the models here provide concrete insights into how new
+pressive than expected.                                                           communication technology can help or hurt political mo-
+    Third, even the models with multiple actors treat them                        bilization, providing a starting point for what will hopefully
+all as homogeneous, not differentiating with a leadership                         become a fruitful communication between theorizing and
+that may use ICT differently than other participants and                          empirical work on both the relationship between technology
+nonparticipants. For example, better technology may allow                         and politics and what data from new technologies can teach
+organizers to communicate better to plan antiregime ac-                           us about politics in general.
+tivity. This effect would seem to run parallel to improving
+tactical coordination, by having protest leaders converge                         ACKNOWLEDGMENTS
+more quickly on what tactics to encourage. So, this effect                        Many thanks to Phil Arena, Tiberiu Dragu, Domink Duell,
+reinforces the ﬁnding that tactical coordination—perhaps                          Ruben Enikolopov, Haifeng Huang, Ben Jones, Mike Miller,
+more broadly deﬁned—has an unambiguously positive ef-                             William Minozzi, Martijn Schoonveide, Mehdi Shadmehr,
+fect on antiregime action.                                                        Milan Svolik, Nils Weidmann, Thomas Zeitzoff, and audi-
+                                                                                  ence members at the 2013 and 2014 European Political
+CONCLUSION                                                                        Science Association meetings, the 2014 Midwest Political
+As communication technology continues to improve and                              Science Association meeting, the 2014 Political Economy
+assume a central role in politics, debates about how new                          Conference at the Catholic University of Milan, Interna-
+technology affects political behavior are unlikely to go                          tional Studies Association 2015, and seminars at Buffalo,
+away. Similarly, the rapidly growing availability of infor-                       Cornell, Konstanz, New York University, Rochester, and
+mation generated by social media and related technologies                         George Washington University for comments and discus-
+will almost certainly become a central source of data for                         sion. All remaining errors are mine.
+political scientists and social scientists more generally. As
+most of this information is observational, there is an acute                      REFERENCES
+need to develop theories that can place structure on how we                       Acharya, Avidit. 2014. “Coordination and Development in Dictatorships.”
+should interpret this ﬁre hose of data. Even in the (arguably                        Manuscript.
+                                                                                  Aday, Sean, Henry Farrell, Marc Lynch, John Sides, and Dean Freelon.
+rare) instances in which it is possible to run experiments
+                                                                                     2012. “Blogs and Bullets II: New Media and Conﬂict after the Arab
+and credibly estimate treatment effects on, say, what types                          Spring.” Report, US Institute for Peace, Washington, DC.
+of communication are censored or how having one’s writ-                           Aday, Sean, Henry Farrell, Marc Lynch, John Sides, John Kelly, and Ethan
+ing censored affects future behavior (King et al. 2014; Roberts                      Zukerman. 2010. “Blogs and Bullets: New Media in Contentious Pol-
+2014), good research design alone cannot tell us what these                          itics.” Report, US Institute for Peace, Washington, DC.
+                                                                                  Angeletos, George-Marios, Christian Hellwig, and Alessandro Pavan. 2007.
+causal effects tell us about authoritarian (and democratic)
+                                                                                     “Dynamic Global Games of Regime Change: Learning, Multiplicity, and
+politics.                                                                            Timing of Attacks.” Econometrica 75 (3): 711–56.
+   The modeling here is an early step in such theorizing,                         Angeletos, George-Marios, and Alessandro Pavan. 2007. “Efﬁcient Use of
+clarifying the formal logic of certain channels through                              Information and Social Value of Information.” Econometrica 75 (4):
+                                                                                     1103–42.
+which information generated by new communication tech-
+                                                                                  Barberá, Pablo, and Megan Metzger. 2014. “Tweeting the Revolution:
+nologies is associated with (and potentially causes) antiregime                      Social Media Use and the #Euromaidan Protests.” Hufﬁngton Post,
+action. Of course the models developed here are not meant                            February 21.
+                                                                                  Barberá, Pablo, and Gonzalo Rivero. 2014. “Understanding the Political
+                                                                                     Representativeness of Twitter Users.” Social Science Computer Review.
+    22. Another distinction between political and tactical coordination that         Electronically published, December 1.
+may arise from a dynamic model is that while the antiregime sentiment is likely   Bennett, W. Lance, and Alexandra Segerberg. 2013. The Logic of Con-
+stable across short periods of time, tactics may evolve more rapidly, further        nective Action: Digital Media and the Personalization of Contentious
+increasing the importance of getting new information through this channel.           Politics. Cambridge: Cambridge University Press.
+
+
+
+
+                                  This content downloaded from 128.104.122.153 on Thu, 24 Sep 2015 08:37:50 AM
+                                                  All use subject to JSTOR Terms and Conditions
+000 / Communication Technology and Protest Andrew T. Little
+
+
+Boix, Carles, and Milan Svolik. 2013. “The Foundations of Limited Au-        Little, Andrew T. 2012. “Elections, Fraud, and Election Monitoring in the
+    thoritarian Government: Institutions and Power-Sharing in Dictator-          Shadow of Revolution.” Quarterly Journal of Political Science 7 (3):
+    ships.” Journal of Politics 75 (2): 300–316.                                 249–83.
+Bueno de Mesquita, Ethan. 2010. “Regime Change and Revolutionary             Little, Andrew T. 2015. “Coordination, Learning, and Coups.” Journal of
+    Entrepreneurs.” American Political Science Review 108 (3): 446–66.           Conﬂict Resolution. Electronically published February 12.
+Comunello, Francesca, and Giuseppe Anzera. 2012. “Will the Revolution        Lorentzen, Peter. 2013. “China’s Strategic Censorship.” American Journal
+    Be Tweeted? A Conceptual Framework for Understanding the Social              of Political Science 58 (2): 402–14.
+    Media and the Arab Spring.” Islam and Christian-Muslim Relations 23      Morozov, Evgeny. 2009. “Texting towards Utopia: Does the Internet
+    (4): 453–70.                                                                 Spread Democracy?” Boston Review (March).
+Dafoe, Allan, and Jason Lyall. 2015. “From Cell Phones to Conﬂict?           Morris, Stephen, and Hyun Song Shin. 2002. “Social Value of Public In-
+    Reﬂections on the Emerging ICT–Political Conﬂict Research Agenda.”           formation.” American Economic Review 92 (5): 1521–34.
+    Journal of Peace Research 52 (3): 401–13.                                Morris, Stephen, and Hyun Song Shin. 2003. “Global Games: Theory and
+Dewan, Torun, and David P. Myatt. 2008. “The Qualities of Leadership:            Applications.” In Mathias Dewatripont, Lars Peter Hansen, and Stephen J.
+    Direction, Communication, Obfuscation.” American Political Science           Turnovsky, eds., Advances in Economics and Econometrics: Theory and
+    Review 102 (3): 351–68.                                                      Applications; Eighth World Congress. Cambridge: Cambridge University
+Edmond, Chris. 2013. “Information Manipulation, Coordination, and                Press.
+    Regime Change.” Review of Economic Studies 80 (4): 1422–58.              Munger, Kevin, Richard Bonneau, Jonathan T. Jost, Jonathan Nagler, and
+Egorov, Georgy, Sergei Guriev, and Konstantin Sonin. 2009. “Why                  Joshua A. Tucker. 2014. “Elites Tweet to Get the Feet of the Streets:
+    Resource-Poor Dictators Allow Freer Media: A Theory and Evidence             Measuring Regime Response to Protest Using Social Media.” Manu-
+    from Panel Data.” American Political Science Review 103 (4): 645–68.         script.
+Else, Liz. 2012. “The Revolution Will Be Tweeted.” New Scientist, Febru-     Myatt, David P. 2015. “A Theory of Protest Voting.” Manuscript.
+    ary 6.                                                                   Patel, David, and Valerie Bunce. 2012. “Turning Points and the Cross-
+Enikolopov, Ruben, Maria Petrova, and Ekaterina Zhuravskaya. 2011.               National Diffusion of Popular Protest.” Comparative Democratization
+    “Media and Political Persuasion: Evidence from Russia.” American             10 (1): 10–13.
+    Economic Review 101 (7): 3253–85.                                        Peisakhin, Leonid, and Arturas Rozenas. 2015. “Electoral Mobilization
+Farrell, Henry. 2012. “The Consequences of the Internet for Politics.”           with Biased Media: The Inﬂuence of Russian Television in Ukraine.”
+    Annual Reviews of Political Science 15:35–52.                                Manuscript.
+Gehlbach, Scott, and Konstantin Sonin. 2014. “Government Control of the      Petrova, Maria, and Galina Zudenkova. 2015. “Content and Coordination
+    Media.” Journal of Public Economics 118:163–71.                              Censorship in Authoritarian Regimes.” Manuscript.
+Guriev, Sergei M., and Daniel Treisman. 2015. “How Modern Dictators Sur-     Pierskalla, Jan H., and Florian M. Hollenbach. 2013. “Technology and
+    vive: Cooptation, Censorship, Propaganda, and Repression.” CEPR Dis-         Collective Action: The Effect of Cell Phone Coverage on Political
+    cussion Paper no. DP10454, Centre for Economic Policy Research,              Violence in Africa.” American Political Science Review 107 (2): 207–
+    London.                                                                      24.
+Hale, Henry E. 2013. “Explaining Moldova’s ‘Twitter Revolution That          Reuter, Ora John, and David Szakonyi. 2015. “Online Social Media and
+    Wasn’t.’” Working paper, PONARS Eurasia.                                     Political Awareness in Authoritarian Regimes.” British Journal of Po-
+Hellwig, Christian. 2002. “Public Information, Private Information, and          litical Science 45 (1): 29–51.
+    the Multiplicity of Equilibria in Coordination Games.” Journal of Eco-   Roberts, Margaret E. 2014. “Fear or Friction? How Censorship Slows the
+    nomic Theory 107 (2): 191–222.                                               Spread of Information in the Digital Age.” Manuscript.
+Hollyer, James R., B. Peter Rosendorff, and James Raymond Vreeland.          Schelling, Thomas C. 1960. The Strategy of Conﬂict. Cambridge, MA:
+    2013. “Transparency, Protest and Political (In)Stability.” Manuscript.       Harvard University Press.
+Howard, Philip N. 2011. “The Cascading Effects of the Arab Spring.”          Shadmehr, Mehdi, and Dan Bernhardt. 2011. “Collective Action with Un-
+    Miller-McCune 23 (February).                                                 certain Payoffs: Coordination, Public Signals and Punishment Dilem-
+Huang, Haifeng. 2014. “Propaganda as Signaling.” Comparative Politics            mas.” American Political Science Review 105:829–51.
+    (forthcoming).                                                           Shadmehr, Mehdi, and Dan Bernhardt. 2015. “State Censorship.” Amer-
+Kendall-Taylor, Andrea, and Erica Frantz. 2014. “How Autocracies Fall.”          ican Economic Journal: Microeconomics 7 (2): 280–307.
+    Washington Quarterly 37 (1): 35–47.                                      Shapiro, Jacob, and Nils Weidmann. 2015. “Is the Phone Mightier than
+Kern, Holger Lutz, and Jens Hainmueller. 2009. “Opium for the Masses:            the Sword? Cell Phones and Insurgent Violence in Iraq.” International
+    How Foreign Media Can Stabilize Authoritarian Regimes.” Political            Organization 69 (2): 247–74.
+    Analysis 17 (4): 377–99.                                                 Shirky, Clay. 2008. Here Comes Everybody: The Power of Organizing with-
+Keynes, John Maynard. 1936. The General Theory of Employment, Interest           out Organizations. New York: Penguin.
+    and Money. London: Macmillan.                                            Siegal, David A., and Jacob N. Shapiro. 2013. “Coordination and Security:
+King, Gary, Jennifer Pan, and Margaret E. Roberts. 2013. “How Censor-            How Mobile Communications Affect Insurgency.” Journal of Peace
+    ship in China Allows Government Criticism but Silences Collective            Research 52 (3): 312–22.
+    Expression.” American Political Science Review 107 (2): 326–43.          Starbird, Kate, and Leysia Palen. 2012. “(How) Will the Revolution Be
+King, Gary, Jennifer Pan, and Margaret E. Roberts. 2014. “Reverse-               Retweeted? Information Diffusion and the 2011 Egyptian Uprising.”
+    Engineering Censorship in China: Randomized Experimentation and              In Proceedings of the ACM 2012 Conference on Computer Supported
+    Participant Observation.” Science 345 (6199): 1251722.                       Cooperative Work. New York: ACM, 7–16.
+Kricheli, Ruth, Yair Livne, and Beatriz Magaloni. 2011. “Taking to the       Svensson, Lars E. O. 2006. “Social Value of Public Information: Morris
+    Streets: Theory and Evidence on Protests under Authoritarianism.”            and Shin (2002) Is Actually Pro Transparency, Not Con.” American
+    Manuscript.                                                                  Economic Review 96 (1): 448–52.
+
+
+
+
+                                This content downloaded from 128.104.122.153 on Thu, 24 Sep 2015 08:37:50 AM
+                                                All use subject to JSTOR Terms and Conditions
+                                                                                            Volume 78     Number 1      January 2016 / 000
+
+
+Tarrow, Sidney. 1994. Power in Movement: Social Movements, Collective    Yanagizawa-Drott, David. 2014. “Propaganda and Conﬂict: Theory and
+   Action and Politics. Cambridge: Cambridge University Press.               Evidence from the Rwandan Genocide.” Quarterly Journal of Economics
+Tufekci, Zeynep. 2014. “Big Questions for Social Media Big Data: Rep-        129 (4): 1947–96.
+   resentativeness, Validity and Other Methodological Pitfalls.” arXiv   Zeitzoff, Thomas. 2011. “Using Social Media to Measure Conﬂict Dy-
+   preprint arXiv:1403.7400.                                                 namics: An Application to the 2008–2009 Gaza Conﬂict.” Journal of
+Tyson, Scott A., and Alastair Smith. 2013. “Regime Insiders and Revo-        Conﬂict Resolution 55 (6): 938–69.
+   lutions.” Presented at the annual meeting of the Midwest Political    Zeitzoff, Thomas. 2014. “Does Social Media Inﬂuence Conﬂict? Evidence
+   Science Association, Chicago.                                             from the 2012 Gaza Conﬂict.” Manuscript.
+
+
+
+
+                              This content downloaded from 128.104.122.153 on Thu, 24 Sep 2015 08:37:50 AM
+                                              All use subject to JSTOR Terms and Conditions
+

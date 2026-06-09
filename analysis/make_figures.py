@@ -57,6 +57,7 @@ import matplotlib.pyplot as plt
 
 from models import (
     PRIMARY_SLUG,
+    PART1_SLUGS as _PART1_SLUGS,
     MODEL_COLORS as _MODEL_COLORS,
     SHORT_NAMES as _SHORT_NAMES,
     EXCLUDE_MODELS as _EXCLUDE_MODELS,
@@ -128,6 +129,26 @@ def finish_rate_panel(ax, xlabel=r"$\theta$ (regime strength)",
         add_hgrid(ax, alpha=0.22)
 
 
+def within_group_corr(df, x, y, group_col="country"):
+    """Correlation after demeaning x and y within a grouping variable."""
+    if group_col not in df.columns:
+        return stats.pearsonr(x, y)[0]
+    tmp = pd.DataFrame(
+        {
+            "group": df[group_col].values,
+            "x": np.asarray(x, dtype=float),
+            "y": np.asarray(y, dtype=float),
+        }
+    ).dropna()
+    if len(tmp) < 3:
+        return np.nan
+    tmp["x"] = tmp["x"] - tmp.groupby("group")["x"].transform("mean")
+    tmp["y"] = tmp["y"] - tmp.groupby("group")["y"].transform("mean")
+    if tmp["x"].std() == 0 or tmp["y"].std() == 0:
+        return np.nan
+    return stats.pearsonr(tmp["x"], tmp["y"])[0]
+
+
 def draw_binned_logistic(ax, df, color, label, marker="o", linestyle="-",
                          n_bins=12, theta_grid=None, fit=True,
                          points=True, ribbon=True, linewidth=1.15,
@@ -187,11 +208,11 @@ def load_model_data(model_dir):
 PRIMARY = PRIMARY_SLUG
 primary_data = load_model_data(PRIMARY)
 
-# All models with pure data
-ALL_MODELS = [d.name for d in ROOT.iterdir()
-              if d.is_dir() and (d / "experiment_pure_summary.csv").exists()
-              and d.name not in EXCLUDE_MODELS]
-ALL_MODELS.sort()
+# Paper-facing model roster. Exploratory model outputs may exist under output/,
+# but main and appendix model figures should match Table 1.
+ALL_MODELS = [slug for slug in _PART1_SLUGS
+              if (ROOT / slug / "experiment_pure_summary.csv").exists()
+              and slug not in EXCLUDE_MODELS]
 
 # Cross-model comparison
 comp = load_csv(ROOT / "comparison" / "model_comparison_summary.csv")
@@ -259,14 +280,26 @@ def fig01_sigmoid():
     ax.axvline(ts_p, color=C_PURE, linestyle=":", linewidth=0.7, alpha=0.65)
     ax.axvline(theta_star, color=C_THEORY, linestyle=":", linewidth=0.7, alpha=0.55)
 
-    r_p = stats.pearsonr(pure["theta"], pure[_join_col(pure)])[0]
+    # Paper convention: r(J, A(theta)) — correlation with theoretical attack mass
+    _pure_valid = pure.dropna(subset=["theta", _join_col(pure)])
+    r_p = stats.pearsonr(attack_mass(_pure_valid["theta"]),
+                         _pure_valid[_join_col(_pure_valid)])[0]
     ax.text(0.03, 0.03,
-            f"$r(\\theta,J)$ = {r_p:.2f}, $\\hat{{\\theta}}^*$ = {ts_p:.2f}",
+            f"$r(J, A(\\theta))$ = {r_p:+.2f}, $\\hat{{\\theta}}^*$ = {ts_p:.2f}",
             transform=ax.transAxes, fontsize=6, va="bottom",
             bbox=dict(boxstyle="round,pad=0.2", facecolor="white",
                       alpha=0.9, edgecolor=C_GRID, linewidth=0.4))
 
-    ax.legend(loc="upper right", fontsize=6)
+    from matplotlib.patches import Patch
+    handles, labels = ax.get_legend_handles_labels()
+    handles += [
+        Patch(facecolor=C_PURE, alpha=0.11, linewidth=0, label="95% CI"),
+        Line2D([0], [0], color=C_PURE, linestyle=":", linewidth=0.7,
+               alpha=0.65, label=r"Empirical cutoff $\hat{\theta}^*$"),
+        Line2D([0], [0], color=C_THEORY, linestyle=":", linewidth=0.7,
+               alpha=0.55, label=r"Theoretical $\theta^*$"),
+    ]
+    ax.legend(handles=handles, loc="upper right", fontsize=5.5)
     finish_rate_panel(ax)
 
     save(fig, "fig01_sigmoid")
@@ -289,8 +322,12 @@ def fig02_cross_model():
             if len(df) == 0:
                 row[f"r_{treatment}"] = np.nan
                 continue
+            d = df.dropna(subset=["theta", _join_col(df)])
+            if len(d) < 3:
+                row[f"r_{treatment}"] = np.nan
+                continue
             row[f"r_{treatment}"] = stats.pearsonr(
-                attack_mass(df["theta"]), df[_join_col(df)]
+                attack_mass(d["theta"]), d[_join_col(d)]
             )[0]
         rows.append(row)
     if not rows:
@@ -306,21 +343,25 @@ def fig02_cross_model():
     y = np.arange(len(df))
     short_names = [SHORT_NAMES.get(m, m[:20]) for m in df["model"]]
 
+    # Small vertical offset so near-identical pure/comm values stay visible
+    jit = 0.10
     for i, (_, row) in enumerate(df.iterrows()):
-        ax.plot([row["abs_r_pure"], row["abs_r_comm"]], [i, i],
+        ax.plot([row["abs_r_pure"], row["abs_r_comm"]], [i + jit, i - jit],
                 color=C_GRID, linewidth=1.2, zorder=1)
 
-    ax.scatter(df["abs_r_pure"], y, color=C_PURE, s=25, zorder=3,
+    ax.scatter(df["abs_r_pure"], y + jit, color=C_PURE, s=25, zorder=3,
                edgecolors="white", linewidths=0.3, label="Pure")
-    ax.scatter(df["abs_r_comm"], y, color=C_COMM, s=25, zorder=3,
+    ax.scatter(df["abs_r_comm"], y - jit, color=C_COMM, s=25, zorder=3,
                marker="s", edgecolors="white", linewidths=0.3, label="Comm")
 
+    scramble_fail_plotted = False
     if "r_scramble" in df.columns:
         for i, (_, row) in enumerate(df.iterrows()):
             rs = row.get("r_scramble", np.nan)
             if pd.notna(rs) and abs(rs) > 0.3:
                 ax.plot(abs(rs), i, marker="x", color=C_FLIP, markersize=5,
                         markeredgewidth=1.5, zorder=4)
+                scramble_fail_plotted = True
 
     mean_r = df["abs_r_pure"].mean()
     ax.axvline(mean_r, color=C_MUTED, linestyle="--", linewidth=0.6, alpha=0.8)
@@ -338,10 +379,12 @@ def fig02_cross_model():
                markersize=5, label="Pure"),
         Line2D([0], [0], marker="s", color="w", markerfacecolor=C_COMM,
                markersize=5, label="Comm"),
-        Line2D([0], [0], marker="x", color=C_FLIP, markersize=5,
-               markeredgewidth=1.5, linestyle="none",
-               label="Scramble fails ($|r| > 0.3$)"),
     ]
+    if scramble_fail_plotted:
+        handles.append(
+            Line2D([0], [0], marker="x", color=C_FLIP, markersize=5,
+                   markeredgewidth=1.5, linestyle="none",
+                   label="Scramble fails ($|r| > 0.3$)"))
     ax.legend(handles=handles, fontsize=6, loc="lower right")
 
     plt.tight_layout()
@@ -389,9 +432,9 @@ def fig03_falsification():
         jc = _join_col(df)
         mean_j = df[jc].mean()
         ax.axhline(mean_j, color=color, linestyle="--", linewidth=0.9, alpha=0.72)
-        r_val = stats.pearsonr(attack_mass(df["theta"]), df[jc])[0]
+        r_val = within_group_corr(df, attack_mass(df["theta"]), df[jc])
         ax.text(0.97, 0.97 - models_with_flip[:4].index(model) * 0.10,
-                f"$r_A = {r_val:+.2f}$", transform=ax.transAxes, fontsize=7,
+                f"$r_A^w = {r_val:+.2f}$", transform=ax.transAxes, fontsize=7,
                 ha="right", va="top", color=color)
     ax.set_title("B. Signal scrambled")
     finish_rate_panel(ax, xlabel=r"$\theta$", ylabel="", xlim=(-3.5, 3.5))
@@ -449,6 +492,12 @@ def fig05_communication():
         ax.plot([gp.iloc[i]["mean"], gc.iloc[i]["mean"]], [i, i],
                 color=C_GRID, linewidth=1.5, zorder=1)
 
+    # 95% CI whiskers on each binned mean
+    ax.errorbar(gp["mean"], y, xerr=1.96 * gp["sem"], fmt="none",
+                ecolor=C_PURE, elinewidth=0.6, capsize=1.5, alpha=0.7, zorder=2)
+    ax.errorbar(gc["mean"], y, xerr=1.96 * gc["sem"], fmt="none",
+                ecolor=C_COMM, elinewidth=0.6, capsize=1.5, alpha=0.7, zorder=2)
+
     ax.scatter(gp["mean"], y, color=C_PURE, s=20, zorder=3,
                label="Pure", edgecolors="none")
     ax.scatter(gc["mean"], y, color=C_COMM, s=20, zorder=3,
@@ -461,14 +510,16 @@ def fig05_communication():
     delta_high = gc.iloc[mid_idx:]["mean"].mean() - gp.iloc[mid_idx:]["mean"].mean()
 
     def _fmt_delta(v):
-        if abs(v) < 0.005:
-            return "0.00"
-        return f"{v:+.2f}"
+        """Format a join-fraction delta in percentage points."""
+        if abs(v) < 0.0005:
+            return "0.0 pp"
+        return f"{v * 100:+.1f} pp"
 
-    ax.text(0.97, 0.02,
+    ax.text(0.03, 0.02,
             f"Weak regime $\\Delta$ = {_fmt_delta(delta_low)}\n"
-            f"Strong regime $\\Delta$ = {_fmt_delta(delta_high)}",
-            transform=ax.transAxes, fontsize=6, va="bottom", ha="right",
+            f"Strong regime $\\Delta$ = {_fmt_delta(delta_high)}\n"
+            "Whiskers: 95% CI",
+            transform=ax.transAxes, fontsize=6, va="bottom", ha="left",
             bbox=dict(boxstyle="round,pad=0.2", facecolor="white",
                       alpha=0.9, edgecolor=C_GRID, linewidth=0.4))
 
@@ -703,14 +754,44 @@ def fig12_surveillance():
                              linestyle=linestyle, n_bins=10,
                              theta_grid=theta_grid, linewidth=linewidth)
 
-    ax.legend(fontsize=6, loc="upper right")
+    from matplotlib.patches import Patch
+    _handles, _ = ax.get_legend_handles_labels()
+    _handles.append(Patch(facecolor=C_SURV, alpha=0.11, linewidth=0,
+                          label="95% CI"))
+    ax.legend(handles=_handles, fontsize=6, loc="upper right")
     ax.set_title("A. Clean prompt-isolation effect")
     finish_rate_panel(ax)
 
     ax = axes[1]
     base_mean = comm_df[jc_c].mean()
+
+    def matched_delta_pp(treatment_df):
+        keys = ["country", "period", "theta", "z", "benefit", "theta_star"]
+        if len(treatment_df) == 0 or any(c not in treatment_df.columns for c in keys):
+            return None, None
+        if any(c not in comm_df.columns for c in keys):
+            return None, None
+        base = (
+            comm_df.groupby(keys, as_index=False)[jc_c]
+            .mean()
+            .rename(columns={jc_c: "baseline"})
+        )
+        treat_join = _join_col(treatment_df)
+        treat = (
+            treatment_df.groupby(keys, as_index=False)[treat_join]
+            .mean()
+            .rename(columns={treat_join: "treatment"})
+        )
+        matched = base.merge(treat, on=keys, how="inner")
+        if matched.empty:
+            return None, None
+        return (matched["treatment"] - matched["baseline"]).mean(), len(matched)
+
+    clean_delta, clean_n = matched_delta_pp(clean)
+    if clean_delta is None:
+        clean_delta, clean_n = clean[jc_s].mean() - base_mean, len(clean)
     rows = [
-        ("Surveillance", clean[jc_s].mean() - base_mean, C_SURV),
+        ("Surveillance\n(matched)", clean_delta, C_SURV, clean_n),
     ]
     for label, df, color in [
         ("Placebo", placebo, C_MUTED),
@@ -718,13 +799,18 @@ def fig12_surveillance():
         ("No messages", no_msg, C_SCRAMBLE),
     ]:
         if len(df) > 0:
-            rows.append((label, df[_join_col(df)].mean() - base_mean, color))
+            rows.append((label, df[_join_col(df)].mean() - base_mean, color,
+                         len(df)))
 
-    ddf = pd.DataFrame(rows, columns=["condition", "delta", "color"])
+    ddf = pd.DataFrame(rows, columns=["condition", "delta", "color", "n"])
     y = np.arange(len(ddf))
     ax.barh(y, ddf["delta"] * 100, color=ddf["color"], edgecolor="none", height=0.55)
     ax.set_yticks(y)
-    ax.set_yticklabels(ddf["condition"])
+    tick_labels = [
+        f"{cond}\n($n$ = {int(n):,})" if pd.notna(n) else cond
+        for cond, n in zip(ddf["condition"], ddf["n"])
+    ]
+    ax.set_yticklabels(tick_labels, fontsize=6.5)
     ax.invert_yaxis()
     zero_line(ax, "x")
     x_min = min(-1.0, (ddf["delta"] * 100).min() - 1.0)
@@ -851,7 +937,6 @@ def figA1_agent_count():
     n_keys = sorted(n_variants.keys())
     colors = {n: cmap(i / (len(n_keys) - 1)) for i, n in enumerate(n_keys)}
 
-    r_values = {}
     for n, path in sorted(n_variants.items()):
         df = load_csv(path)
         if len(df) == 0:
@@ -862,19 +947,12 @@ def figA1_agent_count():
                    edgecolors="white", linewidths=0.2)
 
         (b0, b1), _ = fit_logistic(df)
+        r_val = stats.pearsonr(attack_mass(df["theta"]), df[_join_col(df)])[0]
         ax.plot(theta_grid, logistic(theta_grid, b0, b1),
-                color=color, linewidth=1.0, label=f"n = {n}")
+                color=color, linewidth=1.0,
+                label=f"$n = {n}$ ($r_A = {r_val:+.2f}$)")
 
-        r_val = stats.pearsonr(df["theta"], df[_join_col(df)])[0]
-        r_values[n] = r_val
-
-    r_text = "\n".join([f"n={n}: r = {r:.2f}" for n, r in sorted(r_values.items())])
-    ax.text(0.03, 0.03, r_text, transform=ax.transAxes, fontsize=5.5,
-            va="bottom", family="monospace",
-            bbox=dict(boxstyle="round,pad=0.2", facecolor="white",
-                      alpha=0.9, edgecolor=C_GRID, linewidth=0.4))
-
-    ax.legend(fontsize=6, loc="upper right")
+    ax.legend(fontsize=5.5, loc="upper right")
     finish_rate_panel(ax)
 
     save(fig, "figA1_agent_count")
@@ -917,7 +995,7 @@ def figA2_network():
                 zorder=2, label=label)
         slopes[label] = b1
 
-    slope_text = "Slope $\\beta_1$:\n" + "\n".join(
+    slope_text = "Slope $\\kappa$:\n" + "\n".join(
         [f"  {k}: {v:.2f}" for k, v in slopes.items()])
     ax.text(0.97, 0.97, slope_text, transform=ax.transAxes, fontsize=5.5,
             va="top", ha="right",
@@ -1382,10 +1460,11 @@ def fig19_nonparametric_beliefs():
                 fmt="o", color=C_PURE, markersize=4, elinewidth=0.6,
                 capsize=2, zorder=3, label="Mean stated belief")
 
-    # Correlation annotation
+    # Correlation annotation — belief vs raw z-score signal (this is a
+    # different object from the belief-vs-posterior r reported in the text)
     r_val, p_val = stats.pearsonr(z_scores, beliefs)
     ax.text(0.97, 0.97,
-            f"$r = {r_val:+.2f}$\n$N = {len(z_scores):,}$",
+            f"$r(\\mathrm{{belief}}, z) = {r_val:+.2f}$\n$N = {len(z_scores):,}$",
             transform=ax.transAxes, fontsize=6, va="top", ha="right",
             bbox=dict(boxstyle="round,pad=0.2", facecolor="white",
                       alpha=0.9, edgecolor=C_GRID, linewidth=0.4))
@@ -1412,12 +1491,12 @@ def fig20_cross_generator():
         return
 
     variant_map = {
-        "Mistral Small Creative": {
+        SHORT_NAMES["mistralai--mistral-small-creative"]: {
             "baseline": "mistralai/mistral-small-creative_baseline",
             "cable": "mistralai/mistral-small-creative_cable",
             "journalistic": "mistralai/mistral-small-creative_journalistic",
         },
-        "Llama 3.3 70B": {
+        SHORT_NAMES["meta-llama--llama-3.3-70b-instruct"]: {
             "baseline": "meta-llama/llama-3.3-70b-instruct_baseline",
             "cable": "meta-llama/llama-3.3-70b-instruct_cable",
             "journalistic": "meta-llama/llama-3.3-70b-instruct_journalistic",
@@ -1458,10 +1537,10 @@ def fig20_cross_generator():
                     linewidth=1.2,
                     label=f"{variant_name.capitalize()}")
 
-            # Annotate r
-            r_val = np.corrcoef(df["theta"].values, df[jcol].values)[0, 1]
+            # Annotate r — signed, two decimals, matching Table conventions
+            r_val = stats.pearsonr(attack_mass(df["theta"]), df[jcol])[0]
             # Put r values in legend label
-            ax.plot([], [], " ", label=f"  $r = {r_val:.3f}$")
+            ax.plot([], [], " ", label=f"  $r_A = {r_val:+.2f}$")
 
         ax.set_xlabel(r"$\theta$ (regime strength)")
         ax.set_title(model, fontsize=9, loc="left")
@@ -1518,7 +1597,7 @@ def fig15_text_baseline():
     # Empirical join rate
     ax.errorbar(bins["z_score"], bins["join_rate"], yerr=1.96 * bins["join_se"],
                 fmt="o", color=C_PURE, markersize=3, elinewidth=0.5, capsize=1.5,
-                label="LLM join rate", zorder=3)
+                label="LLM join rate (95% CI)", zorder=3)
 
     # Fitted logistic
     if fitted is not None:
@@ -1528,7 +1607,7 @@ def fig15_text_baseline():
     # Text-only baseline
     ax.plot(bins["z_score"], bins["text_baseline"], "s--", color=C_SCRAMBLE,
             markersize=3, linewidth=0.8, alpha=0.8,
-            label=f"Text baseline ($1 - d$)")
+            label="Text baseline ($1 - d$, direction slider)")
 
     # Reference lines
     ax.axhline(0.5, color=C_GRID, linewidth=0.5, linestyle=":")
@@ -1565,8 +1644,8 @@ def fig_example_briefings():
     # clean, non-garbled wording. No text post-processing is applied beyond
     # line wrapping in the figure renderer.
     gen = BriefingGenerator(seed=5150)
-    example_agent_id = 8
-    example_period = 124
+    example_agent_id = 2
+    example_period = 1007
 
     z_scores = [-2.0, 0.0, 2.0]
     titles = [

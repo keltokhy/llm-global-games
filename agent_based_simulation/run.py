@@ -760,9 +760,10 @@ def main():
     parser.add_argument("--second-order-order", type=str, choices=["post", "pre", "both"], default="post",
                         help="When to elicit second-order beliefs: 'post' (after decision, default), "
                              "'pre' (before decision), or 'both'. Only effective with --elicit-second-order.")
-    parser.add_argument("--surveillance-mode", type=str, choices=["full", "placebo", "anonymous"], default="full",
+    parser.add_argument("--surveillance-mode", type=str, choices=["full", "placebo", "anonymous", "style"], default="full",
                         help="Surveillance framing: 'full' (consequences, default), "
-                             "'placebo' (monitored, no consequences), 'anonymous' (aggregated anonymously). "
+                             "'placebo' (monitored, no consequences), 'anonymous' (aggregated anonymously), "
+                             "'style' (indirect/metaphorical style instruction, no monitoring framing). "
                              "Only effective with --surveillance.")
     parser.add_argument("--task-mode", type=str, choices=["coordination", "individual_bet"],
                         default="coordination",

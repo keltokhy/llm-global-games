@@ -3,18 +3,22 @@
 \caption{Clean prompt-isolation surveillance reruns. The surveillance prompt is the baseline trusted-contact communication prompt plus one appended monitoring warning; the decision prompt is unchanged.}
 \label{tab:prompt_isolation}
 \footnotesize
-\setlength{\tabcolsep}{5pt}
-\begin{tabular}{lcccccc}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lcccccccc}
 \toprule
-Model & $N$ & Baseline & Surv. & $\Delta$ (pp) & $r(J,A)$ & $p$ \\
+Model & Full cells (B/S) & Matched cells & Baseline & Surv. & $\Delta$ (pp) & SE & $r(J,A)$ & $p$ \\
 \midrule
-Mistral Small Creative & 1000 & 41.1\% & 32.0\% & -9.1 & +0.72 & 0.000 \\
-Llama 3.3 70B & 1000 & 41.6\% & 31.8\% & -9.8 & +0.65 & 0.033 \\
-Qwen3 30B & 1000 & 45.2\% & 35.8\% & -9.4 & +0.68 & 0.026 \\
-GPT-OSS 120B & 1000 & 44.2\% & 33.1\% & -11.1 & +0.75 & 0.000 \\
-Qwen3 235B & 1000 & 42.4\% & 38.8\% & -3.6 & +0.78 & 0.033 \\
+Mistral Small Creative & 680/1000 & 500 & 45.3\% & 31.4\% & $-13.9$ & 0.7 & $+0.72$ & $<$0.001 \\
+Llama 3.3 70B & 100/1000 & 20 & 46.2\% & 31.2\% & $-15.0$ & 4.4 & $+0.65$ & 0.003 \\
+Qwen3 30B & 100/1000 & 20 & 50.0\% & 37.8\% & $-12.2$ & 2.5 & $+0.68$ & $<$0.001 \\
+GPT-OSS 120B & 200/1000 & 20 & 42.5\% & 30.5\% & $-12.0$ & 3.9 & $+0.75$ & 0.006 \\
+Qwen3 235B & 1000/1000 & 20 & 42.0\% & 39.0\% & $-3.0$ & 2.2 & $+0.78$ & 0.186 \\
+\midrule
+Equal-weight avg & --- & --- & --- & --- & $-11.2$ & --- & --- & --- \\
+Pooled matched & --- & 580 & --- & --- & $-13.5$ & 0.7 & --- & $<$0.001 \\
 \bottomrule
 \end{tabular}
-\vspace{0.25em}
-\parbox{\textwidth}{\footnotesize\emph{Notes:} Baseline is each model's communication treatment. $\Delta$ is surveilled communication minus baseline communication in percentage points. $p$-values are from two-sample $t$-tests on period-level join fractions.}
+\begin{tablenotes}
+\footnotesize\emph{Notes:} Baseline is each model's communication treatment. ``Full cells'' counts the available baseline and surveillance task cells after collapsing duplicate rows by the exact key (country, period, $\theta$, $z$, benefit, $\theta^*$); it is not the support used for the paired effect when common support is smaller. The non-primary baseline communication arms were shorter pilot grids (100--200 cells) while the later surveillance reruns used a larger grid; because those grids were not nested, only 20 exact cells overlap for several models. $N$ for each paired contrast is the number of matched common-support cells; Baseline, Surv., $\Delta$, SE, and $p$ are computed only on those cells, with $p$ from a paired one-sample $t$-test of cell-level (surveillance $-$ baseline) differences and SE the paired standard error of $\Delta$ in pp. $r(J,A)$ is the surveillance-arm threshold-alignment correlation on the full surveillance rerun. Aggregating the primary model's matched-cell deltas to country means ($N = 5$ countries) gives $t = -13.90$, $p <0.001$, so the headline effect survives country-level clustering.
+\end{tablenotes}
 \end{table*}

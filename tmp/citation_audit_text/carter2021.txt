@@ -1,0 +1,1893 @@
+Article
+
+Propaganda and Protest
+in Autocracies
+Erin Baggott Carter1
+
+Journal of Conflict Resolution
+2021, Vol. 65(5) 919-949
+ª The Author(s) 2020
+Article reuse guidelines:
+sagepub.com/journals-permissions
+DOI: 10.1177/0022002720975090
+journals.sagepub.com/home/jcr
+
+and Brett L. Carter1
+
+Abstract
+Does propaganda reduce the rate of popular protest in autocracies? To answer this
+question, we draw on an original dataset of state-run newspapers from thirty
+countries, encompassing six languages and over four million articles. We find that
+propaganda diminishes the rate of protest, and that its effects persist over time. By
+increasing the level of pro-regime propaganda by one standard deviation, autocrats
+have reduced the odds of protest the following day by 15%. The half-life of this effect
+is between five and ten days, and very little of the initial effect persists after one
+month. This temporal persistence is remarkably consistent with campaign advertisements in democracies.
+Keywords
+propaganda, protest, quantitative text analysis, computational social science,
+autocratic politics
+
+Introduction
+Does propaganda work? There is some evidence it can. In pre-World War II
+Germany, state radio broadcasts increased support for the Nazi regime and, in
+historically anti-Semitic regions, the rate at which Jews were denounced and
+deported to concentration camps (Adena et al. 2015). During the 1994 Rwandan
+genocide, radio broadcasts increased the Tutsi death toll by 10% (Yanagizawa-Drott
+1
+Department of Political Science and International Relations, University of Southern California, Los
+Angeles, CA, USA
+
+Corresponding Author:
+Erin Baggott Carter, Department of Political Science and International Relations, University of Southern
+California, 3518 Trousdale Pkwy, Los Angeles, CA 90089, USA.
+Email: blcarter@usc.edu
+
+920
+
+Journal of Conflict Resolution 65(5)
+
+2014). During the 1999 Russian parliamentary election, access to independent television decreased the likelihood of voting for President Vladimir Putin’s United
+Russia by 8.9 percentage points (Enikolopov, Petrova, and Zhuravskaya 2011;
+White, Oates, and McAllister 2005). Today, Chinese students exposed to propaganda in an educational setting are less willing to engage in political dissent (Huang
+2015).1 Other evidence, however, suggests propaganda may be less effective. In
+Mali, Bleck, and Michelitch (2017) find that state radio broadcasts in the wake of a
+military coup had no effect on popular support for the newly installed junta.
+Mass protests constitute a key threat to autocratic survival, especially as the rate
+of elite coups declines (Marinov and Goemans 2014). In this paper, we ask whether
+pro-regime propaganda has diminished the rate of protest in contemporary autocracies. We draw on an original dataset of state-run newspapers from thirty countries,
+encompassing six languages and over four million articles. To collect this corpus, we
+scraped online newspaper archives using the Python programming language. When
+online archives were not available, we manually downloaded articles from Lexis
+Nexis. We used machine learning techniques to identify propaganda articles that
+discuss government action. Next, we transformed the corpus of articles into time
+series data by measuring the valence—both positive and negative—of the words
+used to describe the incumbent government’s policies on a given day. The result is a
+country-day dataset that records the amount and valence of government coverage.
+This conception of propaganda—as spin, not lies—accords with how scholars and
+practitioners have long understood it (Jowett and O’Donnell 2012; Stanley 2015).
+Put simply, in our dataset, more “propagandistic” coverage presents the regime in a
+more favorable light.2
+Autocrats employ propaganda strategically. Therefore, when estimating the effect
+of propaganda on the rate of protest, we confront two forms of selection bias. First, the
+regimes in which propaganda is employed frequently may be systematically different
+than those in which it is not, and in ways that are correlated with the rate of collective
+action. We refer to this as “unit selection bias,” and it may occur for a variety of
+reasons. Most obviously, the regimes most likely to employ propaganda may exert
+particularly strong control over their countries’ media environments, and this degree
+of control could be associated with higher or lower levels of collective action. Second,
+authoritarian regimes employ propaganda differently at different times of year, and
+these moments may be systematically associated with collective action. We refer to
+this as “temporal selection bias,” and it too may emerge for a variety of reasons. The
+rate of propaganda may rise immediately before elections, when autocrats have a
+particularly strong incentive to manipulate the beliefs of their citizens. Additionally,
+autocratic propaganda apparatuses may provide more positive coverage when there is
+more genuinely good news: when the unemployment rate is lower or when the economy grows more quickly. If positive coverage indicates genuinely good news rather
+than pro-regime propaganda—and citizens are then less likely to protest—then an
+estimated relationship between propaganda and protest will be spurious.
+
+Carter and Carter
+
+921
+
+To accommodate unit selection bias, we employ estimating equations with
+country-level fixed effects. In so doing, we ask how changes in the volume of
+propaganda on day t  1 condition the rate of collective action on day t. To accommodate temporal selection bias, we control for a range of time variant features that
+may condition whether autocrat i employs propaganda on a given day or during a
+given year: whether day t falls during an election season or on election day itself,
+country i’s history of political instability up to day t, the rate of internet access, as
+well as a range of economic measures that reflect the living conditions of citizens.
+We control for the daily amount of genuinely positive developments in country i by
+measuring the amount of positive coverage it receives in the world’s newspapers of
+record. We also control for references to country i‘s political opposition, who may
+attempt to mobilize unrest.
+In addition to these baseline models, we draw on recent research in American
+politics to probe whether the effects of propaganda persist over time. Scholars
+increasingly find that political messaging in democracies has the strongest effect
+on citizens’ beliefs immediately after consumption. Although these effects decline
+quickly, they tend to persist, with half-lives of roughly one week. We explore
+whether the effect of pro-regime propaganda on protest exhibits similar properties.
+If propaganda has measurable effects on the rate of protest on day t, is some proportion of the effect still felt in the days or weeks that follow? Put otherwise, does the
+autocrat’s decision to employ propaganda on day t have a measurable effect on the
+rate of protest on day t þ 5 or t þ 15? To answer this question, we follow Hill et al.
+(2013), who identify a series of functional forms that fit how memories and beliefs
+fade over time. Hill et al. (2013) refer to these as decay functions, and, like them, we
+ask which among several best fit the patterns in our data.
+We find that pro-regime propaganda is associated with a substantively meaningful reduction in the rate of popular protest. By increasing the level of pro-regime
+propaganda by one standard deviation, contemporary autocrats have reduced the
+odds of protest the following day by 15%. This effect is relatively durable. Depending on the form of the decay function, the half-life of the effect is typically between
+five and ten days. One month later, very little of the initial effect still persists. This
+temporal signature is strikingly consistent with political messaging in American
+politics. In short, propaganda in autocracies appears to condition collective action
+much as campaign advertisements in democracies condition voting. Our data do not
+permit us to identify precisely why propaganda reduces the rate of protest. Indeed,
+the mechanisms of behavior change in democracies and autocracies may be quite
+different. It is possible, for instance, that propaganda persuades citizens of the
+regime’s merits, and hence mitigates the frustration that compels protest. Alternatively, propaganda might constitute a signal, implicitly understood by citizens, about
+the autocrat’s willingness to employ violence to retain power, which diminishes the
+rate of collective action by increasing its expected costs to citizens. We discuss these
+mechanisms in more detail in the second section, and in the sixth section we discuss
+how future research might adjudicate among them.
+
+922
+
+Journal of Conflict Resolution 65(5)
+
+This paper contributes to the broader literature about autocratic politics in several
+ways. With popular protests increasingly the chief threat to autocratic survival
+(Marinov and Goemans 2014), scholars have sought to understand their dynamics:
+who protests (Brancati 2016; Rosenfeld 2017), when (Tucker 2007; Fearon 2011;
+Beaulieu 2014; Trejo 2014), how they organize (Tufekci and Wilson 2012; Howard
+and Hussain 2013; Steinert-Threlkeld et al. 2015; Christensen and Garfias 2018; Fu
+2018), which tactics they employ (Chen 2012; Chenoweth and Ulfelder 2017), and
+which tactics are most effective (Chenoweth and Stephan 2011). In turn, scholars
+have sought to understand how the world’s autocrats attempt to inoculate themselves: by incarcerating dissidents (Truex 2019), censoring their citizens’ informational environments (King, Pan, and Roberts 2013; Shadmehr and Bernhardt 2015;
+Qin, Strömberg, and Wu 2017; Roberts 2018; Gallagher and Miller 2019), deploying
+bots to shape social media conversations (King, Pan, and Roberts 2017), and blocking internet access altogether (Rydzak 2019). This paper, to the best of our knowledge, represents the first attempt to measure the effects of print propaganda on
+popular protest. Moreover, our data represent the first attempt to measure autocratic
+propaganda in a cross-country setting.
+This paper joins a growing wave of scholarship that locates the origins of autocratic survival in the politics of information and belief. This was once the chief way
+that scholars explained autocratic durability. As Tullock (1987) put it: “As long as
+people think that the dictator’s power is secure, it is secure.” If beliefs were critical
+to sustaining an autocrat’s power, so too, scholars concluded, could they bring an
+autocrat down. This time, scholars drew not on the durability of the 20th century’s
+most famous dictators, but rather the stunning ease with which they were toppled.
+Kuran (1989) and Lohmann (1993), among others, famously explained how the
+Soviet Union could collapse so thoroughly by applying “tipping point” models of
+collective action. More recently, scholars have sought the origins of autocratic
+survival in formal political institutions: single party regimes or national legislatures
+populated by regular elections (Lust-Okar 2006; Brownlee 2007; Gandhi 2008;
+Blaydes 2008; Magaloni 2008; Slater 2010; Svolik 2012; Geddes, Wright, and
+Frantz 2018). But since the end of the Cold War, when the international community
+began more forcefully pressing for nominally democratic institutions in exchange
+for development aid and debt relief (Levitsky and Way 2010), there is now less
+institutional variation across the world’s autocracies than perhaps ever before. Most
+broadly, our results suggest that the struggle for citizens’ beliefs is fundamental to
+understanding how autocrats survive.
+This paper proceeds as follows. The second section surveys recent scholarship on
+political communication in autocracies and democracies, from which we derive our
+hypotheses for empirical testing. The third section introduces our corpus of thirty
+state-run newspapers and describes our measure of propaganda. The fourth section
+estimates the effect of positive coverage of regime policies upon the rate of riots.
+The fifth section explores to what extent the initial effects of propaganda persist over
+time. The sixth section concludes with suggestions for future research. The Online
+
+Carter and Carter
+
+923
+
+Appendix provides additional information about our measure of propaganda and our
+corpus of newspapers.
+
+Theoretical Framework
+Mechanisms of Propaganda and Protest
+Autocratic propaganda may alter the beliefs or behaviors of citizens through a
+variety of mechanisms.3 In the context of popular unrest, three are particularly
+salient.
+First, pro-regime propaganda may change citizens’ beliefs about the autocrat’s
+performance in office. If autocrats regard their citizens as rational Bayesians, they
+may instruct their propaganda apparatuses to cultivate a reputation for neutrality. By
+mixing factual reporting with useful fictions, Gentzkow and Shapiro (2006) and
+Gehlbach and Sonin (2014) show theoretically, autocratic propaganda apparatuses
+acquire some reputation for credibility, and hence too the capacity to shape their
+citizens’ beliefs. Put simply, to persuade citizens of useful fictions, propaganda
+apparatuses must have a reputation for occasionally reporting damaging facts.
+Accordingly, Rozenas and Stukal (2019) shows that Russian President Vladimir
+Putin’s TV networks routinely cover economic downturns, even if those downturns
+are blamed on external forces. Likewise, Carter and Carter (2020) show that propaganda apparatuses in many of the world’s autocracies cover the incumbent government almost as neutrally as state-affiliated newspapers in democracies, except
+during election seasons, when the volume of pro-regime propaganda spikes. If
+citizens are not rational Bayesians, the scope for propaganda to manipulate beliefs
+is likely more profound. Citizens may underestimate the biases in media content
+(Eyster and Rabin 2009), be constrained by memory limitations (Mullainathan,
+Schwartzstein, and Shleifer 2008), or double count reported information (DeMarzo,
+Vayanos, and Zwiebel 2003).
+Second, pro-regime propaganda may compel citizens to question the beliefs of
+their neighbors. Even if individuals are not persuaded by pro-regime propaganda,
+they may have less confidence in their neighbors’ ability to distinguish fact from
+fiction. In autocracies, this alone is sufficient to generate widespread popular compliance. Little (2017) shows formally that if citizens believe their neighbors view
+government propaganda as credible, then it can affect mass behavior without affecting mass beliefs. Citizens engage in “preference falsification” by acquiescing to the
+regime, like their neighbors, lest they be punished for non-compliance (Kuran 1997;
+Wedeen 1999).
+Even if citizens are unpersuaded by pro-regime propaganda—and citizens know
+that their neighbors are similarly unpersuaded—propaganda may still reduce the rate
+of popular protest. The reason is that propaganda may convey information to voters
+about the autocrat’s willingness to use force to retain power. In particular, citizens
+may believe that an autocrat who broadcasts extremely positive pro-regime
+
+924
+
+Journal of Conflict Resolution 65(5)
+
+propaganda may be signaling to citizens that his capacity for repression is so unconstrained that he has no need to seek their genuine support. In game theoretic terms,
+the use of propaganda may convey information about an autocrat’s type. There is
+some evidence of this. Huang (2015, 420) describes the Chinese government’s
+propaganda apparatus this way: “Such propaganda is not meant to ‘brainwash’
+people with its specific content about how good the government is, but rather to
+forewarn the society about how strong it is via the act of propaganda itself.” Likewise, the Republic of Congo was wracked by a series of civil wars between 1993 and
+2003, which killed roughly 1% of the country’s citizens and displaced at least 30%.
+Denis Sassou Nguesso emerged as the victor, and his propaganda newspaper, Les
+Dépêches de Brazzaville, frequently casts him as the “apostle of peace,” the
+“guarantor” of the country’s “cherished” stability. Some Congolese citizens interpret these fulsome allusions as threats: about the violence Sassou Nguesso is willing
+to employ to retain power. Given the prospect of violence, citizens in autocracies
+may be particularly sensitive to these signals, and hence be less likely to protest after
+receiving them.
+These three mechanisms yield our first hypothesis.
+Hypothesis 1: Propaganda should reduce the contemporaneous rate of popular
+protest.
+
+Temporal Dynamics of Propaganda
+Social psychologists have long recognized that the effects of persuasive communication are most profound immediately after consumption, and then decline quickly after
+(Cook and Flay 1978). This appears to be true for political messaging in democracies.
+Hill et al. (2013) find that the half-life of American campaign advertisements is
+roughly one week. Similarly, casualty reports decrease popular support for a war, but
+only for one to two months at a time (Hayes and Myers 2009; Althaus, Bramlett, and
+Gimpel 2012; Sides and Vavreck 2013). A large experimental study supports these
+conclusions. Gerber et al. (2011) randomly assigned $2 million of television and radio
+advertisements to different media markets in the 2006 Texas gubernatorial race. A
+tracking poll conducted telephone interviews with 1,000 registered voters each day.
+Advertisements had strong but short-lived effects on voting preferences, with their
+effects relatively undetectable a week or two after consumption.
+Political communication rarely has long-term effects, these scholars suggest,
+because it does not elicit “effortful processing” from consumers. That is, citizens
+generally consume political advertisements in passing, without actively internalizing
+them. For persuasive communication to have lasting effects on the beliefs of consumers, it must induce individuals to process it actively. If it does not, consumers
+will revert to their prior beliefs relatively quickly (Hill et al. 2013).
+Our understanding of propaganda is consistent with this general framework, with
+some important nuances. Each of the three theoretical mechanisms above implies
+
+Carter and Carter
+
+925
+
+that the effects of propaganda should persist over time. They have different implications, however, for the duration of this persistence. Propaganda that aims to
+influence beliefs about regime performance is theoretically similar to a campaign
+advertisement. To illustrate how, in the Online Appendix we reproduce an article
+from Paul Kagame’s The New Times, which cites his efforts to improve infrastructure and help young people “realise their full potential.” It bears a striking resemblance to American campaign advertisements, and hence its persuasive effects may
+decay at similar rates. If anything, we might expect the persuasive effects of proregime propaganda in autocracies to decay even more quickly than campaign advertisements in democracies. Many of the countries in our sample are relatively poor,
+and so the gap between regime promises and citizen welfare is often large. Moreover, the welfare gains that occur are generally concentrated among elites. Accordingly, we expect the facade of regime performance to be difficult to maintain.
+Whatever effect performance propaganda may have, it is likely temporary, and
+quickly undone by economic realities.
+If, by contrast, propaganda conditions the rate of popular protest chiefly by
+signaling the autocrat’s willingness to employ violence, then citizens likely engage
+in the “effortful processing” that social psychologists regard as critical for propaganda to have durable effects. In this case, we should expect the effects of proregime propaganda to persist after the initial signal, and potentially much longer.
+In short, although the three theoretical mechanisms above suggest that proregime propaganda should diminish the rate of protest, they have different implications for the effect’s persistence. Still, we frame our second hypothesis generally.
+Hypothesis 2: The effect of propaganda on protest will decay over time.
+
+Measuring Propaganda
+Identifying and Collecting State-Run Newspapers
+To create our dataset of propaganda, we identified the most widely distributed staterun newspapers for as many autocracies as possible across the world.4 We then
+restricted attention to newspapers that are published in six languages for which
+quantitative text analysis methods are well developed: Arabic, Chinese, English,
+French, Russian, and Spanish. We further restricted attention to state-run newspapers that maintain online archives or are archived on Lexis Nexis to facilitate data
+collection and computational processing.
+Although these two restrictions were critical for data collection, each entails a
+drawback. First, by restricting attention to state-run newspapers in those six major
+languages, we were unable to include several prominent propaganda newspapers
+that are published in Portuguese and several widely spoken local languages.
+Although this restriction may reduce the precision of our statistical estimates, we
+do not believe it generates bias. We have no reason to believe, for instance, that the
+
+926
+
+Journal of Conflict Resolution 65(5)
+
+Ethiopian government’s propaganda newspaper, Addis Zemen, published in Amharic, is systematically different than Yahya Jammeh’s Daily Observer. Perhaps more
+importantly, for countries with multiple politically salient ethnic groups, publishing
+a propaganda newspaper in a local language would prevent many citizens from
+consuming it. Hence Denis Sassou Nguesso, who has ruled the Republic of Congo
+for all but five years since 1979, publishes Les Dépêches de Brazzaville in French
+rather than Lingala, which is spoken mostly by the country’s northerners.
+By publishing pro-regime propaganda in the language of the European colonizer,
+Africa’s autocrats implicitly target the urban citizens whose protests, given their
+proximity to the national capital, are most threatening, and who read English and
+French at much higher rates than their rural compatriots. Accordingly, we view the
+restriction to major world languages as theoretically appropriate, even if, by excluding state-run newspapers in Burundi and Ethiopia, it reduces the precision of our
+statistical estimates.
+Second, by restricting attention to state-run newspapers available online or on
+Lexis Nexis, we may leave open the possibility of selection bias. It is possible that
+state-run newspapers with digital archives are systematically different than those
+without. In particular, autocrats who finance online archives for propaganda newspapers may do so because their populations enjoy higher rates of internet access. If
+this reflects superior access to information, these citizens could be more likely to
+protest. If this reflects superior welfare, these citizens might be less likely to protest.
+We cannot rule this possibility out. However, we show in the Online Appendix that
+internet access in our sample is very similar to the global mean among all autocracies. Indeed, reflecting the growing prevalence of internet access across the
+world, we found that autocrats who govern the world’s poorest countries are as
+likely to maintain online archives as those from more affluent countries. Rather,
+whether state-run newspapers maintain freely available online archives appears to be
+more a function of regime type than GDP. We found that the vast majority of
+autocrats make their state-run newspapers available online, accessible without
+restriction. Since propaganda is useful only when consumed, most autocrats maximize its distribution, and so seldom regard it as intellectual property. This is consistent with their approach to domestic distribution. Sassou Nguesso is again
+instructive. Les Dépêches de Brazzaville remains Congo’s only daily newspaper,
+printed in color on high quality paper. At a market price of roughly $0.20, it is
+heavily subsidized by the state.5 Its primary competitor is La Semaine Africaine, an
+independent newspaper that appears twice per week. Constrained by market forces,
+it sells for roughly $1.00, despite being printed in black ink on cheap paper. In
+democracies, we found that state-affiliated newspapers are far more likely to operate
+as a business, with articles behind a paywall. When newspaper archives were not
+freely available, we acquired them from Lexis Nexis.
+Our final sample includes state-run newspapers from thirty autocracies from
+across Africa, Asia, the Middle East, Eastern Europe, and Latin America. The
+sample reflects the heterogeneity of the world’s autocracies. It includes a police
+
+Carter and Carter
+
+927
+
+Table 1. Our Corpus of State-Run Newspapers.
+Country
+Belarus
+Burkina Faso
+Cameroon
+Chad
+China
+Congo
+Cuba
+Djibouti
+Egypt
+Eritrea
+Gabon
+Gambia
+Iraq
+Jordan
+Kazakhstan
+Libya
+Qatar
+Russia
+Rwanda
+Saudi Arabia
+Singapore
+Swaziland
+Syria
+Tunisia
+Uganda
+United Arab Emirates
+Uzbekistan
+Venezuela
+Yemen
+Zimbabwe
+
+Language Newspaper
+Russian
+French
+Eng, Fra
+French
+Chinese
+French
+Spanish
+French
+Arabic
+English
+English
+English
+Arabic
+Arabic
+Russian
+English
+Arabic
+Russian
+English
+Arabic
+English
+English
+Arabic
+French
+English
+Arabic
+Russian
+Spanish
+Arabic
+English
+
+Segodnya
+Sidwaya
+Cameroon Tribune
+Le Progrès
+People’s Daily
+Les Depeches
+Granma
+La Nation
+Al Ahram
+Hadas Shabait
+L’Union
+Daily Observer
+Al Sabaah
+Al Rai
+Pravda
+JANA
+Al Rayah
+Rossiskaya Gazeta
+New Times
+Al Riyadh
+Straits Times
+Observer
+Al Thawra
+La Presse
+New Vision
+Ettihad
+Narodnoye Slovo
+Diario Vea
+Al Thawra
+The Herald
+
+Articles
+168,666
+23,875
+30,635
+2,661
+468,063
+1,144*
+30,062
+3,402
+27,515
+8,707
+79,381*
+36,161
+5,322
+52,881
+20,479
+3,291
+72,907
+115,478
+40,474
+74,878
+200,851
+838
+19,399
+53,811
+33,013
+117,191
+6,532
+6,585
+13,989
+59,718
+
+Start Date End Date
+2013
+2010
+2010
+2010
+1997
+2013
+2014
+2013
+2014
+2010
+1997
+2007
+2011
+2012
+2015
+2009
+2012
+2013
+2010
+2000
+2010
+2015
+2005
+2010
+2010
+2012
+2014
+2016
+2010
+2010
+
+2017
+2015
+2017
+2016
+2017
+2017
+2016
+2015
+2017
+2015
+2017
+2015
+2011
+2017
+2017
+2015
+2016
+2017
+2015
+2005
+2015
+2015
+2009
+2015
+2013
+2016
+2017
+2017
+2017
+2015
+
+*Indicates editions or pages, rather than articles. Typically, editions averaged thirty articles.
+
+state (Eritrea), a monarchy (Saudi Arabia), a single party regime (China), and a
+handful of autocracies governed with nominally democratic institutions (Russia).
+A full list of newspapers, by country and language, appears in Table 1. We include a
+detailed description of all newspapers in our sample in the Online Appendix.
+
+From Text to Time Series Data on Propaganda
+After we finalized our sample of state-run newspapers, we either scraped their online
+archives using the Python programming language or manually downloaded all available articles from Lexis Nexis. To convert newspaper text into time series data on
+
+928
+
+Journal of Conflict Resolution 65(5)
+
+pro-regime propaganda, we first had to determine what constitutes the regime. Here,
+we are guided by theory. Citizens’ views about the incumbent government are
+conditioned by more than simply their views about the autocrat or ruling party.
+They are also conditioned by public services provided by local officials and the
+activities of government ministers (Hassan 2016; Geddes, Wright, and Frantz 2018).
+Accordingly, we adopt a broad view of what constitutes the regime: encompassing
+local officials, regional governors, the autocrat, and his senior allies.6
+Cataloguing this range of officials in a cross-country setting is virtually impossible. Therefore, we use machine learning techniques to identify each article in a
+newspaper from country i that referenced government action on day t. We employ a
+multi-label classifier, which accommodates the possibility that some articles discuss
+multiple topics: the government, its economic policies, and perhaps also its foreign
+policy. To implement the classifier, we first sampled 500 articles from each of our
+six language groups. The sample was stratified, such that each country in a given
+language group contributed an equal number of articles to the language group’s
+sample. We refer to these 500 articles as each language group’s training set, and
+the remaining articles as the test set. Second, we labeled each article in the training
+set with as many topics as applicable, in part to make our data useful to future
+scholars. While this paper focuses on government action and several potentially
+important other coverage topics—more on this in Robustness Checks Section—
+we identified a set of twenty-nine total possible topics in our newspaper corpus.
+This set of topic labels appears in the Online Appendix. We developed this list
+inductively, after reading several thousand articles, with the intent of categorizing
+virtually all coverage topics. To ensure that our training set is appropriately labeled,
+we had a research assistant relabel a random sample of the articles that constitute our
+training set, and we then computed the rate of inter-coder reliability across topics.
+We detail this procedure in the Online Appendix. The inter-coder reliability rates are
+high, generally over 0.9.
+Next, we implemented the multi-label topic model on each state-run newspaper,
+using the multilabel package in Python’s sklearn module. This multi-label classifier
+employs a linear support vector classifier one-versus-rest model to assign as many
+topics as appropriate to test set articles. Before classifying articles, we removed stop
+words, numbers, and punctuation from each language corpus. For Chinese, we split
+text into constituent word chunks with the jieba segmenting algorithm. For other
+languages, we lowercased the text.
+We present a series of validation checks in the Online Appendix. First, we
+computed an overall accuracy rate for each topic through a series of binary classification decisions. Across languages, our classifier’s accuracy generally exceeded
+90%. Next, we show that we have good precision-recall curves for the core topic of
+interest in this paper—government action—as well as several topics we control for
+in robustness checks, including the economy, sports, and international cooperation.
+Finally, we report Hamming Loss values. These are metrics for multi-label
+
+Carter and Carter
+
+929
+
+classification that measure the share of labels that were incorrectly predicted. Across
+languages, our Hamming Loss values are quite low, generally under 5%.
+After identifying all articles about government action, we measured their valence.
+We employ dictionary based semantic analysis. Sometimes referred to as “opinion
+mining,” the method begins with a text and a set of lexical dictionaries that group
+words by their broader meanings. It then infers the text’s meaning by determining
+the frequency with which its constituent words appear in the lexical dictionaries
+specified by the analyst (Anandarajan, Hill, and Nolan 2019).
+Key to dictionary based semantic analysis is the quality of these lexical dictionaries. We use the Harvard General Inquirer (2015), a set of dictionaries developed by
+linguists to measure different concepts in text. Karadeniz and Dogdu (2018) describe
+the Harvard General Inquirer as a “clean and classical source of word and affect
+associations.” Computational linguists have used it for a range of applications,
+including studies of Twitter speech (O’Connor et al. 2010). The Harvard General
+Inquirer features two main dictionaries. The first records 1,915 words that connote
+positive sentiment, and the other records 2,291 words that connote negative sentiment. To apply dictionary based semantic analysis across languages, we translate the
+Harvard General Inquirer (2015) into Arabic, French, Spanish, and Russian. For
+Chinese, we draw on the work of Dong and Dong (2014), who assembled an analogous dictionary. After implementing the preprocessing techniques described above,
+we stemmed each word in the English, Spanish, French, and Russian corpora. We
+did not stem Arabic words because a sophisticated stemming algorithm has not yet
+been developed.
+We measured the aggregate valence of each article j about government action in
+country i on day t by using these semantic dictionaries to identify article j‘s positive
+and negative words. We then computed the total number of positive less negative
+words, and standardized it by the total number of dictionary hits:
+Positive CoverageGov
+ijt ¼
+
+Positive Wordsijt  Negative Wordsijt
+Positive Wordsijt þ Negative Wordsijt
+
+ð1Þ
+
+By standardizing according to total dictionary hits, we accommodate the possibility
+that different language dictionaries are of different quality. If, for instance, the English
+language positive and negative valence dictionaries are more thorough than those in
+Arabic or Russian, standardizing by dictionary hits should correct accordingly.
+To be clear, our measure of propaganda does not distinguish between positive
+spin and factual good news. As we discuss below, our estimating equations control
+for actual good news in a variety of ways. Likewise, our measure of propaganda does
+not explicitly incorporate the use of justification or comparison frames. Propaganda
+apparatuses may, for instance, defend the government’s record by appealing to
+ongoing difficulties in neighboring countries. These sorts of frames are difficult to
+identify in a cross-country setting, and so constitute an important direction for future
+research. Still, in the Online Appendix, we control for a range of coverage topics—
+
+930
+
+Journal of Conflict Resolution 65(5)
+
+such as the economy, sports, and international cooperation—that may be used to
+distract citizens from bad news or justify the government’s performance.
+
+Baseline Estimation
+Protest Data
+Propaganda and protest are both day-level events. Propaganda is distributed in print
+newspapers, often published daily. Protests occur on specific days, either organized
+by political activists or having emerged spontaneously. To avoid ecological bias,
+therefore, we treat the country-day as the unit of analysis.
+We draw data on state repression and popular protests from the Armed Conflict
+Location Event Database (ACLED) (Raleigh et al. 2010). ACLED records the daily
+number of repression and collective action events throughout Africa, the Middle
+East, Eastern Europe, Asia, and Latin America since 1997. In our sample of countries, ACLED records 4,909 protests that occur on 2,153 days. For our purposes, a
+particular strength of ACLED is that it draws from a wider set of sources than other
+datasets of collective action. This is crucial, for if our measurements of repression
+and protest history were drawn solely from major world publications, they could
+potentially be confounded by media censorship. For instance, if an autocrat anticipated having to repress protesters in advance of some politically sensitive moment
+(Truex 2019), he could preemptively censor foreign media sources, preventing them
+from reporting on the ensuing protests and repression. ACLED codes a broad range
+of sources: reports from international NGOs, local media organizations, and social
+media. The result is the most complete record of collective action in autocracies yet
+assembled, and one which is least likely to be biased for our purposes. ACLED codes
+two types of collective action: riots, which are distinguished by violence, and protests, which are generally peaceful. We focus on both. The variable Protestit assumes
+value 1 if ACLED records a protest or riot in country i on day t.
+As we discuss in Robustness Checks Section, we replicate all results in the main
+text with the Integrated Crisis Early Warning System (ICEWS) event dataset. In the
+Online Appendix, we present these results and discuss the two protest datasets in
+further detail.
+
+Unit Selection Bias
+Autocrats choose whether to employ propaganda; it is a strategic decision. As a
+result, the countries in which propaganda is employed frequently may be systematically different than those where it is not, and in ways that are correlated with
+protest. For instance, since propaganda may be most effective when citizens are
+unaware of it, the countries where propaganda is most substantial or most common
+may have media environments over which the regime exerts particularly strong
+
+Carter and Carter
+
+931
+
+control. In turn, this degree of control could be associated with higher or lower levels
+of protest.
+To accommodate the possibility of unit selection bias, we employ estimating
+equations with country-level fixed effects. In so doing, we ask how changes in the
+volume of propaganda over a given time frame affect the rate of protest on day t. Our
+baseline estimating equation is:
+PrðProtestit ¼ 1Þ ¼ a þ b1 ðPositive CoverageGov
+it1 Þ
+þ kXit þ cWis þ gi þ ls þ E
+
+ð2Þ
+
+where i indexes country, t indexes day, s indexes year. The vectors Xit and Wis
+include all relevant day- and year-level covariates, respectively, which we discuss
+below. To accommodate any unobserved characteristics by country we include a full
+set of country-level fixed effects, given by gi . We also accommodate any unobserved
+annual characteristics with year-level fixed effects, given by ls . Since the estimating
+equation in (2) uses the the country-day as the unit of analysis, we define Positive
+as the daily mean of Positive CoverageGov
+CoverageGov
+it
+ijt . Since the outcome is
+dichotomous, we estimate (2) with a logit model.
+
+Temporal Selection Bias
+Repressive governments may also vary the amount of propaganda according to the
+prevailing political environment. While we accommodate some of these with yearlevel fixed effects, other political dynamics may fluctuate sub-annually. Certain
+temporal windows could make both propaganda and protest more (or less) common,
+and thus render any observed relationship spurious. We discuss four such threats to
+inference below.
+Election seasons. Election seasons are a leading candidate for spurious correlation.
+Most contemporary autocrats govern with nominally democratic political institutions: presidential term limits, multiparty legislatures, and regular elections. As
+scholars have observed, Western donors generally require nominally democratic
+institutions in exchange for development aid and debt relief (Levitsky and Way
+2010). These regular elections constitute “focal moments” for popular protest. Since
+elections can help citizens coordinate otherwise dangerous anti-regime behavior, the
+rate of popular protest is higher during election seasons than other days of the year
+(Tucker 2007; Fearon 2011; Knutsen and Nygard 2015; Knutsen, Nygard, and Wig
+2017; Wig and Rod 2016). But because winning elections without obvious fraud
+renders autocrats more secure from popular instability and elite coups, autocrats also
+face tremendous incentives to persuade citizens to vote for them (Brancati 2016).
+Accordingly, Carter and Carter (2020) show that pro-regime propaganda is more
+common during election seasons than otherwise.
+
+932
+
+Journal of Conflict Resolution 65(5)
+
+Table 2. Corpus of Global Newspapers of Record.
+Al Jazeera English
+International New York Times
+Oil Daily
+The Telegraph (UK)
+The Courier Mail (Australia)
+The Globe and Mail (Canada)
+IRIN
+Wall Street Journal
+CNN
+United Press International
+
+BBC Monitoring
+Newsweek
+Petroleum Economist
+The Mirror (UK)
+The Daily Mail (UK)
+The Washington Post
+UN News Service
+Agence France Presse
+News Bites—Africa
+
+Oil and Gas Journal
+The Standard (UK)
+The Christian Science Monitor
+The Evening Standard (UK)
+The Toronto Star
+USA Today
+Associated Press
+PR Newswire Africa
+
+The “good news” effect. A second potential source of temporal selection bias is what
+we refer to as the “good news” effect. Autocratic propaganda apparatuses may
+provide more positive coverage when there is more genuinely good news: when the
+unemployment rate is lower or when the economy grows more quickly. Citizens, of
+course, are less likely to protest during these moments. We control for a range of
+economic indicators that reflect living standards: country i‘s GDP growth rate,
+unemployment rate, oil supply, and internet penetration rate. Observed annually,
+however, these economic indicators may be crude. It is possible that good news
+emerges by the day or week, that the autocrat’s propaganda apparatus reports this
+news objectively, and that citizens respond by protesting less. In short, annual
+economic indicators may be unable to totally account for genuine good news, which
+renders citizen protests less likely.
+To ensure that this possibility does not drive our results, we create the variable
+Good Newsijt . We do so much as we did Positive CoverageGov
+ijt . For each country i,
+we downloaded from Lexis Nexis every article that references country i from the
+world’s news organizations of record. We identify 28 such news sources, which
+appear in Table 2. Then, for each article in the corpus, we computed the total number
+of positive less negative words, and standardized it by the total number of dictionary
+hits:
+Good Newsijt ¼
+
+Positive Wordsijt  Negative Wordsijt
+Positive Wordsijt þ Negative Wordsijt
+
+ð3Þ
+
+Again, this measure is analogous to our measure of pro-regime propaganda,
+Positive CoverageGov
+ijt . The resulting Good Newsijt variable, we believe, is as close
+to an objective measure of “good news,” recorded at the day level, as currently
+exists. Since the unit of analysis in the estimating equation in (2) is the countryday, we define Good Newsit as the daily mean of Good Newsijt .
+To assess the measure’s plausibility, we estimate a series of bivariate regressions.
+The results appear in Table 3. From Model 1, our day-level measures of Good Newsit
+
+Carter and Carter
+
+933
+
+Table 3. Correlates of Good Newsit in Autocracies.
+Dependent variable:
+Good news it
+(1)
+Positive coverage Gov
+it
+
+(2)
+
+(3)
+
+21.008
+(9.629)
+204.673
+(40.544)
+
+Log GDP per capita
+GDP growth
+
+0.160
+(1.519)
+
+Unemployment
+Constant
+Country fixed effects
+Year fixed effects
+Observations
+R2
+
+(4)
+
+45.134
+(209.886)
+P
+P
+46,188
+0.429
+
+1,438.615
+(289.609)
+P
+P
+195
+0.797
+
+40.059
+(89.640)
+P
+P
+204
+0.760
+
+13.856
+(11.560)
+192.845
+(166.035)
+P
+P
+101
+0.858
+
+Note:  p < 0.1;  p < 0.05;  p < 0.01.
+
+and Positive CoverageGov
+are strongly correlated. We regard this is unsurprising, as
+it
+autocratic propaganda apparatuses surely capitalize upon—and claim credit for—
+positive developments. At the year level, Models 2 through 4 confirm that Good
+Newsis is positively correlated with logged GDP per capita and GDP growth and
+negatively correlated with the unemployment rate, as expected. These results suggest that our day-level measure of Good Newsit does indeed reflect positive developments across the world’s autocracies.
+Protest and repression histories. A third potential source of temporal selection bias is
+the recent history of protest and repression. It is possible, for instance, that protests
+on day t  1 may render continued protests on day t more likely and simultaneously
+compel the regime to increase propaganda. Likewise, if the autocrat employs repression on day t  1, citizens may be particularly angry on day t, rendering propaganda
+especially useful. Alternatively, in response to repression on day t  1, citizens may
+be less inclined to protest on day t, rendering propaganda less critical for the autocrat. To be clear, the first two sources of bias, if unaccounted for, should bias against
+the theoretical mechanisms above, and the third should bias in favor of them.
+We control for underlying political instability in several ways. First, we control
+for whether day t  1 witnessed a protest or repression event. Like our measure of
+protest, we draw data on repression from the ACLED dataset. Second, since these
+lagged measures of protest and repression may not fully capture prevailing political
+
+934
+
+Journal of Conflict Resolution 65(5)
+
+instability, we also control for how many days experienced protest in the preceding
+three days. We label this variable Protest History: 3 daysit , and we create a similar
+variable, Repression History: 3 daysit , that measures how many days experienced
+repression over the preceding three days. Finally, to ensure that we fully accommodate any latent political instability that could be associated with both protest and
+propaganda, we also control for the number of days that experienced protest in the
+preceding week and month. We label these variables Protest History: Weekit and
+Protest History: Monthit , respectively, and we create analogous Repression History:
+Weekit and Repression History: Monthit variables similarly. Descriptive statistics for
+all variables appear in the Online Appendix.
+The political opposition. A final potential source of temporal selection bias is coverage
+of the political opposition. It is possible, for instance, that during moments of
+tension, opposition leaders make special efforts to foster political change, either
+by mobilizing constituents or calling international attention to the regime’s human
+rights violations. In turn, we may observe a negative relationship between
+pro-regime coverage and protest because references to the political opposition—
+alongside coverage of the government—are driving down our measure of Positive
+CoverageGov
+it , and at precisely the moment that opposition leaders are mobilizing
+protests. By failing to control for coverage of the political opposition, any estimated
+and protest may be spurious.
+negative relationship between Positive CoverageGov
+it
+To ensure this is not the case, we created an exhaustive list of opposition leaders
+and parties for each country in our sample. This entailed identifying every candidate
+that competed in a national election, as well as the senior leaders of every party that
+competed in a legislative election. We also included political dissidents, political
+prisoners, and civil society activists, who would likely emerge as prominent politicians if opposition was legal. Politics, of course, is fluid, and so we were attentive to
+the possibility that opposition leaders and parties are occasionally co-opted, and
+hence no longer members of the opposition. For all countries, we began identifying
+opposition leaders and parties at least five years before our sample period. The
+Online Appendix presents our full list of opposition identifiers. At a minimum, it
+includes several dozen for each country. In some cases, we counted several hundred.
+We also created a list of general opposition terms for each of the six languages in our
+corpus. These appear in Figure 1.
+These general opposition identifiers are critical, but they create the possibility of
+measurement error. Propaganda apparatuses commonly cover party competition
+elsewhere; Sassou Nguesso’s Les Dépêches de Brazzaville, for instance, frequently
+covered opposition to President Joseph Kabila in the Democratic Republic of Congo.
+To distinguish coverage of the domestic opposition from coverage of foreign opposition, we employed a foreign opposition filter. If a foreign country was mentioned
+in the first hundred words of an article, or in the twenty word concordance segment
+centered upon an opposition term, we designated that identifier as a reference to the
+foreign opposition and omitted it from our dataset. Otherwise, we designated it a
+
+Carter and Carter
+
+935
+
+Figure 1. General opposition identifiers.
+
+domestic opposition reference. We identified a second source of measurement error.
+Our general opposition identifiers in English and French are commonly used in
+sports coverage. To minimize this source of measurement error, we coded a random
+sample of 300 articles from each language group as “sports” or “not sports,” and then
+omitted sports articles from our measure of opposition coverage. We instructed
+research assistants who were fluent in each language to record the number of true
+references to the opposition in each of the articles in our validation set. We compared these true counts to the predicted counts from our algorithm. For each languages, our algorithm was over 87% accurate in identifying the precise number of
+opposition entities referenced per article. The variable Opposition Referencesit
+counts references to country i’s political opposition on day t.
+
+Results
+The results appear in Table 4. Model 1 reports the bivariate relationship between
+pro-regime propaganda on day t  1 and the rate of protest on day t. Models 2 and 3,
+respectively, add controls for protest and state repression on day t  1. Model 4 adds
+our other day-level control variables: Good Newsit1 , Opposition Referencesit1 ,
+Election Dayit , and Election Seasonit . Model 4 also lets the effect of propaganda
+on protest vary according to whether day t occurs during an election season. Model 5
+adds the economic and informational covariates, measured at the year level. Models
+6 through 8 add additional day-level measures of recent political instability.
+The estimates for Positive CoverageGov
+are strikingly consistent across models.
+it
+The associated odds ratios, which measure the effect of a unit change in Positive
+CoverageGov
+it on the daily odds of protest, hover around 0.5. Note that the mean daily
+value of Positive CoverageGov
+it , across autocracies, is 0.42; its standard deviation is
+0.26. Accordingly, if an autocrat shifts from an average level of pro-regime propaganda on day t to one standard deviation greater, then, we estimate, the odds of
+protest are reduced by roughly 15%. If an autocrat shifts from an average level of
+pro-regime propaganda on day t to two standard deviations greater, then the odds
+of protest fall by roughly 28%. These estimated effects are quite plausible: modest,
+but non-trivial.
+We find some evidence that pro-regime propaganda may not reduce the rate of
+protest during election seasons. Across models, the ðPositiveCoverageGov
+it 
+
+936
+
+Good news it1
+
+Election season it  Positive
+coverage Gov
+it1
+
+Election season it
+
+Election it
+
+Repression history: 1 month i
+
+Protest history: 1 month i
+
+Repression history: 1 week i
+
+Protest history: 1 week i
+
+Repression history: 3 day i
+
+Protest history: 3 day i
+
+Repression it1
+
+Protest it1
+
+Positive coverage Gov
+it1
+
+
+
+0.667
+(0.254)
+
+(1)
+
+
+0.605
+(0.257)
+0.943
+(0.069)
+
+(2)
+
+(3)
+
+
+0.605
+(0.257)
+0.942
+(0.069)
+0.017
+(0.063)
+
+Table 4. Propaganda and Protest in Autocracies, Baseline Results.
+
+
+
+
+
+1.529
+(0.819)
+0.471
+(0.537)
+2.828
+(1.610)
+0.0001
+
+(1.228)
+0.0001
+
+0.977
+(0.377)
+0.781
+(0.086)
+0.063
+(0.082)
+
+(5)
+
+0.967
+(0.577)
+0.047
+(0.419)
+1.994
+
+0.742
+(0.277)
+0.886
+(0.071)
+0.008
+(0.065)
+
+(4)
+
+Protest it
+
+Dependent Variable:
+
+
+
+(1.605)
+0.0001
+
+1.591
+(0.833)
+0.484
+(0.536)
+2.553
+
+0.901
+(0.380)
+0.690
+(0.087)
+0.045
+(0.084)
+0.293
+(0.046)
+0.054
+(0.066)
+
+(6)
+
+
+
+(1.613)
+0.0002
+
+1.522
+(0.842)
+0.525
+(0.539)
+2.576
+
+0.882
+(0.381)
+0.665
+(0.088)
+0.036
+(0.085)
+0.115
+(0.067)
+0.012
+(0.093)
+0.142
+(0.039)
+0.048
+(0.056)
+
+(7)
+
+(continued)
+
+(1.617)
+0.0002
+
+0.872
+(0.382)
+0.660
+(0.088)
+0.039
+(0.085)
+0.123
+(0.067)
+0.008
+(0.093)
+0.106
+(0.044)
+0.038
+(0.064)
+0.022
+(0.013)
+0.006
+(0.020)
+1.534
+(0.843)
+0.543
+(0.539)
+2.626
+
+(8)
+
+937
+
+29,894
+3,955.270
+
+29,895
+4,044.777
+
+(2)
+
+18.688
+(1,259.960)
+p
+p
+
+(1)
+
+18.536
+(1,256.768)
+p
+p
+
+Note:  p < 0.1;  p < 0.05;  p < 0.01.
+
+Country fixed effects
+Year fixed effects
+Observations
+Log Likelihood
+
+Constant
+
+Social media censorship
+
+Internet censorship
+
+Oil/GDP
+
+Unemployment
+
+Log GDP per capita
+
+GDP growth
+
+Opposition references it1
+
+Table 4. (continued)
+
+29,894
+3,955.233
+
+18.689
+(1,259.959)
+p
+p
+
+(3)
+
+27,008
+3,706.882
+
+18.934
+(1,259.359)
+p
+p
+
+(0.0003)
+0.038
+(0.038)
+
+(4)
+
+9,810
+2,006.208
+
+9,810
+1,984.783
+
+p
+
+p
+
+(6)
+(0.0004)
+0.140
+(0.083)
+0.583
+(129.587)
+0.046
+(4,984.999)
+5.589
+(200.828)
+1.375
+(625.288)
+51.487
+(20,898.790)
+47.290
+(20,957.600)
+0.682
+(37,053.220)
+p
+
+(5)
+(0.0004)
+0.154
+(0.083)
+0.586
+(130.633)
+1.089
+(5,009.558)
+5.629
+(201.683)
+1.344
+(627.889)
+51.658
+(21,040.530)
+47.538
+(21,107.540)
+6.838
+(37,189.160)
+p
+
+Protest it
+
+Dependent Variable:
+
+9,810
+1,977.509
+
+p
+
+(0.0004)
+0.140
+(0.083)
+0.580
+(129.091)
+0.566
+(4,974.126)
+5.570
+(200.321)
+1.394
+(623.737)
+51.419
+(20,820.200)
+47.173
+(20,874.740)
+5.090
+(36,995.270)
+p
+
+(7)
+
+9,810
+1,975.826
+
+p
+
+(0.0004)
+0.141
+(0.083)
+0.577
+(127.556)
+1.320
+(4,914.840)
+5.554
+(199.453)
+1.410
+(618.375)
+51.049
+(20,626.230)
+46.749
+(20,677.650)
+10.498
+(36,583.450)
+p
+
+(8)
+
+938
+
+Journal of Conflict Resolution 65(5)
+
+ElectionSeasonit Þ interaction is positive, but the total marginal effect—which incorporates the base term for Positive CoverageGov
+it —is estimated with too little precision
+to reach statistical significance. There are two explanations for this. First, it may
+genuinely be the case that, during election seasons, pro-regime propaganda has no
+effect on the rate of protest in our sample. Many of the countries in our sample are
+poor, their citizens are keen for change, and during election seasons opposition
+leaders inspire hopes for a better future. As a result, the constraining effects of
+propaganda may genuinely fail to overcome popular grievances. Alternatively, it
+may also be the case that election seasons are systematically different from other
+calendar days, and in ways that our model does not fully accommodate. Scholars
+increasingly recognize that elections constitute focal points for protests, when collective action problems are more easily overcome. In this sense, we should expect
+both pro-regime propaganda and popular protests to occur simultaneously during
+election seasons.
+
+Robustness Checks
+The Online Appendix includes a series of robustness checks. Perhaps most importantly, we replicate the baseline results in Table 4 and the decay results in Section 5
+with the Integrated Crisis Early Warning System (ICEWS) event dataset. ACLED is
+manually coded; ICEWS is machine coded. Although ICEWS records more events
+than ACLED,7 the two records of protest are tightly correlated. The baseline results
+in Table 4 and the decay results in fifth section are substantively identical with the
+ICEWS dataset.
+Next, we ensure that the results in Table 4 are robust to different statistical
+models. Since protests are relatively rare, we reestimate equation (2) with a rare
+events logit correction. We also exploit the fact that ACLED records the number of
+protests in country i on day t by reestimating equation (2) with a negative binomial
+model. The results are unchanged.
+Qin, Strömberg, and Wu (2018) develop a measure of propaganda in China that
+treats the amount of regime coverage—rather than the valence embedded within that
+coverage—as the quantity of interest. To be clear, we view these as different quantities. In our view, there is no ex ante reason to view the amount of regime coverage
+as a proxy for its valence. Nonetheless, we create the variable Government Actionit ,
+which records the share of all articles in country i’s propaganda newspaper on day t
+that are about the regime. We then reestimate equation (2) with Government Actionit
+as the outcome, rather than Positive CoverageGov
+it . Although the estimated effect
+remains negative, it is statistically indistinguishable from 0. This affirms our theoretical prior that the amount of regime coverage is a different quantity than its valence.
+Protests may be correlated across days. It may be much easier, for instance, to
+sustain a protest once it has emerged than to initiate one in the first place. As a result,
+the outcome variable in equation (2) may be serially correlated. We accommodate
+this in Table 4 by controlling for protests on day t  1, as well as the number of days
+
+Carter and Carter
+
+939
+
+over the preceding week and the preceding month that witnessed a protest. As a
+robustness check, we employ a Markov transition framework (Epstein et al. 2005).
+We restrict attention to country-days where no protests occurred on day t  1, and
+discard country-day observations where some protest event occurred on day t  1.
+We thus measure the effect of media coverage on the probability that protests
+emerged on day t. The results are essentially identical to the results in Table 4.
+We also restrict attention to country-days where protests occurred the day before.
+In so doing, we measure the effect of media coverage on the probability that protests
+continue. The estimated coefficient is very similar to the results in Table 4, but the
+loss in observations—to just 1,343, from between 28,436 and 39,369—renders the
+estimates imprecise.
+Readers may be concerned that our data collection process limits the external
+validity of these statistical results. In particular, since we rely on online archives, our
+sample may be skewed in favor of autocracies with relatively high internet penetration
+rates. If higher rates of internet access limit the efficacy of propaganda, then these
+statistical results may well constitute a lower bound. In the Online Appendix, we show
+that the mean rate of internet access is slightly higher in our sample of autocracies than
+the global mean. This difference, however, is entirely driven by the inclusion in our
+sample of three microstates with particularly high internet access rates: Qatar, Singapore, and the United Arab Emirates. In the Online Appendix, we reestimate equation
+(2), but with these three microstates excluded. The results are unchanged. This suggests our use of online archives does not threaten external validity.
+We also control for a range of other potential time-varying confounders. To
+accommodate the possibility that repressive governments may employ redistributive
+programs to mitigate unrest, we control for government spending as a share of GDP.
+To ensure that the results are not driven by censorship spikes or social media shutdowns during periods of unrest, we control for a range of measures of social media
+use and digital censorship from the Digital Society Project (Mechkova et al. 2019).
+To ensure that the results are not driven by coverage that is meant to distract from the
+regime’s policies or by positive coverage of issues that are not explicitly linked to
+the regime (Rozenas and Stukal 2019; Field et al. 2018; Healy, Malhotra, and Mo
+2010), we control for both the volume of non-regime coverage and its valence. To
+ensure that the results are not sensitive to our definition of election season, we vary
+the number of days on either side of election day that constitutes an election season.
+The results in Table 4 are unchanged across each of these variants.
+We conclude with a note of caution. Although we have expressed these results in
+terms of the marginal effect of a unit increase in pro-regime propaganda on day t,
+these results do not suggest that, in practice, more propaganda would further reduce
+the rate of protest. As we noted above, autocrats employ propaganda by choice. They
+set the amount of propaganda by choice as well. Since, as Goebbels observed,
+“propaganda becomes ineffective the moment we are aware of it,” it may well be
+the case that additional propaganda would undermine the entire effort. In short, we
+believe that autocrats set the amount of propaganda optimally. The results above
+
+940
+
+Journal of Conflict Resolution 65(5)
+
+Table 5. Decay Functions.
+Distribution
+
+Functional Form
+
+Exponential
+Logarithmic
+Power
+Weibull
+
+P
+Protestt ¼ I  Tt¼0 expðd  tÞPositive CoverageGov
+t1 þ Xb
+P
+Protestt ¼ Tt¼0 ½I  d  logðt þ 1Þ  Positive CoverageGov
+t1 þ Xb
+PT
+d
+Gov
+Protestt ¼ I  t¼0 expðt þ 1Þ Positive Coveraget1 þ Xb
+P
+Protestt ¼ I  Tt¼0 expðd  tÞPositive CoverageGov
+t1 þ Xb
+
+suggest that propaganda, as it has been employed, has been associated with lower
+rates of protest in the world’s autocracies. However, the results do not suggest that, if
+autocrats had employed even more propaganda, they could have rendered protest
+even less likely as well.
+
+Do the Effects of Propaganda Persist Over Time?
+Functional Forms
+The results above make clear that pro-regime propaganda on day t  1 is associated
+with a meaningful reduction in the rate of protest on day t. However, are these effects
+persistent? That is, does pro-regime propaganda on day t  1 have any effect on the
+rate of protest on day t þ 5 or day t þ 10? To probe whether the effects of proregime propaganda persist over time, we follow Hill et al. (2013), who study the
+effects of political advertisements in two election campaigns in the United States:
+the 2000 presidential race and several state races in 2006. Drawing on models of
+memory decay from experimental psychology, Hill et al. (2013) identify four decay
+functions that characterize the persistence of persuasion effects. They then fit these
+decay functions to their data, and ask which of them best captures “whatever pattern
+of decay may be present.”
+Following Hill et al. (2013), we focus on four functional forms: the exponential,
+logarithmic, power, and Weibull. These functional forms appear in Table 5. In each,
+the daily rate of protest is a function of two main effects. The first is the effect of proregime propaganda on day t  1, which conditions the rate of protest on day t
+through its estimated coefficient, I, which Hill et al. (2013) refer to as an impact
+parameter. The second is the effect of pro-regime propaganda on the days before
+t  1, which exert the effect I weighted by the value of a decay function on its day.
+The value of the decay function on a given day is determined by the shape parameter
+d, which we estimate with maximum likelihood techniques. Here, to be conservative, we let pro-regime propaganda as temporally distant as thirty days before day t
+condition the rate of protest on day t. The vector X gives the set of covariates from
+the baseline models and country fixed effects.
+
+Carter and Carter
+
+941
+
+Table 6. Parametric Decay Estimates in Autocracies.
+
+Impact
+Decay
+Day-level control variables
+Country fixed effects
+Year fixed effects
+Observations
+Log Likelihood
+
+(1)
+Exponential
+
+(2)
+Weibull
+
+(3)
+Power
+
+(4)
+Logarithmic
+
+0.430
+(0.178)
+0.065
+(0.043)
+P
+P
+P
+5,785
+1,464.547
+
+0.337
+(0.333)
+0.170
+(0.298)
+P
+P
+P
+5,785
+1,468.727
+
+0.807
+(0.327)
+0.636
+(0.224)
+P
+P
+P
+5,785
+1,463.458
+
+0.511
+(0.173)
+0.126
+(0.068)
+P
+P
+P
+5,785
+1464.109
+
+Note:  p < 0.1;  p < 0.05;  p < 0.01.
+
+Results
+Table 6 presents results for the two key parameters, the impact parameter I and the
+decay parameter d, for each of the four functional forms. Figure 2 presents survival
+rates of pro-regime propaganda influence on the rate of protest, based on the results
+in Table 6. Because the decay models are sensitive to multicollinearity, we employ
+Model (4) from Table 4, which includes all our day-level variables, country-fixed
+effects, and year-fixed effects, but omits annually observed covariates. The resulting
+survival plots display the percent of propaganda impact from each lagged day (two
+to thirty one) that survives at day t ¼ 0, when a protest occurs or does not. Importantly, the impact parameter estimates I are similar to the baseline results in Table 4
+and the robustness checks in the Online Appendix.
+The effects of pro-regime propaganda, we find, are indeed persistent, and in much
+the same way as campaign advertisements in democracies. For the exponential,
+power, and logarithmic functions, we estimate that the half-life of pro-regime propaganda is between five and ten days. Using the Weibull function, we find that the
+half-life of pro-regime propaganda is roughly fifteen days. For the first three functions, we find that, thirty days after propaganda is employed, very little of its initial
+effect persists. Again, these results bear a striking similarity to those presented by
+Hill et al. (2013), which suggests that pro-regime propaganda may well operate
+through similar mechanisms of persuasion as campaign advertisements in
+democracies.
+
+Conclusion
+Propaganda works, we find, and it does so with a temporal signature similar to
+political messaging in democracies. A one standard deviation increase in proregime propaganda reduces the odds of protest the following day by 15%. The
+
+942
+
+Journal of Conflict Resolution 65(5)
+
+30
+
+50
+
+70
+
+90
+
+Exponential
+Weibull
+Power
+Logarithmic
+
+0 10
+
+Percent impact remaining on day t
+
+Decay Rates
+
+0
+
+5
+
+10
+
+15
+
+20
+
+25
+
+30
+
+Number of days since propaganda
+Figure 2. Pro-regime propaganda decay rates in autocracies. Plots show percentage of initial
+impact that remains at day t from each previous day.
+
+half-life of propaganda in autocracies is between five and ten days, similar to the
+half-life of campaign advertisements in democracies. These effects are substantively
+meaningful and precisely estimated.
+This paper suggests a number of directions for future research. Most importantly,
+it remains unclear why propaganda diminishes the rate of protest: that is, which of
+the theoretical mechanisms identified in the second section are most important. Does
+propaganda shape the beliefs of citizens, and so diminish whatever grievances would
+otherwise compel them to the streets? Does it cause citizens to view their neighbors
+as more likely to support the regime, and thereby render collective action more
+costly to initiate? Does it signal to citizens that the regime is willing to meet protest
+with repression, and hence discourage protest in the first place? Are the mechanisms
+through which propaganda works systematically different across autocracies? We
+believe that field experiments may be best suited to adjudicate among these competing explanations.
+Second, our focus on explicitly pro-regime propaganda may be narrow. Propaganda newspapers contain a vast amount of other information, presumably selected
+strategically by the autocrat or his appointees to achieve some domestic objective.
+Our data, as well as the text analytic techniques that we employ to measure
+
+Carter and Carter
+
+943
+
+propaganda, can be easily adapted to ask a range of other questions. For instance,
+scholars have long understood that the Chinese Communist Party (CCP) references
+“social stability maintenance” as a sign of its commitment to suppressing unrest.
+“The term,” Huang (2015, 426) observes, “is broadly understood as a code word for
+maintaining the stability of the existing regime.” When do autocrats use their propaganda apparatuses to issue explicit threats of violence against citizens? Do other
+forms of non-regime propaganda, such as those documented by Rozenas and Stukal
+(2019) and Field et al. (2018), have effects that are similar in magnitude to those of
+pro-regime propaganda?
+Finally, propaganda may be most effective when employed consistently over a
+sustained period: when it creates an alternate reality that, over time, induces its
+citizens to relinquish their once held convictions. This paper has focused on the
+effects of deviations from a state-run newspaper’s average level of propaganda. If
+propaganda is most effective when it is consistently employed, however, these
+deviations may, in fact, have a weaker effect on the rate of protest than the level
+of propaganda that an autocrat consistently employs. Future research might consider
+how to measure sustained propaganda campaigns, and then measure their effects.
+Most broadly, this paper insists on the centrality of information and belief to
+autocratic survival. Perhaps because the concepts are so difficult to measure, the new
+wave of research on autocratic politics has largely overlooked the centrality of
+information and beliefs to autocratic survival. Of course, this research has taught
+us much about the role of institutions: of single parties, in particular, but also how
+autocrats have learned to survive nominally democratic institutions and, in some
+cases, use these institutions to advance their interests. Yet this focus on institutions
+may have come at the expense of a focus on information and beliefs, which scholars
+long regarded as the chief determinant of acquiescence—both by frustrated citizens
+and conspiring elites—and, therefore, to autocratic survival. New computational
+tools make it possible to measure the politics of information and, ultimately, understand its effects on autocratic survival.
+Acknowledgments
+For helpful comments, we thank Andrew Coe, Alex Lin, Bryn Rosenfeld, Arthur Spirling, two
+anonymous reviewers, and participants at the USC Center for International Studies Workshop
+and the NYU Text as Data Speaker Series. We especially thank James Lo for sharing his code
+and expertise. For research assistance, we thank Megan Angulo, Connor Chapkis, Bryant
+Cong, Eva Isakovic, Yash Kamath, Young-Kyung Kim, Megan Lee, Lisa de Rafols, Hector
+Reyes, Alanna Schenk, Joshua Shaw, and Ciara Taylor.
+
+Declaration of Conflicting Interests
+The author(s) declared no potential conflicts of interest with respect to the research, authorship, and/or publication of this article.
+
+944
+
+Journal of Conflict Resolution 65(5)
+
+Funding
+The author(s) disclosed receipt of the following financial support for the research, authorship,
+and/or publication of this article: This research was supported by Center for International
+Studies, University of Southern California.
+
+ORCID iD
+Erin Baggott Carter
+
+https://orcid.org/0000-0002-9196-8572
+
+Supplemental Material
+Supplemental material for this article is available online.
+
+Notes
+1. Propaganda is important in transitional democracies; see Lawson and McCann (2005) and
+Boas and Hidalgo (2011). For more on Fox News, see DellaVigna and Kaplan (2007) and
+Martin and Yurukoglu (2017).
+2. Joseph Goebbels, architect of Nazi Germany’s propaganda, favored positive spin over lies:
+“otherwise the enemy or the facts might expose falsehoods” (Taylor 1998).
+3. In the democratic context, there is considerable evidence that political messaging alters the
+beliefs of those who consume it. See, for example, DellaVigna and Gentzkow (2010).
+4. To maximize temporal coverage, we draw regime classifications from Marshall and Jaggers (2005), who define countries as democracies for Polity scores greater than or equal to
+6. Therefore, our sample includes all countries with Polity scores of five or less in year t.
+5. Interviews with anonymous journalists. Many claim that Les Dépêches de Brazzaville is
+subsidized by the state oil company.
+6. Propaganda content that does not directly implicate the regime may be salient as well; see
+Rozenas and Stukal (2019) and Field et al. (2018).
+7. Raleigh and Kishi (2019) attribute this to coding error in the ICEWS algorithm.
+
+References
+Adena, Maja, Ruben Enikolopov, Maria Petrova, Veronica Santarosa, and Ekaterina Zhuravskaya. 2015. “Radio and the Rise of the Nazis in Prewar Germany.” Quarterly Journal
+of Economics 130 (4): 1885-939.
+Althaus, Scott L., Brittany H. Bramlett, and James G. Gimpel. 2012. “When War Hits Home:
+The Geography of Military Losses and Support for War in Time and Space.” Journal of
+Conflict Resolution 56 (3): 382-412.
+Anandarajan, Murugan, Chelsey Hill, and Thomas Nolan. 2019. Practical Text Analysis:
+Maximizing the Value of Text Data, Vol. 2. New York: Springer.
+Beaulieu, Emily. 2014. Electoral Protest and Democracy in the Developing World.
+New York: Cambridge University Press.
+Blaydes, Lisa. 2008. Authoritarian Elections and Elite Management: Theory and Evidence
+from Egypt. Stanford, CA: Stanford University.
+
+Carter and Carter
+
+945
+
+Bleck, Jaimie, and Kristin Michelitch. 2017. “Capturing the Airwaves, Capturing the Nation?
+A Field Experiment on State-run Media Effects in the Wake of a Coup.” Journal of
+Politics 79 (3): 873-89.
+Boas, Taylor C. F., and Daniel Hidalgo. 2011. “Controlling the Airwaves: Incumbency
+Advantage and Community Radio in Brazil.” American Journal of Political Science 55
+(4): 869-85.
+Brancati, Dawn. 2016. Democracy Protests: Origins, Features, and Significance. New York:
+Cambridge University Press.
+Brownlee, Jason. 2007. Durable Authoritarianism in an Age of Democratization. New York:
+Cambridge University Press.
+Carter, Erin Baggott, and Brett L. Carter. 2020. Propaganda in Autocracies. Cambridge, MA:
+R&R, Cambridge University Press.
+Chen, Xi. 2012. Social Protest and Contentious Authoritarianism in China. Cambridge, UK:
+Cambridge University Press.
+Chenoweth, Erica, and Maria J. Stephan. 2011. Why Civil Resistance Works: The Strategic
+Logic of Nonviolent Conflict. New York: Columbia University.
+Chenoweth, Erica, and Jay Ulfelder. 2017. “Can Structural Conditions Explain the Onset of
+Nonviolent Uprisings?” Journal of Conflict Resolution 61 (2): 298-324.
+Christensen, Darin, and Francisco Garfias. 2018. “Can You Hear Me Now? How Communication Technology Affects Protest and Repression.” Quarterly Journal of Political Science
+13:89-117.
+Cook, Thomas D., and Brian R. Flay. 1978. “The Persistance of Experimentally Induced
+Attitude Change.” Advances in Experimental Social Psychology 11:1-57.
+DellaVigna, Stefano, and Matthew Gentzkow. 2010. “Persuasion: Empirical Evidence.”
+Annual Review of Economics 2:643-69.
+DellaVigna, Stefano, and Ethan Kaplan. 2007. “The Fox News Effect: Media Bias and
+Voting.” Quarterly Journal of Economics 122 (3): 1187-234.
+DeMarzo, Peter M., Dimitri Vayanos, and Jeffrey Zwiebel. 2003. “Persuasion Bias, Social
+Influence, and Unidimensional Opinions.” Quarterly Journal of Economics 118 (3):
+909-68.
+Dong, Zhendong, and Qiang Dong. 2014. “Positive and Negative Valence Dictionaries.”
+HowNet. Accessed January 1, 2020. www.keenage.com.
+Enikolopov, Ruben, Maria Petrova, and Ekaterina Zhuravskaya. 2011. “Media and Political
+Persuasion: Evidence from Russia.” American Economic Review 101 (7): 3253-85.
+Epstein, David, Robert H. Bates, Jack Goldstone, Ida Kristensen, and Sharyn O’Halloran.
+2005. “Democratic Transitions.” American Journal of Political Science 59:551-69.
+Eyster, Erik, and Matthew Rabin. 2009 “Rational and Naive Herding.” Centre for Economic
+Policy Research Discussion Paper 7351.
+Fearon, James D. 2011. “Self-enforcing Democracy.” Quarterly Journal of Economics 126
+(4): 1661-708.
+Field, Anjalie, Doron Kliger, Shuly Wintner, Jennifer Pan, Dan Jurafsky, and Yulia Tsvetkov.
+2018. “Framing and Agenda-setting in Russian News: A Computational Analysis of
+
+946
+
+Journal of Conflict Resolution 65(5)
+
+Intricate Political Strategies.” Proceedings of EMNLP, 3570-80. Association for Computational Linguistics.
+Fu, Diana. 2018. Mobilizing Without the Masses: Control and Contention in China. New
+York: Cambridge University Press.
+Gallagher, Mary E., and Blake Miller. 2019. Who Not What: The Logic of China’s Information
+Control Strategy. Ann Arbor: University of Michigan.
+Gandhi, Jennifer. 2008. Political Institutions under Dictatorship. New York: Cambridge
+University Press.
+Geddes, Barbara, Joseph Wright, and Erica Frantz. 2018. How Dictatorships Work: Power,
+Personalization, and Collapse. New York: Cambridge University Press.
+Gehlbach, Scott, and Konstantin Sonin. 2014. “Government Control of the Media.” Journal of
+Public Economics 118:163-71.
+Gentzkow, Matthew, and Jesse M. Shapiro. 2006. “Media Bias and Reputation.” Journal of
+Political Economy 114 (2): 280-316.
+Gerber, Alan S., James G. Gimpel, Donald P. Green, and Daron R. Shaw. 2011. “How Large
+and Long-lasting are the Persuasive Effects of Televised Campaign Ads? Results from a
+Randomized Field Experiment.” American Political Science Review 105:135-50.
+Harvard General Inquirer. 2015. “Positiv and Negativ Semantic Dictionaries.” Accessed
+January 1, 2020. http://www.wjh.harvard.edu/inquirer/.
+Hassan, Mai. 2016. “The Strategic Shuffle: Ethnic Geography, the Internal Security
+Apparatus, and Elections in Kenya.” American Journal of Political Science 61 (2):
+382-95.
+Hayes, Andrew F., and Teresa A. Myers. 2009. “Testing the Proximate Casualties Hypothesis:
+Local Troop Loss, Attention to News, and Support for Military Intervention.” Mass Communication and Society 12:379-402.
+Healy, Andrew J., Neil Malhotra, and Cecilia Hyunjung Mo. 2010. “Irrelevant Events Affect
+Voters’ Evaluations of Government Performance.” Proceedings of the National Academy
+of Sciences of the USA 107 (29): 12804-09.
+Hill, Seth J., James Lo, Lynn Vavreck, and John Zaller. 2013. “How Quickly We Forget: The
+Duration of Persuasion Effects from Mass Communication.” Political Communication 30:
+521-47.
+Howard, Philip N., and Muzammil M. Hussain. 2013. Democracy’s Fourth Wave? Digital
+Media and the Arab Spring. New York: Oxford University Press.
+Huang, Haifeng. 2015. “Propaganda as Signaling.” Comparative Politics 47 (4): 419-44.
+Jowett, Garth S., and Victoria O’Donnell. 2012. Propaganda and Persuasion. London, UK:
+Sage.
+Karadeniz, Talha, and Erdogan Dogdu. 2018. “Improvement of General Inquirer Features
+with Quantity Analysis.” 2018 IEEE International Conference on Big Data, 2228-31.
+Institute of Electrical and Electronics Engineers.
+King, Gary, Jennifer Pan, and Margaret E. Roberts. 2013. “How Censorship in China Allows
+Government Criticism but Silences Collective Expression.” American Political Science
+Review 107 (2): 326-43.
+
+Carter and Carter
+
+947
+
+King, Gary, Jennifer Pan, and Margaret E. Roberts. 2017. “How the Chinese Government
+Fabricates Social Media Posts for Strategic Distraction, not Engaged Argument.”
+American Political Science Review 111 (3): 484-501.
+Knutsen, Carl Henrik, Havard Mokliev, and Nygard Tore Wig. 2017. “Autocratic Elections:
+Stabilizing Tool or Force for Change?” World Politics 69 (1): 98-143.
+Knutsen, Carl Henrik, and Havard Mokliev Nygard. 2015. “Institutional Characteristics and
+Regime Survival: Why Are Semi-democracies Less Durable Than Autocracies and
+Democracies?” American Journal of Political Science 59 (3): 656-70.
+Kuran, Timur. 1989. “Sparks and Prairie Fires: A Theory of Unanticipated Political Revolution.” Public Choice 61 (1): 41-74.
+Kuran, Timur. 1997. Private Truths, Public Lies: The Social Consequences of Preference
+Falsification. Cambridge, MA: Harvard University Press.
+Lawson, Chappell, and James A. McCann. 2005. “Television News, Mexico’s 2000 Elections
+and Media Effects in Emerging Democracies.” British Journal of Political Science 35:
+1-30.
+Levitsky, Steven, and Lucan A. Way. 2010. Competitive Authoritarianism: Hybrid Regimes
+After the Cold War. Cambridge, UK: Cambridge University Press.
+Little, Andrew T. 2017. “Propaganda and Credulity.” Games and Economic Behavior 102:
+224-32.
+Lohmann, Susanne. 1993. “A Signaling Model of Informative and Manipulative Political
+Action.” American Political Science Review 87 (2): 319-33.
+Lust-Okar, Ellen. 2006. “Elections under Authoritarianism: Preliminary Lessons from Jordan.”
+Democratization 13 (3): 456-71.
+Magaloni, Beatriz. 2008. “Credible Power-sharing and the Longevity of Authoritarian Rule.”
+Comparative Political Studies 41 (4): 715-41.
+Marinov, Nikolay, and Hein Goemans. 2014. “Coups and Democracy.” British Journal of
+Political Science 44: 799-825.
+Marshall, Monty G., and Keith Jaggers. 2005. Polity IV Project: Political Regime Characteristics and Regime Transitions, 1800-2004. Arlington: George Mason University.
+Martin, Gregory J., and Ali Yurukoglu. 2017. “Bias in Cable News: Persuasion and Polarization.” American Economic Review 107 (9): 2565-99.
+Mechkova, Valeriya, Daniel Pemstein, Brigitte Seim, and Steven Wilson. 2019. “DSP [Country-Year] Dataset v9.” Digital Society Project.
+Mullainathan, Sendhil, Joshua Schwartzstein, and Andrei Shleifer. 2008. “Coarse Thinking
+and Persuasion.” Quarterly Journal of Economics 123 (2): 577-619.
+O’Connor, Brendan, Ramnath Balasubramanyan, Bryan R. Routledge, and Noah A. Smith.
+2010. “From Tweets to Polls: Linking Text Sentiment to Public Opinion Time Series.”
+Proceedings of the International AAAI Conference on Weblogs and Social Media, 1-8.
+Washington, DC: ICWSM.
+Qin, Bei, David Strömberg, and Yanhui Wu. 2017. “Why Does China Allow Freer Social
+Media? Protests vs. Surveillance and Propaganda.” Journal of Economic Perspectives 31
+(1): 117-40.
+
+948
+
+Journal of Conflict Resolution 65(5)
+
+Qin, Bei, David Strömberg, and Yanhui Wu. 2018. “Media Bias in China.” American Economic Review 108 (9): 2442-76.
+Raleigh, Clionadh, Andrew Linke, Høavard Hegre, and Joakim Karlsen. 2010. “Introducing
+ACLED-armed Conflict Location and Event Data.” Journal of Peace Research 47 (5):
+651-60.
+Raleigh, Clionadh, and Roudabeh Kishi. 2019. “Comparing Conflict Data: Similarities and
+Differences Across Conflict Datasets.” ACLED. Online codebook. Accessed November
+12, 2020. https://www.acleddata.com/wp-content/uploads/2019/09/ACLED-Comparison_
+8.2019.pdf.
+Roberts, Margaret E. 2018. Censored: Distraction and Diversion Inside China’s Great Firewall. Princeton, NJ: Princeton University Press.
+Rosenfeld, Bryn. 2017. “Reevaluating the Middle-class Protest Paradigm: A Case-control
+Study of Democratic Protest Coalitions in Russia.” American Political Science Review
+111 (4): 637-52.
+Rozenas, Arturas, and Denis Stukal. 2019. “How Autocrats Manipulate Economic News:
+Evidence from Russia’s State-controlled Television.” Journal of Politics 81 (3): 982-96.
+Rydzak, Jan. 2019. Of Blackouts and Bandhs: The Strategy and Structure of Disconnected
+Protest in India. Stanford, CA: Stanford University.
+Shadmehr, Mehdi, and Dan Bernhardt. 2015. “State Censorship.” American Economic Journal: Microeconomics 7 (2): 280-308.
+Sides, John, and Lynn Vavreck. 2013. The Gamble: Choice and Chance in the 2012 Election.
+Princeton, NJ: Princeton University Press.
+Slater, Dan. 2010. Ordering Power: Contentious Politics and Authoritarian Leviathans in
+Southeast Asia. New York: Princeton University Press.
+Stanley, Jason. 2015. How Propaganda Works. New York: Princeton University Press.
+Steinert-Threlkeld, Zachary C., Delia Mocanu, Alessandro Vespignani, and James Fowler.
+2015. “Online Social Networks and Offline Protest.” EPJ Data Science 4 (19): 1-9.
+Svolik, Milan W. 2012. The Politics of Authoritarian Rule. Cambridge, MA: Cambridge
+University Press.
+Taylor, Richard. 1998. Film Propaganda: Soviet Russia and Nazi Germany. New York: I.B.
+Tauris.
+Trejo, Guillermo. 2014. “The Ballot and the Street: An Electoral Theory of Social Protest in
+Autocracies.” Perspectives on Politics 12 (2): 332-52.
+Truex, Rory. 2019. “Focal Points, Dissident Calendars, and Preemptive Repression.” Journal
+of Conflict Resolution 63 (4): 1032-52.
+Tucker, Joshua A. 2007. “Enough! Electoral Fraud, Collective Action Problems, and Postcommunist Colored Revolutions.” Perspectives on Politics 5 (3): 535-51.
+Tufekci, Zeynep, and Christopher Wilson. 2012. “Social Media and the Decision to Participate in Political Protest: Observations From Tahrir Square.” Journal of Communication
+62:363-79.
+Tullock, Gordon. 1987. Autocracy. New York: Springer.
+Wedeen, Lisa. 1999. Ambiguities of Domination: Politics, Rhetoric, and Symbols in Contemporary Syria. Chicago: The University of Chicago.
+
+Carter and Carter
+
+949
+
+White, Stephen, Sarah Oates, and Ian McAllister. 2005. “Media Effects and Russian Elections.” British Journal of Political Science 35 (2): 191-208.
+Wig, Tore Espen, and Geelmuyden Rod. 2016. “Cues to Coup Plotters: Elections as Coup
+Triggers in Dictatorships.” Journal of Conflict Resolution 60 (5): 787-812.
+Yanagizawa-Drott, David. 2014. “Propaganda and Conflict: Evidence from the Rwandan
+Genocide.” Quarterly Journal of Economics 129 (4): 1947-94.
+
+

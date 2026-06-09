@@ -374,6 +374,35 @@ def run_agent_logit(df: pd.DataFrame) -> dict[str, Any]:
         results["main_logit"]["base_treatment"] = "pure"
         results["main_logit"]["n_clusters"] = int(len(np.unique(cluster_ids)))
 
+        # ── Average discrete-change effects for binary treatment dummies ──
+        # The derivative-based MEM (beta_j * pbar(1-pbar)) is inappropriate for
+        # binary regressors and ignores the theta*treatment interaction columns.
+        # Instead, for each treatment dummy, predict P(join) for every
+        # observation in the estimation sample with the dummy set to 1 (and its
+        # theta-interaction set to theta*1) and with the dummy set to 0
+        # (interaction = 0), holding all other regressors at observed values,
+        # then average the difference over the sample.
+        idx = {name: i for i, name in enumerate(var_names)}
+        beta = np.asarray(logit_clustered.params)
+        theta_col = X[:, idx["theta"]]
+        ame_discrete: dict[str, float] = {}
+        for t in treatments:
+            d_i = idx[f"treat_{t}"]
+            i_i = idx[f"theta_x_{t}"]
+            X1 = X.copy()
+            X1[:, d_i] = 1.0
+            X1[:, i_i] = theta_col
+            X0 = X.copy()
+            X0[:, d_i] = 0.0
+            X0[:, i_i] = 0.0
+            diff = expit(X1 @ beta) - expit(X0 @ beta)
+            ame_discrete[f"treat_{t}"] = round(float(np.mean(diff)), 4)
+        results["main_logit"]["ame_discrete"] = ame_discrete
+
+        print("\nAverage discrete-change effects (dummy + theta-interaction toggled):")
+        for name, val in ame_discrete.items():
+            print(f"  {name}: {val:+.4f}")
+
         print(f"\nPseudo R-squared: {results['main_logit']['pseudo_r2']:.4f}")
         print(f"\n{'Variable':<35} {'Coef':>8} {'SE':>8} {'z':>8} {'p':>8}")
         print("-" * 75)
@@ -469,6 +498,7 @@ def run_belief_regressions(belief_df: pd.DataFrame) -> dict[str, Any]:
         )
         results["belief_equation"] = _format_ols_results(ols_clustered, var_names_1)
         results["belief_equation"]["base_treatment"] = base_treatment
+        results["belief_equation"]["n_clusters"] = int(len(np.unique(clu1)))
 
         print(f"R-squared: {results['belief_equation']['r_squared']:.4f}")
         print(f"\n{'Variable':<35} {'Coef':>8} {'SE':>8} {'t':>8} {'p':>8}")
@@ -504,6 +534,12 @@ def run_belief_regressions(belief_df: pd.DataFrame) -> dict[str, Any]:
         )
         results["action_equation"] = _format_logit_results(logit_clustered2, var_names_2)
         results["action_equation"]["base_treatment"] = base_treatment
+        results["action_equation"]["n_clusters"] = int(len(np.unique(clu2)))
+        # Sample composition by model (for table notes)
+        results["action_equation"]["model_counts"] = {
+            str(m): int(c)
+            for m, c in reg_df.loc[mask2, "model"].value_counts().items()
+        }
 
         print(f"Pseudo R-squared: {results['action_equation']['pseudo_r2']:.4f}")
         print(f"\n{'Variable':<35} {'Coef':>8} {'SE':>8} {'z':>8} {'p':>8}")
@@ -786,7 +822,9 @@ def _finite_n_for_subset(df: pd.DataFrame, label: str) -> dict[str, Any] | None:
     theta_vals = period_groups["theta"].values
     n_bins = min(15, max(5, len(period_groups) // 10))
     bins = np.linspace(theta_vals.min(), theta_vals.max(), n_bins + 1)
-    period_groups["theta_bin"] = pd.cut(period_groups["theta"], bins=bins, labels=False)
+    period_groups["theta_bin"] = pd.cut(
+        period_groups["theta"], bins=bins, labels=False, include_lowest=True
+    )
     period_groups = period_groups.dropna(subset=["theta_bin"])
 
     binned = period_groups.groupby("theta_bin").agg(
@@ -801,7 +839,9 @@ def _finite_n_for_subset(df: pd.DataFrame, label: str) -> dict[str, Any] | None:
         return None
 
     # ── Fit logistic on TRAINING data only ──
-    train_groups["theta_bin"] = pd.cut(train_groups["theta"], bins=bins, labels=False)
+    train_groups["theta_bin"] = pd.cut(
+        train_groups["theta"], bins=bins, labels=False, include_lowest=True
+    )
     train_groups = train_groups.dropna(subset=["theta_bin"])
 
     train_binned = train_groups.groupby("theta_bin").agg(
@@ -862,7 +902,9 @@ def _finite_n_for_subset(df: pd.DataFrame, label: str) -> dict[str, Any] | None:
     print(f"  In-sample: r={r:.4f} (p={p_val:.6f}), RMSE={rmse:.4f}, MAE={mae:.4f}")
 
     # ── Out-of-sample evaluation ──
-    test_groups["theta_bin"] = pd.cut(test_groups["theta"], bins=bins, labels=False)
+    test_groups["theta_bin"] = pd.cut(
+        test_groups["theta"], bins=bins, labels=False, include_lowest=True
+    )
     test_groups = test_groups.dropna(subset=["theta_bin"])
 
     test_binned = test_groups.groupby("theta_bin").agg(
@@ -979,7 +1021,7 @@ def generate_regression_table(results: dict) -> str:
     lines.append(r"\centering")
     lines.append(r"\small")
 
-    lines.append(r"\caption{Agent-Level Regressions}")
+    lines.append(r"\caption{Agent-level regressions}")
     lines.append(r"\label{tab:regressions}")
 
     # Build column spec
@@ -1103,15 +1145,50 @@ def generate_regression_table(results: dict) -> str:
     lines.append(r"\bottomrule")
     lines.append(r"\end{tabular}")
 
-    # Notes
+    # ── Notes (sample composition, clustering, and marginal effects are
+    #    derived from the fitted results so they stay in sync with the data) ──
+    def _fmt_n(n: int | None) -> str:
+        return f"{n:,}".replace(",", r"{,}") if n is not None else "?"
+
+    main_n = main.get("n_obs")
+    main_clusters = main.get("n_clusters")
+    coord_n = coord.get("n_obs")
+    coord_clusters = coord.get("n_clusters")
+    action_n = action_eq.get("n_obs")
+    action_clusters = action_eq.get("n_clusters")
+
+    # Column (3) sample composition by model
+    action_counts = action_eq.get("model_counts", {})
+    comp_parts = []
+    for slug, cnt in sorted(action_counts.items(), key=lambda kv: -kv[1]):
+        comp_parts.append(f"{SHORT_NAMES.get(slug, slug)} (${_fmt_n(cnt)}$ obs.)")
+    action_comp = ", ".join(comp_parts) if comp_parts else "belief-elicitation runs"
+
+    # Marginal effects: derivative-based MEM for theta, discrete change for
+    # the surveillance dummy
+    mem_theta = main.get("marginal_effects_at_mean", {}).get("theta")
+    ame_surv = main.get("ame_discrete", {}).get("treat_surveillance")
+
     lines.append(r"\begin{tablenotes}")
     lines.append(r"\small")
-    lines.append(r"\textit{Notes:} Logit coefficients reported with clustered standard errors")
-    lines.append(r"(model--country--period) in parentheses.")
-    lines.append(r"Column (1): agent-level join decision on $\theta$, treatment dummies, and interactions,")
-    lines.append(r"with model fixed effects. Base category: pure treatment.")
-    lines.append(r"Column (2): coordination ablation---$\Pr(\text{join}_i = 1) = \Lambda(\beta_0 + \beta_1 \text{Dir}_i + \beta_2 \text{Coord}_i + \beta_3 \text{Dir}_i \times \text{Coord}_i)$---using briefing slider values (pure treatment only). Direction $\in [0,1]$ is increasing in regime strength; Coordination $\in [0,1]$ is decreasing (high = weaker regime). Because both are monotone logistic transforms of the same signal, they are near-collinear ($\rho \approx -1$); individual coefficients reflect the partial effect \textit{conditional on the other}, not the marginal effect.")
-    lines.append(r"Column (3): partial effect of elicited belief ($b_i \in [0,100]$, stated success probability) on action, controlling for $z$-score. ``Treat: X'' rows are treatment intercept dummies (base category: communication), not interactions with belief.")
+    lines.append(r"\textit{Notes:} Logit coefficients with standard errors clustered at the model--country--period level in parentheses (all three columns; in column (3) the sample is almost entirely a single model, so clusters effectively coincide with country--period cells).")
+    lines.append(r"Column (1): agent-level join decisions pooled across all seven models in the pure, communication, scramble, and flip treatments, plus surveillance runs for Mistral, Llama 3.3 70B, and Qwen3 30B"
+                 + f" ($N = {_fmt_n(main_n)}$; ${_fmt_n(main_clusters)}$ clusters)."
+                 + r" Regressors: $\theta$, treatment dummies (base category: pure), $\theta \times$ treatment interactions, and model fixed effects.")
+    lines.append(r"Column (2): coordination ablation---$\Pr(\text{join}_i = 1) = \Lambda(\beta_0 + \beta_1 \text{Dir}_i + \beta_2 \text{Coord}_i + \beta_3 \text{Dir}_i \times \text{Coord}_i)$, where $\Lambda$ denotes the logistic CDF---using briefing slider values; pure treatment only, all seven models pooled, no model fixed effects"
+                 + f" ($N = {_fmt_n(coord_n)}$; ${_fmt_n(coord_clusters)}$ clusters)."
+                 + r" Direction $\in [0,1]$ is increasing in regime strength; Coordination $\in [0,1]$ is decreasing (high = weaker regime). Because both are monotone logistic transforms of the same signal, they are near-collinear ($\rho \approx -1$); individual coefficients reflect the partial effect \textit{conditional on the other}, not the marginal effect.")
+    lines.append(r"Column (3): partial effect of elicited belief ($b_i \in [0,100]$, stated success probability) on action, controlling for $z$-score. Sample: belief-elicitation runs only (communication, pure, and surveillance variants), comprising "
+                 + action_comp
+                 + f"; $N = {_fmt_n(action_n)}$"
+                 + (f"; ${_fmt_n(action_clusters)}$ clusters" if action_clusters else "")
+                 + r". ``Treat: X'' rows are treatment intercept dummies (base category: communication), not interactions with belief.")
+    if mem_theta is not None:
+        lines.append(r"Marginal effects, column (1): for the continuous regressor $\theta$, the derivative-based effect at the mean is $\hat{\beta}_\theta \, \bar{p}(1-\bar{p}) = "
+                     + f"{mem_theta:.3f}$.")
+    if ame_surv is not None:
+        lines.append(r"For the binary surveillance treatment, a derivative-based marginal effect is not meaningful and would ignore the $\theta \times$ surveillance interaction; we therefore report the average discrete-change effect of surveillance (toggling the dummy and its $\theta$-interaction jointly, with all other regressors at observed values, averaged over the column (1) estimation sample): $"
+                     + f"{ame_surv * 100:.1f}$ pp.")
     lines.append(r"\textbf{Caveat:} beliefs are elicited \textit{after} the join/stay decision (post-decision), so the belief coefficient reflects association rather than a causal pathway; post-decision rationalization may inflate the correlation.")
     lines.append(r"The very high pseudo-$R^2$ (0.975) and large intercept indicate near-deterministic prediction consistent with quasi-separation---belief almost perfectly predicts action, as expected when belief is stated \textit{post hoc}.")
     lines.append(r"${}^{*}p<0.10$, ${}^{**}p<0.05$, ${}^{***}p<0.01$.")
@@ -1134,12 +1211,12 @@ def generate_finite_n_table(results: dict) -> str:
     lines.append(r"\centering")
     lines.append(r"\small")
 
-    lines.append(r"\caption{Finite-$N$ Benchmark: Predicted vs.\ Empirical Regime Fall Rates}")
+    lines.append(r"\caption{Finite-$n$ benchmark: predicted vs.\ empirical regime fall rates}")
     lines.append(r"\label{tab:finite_n}")
     lines.append(r"\resizebox{\columnwidth}{!}{%")
     lines.append(r"\begin{tabular}{lccccc}")
     lines.append(r"\toprule")
-    lines.append(r"Model & $N$ periods & Logistic $x_0$ & Pearson $r$ & RMSE & MAE \\")
+    lines.append(r"Model & $N$ cells & Logistic $x_0$ & Pearson $r$ & RMSE & MAE \\")
     lines.append(r"\midrule")
 
     # Per-model results
@@ -1178,10 +1255,19 @@ def generate_finite_n_table(results: dict) -> str:
     lines.append(r"\end{tabular}}")
     lines.append(r"\begin{tablenotes}")
     lines.append(r"\small")
-    lines.append(r"\textit{Notes:} For each $\theta$ bin, the predicted fall rate is")
-    lines.append(r"$\Pr(\text{Binom}(25, \hat{p}(\theta)) > 25\theta)$ where $\hat{p}(\theta)$")
-    lines.append(r"is the fitted logistic join probability. Pearson $r$ measures correlation")
-    lines.append(r"between predicted and empirical fall rates across $\theta$ bins.")
+    lines.append(r"\textit{Notes:} Pure treatment only, $n = 25$ agents per row. For each $\theta$ bin, the predicted fall rate is")
+    lines.append(r"$\Pr(\text{Binom}(n, \hat{p}(\theta)) > n\theta)$ where $\hat{p}(\theta)$")
+    lines.append(r"is the fitted logistic join probability.")
+    lines.append(r"``$N$ cells'' is the number of unique country--period cells after pooling repeated log entries;")
+    lines.append(r"for Mistral the pure-treatment log contains 1{,}000 runs over 600 unique country--period indices")
+    lines.append(r"(re-runs appended to the same log are pooled within a cell).")
+    lines.append(r"``Logistic $x_0$'' is the midpoint of the logistic $\hat{p}(\theta) = L/(1+e^{-k(\theta - x_0)})$")
+    lines.append(r"fitted to bin-averaged join rates on a random 70\% train split of cells (fixed seed);")
+    lines.append(r"it can therefore differ from the full-sample cutoff in the logistic-parameters table,")
+    lines.append(r"which is estimated on all observations without the split.")
+    lines.append(r"Pearson $r$ is the correlation between predicted and empirical fall rates across $\theta$ bins")
+    lines.append(r"(10--15 bins per model, 15 pooled), computed in-sample over all cells; stars are from the")
+    lines.append(r"two-sided test of zero correlation across those bins.")
     lines.append(r"${}^{*}p<0.10$, ${}^{**}p<0.05$, ${}^{***}p<0.01$.")
     lines.append(r"\end{tablenotes}")
 

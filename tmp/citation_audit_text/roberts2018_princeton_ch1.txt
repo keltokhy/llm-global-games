@@ -1,0 +1,1066 @@
+January 4, 2018     Time: 09:17am      Chapter1.tex
+
+
+
+
+                      © Copyright, Princeton University Press. No part of this book may be
+                      distributed, posted, or reproduced in any form by digital or mechanical
+                      means without prior written permission of the publisher.
+
+
+
+
+                  CHAPTER ONE
+
+
+
+                  Introduction
+
+                        China has four million websites, with nearly 700 million
+                        Internet users, 1.2 billion mobile phone users, 600 million
+                        WeChat and Weibo users, and generates 30 billion pieces
+                        of information every day. It is not possible to apply
+                        censorship to this enormous amount of data. Thus
+                        censorship is not the correct word choice. But no
+                        censorship does not mean no management.
+                                    — Lu Wei, Former Director, State Internet Information
+                                                          Office, China, December 20151
+
+
+
+                  1.1 THE PUZZLE OF POROUS CENSORSHIP
+
+                  As more people around the world gain access to the Internet,
+                  government censorship seems an increasingly futile exercise.
+                  Traditional conceptions of censorship that could completely
+                  control information, such as watertight bans on access,
+                  prepublication review, or government-enforced prohibitions on
+                  content, seem silly when you consider that every second millions
+                  of Internet users around the world are sending one another
+                  instant messages, participating in online forums, and tweeting
+                  to hundreds of thousands of followers. Even the world’s most
+                  famous censors recognize this reality. As the former “gatekeeper
+                  of the Chinese Internet” Lu Wei stresses in the epigraph to this
+                  chapter, the thirty billion pieces of information generated each
+                  day by Chinese citizens quite simply cannot be censored.
+
+                     1                                                              December 9,
+                  2015. Available at: http://news.china.com/domestic/945/20151209/20903585.html.
+
+
+
+
+                         For general queries, contact webmaster@press.princeton.edu
+January 4, 2018    Time: 09:17am     Chapter1.tex
+
+
+
+
+                      © Copyright, Princeton University Press. No part of this book may be
+                      distributed, posted, or reproduced in any form by digital or mechanical
+                      means without prior written permission of the publisher.
+
+                  2   •    CHAPTER ONE
+
+
+                     Yet recognizing the impossibility of complete control of
+                  online discourse has not kept authoritarian regimes from spend-
+                  ing billions of dollars trying. On the face of it, authoritarian
+                  efforts of information control seem halfhearted. Even censor-
+                  ship in one of the most sophisticated censorship regimes in the
+                  world—China—could be seen as faltering attempts at “informa-
+                  tion management.” For the most part, these efforts at censorship
+                  are porous—frequently circumvented by savvy Internet users,
+                  accidentally evaded by citizens wasting time on the web, and
+                  rarely enforced with punishment.2
+                     Indeed, most censorship methods implemented by the
+                  Chinese government act not as a ban but as a tax on informa-
+                  tion, forcing users to pay money or spend more time if they want
+                  to access the censored material. For example, when the govern-
+                  ment “kicked out” Google from China in 2010, it did so simply
+                  by throttling the search engine so it loaded only 75 percent of
+                  the time.3 If you wanted to use Google, you just had to be a
+                  bit more patient. The Great Firewall, China’s most notorious
+                  censorship invention that blocks a variety of foreign websites
+                  from Chinese users, can be circumvented by savvy Internet users
+                  by downloading a Virtual Private Network (VPN). Social media
+                  users in China circumvent keyword censoring of social media
+                  posts by substituting similar words that go undetected for words
+                  that the government blocks, making content easy to find if you
+                  spend more time searching.4 Newspapers are often instructed by
+
+                      2 Yang (2009a, pg. 2) describes many of the ways in which Chinese netizens
+
+                  circumvent Internet control and calls government control over the Internet “only
+                  partly effective.” Xiao (2011) similarly emphasizes how Internet controls in China
+                  are easily evaded.
+                      3 Millward, Steven, “Google+ Not Actually Blocked in China, Just Be-
+
+                  ing Slowly Throttled,” Tech in Asia, June 30, 2011. Available at: https://www.
+                  techinasia.com/google-plus-china.
+                      4 Branigan, Tania, “How China’s internet generation broke the silence,”
+
+                  Guardian, March 24, 2010. Available at: https://www.theguardian.com/world/2010/
+                  mar/24/china-internet-generation-censorship; Hiruncharoenvate, Lin and Gilbert
+                  (2015).
+
+
+
+
+                          For general queries, contact webmaster@press.princeton.edu
+January 4, 2018     Time: 09:17am      Chapter1.tex
+
+
+
+
+                       © Copyright, Princeton University Press. No part of this book may be
+                       distributed, posted, or reproduced in any form by digital or mechanical
+                       means without prior written permission of the publisher.
+
+                                                                        INTRODUCTION           •   3
+
+                  censors to put stories on the back pages of the newspaper, where
+                  access is just a few more flips of the page away.5
+                      Porous censorship is not unique to China or even to the mod-
+                  ern time period. Instead of shutting off the whole Internet, Iran
+                  has been known to simply throttle it and make it slower during
+                  elections.6 The Russian government uses armies of online bots
+                  and commentators to flood opposition hashtags and make it
+                  more difficult, but not impossible, for people to find information
+                  on protests or opposition leaders.7 Even before the Internet, in
+                  the late nineteenth century, British censors banned translations
+                  of French literature they considered obscene, but allowed un-
+                  translated versions to circulate freely, allowing unlimited access
+                  to those willing to expend the effort to read them in French.8
+                  In East Germany during the cold war, the government decided
+                  against enforcing restrictions on satellite dishes that enabled
+                  citizens to watch West German television, effectively allowing
+                  East Germans who were interested enough to find a way to buy
+                  a satellite dish to have access to it.9
+                      Why do governments attempt to control information when
+                  these controls are easily circumvented? Conventional wisdom
+                  posits that these porous censorship strategies are futile for
+                  governments as citizens learn quickly to circumvent censorship
+                  that is not complete or enforced. Many have stressed that
+                  information, which is often called “non-excludable” because it is
+
+                      5 “Ministry of Truth: Personal Wealth, Income Gap,” China Digital Times,
+
+                  February 6, 2013. Available at: https://chinadigitaltimes.net/2013/02/ministry-of-
+                  truth-personal-wealth-income-gap/.
+                      6 See Aryan, Aryan and Halderman (2013, pg. 5) and Esfandiari, Golnaz
+
+                  “Iran Admits Throttling Internet to ‘Preserve Calm’ During Election,” Radio
+                  Free Europe, June 26, 2013. Available at: http://www.rferl.org/a/iran-Internet-
+                  disruptions-election/25028696.html.
+                      7 Goncharov, Maxim, “The Dark Side of Social Media,” TrendLabs Security Intel-
+
+                  ligence Blog, December 7, 2011. Available at: http://blog.trendmicro.com/trendlabs-
+                  security-intelligence/the-dark-side-of-social-media/.
+                      8 Reynolds (2014, pg. 188).
+                      9 Kern and Hainmueller (2009, pg. 394–395).
+
+
+
+
+                         For general queries, contact webmaster@press.princeton.edu
+January 4, 2018    Time: 09:17am      Chapter1.tex
+
+
+
+
+                      © Copyright, Princeton University Press. No part of this book may be
+                      distributed, posted, or reproduced in any form by digital or mechanical
+                      means without prior written permission of the publisher.
+
+                  4   •    CHAPTER ONE
+
+
+                  easily shared, is difficult to control once it has become known to
+                  a portion of the public, as it can spread quickly.10 “Information
+                  wants to be free,” originally coined by Stewart Brand, cap-
+                  tures the idea that information technology makes information
+                  easy to copy and thus difficult to control.11 More puzzling is
+                  that many governments have the capacity to enforce censor-
+                  ship more forcefully, but choose not to do so. Periodic VPN
+                  crackdowns indicate that China could make the Firewall less
+                  permeable, but much of the time the government chooses not
+                  to.12 The government could implement draconian punishments
+                  for those who evade censorship, creating strong disincentives
+                  for circumvention, but most circumvention is not even illegal.
+                  Using censorship that taxes, rather than prohibits, information
+                  in China—and in other countries around the world—seems to
+                  be a design choice, not an operational flaw—but why?
+
+
+
+                  1.2 DISTRACTION AND DIVERSION
+
+                  In this book, I shed light on the puzzle of porous censorship
+                  by showing that even easily circumventable censorship has an
+                  important impact on information access for the typical person
+                  in most circumstances, and, for this very reason, is strategi-
+                  cally useful for authoritarian regimes. Many censorship meth-
+                  ods require citizens to spend more time or money accessing
+
+
+                      10 Taubman (1998, pg. 266) stresses that the decentralized nature of the Internet
+
+                  means no censorship methods are foolproof. Yang (2009b, pg. 30) contends that
+                  online activism is powerful because it can be more easily multiplied. Esarey and Xiao
+                  (2011) show that digital media has more critical content than newspapers in China.
+                      11 Barlow, John Perry, “The Economy of Ideas,” Wired, March 1, 1994. Available
+
+                  at: https://www.wired.com/1994/03/economy-ideas/.
+                      12 “China Cracks Down on VPNs During Political Meetings,” Wall Street
+
+                  Journal,     http://blogs.wsj.com/chinarealtime/2016/03/10/china-cracks-down-on-
+                  vpns-during-political-meetings/.
+
+
+
+
+                          For general queries, contact webmaster@press.princeton.edu
+January 4, 2018     Time: 09:17am     Chapter1.tex
+
+
+
+
+                       © Copyright, Princeton University Press. No part of this book may be
+                       distributed, posted, or reproduced in any form by digital or mechanical
+                       means without prior written permission of the publisher.
+
+                                                                       INTRODUCTION           •   5
+
+                  information that the government would like to slow down.
+                  Only a minority of citizens who are interested enough in the
+                  information and have the education and resources to pay the
+                  costs of evasion are motivated and equipped enough to cir-
+                  cumvent censorship. For the majority of citizens, who are less
+                  interested in politics and are not willing to spend significant time
+                  becoming informed,13 small costs of access and government
+                  distractions can divert citizens to information that is less dan-
+                  gerous to the regime. Even though it is possible to access most
+                  information, as normal citizens get lost in the cacophony of in-
+                  formation available to them, their consumption of information
+                  is highly influenced by the costs of obtaining it. I argue that there
+                  are massively different implications for the spread of political
+                  information of having certain information completely free and
+                  easy to obtain as compared to being available but slightly more
+                  difficult to access.
+                      Part of the inconsistency between conventional wisdom
+                  about censorship and the reality of censorship results from
+                  the lack of conceptual clarity about the mechanisms by which
+                  censorship affects the public’s consumption of information. We
+                  lack a theory of censorship. I provide a typology of the three
+                  ways in which censorship can affect individuals. What most
+                  people think of when they think of censorship is fear—threats
+                  of punishment, such as losing a job, prison, or worse—which
+                  may deter citizens from spreading or accessing information.
+                  Fear works by prohibiting particular information and through
+                  this inducing self-censorship. But the threat of punishment
+                  must be observable to be credible—those who are not aware
+
+                     13 Many scholars in political communication have shown that most people are not
+
+                  willing to spend time informing themselves about politics. For example, Sniderman,
+                  Tetlock and Brody (1991) show that voters rely on heuristics to make political
+                  judgements, Popkin (1994) explores how voters use information shortcuts to make
+                  choices, Conover and Feldman (1984) develop a theory of how people have ideology
+                  under low information, and Hamilton (2004, pg. 11) explains how media consumers
+                  can be rationally ignorant.
+
+
+
+
+                         For general queries, contact webmaster@press.princeton.edu
+January 4, 2018    Time: 09:17am     Chapter1.tex
+
+
+
+
+                      © Copyright, Princeton University Press. No part of this book may be
+                      distributed, posted, or reproduced in any form by digital or mechanical
+                      means without prior written permission of the publisher.
+
+                  6   •    CHAPTER ONE
+
+
+                  of punishment cannot be deterred by it. Although fear is a
+                  more complete form of censorship because it can be enforced,
+                  fear is problematic for authoritarian regimes because it can
+                  cause backlash, draw attention to censored information, and
+                  create information-gathering problems for governments. Fear
+                  is more difficult to use in the digital age because prohibitions
+                  on information are difficult for governments to enforce when
+                  information is easily copied.
+                     The other two less well-known censorship mechanisms I
+                  introduce—friction and flooding—have proven themselves more
+                  useful in the age of the Internet. Friction—increasing the costs,
+                  either in time or money, of access or spread of information—
+                  diverts citizens’ attention by imposing barriers to informa-
+                  tion access. A slow webpage, a book removed from a library,
+                  reordered search results, or a blocked website can all be used
+                  to increase the costs of access to information. Friction is often
+                  circumventable—it can be evaded simply by sustaining these
+                  costs. However, it does not have to be observable in order
+                  to work and therefore can more easily be explained away or
+                  go unnoticed. Friction’s counterpart, flooding, is information
+                  coordinated as distraction, propaganda, or confusion, such
+                  as astroturfing, online propaganda, or government-mandated
+                  newspaper articles. Flooding competes with information that
+                  authoritarian governments would like to hide by diluting it
+                  and distracting from it. As with the friction mechanism, while
+                  flooding can be discounted or avoided, flooding requires the
+                  consumer to take time and effort to separate out good informa-
+                  tion from bad information.
+                     I offer a wide range of empirical evidence—from online
+                  experiments to nationally representative surveys, datasets of
+                  millions of geo-located social media posts, and leaked propa-
+                  ganda archives—to show that friction and flooding effectively
+                  divert and distract most people away from censored infor-
+                  mation. Even though a minority of people will pay the costs
+                  to circumvent censorship, friction and flooding are useful to
+
+                          For general queries, contact webmaster@press.princeton.edu
+January 4, 2018     Time: 09:17am     Chapter1.tex
+
+
+
+
+                       © Copyright, Princeton University Press. No part of this book may be
+                       distributed, posted, or reproduced in any form by digital or mechanical
+                       means without prior written permission of the publisher.
+
+                                                                       INTRODUCTION           •   7
+
+                  governments because they separate those who are willing to
+                  pay the cost of evasion from those who are not, enabling the
+                  government to target repression toward the most influential
+                  media producers while avoiding widespread repressive policies.
+                  I focus my empirical evidence on the citizen production and
+                  consumption of information on the Chinese Internet. China is
+                  a nearly ideal case for testing how each mechanism of censor-
+                  ship affects citizens’ consumption of information and political
+                  behavior because the Chinese government implements a wide
+                  variety of censorship tactics, which function through each of the
+                  three censorship mechanisms. Furthermore, China’s censorship
+                  system has become the model for many authoritarian regimes:
+                  evidence exists that others are trying to emulate it.14 A better
+                  understanding of how the Chinese censorship system works will
+                  allow us to predict the future impacts of information control
+                  across a wide range of authoritarian regimes.
+                     Censorship is difficult to study empirically because it is often
+                  intended to go undetected. Recently, entire subfields in com-
+                  puter science have emerged dedicated to detecting censorship
+                  because governments are not typically forthcoming with their
+                  tactics.15 In this book, I move beyond what is censored to take
+                  up the challenging task of measuring individuals’ reactions to
+                  censorship while they are being subjected to it. Using large
+                  social media datasets, measures of the spread of online informa-
+                  tion, online experiments, and surveys, I answer the questions:
+                  How do individuals react when observing censorship? How
+                  does Internet users’ behavior change when particular pieces of
+                  information are more difficult to access? Are Internet users
+                  who come across distracting online propaganda likely to spread
+
+                    14 See Diamond (2015, pg. 151), and Soldatov, Andrei and Irna Borogan, “Putin
+
+                  brings China’s Great Firewall to Russia in cybersecurity pact,” Guardian, November
+                  29, 2016, https://www.theguardian.com/world/2016/nov/29/putin-china-internet-
+                  great-firewall-russia-cybersecurity-pact. As a result, scholars have advocated for
+                  more research on the Chinese censorship system; see Shorey and Howard (2016).
+                     15 For an overview of the challenges measuring censorship see Burnett and
+
+                  Feamster (2013).
+
+
+                         For general queries, contact webmaster@press.princeton.edu
+January 4, 2018    Time: 09:17am       Chapter1.tex
+
+
+
+
+                      © Copyright, Princeton University Press. No part of this book may be
+                      distributed, posted, or reproduced in any form by digital or mechanical
+                      means without prior written permission of the publisher.
+
+                  8   •    CHAPTER ONE
+
+
+                  and share it? The evidence I present shows that although many
+                  people are resistant to censorship when they notice and observe
+                  it, they are very affected by it when they are inconvenienced by
+                  it, do not notice it, or can explain it away.
+                      My findings of how censorship influences individuals may
+                  explain why we see so many regimes using porous censor-
+                  ship strategies even though these methods are easy to thwart.
+                  Although many would see the fact that a minority of capable cit-
+                  izens can route around censorship as detrimental to the regime’s
+                  censorship efforts, I argue that circumventible censorship can
+                  be useful to authoritarian regimes precisely because it has dif-
+                  ferent effects on different segments of the population. Porous
+                  censorship drives a wedge between the elite and the masses.
+                  The savvy members of the elite easily circumvent censorship,
+                  discount propaganda, read blocked information, and enter into
+                  banned social networks. By contrast, friction and flooding prey
+                  on the rest of the public’s short attention spans, busy schedules,
+                  and general lack of interest in politics, nudging them toward
+                  an information environment that is disconnected from their
+                  more well-educated, well-to-do, and politically sophisticated
+                  counterparts. By separating the elite from the masses, the gov-
+                  ernment prevents coordination of the core and the periphery,
+                  known to be an essential component in successful collective
+                  action.16 Although a portion of savvy and politically concerned
+                  citizens may be willing to pay the costs imposed by friction
+                  and flooding, less interested individuals often are not, making
+                  wider discontent among the broader population significantly
+                  less likely and reducing the accountability of political entities.
+                      The strategy of porous censorship allows the government to
+                  avoid widespread use of observable repression, which is well
+
+                     16 Barberá et al. (2015) show that the periphery is critical to the success of protests,
+
+                  Steinert-Threlkeld (2017) shows that the periphery can even instigate successful
+                  protests, and Chenoweth and Stephan (2011, pg. 39–40) show that total numbers
+                  and recruitment are a strong predictor of successful protest movements.
+
+
+
+
+                          For general queries, contact webmaster@press.princeton.edu
+January 4, 2018     Time: 09:17am     Chapter1.tex
+
+
+
+
+                       © Copyright, Princeton University Press. No part of this book may be
+                       distributed, posted, or reproduced in any form by digital or mechanical
+                       means without prior written permission of the publisher.
+
+                                                                       INTRODUCTION           •   9
+
+                  known to spark popular backlash.17 Autocrats face significant
+                  trade-offs when making citizens fearful of speaking out. Highly
+                  constraining forms of censorship that operate through deter-
+                  rence must be observable to their targets; otherwise deterrence
+                  cannot work. As I will show using social media data, surveys,
+                  and online experiments, when censorship is observable, political
+                  entities call attention to the information they would like to
+                  make off-limits. The observation of censorship intended to cre-
+                  ate deterrence can instead create opportunities for push-back,
+                  signal government weakness, and create increased interest in the
+                  off-limits topic. Repression that deters citizens from speaking
+                  out also creates information and surveillance problems for the
+                  government, as governments often rely on input from the media
+                  and population to identify local corruption and on information
+                  in the public sphere to identify new pockets of dissent.18
+                      Incomplete censorship, by contrast, is more easily masked by
+                  political entities, giving the government the cover of plausible
+                  deniability.19 Flooding can front as concerned citizens who are
+                  voluntarily writing pro-government content online or are spon-
+                  taneously gathering in a pro-government parade, and friction
+                  can front as technological errors or algorithmic quirks, which
+                  ordinary citizens may not be aware of or may explain away. If
+                  a link on the Internet redirects to an error page, it is difficult to
+                  tell whether the page is down or the government has blocked it.
+                  If a book is missing from a library shelf, is it lost, not ordered,
+                  or removed by the government? If a social media post does
+
+                    17 Dickson (2016, pg. 7).
+                     18 Egorov, Guriev and Sonin (2009); Liebman (2005); Lorentzen (2014); Shirk
+
+                  (2011, pg. 19); Stockmann (2012, pg. 140); Qin, Strömberg and Wu (2017).
+                     19 Stockmann (2012) makes a similar argument about the traditional media
+
+                  in China, arguing that the commercialization of the media provides cover for
+                  government propaganda. The concept of plausible deniability has also been used
+                  widely in the literature on repression, for example, Conrad and Moore (2010,
+                  pg. 461) argue that plausible deniability of torture allows the state to shift the
+                  blame.
+
+
+
+
+                         For general queries, contact webmaster@press.princeton.edu
+January 4, 2018    Time: 09:17am     Chapter1.tex
+
+
+
+
+                       © Copyright, Princeton University Press. No part of this book may be
+                       distributed, posted, or reproduced in any form by digital or mechanical
+                       means without prior written permission of the publisher.
+
+                  10    •   CHAPTER ONE
+
+
+                  not appear in a news feed, is it because the algorithm predicts
+                  you might not be interested in it, or because of government
+                  manipulation?20 Because information is widespread and has
+                  many substitutes, small impediments to reading information
+                  and even silly distractions can significantly affect users’ con-
+                  sumption of political information.
+                      The strategy of porous censorship does, however, have an
+                  Achilles’ heel. Although for most citizens most of the time,
+                  small impediments to accessing information and government-
+                  encouraged distractions can divert them to more benign infor-
+                  mation, there are cases when the typical citizen will take the
+                  time to seek out restricted information and evade censorship. I
+                  show that in periods of crisis, such as the 2015 Tianjin explosion,
+                  citizens are more likely to spend time seeking out methods of
+                  accessing restricted information. Similarly, when censorship is
+                  imposed suddenly and disrupts habits, such as the case of the
+                  Instagram block during the 2014 Hong Kong protests, citizens
+                  are more likely to find ways to continue consuming information
+                  and entertainment to which they are accustomed.21 Thus, the
+                  strategy of porous censorship can be counterproductive and
+                  dangerous to the regime when it uses this censorship too de-
+                  cisively during times it needs censorship most. If information
+                  were to disrupt the Chinese political system, it would be during
+                  a period when the majority of people were willing to pay the
+                  price imposed by censorship to collectively inform themselves.
+
+
+                  1.3 IMPLICATIONS AND CHALLENGES TO
+                      CONVENTIONAL WISDOM
+
+                  The findings I present in this book challenge many conven-
+                  tional notions of censorship and have implications for research
+                    20 See Knockel, Ruan and Crete-Nishihata (2017) for an example of how censor-
+
+                  ship is used surreptitiously in the Chinese social media platform WeChat.
+                     21 Hobbs and Roberts (2016).
+
+
+
+
+                         For general queries, contact webmaster@press.princeton.edu
+January 4, 2018     Time: 09:17am      Chapter1.tex
+
+
+
+
+                       © Copyright, Princeton University Press. No part of this book may be
+                       distributed, posted, or reproduced in any form by digital or mechanical
+                       means without prior written permission of the publisher.
+
+                                                                       INTRODUCTION            •   11
+
+                  in digital politics, the politics of repression, and political
+                  communication.
+
+
+                  Censorship Is More Than Fear
+                  First, this book speaks to the strategies that modern autoc-
+                  racies use to prevent large-scale dissent. Many scholars have
+                  puzzled over the resilience of some authoritarian regimes.22
+                  Some argue that the resilience of autocracies is due in part to
+                  successful repression; that autocrats have survived by forcefully
+                  extinguishing opposition groups.23 Others have maintained that
+                  autocrats are successful in part by creating institutions that are
+                  better able to share power with the opposition and respond
+                  to citizens’ concerns.24 Still others have credited authoritarian
+                  resilience to brainwashing or enforced symbolism, through cult-
+                  like nationalism, religion, or ideology.25
+                     In this book I demonstrate that autocrats have methods
+                  outside of direct repression, accommodation, or brainwashing
+                  to maintain power, even in the modern era. Autocrats have a
+                  large toolbox available to them to nudge citizens away from ac-
+                  tivist circles, dangerous information, and focal points that could
+                  facilitate coordination.26 These methods are not forceful, do not
+                  accommodate, and are often not meant to directly persuade.
+                  Instead, they create small inconveniences that reroute users
+
+                    22 Nathan (2003); Anderson (2006); Gilley (2003).
+                     23 Davenport (2007, pg. 7) describes the “Law of Coercive Responsiveness,” that
+
+                  autocrats respond to opposition movements with force. Brownlee (2007, pg. 33)
+                  argues that autocrats have been able to repress opposition groups to consolidate
+                  power.
+                     24 Wintrobe (1990, pg. 851) and Wintrobe (1998) stresses the patronage and
+
+                  public services dictators can provide as a substitute for repression. Dickson (2016);
+                  He and Warren (2011); and Lorentzen (2013) elaborate on how the Chinese
+                  government creates channels to respond to citizens’ concerns. Magaloni (2008);
+                  Bueno De Mesquita et al. (2003); and Boix and Svolik (2013) describe how dictators
+                  create power-sharing institutions to prevent overthrow by other elite.
+                     25 See Wedeen (1999).
+                     26 Note that this is the same “nudge” logic with a darker take as that used in the
+
+                  behavioral economics literature; see Thaler and Sunstein (2009).
+
+
+                         For general queries, contact webmaster@press.princeton.edu
+January 4, 2018    Time: 09:17am     Chapter1.tex
+
+
+
+
+                       © Copyright, Princeton University Press. No part of this book may be
+                       distributed, posted, or reproduced in any form by digital or mechanical
+                       means without prior written permission of the publisher.
+
+                  12    •   CHAPTER ONE
+
+
+                  to information and social networks that are more palatable to
+                  the regime, decreasing the mobilization capacity for opposition,
+                  often without citizens being aware of it. Although less forceful
+                  than repression or brainwashing, these methods are surprisingly
+                  effective in changing the behavior of the vast majority of citizens
+                  who are too busy to engage deeply in politics.
+
+
+                  Censorship Is Customized
+                  Second, this book speaks to a long-standing question of whether
+                  and how governments can control social media in the infor-
+                  mation age. Many scholars believed that the Internet, which
+                  expanded the number of citizens involved in public discourse,
+                  would force governments to become more accountable to citi-
+                  zens because of the speed with which large numbers of citizens
+                  could participate in everyday public debate.27 Yet the failure
+                  of the Internet to create the expected accountability in some
+                  authoritarian regimes led other scholars to argue that this new
+                  technology in fact played into the hands of the autocrats.28 Some
+                  of these writers hypothesized that the Internet had not reached
+                  its political potential because of extreme self-censorship and
+                  fear.29 Others discerned that the Internet created opportunities
+                  for authorities to use sophisticated hidden technologies that
+                  could manipulate citizens without their consent or being aware
+                  of it.30
+                     The findings in this book cut a middle path between these
+                  arguments by showing that Internet censorship has very dif-
+                  ferent impacts on different types of individuals, which allows
+
+
+                     27 Ferdinand (2000, pg. 5), Lynch (2011), Bellin (2012, pg. 138), Diamond (2010,
+
+                  pg. 70).
+                     28 Morozov (2011), MacKinnon (2012), Kalathil and Boas (2010), Rød and
+
+                  Weidmann (2015), Steele and Stein (2002).
+                     29 Kalathil and Boas (2010, pg. 26), Wacker (2003, pg. 88).
+                     30 MacKinnon (2012, pg. 6), Morozov (2011, pg. 97).
+
+
+
+
+                         For general queries, contact webmaster@press.princeton.edu
+January 4, 2018     Time: 09:17am     Chapter1.tex
+
+
+
+
+                      © Copyright, Princeton University Press. No part of this book may be
+                      distributed, posted, or reproduced in any form by digital or mechanical
+                      means without prior written permission of the publisher.
+
+                                                                    INTRODUCTION           •   13
+
+                  governments to use these differential effects strategically to
+                  maximize censorship’s impact while minimizing its costs. The
+                  findings in this book suggest that the low probability of the
+                  government following through on punishment for millions of
+                  Internet users who engage daily in off-limits discussion has
+                  diminished the government’s ability to enforce self-censorship
+                  on those engaged in public discourse. Self-censorship, by itself,
+                  does not “purify” the Internet in many authoritarian regimes
+                  as some have suggested, and online criticism of autocrats is
+                  commonplace.31 For the majority of citizens, this book provides
+                  evidence that political entities have a wide range of effective
+                  tools available to them to interfere with the Internet without
+                  citizens being aware of it or motivated enough to circumvent
+                  it.32 However, these tools work not because they are sophis-
+                  ticated enough to prevent access to information, but precisely
+                  because they have holes: they can affect the majority of the pub-
+                  lic’s information-seeking behavior simply by inconveniencing
+                  them, without interfering so much to cause widespread public
+                  backlash. Small costs of access, not draconian punishments
+                  or sophisticated manipulation, can have huge effects on the
+                  behavior of the majority.
+                      Because censorship affects different segments of the pop-
+                  ulation differently, its impact is more than simply hidden
+                  manipulation and instead is a story of customized repression.
+                  The fact that the majority are affected by diversion and distrac-
+                  tions allows regimes the flexibility to selectively target punish-
+                  ment for speech toward journalists, activists, and other high-
+                  profile elites. Because friction and flooding are not effective for
+                  highly capable and motivated individuals, autocrats use targeted
+
+                    31 Zhang, Yuxin, “China: Self-Censorship Displaces Western Threats,” Diplomat,
+
+                  March 3, 2015. http://thediplomat.com/2015/03/china-self-censorship-displaces-
+                  western-threats/.
+                    32 This finding provides support for some of the arguments in MacKinnon (2012)
+
+                  and Morozov (2011).
+
+
+
+
+                         For general queries, contact webmaster@press.princeton.edu
+January 4, 2018    Time: 09:17am      Chapter1.tex
+
+
+
+
+                       © Copyright, Princeton University Press. No part of this book may be
+                       distributed, posted, or reproduced in any form by digital or mechanical
+                       means without prior written permission of the publisher.
+
+                  14    •   CHAPTER ONE
+
+
+                  fear to contain the spread of information at elite levels.33 Just as
+                  the Internet has enabled more micro-targeting of information
+                  and advertising toward particular individuals, the evidence I
+                  present suggests that censorship as well is becoming increasingly
+                  customized to individual behavior and capabilities.
+                     Despite the cunning of the Chinese censorship system,
+                  I highlight the ways in which the censorship system can be un-
+                  dermined in particular periods. I show that the regime is more
+                  constrained in making censorship porous during crises when
+                  individuals are motivated to seek out information. The more
+                  that citizens are willing to overcome friction, the less able the
+                  government is to use censorship methods other than fear. This
+                  puts the government in a difficult situation, as direct repression
+                  will frequently cause backlash. Although the government will try
+                  to ramp up all forms of censorship during periods of crisis, these
+                  are also the periods that are most likely to force government
+                  accountability and concessions.
+
+                  More Media Does Not Always Lead to Better Information
+                  I caution against a rosy economic model of information where
+                  more producers of information will always lead to better infor-
+                  mation outcomes. Some scholars have posited that as the num-
+                  ber of producers of information and media outlets increases,
+                  the government’s influence over the media will decrease because
+                  governments will have a more difficult time forcing media to
+                  keep silent.34 One implication is that the digital age, where there
+                  are many more producers of information, will lead to a less
+                  biased news media.35
+
+                     33 This finding is more in line with arguments made in studies that emphasize the
+
+                  impact of fear in controlling the spread of information. Kalathil and Boas (2010);
+                  Wacker (2003).
+                     34 See Besley and Prat (2006, pg. 4), Gentzkow, Glaeser and Goldin (2006,
+
+                  pg. 189).
+                     35 Edmond (2013, pg. 1441).
+
+
+
+
+                         For general queries, contact webmaster@press.princeton.edu
+January 4, 2018     Time: 09:17am      Chapter1.tex
+
+
+
+
+                       © Copyright, Princeton University Press. No part of this book may be
+                       distributed, posted, or reproduced in any form by digital or mechanical
+                       means without prior written permission of the publisher.
+
+                                                                       INTRODUCTION            •   15
+
+                     However, these models only consider coercion of media and
+                  media capture as methods of censorship and do not consider
+                  the impacts that governments have on the distribution of in-
+                  formation. The results in this book show that even if media
+                  that contains better information exists, if government can create
+                  frictions on the distribution of information through censorship,
+                  then this media will not reach most of the public.36 Govern-
+                  ments that have direct control over information distribution
+                  can use friction to de-prioritize media that they find to be
+                  objectionable. Even if articles on the Internet contain good
+                  information, if they are buried in a search engine by government
+                  censorship, very few people will access it.
+                     Moreover, even if governments do not directly control the
+                  distribution of information, they can use the fact that anyone
+                  can enter into the Internet discourse to flood the information
+                  environment with their own version of events. By hiring paid
+                  commentators or distributing online propaganda, governments
+                  can crowd out information that they find objectionable, under-
+                  mine the credibility of competing media, and distract citizens
+                  from events that reflect badly on them. Counterintuitively, the
+                  ability for anyone to produce media can result in the production
+                  of less reliable information because some governments and
+                  entities will have incentives and resources to produce and spread
+                  unreliable information en masse.
+
+
+                  A Broader Definition of Censorship Has
+                     Implications for Democracies
+                  Last, because this book is about censorship that does not always
+                  function through fear, it has broader implications for censorship
+                  outside of authoritarian systems. Democracies generally have
+
+                     36 Edmond (2013, pg. 1442) allows for the possibility that governments can invest
+
+                  in “large-scale fixed investments for information control” online that may allow
+                  them to control the Internet despite the decentralized nature of the Internet.
+
+
+
+
+                         For general queries, contact webmaster@press.princeton.edu
+January 4, 2018    Time: 09:17am     Chapter1.tex
+
+
+
+
+                       © Copyright, Princeton University Press. No part of this book may be
+                       distributed, posted, or reproduced in any form by digital or mechanical
+                       means without prior written permission of the publisher.
+
+                  16    •   CHAPTER ONE
+
+
+                  laws that prevent them from directly repressing free speech—
+                  they cannot use fear-based methods of censorship. However,
+                  democratic governments have vast powers to affect the costs
+                  of access to information by producing legislation that regulates
+                  information such as the availability of data, the transparency
+                  of the government, and the functioning of the Internet. The
+                  findings in this book suggest that even small impediments to
+                  access imposed by any regime can have significant political ef-
+                  fects, and therefore that manipulation of information in democ-
+                  racies can also have a widespread impact on the public’s political
+                  knowledge.
+                     As I will discuss in the conclusion, recent events in democ-
+                  racies highlight the importance of a broader definition of cen-
+                  sorship. Evidence that taxes on the accessibility of information
+                  can have large political impacts37 suggests that society should
+                  be concerned with the extent that a few Internet companies and
+                  Internet service providers have primary control over the speed
+                  and convenience with which information can be accessed. If
+                  too few individuals, companies, or politicians wield significant
+                  power to make certain political information easy to access while
+                  making other information more difficult (for example through
+                  fast lanes on the Internet or reordering search results) in an
+                  effort to advance their own interests, this could have political
+                  impacts in democracies similar to the impacts of search filtering
+                  and firewalls in autocracies. Similarly, as traditional media have
+                  been decimated by competition from the Internet, small costs
+                  of access to data imposed by federal or local government may
+                  have an impact on content reported to the public in the tradi-
+                  tional press. The broader definition of censorship I provide in
+                  this book emphasizes the importance of institutionalizing and
+
+                     37 Byrnes, Nanette, “How the Bot-y Politic Influenced This Election,” November
+
+                  8, 2016. Available at: MIT Technology Review https://www.technologyreview.com/
+                  s/602817/how-the-bot-y-politic-influenced-this-election/. Epstein and Robertson
+                  (2015), Bond et al. (2012).
+
+
+
+
+                         For general queries, contact webmaster@press.princeton.edu
+January 4, 2018     Time: 09:17am     Chapter1.tex
+
+
+
+
+                      © Copyright, Princeton University Press. No part of this book may be
+                      distributed, posted, or reproduced in any form by digital or mechanical
+                      means without prior written permission of the publisher.
+
+                                                                      INTRODUCTION         •   17
+
+                  facilitating government transparency and competition between
+                  information distributors as well as producers in democracies so
+                  that what information is provided, at what speed and when,
+                  to the press and public is not completely the result of political
+                  motivations and strategy.
+                     Citizens in democracies recently have been shown to be
+                  susceptible to flooding as well. Distractions and misinformation
+                  spread online by cheap Internet commentators or automated
+                  bots increase the burden on the public to separate the signal
+                  from the noise, and many confuse good and bad information.38
+                  Denial of service attacks that flood the websites of media, In-
+                  ternet companies, nongovernmental organizations, and govern-
+                  ment with too much traffic so that they become unavailable have
+                  the power to silence information channels selectively.39 As soon
+                  as these strategies are used for political purposes, they become
+                  political censorship. Although much censorship research has
+                  focused on the Internet in autocracies, more research needs to
+                  be done to study how censorship extends to democratic envi-
+                  ronments on the Internet as these undoubtedly have important
+                  political impacts.
+
+
+                  1.4 THE PLAN OF THE BOOK
+
+                  I proceed by offering a theory of the strategic interplay
+                  between government censorship and citizens’ consumption and
+                  production of information. First, I describe the incentives of
+                  the government—why it would choose to censor and the costs
+                  it might incur from censorship. Next, I develop a model of
+                  how both citizens and the media interact with information.
+
+                    38 Nyhan and Reifler (2010), Ratkiewicz et al. (2011, pg. 301–302).
+                     39 Woolf, Nicky, “DoS attack that disrupted internet was largest of its kind
+
+                  in history, experts say,” Guardian, October 26, 2016. Available at: https://www.
+                  theguardian.com/technology/2016/oct/26/ddos-attack-dyn-mirai-botnet.
+
+
+
+
+                         For general queries, contact webmaster@press.princeton.edu
+January 4, 2018    Time: 09:17am     Chapter1.tex
+
+
+
+
+                       © Copyright, Princeton University Press. No part of this book may be
+                       distributed, posted, or reproduced in any form by digital or mechanical
+                       means without prior written permission of the publisher.
+
+                  18    •   CHAPTER ONE
+
+
+                  Using this model, I elucidate the three main ways in which cen-
+                  sorship can influence the media and the public—fear, friction,
+                  and flooding. I then provide examples of each of these mech-
+                  anisms in various communication media, and describe when
+                  each will have more or less impact on the spread of information.
+                  Fear, which is censorship based on deterrence, is by nature very
+                  constraining but must be observable in order to have an impact.
+                  Fear has to be credible in order to create deterrence; otherwise, it
+                  may instead draw attention to authoritarian weakness or create
+                  backlash. Therefore, it is discreetly targeted toward the most
+                  capable and motivated individuals. Friction, which imposes
+                  small taxes on information access, and flooding, which creates
+                  distractions, by contrast, do not need to be obviously driven by
+                  political entities to have an impact on information consumption
+                  and dissemination. Friction and flooding are more porous but
+                  less observable to the public than censorship using fear, and
+                  therefore are more effective with an impatient or uninterested
+                  public.
+                     Chapter 3 provides an overview of the modern history of
+                  censorship in China and outlines the institutional structure and
+                  methods of censorship in China today. It describes how the
+                  Chinese censorship system has evolved from a model that was
+                  designed to micromanage every citizen’s consumption and pro-
+                  duction of information to one that relies on porous censorship.
+                  It provides an overview of the main methods by which the
+                  Chinese government censors the Internet and the bureaucratic
+                  system that implements this censorship. Practically, it describes
+                  why China provides a good empirical test for the impact of
+                  porous censorship.
+                     Chapter 4 explores how citizens react when they observe cen-
+                  sorship online in China. Although many scholars have suggested
+                  that fear and self-censorship are the main forms of control
+                  of the Chinese Internet, I show that typical Internet users do
+                  not act afraid after experiencing online censorship and instead
+
+
+
+                         For general queries, contact webmaster@press.princeton.edu
+January 4, 2018     Time: 09:17am   Chapter1.tex
+
+
+
+
+                      © Copyright, Princeton University Press. No part of this book may be
+                      distributed, posted, or reproduced in any form by digital or mechanical
+                      means without prior written permission of the publisher.
+
+                                                                 INTRODUCTION          •   19
+
+                  are angered by observing it. Using a matched pair study of
+                  users who forward the same social media post, but where one
+                  experiences censorship and the other does not, I study how
+                  experience with censorship affects the writings of Internet users.
+                  I find that, all else being equal, those who have experienced
+                  censorship persist in writing about the censored topic and are
+                  more likely to complain about censorship, even as they become
+                  increasingly targeted with censorship. I then survey Internet
+                  users about how they would feel if they experienced censorship.
+                  I find that Internet users, particularly those who report having
+                  experienced censorship, are much more likely to report being
+                  unfazed or angry about censorship than fearful or worried.
+                  Last, using online experiments, I randomly assign users in a
+                  lab experiment to come across a censored webpage. I find that
+                  the observation of censorship creates more, not less, interest in
+                  the censored topic and also decreases support for government
+                  censorship policies. I explore how the Chinese government,
+                  likely aware that experience with censorship can undermine its
+                  reputation, adopts a two-pronged censorship strategy targeting
+                  high-profile users with fear-based censorship while attempting
+                  to make online censorship efforts less observable to the public.
+                      Chapter 5 demonstrates that small, less observable frictions
+                  on information have a powerful influence on the online behavior
+                  of Chinese citizens. First, I analyze the spread of information
+                  about 120 self-immolation events in Tibet through social media
+                  in China. I find that the best predictor of the number of social
+                  media posts that accompany a self-immolation event is whether
+                  the event occurs on the weekend, when the censors are slower to
+                  censor, suggesting that the speed of censorship has important
+                  implications for the spread of information in China. Next,
+                  I estimate the effect of the Great Firewall on the behavior
+                  of citizens in China. Using surveys and direct measures of
+                  those evading censorship through data from the social media
+                  platform Twitter, I find that those who evade the Firewall are
+
+
+
+                        For general queries, contact webmaster@press.princeton.edu
+January 4, 2018    Time: 09:17am     Chapter1.tex
+
+
+
+
+                       © Copyright, Princeton University Press. No part of this book may be
+                       distributed, posted, or reproduced in any form by digital or mechanical
+                       means without prior written permission of the publisher.
+
+                  20    •   CHAPTER ONE
+
+
+                  technologically savvy, well-educated, high-income Internet
+                  users in China who have high levels of political efficacy. I
+                  find that the Firewall pulls this political elite away from their
+                  potential followers. I show that newly blocked websites have pre-
+                  cipitous declines in usage directly following their block, showing
+                  how small impediments to access have an immediate impact on
+                  traffic from typical Chinese users. But I find that friction has
+                  an Achilles’ heel, and is more commonly circumvented during
+                  crises and moments of sudden implementation.40
+                     In chapter 6, I demonstrate that flooding in both online
+                  and traditional news media in China coordinates messages to
+                  distract the public from sensitive events. Using plagiarism detec-
+                  tion software and leaked archives from the Chinese government
+                  to identify instances of flooding both online and in traditional
+                  news media, I show that the government uses propaganda to
+                  distract with coverage of the mundane details of Party meetings
+                  or with encouraging quotes and positive thoughts directed at
+                  the public.41 Using estimates of search results for reposting of
+                  propaganda articles around the web, I show that for the most
+                  part this strategy is effective—highly coordinated propaganda
+                  used by the Chinese government is more likely than articles that
+                  are less coordinated to be re-shared in both the domestic and
+                  international social media spheres.
+                     Chapter 7 concludes with a discussion of the implications
+                  of my findings for politics in both democracies and autocracies
+                  as information technology and social media become more cen-
+                  tral components of political communication. I lay out specific
+                  directions for future research in the area of censorship and
+                  discuss censorship’s potential for long-term political impacts on
+                  domestic and international politics.
+
+
+                    40 This draws on work with William Hobbs; see Hobbs and Roberts (2016).
+                    41 This draws on work with Brandon Stewart, Jennifer Pan, and Gary King; see
+
+                  Roberts and Stewart (2016); King, Pan and Roberts (2017).
+
+
+
+
+                         For general queries, contact webmaster@press.princeton.edu
+

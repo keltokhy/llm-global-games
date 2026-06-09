@@ -12,6 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 PAPER_DIR = ROOT / "paper"
+MAX_SUBMISSION_PAGES = 30
 
 LOG_PROBLEM_PATTERNS = [
     re.compile(pattern, re.I)
@@ -104,7 +105,8 @@ def _check_main_pdf() -> None:
 
     if info.get("Author") != "Khaled Eltokhy":
         raise AssertionError(f"paper.pdf Author metadata is {info.get('Author')!r}")
-    if info.get("Pages") != "20":
+    pages = int(info.get("Pages") or 0)
+    if pages <= 0 or pages > MAX_SUBMISSION_PAGES:
         raise AssertionError(f"paper.pdf Pages metadata is {info.get('Pages')!r}")
     if "https://github.com/keltokhy/llm-global-games" not in text:
         raise AssertionError("paper.pdf is missing the public replication URL")
@@ -120,7 +122,8 @@ def _check_anonymous_pdf() -> None:
 
     if info.get("Author") != "Anonymous Author(s)":
         raise AssertionError(f"paper_anonymous.pdf Author metadata is {info.get('Author')!r}")
-    if info.get("Pages") != "20":
+    pages = int(info.get("Pages") or 0)
+    if pages <= 0 or pages > MAX_SUBMISSION_PAGES:
         raise AssertionError(f"paper_anonymous.pdf Pages metadata is {info.get('Pages')!r}")
     for pattern in ANONYMOUS_FORBIDDEN_PATTERNS:
         if re.search(pattern, text, re.I):

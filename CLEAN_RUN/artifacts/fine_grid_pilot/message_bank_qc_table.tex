@@ -1,0 +1,13 @@
+\begin{tabular}{lllllll}
+\toprule
+message bank & rows & missing columns & factual equivalence fail rate & style balance fail rate & accepted rows & pass \\
+\midrule
+baseline\_messages.parquet & 25000 & [] & 0.0 & 0.0 & 25000 & True \\
+baseline\_surveillance\_matched.parquet & 15000 & [] & 1.0 & 0.6654666666666667 & 0 & False \\
+direct\_coded\_pairs.parquet & 5250 & [] & 1.0 & 0.6577142857142857 & 0 & False \\
+direct\_coded\_pairs\_fine\_grid\_pilot.parquet & 340 & [] & 0.0 & 0.0 & 340 & True \\
+direct\_coded\_pairs\_medium\_pilot.parquet & 400 & [] & 0.0 & 0.0 & 400 & True \\
+direct\_coded\_pairs\_pilot.parquet & 5 & [] & 0.0 & 0.0 & 5 & True \\
+direct\_coded\_pairs\_small\_pilot.parquet & 100 & [] & 0.0 & 0.0 & 100 & True \\
+\bottomrule
+\end{tabular}

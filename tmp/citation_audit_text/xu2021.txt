@@ -1,0 +1,1161 @@
+  To Repress or To Co-opt? Authoritarian Control in
+           the Age of Digital Surveillance⇤
+                                                     Xu Xu†
+
+               (Forthcoming at the American Journal of Political Science)
+                                                    Abstract
+
+       This paper studies the consequences of digital surveillance in dictatorships. I first
+       develop an informational theory of repression and co-optation. I argue that digital
+       surveillance resolves dictators’ information problem of not knowing individual citi-
+       zens’ true anti-regime sentiments. By identifying radical opponents, digital surveil-
+       lance enables dictators to substitute targeted repression for non-exclusive co-optation
+       to forestall coordinated uprisings. My theory implies that as digital surveillance tech-
+       nologies advance, we should observe a rise in targeted repression and a decline in uni-
+       versal redistribution. Using a difference-in-differences design that exploits temporal
+       variation in digital surveillance systems among Chinese counties, I find that surveil-
+       lance increases local governments’ public security expenditure and arrests of political
+       activists but decreases public goods provision. My theory and evidence suggest that
+       improvements in governments’ information make citizens worse off in dictatorships.
+
+       Keywords:: digital surveillance; dictatorship; China; information; repression; co-
+       optation
+
+
+
+
+   ⇤
+      For helpful comments, I would like to thank Xun Cao, Martin Dimitrov, Christopher Fariss, Matt Golder, Sheena
+Greitens, Erin Hartman, Ji Yeon Hong, John Huber, Luke Keele, Hanzhang Liu, Zhaotian Luo, Xiao Ma, Melanie
+Manion, Daniel Mattingly, Ricardo Piqué, Adam Przeworski, Suzanne Scoggins, David Siegel, Wenfang Tang, Rory
+Truex, Joseph Wright, Tianyang Xi, Yiqing Xu, Yao-Yuan Yeh, Changdong Zhang, Boliang Zhu; participants at the
+APSA annual meeting, the MPSA conference, the annual meeting of the Society for Political Methodology, the Quan-
+titative China Studies Seminar at New York University, the New Faces in China Studies conference at Duke University,
+and department seminars at Penn State. Three anonymous referees and Editors Sarah Brooks, Kathleen Dolan, Jennifer
+L. Lawless, Jan Leighley, and Graeme Robertson provided constructive criticisms that greatly improved the paper. Fi-
+nally, I would like to thank Xin Jin for her helpful comments and unwavering support. All remaining errors are my
+own. Online Appendix and replication materials are available at https://xu-xu.net/research.html
+    †
+      Ph.D. Candidate, Department of Political Science, Penn State University. xux112@psu.edu, https://xu-xu.net.
+210 Pond Lab, University Park, PA 16802
+1        Introduction
+        In early June 2013, former NSA contractor Edward Snowden revealed top-secret documents
+concerning the U.S. government’s surveillance operations. In Western democracies, the Snowden
+leaks fueled intense controversy among the public and caused a significant retreat in government
+surveillance.1 However, in dictatorships where the governments pay less heed to public opinion,
+courts, and civil rights, digital surveillance has steadily increased in the past decade. Many au-
+thoritarian countries have purchased, developed, or enhanced surveillance tools in recent years
+(Valentino-DeVries, Vo and Yadron 2015). More importantly, unlike U.S. surveillance that mainly
+focuses on international communications (Gellman and Poitras 2013), government surveillance in
+authoritarian regimes primarily targets domestic activity. Why are authoritarian governments so
+enthusiastic about domestic surveillance? How does digital surveillance influence government be-
+havior and citizen well-being? The rapid rise in digital surveillance, as I show, has implications
+for our understanding of how dictatorships use repression and co-optation to address the risk of
+popular uprisings and to enhance regime stability.
+        Dictators control their populace through repression and co-optation, whereby citizens bene-
+fit from privileges doled by the regime but also are subject to government suppression and even
+violence (Svolik 2012). Dictators’ strategies to mitigate the risk of popular revolt and maintain
+regime stability must weigh the costs and benefits of both tools. Though a large body of literature
+emphasizes dictators’ repression-cooptation trade-off (e.g., Wintrobe 2000; Frantz and Kendall-
+Taylor 2014), few studies have addressed how changes in the informational environment shapes
+this tradeoff.2 The literature on information in authoritarian regimes largely focus on the horizontal
+information problem faced by dissenting citizens who do not know each other’s anti-regime sen-
+timent, which prevents them from coordinating uprisings successfully (e.g., Kuran 1991; Edmond
+2013). In such settings, communication technologies facilitate horizontal information exchanges,
+    1
+      For example, the U.S. Congress passed the USA Freedom Act on June 2, 2015, which significantly curtailed the
+government’s sweeping surveillance of phone calls and data gathering; on May 25, 2018, the European Union passed
+the strictest privacy law in EU history – the General Data Protect Regulation.
+    2
+      See Blaydes (2018, Chapter 2) for a recent exception.
+
+
+                                                        1
+enabling better coordination among citizens (e.g., Edmond 2013). A few recent studies argue that
+dictators allow vertical information flows through media or multiparty elections to address social
+grievances and to monitor local officials (Huang, Boranbay-Akan and Huang 2019; Lorentzen
+2014; Miller 2015). However, an important question in vertical information exchange remains
+unexplored: dictators do not have refined information on each citizen’s anti-regime sentiment and
+thus cannot optimally allocate resources between repression and co-optation to deter collective
+action. This article argues that increasing digital surveillance shapes the repression-cooptation
+trade-off in substantively important ways by mitigating this vertical information problem, thereby
+allowing authoritarian governments to substitute targeted, preventive repression for more costly
+universal co-optation.
+       All dictators face threats from citizens excluded from the power, especially organized opposi-
+tion groups (Svolik 2012). Even if disenfranchised citizens cannot threaten regime survival, dic-
+tators still have an incentive to prevent everyday protests and maintain social order for economic
+growth so that they can extract more rents from the economy (Pan 2015). Radical opponents –
+citizens with stronger anti-regime sentiments – pose greater threats to social order than moderate
+ones because they have a stronger tendency to protest (Lust-Okar 2005) and they are crucial to
+forming a critical mass necessary for anti-regime mobilization (Oliver and Marwell 1988). In sta-
+ble dictatorships, large-scale, indiscriminate repression is rare and usually not a preferable option
+to dissuade mass mobilization in the first place. Ideally, dictators could selectively repress radicals
+to prevent mass mobilization by addressing threats when the opposition is still organizing collec-
+tive action (Ritter and Conrad 2016). However, dictators are inherently uninformed. In contrast
+to democratic leaders, who obtain information about citizens from free speech, critical media, and
+multiparty elections, dictators face the difficulty of obtaining accurate information about citizens
+even if they hold elections because citizens have an incentive to misrepresent their anti-regime
+sentiments when faced with the prospect of repression (Kuran 1991).3 This authoritarian informa-
+   3
+     Miller (2015), among others, argue that multi-party elections in dictatorships allow citizens to signal dissatisfac-
+tion with the regime. But this type of information is much blunter than information collected in a society with political
+freedom. Further, many authoritarian regimes, such as China, Saudi Arabia, and North Korea, do not have multi-party
+elections.
+
+
+                                                           2
+tion problem undermines dictators’ ability to identify radicals for targeted repression. As a result,
+dictators resort to expensive co-optation policies such as universal welfare provision to prevent
+moderates from coordinating with radicals to form an organized opposition.
+       The development of information and communications technology (ICT), especially surveil-
+lance technology, alleviates the vertical information problem in dictatorships. ICT facilitates citi-
+zens’ digital communication, leaving substantial information in digital formats for governments to
+access and analyze. For example, the Iranian and Syrian regimes employ an array of digital surveil-
+lance tools to spy on citizens, especially those they deem threatening to regime survival (Gunitsky
+2015; Gohdes 2014). Chinese government agencies also invest in digital tools to track and analyze
+online activities for containing threats before they spread (Qin, Strömberg and Wu 2017). More-
+over, recent technology advancements in high-resolution cameras, facial recognition, and big data
+processing empower governments to monitor citizens and identify dissidents in a timely manner
+(Liu and Wang 2017). When digital surveillance enables dictators to identify radical opponents,
+they substitute less expensive targeted repression for non-exclusive co-optation to lower regime
+survival cost. Thus, as digital surveillance technologies advance, we should observe increased
+selective repression but less non-exclusive co-optation.
+       This paper focuses on surveillance technology rather than ICT penetration,4 using China as
+a testing ground. In 1998, the Ministry of Public Security in China proposed the Golden Shield
+Project – a digital surveillance system (Walton 2001) – to improve the efficiency and effectiveness
+of the police. In 2001, the central government approved and started to fund the project, which was
+then implemented through several phases. The first phase of the project mainly built population
+databases, ID tracking systems, and Internet surveillance tools. The second phase of the project
+– the 3111 Initiative – focused on street surveillance camera systems. Recent advancements on
+this project started to integrate facial recognition, big data, and artificial intelligence technologies
+into the system. Due to the central ministry’s phase-in strategy in experimenting this project, the
+   4
+    This paper considers increases in digital surveillance for a given level of Internet penetration. See Shapiro and
+Siegel (2015) for an example of how changes in ICT access alter insurgent mobilization and government surveillance
+together.
+
+
+
+                                                         3
+timing of implementation varied across counties. This variation in the timing allows comparison
+of counties with and without completed Golden Shield systems, using difference-in-differences
+(DiD) designs.
+   Using unique archival data on Chinese county government expenditures and county-level po-
+litical prisoners, I find that the implementation of the Golden Shield project increases local gov-
+ernments’ targeted repression, as measured by local public security expenditure and the number of
+political prisoners. I also find that the Golden Shield project has an negative impact on government
+welfare provision, agriculture investments, and provision of other public goods. These findings are
+consistent with the theoretical predictions that governments substitute preventive, targeted repres-
+sion for non-exclusive co-optation. The results are robust to lagged dependent variable models that
+address endogeneity problem between the local implementation of the Golden Shield project and a
+need for repression, as well as matching and trajectory balancing models that address time-variant
+omitted variable biases.
+   This paper directly contributes to a large body of literature on repression and co-optation in
+dictatorships (e.g., Gandhi and Przeworski 2006; Davenport 2007), especially work that focuses
+on the repression-cooptation trade-off. For example, Wintrobe (2000) presents a general theory of
+dictatorships that hold power through a combination of repression and loyalty, a concept similar
+to co-optation. Gershenson and Grossman (2001) analyze the changing mix of repression and
+co-optation that Soviet elites used to retain power in response to exogenous changes in domestic
+and international threats. Frantz and Kendall-Taylor (2014) develop a framework to show how
+co-optation institutions influence different types of repressive strategies in dictatorships. My work
+differs in two ways. First, I argue that though both repression and co-optation are important tools
+of authoritarian control, the information requirements to employ common forms of repression
+and co-optation differ – (targeted) repression requires more refined information. Second, I derive
+informational conditions under which dictators substitute repression for co-optation.
+   The theory and evidence in this paper address a common phenomenon regarding information
+and repression in dictatorships. Sullivan (2016) examines police repression in Guatemala to show
+
+
+                                                 4
+that when the government accumulates sufficient information about organizers to repress mobi-
+lization repeatedly, it can destroy challenger organizations by targeting the clandestine activities;
+but when repression is directed at ongoing overt challenges, it motivates backlash that escalates
+dissent. Dimitrov and Sassoon (2014) compare the operation of state security organs in Bulgaria
+and Iraq and find that, in Bulgaria, massive repression was replaced by surveillance and targeted
+repression because State Security was able to collect more fine-grained information on citizens.
+Truex (2019) also shows that the Chinese government strategically anticipates events that create
+focal points for protest coordination and then uses preventive repression to reduce dissent before-
+hand. My paper contributes to this literature by highlighting the role of digital technologies in
+selective repression and examining the trade-off between targeted repression and non-exclusive
+co-optation when governments’ information improves.
+   This paper also contributes to a growing body of literature on ICT and authoritarian survival.
+Early studies posit that information technologies increase political freedom since they spread
+democratic values and empower ordinary citizens to mobilize (e.g., Diamond 2010). However,
+the Internet and ICT also provide authoritarian governments with new opportunities for political
+control (e.g., Lynch 2011). Authoritarian governments use the Internet and ICT to censor and
+repress online expressions (King, Pan and Roberts 2013), collect information about citizen prefer-
+ences (Gunitsky 2015), monitor local politicians (Qin, Strömberg and Wu 2017), distract or guide
+public opinion (King, Pan and Roberts 2017), and identify demonstrators and political opponents
+(Gunitsky 2015; Lynch 2011). Recent scholarship also finds that many regimes, including Rus-
+sia, Turkey, Egypt, Bahrain, and Syria, employ domestic digital surveillance to monitor citizens
+(e.g., Gohdes 2014, p.91). This paper contributes to this literature by emphasizing the informa-
+tion advantages of digital surveillance for dictators to better target repression and decrease costly
+co-optation. As important, the theory and findings highlight that improvements in government in-
+formation likely induce more repression instead of more policy concessions, as suggested in prior
+literature (e.g., Gunitsky 2015; Miller 2015).
+
+
+
+
+                                                 5
+2        An Informational Theory of Repression and Co-optation in
+
+         Stable Dictatorships
+        Dictators rely on repression and co-optation to control citizens excluded from power (Svolik
+2012). Repression subdues opposition to the ruling elite by force or violence (e.g., Davenport
+2007). It is the defining characteristic of all states and is particularly salient in dictatorships.
+Co-optation, on the other hand, provides benefits to a group of citizens in exchange for politi-
+cal support (e.g., Gandhi and Przeworski 2006). While co-optation often involves using formal
+institutions such as parties and legislatures to cement enduring commitments to provide benefits
+to co-opted groups (Gandhi and Przeworski 2006), even dictatorships without strong formal in-
+stitutions appease popular discontent with policy concessions or material handouts (Kitschelt and
+Wilkinson 2007). To forestall dissent before coordinated protest manifests, dictators choose the
+optimal levels of repression and co-option by weighing the costs and benefits of both.
+
+
+2.1        The tradeoff between targeted repression and non-exclusive co-optation
+
+        Repression and co-optation can be indiscriminate or targeted, but most of today’s stable, non-
+rentier dictatorships seldom use indiscriminate repression or targeted co-optation as the main tools
+for everyday social control.
+        Large-scale, indiscriminate repression can incur international sanctions (Way and Levitsky
+2006), lowers economic productivity (Nafziger and Auvinen 2002), causes mass backlash and
+mobilization (Sullivan 2016), and potentially leads to elite splits (O’Donnell, Schmitter and White-
+head 1986). For a regime on the brink of collapse, large-scale, indiscriminate repression may be a
+drastic remedy but it is not a long-term solution for sustaining a stable dictatorship by dissuading
+mass mobilization in the first place. Further, indiscriminate repression is less effective than tar-
+geted repression in deterring participation,5 although it requires less information on citizens types
+    5
+      Siegel (2011b) demonstrates that targeted repression is more likely to deter mobilization than random repression.
+Although social networks and the distribution of preferences influence the relative advantages of targeted repression,
+it is still better at preventing mobilization than random repression for all levels of repression intensity, and especially
+at low-intensity levels.
+
+
+                                                            6
+(Dimitrov and Sassoon 2014). Scholars find that targeted repression against individual opponents
+and weakening challenger organizations is far more frequently employed as an everyday tool of
+repression in dictatorships than indiscriminate repression (Sullivan 2016; Truex 2019; Ritter and
+Conrad 2016).
+       On the other hand, targeted co-option is expensive because its cost increases with the number of
+individuals co-opted, whereas non-exclusive co-optation such as public goods provision is far more
+efficient for buying mass support (see De Mesquita et al. [2003]’s selectorate theory building on
+this intuition). In most of today’s stable dictatorships, citizens’ anti-regime mobilization is low and
+regime stability high because the regimes provide the two most basic public goods all citizens value
+– social stability and broad-based long-term economic growth, which increase citizen satisfaction
+with the regime (Magaloni 2006). Therefore, dictators seldom use exclusive co-optation to buy
+mass support, especially in non-rentier states where governments face resource constraints.
+       Moreover, targeted co-optation of radicals is less efficient in deterring mobilization than tar-
+geted repression because the cost to buy support from radicals can be significantly higher than that
+to imprison them. Further evidence suggests that selective co-optation is ineffective in preventing
+protests because the unequal distribution of benefits among citizens intensifies contention and cat-
+alyzes collective action (Pan 2015).6 More importantly, selective co-optation incurs a commitment
+problem that undermines the effectiveness of this strategy: dictators can renege on the promised
+rewards once the mobilization threat is gone, and co-opted opponents may also renege by mobiliz-
+ing later, ignoring the reward they received (Stokes 2005). This commitment problem intensifies if
+radicals have strong anti-regime sentiment and thus are likely to renege on their promises.7 Thus,
+to deal with radicals, dictators prefer employing targeted repression to targeted co-optation.
+       This discussion underscores an important scope condition for my theory: recent stable, non-
+rentier dictatorships where the governments attempt to deter mass mobilization. Given that most
+dictatorships, most of the time, are relatively stable,8 my theory has general implications for mod-
+   6
+     Targeted co-optation can be as or more effective than repression when it has a positive spillover effect on insur-
+gents’ social network (Siegel 2011a), but this evidence suggests the spillover effect could be negative.
+   7
+     Non-exclusive co-optation is less prone to the commitment problems since it can still buy off honest moderates.
+   8
+     Military juntas are less stable but they are increasingly rare in the past thirty years (Geddes, Wright and Frantz
+
+
+                                                          7
+ern dictatorships.
+    As non-exclusive co-optation and targeted repression become common practices in recent sta-
+ble dictatorships, dictators face a tradeoff between these two strategies for everyday social control.
+Ideally, dictators prefer targeted repression to forestall citizen mobilization by identifying radical
+opponents and then stopping them through harassment, intimidation, or detention (Truex 2019).
+However, dictators face a vertical information problem that citizens tend to hide their true anti-
+regime preferences when they feel threatened by the prospect of state repression (Kuran 1991).
+Due to this information problem, dictators cannot accurately target radicals. Non-exclusive co-
+optation is most useful when the regime has sufficient geographic, occupational, or racial/ethnic
+information about a large group of potential opponents to offer public or club goods but does not
+have accurate individual-level information to distinguish radical from moderate opponents. Be-
+cause buying support from a moderate is cheaper than buying support from a radical, and public
+goods are non-exclusive regardless of the number of recipients, the regime gains support from a
+large number of moderates. Although this strategy does not win over radicals, whose price of
+support is higher than that for moderates, if protests require coordination between radicals and
+moderates, non-exclusive co-optation deters moderates from participating, thereby reducing the
+likelihood of protest mobilization.
+    Although moderates typically outnumber radicals, the latter remains the primary threat to social
+order because radicals are more likely to organize a protest, and a protest is more likely to succeed
+when radicals participate (Oliver and Marwell 1988). Because successful anti-regime protests
+require coordination between moderates and (particularly) radicals, dictators selectively repress
+radicals to prevent coordinated protests rather than providing universal welfare to all opponents
+when the regime has accurate individual-level information about citizens’ types. Thus, when the
+probability of finding radicals is low, dictators prefer co-optation to repression. In contrast, when
+the likelihood of finding radicals is sufficiently high, dictators opt for selective repression over
+non-exclusive co-optation.
+2018).
+
+
+
+                                                  8
+2.2 Digital surveillance, co-optation, and repression
+
+       In the past two decades, the development of the Internet and the spread of social media have al-
+tered the way of communication, which provides authoritarian governments with new opportunities
+for surveillance. Citizens transmit information in electronic forms through an Internet infrastruc-
+ture that can be controlled or interrupted by the government. Digital surveillance technologies,
+such as spying malware and automated mass-detection systems, are widely used in authoritarian
+countries (Gohdes 2014). In addition, recent advances in automated text analysis, machine learn-
+ing techniques, and high-powered computing have reduced the costs of identifying critical users
+and censoring messages (Edmond 2013). Dictators use these tools to track and analyze online
+activities, to gauge public opinion, and to contain threats before they spread (Qin, Strömberg and
+Wu 2017). Moreover, street surveillance cameras, combined with facial recognition and big data
+technologies, help dictators identify individual radical opponents and monitor early protests (Liu
+and Wang 2017). Thus, when information through digital surveillance increases dictators’ proba-
+bility of detecting radical opponents, dictators will substitute targeted repression for co-optation to
+pre-empt anti-regime mobilization. This logic informs the following expectations:
+       Repression hypothesis: Government digital surveillance increases targeted, preventive repres-
+sion in authoritarian regimes.
+       Co-optation hypothesis: Government digital surveillance decreases non-exclusive co-optation
+in authoritarian regimes.9
+
+
+2.3       Discussion
+
+       My theory focuses on the role of information in shaping authoritarian repression and co-
+optation. It applies to a majority of today’s stable dictatorships. Even in societies where regime ide-
+ology or cultural legacies motivate high-intensity indiscriminate repression (e.g., genocide) against
+certain religious or ethnic groups, states still rely on surveillance and targeted repression to achieve
+   9
+    I examine repression and co-optation separately because they are different outcomes of surveillance. Yet, since
+repression and co-optation are correlated due to the tradeoff discussed above, I also use a Seemingly Unrelated Re-
+gression approach to fit models of repression and co-optation together to allow for correlated errors.
+
+
+                                                        9
+social control (Blaydes 2018; Dimitrov and Sassoon 2014; Gohdes 2014).
+         Preventive repression as a result of increased government surveillance might further deter cit-
+izens from revealing true preferences, exacerbating the authoritarian information problem in the
+long run. However, if governments employ less visible, low-intensity repression, citizens will be
+less likely to hide their regime preferences. Thus, authoritarian governments have an incentive to
+make repression less visible to prevent backlash and to create uncertainty about their repression
+targets so as not to exacerbate the information problems in the future.10
+         Although my theory does not endogenize the adoption of digital surveillance, it is helpful to
+think about why digital surveillance arises in the first place. First, dictators may develop digital
+surveillance to improve repression efficiency as long as its benefits outweigh costs. For example,
+states with high technology capacity (i.e., lower surveillance costs) may be more likely to engage
+in digital surveillance. Second, dictators may switch to targeted repression because they cannot
+afford non-exclusive co-optation or they need to direct the resources towards more productive
+investments. An economic downturn, an interstate war, a growing threat of social uprising, or
+emerging sectionalism may force dictators to develop digital surveillance for targeted repression.
+Further, dictators may adopt digital surveillance to control hard-to-penetrate populations such as
+religious or ethnic groups. Nevertheless, even if digital surveillance is endogenous to repression,
+the prediction that digital surveillance increases targeted repression and decreases non-exclusive
+co-optation still holds. My empirical strategy addresses endogeneity concerns to identify the causal
+effect of digital surveillance on repression and co-optation.
+
+
+3         Data and Empirical Strategies
+         I use a full sample of about three thousand Chinese counties (and districts) to examine how
+digital surveillance influences government repression and co-optation. These counties, as analogs
+to states in the international system, along with Chinese government’s phase-in digital surveillance
+    10
+    Although dictators may sometimes make preemptive repression visible to deter potential protesters, there is no
+need to publicize all cases since acknowledging that many people are protesting against the regime signals regime
+vulnerability (Gueorguiev 2017). Instead, dictators can make a few representative cases of repression visible for
+deterrence purpose while hiding their surveillance practice from the public.
+
+
+                                                       10
+programs allow me to adopt a difference-in-differences (DiD) design to identify the effects of
+digital surveillance on repression and co-optation. Moreover, the large number of counties allows
+matching and trajectory balancing methods to handle potential time-varying confounders that could
+weaken the DiD estimation.
+
+
+3.1 Fiscal Arrangements in Chinese Counties
+
+   China is an authoritarian country with a multilevel government incorporating about three thou-
+sand counties/districts (for simplicity, hereafter, I use county to indicate both) nested in prefec-
+tures/cities (about 335) and provinces/municipalities (31) under the central government. On aver-
+age, a county has about 500,000 residents.
+   I focus on county governments because they are directly responsible for social welfare provi-
+sion and repression at the local level. Similar to leaders in authoritarian countries, county leaders
+in China worry about popular uprisings because their career advancements are tied to local stability
+(Edin 2003). County leaders, therefore, employ co-optation and repression (e.g., providing social
+welfare and arresting dissidents) to prevent protests. Due to fiscal decentralization, county gov-
+ernments keep a share of the tax income and allocate their budgets without direct central control
+(Jia, Guo and Zhang 2014). Scholars have long attributed China’s economic growth to local gov-
+ernments’ fiscal autonomy — see, e.g., Montinola, Qian and Weingast (1995)’s “federalism, China
+style” and Oi (1995)’s “entrepreneurial local government”. Further, China’s 1994 tax reform – the
+famous “Separating Tax System” — further expanded county governments’ expenditure obliga-
+tions, including support for agricultural production, financing compulsory education, provision of
+public health services, and management of social security programs (Jia, Guo and Zhang 2014).
+In other words, each county has a largely constrained budget (from tax and revenue) to allocate
+across different categories. If local officials save money from some redistribution obligations, they
+can spend more on other activities that benefit their political careers such as large-scale develop-
+ment projects that signal economic and political achievements (Guo 2009). Thus, Chinese county
+leaders’ career incentives, fiscal responsibilities, and budget constraints are similar to those of state
+
+
+
+                                                   11
+leaders in the international system.
+
+
+3.2 Measures and Data
+
+    I use county-level public security expenditure and the number of political prisoners as two
+complementary measures for targeted repression. For investment in non-exclusive co-optation, I
+use local welfare and public goods expenditure as well as local public goods provision. The data
+are collected from multiple archives kept in Beijing, Hong Kong, and other cities in China.
+    Public Security Expenditure Measure
+    Local public security expenditure is the total annual spending of local police forces, procu-
+ratorates, and courts. This expenditure, therefore, includes spending on the local government
+organizations that implement targeted repression: detentions, monitoring, harassments, beatings,
+and torture of local activists and dissidents. It does not include the spending of high-intensity
+repressive bodies such as the Armed Police Force and the People’s Liberation Army, which the
+central government and provincial governments fund. Moreover, foreign observers have long used
+local security spending as an indicator for domestic repression in China (e.g., Martina 2014); and
+archival evidence suggests that the regime invests in local security spending to maintain everyday
+social stability.
+    Local public security budgets exclude expenses of the Golden Shield Project, which was mostly
+funded by the central government. While local security expenditure may also be used to fight
+crime, scholars find that Chinese security agents are better trained and equipped to control protests
+than to combat crimes (Scoggins 2018). Thus, the local public security expenditure is a reasonable
+proxy for targeted repression. See Online Appendix A.1 for details about this measure.
+    Political Prisoners Measure
+    While security spending measures investment in repressive capacity, which closely hews to the
+theoretical expectations, it does not measure actual repression. Therefore, I use the number of
+political prisoners as a complement to the spending measure.
+    The political prisoner data draws on information contained in the Congressional-Executive
+
+
+
+                                                 12
+Commission on China’s Political Prisoner Database (CECC-PPD). The CECC lists individuals
+who have been detained or imprisoned in China for non-criminal reasons. Human rights organi-
+zations, such as the Human Rights in China, the Network of Chinese Human Rights Defenders,
+Human Rights Watch, and Dui Hua Foundation compile lists of the prisoners’ names and dates
+of incarceration. Several recent studies employ this political prisoner data to measure preventive
+repression (e.g., Truex 2019; Gueorguiev 2017). Data on detentions are available starting in 1981
+but poor data quality during the early years, when entries were recorded retrospectively, makes
+them unsuitable for analysis. In addition, I use the second-phase Golden Shield Project to exam-
+ine this prisoner data. Considering that the first-phase Golden Shield project (completed in 2005)
+could contaminate the effect of the second-phase project, I then exclude all entries prior to 2006.
+After excluding entries with missing information, 4,531 (out of 5,007) detentions remain between
+2006 and 2017. Among them, 82 percent of arrests were related to political crimes such as associ-
+ation, speech, and the spread of information – precisely the types of actions that facilitate protest
+coordination. Unlike combating crime that is loosely organized, controlling social unrest is well-
+disciplined in China with specific government protocols (Scoggins 2018), which makes prisoner
+data a comparable measure of targeted repression across different localities.
+       I generate a measure of local repression by aggregating every prisoner’s time and location of
+detention (complemented by location of residence) in each county-year unit. This yields a 12-
+year panel for about 2,860 county-level units between 2006 and 2017. On average, each county
+arrested about 1.52 activists during the time period (the maximum is 256 and the minimum is 0).11
+See Online Appendix A.2 for details about this measure.
+       Discussion of Repression Measures
+       Both measures of targeted repression have their drawbacks: security spending includes all
+expenses of local security bodies; the prisoner data has missingness. Nevertheless, using both
+measures together mitigates the drawbacks of each. Moreover, while the prisoner data may have
+reporting biases because some regions are more heavily repressed traditionally, the difference-in-
+  11
+       I address the concern of under-reporting in Online Appendix B.6.
+
+
+
+                                                          13
+differences design exploits temporal variation within counties rather than cross-sectional variation,
+mitigating bias from spatial missingness.
+       Co-optation Measures
+       I use local welfare expenditure – the total expense of subsistence allowances, pension, endow-
+ment, medical and unemployment insurance policies – as a measure of investment in co-optation.
+This measure is a reasonable proxy for co-optation because scholars find that welfare policies in
+authoritarian countries effectively co-opt groups of people who pose a high risk to regime sta-
+bility (Knutsen and Rasmussen 2018). I also use the expenditures and quantities of local public
+goods, such as the numbers of welfare centers and beds and the numbers of students in elementary
+and middle schools, as measures of co-optation. Note that I include agriculture production as a
+proxy for government spending on agriculture because this spending is one of local government
+obligations. These measures of local public goods therefore capture the non-exclusive nature of
+co-optation.
+       Data Sources
+       I construct two datasets for these measures. First, I compile an original panel of county-level
+annual fiscal data using multiple sources. The 1994 - 2007 county-level public security, wel-
+fare, education, and agriculture expenditures come from the Fiscal Statistical Yearbook of Chi-
+nese Cities and Counties from 1995 to 2008.12 Data on other covariates such as population and
+GDP comes partly from the China County Socio-Economic Statistical Yearbook. The final dataset
+contains about 2,860 counties between 1994 and 2007, roughly 36,180 observations. Second, I
+matched the 2006-2017 county-level political prisoner data with the social economic and public
+goods data from the China County Socio-Economic Statistical Yearbooks.13 Summary statistics of
+these two datasets are reported in Online Appendix A.3.
+  12
+    The national fiscal yearbooks are only available by 2008 with data by 2007.
+  13
+    The socio-economic yearbooks contain no data for city districts – same administrative-level units as counties. I
+address this missing data problem in Online Appendix B.2.
+
+
+
+
+                                                        14
+3.3 The Golden Shield Project
+
+       My main empirical strategies rely on difference-in-differences comparisons that exploit local
+temporal variation in the implementations of a surveillance system — the Golden Shield Project
+(GSP). In 1998, the Ministry of Public Security initiated the GSP, a domestic surveillance and filter-
+ing system that integrates on online government databases with an all-encompassing surveillance
+network (Walton 2001). This project was constructed through several phases.
+       The first phase of the project, completed in 2005, mainly built population databases, ID track-
+ing systems, and Internet surveillance tools. A local GSP platform includes a local population
+database that records residents’ photo, ID number, address, household composition, and other basic
+information; further, it connects to a network of population databases nationwide. This local-level
+database also communicates with a database for high-priority monitoring and control (Õπ°ß
+∫„) that records residents who potentially threaten social and regime stability. Based on these
+two population databases, the platform further integrates several surveillance programs or tools. In
+addition, the system has ID scanning and tracking terminals installed in hotels, Internet cafes, train
+stations, bus terminals, airports, and train and air ticket offices. These tracking systems allow local
+police to track local and migrant populations, especially the population for high-priority monitor-
+ing and control. For example, once a blacklisted petitioner books a bus, train, or flight ticket to the
+province capital or Beijing, the system automatically notifies the local police bureau, and then the
+bureau will send officers to stop the petitioner.14
+       Moreover, the local GSP platform incorporates Internet surveillance modules that monitor im-
+portant websites, online forums, and social media. Based on keywords searching software, these
+modules automatically discover and record public sentiments, and then report signs of social insta-
+bility to local police (Du 2013). There are also Internet control modules that can conduct remote
+attacks (e.g., denial-of-service attacks) to disrupt websites, fabricate posts in threads, and guide
+online discussions (Du 2013). Combining IP address tracking with population databases enables
+the police to identify individuals who post sensitive information and track their location.
+  14
+       An interview with a sub-district office director in Sichuan Province in June, 2015.
+
+
+                                                            15
+       In the late 2000s, the Ministry of Public Security started the second phase of the GSP by
+integrating street surveillance cameras into the system. The ministry initiated a series of projects,
+including the Plan “3111” initiative.15 With recently developed artificial intelligence and facial
+recognition technologies, the surveillance camera system identifies individuals in real time (Liu
+and Wang 2017).
+       Abundant anecdotal evidence suggests that the GSP facilitates preventive repression. For ex-
+ample, two famous lawsuits filed by Chinese political prisoners against Cisco reveals that the GSP,
+equipped with Cisco networking hardware, can detect, identify and track political dissidents, who
+were later imprisoned by police (Moses 2011). There are also many individuals monitored and
+detained for their online political writings.16
+
+3.4 Empirical Specifications
+
+       Based on the local implementation of the GSP, I employ two main estimation strategies to
+analyze the effect of digital surveillance on local repression: a difference-in-differences (DiD)
+approach that compares differential changes in repression before and after the completion of this
+project, and a lagged dependent variable estimation that addresses endogeneity concerns that arise
+if past repression influences the timing of implementation of local GSPs in different cross-section
+units. Because different datasets cover different time ranges, I use the implementations of the first-
+phase GSP (2005) as an identification strategy for the expenditure dataset and the second phase (
+“3111” initiative, three waves) for the prisoner dataset.
+       I also use the same DiD specifications to estimate the effect of digital surveillance on govern-
+ment co-optation. Because measures of co-optation and repression are different budget expendi-
+tures, which are correlated with each other given local government budget constraints, I also use
+Seemingly Unrelated Regression (SUR) models to fit specifications with different budget expendi-
+tures together that allows errors to be correlated across equations.
+       Difference-in-Differences Design
+  15
+    Other projects include the “Safe Cities” project, the “Skynet” project, and the Rural “Sharp Eyes” project.
+  16
+    See China’s Political Prisoner Database by the Congressional-Executive Commission on China at https://www.
+cecc.gov/resources/political-prisoner-database. Accessed November 5, 2017.
+
+
+                                                      16
+       I first use a difference-in-differences approach that compares changes in outcome Yit in places
+with and without completed Golden Shield systems:
+
+
+                                                                              0
+                           Yit = ↵1 + ⇢1 Dit + ⌧1 timet +          i+    t + Xit      1 + ✏it ;                      (1)
+
+
+where Yit can be county i’s repression or co-optation at year t;              i and     t are county and year fixed-
+
+effect dummies; Xit0 is a set of time-varying county-level controls, and ✏it the error term. timet is
+a dummy variable indicating the period that the local GSP system has been completed. Dit is an
+indicator variable that is one if county i has a completed system at year t and zero otherwise. I am
+interested in estimating ⇢1 , the DiD estimate.17
+       This DiD model estimates the over-time changes in “control” and “treatment” groups and then
+takes the difference of the two over-time differences. With exogenous controls Xit , the key identifi-
+cation assumption is E(✏it | i ,      t , Dit ) = 0. That is, a county with a completed GSP system should
+
+have to maintain the same difference to a county without a completed system had the former not
+completed the system. In other words, there are underline parallel trends on the outcomes between
+the two groups.
+       Note that I define treatment and time differently for the two datasets because they span different
+phases of the Golden Shield project as the following:
+       Golden Shield First Phase:              The expenditure dataset covers a period between 1994 and
+2007. I use the first phase of the GSP as an identification strategy. The GSP was initialized
+in 1998 and began operation in 2003. The first phase of this project, including the population
+databases and most of the ID tracking systems, was completed in 2005.18 Some counties were
+even equipped with an Internet surveillance system by 2005. In 2006, the central Ministry of Public
+Security awarded about 40 prefectural-level Bureaus of Public Security for their excellent work in
+completing the first phase of this project, which suggests that these 40 prefectures have finished
+  17
+      I use cluster-bootstrap variance matrix developed by Bertrand, Duflo and Mullainathan (2004) to adjust for serially
+correlated standard errors.
+   18
+      China.com, 2003, The Golden Shield Project, http://www.china.com.cn/chinese/zhuanti/283732.htm. Accessed
+July 4, 2019.
+
+
+
+                                                          17
+the 1st-phase surveillance systems by 2005 while other 280 prefectures did so only after 2005. The
+DiD estimator for this dataset exploits this temporal variation: timet is a dummy variable that is
+equal to one after 2005, and Dit is an indicator variable that is equal to one if county i is located in
+a prefecture that has completed GS after 2005 and zero otherwise.
+       Golden Shield Second Phase – the “3111” Initiative:                          The political prisoner dataset
+covers a period between 2006 and 2017. I use the second phase of the GSP — the City Alarm
+and Surveillance Camera Pilot Project (“3111” Initiative) — as an identification strategy. Since
+2006, the Ministry of Public Security and provincial governments jointly conducted three waves
+of the “3111” Initiative (Ding 2010). The first wave included four cities (consisting of about 50
+county-level administrations), where the systems took effect in 2008. The second wave included 22
+cities (consisting of about 130 counties/districts), with the systems completed in 2010. During the
+last wave, another 470 counties/districts piloted “3111” projects, with completion in 2012 (Li and
+Hikvision Digital Technology Co. 2015). A total of 660 pilot counties/districts were selected with
+a relatively even distribution within 31 provinces to demonstrate the surveillance camera systems
+to all other counties in China. Thus, local security concerns were not a major reason for selecting
+these counties, which mitigates the endogeneity problem. I also find that past political arrests are
+not correlated with pilot county selection. The phase-in nature of the “3111” Initiative permits a
+staggered DiD design with multiple time periods and multiple groups — a stronger identification
+strategy than a single treatment period DiD. For the political prisoner dataset, Dit is an indicator
+variable that is equal to one if county i is a “3111” pilot county after the time of completion and
+zero otherwise.19
+       Lagged Outcome Variable Design
+       The causal identification of the DiD method assumes time-invariant confounders that can be
+captured by the fixed effects. However, it is possible that repression and surveillance are endoge-
+nous. For example, local pressure for repression may directly affect the implementations of local
+GS systems or the self-selections of the “3111” pilot counties. It is also possible that counties
+  19
+       See Online Appendix A.4 for details about the “3111” Initiative as well as how those pilot counties were selected.
+
+
+
+                                                            18
+spend more money on repression tend to spend more on surveillance. To address this endogeneity
+problem, I use a lagged outcome model to account for pressure for repression or other omitted
+variables that lead to repression (Angrist and Pischke 2008):
+
+
+                                                         0
+                   Yit = ↵2 + ⇢2 Dit + ⇡2 Yit 1 +   t + Xit   2 + ✏it ,   t = 1, ...T ;          (2)
+
+
+where Yit 1 refers to one-year lagged outcome variable (i.e., repression). For different datasets,
+the variable Dit indicates different counties in different time periods as mentioned above.
+   DiD, Lags, and Trajectory Balancing
+   While both DiD and Lagged Outcome models are solutions of causal inference, each requires
+relatively strong assumptions for identification that are often hard to justify. Fortunately, Angrist
+and Pischke (2008) point out an interesting bounding property of these two approaches. They
+prove that if the DiD model is correct but the analyst uses a Lagged Outcome model, this will
+generate a correlation between the treatment and the lagged outcome which will bias the treatment
+effect downward. Conversely, if the Lagged Outcome model generates the data whereas the analyst
+estimates a DiD model, the estimated treatment effect will be too large since the unestimated lag
+parameter will be additive with the treatment effect through the error term. Therefore, we can view
+the estimates from a DiD model and a Lagged Outcome model as the upper bound and the lower
+bound for the causal effect of interest.
+   Another way to address the endogeneity problem is a recently developed trajectory balancing
+approach, which uses kernel balancing to weight control observations to match the treated observa-
+tions according to the pretreatment trends (i.e., high-order “trajectory”) of outcome and covariates
+(Hazlett and Xu 2018). This approach handles time-vary confounders by assuming some time-
+fixed linear combination of the time-varying confounders. Because pretreatment outcomes contain
+information on those confounders, balancing control observations with the treated on pretreatment
+outcomes differences out the time-varying confounders.
+
+
+
+
+                                                 19
+4    Results
+    In this section, I first present the results of surveillance on repression using those two repression
+measures. I then show that repression substitutes for co-optation after surveillance implementation.
+
+
+4.1 Golden Shield and Local Public Security Expenditure
+
+    My argument posits that digital surveillance increases preventive repression. Figure 1 provides
+initial evidence from security spending data. The plot in the left panel shows that since 2006,
+the year that the GSP’s first phase was completed, counties in prefectures with completed surveil-
+lance systems increase local public security expenditure more so than counties without completed
+surveillance systems, especially in 2007. The trends between the two groups are relatively parallel.
+To mitigate time-varying omitted variable biases, I further use the trajectory balancing approach
+to weight the control group. As shown in the right panel, the weighted control group – counties
+without completed surveillance systems – have almost the same pretreatment trend as that of the
+treated group, and the treated group has a larger increase in security expenditure since 2006.
+
+
+
+
+               Unweighted Trends                        Trends with TjBal Weighted Control Group
+
+            Figure 1: Trends in Security Expenditure, 1st-Phase Golden Shield Project
+
+
+    Table 1 presents the estimated results using the unweighted data. Column (1) reports the DiD
+estimate (GS Completed County), controlling for local total fiscal expenditure, population, and
+
+
+                                                   20
+urbanization. Because the first-phase GS systems are completed at the prefecture level, I cluster
+standard errors by prefectures. The estimated effect is positive, large, and statistically significant,
+indicating that county governments in prefectures with completed GS systems spent 11.6 percent
+more on public security than counties in prefectures with uncompleted GS systems after 2005.
+
+               Table 1: 1st-Phase Golden Shield Project and Public Security Expenditure
+                           Fixed Eff.   Lagged DV      Fixed Eff.   Lagged DV     Fixed Eff.   Lagged DV
+                              (1)          (2)            (3)          (4)           (5)          (6)
+    VARIABLES               Security     Security      Security     Security      Security     Security
+                             (log)        (log)         (log)        (log)         (log)        (log)
+
+
+    Golden Shield⇥Time      0.116***     0.0363**     0.0995***      0.0297**     0.128***      0.0338**
+                            (0.0287)     (0.0141)      (0.0303)      (0.0122)     (0.0369)      (0.0139)
+    Time: Post-2005         0.784***                  0.0387***                   0.552***
+                            (0.0833)                   (0.0128)                    (0.102)
+    Lagged DV                             0.754***                   0.773***                    0.755***
+                                          (0.0118)                    (0.0126)                   (0.0138)
+    Expenditure(log)        0.638***      0.263***     0.570***      0.237***     0.531***       0.223***
+                            (0.0360)      (0.0132)      (0.0492)      (0.0146)    (0.0315)       (0.0145)
+    Population(Log)          0.0431      -0.00982*       0.0445     -0.0153***     0.0450        -0.00173
+                            (0.0290)     (0.00536)      (0.0401)     (0.00550)    (0.0298)      (0.00587)
+    Urb. Ratio              -0.00628     0.0460***     -0.00247     0.0411***     -0.00100      0.0619***
+                            (0.0130)     (0.00996)      (0.0163)     (0.00974)    (0.0132)       (0.0118)
+    GDP (log)                                           0.00205     0.0112***
+                                                       (0.00588)     (0.00373)
+    Admin. Exp. (log)                                                             0.149***      0.0465**
+                                                                                  (0.0531)      (0.0215)
+    County FEs                 Yes          No             Yes          No           Yes           No
+    Year FEs                   Yes          Yes            Yes          Yes          Yes           Yes
+
+    Constant                  0.121      -0.590***     1.363***     -0.741***     0.000178      -0.771***
+                             (0.310)      (0.0751)      (0.488)      (0.0785)      (0.407)        (0.103)
+
+    Observations             34,757       31,632        25,340        24,827       27,329         24,489
+    R-squared                 0.889        0.953         0.826        0.948         0.858          0.948
+    N of County               2,745                      2,731                      2,742
+    Robust standard errors clustered by prefectures. The number of observations are different between fixed
+    effects models and lagged DV models because the lags automatically drop observations in the first year.
+    Table B.4 shows that the results remain similar and robust when matching the sample of the fixed effects
+    models with that of the lagged DV models.
+    *** p<0.01, ** p<0.05, * p<0.1
+
+
+   Columns (2) reports the results of the lagged DV model using the unweighted data; the estimate
+suggests the lower bound for the causal effect. The coefficient for GS Completed County remains
+positive and statistically significant: county governments in surveillance prefectures spent roughly
+
+                                                      21
+3.6 percent more on public security since 2005. Columns (3) - (6) show that the results are stable
+when including additional controls such as GDP and administrative expenditure.20 In addition, the
+result from weighted data using Trajectory Balancing approach indicates a 6.9 percent increase
+in security expenditure after surveillance.21 Together, these results suggest that the GSP has a
+large, positive effect on local repression. Given that China’s internal security spending was larger
+than the army’s budget in 2011, an 4 - 12 percent increase in security spending is substantial. I
+also conduct a DiD falsification test based on the weighted data and find no pre-trend difference
+(Online Appendix B.5).
+
+
+4.2 “3111” Initiative and Political Prisoners
+
+       Figure 2 plots the number of political prisoners between the last wave of the “3111” counties
+and the never-treated counties before and after 2012. Pilot counties with completed surveillance
+camera systems have a sharper increase in the number of prisoners than non-pilot counties. Figure
+2 also shows that the pre-surveillance trends between these two groups of counties are almost
+identical, which gives us more confidence to interpret DiD results as causal because it suggests
+common underlying trends between these two groups in the absence of the “3111” Initiative.
+       Column (1) in Table 2 reports the DiD estimates from Equation (1), with standard errors clus-
+tered on counties because the “3111” Initiative use counties as pilot project units.22 The result
+indicates that pilot counties with advanced surveillance camera systems arrest 0.1 more political
+activists than non-pilot counties. Given that the average number of prisoners per county-year is
+0.13, political prisoners almost double in surveillance pilot counties relative to non-pilot counties.
+Columns (2) reports the lagged DV model estimate from Equation (2). The result is also substan-
+tial and statistically significant. A DiD falsification test finds no pre-trend difference between these
+two groups (Online Appendix B.5).23
+  20
+     The main models (Column [1] and [2]) do not include these two controls because the GDP variable misses all
+counties/cities in 1994, 1995, 1996, and 2007, and the administrative expenditure variable misses all counties/cities in
+2004 and 2005.
+  21
+     Online Appendix B.4 presents detailed results from the Trajectory Balancing approach.
+  22
+     The results are robust to clustering on prefectures.
+  23
+     The models do not include social-economic controls because city districts’(more than one-third of county-level
+units) controls are missing. Nevertheless, the results are robust with controls based on a subsample excluding city dis-
+
+
+                                                          22
+                  Figure 2: Trends in Political Prisoners, 3rd-Wave “3111” Initiative
+
+                  Table 2: “3111” Initiative (2nd-Phase GSP) and Political Prisoners
+                                               All Provinces             Tibet, Xinjiang &
+                                                                         Beijing Excluded
+                                          Fixed Eff.   Lagged DV      Fixed Eff. Lagged DV
+                                             (1)           (2)           (3)           (4)
+                    VARIABLES             Prisoners     Prisoners     Prisoners     Prisoners
+
+                    “3111” County         0.0949***     0.0844***     0.109***     0.0422***
+                                           (0.0283)      (0.0215)     (0.0247)      (0.0143)
+                    Lagged Prisoners                     0.157***                   0.142***
+                                                         (0.0114)                   (0.0104)
+                    County FEs               Yes            No           Yes           No
+                    Year FEs                 Yes            Yes          Yes           Yes
+
+                    Constant              0.0381***     0.0647***    0.0347***     0.0648***
+                                          (0.00715)      (0.0100)    (0.00694)      (0.0105)
+
+                    Observations           34,328        31,460        32,033        29,359
+                    R-squared               0.002        0.025          0.002        0.021
+                    Number of County        2,868                       2,674
+                    Robust standard errors clustered by counties. The results remain similar
+                    and robust when matching the sample of fixed effects models with that of
+                    lagged DV models.
+                    *** p<0.01, ** p<0.05, * p<0.1
+
+
+tricts (Online Appendix B.2). In addition, I use Fixed-Effects Negative Binomial models, Negative Binomial models,
+and Zero-inflated Negative Binomial models to address the discrete and non-negative values of the prisoner variable.
+The results remain robust to all model specifications. See Online Appendix B.2 for details.
+
+
+
+                                                        23
+       The Tibet and Xinjiang autonomous regions rely more heavily on repression than other provinces
+due to ethnic tensions and secession. In addition, petitioners and protesters are more likely to gather
+in Beijing, China’s political center, and therefore preventive repression is more intensive there. It
+is possible that the positive results are driven by outlier counties in Beijing, Tibet, and Xinjiang.
+The prisoner data also shows that governments in these three regions arrest disproportionally more
+activists than governments in other areas. To address this concern, I replicate the analyses using
+a subsample that excludes counties from those three provinces. As shown in Column (3) and (4),
+the results remain large and statistically significant.
+       Note that the average numbers of political prisoners in “3111” pilot and non-pilot counties
+converge in 2017, possibly suggesting that local governments may have arrested most dissidents
+so that extensive imprisonment is no longer necessary. It is also possible that citizens have learned
+to hide from government surveillance. Unfortunately, the data does not allow me to test these
+possibilities. Nevertheless, the evidence suggests that digital surveillance is effective for at least
+four years.
+
+4.3 Surveillance and the Repression-cooptation trade-off
+
+       Scholars argue that Internet and social media surveillance enables authoritarian governments
+to collect accurate information on mass opinion and to tailor policies accordingly (Gunitsky 2015).
+While the Chinese government may use the information to adjust policy, this practice does not
+preclude the government from employing surveillance to identify political opponents. If, however,
+surveillance is primarily a tool to inform policy, we could expect surveillance to increase welfare
+spending in areas of potential unrest. In contrast, my theory suggests that surveillance for iden-
+tifying individual opponents should result in more repression and less redistribution because the
+former is a more cost-efficient way to maintain social stability.
+       To test this trade-off, I examine how surveillance influences redistribution and security expen-
+ditures together using Seemingly Unrelated Regression models with a DiD setup. I use levels
+of expenditure rather than log scales to compare spending in different categories.24 Table 3 shows
+  24
+       See Table B.5 in Online Appendix B.1 for estimation in log scales.
+
+
+                                                           24
+large, negative, and statistically significant effects of surveillance on welfare and agriculture spend-
+ing. Further, I examine how the “3111” Initiative influences local public goods provision. Table 4
+shows that most of the effects are negative and the effects on the number of beds in hospitals and
+agriculture products are large, negative, and statistically significant (2.4 - 12 percentage decreases).
+Overall, these results suggest that surveillance decreases non-exclusive co-optation. Note that the
+negative effects do not mean an absolute reduction in public goods and welfare provision. Instead,
+these DiD estimates indicate that welfare spending and public goods have smaller increases in
+surveillance counties than in non-surveillance counties.
+             Table 3: 1st-Phase GSP, Public Security, and Redistribution Expenditures
+
+                                            (1)                 (2)            (3)               (4)
+     VARIABLES                            Security            Welfare       Education        Agriculture
+                                       (10,000 CNY)        (10,000 CNY)   (10,000 CNY)     (10,000 CNY)
+
+     Golden Shield⇥Time                    2,880***         -3,075***         -432.5          -993.2**
+                                            (679.5)           (1,171)         (1,191)          (430.7)
+     Time: Post-2005                      -1,195***           1,266**        1,816***         1,356***
+                                            (301.9)           (520.1)         (528.9)          (191.3)
+     Total Expenditure (10,000 CNY)      0.0731***          0.0379***        0.131***       0.0292***
+                                         (0.000229)         (0.000394)     (0.000401)       (0.000145)
+     Population (10,000 Person)           -1.377***          3.608***        32.77***         0.817***
+                                            (0.223)           (0.383)         (0.390)          (0.141)
+     Urbanization Ratio (0-1)                345.8            992.5**       -3,131***        -1,089***
+                                            (279.1)           (480.9)         (489.1)          (176.9)
+     County FEs                               Yes               Yes             Yes              Yes
+     Year FEs                                 Yes               Yes             Yes              Yes
+
+     Constant                              -379.2*            115.8         3,416***         1,345***
+                                           (214.2)           (369.1)         (375.3)          (135.8)
+
+     Observations                          19,755             19,755         19,755           19,755
+     R-squared                              0.923              0.567          0.950            0.839
+     Seemingly unrelated regressions with two-way fixed effects. Robust standard errors clustered by pre-
+     fectures.
+     *** p<0.01, ** p<0.05, * p<0.1
+
+
+
+4.4 Alternative Mechanisms
+
+   One concern is that digital surveillance lowers the thresholds of what dictators perceive to be
+radical opponents to include individuals’ browsing preferences. This means increased repression
+might result from “redefining” radicals instead of detecting radicals. However, information on
+
+                                                      25
+                Table 4: “3111” Initiative (2nd-Phase GSP) and Public Goods Provision
+                                   Welfare                         Education                     Agriculture
+                         (1)         (2)         (3)             (4)         (5)        (6)          (7)           (8)
+ VARIABLES            Welfare     Welfare     Hospital        Primary     Middle     Grain        Cotton       Oil Crop
+                      Centers      Beds        Beds            Stdts      Stdts      Prodct       Prodct        Prodct
+                       (log)       (log)       (log)           (log)       (log)      (log)        (log)         (log)
+
+ “3111” County        0.00614     -0.00352    -0.0243**        0.00643     0.00143   -0.047***     -0.121*     -0.108***
+                      (0.0241)    (0.0326)     (0.0121)       (0.00935)   (0.0124)    (0.0111)    (0.0716)      (0.0263)
+ Land Area(Log)        -0.0625     0.00403      0.0244        0.0589**      0.0317      0.0745      0.276        0.0632
+                      (0.0806)    (0.0641)     (0.0225)        (0.0266)   (0.0307)    (0.0514)     (0.183)      (0.0910)
+ Population(Log)        0.140*     0.312**    0.309***        0.447***    0.503***     0.124**     0.349*       0.599***
+                      (0.0760)     (0.125)     (0.0718)        (0.0813)   (0.0892)    (0.0526)     (0.211)       (0.150)
+ 1st Industry(Log)      0.0405     0.117**     -0.0129         -0.09***    -0.0130    0.319***     0.266**      0.253***
+                      (0.0420)    (0.0541)     (0.0195)        (0.0210)   (0.0220)    (0.0516)     (0.113)      (0.0685)
+ 2nd Industry(Log)    0.0652**    0.0722**    0.036***        -0.041***     0.0137      0.0152    0.226***      0.128***
+                      (0.0265)    (0.0322)     (0.0102)       (0.00878)   (0.0150)    (0.0103)    (0.0687)      (0.0290)
+ Fiscal Bgt.(Log)       0.0355    0.114***    0.055***        0.026***    0.089***    -0.00566     0.0586       0.134***
+                      (0.0273)    (0.0383)     (0.0143)        (0.0101)   (0.0153)    (0.0123)    (0.0906)      (0.0328)
+ County FEs               Yes        Yes          Yes             Yes         Yes         Yes        Yes           Yes
+ Year FEs                 Yes        Yes          Yes             Yes         Yes         Yes        Yes           Yes
+
+ Constant               0.649       1.129     4.284***        9.376***    6.923***   7.113***     -3.407*       -0.0467
+                       (0.912)     (1.064)     (0.378)         (0.400)     (0.426)    (0.632)     (1.937)       (0.998)
+
+ Observations          19,474      19,447      20,065          20,107      20,099     18,361       8,542        19,275
+ R-squared              0.018       0.351       0.613           0.234       0.258      0.118       0.104         0.045
+ N of County            2,081       2,081       2,086           2,086       2,086      2,066       1,093         2,041
+ Two-way fixed effects models. Robust standard errors clustered by counties.
+ *** p<0.01, ** p<0.05, * p<0.1
+
+
+the prisoners arrested for their online activities in the CECC-PPD database suggests that most of
+them used the Internet as a platform for anti-regime mobilization, indicating they are likely radical
+regime opponents. I further exclude all internet-related arrests (about 10.6%) from the sample.
+The results remain large and statistically significant at 0.01 level (See Online Appendix B.6 for
+details).
+    If surveillance allows the government to more efficiently govern by improving redistribution
+accuracy and monitoring local officials, then increased surveillance should mean a fixed amount of
+government spending on local public goods will yield more gains in citizen welfare and more gains
+in social stability. Thus, while surveillance may allow the government to substitute repression for
+(costly) local public goods provision, a decline in spending on public goods provision could simply
+
+
+
+                                                         26
+be the result of more efficient governance brought about by increased surveillance. However, we
+can rule out this mechanism for several reasons. First, my empirical strategy is based on the Golden
+Shield project that is designed for police departments to monitor citizens. It is unlikely that this
+surveillance system improves government efficiency in delivering public goods. Second, the 3111
+Initiative (the 2nd phase of the GSP) is designed to install street camera systems in cities. It is
+unlikely that city camera systems improve redistribution accuracy in rural areas, and thus influence
+agricultural production (Table 4, Column [6], [7], and [8]).
+    A reduction in welfare spending after surveillance might also result from local government
+budget constraints: they spend more money on repression with less left for redistribution. However,
+if this were the case, we would observe an accounting balance between increases in repression
+spending and decreases in co-optation. As shown in Table 3, the reduced co-optation spending is
+about 60 percent larger than the increased security spending, suggesting that the tradeoff between
+repression and co-optation is unlikely to stem from local governments’ accounting balance. A final
+concern is that increased surveillance might better inform a government strategy of individual-
+level targeted benefits, which might influence welfare expenditure. Though I cannot rule out this
+possibility, the increased political arrests with surveillance suggest that governments use more
+targeted repression.
+
+
+5    Conclusion
+    Today, roughly half of the world’s population lives under some form of non-democratic govern-
+ment. Although social scientists, policymakers, and human rights advocates celebrated the dawn
+of the Internet Era in the hopes that better communication technology would become a power-
+ful tool to ensure and encourage freedom and democracy (Diamond 2010), we have not observed
+widespread authoritarian collapse in the two decades since the advent of this era. In this paper, I
+argue that digital surveillance empowers dictators by resolving their information problem in iden-
+tifying radical opponents and enabling them to substitute preventive repression for co-optation to
+prevent social unrest. The evidence from analyzing the effects of the Golden Shield Project on
+
+
+                                                27
+Chinese subnational governments’ repression and co-optation is consistent with this theory.
+    The findings of this paper are based on the practices of surveillance and repression conducted
+by the police in a non-electoral dictatorship, but the theory developed here is generalizable to other
+types of surveillance and repression as well as to electoral autocracies. For example, in 2004, the
+Hugo Chávez regime in Venezuela was able to identify several million voters who had attempted
+to remove him from office. The regime then used a user-friendly software program known as
+Maisanta to distribute the list throughout the government bureaucracy for punishment. Scholars
+find that voters who were identified as Chávez opponents experienced a 5 percent drop in earnings
+and a 1.3 percentage point drop in employment rates after the voter list was released (Hsieh et al.
+2011). This case suggests that dictators have many ways to surveil and repress opponents, and
+surveillance can be effective when it is used to collect individual-level information on citizens’
+political preferences during elections.
+    The theory and findings in this paper have several implications for explaining authoritarian
+survival in the digital age. First, digital surveillance helps dictators repress radical opponents
+to forestall large-scale social protests that might threaten their survival. Second, contemporary
+dictatorships seldom employ large-scale in-person surveillance (e.g., Stasi in East Germany) to
+control society due to its detrimental effects on social trust and economic growth (Blaydes 2018) as
+well as the costs and risks of creating and managing a large bureaucracy comprised of human agents
+who may threaten the dictator’s survival. Digital surveillance relies less on human agents and
+can more easily be disguised. The reduced social and political costs facilitate using surveillance
+to control society in dictatorships.25 Moreover, surveillance enables dictators to use preventive
+repression to address threats before overt mass protests mobilize, which reduces the necessity to
+engage in reactive, often more violent, state-led repression. As a consequence, surveillance likely
+reduces dictators’ reliance on military or paramilitary forces for retaining power and therefore
+lowers the risk of military takeover. Future research in these directions is worth exploration.
+
+
+  25
+     Digital surveillance is quicker and more comprehensive than human-agent based surveillance, and thus may be
+more accurate if human agents are subjective or even malicious against “innocent” people.
+
+
+                                                      28
+References
+Angrist, Joshua D. and Jörn-Steffen Pischke. 2008. Mostly Harmless Econometrics: An Empiri-
+  cist’s Companion. Princeton University Press.
+Bertrand, Marianne, Esther Duflo and Sendhil Mullainathan. 2004. “How Much Should We Trust
+  Differences-in-differences Estimates?” The Quarterly Journal of Economics 119(1):249–275.
+Blaydes, Lisa. 2018. State of Repression: Iraq Under Saddam Hussein. Princeton University
+  Press.
+Davenport, Christian. 2007. “State Repression and Political Order.” Annual Review of Political
+  Science 10:1–23.
+De Mesquita, Bruce Bueno, Alastair Smith, Randolph M. Siverson and James D. Morrow. 2003.
+  The Logic of Political Survival. MIT Press.
+Diamond, Larry JF. 2010. “Liberation Technology.” Journal of Democracy 21(3):69 – 83.
+Dimitrov, Martin K. and Joseph Sassoon. 2014. “State Security, Information, and Repression: A
+  Comparison of Communist Bulgaria and Ba’thist Iraq.” Journal of Cold War Studies 16(2):3–31.
+Ding, Zhaowei. 2010. “The Progress of National-wide “Safe City” Projects in 2010.” China Public
+  Security 04.
+Du, Xinwei. 2013. Design and Implementation of Taiyuan Comprehensive Information Platform
+  for a Bureau of Police (in Chinese). Master’s thesis. University of Electronic Science and Tech-
+  nology of China. Available at http://cdmd.cnki.com.cn/Article/CDMD-10614-1013330231.htm.
+  Accessed July 4, 2019.
+Edin, Maria. 2003. “State Capacity and Local Agent Control in China: CCP Cadre Management
+  From a Township Perspective.” The China Quarterly 173:35–52.
+Edmond, Chris. 2013. “Information Manipulation, Coordination, and Regime Change.” Review of
+  Economic Studies 80(4):1422–1458.
+Frantz, Erica and Andrea Kendall-Taylor. 2014. “A Dictator’s Toolkit: Understanding How Co-
+  optation Affects Repression in Autocracies.” Journal of Peace Research 51(3):332–346.
+
+
+
+                                                29
+Gandhi, Jennifer and Adam Przeworski. 2006. “Cooperation, Cooptation, and Rebellion Under
+  Dictatorships.” Economics & Politics 18(1):1–26.
+Geddes, Barbara, Joseph Wright and Erica Frantz. 2018. How Dictatorships Work: Power, Person-
+  alization, and Collapse. Cambridge University Press.
+Gellman, Barton and Laura Poitras. 2013. “U.S., British Intelligence Mining Data from Nine U.S.
+  Internet Companies in Broad Secret Program.” The Washington Post . July 03.
+Gershenson, Dmitriy and Herschel I Grossman. 2001. “Cooption and Repression in the Soviet
+  Union.” Economics & Politics 13(1):31–47.
+Gohdes, Anita R. 2014. Repression in the Digital Age: Communication Technology and the Poli-
+  tics of State Violence. Phd dissertation. Universität Mannheim. Available at: https://ub-madoc.
+  bib.uni-mannheim.de/37902/. Accessed July 4, 2019.
+Gueorguiev, Dimitar D. 2017. “In Public or in Private: Repressing Dissidents in China.” Working
+  Paper. Available at SSRN: https://ssrn.com/abstract=3038812. Accessed July 4, 2019.
+Gunitsky, Seva. 2015. “Corrupting the Cyber-commons: Social Media as a Tool of Autocratic
+  Stability.” Perspectives on Politics 13(1):42–54.
+Guo, Gang. 2009. “China’s Local Political Budget Cycles.” American Journal of Political Science
+  53(3):621–632.
+Hazlett, Chad and Yiqing Xu. 2018. “Trajectory Balancing: A General Reweighting Approach to
+  Causal Inference with Time-Series Cross-Sectional Data.” Working Paper, UCLA and UCSD.
+  Link: https://papers.ssrn.com/sol3/papers.cfm?abstract id=3214231. Accessed July 4, 2019.
+Hsieh, Chang-Tai, Edward Miguel, Daniel Ortega and Francisco Rodriguez. 2011. “The Price
+  of Political Opposition: Evidence from Venezuela’s Maisanta.” American Economic Journal:
+  Applied Economics 3(2):196–214.
+Huang, Haifeng, Serra Boranbay-Akan and Ling Huang. 2019. “Media, Protest Diffusion, and
+  Authoritarian Resilience.” Political Science Research and Methods 7(1):23–42.
+Jia, Junxue, Qingwang Guo and Jing Zhang. 2014. “Fiscal Decentralization and Local Expenditure
+  Policy in China.” China Economic Review 28:107–122.
+
+
+                                                30
+King, Gary, Jennifer Pan and Margaret E Roberts. 2013. “How Censorship in China Allows
+  Government Criticism but Silences Collective Expression.” American Political Science Review
+  107(2):326–343.
+King, Gary, Jennifer Pan and Margaret E. Roberts. 2017. “How the Chinese Government Fabri-
+  cates Social Media Posts for Strategic Distraction, Not Engaged Argument.” American Political
+  Science Review 111(3):484–501.
+Kitschelt, Herbert and Steven I Wilkinson. 2007. Patrons, Clients and Policies: Patterns of Demo-
+  cratic Accountability and Political Competition. Cambridge University Press.
+Knutsen, Carl Henrik and Magnusn Rasmussen. 2018. “The Autocratic Welfare State: Old-
+  Age Pensions, Credible Commitments, and Regime Survival.” Comparative Political Studies
+  51(5):659–695.
+Kuran, Timur. 1991. “Now Out of Never: The Element of Surprise in the East European Revolution
+  of 1989.” World Politics 44(1):7–48.
+Li, Yanxiang and Ltd. Hikvision Digital Technology Co. 2015. “The History and Prospects of Safe
+  City (in Chinese).” China Public Security 09. Available at: http://www.cnki.com.cn/Article/
+  CJFDTOTAL-GGAZ201509013.htm. Accessed July 4, 2019.
+Liu, Joyce and Xiqing Wang. 2017. “In Your Face: China’s all-seeing state.” BBC News . December
+  10.
+Lorentzen, Peter L. 2014. “China’s Strategic Censorship.” American Journal of Political Science
+  58(2):402–414.
+Lust-Okar, Ellen. 2005. Structuring Conflict in the Arab World: Incumbents, Opponents, and
+  Institutions. Cambridge University Press.
+Lynch, Marc. 2011. “After Egypt: The Limits and Promise of Online Challenges to the Authori-
+  tarian Arab State.” Perspectives on Politics 9(2):301–310.
+Magaloni, Beatriz. 2006. Voting for Autocracy: Hegemonic Party Survival and Its Demise in
+  Mexico. Cambridge University Press.
+Martina, Michael. 2014. “China Withholds Full Domestic-security Spending Figure.” Reuters .
+
+
+                                               31
+  March 04.
+Miller, Michael K. 2015.    “Elections, Information, and Policy Responsiveness in Autocratic
+  Regimes.” Comparative Political Studies 48(6):691–727.
+Montinola, Gabriella, Yingyi Qian and Barry R Weingast. 1995. “Federalism, Chinese Style: The
+  Political Basis for Economic Success in China.” World Politics 48(1):50–81.
+Moses, Asher. 2011. “Fighting China’s Golden Shield: Cisco Sued Over Jailing and Torture of
+  Dissidents.” The Sydney Morning Herald . August 16.
+Nafziger, E Wayne and Juha Auvinen. 2002. “Economic Development, Inequality, War, and State
+  Violence.” World Development 30(2):153–163.
+Oi, Jean C. 1995. “The Role of the Local State in China’s Transitional Economy.” The China
+  Quarterly 144:1132–1149.
+Oliver, Pamela E and Gerald Marwell. 1988. “The Paradox of Group Size in Collective Action: A
+  Theory of the Critical Mass. II.” American Sociological Review 53(1):1–8.
+O’Donnell, Guillermo, Philippe C Schmitter and Laurence Whitehead. 1986. Transitions from
+  Authoritarian Rule: Comparative Perspectives. Vol. 3 JHU Press.
+Pan, Jennifer. 2015. Buying Inertia: Preempting Social Disorder with Selective Welfare Provision
+  in Urban China. Phd dissertation. Harvard University. Available at: https://dash.harvard.edu/
+  handle/1/17467174. Accessed July 4, 2019.
+Qin, Bei, David Strömberg and Yanhui Wu. 2017. “Why Does China Allow Freer Social Media?
+  Protests Versus Surveillance and Propaganda.” Journal of Economic Perspectives 31(1):117–40.
+Ritter, Emily Hencken and Courtenay R. Conrad. 2016. “Preventing and Responding to Dissent:
+  The Observational Challenges of Explaining Strategic Repression.” American Political Science
+  Review 110(1):85–99.
+Scoggins, Suzanne E. 2018. “Policing Modern China.” China Law and Society Review 3(2):79–
+  117.
+Shapiro, Jacob N and David A Siegel. 2015. “Coordination and Security: How Mobile Communi-
+  cations Affect Insurgency.” Journal of Peace Research 52(3):312–322.
+
+
+                                              32
+Siegel, David A. 2011a. “Non-disruptive Tactics of Suppression Are Superior in Countering Ter-
+  rorism, Insurgency, and Financial Panics.” PloS One 6(4):e18545.
+Siegel, David A. 2011b. “When Does Repression Work? Collective Action in Social Networks.”
+  The Journal of Politics 73(4):993–1010.
+Stokes, Susan C. 2005. “Perverse Accountability: A Formal Model of Machine Politics With
+  Evidence from Argentina.” American Political Science Review 99(3):315–325.
+Sullivan, Christopher M. 2016. “Political Repression and the Destruction of Dissident Orga-
+  nizations: Evidence from the Archives of the Guatemalan National Police.” World Politics
+  68(4):645–676.
+Svolik, Milan W. 2012. The Politics of Authoritarian Rule. Cambridge University Press.
+Truex, Rory. 2019. “Focal Points, Dissident Calendars, and Preemptive Repression.” Journal of
+  Conflict Resolution 63(4):1032–1052.
+Valentino-DeVries, Jennifer, Lam Thuy Vo and Danny Yadron. 2015. “Cataloging the World’s
+  Cyberforces.” The Wall Street Journal . December 28.
+Walton, Greg. 2001. China’s Golden Shield: Corporations and the Development of Surveillance
+  Technology in the People’s Republic of China. Rights & Democracy.
+Way, Lucan A. and Steven Levitsky. 2006. “The Dynamics of Autocratic Coercion After the Cold
+  War.” Communist and Post-Communist Studies 39(3):387–410.
+Wintrobe, Ronald. 2000. The Political Economy of Dictatorship. Cambridge University Press.
+
+
+
+
+                                              33
+

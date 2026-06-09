@@ -3,7 +3,7 @@ Replication README
 
 Paper
 -----
-Speaking in Code: How Surveillance Suppresses Coordinated Dissent
+Speaking in Code: Surveillance and Coordinated Dissent in a Language-Based Global Game with LLM Agents
 
 This repository contains the simulation code, raw experiment outputs,
 analysis scripts, generated tables and figures, and LaTeX source needed

@@ -1,0 +1,8 @@
+arm_id,period_rows,mean_join_fraction_valid,api_error_rate,unparseable_rate
+fine_coded_replay_qwen30,34,0.4588235294117647,0.0,0.0
+fine_comm_baseline_qwen30,34,0.46176470588235297,0.0,0.0
+fine_direct_replay_qwen30,34,0.4676470588235294,0.0,0.0
+fine_flip_qwen30,34,0.7088235294117647,0.0,0.0
+fine_pure_qwen30,34,0.4970588235294117,0.0,0.0
+fine_scramble_qwen30,34,0.4970588235294117,0.0,0.0
+fine_surv_sender_only_qwen30,34,0.4411764705882353,0.0,0.0

@@ -1,18 +1,19 @@
 \begin{table}[t]
 \centering
-\caption{Strategic-stakes narrative comparative statics. High-cost framing emphasizes severe reprisals for failed action; low-cost framing emphasizes minimal consequences. The table is evidence on qualitative stakes framing, not literal numeric payoff reasoning.}
+\caption{Strategic-stakes narrative-header comparative statics. High-cost framing emphasizes severe reprisals for failed action; low-cost framing emphasizes minimal consequences. These rows are the two-header narrative contrast, not the seven-cell numeric payoff ladder.}
 \label{tab:bc_statics}
-\small
-\resizebox{\columnwidth}{!}{%
+\scriptsize
+\setlength{\tabcolsep}{2pt}
 \begin{tabular}{lccccc}
 \toprule
-Design & $N$ & Mean join & $r(J, A(\theta))$ & Cutoff $\hat{\theta}^*$ (SE) & $\Delta$ (pp) \\
+Design & $N$ & Mean join & $r(J,A)$ & $\hat{\theta}^*$ (SE) & $\Delta$ (pp) \\
 \midrule
-Baseline & 270 & 0.409 & +0.88 & 0.39 (0.007) & --- \\
-High cost & 270 & 0.190 & +0.87 & 0.13 (0.010) & -21.9 \\
-Low cost & 270 & 0.693 & +0.88 & 0.72 (0.007) & +28.4 \\
+Baseline (no header) & 270 & 40.9\% & $+0.88$ & $+0.39$ (0.007) & --- \\
+High-cost header & 270 & 19.0\% & $+0.87$ & $+0.13$ (0.010) & $-21.9$ \\
+Low-cost header & 270 & 69.3\% & $+0.88$ & $+0.72$ (0.007) & $+28.4$ \\
 \bottomrule
-\end{tabular}}
-\vspace{0.25em}
-\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model, information design $\theta$-grid. Identical briefings across conditions; only the strategic-stakes header varies. $\Delta$: change vs.\ baseline mean join (pp).}
+\end{tabular}
+\begin{tablenotes}
+\footnotesize\emph{Notes:} Primary model, information-design $\theta$-grid. $N$ counts country--period rows ($n = 25$ agents per row). Identical briefing bodies across conditions; only the prepended strategic-stakes header varies. The high/low rows are the original header conditions \texttt{bc\_high\_cost} and \texttt{bc\_low\_cost}; they are not the endpoints of the separate narrative ladder reported in Table~\ref{tab:bc_sweep_mapping}. $\Delta$: change in mean join vs.\ baseline (pp, actual $-$ baseline); cutoff SEs are delta-method standard errors from the logistic fit (per-condition mean-join SEs are not stored in the verified statistics). Note the sign convention relative to Table~\ref{tab:bc_classifier}: there, Gap $=$ classifier $-$ actual, and because the classifier's prediction stays near the baseline rate, a header that lowers actual joining appears here as a negative $\Delta$ and there as a positive Gap of approximately the same magnitude.
+\end{tablenotes}
 \end{table}

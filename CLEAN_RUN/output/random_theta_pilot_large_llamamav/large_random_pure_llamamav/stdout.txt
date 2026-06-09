@@ -1,0 +1,2 @@
+running large_random_pure_llamamav -> /Users/khaled/GitHub/llm-global-games/CLEAN_RUN/output/random_theta_pilot_large_llamamav/large_random_pure_llamamav
+large_random_pure_llamamav: completed 250 period rows

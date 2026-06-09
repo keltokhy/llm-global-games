@@ -1,0 +1,2821 @@
+C OMMUNICATION I N G LOBAL G AMES :
+T HEORY AND E XPERIMENT∗
+A LA AVOYAN†
+February 13, 2024
+
+Abstract
+Communication is introduced as a strategic choice in a regime change coordination game with
+incomplete information. There exists a communication equilibrium, in which agents act more aggressively and take on the regime more often than they would without communicating. The effects
+of communication are two-fold: (i) increases the rate of coordinated attacks, and (ii) reduces futile
+attempts on the regime, thus reducing wasted cost. The experimental results demonstrate that communication reduces miscoordination; however, the subjects are not as strategic with their messages
+as theory predicts, and therefore, they fail to increase their payoffs. This result demonstrates how
+the effects of communication differ in an environment with incomplete information, contrasting
+with the overwhelming experimental evidence indicating communication benefits in coordination
+games with complete information.
+JEL Classification: C71, C73, C92, D74;
+Keywords: global games, communication, cheap-talk, strategic uncertainty, coordination, experiment.
+
+∗
+
+I thank Andrew Schotter for his continuous support on this project. I am grateful to Dilip Abreu, Miguel A. Ballester,
+Guillaume Fréchette, Frank Heinemann, Alessandro Lizzeri, Elliot Lipnowski, Erik Madsen, Laurent Mathevet, Keith
+O’Hara, Paula Onuchic, David Pearce, João Ramos, Debraj Ray, Ennio Stacchetti, Michal Szkup, Séverine Toussaert, Isabel
+Trevino, Nikhil Vellodi, Basil Williams, and Sevgi Yuksel for helpful conversations and suggestions. I gratefully acknowledge
+financial support from the Center for Experimental Social Science (CESS) at New York University (NYU).
+†
+Department of Economics, Indiana University. E-mail: aavoyan@iu.edu
+
+1
+
+1
+
+Introduction
+
+As a society, we consistently face situations where we require to coordinate our actions. Many of these
+settings can be considered a regime change game in which participants can disrupt an existing status
+quo but only if a large number of individuals coordinate their actions. For example, authoritarian political regimes can be toppled, but only if enough people join a protest. Currency can be devalued,
+but only if a sufficiently large number of speculators attack it. A well-established structure to examine
+these phenomena is global games wherein there is a breakdown in common knowledge and individuals
+have private information about the state of the world.1 This paper builds on research in global games by
+introducing the possibility that individuals communicate before considering an action. Such communication can occur in multiple circumstances, e.g., in political crises, people use social media to indicate
+their intention to protest. During currency crises, banks issue statements about their plans. Recently,
+retail investors2 used a discussion platform to coordinate a successful short squeeze3 of a GameStop
+Corp. stock that led to a ‘once-in-a-decade’ stock price spike. Furthermore, for all these examples,
+the involved parties are not committed to their communicated intentions, thus making this interaction
+cheap-talk.
+This study introduces communication as a strategic choice between similarly informed participants
+in a standard two-person global game setting. Binary message space is considered,4 where agents can
+send one of the two messages implying an intention to either join the regime change or abstain. There
+exists a communication equilibrium that preserves the structure of the global game and can improve the
+agents’ welfare.5 Two types of inefficiencies are present in global games. First, individuals coordinate
+on the risk-dominant as opposed to the payoff-dominant equilibrium. Second, individuals may miscoordinate, thus leading to unnecessary costs. The communication equilibrium induced by cheap-talk
+communication can improve the welfare by reducing both types of inefficiencies. Interestingly, however, communication leads to an overreaction in some instances. Agents attack the regime more than if
+they had acted based on their combined full information. Communication swings the types that would
+like to join the regime change, but their information alone would not have been enough. These types
+are on the fence; they get persuaded by a positive message from the other side that nudges them to join
+1
+
+For example, see Morris and Shin (1998, 2002) and Corsetti et al. (2004) for currency attacks; Goldstein and Pauzner
+(2005) and Rochet and Vives (2004) for bank runs; Dasgupta (2007) for delayed FDI investments; Corsetti et al. (2006) and
+Zwart (2007) for debt crises; Edmond (2013) for information manipulation by the regime; and Angeletos et al. (2007), Chassang (2010), and Mathevet and Steiner (2013) for a more dynamic setting. Heinemann et al. (2004, 2009) find experimental
+support for certain theoretical predictions.
+2
+A retail investor is an individual, non-professional investor who trade securities via brokerage firms or savings accounts.
+3
+Rapid increase in the price of a stock primarily because of an excess of short selling rather than underlying fundamentals.
+4
+Note that while focusing on binary messages may seem restrictive, it mimics the expression of sharing intentions about
+choices in our daily lives. We are more likely to share our intended action than we are to state all the pieces of information
+that lead us to lean toward taking that action. Alternative message space is examined later in the paper, and the experiment examines whether intention sharing naturally arises in the environment where information can be shared directly. See Appendix
+B for more details.
+5
+There exists an uninformative (babbling) equilibrium in which agents ignore the messages; in this case, the actions are
+the same as those in a game without communication.
+
+2
+
+the cause.
+There are two stages in this environment: the communication stage, in which agents interact, and
+the actions stage, in which agents join the regime change or abstain. The communication equilibrium involves threshold strategies in the communication stage, where an agent states the willingness
+to participate in an attack if the private information exceeds a threshold. Intuitively, when the agents’
+messages agree, actions follow the messages. If there is a disagreement, the magnitude of signals becomes important. If an agent sends a message with an intention to attack and the other agent disagrees,
+two things can happen: If the agent’s private information is extremely strong, the agent will go through
+the message and single-handedly take on the regime. However, if the agent’s private information is not
+so extreme, they will abstain from attacking despite their stated intention to attack. Communication
+equilibrium results in an unusual and intriguing outcome in which even after reporting a plan to attack,
+agents may not follow their message, and it is part of an equilibrium. The message conveying the
+intention to attack is more of a “maybe” message.
+The overall welfare implications of communication depend on the side that we consider. Suppose
+we examine the consequences of communication from the viewpoint of the central bank that may
+want to keep the currency peg intact; then, communication is not beneficial because it increases the
+probability of coordinated attacks. Consider political protests: if we evaluate communication from the
+viewpoint of protesters, it is beneficial. However, a dictator who wants to stay in power will want
+to prevent and obstruct communication because it increases the probability of a successful revolution.
+This is a phenomenon we see in different parts of the world where the government tailors access to the
+internet, or bans access to certain social media outlets. In conclusion, the theory illuminates whether
+and when the consequences of communication are beneficial and to which side.
+The theory provides specific predictions about the overall outcome of introducing communication
+in this environment. Moreover, the theory prescribes a map of how the agents should react to different
+configurations of messages—this aspect of the theory is less commonly reported in the literature. That
+is, when cheap talk is introduced into coordination games with complete information, the effects of
+it often depend on additional refinements. The theories on how agents should react to heterogeneous
+messages are still few and require additional research.6 In this study, the communication equilibrium
+has an easy map for agents. If the messages agree, the agents simply follow through with corresponding
+actions. If the messages disagree, the agent with the negative message follows through with the intention, whereas the other one re-evaluates his intention in a simple manner: if the evidence is extremely
+strong (i.e., the signal is greater than the threshold), attack the status quo or otherwise abstain.
+In the second part of the study, the model predictions are examined in a lab experiment. The experiment is additionally intriguing since all thresholds in the model are numerically calculated. Hence,
+the agent’s behavior in the lab and theory can be compared on both overall and individual point levels.
+6
+
+Blume (1998) reasons that communication results in the selection of a more salient equilibrium if all players communicate
+homogeneously, agreeing on an equilibrium. The results in Blume (1998) are obtained with the condition that messages have
+a priori informational content (AIC condition). See also, Farrell (1988) and Aumann (1990) for definitions of self-committing
+and self-signaling messages, respectively, which are argued to lead to credible communication.
+
+3
+
+This study presents a new statistical result that allows relatively straightforward calculation of all
+required thresholds in the experiment. In the action-taking stage, the agent has to combine two qualitatively different pieces of information. The agent has their point signal about the state of the world
+and an intention from the agent. The latter indicates an interval information: the other agent’s signal
+was either above or below a threshold. Note, this is not an interval information about the true state of
+the world, that would lead to truncating the prior distribution. This interval information is based on the
+signal realization of the other agent. Combining these point and interval signals leads to a new result,
+which, in turn, results in more precise thresholds for the experiment.
+The purpose of the experiment reported in this paper is twofold. First, the experiment provides a
+test of the number of predictions arising from the theory. The experiment examines whether the ability
+to communicate affects the subjects’ strategies and consequently their payoffs. Second, the experiment
+examines whether binary communication with intention sharing arises even when a richer message
+space is available to subjects. Let us describe the treatments in the experiment.
+For the control treatment, which replicates the baseline game without communication, subjects
+observe a private signal about the true state of the world and then decide between two alternatives:
+attack or abstain.7 Then we have communication treatments. In the first communication treatment,
+the communication protocol follows an intuitive structure that comes from the equilibrium. In this
+treatment, called the letter-messages treatment, subjects are allowed to send one of the two letters
+corresponding to their two actions. The experimental data demonstrate that the vast majority of subjects
+use the communication protocol to convey information. Moreover, what is even more encouraging, the
+subjects use threshold strategies to transmit information. In the communication equilibrium described
+in the theory section, as per information exchange, if individuals agree on an intended action, they
+should follow through with their initial intentions. Experimental data provide strong supports for these
+qualitative features of the equilibrium. If both subjects agree on an intended action, they follow through
+with their intentions in >99% of cases. However, the subjects set much more demanding cutoff levels
+than those theoretically predicted. The thresholds they use to send a message are highly conservative
+and are similar to the threshold they would use in the action stage in the absence of communication.
+Hence, participants state what action they would have taken in the absence of communication, and they
+miss out on the payoff improvement via threshold reduction.
+Additional treatments are considered to examine whether restricting communication to two messages is the reason behind the lack of benefit of communication in this environment. In the second
+communication treatment, number-messages treatment, after subjects observe their private signal (a
+number), they can send any number message. In this treatment, the subjects need to identify certain
+common language using numbers to signal their intentions to the other subject. Although this treatment
+allows transmitting more information, the task becomes difficult without commonly understood messages. Hence, the number-and-letter treatment is introduced. This treatment allows subjects to send
+both a number and a letter (intended action). Although from the equilibrium perspective, the ability
+7
+
+In the experiment, we use neutral action labels, A and B, to avoid any confounding effects of charged language.
+
+4
+
+to send a letter message is redundant, the treatment is introduced because, behaviorally, it may help
+clarify a subject’s intended action.
+The communication treatments reduce the miscoordination observed in the control treatment; however, the aggregate effect of communication on payoffs is not statistically significant. This evidence
+goes against the beneficial effects of communication in coordination games with complete information,
+thus highlighting the disruption of communication benefits in the environment where communication
+transmits information and does not simply confirm the intentions. While experimental data provide
+strong support for the qualitative features of the communication equilibrium, the agents are far from
+the theoretical predictions. Agents communicate to convey their intentions, and they do not consider
+the strategic information contained in their message. Additional research with open-chat discourse or
+more structured interaction can be implemented to observe whether agents become more strategic with
+their messages.
+
+2
+
+Related Literature
+
+This study introduces communication as a strategic choice between similarly informed participants in
+global games. The possible effects of introducing cheap talk among agents in global games were briefly
+discussed in Morris and Shin (2003), page 71. Besides this short discussion, communication in global
+games has been overlooked; the “top-down” approach is adopted when considered. In this approach,
+additional information is provided via a public signal either directly or through a public choice.8 The
+communication incentives in this study differ from an environment where one policy-maker communicates to all agents or an environment in which the communication combines two signals, thus resulting
+in an action based on common information, as in ? or Shadmehr and Bernhardt (2017). The communication equilibrium described in this study is the partially informative one in which the messages are
+intuitive and correspond to intended actions.
+This study contributes to the literature on communication in coordination games with incomplete
+information. Baliga and Morris (2002) studied one-sided communication in a two-player, two-state
+game where the cost of taking a risky action can be high or low. One player is completely informed and
+can send a cheap-talk message to the other player who has a low cost of attacking. The authors report
+that the complete revelation of the cost type cannot be supported in equilibrium, similar to the intuition
+of communication in the battle of the sexes game as discussed in Banks and Calvert (1992). In Baliga
+and Morris (2002), unlike the global games’ structure, the agents’ types are not correlated. In their
+setting, assuming the independence of types can be a valid assumption, whereas, in the global games
+environments, the underlying fundamental state is important for all the sides involved. The assumption
+of type independence results in a non-monotonic communication equilibrium, as reported in Example
+4 of Baliga and Morris (2002) and in Baliga and Sjöström (2004). In both of these studies, the high
+8
+Hellwig (2002) was the first to introduce public signals into the model of Morris and Shin (1998) and characterize the
+equilibria in global games with public and private signals. For aggregating information through prices or interest rates, see
+Angeletos et al. (2006), Hellwig et al. (2006) and Ozdenoren and Yuan (2008). For information manipulation through biased
+media, see Edmond (2013). Chen et al. (2016) modeled a rumor as a public signal.
+
+5
+
+types mimic the messages of low types. This equilibrium can be sustained by exploiting the medium
+types who care the most about coordination.9
+Baliga and Sjöström (2012) expand on Baliga and Sjöström (2004) where a third-party public communication is introduced through an extremist who is either a “provocateur” or “pacifist.” Their work
+considers binary messages and shows how this assumption is without loss of generality, unlike the current study, where a richer message space is reported to alter the equilibrium and welfare. If the third
+party is a “hawkish extremist” and actions are strategic complements, the extremist’s messages can
+increase the possibility of a conflict and decrease welfare. Evdokimov and Garfagnini (2018) experimentally examines the model considered in Baliga and Sjöström (2012). The experimental evidence
+does not support the most informative or uninformative equilibrium. Evdokimov and Garfagnini (2018)
+reported that third-party communication is not strategic.
+Although a vast base of theoretical literature on global games exists, experimental literature on
+this topic is considerably scarce.10 Heinemann et al. (2004, 2009) experimentally study a speculative
+attack model under perfect and noisy private information. In contrast, Cabrales et al. (2007) test the
+theory in more discrete state space and in a two-player setting. These studies demonstrate that subjects’
+behavior is consistent with the theoretical predictions and that the vast majority of subjects use threshold
+strategies. Cornand and Heinemann (2008) consider a combination of private and public signals and
+two noisy public signals in another treatment. The case of one private and one public signal provides a
+higher probability of an attack than two noisy public signals. Subjects seem to overreact to the public
+signal when they observe a private one. Similar results were reported by Cornand and Heinemann
+(2014) where subjects overweight the public signal. Duffy and Ochs (2012) examine a dynamic global
+game and report no significant differences between the dynamic and static game thresholds.11
+Qu (2013) experimentally examine the effect of endogenous information acquisition via market
+prices (see the theoretical model in Angeletos and Werning (2006)). An additional treatment introduced
+in the study is the cheap talk protocol, which is similar to the intention-sharing treatment in the current
+study. In Qu (2013), an experimenter acted as a mediator, collecting the intentions to invest, and
+reported back to the group the percentage of subjects that demonstrated interest in investing. The
+experimental results show that informative equilibria occurred and that cheap-talk interaction improved
+the coordination, which contrasts with the results reported in the current study.
+Szkup and Trevino (2020) experimentally examine the costly information acquisition model of
+Szkup and Trevino (2015).12 The paper demonstrates that subject behavior is consistent with the theo9
+
+See Appendix D, where Example 4 of Baliga and Morris (2002) is modified to fit the environment studied in this paper.
+The type of non-monotonic equilibria described in these papers does not exist in the current paper. Additionally, the monotonic equilibrium characterized in the current paper cannot be supported in their setting (see Baliga and Sjöström (2004),
+page 360).
+10
+See Duffy (2008) for a survey of experimental work in macroeconomics.
+11
+Shurchkov (2013) tested a two-period version of the model in Angeletos et al. (2007), and their results provide support
+for most theoretical predictions. The results show that knowledge about the survival of the status quo in the first stage
+discourages an attack in the second stage.
+12
+See also, Trevino (2020) for a two-country model of contagion and corresponding experimental evidence.
+
+6
+
+retical predictions of a threshold strategy usage; however, subjects invest too much into acquiring precision of their signal in the information acquisition phase. In the experiment conducted in the present
+study, the communication stage is added to the base game of Szkup and Trevino (2020), thus keeping
+all the relevant parameters the same. This allows the comparisons of the control treatment in this study
+with the control treatment in their study.
+Extensive experimental studies on the effects of communication in coordination games with complete information are reported in the literature, and these studies demonstrate that cheap talk can facilitate coordination on an efficient equilibrium (for a critical survey, see Devetag and Ortmann (2007)).
+Van Huyck et al. (1990) demonstrated that there is a strong tendency of play to diverge toward an inefficient risk-dominant equilibrium in the minimum-effort game; this result has motivated considerable
+research, leading to a vast literature on this subject. Cooper et al. (1992) reported that with one-way
+communication, the payoff-dominant equilibrium was selected more often in a 2 × 2 Stag and Hunt
+
+game, but two-way communication does so to a greater extent. Blume and Ortmann (2007) tested the
+effect of cheap-talk communication both in the minimum-effort and median games. They report that
+messages facilitated high rates of convergence to the Pareto-dominant equilibrium.13 Unlike the literature, in this study, similar communication treatments failed to significantly improve payoffs. This result
+may be attributed to the fact that coordination games with incomplete information have an additional
+layer of difficulty. The messages provide the intention to play and information about the underlying
+fundamental state. Additional research and experimental treatments need to be conducted to understand
+nonstrategic communication in incomplete information coordination games.
+
+3
+
+The Model
+
+This section first introduces the baseline game without any communication. Subsequently, the information sharing protocol is introduced. The framework for the underlying game is similar to the 2 × 2
+model of global games introduced by Carlsson and Van Damme (1993) and advanced by Morris and
+Shin (1998, 2002).
+
+3.1
+
+Baseline framework without communication
+
+The state of the world is characterized by a fundamental θ ∈ Θ. In the example of the currency attack, θ
+
+describes the net gain from a devaluation; in the example of regime overturning, θ describes the strength
+of the government. Agents, indexed by i ∈ I = {1, 2}, are ex ante identical and simultaneously choose
+
+between two actions: they can either attack the status quo (ai = 1) or refrain from attacking (ai = 0).
+Thus, the action space for player i is Ai = {0, 1}. Let A := A1 × A2 . Attacking has a fixed cost of
+c > 0, which can be interpreted as a direct transaction cost or the opportunity cost. The action ai = 1
+
+is successful if the other agent selects to attack and θ > θ or if θ > θ̄; hence, the upper and lower
+dominance regions for the fundamental are defined by θ and θ̄. An agent’s incentive to attack increases
+13
+
+See also Berninghaus and Ehrhart (2001), Burton and Sefton (2004), Devetag (2005), Charness (2000), Brandts and
+Cooper (2006), Chaudhuri et al. (2009), Deck and Nikiforakis (2012), and Avoyan and Ramos (2022).
+
+7
+
+with the aggregate size of an attack; hence, the agents’ actions, ai , are strategic complements.
+The payoffs can be summarized in a matrix form, as shown in Figure 1:
+
+Attack
+Not Attack
+
+Success
+θ−c
+0
+
+Failure
+−c
+0
+
+Figure 1: Payoff Matrix
+All agents start with a common prior for θ; they believe θ is drawn from a normal distribution with
+mean θ0 and variance σθ2 .14 Each agent i receives a private signal xi = θ + σi εi , where xi ∈ Xi , and
+
+εi ∼ N (0, 1) is a noise, which is independent and identically distributed across agents and independent
+of θ. Given the realization of agent i’s signal, xi , the posterior distribution of θ is normally distributed
+with mean θ̃i , and variance σ̃i2 , where θ̃ =
+
+2 2
+xi σθ2 +θ0 σi2
+2 = σθ σi .
+and
+σ̃
+2
+2
+2
+i
+σθ +σi
+σθ +σi2
+
+The game with the common knowledge of the state of the fundamental θ (complete information
+game) serves as an intuitive baseline to the game with private information. For θ < θ, regime change
+will not happen even if both agents attack; hence, the dominant strategy is to refrain from attacking
+and to maintain the status quo. If θ ≥ θ, one agent selecting to attack is sufficient for abandoning the
+
+status quo; hence, the dominant strategy is to attack. The case of interest is when θ ∈ [θ, θ̄), where two
+
+pure-strategy equilibria are sustainable: (i) both agents attack, and the status quo is abandoned and (ii)
+both agents refrain from attacking, and the status quo is maintained.
+Carlsson and Van Damme (1993) demonstrate that the multiplicity of equilibria described above is
+attributed to the complete information of the payoff function. If agents do not observe the true value of
+θ but rather a noisy private signal of θ, there is a unique equilibrium. This equilibrium is characterized
+by a symmetric threshold strategy such that agent i attacks the status quo if and only if the signal
+realization is greater than a threshold x∗N C ; i.e., the agent i ∈ {1, 2} follows a symmetric threshold
+
+strategy:
+
+
+1,
+ai (xi ) =
+0,
+
+iff xi ≥ x∗N C
+iff xi < x∗N C
+
+For the completeness of the baseline framework, the latent threshold x∗N C is solved. Let g(θ, x∗j )
+be the payoff of agent i given θ, and let x∗j be the threshold of the other agent. The expected payoff of
+agent i conditional on taking an attacking action is as follows:
+
+E[g(θ, x∗j )|xi ] =
+
+Zθ
+
+
+
+θ Pr(xj ≥ x∗j |xi , θ) p(θ|xi )dθ +
+
+θ
+
+Z∞
+
+θp(θ|xi )dθ − c
+
+θ
+
+Agent i will select to attack the status quo if and only if the expected payoff is ≥ 0, E[g(θ, x∗j )|xi ] ≥
+
+0. To solve for an optimal threshold x∗N C , we only require to identify a signal for which agent i is
+14
+
+Alternatively, we can assume an improper uniform prior for θ on R and common public signal.
+
+8
+
+indifferent between attacking the status quo and refraining from attacking; i.e., E[g(θ, x∗j )|x∗N C ] = 0,
+given the optimal threshold of agent j, x∗j . There exists a unique, dominance-solvable equilibrium in
+which both agents use threshold strategies with cutoff x∗N C .
+
+3.2
+
+Cheap-talk communication
+
+This section introduces communication with a binary message space into the baseline framework presented in Section 3.1. Without additional assumptions,15 the restriction to binary message space is with
+loss of generality. This paper focuses on examining binary communication since it has an intuitive
+interpretation of stating an intention to attack or not. Alternative message space is considered in the
+appendix; see Appendix B.
+Let the message space of agent i be Mi = {0, 1}. Once agent i has observed the private signal
+
+xi ∈ Xi , he sends a message mi : Xi → Mi to the other agent before determining to either attack the
+status quo or refrain from attacking, ai : Xi × M → Ai , where M = Mi × Mj . All messages are sent
+
+and received simultaneously, and sending a message bears no cost (see a discussion on costly messages
+in Appendix B.1). The timing of the entire game is detailed in Figure 2.
+Nature Draws
+The State θ
+
+Players Send and
+Receive Messages
+
+Players Receive
+Private Signals
+
+Players Choose
+to Attack or Not
+
+Figure 2: Timing of the Game
+There exists an uninformative equilibrium where the messages are ignored; however, the case of
+interest is the existence of informative equilibria.
+Theorem 1 Communication equilibrium
+There exists a perfect Bayesian equilibrium, where
+(i) in the communication stage player i sends a message mi (xi ), and
+(ii) in the action stage player i takes an action ai (xi ; x∗C , I), where
+
+1, if x ≥ x∗
+i
+C
+mi (xi ) =
+0, if x < x∗
+i
+
+
+1, if m = m = 1 or x ≥ x̄∗
+i
+j
+i
+ai (xi ; xC , I) =
+0, o.w.
+I = (mi , mj ), xi ∈ Xi , and i 6= j.
+15
+
+For instance, see the discussion in Appendix B.2.
+
+9
+
+(1)
+
+C
+
+(2)
+
+For all combinations of signal realizations (xi , xj ) ∈ R2 let us consider the outcomes of com-
+
+munication under the informative equilibrium described in Theorem 1 (the proofs and details are in
+
+Appendix A). Figure 316 summarizes the messages and actions, where 1 and 0 in the theorem correspond to A and N , representing “attack” and “not attack,” respectively. Note, not all combinations of
+(xi , xj ) ∈ R2 are equally likely as the signals are drawn from the same normal distribution.
+
+If both agents receive signals below the threshold x∗C , they then send a message not to attack; both
+
+abstain from attacking in the action stage and maintain the status quo. Similarly, if both players receive
+signals above the threshold x∗C , they send a message to attack, and they both attack. Thus, if agents
+agree on an intended action, they follow through with their initial intentions.
+Figure 3: Informative Equilibrium Messages and Actions
+xj
+
+xj
+(N, A)
+x̄∗
+(N, A)
+
+(A, A)
+
+(A, A)
+
+x∗C
+
+x∗C
+(N, N )
+
+(N, N )
+
+(A, N )
+x∗C
+
+xi
+
+(A, N )
+
+x∗C
+
+(a) Messages Sent
+
+x̄∗
+
+xi
+
+(b) Actions Taken
+
+If the intended actions disagree, agents use a significantly more demanding cutoff. Consider the
+case shown in Figure 3 where the realized signals are in the gray dotted areas. Area (A, N ) and (N, A)
+are the case that one agent has a signal greater than x∗C , while the other has a signal less than x∗C .
+Depending on the magnitude of the attack signal, the agent who received a no attack message may still
+determine to unilaterally attack the status quo. In particular, agent i attacks the status quo if the realized
+signal xi is greater than the threshold x̄∗ .
+Note that if an agent’s message conveys an intention to not attack, that agent cannot be persuaded
+to switch and attack in the action stage. The intuition behind the statement is that if an agent has
+information as per which they would choose to attack if the other agent were to attack, this player
+would have sent an attack message (“A”). An attack message (weakly) increases the probability of the
+other agent following, and the expected payoff is higher. Hence, the communication threshold x∗C is
+Note that, Figures 3, 4, and 5 are illustrative graphs and that certain thresholds are not to scale. In particular, x̄∗ is
+considerably larger than the other thresholds. It is included in the graph to demonstrate all the possible regions. For the
+experiment, e.g., while x∗C , xN C , and 2xF B are around 11, 28, and 34, respectively, x̄∗ is 178.
+16
+
+10
+
+based on the most optimistic case where the other agent has positive information and is going to attack.
+This intuition is at the heart of this communication equilibrium, and it gives us the first glimpse that
+agents can be much more aggressive than they would be without communication in their attacking
+actions as x∗C is less than the non-communication threshold x∗N C (for more on this, see Section 3.4).
+Moreover, note that if the realized signal for agent i is less than x∗C , this agent will not attack
+under any circumstance, and this agent’s payoff is 0 regardless of the action of the other agent. This
+indifference makes the messages for xi < x∗C easily malleable. In addition to making communication
+equilibrium possible with binary messages, this indifference can be leveraged when the message space
+is richer. In the latter case, the indifference can be used to select the most informative equilibrium
+within the type of equilibria considered (see the discussion in Appendix B.3).
+
+3.3
+
+Combining point and interval signals
+
+There are two stages in this environment: the communication stage in which agents interact, and the
+action stage in which the agents join the regime change or abstain. An agent at the second stage of
+the game—i.e., the action stage—has two pieces of information. One piece of information is the point
+signal xi ∈ R that he privately received and the message from the opponent of the intention to take one
+
+or the other action. A positive message from the opponent indicates that the signal, xj , is higher than
+the communication threshold (xj ≥ x∗C ), and a negative message implies the opposite, i.e., the signal
+
+is below the threshold (xj < x∗C ). The agent has to combine a point signal that he fully observes and
+an interval signal resulting from the opponent’s point signal. To my knowledge, this study presents the
+first documentation of the resulting distribution of θ given such a combination of signals.
+Recall that the agent i’s information set is (xi , mj ), where xi |θ ∼ N (θ, σi2 ) and mj |θ ∼ Bern(1 −
+
+q(θ)) with q(θ; x∗C , σj2 ) = Φ(x∗C ; θ, σj2 ). The following lemma presents the result (see Appendix A.1
+for details, proofs, and additional information about the distribution).
+Lemma 1 If the prior for θ is N (θ0 , σθ2 ), the posterior distribution of θ is an extended skew-normal
+distribution, with density
+1 1
+φ
+p(θ|xi , mj ) =
+Φ(τc ) ωc
+where
+ξc =
+
+
+
+θ − ξc
+ωc
+
+
+
+ p
+
+θ − ξc
+2
+Φ τc 1 + αc + αc
+ωc
+
+σi2 θ0 + σθ2 xi
+σi2 σθ2
+2
+,
+ω
+=
+c
+σi2 + σθ2
+σi2 + σθ2
+
+and
+α
+αc = q
+1 + σi2 /σθ2
+s
+1 + α2
+α(θ0 − xi )
+p
+τc = τ
++
+.
+2
+1 + αc
+σi (1 + σθ2 /σi2 ) 1 + αc2
+
+11
+
+In the abbreviated form, this distribution can be written as ESN (ξc , ωc , αc , τc ).
+For any distribution ESN (ξc , ωc , αc , τc ), ξc is referred to as the location parameter; ωc is the scale
+parameter; αc is the slant parameter; and τc is the truncation parameter. Using Lemma 1, the posterior
+mean and variance are calculated and are given by the following expressions:
+
+
+
+φ(τc )
+φ(τc )
+2
+2
+2 φ(τc )
+τc +
+,
+(δc ωc ), σ = ωc 1 − δc
+µ = ξc +
+Φ(τc )
+Φ(τc )
+Φ(τc )
+respectively, where δc := √ αc 2 .
+1+αc
+
+3.4
+
+Outcomes with and without communication
+
+To evaluate the effects of communication under the informative equilibrium characterized in Theorem
+1, let us first examine the changes in the outcomes. Figure 4 shows the equilibrium outcomes with and
+without communication. The left panel shows that after receiving private signals, xi and xj , agent i and
+agent j take an attack action if and only if their private signals are greater than x∗N C . Because there is
+no communication, the actions are solely based on their own private signals. If both signals are greater
+than x∗N C , both players attack and successfully abandon the status quo. Similarly, if both signals are
+less than x∗N C , both players choose not to attack, and the status quo is maintained. Finally, suppose
+only one agent attacks and the other does not. In that case, we get mismatched actions, represented by
+the gray regions in the left panel (the success of a single-handed attack depends on the true underlying
+value of the fundamental).
+Figure 4: Outcomes Without and With communication
+xj
+
+xj
+(N, A)
+(N, A)
+
+x̄∗
+
+(A, A)
+
+x∗N C
+
+(A, A)
+
+x∗N C
+
+(N, N )
+
+x∗C
+
+(A, N )
+
+(N, N )
+
+x∗N C
+
+xi
+
+x∗C
+
+(a) Without Communication
+
+(A, N )
+x∗N C
+
+x̄∗
+
+xi
+
+(b) With Communication
+
+The right panel of Figure 4 shows the equilibrium outcomes of the game with communication.
+Recall that x∗C is found by assuming that the other agent has good information (xj ≥ x∗C ) and that
+
+they will attack with probability 1. Therefore, x∗C < x∗N C . Two primary types of changes arise
+12
+
+from communication: (i) switches from (N, N ) outcome to (A, A) outcome, and (ii) switches from
+(A, N ) and (N, A) outcomes to either (A, A) or (N, N ) outcomes. If the realized signals are in the
+region [x∗C , x∗N C ) × [x∗C , x∗N C ), without communication the outcome will be (N, N ). However, the
+
+outcome is (A, A) with communication. Let us focus on the area [x∗N C , ∞) × [0, x∗N C ) where, without
+communication, the outcome is (A, N ). The addition of communication divides this area into three
+
+regions. Communication enables coordination on “attack” and “not attack” actions, for which the
+actions were mismatched in the absence of communication. Note that the area [x̄∗ , ∞) × [0, x∗C )
+
+remains miscoordinated (the first indication that this communication equilibrium is not the first-best
+outcome).
+
+Up until now, we discussed the outcomes with and without communication. Now, the question is,
+how does the communication equilibrium described in Theorem 1 compare to the first-best outcome?
+The first-best outcome in this model will be to combine the two-point signals of the agents and attack
+if the expected payoff conditional on the combined information is greater than 0 and abstain from
+attacking otherwise.
+Figure 5: First-best vs. Communication Outcomes
+xj
+
+xj
+(N, A)
+(A, A)
+
+2x∗F B
+
+2x∗F B
+(A, A)
+
+(N, N )
+(N, N )
+
+2x∗F B
+
+xi
+
+(A, N )
+2x∗F B
+
+(a) First-best outcome
+
+xi
+
+(b) Communication outcome
+
+Due to the uncertain nature of θ and signals, even the first best solution is not free of Type I and Type
+II errors. Here, we say that a Type I error (i.e., false positive) occurs if both agents attack when they
+should not have attacked, i.e., true θ was in the “no attack” dominant region. As a result, both agents
+paid the cost but received no gain from it. Furthermore, we say that a Type II error (false negative)
+occurs if both agents abstain from an attack when they should have attacked, i.e., true θ was not in the
+“no attack” dominant region, and if both agents attacked, they would gain a positive payoff. To obtain
+a sense of how these errors evolve with or without communication compared to the first-best case, let
+us consider a numerical example. The second part of this study includes an experiment, and we use
+the parameters from the experiment and compare the three outcomes by considering Type I and Type
+
+13
+
+II errors.
+No Communication
+
+Communication
+
+First-best
+
+4.4%
+9.8%
+
+2.4%
+2.0%
+
+1.6%
+1.8%
+
+Type I Error
+Type II Error
+
+Table 1: Numerical Comparison
+Table 1 summarizes the results of Type I and Type II errors for three cases. The data were simulated
+using the parameters in the experiment, and 500 draws of θ, and the corresponding two signals for each
+agent. Without communication, in 9.8% of the time, players missed out on attacking when a successful
+attack would have been possible; with communication, this type of error decreased to 2% of that in
+the case without communication. Similarly, the occurrence of false attacks for which players pay the
+cost of attacking but receive no gain decreased from 4.4% to 2.4%. As reported, the first-best outcome
+exhibits both types of errors, and the rates are similar to ones in the intention communication case.
+It is worth noting that one can suspect more Type I errors under communication than under no
+communication. This could be hypothesized since under communication agents are more aggressive
+and attack the regime more often. However, although the agents in the case with communication are
+more aggressive, their decisions are based on better information, thereby leading to lower error rates
+overall.
+
+4
+
+Experimental design
+
+The experimental sessions were conducted at the Center for Experimental Social Science (CESS) laboratory at New York University (NYU), using the software z-Tree (Fischbacher (2007)). Participants
+were recruited from the general population of NYU students using hroot Bock et al. (2014). There was
+a total of 14 sessions with 172 subjects. All the treatments included 20 to 25 groups each. The experiment lasted about 50 min, and on average, subjects earned $21 that included a $10 dollar show-up fee.
+In each session, written instructions were distributed to the participants and read aloud.17
+The experiment involved four different treatments. Participants were randomly divided into pairs in
+each treatment, and this assignment was fixed throughout the experiment. Each pair faced 50 independent and identical rounds. All subjects had to choose between two alternatives in each round, namely,
+A and B. Before the participants made their A/B choice, they received a private signal about the true
+state X, a random variable that affected the payoff structures of both players. The parameters used
+were similar to those adopted by Szkup and Trevino (2020). In particular, the current study’s control
+treatment was identical to exogenous medium precision level treatment in Szkup and Trevino (2020).
+For all these treatments, the true state X is randomly drawn from a normal distribution with a
+mean of 50 and a standard deviation of 50. This randomization is performed once; it is used in every
+treatment. This selection ensures that the differences between treatments are attributed to changes
+17
+
+The instructions provided in the experiment can be found in Appendix D.
+
+14
+
+in communication protocols and are not precedents because of the particular order of realized values
+of X. The coordination region for which two pure-strategy equilibria are sustainable under complete
+information is [0, 100). All subjects receive a private signal randomly drawn from a normal distribution
+centered at the true value of X and has a standard deviation of 10. Choosing action A always bears a
+cost of 18 points, thus effectively making the coordination interval [18, 100).
+The first treatment in the experiment was the control treatment, T0 , where the participants observed
+their private signal and then proceeded to make their A/B choice. Once both participants in a pair
+made their selection, the round was over, and they received feedback. The participants observed the
+realization of X in this round, their own private signal realization, the choice made by them and by the
+other member of the pair, and the individual payoff in the round. Note that no communication or any
+sort of interaction was allowed in the control treatment. All other treatments in the experiment involved
+a specific type of communication.
+In the intention-sharing treatment, TI , once the subjects have observed their private signals but
+before they make their final decisions, they can send a message that can only be a letter mL ∈ {A, B}.
+
+These messages can be interpreted as “I’m going to choose the alternative
+
+.” In the signal-sharing
+
+treatment, TS , once the participants observed their private signals about the true state X, but before
+they made their final decisions, they sent a message to each other. This message could be any number
+mN ∈ R and were interpreted as “My signal is
+
+.” The message-sending stage was simultaneous;
+
+once both participants in a pair received the other’s message, they could proceed and decide between
+the alternatives A and B. The round was over when both subjects made their A/B choice.
+In the third communication, intention-and-signal-sharing treatment, TI&S , once the subjects ob-
+
+served their private signals, but before they made their final decisions, they could send a message that
+could be any number mN ∈ R and a letter mL ∈ {A, B}. These messages can be interpreted as “My
+
+signal is
+
+” and “I’m going to choose the alternative
+
+,” respectively. Providing a letter message
+
+in addition to the number message is theoretically redundant. In equilibrium, when a player sends a
+number message, what that number indicates in terms of intended action is apparent. However, the
+effect, experimentally, is not trivial.
+Treatments
+
+Communication
+
+Message Space
+
+T0
+TS
+TI
+TI&S
+
+None
+Cheap Talk
+Cheap Talk
+Cheap Talk
+
+—
+Signals
+Actions
+Signals and Actions
+
+Table 2: Experimental Design
+For all communication treatments, TS , TI , and TI&S , the end-of-the-round feedback consists of
+the realized value of X, the participant’s own signal realization, the message sent and received, the
+choice made by the participant and the other member, and the individual payoff in the round. After
+50 rounds, subjects took a short survey and received their final payment that included the show-up fee
+
+15
+
+and the average of five rounds of the payoffs randomly selected from all 50 rounds (survey results are
+summarized in Appendix C).
+Table 2 summarizes the experiment treatments, communication protocols, and the message space
+available to the subjects.
+
+5
+
+Experimental Results
+
+This section presents the results of the experiment. First, it is established that the vast majority of
+subjects use threshold strategies both in the communication and action stages. Second, the message-toaction map is examined, and the data strongly supports the predictions. Then, quantitative thresholds
+are presented and compared to the theoretical predictions. Finally, the overall effects of all treatments
+are compared in terms of the levels of miscoordination and final payoffs. Despite the strong evidence
+that subjects follow threshold strategy reasoning and correctly update their actions based on the message profile, the overall effect of communication on payoffs is not statistically significant.
+
+5.1
+
+Use of threshold strategies
+
+We say that a behavior is consistent with a threshold strategy if a subject uses a perfect or almost perfect
+threshold strategy. An example of a perfect threshold strategy usage is presented in Figure 6a, in which
+the alternative N is selected for the low realizations of signals and A is selected for the high realizations
+of signals with exactly one switching point. In Figure 6a, for signals less than 40, the subject selects
+an action N (ai = 0 on the graph), whereas for signals above 40, the subject selects A (ai = 1 on the
+graph). We say that a subject uses an almost-perfect threshold strategy if the threshold rule admits a
+few errors—more precisely, if the overlap is less than three signals.18 For example, Figure 6b provides
+an example of an almost-perfect threshold strategy with the overlap of two signal realizations.
+Figure 6: Threshold strategy examples
+
+Action
+
+Almost Perfect Threshold Strategy
+
+Action
+
+Perfect Threshold Strategy
+
+-100
+
+0
+
+100
+
+-100
+
+Signal
+
+0
+
+100
+
+200
+
+Signal
+
+(a) Perfect Threshold Strategy
+
+(b) Almost Perfect Threshold Strategy
+
+Result 1 summarizes the data.19 (For the breakdown of this result by treatment and periods, see
+Table 5 in Appendix C.)
+18
+
+The classification is similar to the one given by Szkup and Trevino (2020).
+The calculations for binary messages are based on treatment TI , i.e., the letter part of treatment TI&S . The calculations
+for the action stage include all treatments. In the analyses, the last 25 rounds were considered.
+19
+
+16
+
+Result 1 Among the participants, 98.28% used threshold strategies in the binary-message communication stage, and 99.01% used threshold strategies in the action stage.
+The data provide strong evidence of the usage of threshold strategies in both stages: when sending
+a binary message and during the action stage.20 Note that threshold strategies are robust in that even
+if a participant believes that the other participant is using a threshold strategy or is randomizing, the
+best response is still a threshold strategy. Now that we have established a strong use of the threshold
+strategies, we can examine the mapping from messages to actions.
+
+5.2
+
+Mapping from messages to actions
+
+According to the equilibrium described in Section 3.2 if the messages sent by both agents in a pair
+agree, the follow-up actions should be the intended actions. Figure 7 shows the transition of all possible
+message pairs to actions for the treatment TI . The experimental results strongly support the theoretical
+prediction: if both agents send the message A or if both send the message N , the outcome is (A, A) or
+(N, N ), respectively, > 99% of the time. This result shows that the message-to-action behavior of the
+agents is highly consistent with the theoretical predictions.
+
+Message Pair
+
+Action Pair
+A, A
+
+A, N / N, A
+
+N, N
+
+A, A
+
+99
+
+1
+
+0
+
+A, N
+N, A
+
+12.6
+
+37
+
+50.4
+
+N, N
+
+0
+
+0
+
+100
+
+Figure 7: Transition matrix for treatment TI
+Theoretically, a disagreement in the messages should lead to either switching to not attacking or
+following through on their communicated intentions if the positive signal is extremely strong. Based
+on experimental parameters, we should see zero values in the elements of the transition matrix when
+(A, N ) turns into anything except (N, N ).21 Disagreements in messages result in all possible outcomes, but the largest portion of the outcomes of > 50% correspond to the (N, N ) action pair.
+Result 2 The subjects closely follow the message-to-action mapping of communication equilibrium.
+20
+This result is consistent with previous literature, see Heinemann et al. (2004), Cornand and Heinemann (2014), and
+Szkup and Trevino (2020).
+21
+If one agent sends the message not to attack, the other player should attack if their private signal is > 178.24. Because
+the realized private signals and corresponding messages were never in that range, the second line of the transition matrix
+should be 0%, 0%, 0%, and 100%.
+
+17
+
+Thus far, we have seen strong evidence supporting the qualitative theoretical predictions. Now, we
+consider the quantitative predictions of the threshold levels.
+
+5.3
+
+Estimating thresholds
+
+To estimate the thresholds for all subjects who use threshold strategies, a logistic distribution is fitted
+to each subject’s data and then averaged to obtain the aggregate results. The threshold is interpreted as
+a signal for which there is a 50% chance of choosing the either alternative. Recall that the cumulative
+distribution function (CDF) of the logistic distribution is given by
+Pr(A) =
+
+1
+1 + exp(a − bxi )
+
+with parameters a ∈ R and b > 0.
+
+Following Heinemann et al. (2004), the ratio a/b can be interpreted as the mean threshold. The
+√
+standard deviation of the threshold estimate, π/(b 3), can be interpreted as a measure of coordination.
+Table 3 lists the experimental and theoretical thresholds for sending binary messages and the estimated
+thresholds for taking an attack action. For the action stage, the table provides unconditional thresholds
+(i.e., the thresholds calculated using all of the data) and conditional thresholds (i.e., the thresholds are
+conditional on matching messages).
+First, note that in the control treatment with no communication, the numerical threshold is 28.31.
+Table 3 highlights that the experimental threshold in T0 is 26.84, and it is statistically indistinguishable
+from the prediction of 28.31. This evidence agrees with the theoretical predictions. Now, recall that
+the threshold used to send a binary message should be identical to that used to attack in the action
+stage because the other player is attacking. Thus, the following conjecture is related to how consistent
+the players are with setting their message and action thresholds and whether they use the same cutoff
+for both decisions. There is no evidence to reject the hypothesis that the experimental estimates in the
+communication stage are equal to conditional thresholds in the action stage (a Wilcoxon signed-rank
+test, which is a pairwise nonparametric test, cannot reject the hypothesis at the 5% significance level);
+hence, we arrive at the next result.
+Result 3 The communication and action thresholds are statistically indistinguishable.
+Thus far, all the examined theoretical predictions have strong experimental support. However, this
+is not true in the case of the communication and conditional action threshold in TI . In this case, the
+signal threshold is more than twice the theoretically predicted level for the communication and action
+stages. The subjects are not as aggressive as the theory predicts, and they send an attack message more
+conservatively.
+Theoretically, threshold reduction is achieved by considering the communication stage strategically. If an individual has information according to which they will choose to attack if the other person
+were to attack, they will send a message that they intend to attack. This reasoning drives the threshold for sending the attack message down. Note that this payoff-improving outcome results from the
+18
+
+Table 3: Estimated and Theoretical Thresholds
+Treatments
+
+Communication Stage
+Experimental Theoretical
+
+T0
+
+—
+
+—
+
+Unconditional
+
+Action Stage
+Conditional
+
+Theoretical
+
+26.84
+
+—
+
+28.31
+
+28.66
+
+25.80
+
+11.47
+
+(3.855)
+
+(0.752)
+
+(1.653)
+
+25.62
+
+TI
+
+11.47
+
+(3.214)
+
+individuals’ strategic behavior in the communication stage, stating that they intend to attack even when
+they are unsure whether they will follow through. The participants instead seem to follow a simple
+heuristic when sending a message in the experiment. The thresholds they use to send a message are
+similar to those used in the action stage in the absence of communication. Hence, they state what they
+would have done without communication, and they miss out on the payoff improvement from threshold
+reduction.
+Result 4 The communication and action thresholds are significantly higher than the theoretical predictions.
+Let us evaluate the experimental effects of communication in all three communication treatments
+by examining the frequency of miscoordination and overall payoffs. First, consider miscoordination—
+subjects selecting different actions. For all these treatments, Figure 8 shows the frequency of mismatched actions. The miscoordination in all communication treatments is less than that in the control
+treatment. Moreover, the ability to share a signal and an intention, while theoretically redundant, leads
+to the lowest level of misscoordination in TI&S .
+Figure 8: Frequency of Miscoordination
+
+Frequency of (A,N)s
+
+0.075
+
+0.050
+
+0.025
+
+0.000
+
+Control
+
+Intention
+
+Signal
+
+Intention & Signal
+
+Treatments
+
+Table 4 displays the mean payoffs in experimental currency units for each treatment and the results
+of the binary hypothesis testing of the control treatment versus all other communication treatments
+(the p-values are adjusted using Bonferroni correction for multiple hypotheses testing). Interestingly,
+none of the communication treatments, TS ,TI , or TI&S , have a significantly different average payoff
+19
+
+compared to the control treatment. While participants take advantage of communication by achieving
+greater coordination and less miscoordination, they do not reduce the attack thresholds as theoretically
+predicted and make numerous Type II errors (missed opportunities of success—i.e., the subjects could
+have succeeded if they both attacked but they did not).
+Table 4: Average Payoffs
+Treatments
+
+T0
+
+TS
+
+TI
+
+TI&S
+
+T0
+
+69.91
+
+∼ 70.00
+
+∼ 70.75
+
+∼ 69.31
+
+(−0.114)
+
+(−2.298)
+
+(0.465)
+
+Note: ∗ p < 0.05, ∗∗ p < 0.01, ∗∗∗ p < 0.001. Welch t-statistic in parentheses.
+
+Result 5 The communication treatments reduce misscoordination. The payoffs in control and all communication treatments are statistically indistinguishable.
+Allowing agents to send cheap-talk messages corresponding to the actions is known to be effective
+in coordination games with complete information (see, e.g., Blume and Ortmann (2007)). However,
+there are no statistically significant differences for a similar one-stage communication treatment in
+the coordination game with incomplete information, as studied in this work. Further treatments with
+more elaborate interactions may be required for the coordination games with incomplete information
+to achieve results similar to those for coordination games with complete information.
+
+5.4
+
+Communication strategies in a richer message space
+
+This section examines communication in TS treatment. We examine numeric messages and classify
+them into four types: truth-telling, partition, mixed, and babbling. Figure 9 depicts the different strategy
+types on a graph where the x-axis is received signals, the y-axis is sent messages, the gray area depicts
+the coordination region, and the black line is the 45-degree line. The top part of Figure 9 presents the
+percentage of those types.
+
+0
+
+50
+
+100
+
+150
+
+Signal
+
+(a) Truth-telling
+
+2.5%
+
+Message
+
+Message
+
+Message
+
+37.5%
+
+-100
+
+0
+
+Message
+
+20%
+
+40%
+
+0
+
+100
+
+50
+
+100
+
+Signal
+
+Signal
+
+(b) Partition
+
+(c) Mixed
+
+150
+
+0
+
+50
+
+100
+
+150
+
+Signal
+
+(d) Babbling
+
+Figure 9: Sample Message Strategies
+If a player sends a message within five points of the true value in 45 out of 50 rounds, we classify
+this behavior as truth-telling and label the subject a truth-telling type. This situation is depicted in
+20
+
+Figure 9a. Consistent with the literature on information transmission in cheap-talk games, a fraction of
+the players truthfully report their private information. Although the truth-telling levels in the current
+paper are sizably smaller than the most papers.22 We find that 60% of subjects employ strategies in
+which the full information is not revealed (even with somewhat conservative truth-telling definition).
+If a subject partitions the signals into two messages for most of the 50 rounds, we refer to this
+subject as a partition type. For example, Figure 9b shows the behavior of one subject classified as
+a partition type; this player used the number 150 to indicate high signals and −150 to indicate low
+signals. In the number-message treatment, TS , 20% of the players reported a common language to
+signal intentions to the other player in the pair (some players used 1 and 2, others employed large and
+small numbers such as 150 and −150 to indicate their intention for alternatives A and N , respectively).
+It is worth emphasizing how sophisticated this behavior is, which is why number and letter treatment
+was introduced in the first place.
+Figure 9c shows a case of partial truth-telling or, as we classify them, mixed types. These types
+inform the truth for certain values of the realized signal; however, in other regions, they either partition
+or babble.23 Finally, we have babbling types that send messages that seem to be unrelated to the underlying signals, as shown in Figure 9d. Only 2.5% of the subjects exhibit babbling behavior, providing
+strong support for the informative equilibria.
+Overall, we observe a consistent use of communication to share intentions and information. Interestingly, however, truth-telling is not as common in this environment compared to other games reported
+in the literature; in previous works, the vast majority of messages were observed to be fully revealing.
+Moreover, the effects of communication on payoffs are not universal for all types. The truth-telling
+group performs worse than the partition or mixed groups. Hence, the overall effect of communication
+is type-dependent.
+
+6
+
+Conclusion
+
+Communication is a natural aspect of the environments modeled by global games, and it is essential to
+consider the effects of it. Moreover, understanding the possible consequences of communication are
+now more vital than ever because of the ubiquitous access and use of discussion platforms and social
+media.24 In particular, this paper has focused on specific communication: intention sharing. In our
+everyday lives, we routinely share our intentions, whether in person or on social media, and whether
+it be about our possible vacation options or voting intentions. Often, we state our intended choices
+22
+
+See, for example, Cai and Wang (2006), where the authors implemented a cheap-talk game from Crawford and Sobel
+(1982) in the lab. Similar results on truth-telling were observed in other studies: Blume et al. (1998, 2001), Evans III et al.
+(2001), Gneezy (2005), and Sánchez-Pagés and Vorsatz (2007). For more examples, see Zak (2008). Few studies provided
+evidence of strategic information concealment, e.g., Agranov and Schotter (2013, 2012) demonstrated that a vast majority
+of subjects refrains from truth-telling, particularly in a disagreement region, where the leader and followers face potential
+conflicts of interest. In general, the authors reported that vague or ambiguous language improves coordination in a region
+where preferences are misaligned.
+23
+The mixed types considered in this work are similar to the A and C types in Agranov and Schotter (2013).
+24
+Even traders and investors keep a close eye and use such tools, for example, Bloomberg chat (an instant messaging tool
+available to traders, investors, and other market participants with a Bloomberg Terminal).
+
+21
+
+rather than the information on which these choices are based. Even considering that some reasoning
+is included, it is uncommon to see all the information that made someone lean toward one decision
+against another. Sometimes, it is even difficult to determine all pieces of information that lead to a
+specific choice.
+The experimental data in this study agree with the qualitative features of the intention-sharing
+equilibrium. There is strong evidence that the players closely follow the map from the messages to
+actions even if the quantitative thresholds are different from the theoretical ones. For example, if both
+the players agree on an intended action, they follow through in over 99% of the cases. However,
+the effect of communication on payoffs is statistically insignificant. Additional research in the area
+can shed light on the subtleties and intricacies involved in the coordination game with incomplete
+information compared to the case of the coordination game with complete information.
+During January 2021, an unusual activity hit the financial market. The saga that unfolded on Wall
+Street was the first. The GameStop Corp. (GME) stock purchases abruptly grew, and the price started
+fluctuating accordingly. This event was a result of a coordinated actions by a large number of small
+retail investors. Several aspects of this phenomenon fit well into the setting described in the current
+study. There is uncertainty about the “strength” of certain hedge funds that held short positions on the
+GME, and hence, there is uncertainty about the number of shares required and the wait time for the
+“success”25 of the retail investors. One particularly fascinating aspect about this event with regard to
+the scope of this study is the use of a message board for this coordinated attack. The communication
+between the participants is primarily performed via a subreddit, /r/WallStreetBets, on a social platform
+called Reddit.26 Several users with a large number of shares of the GME stock posted daily screenshots
+of their portfolios. Usually, these posts demonstrated an intention not to sell these shares; although
+these posts were pure cheap talk, they seem to have affected small (retail) investors. The ability to
+share intentions to buy and then maintain the shares of GME for an indeterminate amount of time led
+to a successful coordination that resulted in several “once-in-a-decade” stock price spikes. Even after
+stabilization, the price was ten times that before this coordinated attack. While there was undoubtedly
+an exchange of information on the state of hedge funds that held short sells of GME stocks, among
+other information, most of the exchange on this platform was about an intention to maintain the stocks
+or to possibly buy more if feasible.
+The example of the GME short squeeze emphasizes the ability of a large number of individuals to
+realize a shared action with the simple ability of intention sharing. Indeed, this is a simplification of the
+environment, and many other reasons contributed to the event; however, it is clear that this event would
+not have occurred without a platform that brought together thousands of people who do not know each
+other and are still primarily anonymous.
+
+25
+
+The “success” refers to the successful execution of a short squeeze. Numerous individual retail investors and several
+hedge funds lost a considerable amount of money.
+26
+Reddit is a content/news sharing and discussion website. A subreddit is a specific online community with posts associated
+with that specific topic. Subreddits are denoted by /r/, followed by the subreddit’s name, e.g., /r/WallStreetBets.
+
+22
+
+References
+Agranov, Marina and Andrew Schotter, “Ignorance is bliss: an experimental study of the use of
+ambiguity and vagueness in the coordination games with asymmetric payoffs,” American Economic
+Journal: Microeconomics, 2012, 4 (2), 77–103.
+and
+
+, “Language and government coordination: An experimental study of communication in the
+
+announcement game,” Journal of Public Economics, 2013, 104, 26–39.
+Angeletos, George-Marios and Iván Werning, “Crises and prices: Information aggregation, multiplicity, and volatility,” The American economic review, 2006, 96 (5), 1720–1736.
+, Christian Hellwig, and Alessandro Pavan, “Signaling in a global game: Coordination and policy
+traps,” Journal of Political economy, 2006, 114 (3), 452–484.
+,
+
+, and
+
+, “Dynamic global games of regime change: Learning, multiplicity, and the timing of
+
+attacks,” Econometrica, 2007, 75 (3), 711–756.
+Aumann, Robert, “Nash equilibria are not self-enforcing,” Economic Decision Making: Games,
+Econometrics and Optimisation, 1990, pp. 201–206.
+Avoyan, Ala and Joao Ramos, “A road to efficiency through communication and commitment,” Available at SSRN 2777644, 2022.
+Azzalini, Adelchi, The skew-normal and related families, Vol. 3, Cambridge University Press, 2013.
+Baliga, Sandeep and Stephen Morris, “Co-ordination, spillovers, and cheap talk,” Journal of Economic Theory, 2002, 105 (2), 450–468.
+and Tomas Sjöström, “Arms races and negotiations,” The Review of Economic Studies, 2004, 71
+(2), 351–369.
+and
+
+, “The strategy of manipulating conflict,” The American Economic Review, 2012, 102 (6),
+
+2897–2922.
+Banks, Jeffrey S and Randall L Calvert, “A battle-of-the-sexes game with incomplete information,”
+Games and Economic Behavior, 1992, 4 (3), 347–372.
+Berninghaus, Siegfried K and Karl-Martin Ehrhart, “Coordination and information: Recent experimental evidence,” Economics Letters, 2001, 73 (3), 345–351.
+Blume, Andreas, “Communication, risk, and efficiency in games,” Games and Economic Behavior,
+1998, 22 (2), 171–202.
+and Andreas Ortmann, “The effects of costless pre-play communication: Experimental evidence
+from games with Pareto-ranked equilibria,” Journal of Economic theory, 2007, 132 (1), 274–290.
+23
+
+, Douglas V DeJong, Yong-Gwan Kim, and Geoffrey B Sprinkle, “Experimental evidence on the
+evolution of meaning of messages in sender-receiver games,” The American Economic Review, 1998,
+88 (5), 1323–1340.
+,
+
+,
+
+, and
+
+, “Evolution of communication with partial common interest,” Games and Economic
+
+Behavior, 2001, 37 (1), 79–120.
+Bock, Olaf, Ingmar Baetge, and Andreas Nicklisch, “hroot: Hamburg registration and organization
+online tool,” European Economic Review, 2014, 71, 117–120.
+Brandts, Jordi and David J Cooper, “Observability and overcoming coordination failure in organizations: An experimental study,” Experimental Economics, 2006, 9 (4), 407–423.
+Burton, Anthony and Martin Sefton, “Risk, pre-play communication and equilibrium,” Games and
+Economic Behavior, 2004, 46 (1), 23–40.
+Cabrales, Antonio, Rosemarie Nagel, and Roc Armenter, “Equilibrium selection through incomplete information in coordination games: an experimental study,” Experimental Economics, 2007,
+10 (3), 221–234.
+Cai, Hongbin and Joseph Tao-Yi Wang, “Overcommunication in strategic information transmission
+games,” Games and Economic Behavior, 2006, 56 (1), 7–36.
+Carlsson, Hans and Eric Van Damme, “Global games and equilibrium selection,” Econometrica:
+Journal of the Econometric Society, 1993, pp. 989–1018.
+Charness, Gary, “Self-serving cheap talk: A test of Aumann’s conjecture,” Games and Economic
+Behavior, 2000, 33 (2), 177–194.
+Chassang, Sylvain, “Fear of miscoordination and the robustness of cooperation in dynamic global
+games with exit,” Econometrica, 2010, 78 (3), 973–1006.
+Chaudhuri, Ananish, Andrew Schotter, and Barry Sopher, “Talking Ourselves to Efficiency: Coordination in Inter-Generational Minimum Effort Games with Private, Almost Common and Common
+Knowledge of Advice*,” The Economic Journal, 2009, 119 (534), 91–122.
+Chen, Heng, Yang K Lu, and Wing Suen, “The power of whispers: A theory of rumor, communication, and revolution,” International economic review, 2016, 57 (1), 89–116.
+Cooper, Russell, Douglas V DeJong, Robert Forsythe, and Thomas W Ross, “Communication in
+coordination games,” The Quarterly Journal of Economics, 1992, 107 (2), 739–771.
+Cornand, Camille and Frank Heinemann, “Optimal degree of public information dissemination,”
+The Economic Journal, 2008, 118 (528), 718–742.
+
+24
+
+and
+
+, “Measuring agents’ reaction to private and public information in games with strategic
+
+complementarities,” Experimental Economics, 2014, 17 (1), 61–77.
+Corsetti, Giancarlo, Amil Dasgupta, Stephen Morris, and Hyun Song Shin, “Does one Soros make
+a difference? A theory of currency crises with large and small traders,” The Review of Economic
+Studies, 2004, 71 (1), 87–113.
+, Bernardo Guimaraes, and Nouriel Roubini, “International lending of last resort and moral hazard: A model of IMF’s catalytic finance,” Journal of Monetary Economics, 2006, 53 (3), 441–471.
+Crawford, Vincent P and Joel Sobel, “Strategic information transmission,” Econometrica: Journal
+of the Econometric Society, 1982, pp. 1431–1451.
+Dasgupta, Amil, “Coordination and delay in global games,” Journal of Economic Theory, 2007, 134
+(1), 195–225.
+Deck, Cary and Nikos Nikiforakis, “Perfect and imperfect real-time monitoring in a minimum-effort
+game,” Experimental Economics, 2012, 15 (1), 71–88.
+Devetag, Giovanna, “Precedent transfer in coordination games: An experiment,” Economics Letters,
+2005, 89 (2), 227–232.
+and Andreas Ortmann, “When and why? A critical survey on coordination failure in the laboratory,” Experimental economics, 2007, 10 (3), 331–344.
+Duffy, John, “Macroeconomics: a survey of laboratory research,” Handbook of experimental economics, 2008, 2.
+and Jack Ochs, “Equilibrium selection in static and dynamic entry games,” Games and Economic
+Behavior, 2012, 76 (1), 97–116.
+Edmond, Chris, “Information manipulation, coordination, and regime change,” Review of Economic
+Studies, 2013, 80 (4), 1422–1458.
+Evans III, John H, R Lynn Hannan, Ranjani Krishnan, and Donald V Moser, “Honesty in managerial reporting,” The Accounting Review, 2001, 76 (4), 537–559.
+Evdokimov, Piotr and Umberto Garfagnini, “Third-party manipulation of conflict: an experiment,”
+Experimental Economics, 2018, 21 (1), 27–49.
+Farrell, Joseph, “Communication, coordination and Nash equilibrium,” Economics Letters, 1988, 27
+(3), 209–214.
+Fischbacher, Urs, “z-Tree: Zurich toolbox for ready-made economic experiments,” Experimental economics, 2007, 10 (2), 171–178.
+25
+
+Gneezy, Uri, “Deception: The role of consequences,” The American Economic Review, 2005, 95 (1),
+384–394.
+Goldstein, Itay and Ady Pauzner, “Demand–deposit contracts and the probability of bank runs,” the
+Journal of Finance, 2005, 60 (3), 1293–1327.
+Heinemann, Frank, Rosemarie Nagel, and Peter Ockenfels, “The theory of global games on test:
+experimental analysis of coordination games with public and private information,” Econometrica,
+2004, 72 (5), 1583–1599.
+,
+
+, and
+
+, “Measuring strategic uncertainty in coordination games,” The Review of Economic
+
+Studies, 2009, 76 (1), 181–221.
+Hellwig, Christian, “Public information, private information, and the multiplicity of equilibria in coordination games,” Journal of Economic Theory, 2002, 107 (2), 191–222.
+, Arijit Mukherji, and Aleh Tsyvinski, “Self-Fulfilling Currency Crises: The Role of Interest
+Rates,” The American Economic Review, 2006, pp. 1769–1787.
+Mathevet, Laurent and Jakub Steiner, “Tractable dynamic global games and applications,” Journal
+of Economic Theory, 2013, 148 (6), 2583–2619.
+Morris, Stephen and Hyun Song Shin, “Unique equilibrium in a model of self-fulfilling currency
+attacks,” American Economic Review, 1998, pp. 587–597.
+and
+
+, “Social value of public information,” American Economic Review, 2002, pp. 1521–1534.
+
+and
+
+, “Global Games: Theory and Applications in Advances in Economics and Econometrics
+
+(Proceedings of the Eighth World Congress of the Econometric Society),” Cambridge, England:
+Cambridge University Press (2003), 2003, 56, 114.
+Ozdenoren, Emre and Kathy Yuan, “Feedback effects and asset prices,” The journal of finance, 2008,
+63 (4), 1939–1975.
+Qu, Hong, “How do market prices and cheap talk affect coordination?,” Journal of Accounting Research, 2013, 51 (5), 1221–1260.
+Rochet, Jean-Charles and Xavier Vives, “Coordination failures and the lender of last resort: was
+Bagehot right after all?,” Journal of the European Economic Association, 2004, 2 (6), 1116–1147.
+Sánchez-Pagés, Santiago and Marc Vorsatz, “An experimental study of truth-telling in a sender–
+receiver game,” Games and Economic Behavior, 2007, 61 (1), 86–112.
+Shadmehr, Mehdi and Dan Bernhardt, “When Can Citizen Communication Hinder Successful Revolution?,” Quarterly Journal of Political Science, 2017, 12 (3), 301–323.
+26
+
+Shurchkov, Olga, “Coordination and learning in dynamic global games: experimental evidence,” Experimental Economics, 2013, 16 (3), 313–334.
+Szkup, Michal and Isabel Trevino, “Information acquisition in global games of regime change,”
+Journal of Economic Theory, 2015, 160, 387–428.
+and
+
+, “Sentiments, strategic uncertainty, and information structures in coordination games,”
+
+Games and Economic Behavior, 2020, 124, 534–553.
+Trevino, Isabel, “Informational channels of financial contagion,” Econometrica, 2020, 88 (1), 297–
+335.
+Van Huyck, John B, Raymond C Battalio, and Richard O Beil, “Tacit coordination games, strategic
+uncertainty, and coordination failure,” The American Economic Review, 1990, 80 (1), 234–248.
+Zak, Paul J, “Values and value: Moral economics,” 2008.
+Zwart, Sanne, “The mixed blessing of IMF intervention: Signalling versus liquidity support,” Journal
+of Financial Stability, 2007, 3 (2), 149–174.
+
+27
+
+Appendices
+A
+
+Proofs and Details
+
+This section provides additional details and proofs of the results presented in this study and all the
+intermediate results that have been omitted from the main body of the paper.
+This sections is organized as follows. Section A.1 presents more derivations and proofs for combining two types of signals under threshold communication strategy. Then the action stage is solved.
+Finally, Section A.2 establishes communication stage results.
+The section proceeds by defining the binary message communication equilibrium.
+Definition 1 Communication strategy x∗C , action strategy a∗ , and belief rule p, form a pure strategy
+symmetric perfect Bayesian equilibrium if
+[i] For any xi ∈ Xi ,
+Z
+
+x∗C (xi ) ∈ arg max
+u(a(xi ; (m(xi ), m−i ), a−i ; θ)p(θ|xi , I)dθ
+m∈Mi
+θ∈Θ
+[ii] For a given m ∈ Mi ,
+∗
+
+a (xi ; I) ∈ argmax
+
+Z
+
+u(a, a−i ; θ)p(θ|xi , I)dθ
+
+a∈Ai
+
+θ∈Θ
+
+[iii] p is obtained by Bayes rule
+p(θ|xi , I) = R
+Θ
+
+where
+
+and
+
+p(xi , I|θ)p(θ)
+,
+p(xi , I|θ)p(θ)dθ
+
+
+1, if x ≥ x
+i
+C
+m(xi ) =
+0, o.w.
+
+(3)
+
+
+1, if (x ≥ x ∧ x ≥ x ) ∨ (x ≥ x̄)
+i
+j
+i
+C
+C
+a(xi ; I) =
+0, o.w.
+
+(4)
+
+I ∈ Mi × Mj , I1 = (m, 1), I0 = (m, 0) and i ∈ I, i 6= j.
+
+28
+
+A.1
+
+Combining Binary and Continuous Signals
+
+A.1.1
+
+Preliminaries and proofs
+
+For the babbling equilibrium, because there is no information conveyed by the messages, the posterior
+distribution will coincide with the one in the baseline framework of Section 3.1. Hence, different
+communication stage strategy could lead to distinct posterior distribution. Let us focus on symmetric
+threshold strategies in communication stage and resulting posterior distribution and its properties.
+Recall that, the state of the world θ is drawn from a normal distribution with mean θ0 and variance
+σθ2 . The agent i’s private signal is drawn from a normal distribution with mean θ and variance σi2 . The
+agent j’s signal is xj and player i receives a message mj :
+x j = θ + εj σ j
+
+1, if x ≥ x∗
+j
+C
+.
+mj =
+0, if x < x∗
+j
+
+C
+
+Hence, the distribution of mj is
+mj ∼ Bern(1 − q(θ)),
+where
+1
+q(θ) = √
+2πσj
+
+Z x∗
+
+(y − θ)2
+exp −
+2σj2
+−∞
+C
+
+!
+dy
+
+Lemma 2 The density of mj given θ can be written as
+p(mj |θ) = Φ(ζj θ; ζj x∗C , σj2 )
+where ζj := sgn(2mj − 1).
+Proof. As mj is a Bernoulli-distributed random variable,
+p(mj |θ) = (1 − q(θ))mj × q(θ)1−mj
+where q(θ; x∗C , σj2 ) := Φ(x∗C ; θ, σj2 ). First, notice that Φ(x∗C ; θ, σj2 ) = 1−Φ(θ; x∗C , σj2 ). When mj = 1,
+we have
+p(mj = 1|θ) = Φ(θ; x∗C , σj2 )
+When mj = 0:
+p(mj = 0|θ) = Φ(x∗C ; θ, σj2 ) = Φ(−θ; −x∗C , σj2 )
+Thus,
+p(mj |θ) = Φ(ζj θ; ζj x∗C , σj2 )
+where ζj := sgn(2mj − 1).
+29
+
+Lemma 3 The likelihood function of θ, with data (xi , mj ), is Extended Skew-Normal with parameters
+ESN (Xi , σi , α, τ ), and density
+p(θ) =
+
+1 1
+φ
+Φ(τ ) σi
+
+
+
+θ − xi
+σi
+
+
+
+
+
+θ − xi
+Φ α0 + α
+σi
+
+where
+α := ζj × σi /σj , α0 := ζj × (xi − x∗C )/σj , τ := √
+
+α0
+1 + α2
+
+Proof. As xi and mj are conditionally independent, then, by Lemma 2,
+p(xi , mj |θ) = φ(θ; xi , σi2 )Φ(ζj θ; ζj x∗C , σj2 )
+As a function of θ,
+p(θ|xi , mj ) ∝ φ(θ; xi , σi2 )Φ(ζj θ; ζj x∗C , σj2 )
+α0
+Let τ := √1+α
+. Then
+2
+
+Thus
+
+Z
+
+φ(θ; xi , σi2 )Φ(ζj θ; ζj x∗C , σj2 )dθ = Φ(τ )
+
+1 1
+p(θ) =
+φ
+Φ(τ ) σi
+
+
+
+θ − Xi
+σi
+
+
+
+
+
+θ − Xi
+Φ α0 + α
+σi
+
+which is the pdf of an Extended Skew-Normal (ESN) distribution.
+The likelihood is extended skewed normal with parameters ESN (Xi , σi , α, τ ), and the prior is
+N (θ0 , σθ ).
+Proof of Lemma 1. Lemma 3 establishes the likelihood function of θ. With a normal prior for θ,
+the updating formulae in Azzalini (2013) is used. 
+
+A.1.2
+
+Mean and variance derivation
+
+The moment generating function (eq 2.40, Azzalini (2013)):
+M (t) := E {exp(ξt + σi Zt)} = exp(ξt + 0.5σi2 t)
+
+Φ(τ + δσi t)
+Φ(τ )
+
+d
+The mean is µ = dt
+M (t)|t=0 . Let’s take the derivative
+
+
+ Φ(τ + δσi t)
+d
+φ(τ + δσi t)
+M (t) = exp(ξt + 0.5σi2 t2 ) ξ + σi2 t
++ exp(ξt + 0.5σi2 t2 )
+(δσi )
+dt
+Φ(τ )
+Φ(τ )
+Evaluate at t = 0,
+µ=
+
+d
+φ(τ )
+M (t)|t=0 = ξ +
+(δσi )
+dt
+Φ(τ )
+
+30
+
+When τ = 0
+d
+M (t)|t=0 = ξ +
+dt
+
+r
+
+2
+(δσi )
+π
+
+Note that, in our case, we actually have
+Z
+
+θφ(θ; Xi , σi )Φ(θ; x∗C , σj )dθ
+
+which is missing the normalizing term Φ(τ ). Therefore,
+Z
+
+θφ(θ; Xi , σi )Φ(θ; x∗C , τj )dθ = Xi Φ(τ ) + φ(τ )δσi
+
+Now for the variance. The second derivative of M (t):
+d2
+φ(τ )
+φ(τ )
+φ(τ )
+M (t)|t=0 = ξ 2 + σi2 + ξ
+(δσi ) + ξ
+(δσi ) −
+τ (δσi )2
+2
+dt
+Φ(τ )
+Φ(τ )
+Φ(τ )
+Then
+
+
+2
+
+2
+d2
+d
+φ(τ )
+φ(τ )
+2
+2
+σ = 2 M (t)|t=0 −
+M (t)|t=0 = σi −
+τ (δσi ) −
+(δσi )
+dt
+dt
+Φ(τ )
+Φ(τ )
+2
+
+or
+σ
+
+2
+
+= σi2
+
+
+
+
+
+φ(τ ) 2
+φ(τ )
+1−
+δ τ+
+Φ(τ )
+Φ(τ )
+
+When τ = 0:
+σ
+
+2
+
+= σi2
+
+
+
+1/(2π) 2
+1−
+δ
+0.52
+
+or
+σ
+
+2
+
+= σi2
+
+
+
+
+
+2 2
+1− δ
+π
+
+Therefore, we say that θ with pdf
+p(θ) =
+
+1
+φ(θ; Xi , σi )Φ(θ; x∗C , σj )
+Φ(τ )
+
+is a random variable with an extended Skew-Normal distribution, and parameters
+p
+α0
+α := σi /σj , δ := α/ 1 + α2 , α0 := (Xi − x∗C )/σj , τ = √
+1 + α2
+which yields the standard notation of
+1 1
+φ
+p(θ) =
+Φ(τ ) ω
+
+
+
+θ−ξ
+ω
+
+where ξ := Xi , ω := σi .
+
+31
+
+
+
+θ−ξ
+Φ α0 + α
+ω
+
+
+
+
+Finally, the CDF. Using Eq. 2.49, Azzalini (2013):
+Φ(x; α, τ ) = Φ(x) −
+
+1
+[H(x, τ ; α) − H(τ, x; α)]
+Φ(τ )
+
+where we have defined
+
+
+p
+
+H(y, z; α) = T y, α + y −1 z 1 + α2 − T y, y −1 τ
+and T is Owen’s T -function:
+T (h, a) =
+
+1
+2π
+
+Z a
+0
+
+exp(−0.5h2 (1 + x2 ))
+dx
+1 + x2
+
+An alternative representation using the bivariate normal distribution:
+Φ(x; α, τ ) =
+where
+
+ΦB (x, τ ; −δ)
+Φ(τ )
+
+Z x Z y
+
+
+φ(t)φ
+
+ΦB (x, y; ρ) =
+−∞
+
+−∞
+
+u + δt
+√
+1 − δ2
+
+
+√
+
+1
+dudt
+1 − δ2
+
+Conditional on the other player’s message (mj = 0 or mj = 1) and communication threshold x∗C ,
+we first assume that players follow a symmetric threshold strategy
+
+1, if x ≥ x∗ (I)
+i
+ai (xi ; x∗C , I) =
+0, if x < x∗ (I)
+
+,
+
+(5)
+
+i
+
+where I = (mi , mj ). Based on whether mj = 0 or mj = 1, x∗ (I) will be different. Hence, there are
+two thresholds: the other player sent “attack” message, call it x∗ and the other player sent “no attack”
+message, call it x̄∗ .
+Equation 6 provides the expected payoff in the action stage for a player i choosing to attack conditional on information (xi , x∗C , I). In addition, player i assumes that player j follows a threshold
+strategy x∗j (I).
+
+Va (xi , x∗j ; x∗C , I) =
+
+Zθ
+
+
+
+θ Pr(xj ≥ x∗j |θ, xi , x∗C , I) p(θ|xi , x∗C , I)dθ +
+
+θ
+
+Z∞
+
+θp(θ|xi , x∗C , I)dθ − c (6)
+
+θ
+
+where
+p(θ|xi , x∗C , I) = R
+Θ
+
+p(xi , x∗C , I|θ)p(θ)
+p(xi , x∗C , I|θ)p(θ)dθ
+
+I ∈ Mi × Mj , xi ∈ Xi and i ∈ I, i 6= j. Next, the equilibrium of the action stage is defined.
+
+32
+
+(7)
+
+Definition 2 Given messages m = (mi , mj ) and message thresholds x∗C = (m∗i , m∗j ) from the communication stage, an equilibrium in monotone strategies for the action stage of the game is a pure
+strategy profile a∗ = (a∗i , a∗j ) and corresponding thresholds x∗ = (x∗i , x∗j ) such that x∗i solves
+Va (x∗i , x∗j ; I) = 0,
+where
+
+
+1, if x ≥ x∗ (I)
+i
+i
+a∗i (xi ; x∗C , I) =
+0, if x < x∗ (I)
+i
+
+i
+
+for all i ∈ I, i 6= j.
+Conditional on the case of mj = 1 or mj = 0, x∗ := x∗i (I1 ) and x̄∗ := x∗i (I0 ) solve
+Va (x∗ , x∗ ; x∗C , I1 ) = 0 and Va (x̄∗ , x̄∗ ; x∗C , I0 ) = 0,
+where I1 = (·, 1) and I0 = (·, 0). The expected payoff of attack action with realized signal xi ,
+conditional on mj = 1, aj = 1 and mj = 0, aj = 0, can be written as
+Z∞
+V1 =
+
+θp(θ|xi , xi , I1 )dθ − c,
+
+(8)
+
+θp(θ|xi , xi , I0 )dθ − c,
+
+(9)
+
+θ
+
+Z∞
+V0 =
+θ̄
+
+where I1 = (·, 1) and I0 = (·, 0). Observe that both equations, (8) and (9), are bounded from below
+by −c.
+
+There exists a unique solution of the action stage of the game given a condition on the relative
+
+informativeness of the private signal compared to the public signal. If σi /σθ is sufficiently small,
+i.e., the private signal is sufficiently more precise than the public signal, then we obtain the following
+proposition.
+Proposition 1 There exists a unique, dominance solvable equilibrium of the actions stage of the game
+√
+in which player i ∈ I uses threshold strategies, characterized by (x∗ , x̄∗ ), if γ(σθ , σi ) > 2.
+Action stage expected payoff can be written as follows:
+
+∗
+
+∗
+
+V ((x̃ , x )|x∗C , I) =
+
+Zθ̄
+
+∗
+
+θP r [xj ≥ x |θ, x∗C , I] p(θ|x̃∗ , x∗C , I)dθ +
+
+θ
+
+Z∞
+θ̄
+
+I = (m(x̃∗ ), m(x∗ )) ∈ M.
+33
+
+θp(θ|x̃∗ , x∗C , I)dθ − c
+
+Posterior belief
+p(θ|x̃∗ , x∗C , I) = R
+Θ
+
+p(x̃∗ , x∗C , I|θ)p(θ)
+,
+p(x̃∗ , x∗C , I|θ)p(θ)dθ
+
+x̃∗ = x∗C solves V ((x̃∗ , x∗C )|I1 ) = c, where
+∗
+
+V ((x̃ , x∗C )|I1 ) =
+
+Zθ̄
+
+θ P r [xj ≥ x∗C |θ, x∗C , I1 ] p(θ|x̃∗ , x∗C , I1 )dθ +
+{z
+
+|
+
+θ
+
+Z∞
+=
+
+}
+
+=1
+
+Z∞
+
+θp(θ|x̃∗ , x∗C , I1 )dθ − c
+
+θ̄
+
+θp(θ|x̃∗ , I1 )dθ − c
+
+θ
+
+x̃∗ = x̄∗ solves V ((x̃∗ , x∗C )|I0 ) = c, where
+Zθ̄
+
+∗
+
+V ((x̃ , x∗C )|I0 ) =
+
+θ P r [xj ≥ x∗C |θ, x∗C , I0 ] p(θ|x̃∗ , x∗C , I0 )dθ +
+|
+
+θ
+
+Z∞
+=
+
+{z
+
+=0
+
+}
+
+Z∞
+
+θp(θ|x̃∗ , x∗C , I0 )dθ
+
+θ̄
+
+θp(θ|x̃∗ , x∗C , I0 )dθ
+
+θ̄
+
+Consider the case when I = I1 and symmetric action stage threshold is x∗
+∗
+
+∗
+
+V ((x , x )|x∗C , I1 ) =
+
+Zθ̄
+
+∗
+
+θP r [xj ≥ x |θ, x∗C , I1 ] p(θ|x∗ , x∗C , I1 )dθ +
+
+θ
+
+If the expression
+
+Z∞
+
+θp(θ|x∗ , x∗C , I1 )dθ − c
+
+θ̄
+
+dV ((x∗ ,x∗ )|x∗C ,I1 )
+is always positive, there is a unique value of x∗ solving V (x∗ , x∗ |x∗C , I1 ) =
+dx∗
+
+0 and the unique strategy surviving iterated deletion of strictly dominated strategies is a threshold rule
+with a cutoff x∗ . Furthermore, because we know that V ((x∗C , x∗C )|x∗C , I1 ) = 0, we get the unique
+cutoff x∗ = x∗C .
+Lemma 4
+
+dV ((x∗ ,x∗ )|x∗C ,I1 )
+> 0.
+dx∗
+
+Proof.
+dV ((x∗ , x∗ )|x∗C , I1 )
+=
+dx∗
+
+
+Zθ̄ 
+∂p(θ|x∗ , x∗C , I1 )
+∂p(θ|x∗ , x∗C , I1 )
+∗
+∗
+∗ ∗
+θ P r [xj ≥ x |θ, xC , I1 ]
++ p(θ|x , xC , I1 )
+dθ
+∂x∗
+∂x∗
+θ
+
+Z∞
+θ
+
++
+
+∂p(θ|x∗ , x∗C , I1 )
+dθ
+∂x∗
+
+θ̄
+
+34
+
+≥
+
+Z∞
+θ̄
+
+!
+√
+1
+1 + α2
+dθ
+− 2
+σj (1 + σθ2 /σi2 )
+σi + σj2
+|
+{z
+}
+√
+> 0, if γ(σi ,σθ )> 2
+
+Z∞
++
+θ̄
+
+
+
+ζ
+φ(τc )
+p
+Φ(τc ) 1 + αc2
+
+c
+1 + αc2 + αc θ−ξ
+ωc )
+p
+ζ
+c
+Φ(τc 1 + αc2 + αc θ−ξ
+ωc )
+
+φ(τc
+
+p
+
+√
+
+!
+1 + α2
+1
+dθ
+−
+σi2 + σj2
+σj (1 + σθ2 /σi2 )
+{z
+}
+|
+√
+> 0, if γ(σi ,σθ )> 2
+
+
+r(r2 + 1) √
+σθ
+γ(σi , σθ ) :=
+> 2, where r := , then
+σθ
+σi
+
+>0
+
+A.2
+
+Communication Stage
+
+Based on the aforementioned results, let us turn to the communication stage:
+Lemma 5 The communication strategy mi : Θ → Mi is a threshold rule.
+Proof. Recall that mi : Xi → Mi , ai : Xi × M → Ai and ui : A × Θ → R, where M = Mi × Mj ,
+A = Ai × Aj , for i ∈ I and i 6= j. The expected utility can be written as
+Z
+θ∈Θ
+
+ai (xi ; (mi (xi ), m−i ))[θ(1{θ∈[θ,θ̄)} aj (xj ; (mi (xi ), m−i )) + 1{θ≥θ̄} ) − c]p(θ|xi , (mi (xi ), m−i ))dθ
+(10)
+
+Let ς = (m, a, p) be a symmetric pure strategy perfect Bayesian equilibrium. Take x1 and x2 ∈ Xi ,
+such that x1 < x2 and mi (x1 ) 6= mi (x2 ) and let
+Z
+
+u(a(x2 ; (m(x2 ), m−i )), a−i ; θ)p(θ|x2 , (m(x2 ), m−i ))dθ ≥
+
+(11)
+
+θ∈Θ
+
+Z
+u(a(x1 ; (m(x1 ), m−i )), a−i ; θ)p(θ|x1 , (m(x1 ), m−i ))dθ
+θ∈Θ
+
+(The abovementioned conditions exclude the equilibria in which mi (xi ) = mi (xj ) for all xi , xj ∈
+
+Xi . Because, we are looking for an informative communication strategy, where some information is
+transmitted, the condition is without loss of generality.) Consider x3 ∈ Xi , such that x3 > x2 . Then,
+because p(θ|x2 , I) > p(θ|x1 , I), for any I ∈ M and given equation 11, we obtain
+
+P r(aj = 1|x2 , (m(x2 ), m−i )) ≥ P r(aj = 1|x1 , (m(x1 ), m−i ))
+
+35
+
+(12)
+
+Then, equation 12 yields
+Z
+
+u(a(x3 ; (m(x2 ), m−i )), a−i ; θ)p(θ|x3 , (m(x2 ), m−i ))dθ ≥
+
+(13)
+
+θ∈Θ
+
+Z
+u(a(x3 ; (m(x1 ), m−i )), a−i ; θ)p(θ|x3 , (m(x1 ), m−i ))dθ
+
+(14)
+
+θ∈Θ
+
+therefore, m(x3 ) = m(x2 ).
+
+B
+
+Costly and noisy messages and richer message space
+
+B.1
+
+Costly messages
+
+Does the communication equilibria in the binary message case survive a small message cost? The answer is yes, with a small adjustment of the threshold. While introducing costly messages, the message
+space is augmented with an empty message with no cost. That is, let M̃i = Mi ∪ {∅} and let mi = ∅ be
+
+costless. The message cost does not influence the agents’ best responses, and the analysis is unchanged
+up to the slight change of thresholds. Instead of the attacking cost of c, the consideration is as if the
+cost was c + ε, where ε is the message cost.
+The communication equilibrium described in the paper in binary message case provides a unique
+outcome in the action stage; however, the communication stage can be slightly modified without affecting the equilibrium or its consequences. For example, consider some signal xN ∈ Xi , for which
+
+player i will abstain from attacking irrespective of the received messages. Since messages are costless
+and the final action is ai = 0, this player is indifferent between sending any message. Because of
+
+that, we can construct the following equilibrium. For all signals xi ∈ Xi \{xN }, players follow the
+equilibrium described in the Theorem 1, but xi = xN sends a message m(xN ) = 1. Since xi = xN
+
+is a measure zero event, it will not affect the best responses or the thresholds. We have constructed an
+informative equilibrium that is payoff equivalent to the equilibrium described in Theorem 1, but has
+a distinct communication stage. This communication stage equilibrium is not sustainable with costly
+messages.
+
+B.2
+
+Noisy Message Transmission
+
+Firstly, let us closely examine the fully revealing equilibrium. Suppose the messages sent are the signal
+realizations mi = xi and messages received are taken at face value. This communication stage induces
+
+common posterior θ|xi , mj ∼ N θ̌, σ̌ 2 . To calculate θ̌, σ̌ 2 , let the average of the two signals be
+x̄ := 21 (x1 + x2 ). Since the average signal is a sufficient statistic, we will refer to it as the player i’s
+
+combined signal. Using the standard approach, the prior belief is updated with the combined signal
+
+x̄σ 2 +θ σ 2
+σ2 σ2
+x̄, which induces a common posterior θ|x̄ ∼ N θ̌, σ̌ 2 , where θ̌ = σθ2 +σ02 , σ̌ 2 = σ2θ+σ2 and
+θ
+
+θ
+
+σ 2 := 14 (σ12 + σ22 ). The first-best outcome of the game is for both players to take an attack action, if
+posterior mean, θ̌, is greater than the cost of attacking c and abstain otherwise.
+36
+
+If there is no noise, fully revealing the signals is an equilibrium, since once signals are combined,
+players’ preferences are perfectly aligned. Now, assume there is some residual uncertainty, that is, for
+example, let messages get distorted in the transition process with noise ξ N (0, σξ2 ) that is independent
+of the state and signals. Then, player i would exaggerate the signal fearing a negative distortion in
+the message sending process. This slight misalignment distorts the fully revealing equilibrium. This
+example highlights how sensitive fully revealing equilibrium is to slight noise in messages.
+
+B.3
+
+Richer message space
+
+This section examines the case in which the message space is as large as the signal space |Mi | = |Si |.
+
+In particular, without loss of generality let Mi = Si . This section focuses on equilibria that preserve the
+structure of the global games in the second stage (Section B.2 above characterizes the fully revealing
+equilibrium).
+In the equilibrium presented below, the richness of message space allows players to reduce the
+cases of miscoordination. However, it does not increase the probability of coordinated attacks; it only
+reduces the cases of unsuccessful unilateral attacks. Therefore, the most informative equilibrium among
+the partially informative equilibria of the type described below is identical to binary message equilibria
+when there is a possibility for both of the players to attack or when both players are not attacking for
+sure.
+Result 6 Communication equilibrium with rich message space
+There exists a perfect Bayesian equilibrium, where
+(i) in the communication stage player i sends a message mi (xi ), and
+(ii) in the action stage player i takes an action ai (xi ; x∗C , I), where
+
+x∗ , if x ≥ x∗
+i
+C
+C
+mi (xi ) =
+x , if x < x∗
+i
+
+i
+
+(15)
+
+C
+
+
+1, if x , x ≥ x or x ≥ x̄∗ (x )
+i j
+i
+j
+C
+ai (xi ; xC , I) =
+0, o.w.
+
+(16)
+
+I = (mi , mj ), for xi ∈ Xi and i ∈ I, i 6= j.
+The “positive message,” an intention to attack, is pooled as in the case of binary signals (the result
+can be obtained by closely following the logic outlined in Lemma 5). That is, if xi ≥ x∗C , then mi = x∗C
+
+(For xi ≥ x∗C , messages are pooled and without loss of generality, let mi = x∗C ). However, the richness
+of messages reduces the cases of miscoordination. When xi < x∗C , player i will never attack, hence
+this player is indifferent between sending any message. Therefore, we can let the message be anything
+but the positive message that states xi ≥ x∗C . By setting mi (xi ) = xi , the probability of mistakes
+
+(unsuccessful attacks) for player j is reduced, leading to the less wasted c in the action stage.
+37
+
+C
+
+Additional Figures and Tables
+Treatments
+TI
+TI&S
+
+Rounds
+
+Threshold Strategy
+
+Perfect
+
+Almost Perfect
+
+All 50
+Last 25
+All 50
+Last 25
+
+98.0%
+98.0%
+87.5%
+97.5%
+
+28.0%
+88.0%
+32.5%
+90.0%
+
+70.0%
+10.0%
+55.0%
+7.5%
+
+Table 5: Threshold strategy usage
+
+Variable
+
+%
+
+Gender: Female
+Game Theory: Yes
+GPA (self reported)
+Major:
+
+Computer Science
+Economics
+Humanities
+Math
+Physics/Chemistry
+Other
+
+44.44
+15.66
+3.5
+17.68
+10.61
+9.091
+5.051
+2.525
+54.55
+
+Table 6: Survey Summary
+
+Figure 10: Distribution of realized signals
+0.03
+0.02
+0.01
+0.00
+-100
+
+0
+
+100
+
+200
+
+200
+
+100
+
+100
+
+0
+
+0
+
+Signal j
+
+200
+
+-100
+
+-100
+
+-100
+
+0
+
+100
+
+Signal i
+
+38
+
+200
+
+0.00
+
+0.01
+
+0.02
+
+0.03
+
+0.04
+
+D
+
+Comparison example
+
+This section presents a simple example to intuitively illustrate the differences between the current paper
+and Baliga and Morris (2002) and to highlight the fundamental differences in game incentives. Let us
+start with the game:
+I
+−5
+0
+
+I
+N
+
+N
+−5
+0
+
+Figure 11: Low type: Dominant Strategy is not to Attack
+I
+N
+I 10 − 5 −5
+N
+0
+0
+Figure 12: Medium type: attack only if the other is attacking
+I
+N
+I 10 − 5 10 − 5
+N
+0
+0
+Figure 13: High type: Dominant Strategy is to Attack
+Suppose there are only two messages available, m and m0 . Baliga and Morris (2002) type of
+equilibrium:
+Messages sent and actions taken
+
+m,
+m̃i (ti ) =
+m0 ,
+
+I,
+ãi (ti , mi , mj ) =
+N,
+
+if ti = L or H
+if ti = M
+
+if (ti , mi , mj ) = (L, m, m), (L, m0 , m0 ) or (M, m0 , m0 )
+otherwise
+
+Consider the following deviation: Suppose player i is type H and message profile is (m, m0 ).
+Equilibrium prescribes this type not to invest. However, the player gets 0 if the player does not invest
+and 5 if the player invests. The important difference is that sometimes, even if player i is sure that player
+j is not joining, then player i would still want to join. This difference is what drives the differences
+and allows for some of the results in this study that are not present in Baliga and Morris (2002). This
+is also the reason why the type of equilibria where communication strategy is non-monotonic such as
+Example 4 in Baliga and Morris (2002) is not present in the current paper.
+Moreover, unlike the above example, in incomplete information case, even when it is a dominant
+strategy to invest, the other player joining increases the probability of success. Therefore, the high
+types would never pretend to be low types.
+
+39
+
+E
+
+Instructions (control treatment)
+Instructions
+This is an experiment in economic decision making. The funds have been provided to run this
+experiment and if you make good decisions you may earn a substantial amount of money, which
+will be paid to you privately in cash vouchers at the end of the experiment. We ask you not to
+communicate with each other from now on and turn your mobile devices to silent mode. If you
+have any questions, please raise your hand.
+The experiment consists of 50 independent and identical rounds. In this experiment you will
+be randomly paired with another person in the room, and you will remain matched with this
+person throughout the 50 rounds that you play.
+Your payoff for each round will depend on your choice, on the choice of the person you have been
+paired with, and on chance. At the end of the experiment, the computer will randomly select five
+of the rounds that you played and you will be privately paid the average of what you earned in
+those specific rounds. The currency in this experiment is called tokens, and will be converted to
+dollars at the end of the experiment at a rate of 6 tokens per dollar. In addition, you will receive a
+participation fee of 10 dollars.
+
+Decisions in each of 50 rounds
+You will start each round of the experiment with an endowment of 24 tokens.
+Each round of the experiment will consist of one decision stage in which you and your pair
+member will make a choice between two alternatives: A or B based upon the information you
+receive about an unknown number X. The number X is selected randomly in each round and
+you will not know what this number is nor will your pair member. We will discuss how the
+number X is randomly chosen later.
+
+Payoff from Choosing Alternative B
+Taking choice B does not yield any extra payoff no matter what your pair member does, so if you
+choose B, your total payoff for the round will be your endowment of 24.
+
+Payoffs from Choosing Alternative A
+If you choose A, then your payoff will depend on how large the unknown number X is and on
+whether your pair member selects A or B. Choosing alternative A always has a cost to you of 18
+tokens.
+Table 1 explains how the payoff of decision A depends on the true value of X and on the
+choice you and your pair member choose. The second column of Table 1 contains a small table
+that explains, for each possible value of X, the payoff that you and your pair member will receive,
+depending on the choices you and your pair member choose. Your payoff is the first number in
+the cell, and your pair member’s payoff is the number after the comma.
+
+1
+
+40
+
+Table 1: Payoffs
+If the value of X is :
+
+Payoffs
+
+Below 0
+
+Between 0.01 and 99.99
+
+Higher than 100
+
+Your
+Choice
+
+Your
+Choice
+
+Your
+Choice
+
+A
+B
+
+Other’s Choice
+A
+B
+6, 6
+6, 24
+24, 6 24, 24
+
+A
+B
+
+Other’s Choice
+A
+B
+X + 6, X + 6 6, 24
+24, 6
+24, 24
+
+A
+B
+
+Other’s Choice
+A
+B
+X + 6, X + 6 X + 6, 24
+24, X + 6
+24, 24
+
+Let us look at these payoffs more closely:
+• If you choose A and the true value of X is less than 0, then you will receive 24 − 18 = 6 no
+matter what your pair member chooses.
+
+• If the true value of X is between 0.01 and 99.99, then the payoff of choice A is equal to
+
+24 + X − 18 if both you and your pair member decide for A. In this case, we say that choice
+A is successful and each participant receives the amount of 24 + X − 18 = X + 6.
+
+• If the value of X is between 0.01 and 99.99 and only you choose A (your pair member chooses
+B), then choice A is not successful and you will not get any extra payoff. In this case you
+will receive 24 − 18 = 6.
+• Finally, if X is higher than 100.00, then if you choose A you will receive 24 + X − 18 = X + 6
+regardless of what your pair member chooses.
+
+Notice that your final payoff depends on the value of X and on the choice of you and your pair
+member.
+Notice as well that for very high and very low values of X, your payoff does not depend on the
+choice of your pair member.
+
+2
+
+How is X chosen and what will you know about it.
+The unknown number X is chosen from a distribution portrayed in Figure 1, which is called a
+normal distribution with mean 50 and standard deviation of 50.
+What Figure 1 shows is that while you will not be told the value of X, you will know that 95%
+of the time the number X will have a value between −48 and 148 and that it is centered around
+50. This means that the number X can take one of many possible values, but the numbers that are
+
+closer to 50 have a higher probability to be drawn than those numbers that are further away from
+50.
+
+Figure 1: Graph of the probability density function of the unknown number X
+While you will not know the value of X that is drawn, you and your pair member will each
+receive a different signal giving you a hint as to what X is. This signal will be drawn at random
+from a similar normal distribution as the one shown in Figure 1 above, except that the mean will
+now be the number X and the standard deviation will be 10. This means that for the value of X
+that is selected in each round 95% of the times your signal will have a value between X − 19.6
+
+and X + 19.6. So, for example, if the unobserved number X is 90 your signal will come from a
+distribution with mean 90 and standard deviation 10, so that 95% of the times your signal will be
+a number between 70.4 and 109.6.
+
+At the beginning of each round the number X will be randomly selected, but you and your
+pair member will not observe it. Instead, you and your pair member will each receive a private
+signal, independently drawn from the distribution with mean X and standard deviation 10. This
+means that you and your pair member will observe different signals. On the basis of your signal
+you are going to make your choice between two alternatives: A or B.
+A round is ended once you and your pair member have made your decisions about choosing
+A or B. Remember that there are 50 rounds in the first part of the experiment.
+
+3
+
+Information after each round
+After each round you will be informed about:
+• The true value of the number X,
+• Your signal,
+• Your choice,
+• Your pair member’s choice,
+• Your individual payoff for the round.
+After a round is over, you will proceed to the next round and face the same decision. Note that
+the values of X are randomly and independently determined from round to round, so a high X
+in one period does not imply anything about the likely value of X for the next period.
+
+Payoffs
+When you reach the end of the experiment, five of the fifty rounds that you have played will be
+randomly selected and you will get paid in dollars the average of the payoffs you obtained in those
+rounds. In particular, the first paying round will be randomly selected from the first 10 rounds
+you played, the second paying round will be randomly selected from the second 10 rounds you
+played, the third paying round will be randomly selected from the third 10 rounds you played,
+the fourth paying round will be randomly selected from the fourth 10 rounds you played, and the
+fifth paying round will be randomly selected from the last 10 rounds you played. The average
+of the tokens you obtained in those particular rounds will be converted to US dollars and will be
+paid to you in cash vouchers. 6 tokens correspond to 1 dollar. You will also receive a show up fee
+of 10 dollars.
+
+Summary
+• An unknown number X is randomly chosen from probability distribution in Figure 1
+• You will be shown a signal (a hint) based on the realization of X
+• You will choose an action A or B, and so will your pair member
+• When the round is over, you will see the information as described above
+• The next round will start
+
+4
+
+All instructions for the experiment were identical except the part regarding the messages. The
+exerts about messages from each communication treatment are in the following subsections.
+
+E.1
+
+Messages (Intentions)
+
+After you have observed your signal but before you make a choice between A and B you can send your
+pair member a message, which can only be two letters: A or B. You will receive the message your pair
+member sent and your pair member will receive your message.
+
+E.2
+
+Messages (Signals)
+
+After you have observed your signal but before you make a choice between A and B you can send your
+pair member a message, which can be any number. You will receive the message your pair member
+sent and your pair member will receive your message.
+
+E.3
+
+Messages (Intentions and Signals)
+
+After you have observed your signal but before you make a choice you can send your pair member a
+message, which consists of sending two letters: A or B and any number. You will be sent the messages
+from your pair member and your pair member will receive your messages.
+
+44
+
+

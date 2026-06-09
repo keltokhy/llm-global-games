@@ -1,0 +1,2 @@
+running large_random_scramble_mistral4 -> /Users/khaled/GitHub/llm-global-games/CLEAN_RUN/output/random_theta_pilot_large_mistral4/large_random_scramble_mistral4
+large_random_scramble_mistral4: completed 250 period rows

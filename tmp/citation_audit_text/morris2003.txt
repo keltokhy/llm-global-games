@@ -1,0 +1,4613 @@
+CHAPTER 3
+
+Global Games: Theory and Applications
+Stephen Morris and Hyun Song Shin
+
+1. INTRODUCTION
+Many economic problems are naturally modeled as a game of incomplete information, where a player’s payoff depends on his own action, the actions of others,
+and some unknown economic fundamentals. For example, many accounts of
+currency attacks, bank runs, and liquidity crises give a central role to players’
+uncertainty about other players’ actions. Because other players’ actions in such
+situations are motivated by their beliefs, the decision maker must take account
+of the beliefs held by other players. We know from the classic contribution
+of Harsanyi (1967–1968) that rational behavior in such environments not only
+depends on economic agents’ beliefs about economic fundamentals, but also
+depends on beliefs of higher-order – i.e., players’ beliefs about other players’
+beliefs, players’ beliefs about other players’ beliefs about other players’ beliefs,
+and so on. Indeed, Mertens and Zamir (1985) have shown how one can give
+a complete description of the “type” of a player in an incomplete information
+game in terms of a full hierarchy of beliefs at all levels.
+In principle, optimal strategic behavior should be analyzed in the space of
+all possible inﬁnite hierarchies of beliefs; however, such analysis is highly
+complex for players and analysts alike and is likely to prove intractable in
+general. It is therefore useful to identify strategic environments with incomplete
+information that are rich enough to capture the important role of higher-order
+beliefs in economic settings, but simple enough to allow tractable analysis.
+Global games, ﬁrst studied by Carlsson and van Damme (1993a), represent
+one such environment. Uncertain economic fundamentals are summarized by
+a state θ and each player observes a different signal of the state with a small
+amount of noise. Assuming that the noise technology is common knowledge
+among the players, each player’s signal generates beliefs about fundamentals,
+beliefs about other players’ beliefs about fundamentals, and so on. Our purpose
+in this paper is to describe how such models work, how global game reasoning
+can be applied to economic problems, and how this analysis relates to more
+general analysis of higher-order beliefs in strategic settings.
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+57
+
+One theme that emerges is that taking higher-order beliefs seriously does not
+require extremely sophisticated reasoning on the part of players. In Section 2,
+we present a benchmark result for binary action continuum player games with
+strategic complementarities where each player has the same payoff function. In
+a global games setting, there is a unique equilibrium where each player chooses
+the action that is a best response to a uniform belief over the proportion of
+his opponents choosing each action. Thus, when faced with some information
+concerning the underlying state of the world, the prescription for each player is
+to hypothesize that the proportion of other players who will opt for a particular
+action is a random variable that is uniformly distributed over the unit interval
+and choose the best action under these circumstances. We dub such beliefs (and
+the actions that they elicit) as being Laplacian, following Laplace’s (1824)
+suggestion that one should apply a uniform prior to unknown events from the
+“principle of insufﬁcient reason.”
+A striking feature of this conclusion is that it reconciles Harsanyi’s fully
+rational view of optimal behavior in incomplete information settings with the
+dissenting view of Kadane and Larkey (1982) and others that rational behavior
+in games should imply only that each player chooses an optimal action in
+the light of his subjective beliefs about others’ behavior, without deducing his
+subjective beliefs as part of the theory. If we let those subjective beliefs be the
+agnostic Laplacian prior, then there is no contradiction with Harsanyi’s view
+that players should deduce rational beliefs about others’ behavior in incomplete
+information settings.
+The importance of such analysis is not that we have an adequate account of
+the subtle reasoning undertaken by the players in the game; it clearly does not do
+justice to the reasoning inherent in the Harsanyi program. Rather, its importance
+lies in the fact that we have access to a form of short-cut, or heuristic device,
+that allows the economist to identify the actual outcomes in such games, and
+thereby open up the possibility of systematic analysis of economic questions
+that may otherwise appear to be intractable.
+One instance of this can be found in the debate concerning self-fulﬁlling
+beliefs and multiple equilibria. If one set of beliefs motivates actions that bring
+about the state of affairs envisaged in those beliefs, while another set of selffulﬁlling beliefs bring about quite different outcomes, then there is an apparent
+indeterminacy in the theory. In both cases, the beliefs are logically coherent,
+consistent with the known features of the economy, and are borne out by subsequent events. However, we do not have any guidance on which outcome will
+transpire without an account of how the initial beliefs are determined. We have
+argued elsewhere (Morris and Shin, 2000) that the apparent indeterminacy of
+beliefs in many models with multiple equilibria can be seen as the consequence
+of two modeling assumptions introduced to simplify the theory. First, the economic fundamentals are assumed to be common knowledge. Second, economic
+agents are assumed to be certain about others’ behavior in equilibrium. Both assumptions are made for the sake of tractability, but they do much more besides.
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+58
+
+Morris and Shin
+
+They allow agents’ actions and beliefs to be perfectly coordinated in a way
+that invites multiplicity of equilibria. In contrast, global games allow theorists
+to model information in a more realistic way, and thereby escape this straitjacket. More importantly, through the heuristic device of Laplacian actions,
+global games allow modelers to pin down which set of self-fulﬁlling beliefs
+will prevail in equilibrium.
+As well as any theoretical satisfaction at identifying a unique outcome in
+a game, there are more substantial issues at stake. Global games allow us to
+capture the idea that economic agents may be pushed into taking a particular
+action because of their belief that others are taking such actions. Thus, inefﬁcient outcomes may be forced on the agents by the external circumstances even
+though they would all be better off if everyone refrained from such actions.
+Bank runs and ﬁnancial crises are prime examples of such cases. We can draw
+the important distinction between whether there can be inefﬁcient equilibrium
+outcomes and whether there is a unique outcome in equilibrium. Global games,
+therefore, are of more than purely theoretical interest. They allow more enlightened debate on substantial economic questions. In Section 2.3, we discuss
+applications that model economic problems using global games.
+Global games open up other interesting avenues of investigation. One of
+them is the importance of public information in contexts where there is an
+element of coordination between the players. There is plentiful anecdotal evidence from a variety of contexts that public information has an apparently
+disproportionate impact relative to private information. Financial markets apparently “overreact” to announcements from central bankers that merely state
+the obvious, or reafﬁrm widely known policy stances. But a closer look at this
+phenomenon with the beneﬁt of the insights given by global games makes such
+instances less mysterious. If market participants are concerned about the reaction of other participants to the news, the public nature of the news conveys more
+information than simply the “face value” of the announcement. It conveys important strategic information on the likely beliefs of other market participants.
+In this case, the “overreaction” would be entirely rational and determined by
+the type of equilibrium logic inherent in a game of incomplete information. In
+Section 3, these issues are developed more systematically.
+Global games can be seen as a particular instance of equilibrium selection
+though perturbations. The set of perturbations is especially rich because it turns
+out that they allow for a rich structure of higher-order beliefs. In Section 4,
+we delve somewhat deeper into the properties of general global games – not
+merely those whose action sets are binary. We discuss how global games are
+related to other notions of equilibrium reﬁnements and what is the nature of
+the perturbation implicit in global games. The general framework allows us to
+disentangle two properties of global games. The ﬁrst property is that a unique
+outcome is selected in the game. A second, more subtle, question is how such a
+unique outcome depends on the underlying information structure and the noise
+in the players’ signals. Although in some cases the outcome is sensitive to the
+details of the information structure, there are cases where a particular outcome
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+59
+
+is selected and where this outcome turns out to be robust to the form of the noise
+in the players’ signals. The theory of “robustness to incomplete information”
+as developed by Kajii and Morris (1997) holds the key to this property. We also
+discuss a larger theoretical literature on higher-order beliefs and the relation to
+global games.
+In Section 5, we show how recent work on local interaction games and
+dynamic games with payoff shocks use a similar logic to global games in
+reaching unique predictions.
+2. SYMMETRIC BINARY ACTION
+GLOBAL GAMES
+2.1.
+
+Linear Example
+
+Let us begin with the following example taken from Carlsson and van Damme
+(1993a). Two players are deciding whether to invest. There is a safe action (not
+invest); there is a risky action (invest) that gives a higher payoff if the other
+player invests. Payoffs are given in Table 3.1:
+Table 3.1. Payoffs of leading
+example
+
+Invest
+NotInvest
+
+Invest
+
+NotInvest
+
+θ, θ
+0, θ − 1
+
+θ − 1, 0
+0, 0
+
+(2.1)
+
+If there was complete information about θ, there would be three cases to
+consider:
+r If θ > 1, each player has a dominant strategy to invest.
+r If θ ∈ [0, 1], there are two pure strategy Nash equilibria: both invest
+and both not invest.
+r If θ < 0, each player has a dominant strategy not to invest.
+But there is incomplete information about θ . Player i observes a private
+signal xi = θ + εi . Each εi is independently normally distributed with mean 0
+and standard deviation σ . We assume that θ is randomly drawn from the real line,
+with each realization equally likely. This implies that a player observing signal
+x considers θ to be distributed normally with mean x and standard deviation
+σ . This in turn implies that he thinks his opponent’s
+signal x is normally
+√
+distributed with mean x and standard deviation 2σ. The assumption that θ is
+uniformly distributed on the real line is nonstandard, but presents no technical
+difﬁculties. Such “improper priors” (with an inﬁnite mass) are well behaved, as
+long as we are concerned only with conditional beliefs. See Hartigan (1983)
+for a discussion of improper priors. We will also see later that an improper
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+60
+
+Morris and Shin
+.
+....
+....
+...
+...
+...
+...
+...
+...
+...
+....
+....
+....
+.
+....
+....
+....... ....... ....... ........... ....... ....... ....... ....... ....... ....... ....... ....... ....... ....... ....... ....... ....... ......... ....... ....... ....... ....... ....... ....... .......
+..
+..
+...
+....................
+.
+.............
+....
+....
+..........
+.........
+.
+....
+........
+....
+.......
+.
+.
+.
+.
+...
+.
+.
+......
+....
+....
+.......
+.......
+..
+....
+... ............
+.
+....
+....
+.... ..........
+.
+.
+.
+...
+. .
+.... .........
+...
+.. ....
+..........
+....
+. .....
+....
+.............
+.
+.
+.
+.
+....
+.....
+..
+.....
+.....
+..........
+......
+...
+......
+...
+........
+...... .
+.
+.
+.
+....
+.........
+....
+.....
+..... ....
+..
+..... ..
+..... .
+....
+..... ...
+.
+...... .. .
+.
+.
+....
+.
+.
+.
+..
+...
+......
+...
+......
+.
+.. ...........
+....
+.
+.
+.........
+........
+....
+....... ....
+.
+.
+.
+.
+.
+.
+.
+...
+.......
+...
+.........
+... ..
+...........
+.
+... . ..
+...............
+.....................
+.
+.
+.........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+.
+.
+.
+.
+.
+.
+... ..
+.
+....
+....
+..
+...
+
+1
+
+b (k)
+
+0.5
+
+0
+
+0.5
+
+1
+
+k
+
+Figure 3.1. Function b(k).
+
+prior can be seen as a limiting case either as the prior distribution of θ becomes
+diffuse or as the standard deviation of the noise σ becomes small.
+A strategy is a function specifying an action for each possible private signal;
+a natural kind of strategy we might consider is one where a player takes the
+risky action only if he observes a private signal above some cutoff point, k:
+
+Invest,
+if x > k
+s(x) =
+NotInvest, if x ≤ k.
+We will refer to this strategy as the switching strategy around k. Now suppose
+that a player observed signal x and thought that his opponent was following
+such a “switching” strategy with cutoff
+√ point k. His expectation of θ will be
+x. He will assign probability  1/ 2σ (k − x) to his opponent observing a
+signal less than k [where (·) is the c.d.f. of the standard normal distribution].
+In particular, if he has observed a signal equal to the cutoff point of his opponent
+(x = k), he will assign probability 12 to his opponent investing. Thus, there will
+be an equilibrium where both players follow switching strategies with cutoff 12 .
+In fact, a switching strategy with cutoff 12 is the unique strategy surviving
+iterated deletion of strictly interim-dominated strategies. To see why,1 ﬁrst
+deﬁne b(k) to be the unique value of x solving the equation
+
+
+k−x
+= 0.
+(2.2)
+x − √
+2σ
+The function b(·) is plotted in Figure 3.1. There is a unique such value because
+the left-hand side is strictly increasing in x and strictly decreasing in k. These
+1 An alternative argument follows Milgrom and Roberts (1990): if a symmetric game with strate-
+
+gic complementarities has a unique symmetric Nash equilibrium, then the strategy played in
+that unique Nash equilibrium is also the unique strategy surviving iterated deletion of strictly
+dominated strategies.
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+61
+
+properties also imply that b(·) is strictly increasing. So, if your opponent is
+following a switching strategy with cutoff k, your best response is to follow a
+switching strategy with cutoff b(k). We will argue that if a strategy s survives
+n rounds of iterated deletion of strictly dominated strategies, then
+
+s(x) =
+
+Invest,
+NotInvest,
+
+if
+if
+
+x > bn−1 (1)
+x < bn−1 (0).
+
+(2.3)
+
+We argue the second clause by induction (the argument for the ﬁrst clause
+is symmetric). The claim is true for n = 1, because as we noted previously,
+NotInvest is a dominant strategy if the expected value of θ is less than 0. Now,
+suppose the claim is true for arbitrary n. If a player knew that his opponent
+would choose action NotInvest if he had observed a signal less than bn−1 (1),
+his best response would always be to choose action NotInvest if his signal was
+less than b(bn−1 (1)). Because b(·) is strictly increasing and has a unique ﬁxed
+point at 12 , bn (0) and bn (1) both tend to 12 as n → ∞.
+The unique equilibrium has both players investing only if they observe a
+signal greater than 12 . In the underlying symmetric payoff complete information
+game, investing is a risk dominant action (Harsanyi and Selten, 1988), exactly
+if θ ≥ 12 ; not investing is a risk dominant action exactly if θ ≤ 12 . The striking
+feature of this result is that no matter how small σ is, players’ behavior is
+inﬂuenced by the existence of the ex ante possibility that their opponent has a
+dominant strategy to choose each action.2 The probability that either individual
+invests is
+
+
+1
+−
+θ
+;
+ 2
+σ
+Conditional on θ, their investment decisions are independent.
+The previous example and analysis are due to Carlsson and van Damme
+(1993a). There is a many-players analog of this game, whose solution is no
+more difﬁcult to arrive at. A continuum of players are deciding whether to
+invest. The payoff to not investing is 0. The payoff to investing is θ − 1 + l,
+where l is the proportion of other players choosing to invest. The information
+structure is as before, with each player i observing a private signal xi = θ + εi ,
+where the εi are normally distributed in the population with mean 0 and standard
+deviation σ . Also in this case, the unique strategy surviving iterated deletion of
+strictly dominated strategies has each player investing if they observe a signal
+above 12 and not investing if they observe a signal below 12 . We will brieﬂy
+sketch why this is the case.
+Consider a player who has observed signal x and thinks that all his opponents
+are following the “switching” strategy with cutoff point k. As before, his
+√ expectation of θ will be x. As before, he will assign probability ((k − x)/ 2σ )) to
+2 Thus, a “grain of doubt” concerning the opponent’s behavior has large consequences. This
+
+element has been linked by van Damme (1997) to the classic analysis of surprise attacks of
+Schelling (1960), Chapter 9.
+Cambridge Collections Online © Cambridge University Press, 2006
+
+62
+
+Morris and Shin
+
+any given opponent observing a signal less than k. But, because the realization
+of the signals are independent conditional on θ, his expectation of the proportion of players who observe a signal less than k will be exactly equal to the
+probability he assigns to any one opponent observing a signal
+√ less than k. Thus,
+his expected payoff to investing will be x − ((k − x)/ 2σ ), as before, and
+all the previous arguments go through.
+This argument shows the importance of keeping track of the layers of beliefs
+across players, and as such may seem rather daunting from the point of view
+of an individual player. However, the equilibrium outcome is also consistent
+with a procedure that places far less demands on the capacity of the players,
+and that seems to be far removed from equilibrium of any kind. This procedure
+has the following three steps.
+r Estimate θ from the signal x.
+r Postulate that l is distributed uniformly on the unit interval [0, 1].
+r Take the optimal action.
+Because the expectation of θ conditional on x is simply x itself, the expected
+payoff to investing if l is uniformly distributed is x − 12 , whereas the expected
+payoff to not investing is zero. Thus, a player following this procedure will
+choose to invest or not depending on whether x is greater or smaller than
+1
+, which is identical to the unique equilibrium strategy previously outlined.
+2
+The belief summarized in the second bullet point is Laplacian in the sense
+introduced in the introductory section. It represents a “diffuse” or “agnostic”
+view on the actions of other players in the game. We see that an apparently
+naive and simplistic strategy coincides with the equilibrium strategy. This is
+not an accident. There are good reasons why the Laplacian action is the correct
+one in this game, and why it turns out to be an approximately optimal action in
+many binary action global games. The key to understanding this feature is to
+consider the following question asked by a player in this game.
+“My signal has realization x. What is the probability that proportion less than
+z of my opponents have a signal higher than mine?”
+
+The answer to this question would be especially important if everyone is using
+the switching strategy around x, since the proportion of players who invest
+is equal to the proportion whose signal is above x. If the true state is θ, the
+proportion of players who receive a signal higher than x is given by 1 − ((ψ −
+θ)/σ ). So, this proportion is less than z if the state θ is such that 1 − ((ψ −
+θ )/σ ) ≤ z. That is, when
+θ ≤ x − σ −1 (1 − z).
+The probability of this event conditional on x is
+
+
+x − σ −1 (1 − z) − x
+
+= z.
+σ
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+(2.4)
+
+Global Games
+
+63
+
+In other words, the cumulative distribution function of z is the identity function,
+implying that the density of z is uniform over the unit interval. If x is to serve
+as the switching point of an equilibrium switching strategy, a player must be
+indifferent between choosing to invest and not to invest given that the proportion
+who invest is uniformly distributed on [0, 1].
+More importantly, even away from the switching point, the optimal action
+motivated by this belief coincides with the equilibrium action, even though
+the (Laplacian) belief may not be correct. Away from the switching point, the
+density of the random variable representing the proportion of players who invest
+will not be uniform. However, as long as the payoff advantage to investing is
+increasing in θ , the Laplacian action coincides with the equilibrium action.
+Thus, the apparently naive procedure outlined by the three bulleted points gives
+the correct prediction as to what the equilibrium action will be. In the next
+section, we will show that the lessons drawn from this simple example extend
+to cover a wide class of binary action global games.
+We will focus on the continuum player case in most of this paper. However,
+as suggested by this example, the qualitative analysis is very similar irrespective
+of the number of players. In particular, the analysis of the continuum player
+game with linear payoffs applies equally well to any ﬁnite number of players
+(where each player observes a signal with an independent normal noise term).
+Independent of the number of players, the cutoff signal in the unique equilibrium
+is 12 . However, a distinctive implication of the inﬁnite player case is that the
+outcome is a deterministic function of the realized state. In particular, once we
+know the realization of θ , we can calculate exactly the proportion of players
+who will invest. It is
+
+
+1
+−θ
+2
+.
+ξ (θ ) = 1 − 
+σ
+With a ﬁnite number of players (I ), we write ξλ,I (θ) for the probability that at
+least proportion λ out of the I players invest when the realized state is θ :
+ξλ,I (θ) =
+
+I
+n≥λI
+
+n
+
+
+
+
+1
+−θ
+2
+
+σ
+
+
+
+ I −n
+1−
+
+1
+−θ
+2
+
+σ
+
+ n
+.
+
+Observe, however, that the many ﬁnite player case converges naturally to the
+continuum model: by the law of large numbers, as I → ∞,
+ξλ,I (θ) → 1
+
+if λ < ξ (θ )
+
+ξλ,I (θ) → 0
+
+if λ > ξ (θ ).
+
+and
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+64
+
+Morris and Shin
+
+2.2.
+
+Symmetric Binary Action Global Games:
+A General Approach
+
+Let us now take one step in making the argument more general. We deal ﬁrst
+with the case where there is a uniform prior on the initial state, and each player’s
+signal is a sufﬁcient statistic for how much they care about the state (we call
+this the private values case). In this case, the analysis is especially clean, and it
+is possible to prove a uniqueness result and characterize the unique equilibrium
+independent of both the structure and size of the noise in players’ signals. We
+then show that the analysis can be extended to deal with general priors and
+payoffs that depend on the realized state.
+2.2.1.
+
+Continuum Players: Uniform Prior and Private Values
+
+There is a continuum of players. Each player has to choose an action a ∈ {0, 1}.
+All players have the same payoff function, u : {0, 1} × [0, 1] × R → R,
+where u(a, l, x) is a player’s payoff if he chooses action a, proportion l
+of his opponents choose action 1, and his “private signal” is x. Thus, we assume
+that his payoff is independent of which of his opponents choose action 1. To
+analyze best responses, it is enough to know the payoff gain from choosing
+one action rather than the other. Thus, the utility function is parameterized by
+a function π : [0, 1] × R → R with
+π(l, x) ≡ u(1, l, x) − u(0, l, x).
+Formally, we say that an action is the Laplacian action if it is a best response
+to a uniform prior over the opponents’ choice of action. Thus, action 1 is the
+Laplacian action at x if
+1
+
+u(1, l, x)dl >
+
+l=0
+
+1
+
+u(0, l, x)dl,
+l=0
+
+or, equivalently,
+1
+
+π (l, x)dl > 0;
+
+l=0
+
+action 0 is the Laplacian action at x if
+1
+
+π (l, x)dl < 0.
+
+l=0
+
+Generically, a continuum player, symmetric payoff, two-action game will have
+exactly one Laplacian action.
+A state θ ∈ R is drawn according to the (improper) uniform density on the
+real line. Player i observes a private signal xi = θ + σ εi , where σ > 0. The
+noise terms εi are distributed in the population with continuous density f (·),
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+65
+
+with support on the real line.3 We note that this density need not be symmetric
+around the mean, nor even have zero mean. The uniform prior on the real line is
+“improper” (i.e., has inﬁnite probability mass), but the conditional probabilities
+are well deﬁned: a player observing signal xi puts density (1/σ ) f ((xi − θ )/σ )
+on state θ (see Hartigan 1983). The example of the previous section ﬁts this
+setting, where f (·) is the standard normal distribution and π (l, x) = x + l − 1.
+We will initially impose ﬁve properties on the payoffs:
+A1: Action Monotonicity: π(l, θ ) is nondecreasing in l.
+A2: State Monotonicity: π (l, θ ) is nondecreasing in θ .
+A3: Strict Laplacian State Monotonicity: There exists a unique θ ∗
+1
+solving l=0 π(l, θ ∗ )dl = 0.
+A4: Limit Dominance: There exist θ ∈ R and θ ∈ R, such that [1]
+π(l, x) < 0 for all l ∈ [0, 1] and x ≤ θ; and [2] π (l, x) > 0 for all
+l ∈ [0, 1] and x ≥ θ .
+1
+A5: Continuity: l=0 g(l) π (l, x)dl is continuous with respect to signal
+x and density g.
+Condition A1 states that the incentive to choose action 1 is increasing in the
+proportion of other players’ actions who use action 1; thus there are strategic complementarities between players’ actions (Bulow, Geanakoplos, and
+Klemperer, 1985). Condition A2 states that the incentive to choose action 1
+is increasing in the state; thus a player’s optimal action will be increasing in the
+state, given the opponents’ actions. Condition A3 introduces a further strengthening of A2 to ensure that there is at most one crossing for a player with
+Laplacian beliefs. Condition A4 requires that action 0 is a dominant strategy
+for sufﬁciently low signals, and action 1 is a dominant strategy for sufﬁciently
+high signals. Condition A5 is a weak continuity property, where continuity in
+g is with respect to the weak topology. Note that this condition allows for some
+discontinuities in payoffs. For example,
+
+0, if l ≤ x
+π (l, x) =
+1, if l > x
+satisﬁes A5 as for any given x, it is discontinuous at only one value of l.
+We denote by G ∗ (σ ) this incomplete information game – with the uniform
+prior and satisfying A1 through A5. A strategy for a player in the incomplete
+information game is a function s : R → {0, 1}, where s(x) is the action chosen
+if a player observes signal x. We will be interested in strategy proﬁles, s =
+(si )i ∈ [0,1] , that form a Bayesian Nash equilibrium of G ∗ (σ ). We will show not
+merely that there is a unique Bayesian Nash equilibrium of the game, but that a
+unique strategy proﬁle survives iterated deletion of strictly (interim) dominated
+strategies.
+3 With small changes in terminology, the argument will extend to the case where f (·) has support
+
+on some bounded interval of the real line.
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+66
+
+Morris and Shin
+
+Proposition 2.1. Let θ ∗ be deﬁned as in (A3). The essentially unique strategy
+surviving iterated deletion of strictly dominated strategies in G ∗ (σ ) satisﬁes
+s(x) = 0 for all x < θ ∗ and s(x) = 1 for all x > θ ∗ .
+The “essential” qualiﬁcation arises because either action may be played if
+the private signal is exactly equal to θ ∗ . The key idea of the proof is that, with a
+uniform prior on θ, observing xi gives no information to a player on his ranking
+within the population of signals. Thus, he will have a uniform prior belief over
+the proportion of players who will observe higher signals.
+Proof. Write πσ∗ (x, k) for the expected payoff gain to choosing action 1 for a
+player who has observed a signal x and knows that all other players will choose
+action 0 if they observe signals less than k:
+
+ 
+
+ 
+∞
+1
+x −θ
+k−θ
+∗
+f
+π 1− F
+, x dθ .
+πσ (x, k) ≡
+σ
+σ
+θ=−∞ σ
+First, observe that πσ∗ (x, k) is continuous in x and k, increasing in x, and decreasing in k, πσ∗ (x, k) < 0 if x ≤ θ and πσ∗ (x, k) > 0 if x ≥ θ . We will argue
+by induction that a strategy survives n rounds of iterated deletion of strictly
+interim dominated strategies if and only if
+
+0, if x < ξ n
+s(x) =
+1, if x > ξ n ,
+where ξ 0 = −∞ and ξ 0 = +∞, and ξ n and ξ n are deﬁned inductively by
+ξ n+1 = min{x : πσ∗ (x, ξ n ) = 0}
+and
+ξ n+1 = max{x : πσ∗ (x, ξ n ) = 0}.
+Suppose the claim was true for n. By strategic complementarities, if action 1
+were ever to be a best response to a strategy surviving n rounds, it must be a
+best response to the switching strategy with cutoff ξ n ; ξ n+1 is deﬁned to be the
+lowest signal where this occurs. Similarly, if action 0 were ever to be a best
+response to a strategy surviving n rounds, it must be a best response to the
+switching strategy with cutoff ξ n ; ξ n+1 is deﬁned to be the highest signal where
+this occurs.
+Now note that ξ n and ξ n are increasing and decreasing sequences, respectively, because ξ 0 = −∞ < θ < ξ 1 , ξ 0 = ∞ > θ > ξ 1 , and πσ∗ (x, k) is increasing in x and decreasing in k. Thus, ξ n → ξ and ξ n → ξ as n → ∞. The
+continuity of πσ∗ and the construction of ξ and ξ imply that we must have
+πσ∗ (ξ , ξ ) = 0 and πσ∗ (ξ , ξ ) = 0. Thus, the second step of our proof is to show
+that θ ∗ is the unique solution to the equation πσ∗ (x, x) = 0.
+To see this second step, write σ∗ (l; x, k) for the probability that a player
+assigns to proportion less than l of the other players observing a signal greater
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+67
+
+than k, if he has observed signal x. Observe that if the true state is θ, the
+proportion of players observing a signal greater than k is 1 − F((k − θ )/σ ).
+This proportion is less than l if θ ≤ k − σ F −1 (1 − l). So,
+
+
+k−σ F −1 (1−l)
+1
+x −θ
+∗
+f
+dθ
+σ (l; x, k) =
+σ
+σ
+θ=−∞
+∞
+x −θ
+f (z) dz, changing variables to z =
+=
+x−k
+σ
+z= σ +F −1 (1−l)
+
+
+x −k
+(2.6)
++ F −1 (1 − l) .
+= 1− F
+σ
+Also observe that if x = k, then σ∗ (·; x, k) is the identity function [i.e.,
+σ∗ (l; x, k) = l], so it is the cumulative distribution function of the uniform
+density. Thus,
+πσ∗ (x, x) =
+
+1
+
+π(l, x)dl.
+
+l=0
+
+Now by A3, πσ∗ (x, x) = 0 implies x = θ ∗ .
+2.2.2.
+
+䊏
+
+Continuum Players: General Prior and Common Values
+
+Now suppose instead that θ is drawn from a continuously differentiable strictly
+positive density p(·) on the real line and that a player’s utility depends on the
+realized state θ, not his signal of θ . Thus, u(a, l, θ ) is his payoff if he chooses
+action a, proportion l of his opponents choose action 1, and the state is θ,
+and as before, π (l, θ ) ≡ u(1, l, θ ) − u(0, l, θ ). We must also impose two extra
+technical assumptions.
+A4∗ : Uniform Limit Dominance: There exist θ ∈ R, θ ∈ R, and
+ε ∈ R++ , such that [1] π (l, θ ) ≤ −ε for all l ∈ [0, 1] and θ ≤ θ;
+and [2] there exists θ such that π (l, θ ) > ε for all l ∈ [0, 1] and
+θ ≥ θ.
+Property A4∗ strengthens property A4 by requiring that the payoff gain to
+choosing action 0 is uniformly positive for sufﬁciently low values of θ , and
+the payoff gain to choosing action 1 is uniformly positive for sufﬁciently high
+values of θ.
+A6: Finite Expectations of Signals:
+
+∞
+z=−∞ z f (z)dz is well deﬁned.
+
+Property A6 requires that the distribution of noise is integrable.
+We will denote by G(σ ) this incomplete information game, with prior p(·)
+and satisfying A1, A2, A3, A4∗ , A5, and A6.
+Proposition 2.2. Let θ ∗ be deﬁned as in A3. For any δ > 0, there exists σ >
+0 such that for all σ ≤ σ , if strategy s survives iterated deletion of strictly
+dominated strategies in the game G(σ ), then s(x) = 0 for all x ≤ θ ∗ − δ, and
+s(x) = 1 for all x ≥ θ ∗ + δ.
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+68
+
+Morris and Shin
+
+We will sketch here why this general prior, common values, game G(σ )
+becomes like the uniform prior, private values, game G ∗ (σ ) as σ becomes
+small. A more formal proof is relegated to Appendix A. Consider σ (l; x, k),
+the probability that a player assigns to proportion less than or equal to l of the
+other players observing a signal greater than or equal to k, if he has observed
+signal x:
+σ (l; x, k) =
+=
+
+k−σ F −1 (1−l)
+p(θ ) f ( x−θ
+) dθ
+θ=−∞
+ x−θ σ
+∞
+dθ
+θ=−∞ p(θ ) f
+σ
+∞
+−1 (1−l) p (x − σ z) f (z) dz
+z= x−k
+σ +F
+,
+∞
+z=−∞ p (x − σ z) f (z) dz
+
+changing variables to
+
+z=
+
+x −θ
+.
+σ
+
+For small σ , the shape of the prior will not matter and the posterior beliefs over
+l will depend only on (x − k)/σ , the normalized difference between the x and
+k. Formally, setting κ = (x − k)/σ , we have
+σ∗ (l; x, x − σ κ) =
+
+∞
+z=κ+F −1 (1−l) p(x − σ z) f (z) dz
+,
+∞
+z=−∞ p(x − σ z) f (z) dz
+
+so that as σ → 0,
+σ∗ (l; x, x − σ κ) →
+
+∞
+
+f (z) dz
+z=κ+F −1 (1−l)
+
+= 1 − F(κ + F −1 (1 − l)).
+
+(2.7)
+
+In other words, for small σ , posterior beliefs concerning the proportion of
+opponents choosing each action are almost the same as under a uniform prior.
+The formal proof of proposition 2.2 presented in Appendix A consists of
+showing, ﬁrst, that convergence of posterior beliefs described previously is
+uniform; and, second, that the small amount of uncertainty about payoffs in the
+common value case does not affect the analysis sufﬁciently to matter.
+2.2.3.
+
+Discussion
+
+The proofs of propositions 2.1 and 2.2 follow the logic of Carlsson and van
+Damme (1993) and generalize arguments presented in Morris and Shin (1998).
+The technique of analyzing the uniform prior private values game, and then
+showing continuity with respect to the general prior, common values game,
+follows Frankel, Morris, and Pauzner (2000). (This paper is discussed further in Section 4.1.) Carlsson and van Damme (1993b) showed a version
+of the uniform prior result (proposition 2.1) in the ﬁnite player case (see
+also Kim, 1996). We brieﬂy discuss the relation to the ﬁnite player case in
+Appendix B.
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+69
+
+How do these propositions make use of the underlying assumptions? First,
+note that assumptions A1 and A2 represent very strong monotonicity assumptions: A1 requires that each player’s utility function is supermodular in the
+action proﬁle, whereas A2 requires that each player’s utility function is supermodular in his own action and the state. Vives (1990) showed that the supermodularity property A2 of complete information game payoffs is inherited by
+the incomplete information game. Thus, the existence of a largest and smallest
+strategy proﬁle surviving iterated deletion of dominated strategies when payoffs
+are supermodular, noted by Milgrom and Roberts (1990), can be applied also to
+the incomplete information game. The ﬁrst step in the proof of proposition 2.1
+is a special case of this reasoning, with the state monotonicity assumption A2
+implying, in addition, that the largest and smallest equilibria consist of strategies that are monotonic with respect to type (i.e., switching strategies). Once we
+know that we are interested in monotonic strategies, the very weak assumption
+A3 is sufﬁcient to ensure the equivalence of the largest and smallest equilibria
+and thus the uniqueness of equilibrium.
+Can one dispense with the full force of the supermodular payoffs assumption
+A1? Unfortunately, as long as A1 is not satisﬁed at the cutoff point θ ∗ [i.e.,
+π(l, θ ∗ ) is decreasing in l over some range], then one can ﬁnd a problematic
+noise distribution f (·) such that the symmetric switching strategy proﬁle with
+cutoff point θ ∗ is not an equilibrium, and thus there is no switching strategy
+equilibrium. To obtain positive results, one must either impose additional restrictions on the noise distribution or relax A1 only away from the cutoff point.
+We discuss both approaches in turn.
+Athey (2002) provides a general description of how monotone comparative static results can be preserved in stochastic optimization problems,
+when supermodular payoff conditions are weakened to single crossing properties, but signals are assumed to be sufﬁciently well behaved (i.e., satisfy
+a monotone likelihood ratio property). Athey (2001) has used such techniques to prove existence of monotonic pure strategy equilibria in a general class of incomplete information games, using weaker properties on payoffs, but substituting stronger restrictions on signal distribution. We can
+apply her results to our setting as follows. Consider the following two new
+assumptions.
+A1∗ : Action Single Crossing: For each θ ∈ R, there exists l ∗ ∈ R ∪
+{−∞, ∞} such that π(l, θ ) < 0 if l < l ∗ and π (l, θ ) > 0 if l > l ∗ .
+A7: Monotone Likelihood Ratio Property: If x > x, then
+f (x − θ )/ f (x − θ ) is increasing in θ.
+Assumption A1∗ is a signiﬁcant weakening of assumption A1 to a single
+crossing property. Assumption A7 is a new restriction on the distribution of the
+noise. Recall that we earlier made no assumptions on the distribution of the
+ ) the incomplete information game with a uniform prior
+noise. Denote by G(σ
+∗
+satisfying A1 , A2, A3, A4, A5, and A7.
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+70
+
+Morris and Shin
+
+ ) has a unique (symmetLemma 2.3. Let θ ∗ be deﬁned as in A3. The game G(σ
+ric) switching strategy equilibrium, with s(x) = 0 for all x < θ ∗ and s(x) = 1
+for all x > θ ∗ .
+The proof is in Appendix C. An analog of proposition 2.2 could be similarly constructed. Notice that this result does not show the nonexistence of
+other, nonmonotonic, equilibria. Additional arguments are required to rule out
+nonmonotonic equilibria. For example, in Goldstein and Pauzner (2000a) –
+an application to bank runs discussed in the next section – noise is uniformly
+distributed (and thus satisﬁes A7) and payoffs satisfy assumption A1∗ . They
+show that (1) there is a unique symmetric switching strategy equilibrium and
+that (2) there is no other equilibrium. Lemma 2.3 could be used to extend
+the former result to all noise distributions satisfying the MLRP (assumption
+A7), but we do not know if the latter result extends beyond the uniform noise
+distribution.
+Proposition 2.1 can also be weakened by allowing assumption A1 to fail
+away from θ ∗ . We will report one weakening that is sufﬁcient. Let g(·) and
+h(·) be densities on the interval [0, 1]; g stochastically dominates h (g  h)
+l
+l
+if z=0 g(z) dz ≤ z=0 h(z) dz for all l ∈ [0, 1]. We write g(·) for the uniform
+density on [0, 1], i.e., g(l) = 1 for all l ∈ [0, 1]. Now consider
+A8: There exists θ ∗ which solves l=0 π (l, θ ∗ )dl = 0 such that [1]
+1
+∗
+l=0 g(l) π (l, x)dl ≥ 0 for all x ≥ θ and g  g, with strict in1
+∗
+equality if x > θ ; and [2] l=0 g(l)π (l, x)dl ≤ 0 for all x ≤ θ ∗
+and g  g, with strict inequality if x < θ ∗ .
+1
+
+We can replace A1–A3 with A8 in propositions 2.1 and 2.2, and all the arguments and results go through. Observe that A1–A3 straightforwardly imply
+A8. Also, observe that A8 implies that π(l, θ ∗ ) be nondecreasing in l [suppose that l > l and π(l, θ ∗ ) < π (l , θ ∗ ); now start with the uniform distribution g and shift mass from l to l]. But, A8 allows some failure of A1 away
+from θ ∗ .
+Propositions 2.1 and 2.2 deliver strong negative conclusions about the efﬁciency of noncooperative outcomes in global games. In the limit, all players
+1
+will be choosing action 1 when the state is θ if l=0 π (l, θ )dl > 0. However, it is
+efﬁcient to choose action 1 at state θ if u(1, 1, θ ) > u(0, 0, θ ). These conditions
+will not coincide in general. For example, in the investment example, we had
+u(1, l, θ ) = θ + l − 1, u(0, l, θ ) = 0 and thus π(l, θ ) = θ + l − 1. So in the
+limiting equilibrium, both players will be investing if the state θ is at least 12 ,
+although it is efﬁcient for them to be investing if the state is at least 0.
+The analysis of the unique noncooperative equilibrium serves as a benchmark
+describing what will happen in the absence of other considerations. In practice,
+repeated play or other institutions will often allow players to do better. We
+will brieﬂy consider what happens in the game if players were allowed to make
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+71
+
+cheap talk statements about the signals that they have observed in the investment
+example (for this exercise, it is most natural to consider a ﬁnite player case; we
+consider the two-player case). The arguments here follow Baliga and Morris
+(2000). The investment example as formulated has a nongeneric feature, which
+is that if a player plans not to invest, he is exactly indifferent about which action
+his opponent will take. To make the problem more interesting, let us perturb
+the payoffs to remove this tie:
+Table 3.2. Payoffs for cheap talk
+example
+
+Invest
+NotInvest
+
+Invest
+
+NotInvest
+
+θ + δ, θ + δ
+δ, θ − 1
+
+θ − 1, δ
+0, 0
+
+Thus, each player receives a small payoff δ (which may be positive or negative)
+if the other player invests, independent of his own action. This change does
+not inﬂuence each player’s best responses, and the analysis of this game in the
+absence of cheap talk is unchanged by the payoff change. But, observe that if
+δ ≤ 0, there is an equilibrium of the game with cheap talk, where each player
+truthfully announces his signal, and invests if the (common) expectation of θ
+conditional on both announcements is greater than −δ (this gives the efﬁcient
+outcome). On the other hand, if δ > 0, then each player would like to convince
+the other to invest even if he does not plan to do so. In this case, there cannot be
+a truth-telling equilibrium where the efﬁcient equilibrium is achieved, although
+there may be equilibria with some partially revealing cheap talk that improves
+on the no cheap talk outcome.
+2.3.
+
+Applications
+
+We now turn to applications of these results and describe models of pricing
+debt (Morris and Shin, 1999b), currency crises (Morris and Shin, 1998), and
+bank runs (Goldstein and Pauzner, 2000a).4 Each of these papers makes speciﬁc assumptions about the distribution of payoffs and signals. But, if one is
+interested only in analyzing the limiting behavior as noise about θ becomes
+4 See Fukao (1994) for an early argument in favor of using global game reasoning in applied
+
+settings. Other applications include Karp’s (2000) noisy version of Krugman’s (1991) multiple equilibrium model of sectoral shifts; Scaramozzino and Vulkan’s (1999) noisy model of
+Shleifer’s (1986) multiple equilibrium model of implementation cycles; and Dönges and Heinemann’s (2000) model of competition between dealer markets and crossing networks in ﬁnancial
+markets.
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+72
+
+Morris and Shin
+
+small, the results of the previous section imply that we can identify the limiting
+behavior independently of the prior beliefs and the shape of the noise.5 In each
+example, we describe one comparative static exercise changing the payoffs of
+the game, illustrating how changing payoffs has a direct effect on outcomes
+and an indirect, strategic effect via the impact on the cutoff point of the unique
+equilibrium. We emphasize that it is also interesting in the applications to study
+behavior away from the limit; indeed, the focus of the analysis in Morris and
+Shin (1999b) is on comparative statics away from the limit. More assumptions
+on the shape of the prior and noise are required in this case. We study behavior
+away from the limit in Section 3.
+2.3.1.
+
+Pricing Debt
+
+In Morris and Shin (1999b), we consider a simple model of debt pricing. In
+period 1, a continuum of investors hold collateralized debt that will pay 1 in
+period 2 if it is rolled over and if an underlying investment project is successful;
+the debt will pay 0 in period 2 if the project is not successful. If an investor
+does not roll over his debt, he receives the value of the collateral, κ ∈ (0, 1). The
+success of the project depends on the proportion of investors who do not roll
+over and the state of the economy, θ . Speciﬁcally, the project is successful if the
+proportion of investors not rolling over is less than θ/z. Writing 1 for the action
+“roll over” and 0 for the action “do not roll over,” payoffs can be described as
+follows:
+
+1, if z (1 − l) ≤ θ
+u(1, l, θ ) =
+0, if z (1 − l) > θ,
+u (0, l, θ ) = κ.
+So
+π(l, θ ) ≡ u(1, l, θ ) − u(0, l, θ )
+
+1 − κ, if z(1 − l) ≤ θ
+=
+−κ,
+if z(1 − l) > θ.
+Now
+
+
+
+ −κ,
+π (l, θ ) dl = θz − κ,
+
+l=0
+
+1 − κ,
+1
+
+if
+
+θ ≤0
+
+if
+
+0≤θ ≤z
+
+if
+
+z ≤ θ.
+
+5 The model in Goldstein and Pauzner (2000a) fails the action monotonicity property (A1) of
+
+the previous section, but they are nonetheless able to prove the uniqueness of a symmetric
+switching equilibrium, exploiting their assumption that noise terms are distributed uniformly.
+However, their game satisﬁes assumptions A1* and A2, and therefore whenever there is a unique
+equilibrium, it must satisfy the Laplacian characterization with the cutoff point θ ∗ deﬁned as in
+A3.
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+1.0
+0.8
+0.6
+V (κ)
+0.4
+0.2
+
+73
+
+..
+....
+...
+....
+...
+....
+....
+.
+.
+...
+....
+....
+....
+....
+....
+.
+.
+.
+....
+....
+....
+...
+....
+...
+.
+.
+.
+.
+....
+...
+....
+....
+....
+...
+.
+.
+.
+.
+....
+...
+...
+..
+....
+...
+....
+...
+....
+..
+....
+.
+.
+..
+..
+...
+...
+....
+....
+..
+...
+...
+....
+...
+....
+..
+.
+.
+.
+.
+...
+.
+....
+...
+.....
+...
+.....
+...
+....... ............
+.....
+
+0.0
+0.0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1.0
+
+κ
+Figure 3.2. Function V (κ).
+
+Thus, θ ∗ = zκ. In other words, if private information about θ among the investors is sufﬁciently accurate, the project will collapse exactly if θ ≤ zκ. We
+can now ask how debt would be priced ex ante in this model (before anyone
+observed private signals about θ ). Recalling that p(·) is the density of the prior
+on θ , and writing P(·) for the corresponding cdf, the value of the collateralized
+debt will be
+V (κ) ≡ κ P(zκ) + 1 − P(zκ)
+= 1 − (1 − κ)P(zκ),
+and
+dV
+= P(zκ) − z(1 − κ) p(zκ).
+dκ
+Thus, increasing the value of collateral has two effects: ﬁrst, it increases the
+value of debt in the event of default (the direct effect). But, second, it increases
+the range of θ at which default occurs (the strategic effect). For small κ, the
+strategic effect outweighs the direct effect, whereas for large κ, the direct effect
+outweighs the strategic effect. Figure 3.2 plots V (·) for the case where z = 10
+and p(·) is the standard normal density.
+Morris and Shin (1999b) study the model away from the limit and argue that
+taking the strategic, or liquidity, effect into account in debt pricing can help
+explain anomalies in empirical implementation of the standard debt pricing
+theory of Merton (1974). Brunner and Krahnen (2000) present evidence of
+the importance of debtor coordination in distressed lending relationships in
+Germany [see also Chui, Gai, and Haldane (2000) and Hubert and Schäfer
+(2000)].
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+74
+
+Morris and Shin
+
+2.3.2.
+
+Currency Crises
+
+In Morris and Shin (1998), a continuum of speculators must decide whether to
+attack a ﬁxed–exchange rate regime by selling the currency short. Each speculator may short only a unit amount. The current value of the currency is e∗ ;
+if the monetary authority does not defend the currency, the currency will ﬂoat
+to the shadow rate ζ (θ ), where θ is the state of fundamentals. There is a ﬁxed
+transaction cost t of attacking. This can be interpreted as an actual transaction
+cost or as the interest rate differential between currencies. The monetary authority defends the currency if the cost of doing so is not too large. Assuming
+that the costs of defending the currency are increasing in the proportion of speculators who attack and decreasing in the state of fundamentals, there will be
+some critical proportion of speculators, a(θ ), increasing in θ , who must attack
+in order for a devaluation to occur. Thus, writing 1 for the action “not attack”
+and 0 for the action “attack,” payoffs can be described as follows:
+u(1, l, θ ) = 0,
+ ∗
+e − ζ (θ) − t,
+u (0, l, θ ) =
+−t,
+
+if l ≤ 1 − a (θ )
+if l > 1 − a(θ ),
+
+where ζ (·) and a(·) are increasing functions, with ζ (θ) ≤ e∗ − t for all θ . Now
+
+ζ (θ) + t − e∗ , if l ≤ 1 − a(θ )
+π(l, θ ) =
+t,
+if l > 1 − a(θ).
+If θ were common knowledge, there would be three ranges of parameters. If
+θ < a −1 (0), each player has a dominant strategy to attack. If a −1 (0) ≤ θ ≤
+a −1 (1), then there is an equilibrium where all speculators attack and another
+equilibrium where all speculators do not attack. If θ > a −1 (1), each player has
+a dominant strategy to attack. This tripartite division of fundamentals arises in
+a range of models in the literature on currency crises (see Obstfeld, 1996).
+However, if θ is observed with noise, we can apply the results of the previous
+section, because π(l, θ ) is weakly increasing in l, and weakly increasing in θ:
+1
+l=0
+
+π (l, θ ) dl = (1 − a(θ))(ζ (θ ) + t − e∗ ) + a(θ )t
+= t − (1 − a(θ ))(e∗ − ζ (θ )).
+
+Thus, θ ∗ is implicitly deﬁned by
+(1 − a(θ ))(e∗ − ζ (θ )) = t.
+Theorem 2 in Morris and Shin (1998) gave an incorrect statement of this condition. We are grateful to Heinemann (2000) for pointing out the error and giving
+a correct characterization.
+Again, we will describe one simple comparative statics exercise. Consider
+a costly ex ante action R for the monetary authority that lowered their costs of
+defending the currency. For example, R might represent the value of foreign
+currency reserves or (as in the recent case of Argentina) a line of credit with
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+75
+
+foreign banks to provide credit in the event of a crisis. Thus, the critical proportion of speculators for which an attack occurs becomes a(θ, R), where a(·)
+is increasing in R. Now, write θ ∗ (R) for the unique value of θ solving
+(1 − a(θ, R))(e∗ − ζ (θ )) = t.
+The ex ante probability that the currency will collapse is
+P(θ ∗ (R)).
+So, the reduction in the probability of collapse resulting from a marginal increase
+in R is
+− p(θ ∗ (R))
+
+∂a
+dθ ∗
+∂R
+.
+= p(θ ∗ (R)) ∂a 1−a(θ,R)
+dR
++ e∗ −ζ (θ) dζ
+∂θ
+dθ
+
+This comparative static refers to the limit (as noise becomes very small), and the
+effect is entirely strategic [i.e., the increased value of R reduces the probability
+of attack only because it inﬂuences speculators’ equilibrium strategies (“builds
+conﬁdence”) and not because the increase in R actually prevents an attack in
+any relevant contingency].
+In Section 4.1, we very brieﬂy discuss Corsetti, Dasgupta, Morris, and Shin
+(2000), an extension of this model of currency attacks where a large speculator
+is added to the continuum of small traders [see also Chan and Chiu (2000),
+Goldstein and Pauzner (2000b), Heinemann and Illing (2000), Hellwig (2000),
+Marx (2000), Metz (2000), and Morris and Shin (1999a)].
+2.3.3.
+
+Bank Runs
+
+We describe a model of Goldstein and Pauzner (2000a), who add noise to
+the classic bank runs model of Diamond and Dybvig (1983). A continuum
+of depositors (with total deposits normalized to 1) must decide whether to
+withdraw their money from a bank or not. If the depositors withdraw their
+money in period 1, they will receive r > 1 (if there are not enough resources to
+fund all those who try to withdraw, then the remaining cash is divided equally
+among early withdrawers). Any remaining money earns a total return R(θ ) > 0
+in period 2 and is divided equally among those who chose to wait until period
+2 to withdraw their money. Proportion λ of depositors will have consumption
+needs only in period 1 and will thus have a dominant strategy to withdraw.
+We will be concerned with the game among the proportion 1 − λ of depositors
+who have consumption needs in period 2. Consumers have utility U (y) from
+consumption y, where the relative risk aversion coefﬁcient of U is strictly
+greater than 1. They note that if R(θ ) was greater than 1 and θ were common
+knowledge, the ex ante optimal choice of r maximizing
+
+
+1 − λr
+λU (r ) + (1 − λ)U
+R (θ )
+1−λ
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+76
+
+Morris and Shin
+
+would be strictly greater than 1. But, if θ is not common knowledge, we have
+a global game. Writing 1 for the action “withdraw in period 2” and 0 for the
+action “withdraw in period 1,” and l for the proportion of late consumers who
+do not withdraw early, the money payoffs in this game can be summarized in
+Table 3.3:
+Table 3.3. Payoffs in bank run game
+
+Early
+0
+Withdrawal
+Late
+1
+Withdrawal
+
+r −1
+l ≤ r (1−λ)
+
+r −1
+l ≥ r (1−λ)
+
+1−λr
+(1−λ)(1−l)r
+
+r
+
+
+r −1
+r − l(1−λ)
+R (θ)
+
+0
+
+Observe that, if θ is sufﬁciently small [and so R(θ) is sufﬁciently small],
+all players have a dominant strategy to withdraw early. Goldstein and Pauzner
+assume that, if θ is sufﬁciently large, all players have a dominant strategy to
+withdraw late (a number of natural economic stories could justify this variation
+in the payoffs).
+Thus, the payoffs in the game among late consumers are
+
+
+r −1
+U (0),
+if l ≤ r (1−λ)
+
+
+
+u(1, l, θ ) =
+r −1
+r −1
+U r − l(1−λ)
+,
+R (θ ) , if l ≥ r (1−λ)
+
+ 
+1
+r −1
+U 1−l(1−λ)
+, if l ≤ r (1−λ)
+u(0, l, θ ) =
+r −1
+U (r ),
+if l ≥ r (1−λ)
+
+so that
+
+
+
+
+1
+r −1
+ U(0) − U
+,
+if l ≤ r (1−λ)
+1−l(1−λ)
+
+
+
+π(l, θ ) =
+ U r − r −1 R (θ ) − U (r ), if l ≥ r −1 .
+l(1−λ)
+r (1−λ)
+
+The threshold state θ ∗ is implicitly deﬁned by
+
+
+r −1
+r (1−λ)
+1
+dl
+U (0) − U
+1 − l (1 − λ)
+l=0
+
+
+
+1
+r −1
+R (θ ) − U(r ) dl = 0.
++
+U r−
+r −1
+l (1 − λ)
+l= r (1−λ)
+The ex ante welfare of consumers as a function of r (as noise goes to zero) is
+W (r ) = P(θ ∗ (r ))U (1)
++
+
+
+
+
+1 − λr
+p(θ ) λU (r ) + (1 − λ)U
+R(θ ) .
+1−λ
+θ=θ ∗ (r )
+∞
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+77
+
+There are two effects of increasing r : the direct effect on welfare is the increased
+value of insurance in the case where there is not a bank run. But, there is also
+the strategic effect that an increase in r will lower θ ∗ (r ).
+Morris and Shin (2000) examine a stripped down version of this model,
+where alternative assumptions on the investment technology and utility functions imply that payoffs reduce to those of the linear example in Section 2.1
+[see also Boonprakaikawe and Ghosal (2000), Dasgupta (2000b), Goldstein
+(2000), and Rochet and Vives (2000)].
+3. PUBLIC VERSUS PRIVATE INFORMATION
+The analysis so far has all been concerned with behavior when either there is a
+uniform prior or the noise is very small. In this section, we look at the behavior
+of the model with large noise and nonuniform priors. There are three reasons
+for doing this. First, we want to understand how extreme the assumptions required for uniqueness are. We will provide sufﬁcient conditions for uniqueness
+depending on the relative accuracy of private and public (or prior) signals. Second, away from the limit, prior beliefs play an important role in determining
+outcomes. In particular, we will see how even with a continuum of players and
+a unique equilibrium, public information contained in the prior beliefs plays a
+signiﬁcant role in determining outcomes, even controlling for beliefs concerning the fundamentals. Finally, by seeing how and when the model jumps from
+having one equilibrium to multiple equilibria, it is possible to develop a better
+intuition for what is driving results.
+We return to the linear example of Section 2.1: there is a continuum of
+players, the payoff to not investing is 0, and the payoff to investing is θ + l − 1,
+where θ is the state and l is the proportion of the population investing. It may
+help in following in the analysis to recall that, with linear payoffs, the exact
+number of players is irrelevant in identifying symmetric equilibrium strategies
+(and we will see that symmetric equilibrium strategies will naturally arise).
+Thus, the analysis applies equally to a two-player game.
+Now assume that θ is normally distributed with mean y and standard deviation τ . The mean y is publicly observed. As before, each player observes a
+private signal xi = θ + εi , where the εi are distributed normally in the population with mean 0 and standard deviation σ . Thus, each player i observes a
+public signal y ∈ R and a private signal xi ∈ R. To analyze the equilibria of
+this game, ﬁrst ﬁx the public signal y. Suppose that a player observed private
+signal x. His expectation of θ is
+θ=
+
+σ 2 y + τ 2x
+.
+σ2 + τ2
+
+It is useful to conduct analysis in terms of these posterior expectations of θ . In
+particular, we may consider a switching strategy of the following form:
+
+Invest,
+if θ > κ
+s(θ ) =
+NotInvest, if θ ≤ κ.
+Cambridge Collections Online © Cambridge University Press, 2006
+
+78
+
+Morris and Shin
+
+If the standard deviation of players’ private signals is sufﬁciently small relative
+to the standard deviation of the public signal in the prior, then there is a strategy
+surviving iterated deletion of strictly dominated strategies. Speciﬁcally, let
+
+
+σ2 σ2 + τ2
+γ ≡γ
+(σ, τ ) ≡ 4
+.
+τ
+σ 2 + 2τ 2
+Now we have
+Proposition 3.1. The game has a symmetric switching strategy equilibrium
+with cutoff κ if κ solves the equation
+√
+κ = ( γ (κ − y));
+(3.1)
+if γ
+(σ, τ ) ≤ 2π , then there is a unique value of κ solving (3.1) and the strategy
+with that trigger is the essentially unique strategy surviving iterated deletion
+of strictly dominated strategies; if γ
+(σ, τ ) > 2π, then (for some values of y)
+there are multiple values of κ solving (3.1) and multiple symmetric switching
+strategy equilibria.
+Figure 3.3 plots the regions in σ 2 − τ 2 space, where uniqueness holds.
+In Morris and Shin (2000), we gave a detailed version of the uniqueness part
+of this result in Appendix A. Here, we sketch the idea. Consider a player who
+has observed private signal x. By standard properties of the normal distribution
+
+
+5
+
+σ2
+σ 2 +τ 2
+τ 4 ... σ2 +2τ 2
+
+..
+..
+...
+...
+..
+.... .
+. .
+...
+.. .
+... .
+σ2
+.
+..
+.. .
+.
+.
+.
+4
+.
+.
+τ
+.. .
+..
+..
+... .
+.. .
+..
+... .
+..
+..
+.
+.. .
+.. .
+..
+...
+.. .
+..
+... .
+... .
+..
+.
+.
+..
+... .
+.. .
+..
+..
+.. .
+..
+..
+.. .
+.
+.
+.
+..
+...
+.. .
+..
+.. .
+..
+.
+.. .
+.. .
+.
+.. .
+.
+..
+.
+.. .
+... .
+.
+.. .
+.
+... .
+..
+.
+... ..
+.
+.
+.. .
+.. .
+.
+... .
+.
+... .
+.
+.. .
+.
+.
+.
+. .
+.. ..
+.
+...
+.
+.. ..
+.
+... .
+.
+... ..
+.
+.
+.
+..
+.
+... ..
+.
+... .
+.
+... .
+.
+... ..
+.
+... ..
+.
+.
+.
+.
+. ..... ...
+.
+.
+. ... ..
+. ..... ..
+.. ...... ...
+.
+.
+.
+.
+.
+. .. ..
+.. ...... ..
+.. ........
+..........
+................
+.......
+.......
+.. .
+.......
+
+= 4π
+
+4
+σ2
+3
+
+2
+
+1
+
+0
+
+
+
+= 2π
+
+σ2
+= 2π
+τ4
+
+multiplicity
+
+uniqueness
+
+0.0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+τ2
+
+Figure 3.3. Parameter range for unique equilibrium.
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+79
+
+(see DeGroot, 1970), his posterior beliefs about θ would be normal with mean
+θ=
+
+σ 2 y + τ 2x
+σ2 + τ2
+
+and standard deviation
+
+σ 2τ 2
+.
+σ2 + τ2
+He knows that any other player’s signal, x , is equal to θ plus a noise term
+with mean 0 and standard deviation σ . Thus, he believes that x is distributed
+normally with mean θ and standard deviation
+
+2σ 2 τ 2 + σ 4
+.
+σ2 + τ2
+Now suppose he believed that all other players will invest exactly if
+their expectation of θ is at least κ [i.e., if their private signals x satisfy
+(σ 2 y + τ 2 x )/(σ 2 + τ 2 ) ≥ κ, or x ≥ κ + (σ 2 /τ 2 )(κ − y)]. Thus, he assigns
+probability
+
+
+σ2
+κ − θ + τ 2 (κ − y)
+
+
+(3.2)
+1 − 
+2σ 2 τ 2 +σ 4
+σ 2 +τ 2
+
+to any particular opponent investing. But his expectation of the proportion of
+his opponents investing must be equal to the probability he assigns to any one
+opponent investing. Thus, (3.2) is also equal to his expectation of the proportion
+of his opponents investing. Because his payoff to investing is θ + l − 1, his
+expected payoff to investing is θ plus expression (3.2) minus one, i.e.,
+
+
+2
+κ − θ + στ 2 (κ − y)
+.
+
+v(θ , κ) ≡ θ −  
+2σ 2 τ 2 +σ 4
+σ 2 +τ 2
+
+His payoff to not investing is 0. Because v(θ , κ) is increasing in θ, we have
+that there is a symmetric equilibrium with switching point κ exactly if v ∗ (κ) ≡
+v(κ, κ) = 0. But
+v ∗ (κ) ≡ v(κ, κ)
+
+
+
+2
+(κ
+σ
+−
+y)
+
+= κ −  
+2 2
+4
+τ 2 2σσ 2τ+τ+σ2
+√
+= κ − ( γ (κ − y)) .
+
+Figure 3.4 plots the function v ∗ (κ) for y = 12 and γ = 1,000, 10, 5, and 0.1,
+respectively.
+Cambridge Collections Online © Cambridge University Press, 2006
+
+80
+
+Morris and Shin
+
+1.0
+ν ∗ (κ)
+0.5
+
+0.0
+
+..
+....
+...
+....
+...
+....
+.
+.
+....
+....
+....
+...
+.....
+...
+.
+.
+.
+..
+...
+.
+....
+....
+.......
+.........
+...
+.......
+...
+.........
+....
+.
+.
+.
+.........
+.
+..........
+.
+.
+....
+.
+.
+.
+.
+.
+.....
+..
+...
+.........
+...
+......
+....
+.........
+...
+.........
+....
+.........
+....
+....
+............
+.... .....
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+...
+..
+...
+..... ...
+....
+...
+..... .....
+....
+...
+...... ......
+...
+...
+....
+....... ....
+...
+....
+...
+...
+....... ......
+....
+...
+...... ............
+...
+....
+.
+.
+...
+.
+.
+.
+.
+.
+.
+.
+.
+... ...
+...
+...
+....
+....... ............
+....
+...
+...
+..
+.......
+...
+...
+....
+........ .............
+....
+...
+...
+.......
+...
+.........
+.........
+... ......
+....
+..........
+...........
+.
+.
+.
+.
+...
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+..... .....
+... ..................................................... ........................................................
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+......................................................................................................................................................................................................................................................................................................................................................................................................................................................
+........................................
+. .....................
+...
+... .......
+.... ....
+...
+....
+.... .....
+............
+....
+...
+........ .................
+...
+....
+....
+....
+........
+.....
+...
+...
+.......... .............
+....
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+...
+. . ...
+..
+...
+........ ........
+...
+...
+....
+...
+........ ......
+...
+...
+...
+...... ......
+....
+...
+..... ......
+...
+....
+...
+..... .....
+...
+...
+....
+...
+................
+...
+.
+.
+.
+.
+.
+.
+.
+.
+...
+..
+... ...
+....
+... ......
+...........
+...
+.........
+.. .....
+....
+........
+....
+....
+..........
+.....
+.......
+...
+...........
+.
+.
+.
+.
+.
+.
+.
+.
+....
+...
+.........
+....
+........
+....
+........
+....
+......
+....
+.....
+...
+.......
+.
+.
+.
+.
+.
+.
+.
+.
+...
+....
+.....
+....
+......
+...
+......
+....
+....
+....
+.....
+......
+....
+.
+.
+...
+
+γ = 1000
+
+γ = 10
+
+γ=5
+
+−0.5
+
+γ = 0.1
+
+−0.5
+
+0.0
+
+0.5
+
+1.0
+
+κ
+
+1.5
+
+Figure 3.4. Function ν ∗ (κ).
+
+The intuition for these graphs is the following. If public information is relatively large (i.e., σ  τ and thus γ is large), then players with posterior expectation κ less than y = 12 conﬁdently expect that their opponent will have
+observed a higher signal, and therefore will be investing. Thus, his expected
+utility is (about) κ. But, as κ moves above y = 12 , he rapidly becomes conﬁdent
+that his opponent has observed a lower signal and will not be investing. Thus,
+his expected utility drops rapidly, around y, to (about) κ − 1. But, if public
+information is relatively small (i.e., σ  τ and γ is small), then players with κ
+not too far above or below y = 12 attach probability (about) 12 to their opponent
+observing a higher signal. Thus, his expected utility is (about) κ − 12 .
+We can identify analytically when there is a unique solution: Observe that
+dv ∗
+√
+√
+= 1 − γ φ( γ (κ − y)) .
+dκ
+Recall
+√ that φ(x), the density of the standard normal, attains its maximum of
+1/ 2π at x = 0. Thus, if γ ≤ 2π, dv ∗ /dκ is greater than or equal to zero
+always, and strictly greater than zero, except when κ = y. So, (3.1) has a
+unique solution. But, if γ > 2π and y = 12 , then setting κ = 12 solves (3.1),
+but dv ∗ /dκ|κ= 12 < 0, so (3.1) has two other solutions.
+Throughout the remainder of this section, we assume that there is a unique
+equilibrium [i.e., that γ
+(α, β) ≤ 2π]. Under this assumption, we can invert the
+equilibrium condition (3.1) to show in (θ̄ , y) space what the unique equilibrium
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+81
+
+...
+...
+..
+
+γ = 0.001
+
+2 ..........
+y
+
+1
+0
+−1
+−2
+
+..
+...
+..
+...
+...
+...
+...
+...
+..
+...
+...
+...
+...
+...
+...
+...
+...
+...
+..
+...
+...
+....
+...
+.......
+...
+.........
+...
+.................
+........................................
+..........................................................................................................
+...............................
+..
+..............
+...
+........
+...
+......
+...
+....
+...
+...
+...
+...
+...
+...
+...
+...
+...
+...
+...
+...
+...
+...
+...
+...
+...
+...
+...
+...
+..
+...
+...
+...
+...
+...
+...
+...
+.
+...
+...
+..
+...
+...
+...
+...
+..
+...
+..
+
+γ=5
+
+invest
+
+not invest
+
+0.0
+
+0.4
+
+κ
+
+0.8
+
+Figure 3.5. Investment takes place above and to the right of the line.
+
+looks like:
+1
+y = h γ (θ̄ ) = θ̄ − √ −1 (θ̄ ).
+γ
+
+(3.3)
+
+Figure 3.5 plots this for γ = 5 and γ = 1/1,000.
+The picture has an elementary intuition. If θ̄ < 0, it is optimal to not invest
+(independent of the public signal). If θ̄ > 1, it is optimal to invest (independent
+of the public signal). But, if 0 < θ̄ < 1, there is a trade-off. The higher y is
+(for a given θ̄), the more likely it is that the other player will invest. Thus, if
+0 < θ̄ < 1, the player will always invest for sufﬁciently high y, and not invest
+for sufﬁciently low y. This implies in particular that changing y has a larger
+impact on a player’s action than changing his private signal (controlling for
+the informativeness of the signals). We next turn to examining this “publicity”
+effect.
+
+3.1.
+
+The Publicity Multiplier
+
+To explore the strategic impact of public information, we examine how much
+a player’s private signal must adjust to compensate for a given change in the
+public signal. Equation (3.1) can be written as
+
+ 2
+
+σ y + τ 2x
+σ 2 y + τ 2x
+√
+−
+γ
+−y
+= 0.
+σ2 + τ2
+σ2 + τ2
+Totally differentiating with respect to y gives
+√
+σ2
++ γ φ(·)
+dx
+τ2
+=−
+.
+√
+dy
+1 − γ φ(·)
+This measures how much the private signal would have to change to compensate
+for a change in the public signal (and still leave the player indifferent between
+investing or not investing). We can similarly see how much the private signal
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+82
+
+Morris and Shin
+
+would have to change to compensate for a change in the public signal, if there
+was no strategic effect. Totally differentiating
+θ=
+
+σ 2 y + τ 2x
+= k,
+σ2 + τ2
+
+we obtain
+dx
+σ2
+=− 2.
+dy
+τ
+Deﬁne the publicity multiplier as the ratio of these two:
+2 √
+1 + στ 2 γ φ(·)
+ζ =
+.
+√
+1 − γ φ(·)
+Thus, suppose a player’s expectation of θ is θ and he has observed the public
+signal that makes him indifferent between investing and not investing [y =
+√
+θ − (1/ γ )−1 (θ )]; the publicity multiplier evaluated at this point will be:
+2 √
+1 + στ 2 γ φ(−1 (θ ))
+.
+ζ =
+√
+1 − γ φ((−1 (θ )))
+
+Notice that (for any given σ and τ ) the publicity multiplier is maximized when
+θ = 12 , and thus the critical public signal y = 12 . Thus, it is precisely when
+there is no conﬂict between private and public signals that the multiplier has its
+biggest effect. Here, the publicity multiplier equals
+
+2
+γ
+1 + στ 2 2π
+∗
+
+ζ =
+.
+γ
+1 − 2π
+Notice that, when γ is small (i.e., σ/τ 2 is small), the publicity multiplier is very
+small. The multiplier is biggest just before we hit the multiplicity zone of the
+parameter space (i.e., when γ ≈ 2π).
+There is plentiful anecdotal evidence that in settings where coordination is
+important, public signals play a role in coordinating outcomes that exceed the
+information content of those announcements. For example, ﬁnancial markets
+apparently “overreact” to announcements from the Federal Reserve Board and
+public announcements in general. If market participants are concerned about the
+reaction of other participants to the news, the “overreaction” may be rational and
+determined by the type of equilibrium logic of our example. Further evidence
+for this is brieﬁngs on market conditions by key players in ﬁnancial markets
+using conference calls with hundreds of participants. Such public brieﬁngs have
+a larger impact on the market than bilateral brieﬁngs with the same information,
+because they automatically convey to participants not only information about
+market conditions, but also valuable information about the beliefs of the other
+participants.
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+83
+
+Urban renewal also has a coordination aspect. Private ﬁrms’ incentives to
+invest in a run-down neighborhood depend partly on exogenous characteristics of the neighborhood, but they also depend to a great extent on whether
+other ﬁrms are investing. A well-publicized investment in the neighborhood
+might be expected to have an apparently disproportionate effect on the probability of ending in the good equilibrium. The willingness of public authorities
+to subsidize football stadiums and conference centers is consistent with this
+view.
+An indirect econometric test of the publicity effect is performed by Chwe
+(1998). Chwe observes that the per viewer price of advertising during the Super
+Bowl is exceptionally high (i.e., the price of advertising increases more than
+linearly in the number of viewers). The premium price is explained by the fact
+that any information conveyed by those advertisements becomes not merely
+known to the wide audience, but also common knowledge among them. The
+value of this common knowledge to advertisers should depend on whether
+there is a signiﬁcant coordination problem in consumers’ decisions whether
+to purchase the product. Chwe makes some plausible ex ante guesses about
+when coordination is an important issue because of network externalities (e.g.,
+the Apple Macintosh) or social consumption (e.g., beer) and when it is not
+(e.g., batteries). He then conﬁrms econometrically that it is the advertisers of
+coordination goods who pay a premium for large audiences.
+In Morris and Shin (1999b), we use the publicity effect to explain an anomaly
+in the pricing of debt. Empirically, the option pricing model of debt due to
+Merton (1974) underestimates the yield on debt (i.e., underestimates the empirical default rate). This deviation from theory is largest for low-grade (highrisk) bonds. A deterioration in public signals for low-grade bonds generates
+a large publicity effect: the deterioration makes investors more pessimistic
+about default for any given strategies of the other players, but, more importantly, the deterioration makes investors more pessimistic about other players’
+strategies.
+
+3.2.
+
+Limiting Behavior
+
+If we increase the precision of public signals, while holding the precision of
+private signals ﬁxed (i.e., let τ → 0 for ﬁxed σ ), then we clearly exit the unique
+equilibrium zone.6 If we increase the precision of private signals, while holding
+the precision of public signals ﬁxed (i.e., let σ → 0 for ﬁxed τ ), then we return
+to the uniform prior setting of Section 2.1. But, we can also examine what
+happens to the unique equilibrium as the precision of both signals increases
+in such a way that uniqueness is maintained. Speciﬁcally, let τ → 0 and let
+6 For sufﬁciently small τ , either action is rationalizable as long as y ∈ (0, 1) and θ ∈ (0, 1). If
+
+either θ ≥ 1 or θ > 0 and y ≥ 1, then only investing is rationalizable. If either θ ≤ 0 or θ < 1
+and y ≤ 0, then only not investing is rationalizable.
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+84
+
+Morris and Shin
+
+σ 2 → cτ 4 , where c < 4π. In this case,
+
+
+σ2 σ2 + τ2
+(σ, τ ) = 4
+γ
+τ
+σ 2 + 2τ 2
+
+
+cτ 4 cτ 4 + τ 2
+→ 4
+τ
+cτ 4 + 2τ 2
+c
+→
+2
+< 2π.
+Thus
+
+ 
+ 
+2
+h γ(σ,τ ) (θ ) → θ −
+−1 θ .
+c
+
+This result says that, even though the public signal becomes irrelevant to a
+player’s expected value of θ in the limit, it continues to have a large impact on
+the outcome. For example, suppose c = 1 and y = 13 (i.e., public information
+looks bad). Each player will invest only if θ ≥ 0.7 (i.e., they will be very
+conservative). This is true even as they ignore y (i.e., θ → x).
+The intuition for this result is the following. Suppose public information
+looks bad (y < 12 ). If each player’s private information is much more accurate
+than the public signal, each player will mostly ignore the public signal in forming
+his own expectation of θ . But, each will nonetheless expect the other to have
+observed a somewhat worse signal than themselves. This pessimism about the
+other’s signal makes it very hard to support an investment equilibrium.
+3.3.
+
+Sufﬁcient Conditions for Uniqueness
+
+We derived a very simple necessary and sufﬁcient condition for uniqueness in
+the linear example, depending only on the precision of public and private signals.
+In this section, we brieﬂy demonstrate that a similar sufﬁcient condition works
+for general payoff functions. In particular, we will show that there is always a
+unique equilibrium if σ 2 /τ 4 is sufﬁciently small.7
+We will show this in a simple setting, although the argument can be extended.
+We maintain the normal distribution assumptions on the prior and signals, but let
+the payoffs be as in Section 2.2, so that π(l, θ ) is the payoff gain from choosing
+action 1 instead of action 0. Furthermore, we will focus on the continuum
+players case, where π (l, θ ) is differentiable and strictly increasing in l and θ ,
+with dπ/dl(l, θ ) ≤ K and dπ/dθ (l, θ ) ≥ ε for all l and θ .
+Under these assumptions, we may look at the expected gain to choosing
+action 1 rather than action 0 if your expectation of θ is θ and you think that
+7 Hellwig (2000) performs a related exercise in a version of our currency attacks model (Morris
+
+and Shin, 1998).
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+85
+
+others follow a switching strategy at κ:
+
+
+
+∞
+σ 2τ 2  θ − θ 
+V (θ , κ) =
+φ 
+σ2 + τ2
+σ 2τ 2
+θ=−∞
+σ 2 +τ 2
+
+ 
+κ − θ + στ 2 (κ − y)
+, θ dθ
+×π 1 − 
+σ
+
+
+
+∞
+σ 2τ 2  θ
+
+=
+φ 
+σ2 + τ2
+σ 2τ 2
+θ =−∞
+
+
+
+
+2
+
+σ 2 +τ 2
+
+
+
+2
+−θ + κ − θ + στ 2 (κ − y)
+, θ + θ dθ .
+×π 1 − 
+σ
+
+
+
+
+Now to apply our earlier argument for uniqueness, it is enough to show that
+expression is increasing in θ and V (κ, κ) = 0 has a unique solution. The former
+is clearly true; to show the latter, observe that
+
+
+
+∞
+2
+2
+σ τ
+θ
+
+V (κ, κ) =
+φ 
+σ2 + τ2
+σ 2τ 2
+θ =−∞
+
+
+
+
+×π 1 − 
+so
+
+σ 2 +τ 2
+
+−θ
+
+2
++ στ 2 (κ − y)
+
+σ
+
+
+
+
+, θ + κ dθ ,
+
+
+
+
+
+dπ(·) dπ(·)
+σ 2τ 2  θ
+σ
+
+φ 
+−
+φ (·) 2 dθ
+σ2 + τ2
+dθ
+dl
+τ
+σ 2τ 2
+θ =−∞
+σ 2 +τ 2
+
+
+
+dπ (·)
+∞
+σ 2τ 2  θ
+ dπ(·) 1 − dl φ (·) σ dθ .
+
+=
+φ
+dπ (·)
+σ2 + τ2
+dθ
+τ2
+σ 2τ 2
+θ =−∞
+dθ
+
+d V (κ, κ)
+=
+dκ
+
+∞
+
+
+
+σ 2 +τ 2
+
+(3.4)
+If this expression is always positive, then there is a unique value of κ solving V (κ, κ) = 0, and the unique strategy surviving iterated deletion of strictly
+dominated √
+strategies is the switching strategy with that cutoff. Because φ(·)
+is at most 1/ 2π, the expression in square brackets within equation (3.4) is
+positive as long as
+dπ (·)
+√
+2
+dl < τ 2π ;
+dπ (·)
+σ
+dθ
+Cambridge Collections Online © Cambridge University Press, 2006
+
+86
+
+Morris and Shin
+
+since
+dπ (·)
+dl ≤ K ;
+dπ (·)
+ε
+dθ
+this will be true as long as
+√
+τ 2 2π
+K
+<
+,
+ε
+σ
+i.e.,
+ ε 2
+σ2
+<
+2π
+.
+τ4
+K
+4. THEORETICAL UNDERPINNINGS
+4.1.
+
+General Global Games
+
+All the analysis thus far has dealt with symmetric payoff games. The analysis
+of Carlsson and van Damme (1993a) in fact provided a remarkably general
+result for two-player, two-action games, even with asymmetric payoffs. Let the
+payoffs of a two-player, two-action game be given by Table 3.4:
+Table 3.4. Payoffs for general 2 × 2
+global game
+
+1
+0
+
+1
+
+0
+
+θ1 , θ2
+θ5 , θ6
+
+θ3 , θ4
+θ7 , θ8
+
+Thus, a vector θ ∈ R8 describes the payoffs of the game. Each player i
+observes a signal xi = θ + σ εi , where the εi are eight-dimensional noise terms.
+This setup describes an incomplete information game parameterized by σ .
+Under mild technical assumptions,8 as σ → 0, any sequence of strategy proﬁles
+surviving iterated deletion of strictly dominated strategies converges to a unique
+limit. Moreover, that limit is independent of the distribution of the noise and
+has the unique Nash equilibrium of the underlying complete information game
+being played (if there is one), and has the risk-dominant Nash equilibrium
+played (if there are two strict Nash equilibria).
+To understand if and when this remarkable result might extend to many
+players and many action games, it is useful to ﬁrst observe that there are two
+8 The following technical conditions are sufﬁcient (Carlsson and van Damme’s actual setup is
+
+a little more general): payoff vector θ is drawn according to a strictly positive, continuously
+differentiable, bounded density on R8 ; and the noise terms (ε1 , ε2 ) are drawn according to a
+continuous density with bounded support, independently of θ .
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+87
+
+independent things being proved here. First, there is a limit uniqueness result.
+As the noise goes to zero, there is a unique strategy proﬁle surviving iterated
+deletion of strictly dominated strategies. Given that with no noise we know that
+there are multiple equilibria, this is a striking result by itself. Second, there
+is a noise-independent selection result. We can characterize behavior in that
+unique limit as a function of the complete information payoffs in the limit,
+and thus independently of the shape of the prior beliefs on θ and the distribution of noise. Thus, Carlsson and van Damme’s two-player, two-action
+analysis combines separate limit uniqueness and noise-independent selection
+results. Similarly, the results in Section 2 for continuum player, symmetric
+binary action games simultaneously showed that there was a unique strategy
+surviving iterated deletion of strictly dominated strategies in the limit (a limit
+uniqueness result) and characterized behavior in the limit (the Laplacian action) independent of the structure of the noise (a noise-independent selection
+result).
+Frankel, Morris, and Pauzner (2000) (hereafter, FMP) examine global games
+with many players, asymmetric payoffs, and many actions. They show that a
+limit uniqueness result holds quite generally, as long as some monotonicity
+properties are satisﬁed. They consider the following environment. Each player
+has an ordered set of actions (ﬁnite or continuum); his payoff depends on
+the action proﬁle played and a payoff parameter θ ∈ R; he observes a signal
+xi = θ + σ εi , where σ > 0, and εi is an independently distributed noise term.
+For sufﬁciently low values of θ , each player has a dominant strategy to choose
+his lowest action, and that for sufﬁciently high values of θ , each player has
+a dominant strategy to choose his highest action. Each player’s payoffs are
+supermodular in the action proﬁle, implying that each player’s best response is
+increasing in others actions (for any θ ). Each player’s payoffs are supermodular
+in his own action and the state, implying that his best response is increasing in
+the payoff parameter θ (for any given actions of his opponents). Under these
+substantive assumptions, and additional technical assumptions,9 FMP show a
+limit uniqueness result. The proof uses the technique, also followed in Section
+2.2, of ﬁrst analyzing the uniform prior, private values game and showing a
+uniqueness result independent of the size of the noise; and then showing that, if
+the noise is small, all equilibria of the game with a general prior and common
+values are close to the unique equilibrium of the uniform prior, private values
+game. The limit uniqueness result of FMP provides a natural many-player,
+many-action generalization of Carlsson and van Damme (1993a). It is true
+that Carlsson and van Damme required no strategic complementarity and other
+monotonicity properties. But, when a two-player, two-action game has multiple
+Nash equilibria (the interesting case for Carlsson and van Damme’s analysis),
+there are automatically strategic complementarities. FMP’s limit uniqueness
+9 Payoffs are continuous with respect to actions and θ , and there is a Lipschitz bound on the
+
+sensitivity of payoffs to changes in own and others’ actions. The state is drawn according to a
+continuous and positive density, and signals are drawn according to a continuous and positive
+density with bounded support.
+Cambridge Collections Online © Cambridge University Press, 2006
+
+88
+
+Morris and Shin
+
+results could presumably be extended straightforwardly to many-dimensional
+payoff parameters and signals, if the relevant monotonicity conditions were
+suitably adjusted.10
+Within this class of monotonic global games where limit uniqueness holds,
+FMP also provide sufﬁcient conditions for noise-independent selection. They
+generalize the notion of a potential maximizing action, due to Monderer and
+Shapley (1996). We will discuss these generalized potential conditions in more
+detail in Section 4.4, because they are also sufﬁcient for the (more demanding)
+property of being robust to incomplete information. The sufﬁcient conditions for
+noise-independent selection encompass two classes of games already discussed
+in this survey: many-player, two-action, symmetric payoff games (where the
+Laplacian action is played); and two-player, two-action games, with possibly
+asymmetric payoffs (where the risk dominant equilibrium is played). They
+also encompass two-player, three-action games with symmetric payoffs. They
+encompass the minimum effort game of Bryant (1983).11
+FMP also provide an example of a two-player, four-action, symmetric payoff
+game where noise-independent selection fails. Thus, there is a unique limit as
+the noise goes to zero, but the nature of the limit depends on the exact distribution
+of the noise. Carlsson (1989) gave a three-player, two-action example in which
+noise-independent selection failed. Corsetti, Dasgupta, Morris, and Shin (2000)
+describe a global games model of currency crises, where there is a continuum
+of small traders and a single large trader. This is thus a many-player, two-action
+game with asymmetric payoffs. We show that the equilibrium selected as noise
+goes to zero depends on the relative informativeness of the large and small
+traders’ signals. This is thus an application where noise-independent selection
+fails.
+We conclude this brief summary by noting one consequence of FMP for the
+earlier analysis in this paper. In Section 2.2, it was shown that the Laplacian
+action was selected in symmetric binary action global games. The argument
+exploited the fact that players observed signals with iid noise in that class of
+games. But, FMP show noise-independent selection of the Laplacian action
+independent of the distribution of noise. If the distribution of noise is very
+different for different players, we surely cannot guarantee that each player
+has a uniform belief over the proportion of his opponents taking each action.
+Nonetheless, the Laplacian action must be played in the limit. We can illustrate
+this implication with a simple example. Consider a three-player game, with
+binary action set {0, 1}. The payoff to action 1 is θ if both of the other players
+choose action 1, θ − z if one other player chooses action 1, and θ − 1 if neither
+10 The conditions for limit uniqueness in FMP conditions could also presumably be weakened in a
+
+number of directions. For example, with additional restrictions on the noise structure, one could
+perhaps use the monotone comparative statics under uncertainty techniques of Athey (2001,
+2002), as in lemma 2.3.
+11 Carlsson and Ganslandt (1998) show the potential maximizing action is selected in the minimum
+effort game when players’ continuous actions are perturbed.
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+89
+
+player chooses action 1 (where 0 < z < 1). The payoff to action 0 is zero. State
+θ is uniformly distributed on the real line. Observe that the Laplacian action is
+1 if 13 θ + 13 (θ − z) + 13 (θ − 1) > 0 [i.e., θ > 13 (z + 1)]. Let ε1 , ε2 , and ε3 be
+i.i.d. with symmetric c.d.f. F(·), let δ be a very small positive number, and let
+σ be a parameter describing the size of the noise. The players’ signals x1 , x2 ,
+and x3 are given by
+x1 = θ + σ δε1 ,
+x2 = θ + σ δε2 ,
+x 3 = θ + σ ε3 .
+Thus, 1 and 2 observe much more informative signals. We will look for a
+switching strategy equilibrium, where players 1 and 2 use cutoff x σ and player
+σ . Let
+3 uses cutoff x
+
+
+σ − x σ
+x
+.
+λσ = F
+σ
+We are interested in what happens in the limit as ﬁrst we take δ → 0, and then
+take the limit as σ → 0. As δ becomes very small, if player 1 or 2 observes
+signal x σ , he will assign probability (about) 12 (1 − λσ ) to both players choosing
+action 1, probability (about) 12 to one player choosing action 1, and probability
+(about) 12 λσ to neither player choosing action 1; although, if player 3 observes
+σ , he will assign probability λσ to both players choosing action 1,
+signal x
+probability 0 to one player choosing action 1, and probability 1 − λσ to neither
+player choosing action 1.
+Thus, we must have:
+1
+1
+1
+(1 − λσ )x σ + (x σ − z) + λσ (x σ − 1) = 0,
+2
+2
+2
+σ + 0 (
+xσ − z) + (1 − λσ )(
+λσ x
+xσ − 1) = 0.
+Rearranging gives:
+1
+1
+z + λσ ,
+2
+2
+σ = 1 − λσ .
+x
+xσ =
+
+σ and thus λσ → 23 (1 − 12 z) [so,
+As σ → 0, we must have x σ → x
+−1
+σ must both converge to 13 (z + 1).
+(
+xσ − x σ )/σ −→ F (λσ )]. Thus, x σ and x
+But this gives the result that the Laplacian action is played by all players in the
+limit, independent of the shape of F.
+4.2.
+
+Higher-Order Beliefs
+
+In global games, the importance of the noisy observation of the underlying
+state lies in the fact that it generates strategic uncertainty, that is, uncertainty
+about others’ behavior in equilibrium. That strategic uncertainty is generated by
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+90
+
+Morris and Shin
+
+players’ uncertainty about other players’ payoffs. Thus, understanding global
+games involves understanding how equilibria depend on players’ uncertainty
+about other players’ payoffs. But, clearly, it is not going to be enough to know
+each player’s beliefs about other players’ payoffs. We must also take into
+account each player’s beliefs about other players’ beliefs about his payoffs,
+and further such higher-order beliefs. Players’ payoffs and higher-order beliefs
+about payoffs are the true primitives of a game of incomplete information, not
+the asymmetric information structure. In earlier sections, we told an asymmetric information story about how there is a true state of fundamentals θ drawn
+from some prior and each player observes a signal of θ generated by some technology. But, our analysis of the resulting game implicitly assumes that there is
+common knowledge of the prior distribution of θ and the signaling technologies. It is hard to defend this assumption literally when the original purpose
+was to get away from the unrealistic assumption that there is common knowledge of the realization of θ. The classic arguments of Harsanyi (1967–1968)
+and Mertens and Zamir (1985) tell us that we can assume common knowledge
+of some state space without loss of generality. But such a common knowledge state space makes sense with an incomplete information interpretation (a
+player’s “type” is a description of his higher-order beliefs about payoffs), but
+not with an asymmetric information interpretation (a player’s “type” is a signal
+drawn according to some ex ante ﬁxed distribution); see Battigalli (1999) and
+Dekel and Gul (1996) for forceful defenses of this position. Thus, we believe
+that the noise structures analyzed in global games are interesting because they
+represent a tractable way of generating a rich structure of higher-order beliefs.
+The analysis of global games represents a natural vehicle to illustrate the power
+of higher-order beliefs at work in applications.12 But, then, the natural way to
+understand the “trick” to global games analysis is to go back and understand
+what is going on in terms of higher-order beliefs.
+Even if one is uninterested in the philosophical distinction between incomplete information and asymmetric information, there is a second reason why
+the higher-order beliefs literature may contribute to our understanding of global
+games. Even keeping a pure asymmetric information interpretation, we can calculate (from the prior distribution over θ and the signal technologies) the players’ higher-order beliefs about payoffs. Statements about higher-order beliefs
+about payoffs turn out to represent a natural mathematical way of characterizing
+which properties of the prior distribution and signal technologies matter for the
+results.
+The pedagogical risk of emphasizing higher-order beliefs is that readers may
+conclude that playing in the uniquely rational way in a global game requires
+fancy powers of reasoning, some kind of hyperrationality that allows them to
+reason to an arbitrarily high number of levels. We emphasize that the fact that
+either the analyst or a player expresses information about the game in terms
+12 For work on higher-order beliefs not using the global games technology, see Townsend (1983);
+
+Allen, Morris, and Postlewaite (1993); Shin (1996); and the discussion of Section 4.1 of Allen
+and Morris (2000).
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+91
+
+of higher-order beliefs does not make standard equilibrium concepts any less
+compelling and does not suggest any particular view about how equilibrium
+behavior might be arrived at. In particular, recall that there is a very simple
+heuristic that will generate equilibrium behavior in symmetric binary action
+games. If there is not common knowledge of the environment you are in, you
+should hold diffuse beliefs about others’ behavior. In particular, if you are on the
+margin between your two actions, it seems reasonable to take the agnostic view
+that you are equally likely to hold any rank in the population concerning your
+evaluation of the desirability of the two actions. Thus, if other people behave
+like you, you should make your decision on the assumption that the proportion
+of other players choosing each action is uniformly distributed. This reasoning
+sound naive, but actually generates a very simple heuristic for behavior that is
+consistent with the unique rational behavior.
+In the remainder of this section, we ﬁrst informally discuss the role of higherorder beliefs in a global game example. Then, we review brieﬂy the theoretical
+literature on higher-order beliefs in games.13 Finally, we show how results from
+that literature can be taken back to the analysis of global games.
+Monderer and Samet (1989) introduced a natural language for characterizing
+players’ higher-order beliefs. Fix a probability p ∈ (0, 1]. Let  be a set of
+possible states, and let E be any subset of . The event E is p-believed at state
+ω among some ﬁxed group of individuals if everyone believes that it is true with
+probability at least p (and we write B pE for the set of states where event E is
+p-believed). The event E is common p-belief at state ω if it is p-believed, it is
+p-believed that it is p-believed, and so on, up to an arbitrary number of levels
+[and we write C p (E) for the set of states where event E is common p-belief ].
+The event E is p-evident if whenever it is true, it is p-believed (i.e., E ⊆ B pE).
+Monderer and Samet proved the following result:
+Proposition 4.1. Event E is common p-belief at ω [i.e., ω ∈ C p (E)] if and only
+if there exists a p-evident event F such that ω ∈ F ⊆ B p E.
+This result provides a ﬁxed-point characterization (i.e., using the p-evident
+property) of an iterative deﬁnition of common p-belief. It thus generalizes
+Aumann’s classic characterization of common knowledge (Aumann, 1976).
+We will illustrate these properties of higher-order beliefs in the global
+games setting.14 So, consider again the two-player example of Section 2.1: θ is
+drawn uniformly from the real line and players i = 1, 2 each observe a signal
+13 Our review of this literature is much abbreviated and highly selective. See Fudenberg and Tirole
+
+(1991) Chapter 14; Osborne and Rubinstein (1994) Chapter 5; Geanakoplos (1994); and Dekel
+and Gul (1996) for more background on this material. Morris and Shin (1997) survey the higherorder beliefs in game theory literature with a focus on the relationship to related literatures in
+philosophy and computer science. Kajii and Morris (1997c) survey this literature with a focus
+on the relation to the standard reﬁnements literature in game theory.
+14 Monderer and Samet (1989) characterized common p-belief for discrete state spaces, but Kajii
+and Morris (1997b) show the straightforward extension to continuum state spaces.
+Cambridge Collections Online © Cambridge University Press, 2006
+
+92
+
+Morris and Shin
+
+xi = θ + εi , where εi is distributed normally with mean 0 and standard deviation σ . Thus, the relevant state space is R3 , with typical element (θ, x1 , x2 ).
+Fix the payoff relevant event E k = {(θ, x1 , x2 ) : θ ≥ k}; this is the set of states
+where the true θ is at least k. If player i observes signal xi , he will assign probability (xi − k/σ ) to the event E k being true. Thus, he will assign probability
+at least p to the event E k exactly if xi ≥ k + σ −1 ( p) ≥ k. Thus
+B p E k = {(θ, x1 , x2 ) : xi ≥ k + σ −1 ( p),
+
+i = 1, 2}.
+√
+Now, if player i observes xi , he assigns probability (xi − κ)/ 2σ to player
+j observing a signal√
+above κ, and he assigns probability at least p to that event
+exactly if xi ≥ κ + 2σ −1 ( p). In addition, player i knows for sure whether
+xi is greater than κ. Thus
+for
+
+B p B p E k = {(θ, x1 , x2 ) : xi ≥ k + σ −1 ( p)
+√
++ max{0, 2σ −1 ( p)}, for i = 1, 2}
+and, by induction,
+[B p ]n E k = {(θ, x1 , x2 ) : xi ≥ k + σ −1 ( p)
+√
++ (n − 1) max{0, 2σ −1 ( p)},
+
+for i = 1, 2}.
+
+(4.1)
+
+So
+C p E k = ∩ [B p ]n E
+n≥1
+
+∅,
+=
+{(θ, x1 , x2 ) : xi ≥ k + σ −1 ( p),
+
+if p > 12
+for i = 1, 2}, if p ≤ 12 .
+
+Thus, a remarkable feature of this simple example is that for any p > 12 , there
+is never common p-belief that θ is greater than k, for any k. We could also
+have shown this using the characterization of common p-belief described in
+proposition 4.1. For any k, event E k is p-evident only if p ≤ 12 . This is because
+a player observing signal k will always assign probability 12 to his opponent
+observing a signal less than k. A key property of global games is that they fail
+to deliver nontrivial common p-belief and p-evident events (for high p). As we
+will see, the existence of such events is key to supporting multiple equilibria in
+incomplete information games.
+Combining this information structure with the payoffs from the two-player
+example of Section 2.1, we can illustrate the extreme sensitivity of strategic
+outcomes to players’ higher-order beliefs. Recall that each player had to choose
+between not investing (with payoff 0) and investing (with payoff θ if the other
+player invests, and payoff θ − 1 otherwise). The unique equilibrium involved
+each player i investing if his signal xi was greater than 12 and not otherwise.
+This result was independent of σ (the scale variable of the noise). Now observe
+that if
+1
+σ ≤
+,
+√
+5(1 + (n − 1) 2)−1 ( p)
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+93
+
+then [by equation (4.1)] for all θ ,
+
+
+2 2
+θ, ,
+∈ [B p ]n E 15 .
+5 5
+In words, suppose that each player observed signal 25 . If we ﬁx any integer n
+and any p < 1, we may choose σ sufﬁciently small such that it is p-believed
+that it is p-believed that (n times) . . . that θ is greater than 15 . If it was common
+knowledge that θ was greater than 15 , it would clearly be rational for both players
+to invest. But, the unique rational behavior has each player not investing.
+Rubinstein (1989) used his electronic mail game to illustrate this sensitivity of strategic outcomes to common knowledge. Monderer and Samet (1989)
+showed why n levels of p-belief or even knowledge was not enough to approximate common knowledge in strategic settings, and common p-belief (i.e.,
+an inﬁnite number of levels) is required. The idea behind this observation is
+illustrated in the next section. Morris, Rob, and Shin (1995) showed why only
+some Nash equilibria (e.g., risk-dominated equilibria) were sensitive to higherorder beliefs and not others, and provided a characterization – related to the
+lack of common p-belief events – of which (discrete state) information systems
+displayed an extreme sensitivity to higher-order beliefs (see also Sorin, 1998).
+Kajii and Morris (1997a) introduced a notion of robustness to incomplete information to characterize equilibria that are not sensitive to higher-order beliefs.
+This work is reviewed and related back to global games in Sections 4.4 and 4.5.
+
+4.3.
+
+Common p-Belief and Game Theory
+
+Fix a ﬁnite set of players 1, . . . , I and a ﬁnite action set Ai for each player
+i. A complete information game is then a vector of payoff functions, g ≡
+(g1 , . . . , g I ), where each gi : A → R. A (discrete state) incomplete information
+I
+I
+game is then a collection {, π, (Pi )i=1
+, (u i )i=1
+}, where  is a countable state
+space, π ∈ () is a prior probability on that state space, Pi is the partition of
+the state space of player i; and u i : A ×  → R is the payoff function of player
+i.
+I
+I
+For any given incomplete information game {, π, (Pi )i=1
+, (u i )i=1
+}, we may
+write |g| for the set of states in the incomplete information game where payoffs
+are given by g. Thus,
+|g| = {ω ∈  | u i (a, ω) = gi (a)
+
+for all
+
+a ∈ A and i = 1, . . . , I } .
+
+Using this language, we can summarize some key observations from the
+theoretical literature on higher-order beliefs in game theory. A pure strategy
+Nash equilibrium a ∗ of a complete information game, g, is said to be a pdominant equilibrium (Morris, Rob, and Shin, 1995) if each player’s action is
+a best response whenever he assigns probability at least p to his opponents
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+94
+
+Morris and Shin
+
+choosing according to a ∗ , i.e.,
+
+
+λ(a−i )gi (ai∗ , a−i ) ≥
+λ(a−i )gi (ai , a−i )
+a−i ∈Ai
+
+a−i ∈Ai
+
+∗
+for all i = 1, . . . , I , ai ∈ Ai and λ ∈ (A−i ), such that λ(a−i
+) ≥ p.
+
+Lemma 4.2. If a ∗ is a p-dominant equilibrium of complete information game
+I
+I
+g, then every incomplete information game {, π, (Pi )i=1
+, (u i )i=1
+} has an equi∗
+p
+librium where a is played with probability 1 on the event C (|g|).
+The proof of this result is straightforward. The event C p (|g|) is itself a
+p-evident event. Consider the modiﬁed incomplete information game where
+each player is constrained to choose according to a ∗ when he p-believes the
+event C p (|g|). Find an equilibrium of that modiﬁed game. By construction,
+a ∗ is played with probability 1 on the event C p (|g|). But, the equilibrium of
+the modiﬁed game is also an equilibrium of the original game. If a player i
+p-believes the event C p (|g|), then he p-believes that other players are choosing
+∗
+a−i
+. But, because his payoffs are given by g and a ∗ is a p-dominant equilibrium,
+∗
+ai must be a best response for player i.
+Because every strict Nash equilibrium is a p-dominant equilibrium for some
+p < 1, we immediately have:
+Corollary 4.3. If a ∗ is a strict Nash equilibrium of complete information
+game g, then there exists p < 1, such that every incomplete information game
+I
+I
+{, π, (Pi )i=1
+, (u i )i=1
+} has an equilibrium where a ∗ is played on the event
+p
+C (|g|).
+Thus, if we took a sequence of incomplete information games where in the
+limit payoffs are common knowledge, and close to the limit they are common
+p-belief (with p close to 1) with ex ante probability close to 1, then payoffs
+from equilibria of that sequence of incomplete information games must converge to payoffs in the limit game. Monderer and Samet (1989) proved such a
+lower hemicontinuity result. One can also ask a converse question: what is the
+relevant topology on information systems, such that information systems close
+to common knowledge information systems deliver outcomes that are close
+to common knowledge outcomes. Monderer and Samet (1996) and Kajii and
+Morris (1998) characterize such topologies (for different kinds of information
+system).
+4.4.
+
+Robustness to Incomplete Information
+∗
+
+Let a be a pure strategy Nash equilibrium of complete information game g;
+a ∗ is robust to incomplete information if every incomplete information game
+where payoffs are almost always given by g has an equilibrium where players
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+95
+
+almost always choose a ∗ [Kajii and Morris (KM), 1997a)].15 More precisely, a ∗
+is robust to incomplete information if, for all δ > 0, there exists ε > 0, such that
+every incomplete information game where π(|g|) ≥ 1 − ε has an equilibrium
+where a ∗ is played by all players on an event with probability at least 1 − δ.
+Robustness (to incomplete information) can be seen as a very strong reﬁnement of Nash equilibrium. Kajii and Morris (1997b) provide a detailed account
+of the relation between robustness and the existing reﬁnements literature, which
+we brieﬂy summarize here. The reﬁnements literature examines what happens
+to a given Nash equilibrium in perturbed versions of the complete information
+game. A weak class of reﬁnements requires only that the Nash equilibrium
+continues to be equilibrium in some nearby perturbed game [Selten’s (1975)
+notion of perfect equilibrium is the leading example of this class]; a stronger
+class requires that the Nash equilibrium continues to be played in all perturbed
+nearby games [Kohlberg and Mertens’ (1986) notion of stable equilibria is
+the leading example of this class]. Robustness belongs to the latter, stronger
+class of reﬁnements. Moreover, robustness to incomplete information allows
+an extremely rich set of “perturbed games.” In particular, while Kohlberg and
+Mertens allow only independent action trembles across players, the deﬁnition
+of robustness leads to highly correlated trembles and thus an even stronger reﬁnement. Indeed, KM construct an example in the spirit of Rubinstein (1989)
+to show that even a game with a unique Nash equilibrium, which is strict, may
+fail to have any robust equilibrium.
+Yet it turns out that a large set of games do have robust equilibria. KM
+provided two sufﬁcient conditions. The ﬁrst is that if a ∗ is the unique correlated
+equilibrium of g, then a ∗ is robust. The second sufﬁcient condition comes from
+a generalization of the notion of p-dominance. Fix a vector of probabilities, p =
+( p1 , . . . , p I ), one for each player. Action proﬁle a ∗ is a p-dominant equilibrium
+if each player i’s action is a best response whenever he assigns probability at
+least pi to his opponents choosing according to a ∗ , i.e.,
+
+
+λ(a−i )gi (ai∗ , a−i ) ≥
+λ(a−i )gi (ai , a−i )
+a−i ∈Ai
+
+a−i ∈Ai
+
+∗
+) such that λ(a−i
+) ≥ pi . If a ∗ is
+for all i = 1, . . . , I , ai ∈ Ai , and λ ∈ (A−i
+I
+a p-dominant equilibrium for some p with i=1 pi ≤ 1, then a ∗ is robust to
+incomplete information. This property is a many-player, many-action generalization of risk dominance. KM proved this result by showing a surprising
+property of higher-order beliefs. Say that an event is p-believed (for some vector of probabilities p) if each player i believes it with probability at least pi ;
+and the event is common p-belief if it is p-believed,
+is p-believed that it is
+it
+I
+p-believed, etc. KM show that if vector p satisﬁes i=1
+pi ≤ 1, and an event
+
+15 KM deﬁne the property of robustness to incomplete information for mixed strategy equilibria
+
+also, but most of the sufﬁcient conditions described previously apply only to pure strategy
+proﬁles. For this reason, we focus on pure strategy proﬁles in the discussion that follows.
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+96
+
+Morris and Shin
+
+has a high probability, then with high probability that event is common p-belief.
+A generalization of lemma 4.2 then proves the robustness result.
+Further sufﬁcient conditions for robustness exploit the idea of potential
+games due to Monderer and Shapley (1996). A function v : A → R is a potential function for complete information game g, if
+v(ai , a−i ) − v(ai , a−i ) = gi (ai , a−i ) − gi (ai , a−i )
+for all i = 1, . . . , I , ai , ai ∈ Ai , and a−i ∈ A−i . This property implies that
+the game g has identical mixed strategy best response correspondences to the
+common interest game with common payoff function v. Observe that a ∗ is thus
+a Nash equilibrium of g if it is a local maximizer of v (i.e., it is not possible to
+increase v by changing one player’s action). Monderer and Shapley suggested if
+a game has multiple Nash equilibria, the global maximizer of v (which must of
+course be a local maximizer and thus a Nash equilibrium) is a natural candidate
+for selection. If action proﬁle a ∗ is the strict maximum of a potential function v
+for complete information game g, we say that a ∗ is potential maximizer of g. Ui
+(2001) shows that a potential maximizing action proﬁle is necessarily robust to
+incomplete information.16 Many-player, two-action, symmetric payoff games
+are potential games, so this result provides a proof that the strategy proﬁle where
+all players choose the Laplacian action is robust to incomplete information.17
+The p-dominance sufﬁcient conditions and potential game sufﬁcient conditions for robustness can be uniﬁed and generalized. We very brieﬂy sketch the
+main ideas and refer the reader to Morris (1999) for more details. Action proﬁle
+a ∗ is a characteristic potential maximizer of the complete information game
+g if there exists a function v : 2{1,...,I } → R with v({1, . . . ,I }) > v(S) for all
+S = {1, . . . , I }, and µi : Ai → R+ such that for all i, ai ∈ Ai , and a−i ∈ A−i ,
+v({ j : a j = a ∗j }) − v({ j : a j = a ∗j } ∪ {i}) ≥ µi (ai )(gi (ai , a−i )
+− gi (ai∗ , a−i )).
+Here, v(·) is a potential function that depends only on the set of players choosing
+according to a ∗ . In this sense, the characteristic potential maximizer condition
+strengthens the potential maximizer condition. But, the earlier equalities are
+replaced with inequalities, and the constants µi also add extra degrees of freedom. So, the characteristic potential maximizer condition neither implies nor
+is implied by the potential maximizer condition. Any characteristic potential
+maximizing action proﬁle is robust to incomplete information. One can use
+duality
+to show that if a ∗ is a p-dominant equilibrium for some p
+arguments
+I
+with i=1 pi ≤ 1, then a ∗ is a characteristic potential maximizer.18
+16 Ui uses a slightly weaker version of robustness to incomplete information, where all types in
+
+the perturbed game either have payoffs given exactly by the complete information game g or
+have a dominant strategy to choose some action.
+17 Morris (1997) previously provided an independent argument showing the robustness of the
+Laplacian strategy proﬁle.
+18 Ui (2000) extends these ideas with a set-based notion of robustness to incomplete information.
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+97
+
+Let the actions of each player be ordered, and for any action ai ∈ Ai , write
+ai− for the action below ai and ai+ for the action above ai . Action proﬁle a ∗ is
+a local potential maximizer of the complete information game g if there exists
+a local potential function v : A → R with v(a ∗ ) > v(a) for all a = a ∗ and, for
+each i, µi : Ai → R+ , such that for all i = 1, . . . , I and a−i ∈ A−i ,
+
+
+gi (ai , a−i )
+if ai > ai∗
+v(ai , a−i ) − v(ai− , a−i ) ≥ µi (ai )
+−gi (ai− , a−i )
+(4.2)
+and
+v(ai , a−i ) − v(ai+ , a−i ) ≥ µi (ai )
+
+
+
+gi (a
+ i , a−i ) 
+−gi ai+ , a−i
+
+
+
+if ai < ai∗ .
+
+One can show that if a ∗ is a local potential maximizer, then a ∗ is both a potential
+maximizer and a characteristic potential maximizer. Thus, it generalizes both
+conditions. If a ∗ is a local potential maximizer of g, and g satisﬁes strategic
+complementarities and each gi (ai , a−i ) is concave with respect to ai , then a ∗
+is robust to incomplete information. The following two-player, three-action,
+symmetric payoff game satisﬁes the strategic complementarity and concavity
+conditions, and one can show that (0, 0) is the local potential maximizer and
+thus robust (the earlier conditions do not help to characterize robustness in this
+example; see Table 3.5):
+Table 3.5. Payoffs in three-action example
+
+0
+1
+2
+
+0
+
+1
+
+2
+
+4, 4
+0, 0
+−3, −6
+
+0, 0
+1, 1
+0, 0
+
+−6, −3
+0, 0
+2, 2
+
+In fact, the local potential maximizer condition can be used to characterize
+the unique robust equilibrium in generic two-player, three-action, symmetric
+payoff games.
+4.5.
+
+Noise-Independent Selection
+
+If an action proﬁle is robust to incomplete information, we know that – roughly
+speaking – any way that a “small” amount of incomplete information is added
+cannot prevent that action proﬁle being played in equilibrium. This observation
+has important implications for global games. Consider a global game where
+payoffs depend continuously on a random parameter θ (which could be multidimensional), and each player observes a noisy signal xi = θ + σ εi . If a ∗ is
+a robust equilibrium of the game being played at θ ∗ , then there will always
+be an equilibrium of the global game (for small σ ) where action proﬁle a ∗ is
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+98
+
+Morris and Shin
+
+almost always played whenever all players observe signals close to θ ∗ . In other
+words, there will be no way of adding noise that will prevent action proﬁle
+a ∗ being played in the neighborhood of θ ∗ in some equilibrium. Thus, if there
+is limit uniqueness [say, because there are strategic complementarities and the
+other assumptions of Frankel, Morris, and Pauzner (2000) are satisﬁed], then a ∗
+must be played in the unique limit for every noise distribution. In the language
+of Section 4.1, a ∗ must be the noise-independent selection.
+Here is a heuristic argument for this claim. Fix θ ∗ and let a ∗ be a Nash
+equilibrium of the complete information game at θ ∗ that is robust to incomplete
+information. By deﬁnition, if a ∗ is robust to incomplete information in game
+u(·, θ ∗ ), every incomplete information game where payoffs are almost always
+given by u(·, θ ∗ ) has an equilibrium where a ∗ is almost always played. Generically, it will also be true that every incomplete information game where payoffs
+are almost always close to u(·, θ ∗ ) will have an equilibrium where a ∗ is almost
+always played. But now consider an incomplete information where some types
+of each player have payoffs close to u(·, θ ∗ ) (“sane” types), although some types
+may have very different payoffs (“crazy” types). Suppose that conditional on
+any player being sane, with probability close to 1, he assigns probability close
+to 1 to all other players being sane. Now, the robustness arguments described
+previously could be adapted to show that this incomplete information game has
+an equilibrium where, conditional on all players being sane, a ∗ is almost always
+played.
+Now, return to the global game and write B(θ ∗ , δ) for a δ ball around θ ∗ (i.e.,
+the set of θ within Euclidean distance δ of θ ∗ ). For a generic choice of θ ∗ , a ∗
+will remain robust to incomplete information close to θ ∗ [i.e., at all θ ∈ B(θ ∗ , δ)
+for some sufﬁciently small δ > 0]. Now, consider a sequence of global games
+where we let the noise go to zero (i.e.,σ → 0). For ﬁxed δ and ﬁxed q < 1, we
+can choose σ sufﬁciently small such that conditional on a player observing a
+signal in B(θ ∗ , δ), with probability at least q, he will assign probability at least
+q to all other players observing signals within B(θ ∗ , δ). Labeling the types
+who observe signals in B(θ ∗ , δ) “sane” and types who observe signals not in
+B(θ ∗ , δ) “crazy,” this argument shows that there is an equilibrium where a ∗ is
+almost always played in a neighborhood of θ ∗ .19
+5. RELATED MODELS: LOCAL HETEROGENEITY
+AND UNIQUENESS
+There are a number of ways that adding local heterogeneity to a population of
+players can remove multiplicity. In this section, we will attempt to give some
+intuition for a general logic at work. We start with a familiar example.
+19 There is a technical problem formalizing this argument. The robustness analysis described in
+
+Section 4.4 was carried out in discrete state spaces, where existence of equilibrium in incomplete
+information games is never a problem. In the uncountable state space setting of global games,
+it would be necessary to impose extra assumptions to ensure existence.
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+99
+
+There are two players, 1 and 2, and each player i has a payoff parameter xi .
+Expected payoffs are given by Table 3.6 :
+Table 3.6. Payoffs in private
+value example
+
+Invest
+NotInvest
+
+Invest
+
+NotInvest
+
+x1 , x2
+0, x2 − 1
+
+x1 − 1, 0
+0, 0
+
+If there was common knowledge that x1 = x2 = x ∈ (0, 1), then there would be
+multiple strict Nash equilibria of the complete information game. Because both
+pure strategy equilibria are strict, they seem quite stable. It seems surprising
+that an apparently “small” perturbation could remove either equilibrium.
+But, now let x be a publicly observed random variable and let x1 = x2 = x.
+Let players be restricted to switching strategies, so that player i will invest if his
+payoff parameter exceeds some cutoff ki and not invest otherwise. Thus, player
+i’s strategy is parameterized by a number ki . Because the game is symmetric,
+we can write b∗ (k) to the optimal cutoff of any player if he expects his opponent
+to choose cutoff k. Clearly, we have
+
+ 0, if k ≤ 0
+b∗ (k) = k, if 0 ≤ k ≤ 1 .
+
+1, if 1 ≤ k.
+This function is plotted in Figure 3.6.
+Symmetric equilibria will exist when this best response function crosses the
+45◦ line. So, there are a continuum of equilibria: for any x ∈ [0, 1], there is an
+equilibrium where each player follows a switching strategy with cutoff x.
+If we perturb this best response function, we would expect there to be a
+ﬁnite number of equilibria (i.e., a ﬁnite number of points where the function b∗
+crosses the 45◦ line). Given the shape of the best response function, it does not
+..
+....
+...
+...........
+..........................................................
+.
+...
+....
+....
+...
+....
+...
+...
+....
+.
+.
+...
+..
+....
+....
+...
+....
+....
+....
+...
+....
+....
+.
+.
+....
+..
+...
+....
+..
+....
+..
+....
+....
+....
+...
+....
+.
+...
+.
+.
+..
+....
+..
+....
+∗
+.....
+....
+...
+...
+....
+..
+...
+.
+.
+...
+.
+...
+...
+....
+....
+....
+....
+...
+....
+....
+....
+.
+....
+.
+....
+....
+....
+....
+....
+....
+....
+....
+....
+.
+.
+....
+.
+...
+...
+....
+...
+.... ......
+.
+.
+.......................................................................................................................................................................................................................................................................
+...
+....
+.
+
+1
+
+b (k)
+
+0
+
+1
+
+k
+
+∗
+
+Figure 3.6. Function b (k).
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+100
+
+Morris and Shin
+
+seem surprising that there might be natural ways of perturbing the best response
+function so that there is a unique equilibrium.
+The two-player example of Section 2.1 represented one way of carrying out
+such a perturbation. There, it was assumed that there was a payoff parameter θ,
+and each player i observed a noisy signal xi = θ + σ εi . The payoffs in Table 3.6
+then represent the expected payoffs of the players, given their signals. Recall
+that a player observing signal xi will believe that his opponent’s
+signal x j is
+√
+distributed normally with mean xi and standard deviation 2σ . If σ = 0 in
+that example, so there is no noise in the signal, we have exactly the scenario
+described previously with best response function b∗ . But, if σ > 0, then the
+best response function rotates clockwise a little bit and crosses the 45◦ line only
+at 12 (see Figure 3.1) and there is a unique equilibrium.
+However, this argument does not really rely on the incomplete information
+interpretation. The important feature of the argument is the local heterogeneity
+in payoffs: a player with payoff parameter xi knows that he is interacting with
+other player(s) who have some perhaps different, but nearby, payoff parameters;
+and he knows that those other player(s) in turn know that they are interacting
+with other player(s) who have some perhaps different, but nearby, payoff parameters. In the remainder of this section, we will see how a similar logic to the
+global game argument can arise when players are interacting not with unknown
+types of an opponent, but with (known) opponents at different locations or at
+different points in time.20,21
+5.1.
+
+Local Interaction Games
+
+A continuum of players are evenly distributed on the real line. If a player does
+not invest, his payoff is 0. If he invests, his payoff is x + l − 1, where x is his
+location and l is a weighted average of the proportion of his neighbors investing.
+In particular, let f (·) be the√density of a standard normal distribution with mean
+0 and standard deviation 2σ ; a player puts weight f (z) on the actions of
+players at location x + z.
+This setup describes a game among a continuum of players. The analysis
+of this game is identical to the analysis of the continuum player example of
+Section 2.1. In particular, players at locations less than 12 will not invest, and
+20 This logic also emerges in the the models of Carlsson (1991) and Carlsson and Ganslandt (1998),
+
+where players’ continuous action choice is subject to a small heterogeneous tremble. The exact
+connection to global games is not known.
+21 A distinctive feature of these arguments relying on local heterogeneity is that a very small
+amount of heterogeneity is sufﬁcient to imply unique equilibrium in environments where there
+are multiple strict equilibria without heterogeneity. One can also sometimes obtain uniqueness
+results assuming global, not local, heterogeneity (i.e. assuming that each player or type has the
+same, but sufﬁciently diffuse, beliefs about other players or types’ payoff parameters). Such
+global heterogeneity uniqueness arguments rely on the existence of a sufﬁciently large amount
+of heterogeneity. See Baliga and Sjöström (2001) in an incomplete information context (where
+global heterogeneity corresponds to independent types); Herrendorf, Valentinyi, and Waldmann
+(2000) and Glaeser and Scheinkman (2000) in models of large population interactions; and
+Frankel (2000b) in the context of a dynamic model with payoff shocks.
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+101
+
+players at locations above 12 will invest. This is despite the fact that, if players
+were interacting only with people at the exact same location (i.e., σ = 0), there
+would be multiple equilibria at all locations between 0 and 1.
+This rather stylized game illustrates the possibility that in local interaction
+games, play at some locations may be inﬂuenced by play at distant locations
+via the structure of local interaction. A literature on local interaction games
+has examined this type of effect.22 To understand the connection a little better,
+imagine a local interaction game where payoffs depend in a nonlinear way on
+location. Thus, let the payoff to investing be ψ(x) + l − 1 (instead of x + l − 1).
+Furthermore, suppose that ψ(x) < 12 for all x and that ψ(x) < 0 for some open
+interval of values of x. For small σ , this game will have a unique equilibrium
+where no player ever invests. To see why, note that for sufﬁciently small σ ,
+players inside the open interval where ψ(x) < 0 will have a dominant strategy
+to not invest. But, now players close to the edge of that interval will have about
+1
+their neighbors within that interval, and thus [since ψ(x) < 12 always] will not
+2
+invest in equilibrium. This argument will iterate to ensure that no investment
+takes place anywhere.
+This argument has very much the ﬂavor of the contagion argument developed by Ellison (1993) and others. There, a population with constant payoffs
+interacts with near neighbors on a line. Players choose best responses to some
+average behavior of their neighbors. But, a low rate of mutations ensures small
+neighborhoods where each action is played with periodically arise randomly.
+Once a risk-dominant action is played in a small neighborhood, it will tend to
+spread to the whole population under the best response dynamics. The initial
+mutant region where the risk-dominant action is played plays much the same
+role as the dominant strategy region in the story described previously. In this
+setting with strategic complementarities, best response dynamics mimic iterated deletion of strictly dominated strategies. Morris (1997) describes more
+formally an exact relationship between a version of Rubinstein’s (1989) e-mail
+game and a version of Ellison’s contagion effect, and describes more generally an exact equivalence between games of incomplete information and local
+interaction games.23
+The connection between games of incomplete information and local interaction games can be exploited. In evolutionary models, local interaction leads
+to much faster convergence to stochastically stable states than global interaction, because of the contagious dynamics. But, there is a very close connection
+between which action will spread contagiously in a local interaction game and
+which action will be played in the limit in a global game. In particular, recall
+from Section 4.1 that some games have a noise-independent selection (i.e., an
+action proﬁle played in the limit of a global game, independent of the noise
+22 For example, Blume (1995), Ellison (1993), and Young (1998). See Glaeser and Scheinkman
+
+(2000) for a recent survey.
+23 Hofbauer (1998, 1999) introduces an approach to equilibrium selection in a local interaction
+
+environment. His “spatially dominant equilibria” seem to coincide with those that are robust to
+incomplete information.
+Cambridge Collections Online © Cambridge University Press, 2006
+
+102
+
+Morris and Shin
+
+structure); whereas in other games, the action played in the limit depends on
+the noise structure. Translated to a local interaction setting, this result implies
+that some games that have the same action tend to spread contagiously, independent of the structure of interaction, whereas in other games ﬁne details of
+the local interaction structure will determine which action is contagious [see
+Morris (1999) for details]. Thus, local interaction may not just speed up convergence to stochastically stable states, but may change the stochastically stable
+states in subtle ways.24
+5.2.
+
+Dynamic Games
+
+5.2.1.
+
+Dynamic Payoff Shocks
+
+A continuum of players each live for an instant of time. If a player does not
+invest, his payoff is 0. If he invests, his payoff is x + l − 1, where x is the date at
+which he lives and l is a weighted average of the proportion of players investing
+at other points in time. In particular, let f (·) be the
+√ density of a standard normal
+distribution with mean 0 and standard deviation 2σ ; a player puts weight f (z)
+on the actions of players living at date x + z.
+This setup describes a game among a continuum of players. The analysis
+of this game is identical to the analysis of the continuum player example of
+Section 2.1 and thus also the local interaction example of the previous section.
+In particular, players will not invest before date 12 and will invest after date 12 .
+This is despite the fact that, if players were interacting only with people making
+contemporaneous choices (i.e., σ = 0), there would be multiple equilibria at
+all dates between 0 and 1.
+This was a very stylized example. But, the logic is quite general. In many
+dynamic strategic environments where choices are made at different points in
+time, a player’s payoff may depend not only on contemporaneous choices, but
+also on choices made by other players at other times. Payoff conditions may
+be varying through time. Thus, players’ optimal choices may depend indirectly
+on environments, where payoffs are very different from what they are now.
+These features may allow us to identify a unique equilibrium. We discuss two
+approaches that exploit this logic.25
+One approach has been developed recently in Burdzy, Frankel, and Pauzner
+(2001), Frankel and Pauzner (1999), and Frankel (2000a).26 A continuum of
+players are periodically randomly matched in a two-player, two-action game.
+24 Morris (2000) also exploits techniques from the higher-order beliefs literature to prove new
+
+results about local interaction.
+25 Morris (1995) describes a third approach. Suppose that players are deciding whether to invest or
+
+not invest at different points in time, but they make their decisions in private and their watches are
+not synchronized. Thus, each player will believe that the time on any other player’s watch is close
+to his own, but not identical. Risk-dominant play may result even when perfect synchronization
+would have allowed multiple equilibria.
+26 See also Frankel and Pauzner (2000) and Levin (2000a) for applications following this approach.
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+103
+
+For simplicity, we can think of them playing the investment game described in
+matrix (2.1). But assume that the publicly observed common payoff parameter
+θ evolves through time according to some random process [a random walk in
+Burdzy, Frankel, and Pauzner (2001), a continuous Brownian motion in Frankel
+and Pauzner (1999)]. Furthermore, suppose that each player can only occasionally alter his behavior: Revision opportunities arrive according to a Poisson
+process and arrive slowly relative to changes in the game’s payoffs. Under
+certain conditions on the noise process (roughly equivalent to the sufﬁciently
+uniform prior conditions in global games), there is a unique equilibrium where
+each player invests when θ exceeds 12 and not when θ is less than 12 .
+This description considerably oversimpliﬁes the analysis. For example, it is
+natural to assume that players observe the public evolution of θ , so they will be
+able to infer at any point in time (even if they cannot observe) the proportion
+of players taking each action. This creates an extra state variable (relative to
+the global games analysis), and the resulting asymmetry between the past and
+future complicates the analysis. Nonetheless, the logic is similar to the stylized
+example previously described. In particular, note how the friction in revision
+opportunities exactly ensures that a player making a choice given some publicly
+observed θ will take into account the choices that others will make at different
+times with different publicly observed θ .27
+Levin (2000a) describes another approach that is closer to the stylized example previously described. At discrete time t, player t chooses an action. His
+payoff may depend on the actions of players choosing before him or the player
+choosing after him, but also depends on a payoff parameter θ . The payoff parameter is publicly observed and evolves according to a random walk. If players
+act as if they cannot inﬂuence or do not care about the action of the decision
+maker in the next period, then under weak monotonicity conditions (a player’s
+best response is increasing in others’ actions and the payoff parameter) and
+limit dominance conditions [the highest (lowest) action is a dominant strategy
+for sufﬁciently high (low) values of θ], there is a unique equilibrium. The no
+inﬂuence assumption makes sense if there are in fact a continuum of players at
+each date or if actions are observed only with a sufﬁciently long lag. In Matsui’s
+(1999) currency crisis model, there are overlapping generations of players, but
+there is a natural reason why players do not care about the actions of players
+preceding them.28
+27 Matsui and Matsuyama (1995) earlier analyzed a model with Poisson revision opportunities.
+
+However, they assumed that the same game was being played through time (i.e., θ was constant),
+but examined the stability of different population states. The state where the whole population
+plays the risk-dominant action can be reached in equilibrium from the state where the whole
+population plays the risk-dominated action, but not vice versa. Hofbauer and Sorger (1999)
+show that the potential maximizing action of (many-action) symmetric potential games tends
+to be played in the Matsui-Matsuyama environment. Oyama (2000) shows that the 12 -dominant
+equilibrium is selected in this context. In a private communication, Hofbauer has reported that it
+also selects the “local potential maximizing action” (see Section 4.4) in two-player, three-action
+games with strategic complementarities and symmetric payoffs.
+28 See also Frankel (2000b) on the relationship between some of these models.
+Cambridge Collections Online © Cambridge University Press, 2006
+
+104
+
+Morris and Shin
+
+5.2.2.
+
+Recurring Incomplete Information
+
+Let θt follow a random walk, with θt = θt−1 + ηt , where each ηt is independently normally distributed with mean 0 and standard deviation τ . In period
+t, θt−1 is publicly observed, but θt is observed only with noise. In particular,
+each player i observes xit = θt + εit , where each εit is independently normally
+distributed with mean 0 and standard deviation σ . In each period, a continuum
+of players decide whether to invest with linear payoffs depending on θt (the
+payoff to not investing is 0, and the payoff to investing is θt + l − 1, where l is
+the proportion of the population investing).
+This dynamic game represents a crude way of embedding the static global
+games analysis in a dynamic setting. In particular, each period’s play of this
+dynamic game can be analyzed independently and is exactly equivalent to the
+public signals model of Section 3. In particular, θt−1 is the public signal about
+θt , whereas xit is player i’s private signal. A unique equilibrium will exist in this
+dynamic game exactly if γ
+(σ, τ ) ≤ 2π (i.e., σ is small relative to τ ). In Morris
+and Shin (2000), we sketch a continuous time version of this recurring incomplete information model and derive the continuous time sufﬁcient conditions
+for uniqueness.
+In Morris and Shin (1999a), we discuss such a recurring incomplete information model of currency crises. One distinctive implication of that analysis is
+that by the publicity effect, the previous period’s fundamentals may be expected
+to have a disproportionate inﬂuence on current outcomes. Thus, for any given
+actual level of fundamentals, an attack on the exchange rate is more likely when
+the fundamentals have just risen.
+Chamley (1999) considers a richer global game model with recurring incomplete information. A large population of players play a coordination game in
+each period, but each player has a private cost of taking a risky action that evolves
+through time. There is correlation in private costs and dominance regions, so
+that each period’s coordination game has the structure of a global game. But past
+actions convey information about other players’ private costs and thus (because
+of persistence) their current costs. Chamley identiﬁes sufﬁcient conditions for
+uniqueness in all periods and discusses a variety of applications.
+5.2.3.
+
+Herding
+
+In the herding models of Banerjee (1992) and Bikhchandani, Hirshleifer, and
+Welch (1992), players sequentially make some discrete choice. Players do not
+care about each other’s actions directly, but players have private information,
+and so each player may partially learn the information of players who choose
+before him. But, if a number of early-moving players happen to observe
+signals favoring one action, late-moving players may start ignoring their own
+private information, leading to inefﬁcient herding because of the negative
+informational externality.
+Herding models share with global game models the feature that outcomes
+are highly sensitive to ﬁne details of the information structure. However, it is
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+105
+
+important to note that the mechanisms are quite different. The global games
+analysis is driven by strategic complementarities and the highly correlated signals generated by the noisy observations technology. However, sensitivity to
+the information structure arises in a purely static setting. The herding stories
+have no payoff complementarities and simple information structures, but rely
+on sequential choice.
+Dasgupta (2000a) analyzes a simple model where it is possible to see both
+kinds of effects at work. A ﬁnite set of players decide sequentially (in an exogenous order) whether to invest or not. Investment conditions are either bad
+(when each player has a dominant strategy to not invest) or good (in which
+case it pays to invest if all other players invest). Each player observes a signal
+from a continuum, with high signals implying a higher probability that investment conditions are good. All equilibria in this model are switching equilibria:
+each player invests only if all previous players invested and his private signal
+exceeds some cutoff. Such equilibria encompass herding effects: previous players’ decisions to invest convey positive information to later players and make
+it more likely that they will invest. They also encompass higher-order belief
+effects: an increase in a player’s signal makes it more likely that he will invest
+both because he thinks it more likely that investment conditions are good and
+because he thinks it more likely that later players will observe high signals and
+choose to invest.29
+6. CONCLUSIONS
+Global games rest on the premise that the information received by economic
+agents is informative, but not so informative so as to achieve common knowledge of the underlying fundamentals. Indeed, as the information concerning the
+fundamentals become more and more accurate, the actions elicited in equilibrium resemble behavior when the uncertainty concerning the actions of other
+agents becomes more and more diffuse. This points to the potential pitfalls if
+we rely too much on our intuitions that are based on complete information
+games that allow perfectly coordinated switching of beliefs and actions. Decentralized decision making in market environments cannot be relied on to rule
+out inefﬁcient outcomes, so that there may be room for policies that mitigate
+the inefﬁciencies. The analysis of economic problems using the methods from
+global games is in its infancy, but the method seems promising.
+Global games also present a “user-friendly” face of games with incomplete information in the tradition of Harsanyi. The potentially daunting task of
+forming an inﬁnite hierachy of beliefs over the actions of all players in the
+game can be given a representation in terms of beliefs (and the behavior that
+they elicit) that are simple to the point of being naive. Global games go some
+29 For other models combining elements of payoff complementarities and herding, see Chari and
+
+Kehoe (2000), Corsetti, Dasgupta, Morris, and Shin (2000), Jeitshcko and Taylor (2001), and
+Marx (2000).
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+106
+
+Morris and Shin
+
+way to bridging the gap between those who believe that rigorous game theory
+has a role in economics (as we do) and those who insist on tractable and usable
+tools for applied economic analysis.
+ACKNOWLEDGMENTS
+This study was supported by the National Science Foundation Grant 9709601(to
+S.M.). Section 3 incorporates work circulated earlier under the title “Private
+Versus Public Information in Coordination Problems.” We thank Hans Carlsson,
+David Frankel, Josef Hofbauer, Jonathan Levin, and Ady Pauzner for valuable
+comments on this paper, and Susan Athey for her insightful remarks. Morris
+would like to record an important intellectual debt in this area to Atsushi Kajii,
+through joint research and long discussions.
+APPENDIX A: PROOF OF PROPOSITION 2.2
+We will prove the ﬁrst half of the result [s(x) = 0 for all x ≤ θ ∗ − δ]. The
+second half [s(x) = 0 for all x ≤ θ ∗ − δ] follows by a symmetric argument.
+For any given strategy proﬁle s = {si }i∈[0,1] , we write ζ (x) for the proportion of
+players observing signal x who choose action 1; ζ (·) will always be a continuous
+function of x.
+Write πσ (x, k) for the highest possible expected payoff gain to choosing
+action 1 for a player who has observed a signal x and knows that all other
+players will choose action 0 if they observe signals less than k:
+πσ (x, k) ≡
+
+max
+
+ 
+ x−θ  
+∞
+π 1 − F k−θ
+, θ dθ
+θ=−∞ p(θ ) f
+σ
+σ
+ x−θ 
+.
+∞
+dθ
+θ=−∞ p (θ ) f
+σ
+{ζ :ζ (x)=0 for all x<k}
+
+(A.1)
+
+Lemma 6.1. There exists x ∈ R and σ 1 ∈ R++ such that πσ (x, k) < 0 for all
+σ ≤ σ 1 , x ≤ x , and k ∈ R.
+Proof. By property A4∗ , we can choose x < θ and a continuously differentiable function π : R → R with π (θ ) = 0 and π (θ ) = −ε for all θ ≤ x such
+that
+π(l, θ ) ≤ π(θ ) ≤ −ε
+for all l ∈ [0, 1] and θ ∈ R. Now let
+ x−θ 
+∞
+π(θ )dθ
+θ=−∞ p(θ ) f
+σ
+ x−θ 
+π σ (x) ≡
+∞
+p(θ
+)
+f
+dθ
+θ=−∞
+σ
+=
+
+∞
+z=−∞ p(x + σ z) f (−z)π(x + σ z) dz
+,
+∞
+z=−∞ p(x + σ z) f (−z) dz
+
+changing variables to z =
+
+θ−x
+.
+σ
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+107
+
+Clearly, π σ (x) is an upper bound on πσ (x, k) for all k. Observe that π σ (x) is
+continuous in σ ; also, π 0 (x) = π(x) so π 0 (x) = −ε for all x ≤ x. Also observe
+that
+dπ σ
+(x)
+dσ
+σ =0
+∞
+∞
+p(x+σ z) f (−z)dz ][ z=−∞ z f (−z)( p (x+σ z)π (x+σ z)+ p(x+σ z)π (x+σ z))dz ]
+[ z=−∞
+2
+∞
+p(x+σ z) f (−z)dz ]
+[ z=−∞
+∞
+∞
+=
+z f (−z) p (x+σ z)dz ][ z=−∞ p(x+σ z) f (−z)π (x+σ z)dz ]
+[ z=−∞
+−
+2
+∞
+p(x+σ z) f (−z)dz ]
+[ z=−∞
+
+
+=
+
+
+
+∞
+
+z f (−z) dz
+z=−∞
+
+σ =0
+
+π (x)
+.
+p (x)
+
+Thus, by A6, dπ σ /dσ (x) = 0 for all x ≤ x. Thus, there exists σ ∈ R++ such
+that π σ (x) < 0 for all σ ≤ σ and x ≤ x.
+Lemma 6.2. There exists σ 2 ∈ R++ such that πσ (x, k) < 0 for all σ ≤ σ 2 ,
+x ≤ x < θ ∗ , and x ≤ k ≤ θ ∗ :
+
+πσ (x, k) =
+
+
+ 
+ x−θ  
+∞
+π 1 − F k−θ
+, θ dθ
+θ=−∞ p(θ ) f
+σ
+σ
+ x−θ 
+∞
+dθ
+θ=−∞ p(θ ) f
+σ
+
+
+ψσ (l; x, k) π l, k − σ F −1 (l) dl,
+
+1
+
+=
+
+l=0
+
+where ψσ (l; x, k) is the density with cdf
+σ (l; x, k) =
+
+=
+
+
+
+k−σ F −1 (1−l)
+p(θ ) f x−θ
+dθ
+θ =−∞
+σ
+ x−θ 
+∞
+dθ
+θ=−∞ p(θ ) f
+σ
+∞
+−1 (1−l) p(x − σ z) f (z) dz
+z= x−k
+σ +F
+,
+∞
+z=−∞ p(x − σ z) f (z) dz
+
+changing variables to
+
+z=
+
+x −θ
+.
+σ
+
+Thus, as σ → 0, σ (l; x, x − σ ξ ) → 1 − F(ξ + F −1 (1 − l)). Thus, as σ → 0,
+πσ (x, x − σ ξ ) → πσ∗ (x, x − σ ξ ) continuously (where πσ∗ is the variable corresponding to a uniform prior derived in the text). We know that πσ∗ (x, x − σ ξ ) >
+0 for the required values of x and ξ . Because we are interested in values of x
+in the closed interval [x, θ ∗ ] and because varying ξ generates a compact set of
+distributions over l, covergence is uniform.
+䊏
+Cambridge Collections Online © Cambridge University Press, 2006
+
+108
+
+Morris and Shin
+
+APPENDIX B: THE FINITE PLAYER CASE
+As we noted in the linear example of Section 2.1, analysis of the continuum and
+ﬁnite players can follow similar methods. Here, we brieﬂy note how to extend
+the uniform prior private values analysis of proposition 2.1 to the ﬁnite player
+case. The extension of the general prior common values analysis of proposition
+2.2 is then straightforward.
+The setting is as in Section 2.2.1, except that there are now I ≥ 2 players, and the noise terms in the private signals are identically and independently distributed according to the density f (·). As before, π (l, x) is the payoff gain to choosing action 1 rather than action 0, if you have observed signal x and proportion l of your opponents choose action 1. Of course, now
+(because you have I − 1 opponents) l will always be an element of the set
+{0, 1/(I − 1), 2/(I − 1), . . . , 1}. Property A3 becomes:
+A3(I): I -Player Single Crossing: There exists a unique θ I∗ solving
+ I −1
+∗
+k=0 (1/I )π (k/(I − 1), θ I ) = 0.
+Observe that, as I → ∞, θ I∗ → θ ∗ (i.e., the θ ∗ of assumption A3). In the
+special case where I = 2, this reduces to 12 π(0, θ2∗ ) + 12 π (1, θ2∗ ) = 0; in other
+words, θ2∗ is the point where the risk-dominant action (Harsanyi and Selten
+1988) switches from 0 to 1. Proposition 2.1 remains true as stated for the ﬁnite
+player game, with θ I∗ replacing θ ∗ . This was essentially shown by Carlsson and
+van Damme (1993b). The key step in the proof is showing that, in a symmetric
+strategy proﬁle, each player has uniform beliefs over the proportion of players
+observing a higher signal. To see why this is true, note that the probability
+that a player observing signal x assigns to exactly proportion n(I − 1) of his
+opponents signal greater than k is
+
+
+ 
+
+1
+x −θ
+I −1
+k − θ I −1−n
+f
+F
+σ
+I −1−n
+σ
+θ=−∞ σ
+n
+
+
+k−θ
+× 1− F
+dθ,
+σ
+∞
+
+where F(·) is the c.d.f. of f (·). Letting x = k − σ z and carrying out the change
+of variables ξ = (k − θ )/σ , this expression becomes
+
+I −1
+f (ξ − z)
+[F(ξ )] I −1−n [1 − F(ξ )]n dξ.
+I −1−n
+ξ =−∞
+∞
+
+
+
+This expression is now independent of σ and k, so we may denote this expression
+by ψ I (n/(I − 1); z). For the same argument to work as in the continuum case,
+it is enough to show that ψ I (·; 0) is the uniform distribution. But, integration
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+109
+
+by parts gives
+
+ 
+ ∞
+n
+I −1
+I
+ψ
+f (ξ ) [F(ξ )] I −1−n [1 − F(ξ )]n dξ
+;0 =
+I −1
+I − 1 − n ξ =−∞
+
+ ∞
+I −1
+=
+f (ξ ) [F(ξ )] I −n [1 − F(ξ )]n−1 dξ
+I − n ξ =−∞
+= ...
+=
+=
+
+∞
+
+f (ξ ) [F(ξ )] I −1 dξ
+
+ξ =−∞
+
+1
+.
+I
+
+APPENDIX C: PROOF OF LEMMA 2.3
+Recall the following expression for a player’s expected payoff gain to choosing
+action 1 for a player who has observed a signal x and knows that all other
+players will choose action 0 if they observe signals less than k:
+
+ 
+
+ 
+∞
+1
+x −θ
+k−θ
+∗
+πσ (x, k) ≡
+f
+π 1− F
+, x dθ.
+σ
+σ
+θ=−∞ σ
+With a change of variables [setting z = (θ − k)/σ ], this expression becomes
+
+
+∞
+x −k
+πσ∗ (x, k) =
+− z π(1 − F (−z) , x) dz.
+f
+σ
+z=−∞
+We can rewrite this expression as
+πσ∗ (x, k) = h(x, k, x),
+where
+∞
+
+
+h(x, k, x ) ≡
+f (x, z)g(z, x )dz,
+z=−∞
+
+
+x −k
+
+−z ,
+f (x, z) ≡ f
+σ
+and
+g(z, x ) ≡ π (1 − F(−z), x ).
+Now observe that, by A7, 
+f (x, z) satisﬁes a monotone likelihood ratio property
+[i.e., if x > x, then 
+f (x, z)/
+f (x, z) is increasing in z]; also observe that, by A1∗ ,
+g(·, x ) satisﬁes a single crossing property: there exists z ∗ ∈ R ∪ {−∞, ∞} such
+that g(z, x ) < 0 if z < z ∗ and g(z, x ) > 0 if z > z ∗ . Now lemma 5 in Athey
+(2000b) implies that h(·, k, x ) satisﬁes a single crossing property: there exists
+x ∗ (k, x ) such that h(x, k, x ) < 0 for all x < x ∗ (k, x ), and h(x, k, x ) > 0 for
+all x > x ∗ (k, x ). But by A2, we know that h(x, k, x ) is strictly increasing in x .
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+110
+
+Morris and Shin
+
+Now suppose h(x, k, x) = 0. If x < x, then
+h(x , k, x ) < h(x , k, x),
+< h(x, k, x),
+
+by A2
+by the single crossing property of h.
+
+By a symmetric argument, we have x > x ⇒ h(x , k, x ) > h(x, k, x). Thus,
+there exists β : R → R such that
+πσ∗ (x, k) < 0
+
+πσ∗ (x, k) = 0
+πσ∗ (x, k) > 0
+
+if
+
+x < β(k)
+
+if
+
+x = β(k)
+
+if
+
+x > β(k).
+
+Thus, if a player thinks that others are following a strategy with cutoff k, a
+player’s best response is to follow a switching strategy with cutoff β(k). But,
+by A3, we know that there exists exactly one value of k such that
+πσ∗ (k, k) =
+
+1
+
+π(l, k)dl = 0.
+
+l=0
+
+Thus, there is a unique symmetric switching strategy equilibrium.
+References
+Allen, F. and S. Morris (2001), “Finance Applications of Game Theory,” in Advances
+in Business Applications of Game Theory, (ed. by K. Chatterjee and W. Samuelson),
+Boston, MA: Kluwer Academic Press.
+Allen, F., S. Morris, and A. Postlewaite (1993), “Finite Bubbles with Short Sales Constraints and Asymmetric Information,” Journal of Economic Theory, 61, 209–229.
+Athey, S. (2001), “Single Crossing Properties and the Existence of Pure Strategy Equilibria in Games of Incomplete Information,” Econometrica, 69, 861–889.
+Athey, S. (2002), “Monotone Comparative Statics under Uncertainty,” Quarterly Journal
+of Economics, 117(1), 187–223.
+Aumann, R. (1976), “Agreeing to Disagree,” Annals of Statistics, 4, 1236–1239.
+Baliga, S. and S. Morris (2000), “Coordination, Spillovers and Cheap Talk,” Journal of
+Economic Theory.
+Baliga, S. and T. Sjöström (2001), “Arms Races and Negotiations,” Northwestern University.
+Banerjee, A. (1992), “A Simple Model of Herd Behavior,” Quarterly Journal of Economics, 107, 797–818.
+Battigalli, P. (1999), “Rationalizability in Incomplete Information Games,” available at
+http://www.iue.it/Personal/Battigalli.
+Bikhchandani, S., D. Hirshleifer, and I. Welch (1992), “A Theory of Fads, Fashion, Custom, and Cultural Change as Informational Cascades,” Journal of Political Economy,
+100, 992–1026.
+Blume, L. (1995), “The Statistical Mechanics of Best-Response Strategy Revision,”
+Games and Economic Behavior, 11, 111–145.
+Boonprakaikawe, J. and S. Ghosal (2000), “Bank Runs and Noisy Signals,” University
+of Warwick.
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+111
+
+Brunner, A. and J. Krahnen (2000), “Corporate Debt Restructuring: Evidence on Coordination Risk in Financial Distress,” Center for Financial Studies, Frankfurt.
+Bryant, J. (1983), “A Simple Rational Expectations Keynes Type Model,” Quarterly
+Journal of Economics, 98, 525–529.
+Bulow, J., J. Geanakoplos, and P. Klemperer (1985), “Multimarket Oligopoly: Strategic
+Substitutes and Complements,” Journal of Political Economy, 93, 488–511.
+Burdzy, K., D. Frankel, and A. Pauzner (2001), “Fast Equilibrium Selection by Rational
+Players Living in a Changing World,” Econometrica, 69, 163–189.
+Carlsson, H. (1989), “Global Games and the Risk Dominance Criterion,” University of
+Lund.
+Carlsson, H. (1991), “A Bargaining Model where Parties Make Errors,” Econometrica,
+59, 1487–1496.
+Carlsson, H. and E. van Damme (1993a), “Global Games and Equilibrium Selection,”
+Econometrica, 61, 989–1018.
+Carlsson, H. and E. van Damme (1993b), “Equilibrium Selection in Stag Hunt Games,” in
+Frontiers of Game Theory, (ed. by K. Binmore, A. Kirman, and A. Tani), Cambridge,
+MA: MIT Press.
+Carlsson, H. and M. Ganslandt (1998), “Noisy Equilibrium Selection in Coordination
+Games,” Economics Letters, 60, 23–34.
+Chamley, C. (1999), “Coordinating Regime Switches,” Quarterly Journal of Economics,
+114, 817–868.
+Chan, K. and Y. Chiu (2000), “The Role of (Non)Transparency in a Currency Crisis
+Model,” McMaster University.
+Chari, V. and P. Kehoe (2000), “Financial Crises as Herd Behavior,” Working Paper 600,
+Federal Reserve Bank of Minneapolis.
+Chui, M., P. Gai, and A. Haldane (2000), “Sovereign Liquidity Crises: Analytics and
+Implications for Public Policy,” International Finance Division, Bank of England.
+Chwe, M. (1998), “Believe the Hype: Solving Coordination Problems with Television
+Advertising,” available at http://chwe.net/michael.
+Corsetti, G., A. Dasgupta, S. Morris, and H. S. Shin (2000), “Does One Soros Make
+a Difference? The Role of a Large Trader in Currency Crises,” Review of Economic
+Studies.
+Dasgupta, A. (2000a), “Social Learning and Payoff Complementarities,” available at
+http://aida.econ.yale.edu/˜amil.
+Dasgupta, A. (2000b), “Financial Contagion Through Capital Connections: A Model of
+the Origin and Spread of Bank Panics,” available at http://aida.econ.yale.edu/˜amil.
+DeGroot, M. (1970), Optimal Statistical Decisions. New York: McGraw-Hill.
+Dekel, E. and F. Gul (1996), “Rationality and Knowledge in Game Theory,” in Advances
+in Economic Theory–Seventh World Congress of the Econometric Society, (ed. by
+D. Kreps and K. Wallace), Cambridge: Cambridge University Press.
+Diamond, D. and P. Dybvig (1983), “Bank Runs, Deposit Insurance, and Liquidity,”
+Journal of Political Economy, 91, 401–419.
+Dönges, J. and F. Heinemann (2000), “Competition for Order Flow as a Coordination
+Game,” Center for Financial Studies, Frankfurt, Germany.
+Ellison, G. (1993), “Learning, Local Interaction, and Coordination,” Econometrica, 61,
+1047–1071.
+Frankel, D. (2000a), “Determinacy in Models of Divergent Development and Business
+Cycles,” available at www.tau.ac.il/˜dfrankel.
+Frankel, D. (2000b), “Noise versus Shocks,” seminar notes, University of Tel Aviv.
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+112
+
+Morris and Shin
+
+Frankel, D., S. Morris, and A. Pauzner (2000), “Equilibrium Selection in Global Games
+with Strategic Complementarities,” Journal of Economic Theory.
+Frankel, D., and A. Pauzner (1999), “Expectations and the Timing of Neighborhood
+Change,” available at www.tau.ac.il/˜dfrankel.
+Frankel, D. and A. Pauzner (2000), “Resolving Indeterminacy in Dynamic Settings: The
+Role of Shocks,” Quarterly Journal of Economics, 115, 285–304.
+Fudenberg, D. and J. Tirole (1991), Game Theory. Cambridge, MA: MIT Press.
+Fukao, K. (1994), “Coordination Failures under Incomplete Information and Global
+Games,” Discussion Paper Series A 299, The Institute of Economic Research, Hitotsubashi University, Kunitachi, Tokyo, Japan.
+Geanakoplos, J. (1994), “Common Knowledge,” in Handbook of Game Theory,
+Chapter 40 of Volume 2, (ed. by R. Aumann and S. Hart), New York: Elsevier Science.
+Glaeser, E. and J. Scheinkman (2000), “Non-Market Interactions,” prepared for the
+Eighth World Congress of the Econometric Society.
+Goldstein, I. (2000), “Interdependent Banking and Currency Crises in a Model of SelfFulﬁlling Beliefs,” University of Tel Aviv.
+Goldstein, I. and A. Pauzner (2000a), “Demand Deposit Contracts and the Probability
+of Bank Runs,” available at http://www.tau.ac.il/˜pauzner.
+Goldstein, I. and A. Pauzner (2000b), “Contagion of Self-Fulﬁlling Currency Crises,”
+University of Tel Aviv.
+Harsanyi, J. (1967–1968), “Games with Incomplete Information Played by ‘Bayesian’
+Players, Parts I–III,” Management Science, 14, 159–182, 320–334, and 486–502.
+Harsanyi, J. and R. Selten (1988). A General Theory of Equilibrium Selection in Games,
+Cambridge, MA: MIT Press.
+Hartigan, J. (1983), Bayes Theory. New York: Springer-Verlag.
+Heinemann, F. (2000), “Unique Equilibrium in a Model of Self-Fulﬁlling Currency
+Attacks: Comment,” American Economic Review, 90, 316–318.
+Heinemann, F. and G. Illing (2000), “Speculative Attacks: Unique Sunspot Equilibrium
+and Transparency,” Center for Financial Studies, Frankfurt.
+Hellwig, C. (2000), “Public Information, Private Information, and the Multiplicity of
+Equilibria in Coordination Games,” London School of Economics.
+Herrendorf, B., Á. Valentinyi, and R. Waldmann (2000), “Ruling out Multiplicity and
+Indeterminacy: The Role of Heterogeneity,” Review of Economic Studies, 67, 295–
+308.
+Hofbauer, J. (1998), “Equilibrium Selection in Travelling Waves,” in Game Theory,
+Experience, Rationality: Foundations of Social Sciences, Economics and Ethics, (ed.
+by W. Leinfellner and E. Köhler), Boston, MA: Kluwer.
+Hofbauer, J. (1999), “The Spatially Dominant Equilibrium of a Game,” Annals of Operations Research, 89, 233–251.
+Hofbauer, J. and G. Sorger (1999), “Perfect Foresight and Equilibrium Selection in
+Symmetric Potential Games,” Journal of Economic Theory, 85, 1–23.
+Hubert, F. and D. Schäfer (2000), “Coordination Failure with Multiple Source Lending,”
+available at http://www.wiwiss.fu-berlin.de/˜hubert.
+Jeitschko, T. and C. Taylor (2001), “Local Discouragement and Global Collapse: A
+Theory of Coordination Avalanches,” American Economic Review, 91, 208–224.
+Kadane, J. and P. Larkey (1982), “Subjective Probability and the Theory of Games,”
+Management Science, 28, 113–120.
+Kajii, A. and S. Morris (1997a), “The Robustness of Equilibria to Incomplete Information,” Econometrica, 65, 1283–1309.
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+Global Games
+
+113
+
+Kajii, A. and S. Morris (1997b), “Common p-Belief: The General Case,” Games and
+Economic Behavior, 18, 73–82.
+Kajii, A. and S. Morris (1997c), “Reﬁnements and Higher Order Beliefs in Game
+Theory,” available at http://www.econ.yale.edu/˜smorris.
+Kajii, A. and S. Morris (1998), “Payoff Continuity in Incomplete Information Games,”
+Journal of Economic Theory, 82, 267–276.
+Karp, L. (2000), “Fundamentals Versus Beliefs under Almost Common Knowledge,”
+University of California at Berkeley.
+Kim, Y. (1996), “Equilibrium Selection in n-Person Coordination Games,” Games and
+Economic Behavior, 15, 203–227.
+Kohlberg, E. and J.-F. Mertens (1986), “On the Strategic Stability of Equilibria,” Econometrica, 54, 1003–1038.
+Krugman, P. (1991), “History Versus Expectations,” Quarterly Journal of Economics,
+106, 651–667.
+Laplace, P. (1824), Essai Philosophique sur les Probabilités. New York: Dover (English
+translation).
+Levin, J. (2000a), “Collective Reputation,” Stanford University.
+Levin, J. (2000b), “A Note on Global Equilibrium Selection in Overlapping Generations
+Games,” Stanford University.
+Marx, R. (2000), “Triggers and Equilibria in Self-Fulﬁlling Currency Collapses,”
+University of California at Berkeley.
+Matsui, A. (1999), “Multiple Investors and Currency Crises,” University of Tokyo.
+Matsui, A. and K. Matsuyama (1995), “An Approach to Equilibrium Selection,” Journal
+of Economic Theory, 65, 415–434.
+Mertens, J.-F. and Zamir, S. (1985), “Formulation of Bayesian Analysis for Games with
+Incomplete Information,” International Journal of Game Theory, 10, 619–632.
+Merton, R. (1974), “On the Pricing of Corporate Debt: The Risk Structure of Interest
+Rates,” Journal of Finance, 29, 449–470.
+Metz, C. (2000), “Private and Public Information in Self-Fulﬁlling Currency Crises,”
+University of Kassel.
+Milgrom, P. and J. Roberts (1990), “Rationalizability, Learning, and Equilibrium in
+Games with Strategic Complementarities,” Econometrica, 58, 1255–1277.
+Monderer, D. and D. Samet (1989), “Approximating Common Knowledge with Common
+Beliefs,” Games and Economic Behavior, 1, 170–190.
+Monderer, D. and D. Samet (1996), “Proximity of Incomplete Information in Games
+with Common Beliefs,” Mathematics of Operations Research, 21, 707–725.
+Monderer, D. and L. Shapley (1996), “Potential Games,” Games and Economic Behavior, 14, 124 –143.
+Morris, S. (1995), “Cooperation and Timing,” available at http://www.econ.yale.
+edu/˜smorris.
+Morris, S. (1997), “Interaction Games,” available at http://www.econ.yale.edu/˜smorris.
+Morris, S. (1999), “Potential Methods in Interaction Games,” available at http://www.
+econ.yale.edu/˜smorris.
+Morris, S. (2000), “Contagion,” Review of Economic Studies, 67, 57–78.
+Morris, S., R. Rob, and H. S. Shin (1995), “ p-Dominance and Belief Potential,” Econometrica, 63, 145–157.
+Morris, S. and H. S. Shin (1997), “Approximate Common Knowledge and Coordination:
+Recent Lessons from Game Theory,” Journal of Logic, Language, and Information,
+6, 171–190.
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+114
+
+Morris and Shin
+
+Morris, S. and H. S. Shin (1998), “Unique Equilibrium in a Model of Self-Fulﬁlling
+Currency Attacks,” American Economic Review, 88, 587–597.
+Morris, S. and H. S. Shin (1999a), “A Theory of the Onset of Currency Attacks,” in
+Asian Financial Crisis: Causes, Contagion and Consequences, (ed. by P.-R. Agenor,
+D. Vines, and A. Weber), Cambridge: Cambridge University Press.
+Morris, S. and H. S. Shin (1999b), “Coordination Risk and the Price of Debt,” available
+at http://www.econ.yale.edu/˜smorris.
+Morris, S. and H. S. Shin (2000), “Rethinking Multiple Equilibria in Macroeconomic Modelling,” NBER Macroeconomics Annual 2000, (ed. by B. Bernanke and
+K. Rogoff ) Cambridge, MA: MIT Press.
+Obstfeld, M. (1996), “Models of Currency Crises with Self-Fulﬁlling Features,” European Economic Review, 40, 1037–1047.
+Osborne, M. and A. Rubinstein (1994), A Course in Game Theory. Cambridge, MA:
+MIT Press.
+Oyama, D. (2000), “ p-Dominance and Equilibrium Selection under Perfect Foresight
+Dynamics,” University of Tokyo, Tokyo, Japan.
+Rochet, J.-C. and X. Vives (2000), “Coordination Failures and the Lender of Last Resort:
+Was Bagehot Right after All?” Universitat Autonoma de Barcelona.
+Rubinstein, A. (1989), “The Electronic Mail Game: Strategic Behavior under Almost
+Common Knowledge,” American Economic Review, 79, 385–391.
+Scaramozzino, S. and N. Vulkan (1999), “Noisy Implementation Cycles and the Informational Role of Policy,” University of Bristol.
+Schelling, T. (1960), Strategy of Conﬂict. Cambridge, MA: Harvard University Press.
+Selten, R. (1975), “Reexamination of the Perfectness Concept for Equilibrium Points in
+Extensive Games,” International Journal of Game Theory, 4, 25–55.
+Shin, H. S. (1996), “Comparing the Robustness of Trading Systems to Higher Order
+Uncertainty,” Review of Economic Studies, 63, 39–60.
+Shleifer, A. (1986), “Implementation Cycles,” Journal of Political Economy, 94, 1163–
+1190.
+Sorin, S. (1998), “On the Impact of an Event,” International Journal of Game Theory,
+27, 315–330.
+Townsend, R. (1983), “Forecasting the Forecasts of Others,” Journal of Political Economy, 91, 546 –588.
+Ui, T. (2000), “Generalized Potentials and Robust Sets of Equilibria,” University of
+Tsukuba.
+Ui, T. (2001), “Robust Equilibria of Potential Games,” Econometrica, 69, 1373–1380.
+van Damme, E. (1997), “Equilibrium Selection in Team Games,” in Understanding
+Strategic Interaction: Essays in Honor of Reinhard Selten, (ed. by W. Albers et al.),
+New York: Springer-Verlag.
+Vives, X. (1990), “Nash Equilibrium with Strategic Complementarities,” Journal of
+Mathematical Economics, 19, 305–321.
+Young, P. (1998), “Individual Strategy and Social Structure,” Princeton, NJ: Princeton
+University Press.
+
+Cambridge Collections Online © Cambridge University Press, 2006
+
+

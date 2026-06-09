@@ -1,0 +1,1494 @@
+FIRST-PRINCIPLES CLEAN RUN PLAN
+===============================
+
+Project:
+  /Users/khaled/GitHub/llm-global-games
+
+Plan file:
+  /Users/khaled/GitHub/llm-global-games/CLEAN_RUN/experiment_plan.txt
+
+Output root:
+  /Users/khaled/GitHub/llm-global-games/CLEAN_RUN/output
+
+Core rule:
+  Start from the question, not from the old code. The old code is useful only
+  if it serves the new design cleanly.
+
+Generator rule:
+  All main experiments use one common default signal-to-text generator unless
+  an experiment explicitly varies the generator.
+
+
+1. THE PAPER WE ARE ACTUALLY TRYING TO WRITE
+============================================
+
+The clean paper should make three claims, in this order.
+
+Claim 1: Language can implement a global-game information structure.
+  Agents receive private prose briefings generated from noisy private signals.
+  Their join rates move monotonically with regime weakness.
+
+Claim 2: Sender-side surveillance suppresses action through messages.
+  The surveillance warning is shown only when senders write messages. Receivers
+  see the resulting messages but receive no surveillance warning in their
+  decision prompt. Joining falls.
+
+Claim 3: The mechanism is loss of public, action-cueing language.
+  Surveillance does not need to erase bad news. It can leave first-order
+  weakness information in the channel while making it less direct, less
+  mutually legible, and less useful for coordination.
+
+Everything in the clean run exists to test one of those claims. If an
+experiment does not help test one of them, it goes to appendix or is dropped.
+
+The motivating question:
+
+  When everyone knows the regime is weak, can surveillance still keep them home?
+
+Working title:
+
+  Speaking in Code: When Everyone Knows the Regime Is Weak, Can Surveillance
+  Still Keep Them Home?
+
+
+2. CLEAN IDENTIFICATION MAP
+===========================
+
+The design needs to distinguish five channels.
+
+Channel A: private signal use.
+  Receivers act on their own briefing.
+
+Channel B: communication value.
+  Peer messages change decisions relative to private briefings alone.
+
+Channel C: sender-side surveillance.
+  Monitoring changes what senders write, and those changed messages change
+  receiver decisions.
+
+Channel D: generic message degradation.
+  Surveilled messages may become worse evidence about regime fall even outside
+  a coordination task.
+
+Channel E: coordination-specific publicness.
+  Holding first-order facts fixed, less direct or less mutually legible
+  language reduces willingness to join more than it reduces private belief that
+  the regime is weak.
+
+The clean run is successful only if the final evidence can say:
+
+  A is present.
+  C is present.
+  D may be present.
+  E is separately measured.
+
+Do not rely on post-decision beliefs for E. Use pre-decision beliefs.
+
+Important distinction:
+  First-order state beliefs are beliefs about regime weakness or regime fall.
+  Participation beliefs are beliefs about how many citizens will join.
+  Higher-order publicness beliefs are beliefs about whether other citizens
+  understand the same information as a shared reason to act.
+
+The clean design must measure all three. A paper about publicness cannot rely
+only on "how likely is regime fall?" or "what percent will join?"
+
+
+3. HOW TO CODE THIS CLEANLY
+===========================
+
+The current repo can be reused, but the clean run should add a small
+experiment layer rather than keep growing ad hoc scripts.
+
+Build one clean package:
+
+  clean_run/
+    __init__.py
+    config.py
+    schema.py
+    grids.py
+    message_bank.py
+    runner.py
+    analyze.py
+    qc.py
+    plans/
+      main.yaml
+      pilot.yaml
+
+This can live under:
+
+  /Users/khaled/GitHub/llm-global-games/CLEAN_RUN/code
+
+or, if we want it importable:
+
+  /Users/khaled/GitHub/llm-global-games/clean_run
+
+Prefer importable package if this becomes the new canonical pipeline.
+
+
+3.1 One manifest, not scattered shell commands
+----------------------------------------------
+
+Create a single YAML manifest that declares every experiment arm.
+
+Required fields per arm:
+
+  arm_id
+  claim
+  model
+  role
+  n_agents
+  n_countries
+  n_periods
+  seed
+  theta_grid_mode
+  message_source
+  message_transform
+  decision_task
+  message_stage_context
+  decision_context
+  belief_timing
+  belief_information
+  output_dir
+  expected_rows
+  primary_outcomes
+  preregistered_comparisons
+  power_target
+  exclusion_rules
+
+Example:
+
+  arm_id: surv_sender_only_mistral
+  claim: sender_side_surveillance
+  model: mistralai/mistral-small-creative
+  role: writer_and_reader
+  n_agents: 25
+  n_countries: 5
+  n_periods: 200
+  seed: 5150
+  theta_grid_mode: random_normal
+  message_source: live
+  message_transform: none
+  decision_task: coordination
+  message_stage_context: surveillance_full
+  decision_context: none
+  belief_timing: none
+  belief_information: none
+  output_dir: CLEAN_RUN/output/main/surv_sender_only_mistral
+  expected_rows: 1000
+  primary_outcomes:
+    - join_fraction_valid
+    - message_sent
+
+The runner reads the manifest and executes arms. The analysis reads the same
+manifest and knows the intended comparisons. No hand reconstruction.
+
+
+3.2 One data schema
+-------------------
+
+Every arm should produce two files.
+
+Period file:
+
+  periods.parquet
+
+One row per country-period-arm.
+
+Required columns:
+
+  run_id
+  arm_id
+  model
+  country
+  period
+  seed
+  theta
+  z_public
+  sigma
+  benefit
+  cost
+  theta_star
+  n_agents
+  n_valid
+  n_join
+  join_fraction_valid
+  coup_success
+  theoretical_attack
+  message_stage_context
+  decision_context
+  decision_task
+  message_source_arm
+  message_transform
+  belief_timing
+  belief_information
+  api_error_rate
+  unparseable_rate
+
+Agent file:
+
+  agents.parquet
+
+One row per agent-period-arm.
+
+Required columns:
+
+  run_id
+  arm_id
+  model
+  country
+  period
+  agent_id
+  theta
+  signal
+  z_score
+  briefing_text
+  message_sent
+  messages_received
+  decision
+  join
+  reasoning
+  belief_pre_success
+  belief_pre_join_share
+  belief_pre_shared_understanding
+  belief_pre_others_expect_join
+  belief_post_success
+  belief_post_join_share
+  belief_post_shared_understanding
+  belief_post_others_expect_join
+  punishment_risk
+  api_error
+  parse_error
+  prompt_hash
+  response_hash
+
+Use parquet for analysis. Export CSV samples for inspection.
+
+
+3.3 One matching key
+--------------------
+
+All causal comparisons use this key:
+
+  model
+  country
+  period
+  theta
+  z_public
+  benefit
+  cost
+  theta_star
+
+For fixed-message replay, also track:
+
+  message_source_arm
+  message_source_country
+  message_source_period
+  message_source_agent_id
+
+If a comparison is supposed to be matched and exact overlap is below 95%, stop.
+Do not silently switch to unpaired inference.
+
+
+3.4 First-class message banks
+-----------------------------
+
+Messages are experimental objects. Treat them as data, not incidental strings.
+
+Message bank schema:
+
+  message_id
+  source_arm_id
+  country
+  period
+  sender_agent_id
+  theta
+  sender_signal
+  sender_z_score
+  original_message
+  direct_message
+  coded_message
+  factual_summary
+  valence
+  sentiment_score
+  hedge_density
+  specificity_score
+  verbosity_tokens
+  syntactic_complexity
+  embedding_vector_id
+  first_order_similarity
+  directness_score
+  codedness_score
+  risk_salience_score
+  factual_equivalence_pass
+  style_balance_pass
+  qc_notes
+
+Message banks should be generated once, QC'd, frozen, and then replayed.
+
+
+3.5 Pre-registration and freeze point
+-------------------------------------
+
+Before any main run starts, freeze:
+
+  CLEAN_RUN/plans/main.yaml
+  CLEAN_RUN/code/clean_run/analyze.py
+  CLEAN_RUN/code/clean_run/qc.py
+  CLEAN_RUN/message_banks/direct_coded_pairs.parquet
+  CLEAN_RUN/artifacts/power_analysis.json
+
+Record:
+
+  git commit hash
+  git diff status
+  exact primary estimands
+  exclusion rules
+  clustering/bootstrap rules
+  minimum detectable effects
+  pilot-to-main decision rules
+
+Preferred registry:
+  OSF or AEA registry.
+
+Minimum if no registry is used:
+  create CLEAN_RUN/preregistration.md and commit it before the main runs.
+
+Rule:
+  Pilot data can tune implementation and power. Pilot data cannot change the
+  sign, outcome definition, or preferred estimand after the main run begins.
+
+
+3.6 Reproducibility rules
+-------------------------
+
+Every run writes:
+
+  manifest.yaml
+  periods.parquet
+  agents.parquet
+  stdout.txt
+  stderr.txt
+  run_metadata.json
+  samples/periods_5rows.csv
+  samples/agents_5rows.csv
+  qc.json
+
+run_metadata.json must contain:
+
+  git commit hash
+  dirty git status
+  command
+  start time
+  end time
+  model
+  API base URL
+  seed
+  package versions
+  environment variables used, excluding secrets
+
+
+3.7 Information-state table
+---------------------------
+
+The paper must include a main-text table showing what each actor sees in each
+arm.
+
+Columns:
+  arm
+  sender sees private briefing
+  sender sees monitoring warning
+  receiver sees private briefing
+  receiver sees peer messages
+  receiver sees monitoring warning
+  belief prompt includes messages
+  belief timing
+  decision task
+
+Purpose:
+  This is not appendix material. The whole identification strategy depends on
+  leak prevention.
+
+
+4. THE MINIMUM BEAUTIFUL EXPERIMENT SUITE
+=========================================
+
+The clean suite has six experiment families.
+
+Family 1: Signal benchmark.
+Family 2: Sender-side surveillance.
+Family 3: Message value controls.
+Family 4: Direct/coded mechanism.
+Family 5: Pre-decision belief mechanism.
+Family 6: Matched cross-task decomposition.
+
+Everything else is secondary.
+
+
+5. FAMILY 1: SIGNAL BENCHMARK
+=============================
+
+Purpose:
+  Show that the prose signal environment behaves like a global-game signal
+  environment.
+
+Models:
+  Primary:
+    mistralai/mistral-small-creative
+
+  Replication:
+    meta-llama/llama-3.3-70b-instruct
+    qwen/qwen3-30b-a3b-instruct-2507
+    openai/gpt-oss-120b
+    qwen/qwen3-235b-a22b-2507
+
+Optional appendix:
+  arcee-ai/trinity-large-preview:free
+  minimax/minimax-m2-her
+
+Arms:
+
+  pure
+    Private briefing only.
+
+  scramble
+    Same marginal briefing distribution, but break theta-to-briefing link.
+
+  flip
+    Negate signal direction.
+
+Rows:
+  Main: 1000 period rows per model per arm.
+  Pilot: 50 period rows per model per arm.
+
+Outcomes:
+  join_fraction_valid
+  r(join_fraction_valid, theta)
+  r(join_fraction_valid, theoretical_attack)
+  fitted logistic slope
+  fitted logistic midpoint
+  parse/API error rates
+
+Success pattern:
+  pure: join falls as theta rises.
+  scramble: relationship collapses.
+  flip: relationship reverses.
+
+Pre-specified falsifier:
+  "Threshold-like" is supported only if all of these hold in the pure arm:
+
+  1. Monotonicity:
+     The smoothed join curve is weakly decreasing over the central theta range,
+     allowing only small local reversals inside the bootstrap confidence band.
+
+  2. Direction:
+     r(join_fraction_valid, theta) < 0 and
+     r(join_fraction_valid, theoretical_attack) > 0.
+
+  3. Shape:
+     A decreasing logistic fit improves out-of-sample log loss or RMSE over a
+     flat mean-only model. If a linear model fits as well as a logistic model,
+     call the result monotone signal use, not threshold-like action.
+
+  4. Falsification:
+     Scramble must attenuate the pure-arm relationship by at least 70%, and
+     flip must reverse the sign.
+
+If these fail, do not describe the benchmark as threshold-like. Say the prose
+briefings induce weaker monotone signal use, or drop the global-game framing.
+
+Interpretation:
+  This proves monotone threshold-like signal use. It does not prove exact
+  Bayesian Nash equilibrium recovery.
+
+
+6. FAMILY 2: SENDER-SIDE SURVEILLANCE
+=====================================
+
+Purpose:
+  Test the main treatment.
+
+Design:
+  Sender writes a message after seeing a private briefing. In the surveillance
+  arm, sender sees a consequential monitoring warning. Receiver decision prompt
+  has no surveillance warning in either arm.
+
+Arms:
+
+  comm_baseline
+    Message stage: trusted contacts.
+    Decision context: none.
+
+  comm_surveillance_sender_only
+    Message stage: trusted contacts plus consequential monitoring warning.
+    Decision context: none.
+
+Models:
+  All six frozen main models from Section 12.
+
+Rows:
+  1000 period rows per arm per model.
+
+Primary estimand:
+
+  surveillance_effect =
+    mean(join_fraction_valid | surveillance messages)
+    - mean(join_fraction_valid | baseline messages)
+
+Inference:
+  Paired by exact task cell.
+  Report model-specific deltas and equal-weight average across models.
+
+Success pattern:
+  surveillance_effect < 0.
+  r(join, theoretical_attack) remains positive under surveillance.
+
+Error-rate rule:
+  Parse and API errors must be reported by arm. If the surveillance arm has a
+  higher error rate than baseline by more than 1 percentage point, run a
+  sensitivity analysis that treats missing/invalid responses as JOIN, then as
+  STAY, then drops the affected country-period cells. The main estimate is not
+  clean unless the sign survives all three.
+
+Interpretation:
+  Sender-side monitoring changes downstream action through messages.
+
+
+7. FAMILY 3: MESSAGE VALUE CONTROLS
+===================================
+
+Purpose:
+  Establish that receivers use peer messages and separate sender-side
+  surveillance from generic observation and direct receiver warning.
+
+
+7.1 No-message control
+----------------------
+
+Arm:
+  no_peer_messages
+
+Design:
+  Agents receive their private briefing and no peer messages. The communication
+  protocol is otherwise skipped cleanly.
+
+Models:
+  DeepSeek V4 Flash, Llama 4 Maverick, Qwen3 30B A3B Instruct 2507.
+
+Rows:
+  1000 period rows per model.
+
+Estimands:
+  no_message_effect = no_message - comm_baseline
+  poison_vs_silence = surveillance_sender_only - no_message
+
+Interpretation:
+  If no messages reduce joining, peer messages matter. If surveillance is below
+  silence, messages are actively harmful in that model. If surveillance is above
+  silence, messages remain informative but degraded.
+
+
+7.2 Degraded-message control
+----------------------------
+
+Arm:
+  degraded_messages
+
+Design:
+  Replace peer messages with generic uninformative text. No surveillance
+  framing.
+
+Models:
+  DeepSeek V4 Flash primary. Llama 4 Maverick optional.
+
+Rows:
+  500 to 1000 period rows.
+
+Interpretation:
+  Tests whether low-quality messages alone can move decisions.
+
+
+7.3 Observation placebos
+------------------------
+
+Arms:
+  monitored_for_research
+  anonymous_aggregation
+
+Design:
+  Same baseline-plus-warning structure, but remove personal consequences.
+
+Models:
+  DeepSeek V4 Flash primary. Llama 4 Maverick replication if budget permits.
+
+Rows:
+  500 to 1000 period rows per arm.
+
+Success pattern:
+  Effects are much smaller than consequential surveillance.
+
+Interpretation:
+  The main effect is not generic observation.
+
+
+7.4 Direct receiver warning
+---------------------------
+
+Arm:
+  fixed_baseline_messages_plus_receiver_warning
+
+Design:
+  Replay baseline messages exactly, but add a surveillance warning to the
+  receiver's decision prompt.
+
+Rows:
+  500 to 1000 period rows.
+
+Interpretation:
+  Direct deterrence exists, but it is not the main sender-only design.
+
+
+8. FAMILY 4: DIRECT/CODED MECHANISM
+===================================
+
+Purpose:
+  This is the most important new experiment. It makes codedness causal.
+
+Question:
+  Holding factual content fixed, does coded/deniable language reduce joining
+  relative to direct language?
+
+Reviewer risk:
+  This arm does nearly all of the causal mechanism work. It cannot simply
+  compare "direct" and "coded" messages if those messages also differ in
+  verbosity, hedge density, specificity, sentiment, syntactic complexity, or
+  fear salience. If those dimensions are imbalanced, the treatment is a bundle
+  and the paper cannot call the effect codedness.
+
+
+8.1 Build the message bank
+--------------------------
+
+Source:
+  Use messages from baseline and surveillance source runs, but only as raw
+  material. The experimental object is the paired rewrite.
+
+Sampling:
+  Focus on marginal states where action is not mechanically 0 or 1.
+
+Recommended theta support:
+  theta between -0.25 and 0.75.
+
+For each selected source message, create:
+
+  direct version:
+    Plain, explicit, names regime/security/action when relevant.
+
+  coded version:
+    Same facts, same valence, same uncertainty, but deniable and indirect.
+
+Hard constraints:
+  - no new facts;
+  - no removed core facts;
+  - no added surveillance warning;
+  - no added punishment threat;
+  - no change in whether the message implies weakness or strength;
+  - similar length;
+  - similar hedge density;
+  - similar sentiment;
+  - similar specificity;
+  - similar syntactic complexity;
+  - similar urgency;
+  - natural language in both arms.
+
+QC:
+  Use at least two independent QC systems before freezing the bank:
+
+  1. LLM judge with a fixed rubric.
+  2. Embedding-based similarity for first-order content.
+  3. Human raters on a random subset, if feasible.
+
+  The preferred design uses all three.
+
+QC questions:
+  1. Do both versions imply the same regime strength?
+  2. Is the coded version less direct?
+  3. Does either version introduce extra punishment risk?
+  4. Is either version confusing or nonsensical?
+  5. Are length, hedge density, specificity, sentiment, and urgency balanced?
+
+Manual audit:
+  Inspect 50 random pairs before pilot.
+
+Stop rule:
+  If more than 5% of audited pairs fail factual equivalence, rebuild the bank.
+  If any non-coded dimension differs by more than 0.10 standardized units after
+  matching, rebalance or report the treatment as a bundled language-style
+  intervention rather than a codedness intervention.
+
+
+8.1.1 Matching procedure
+------------------------
+
+Pre-register the matching procedure before the message bank is frozen.
+
+For each pair, compute:
+
+  first_order_embedding_similarity
+  directness_score
+  codedness_score
+  sentiment_score
+  hedge_density
+  specificity_score
+  risk_salience_score
+  urgency_score
+  token_count
+  syntactic_complexity
+
+Pair acceptance rules:
+
+  first_order_embedding_similarity >= 0.88
+  codedness_score_coded > codedness_score_direct
+  directness_score_direct > directness_score_coded
+  abs(sentiment_direct - sentiment_coded) <= 0.10 SD
+  abs(hedge_density_direct - hedge_density_coded) <= 0.10 SD
+  abs(specificity_direct - specificity_coded) <= 0.10 SD
+  abs(risk_salience_direct - risk_salience_coded) <= 0.10 SD
+  abs(token_count_direct - token_count_coded) <= 20%
+
+Report a balance table for all dimensions. This table belongs in the mechanism
+section or first appendix table after the mechanism section.
+
+
+8.2 Receiver experiment
+-----------------------
+
+Arms:
+
+  direct_replay
+    Receivers see direct messages.
+
+  coded_replay
+    Receivers see coded messages.
+
+Optional:
+
+  original_replay
+    Receivers see source messages.
+
+Decision context:
+  none.
+
+Beliefs:
+  Elicit pre-decision beliefs with messages included.
+
+Models:
+  DeepSeek V4 Flash primary.
+  Llama 4 Maverick replication.
+  Qwen3 30B A3B Instruct 2507 replication if DeepSeek/Llama agree.
+
+Rows:
+  Pilot: 50 period rows per arm.
+  Main: 1000 period rows per arm.
+
+Primary estimand:
+
+  coded_effect = mean(join | coded) - mean(join | direct)
+
+Secondary estimands:
+
+  first_order_belief_effect =
+    mean(P_success_pre | coded) - mean(P_success_pre | direct)
+
+  participation_belief_effect =
+    mean(expected_join_share_pre | coded)
+    - mean(expected_join_share_pre | direct)
+
+  publicness_belief_effect =
+    mean(shared_understanding_pre | coded)
+    - mean(shared_understanding_pre | direct)
+
+Strong result:
+  coded_effect < 0.
+  first_order_belief_effect is small.
+  participation_belief_effect and/or publicness_belief_effect falls.
+
+Interpretation:
+  The mechanism is not merely less information about theta. It is reduced
+  public/action-cueing content.
+
+Robustness:
+  Estimate coded_effect controlling for the measured message dimensions:
+
+    join ~ coded + first_order_content_score + sentiment + hedge_density
+           + specificity + risk_salience + token_count + syntactic_complexity
+           + theta controls + model fixed effects
+
+  The coefficient on coded should remain negative. If it does not, the paper
+  should say surveillance changes a bundle of language features, not codedness
+  alone.
+
+
+9. FAMILY 5: PRE-DECISION BELIEF MECHANISM
+==========================================
+
+Purpose:
+  Replace post-decision belief evidence with pre-action evidence.
+
+Question:
+  Before the decision, what beliefs move under surveillance?
+
+Design:
+  2 x 2 factorial.
+
+Factor 1: message environment
+  baseline communication
+  sender-side surveillance
+
+Factor 2: belief information set
+  messages excluded from belief prompt
+  messages included in belief prompt
+
+Timing:
+  Beliefs are elicited before action.
+
+Beliefs:
+  First-order:
+    How likely is the uprising/regime fall to succeed?
+
+  Participation:
+    What percentage of citizens will JOIN?
+
+  Higher-order publicness:
+    What percentage of citizens will believe that others received similarly
+    weakness-indicating messages?
+
+  Higher-order coordination:
+    What percentage of citizens will believe that other citizens expect many
+    people to JOIN?
+
+Arms:
+  prebelief_comm_messages_excluded
+  prebelief_surv_messages_excluded
+  prebelief_comm_messages_included
+  prebelief_surv_messages_included
+
+Model:
+  DeepSeek V4 Flash primary.
+  Llama 4 Maverick replication optional.
+
+Rows:
+  1000 period rows per arm.
+
+Primary estimands:
+
+  delta_action_excluded
+  delta_success_belief_excluded
+  delta_join_belief_excluded
+  delta_publicness_belief_excluded
+  delta_others_expect_join_excluded
+
+  delta_action_included
+  delta_success_belief_included
+  delta_join_belief_included
+  delta_publicness_belief_included
+  delta_others_expect_join_included
+
+Strong result:
+  Actions fall under surveillance before any post-decision rationalization.
+  First-order state beliefs move less than participation/publicness beliefs.
+  Message-included beliefs reveal what part of the message environment changed.
+  The theoretically strongest result is:
+
+    surveillance shifts higher-order publicness or coordination beliefs more
+    than first-order state beliefs.
+
+Interpretation:
+  The wedge is not an artifact of asking agents after they already chose.
+
+
+10. FAMILY 6: MATCHED CROSS-TASK DECOMPOSITION
+==============================================
+
+Purpose:
+  Separate generic message degradation from coordination-specific suppression.
+
+Design:
+  Generate matched baseline and surveillance message banks on identical task
+  cells. Replay each bank into two decision tasks.
+
+Message sources:
+  baseline messages
+  surveillance messages
+
+Decision tasks:
+  coordination task:
+    JOIN/STAY uprising with strategic complementarity.
+
+  individual bet task:
+    JOIN means make a private bet that the regime falls. Payoff does not depend
+    on what others choose.
+
+Four arms:
+  coord_with_baseline_messages
+  coord_with_surveillance_messages
+  bet_with_baseline_messages
+  bet_with_surveillance_messages
+
+Model:
+  Llama 4 Maverick primary for this decomposition.
+  Mistral Small 4 replication if budget permits.
+
+Rows:
+  Start from pilot variance, then power the interaction. Do not assume 1000
+  rows x 4 arms is enough.
+
+  Pilot:
+    100 period rows per arm.
+
+  Main:
+    Use the pilot to calculate the required rows for the interaction
+    coordination_specific = coord_delta - bet_delta.
+
+Primary estimands:
+
+  coord_delta =
+    mean(join | coordination, surveillance messages)
+    - mean(join | coordination, baseline messages)
+
+  bet_delta =
+    mean(join | individual bet, surveillance messages)
+    - mean(join | individual bet, baseline messages)
+
+  coordination_specific =
+    coord_delta - bet_delta
+
+Inference:
+  Exact paired comparison over task cells.
+  Bootstrap by country-period.
+  Primary regression:
+
+    join ~ surveillance_message * coordination_task + task-cell controls
+
+  The coefficient on surveillance_message:coordination_task is the estimand.
+
+Strong result:
+  bet_delta < 0.
+  coord_delta < bet_delta.
+  coordination_specific < 0.
+
+Interpretation:
+  Some of surveillance is generic message degradation, and an additional part
+  is specific to coordination/publicness.
+
+Power rule:
+  The main run must be powered on the interaction term, not the main
+  surveillance effect. Use pilot estimates of:
+
+    country-period clustered variance
+    within-cell correlation across replay arms
+    expected coord_delta
+    expected bet_delta
+
+  Target:
+    80% power for the interaction at alpha = 0.05.
+
+  Save:
+    CLEAN_RUN/artifacts/power_cross_task_interaction.json
+
+  If the powered sample exceeds budget, report the cross-task result as
+  descriptive and do not use it as a central causal decomposition.
+
+
+11. CROSS-MODEL GENERALIZATION
+==============================
+
+Purpose:
+  Rule out same-model stylistic reflexivity.
+
+Design:
+  One model writes messages. Another model reads them. Compare baseline-written
+  messages to surveillance-written messages.
+
+Directions:
+  Llama 4 Maverick writes, Qwen3 30B A3B Instruct 2507 reads.
+  Qwen3 30B A3B Instruct 2507 writes, Llama 4 Maverick reads.
+  Mistral Small 4 writes, DeepSeek V4 Flash reads.
+  DeepSeek V4 Flash writes, Mistral Small 4 reads.
+
+Rows:
+  1000 period rows per arm if budget permits.
+  500 rows per arm minimum.
+
+Primary estimands:
+  reader_delta for each direction.
+
+Strong result:
+  Cross-model reader_delta < 0 in both directions, or clearly in one direction
+  with a plausible writer heterogeneity explanation.
+
+Interpretation:
+  The effect travels through message content, not private model self-recognition.
+
+
+12. MODEL SET AND SAMPLE SIZES
+==============================
+
+Pick one model-selection story and stick to it.
+
+Recommended story:
+  Robustness across current cheap OpenRouter model families.
+
+Implication:
+  Choose models to maximize family/provider/training diversity at reasonable
+  cost. This is not a clean capability-gradient design. Do not claim that the
+  effect scales with capability unless a separate within-family ladder is run
+  and powered for that question.
+
+OpenRouter verification:
+  Looked up live on May 7, 2026 using:
+    https://openrouter.ai/api/v1/models
+    https://openrouter.ai/api/v1/models/<model_id>/endpoints
+
+  OpenRouter prices are per token in the API response. The table below reports
+  dollars per million input and output tokens.
+
+Frozen main model roster:
+
+  1. qwen/qwen3-30b-a3b-instruct-2507
+     Display name: Qwen: Qwen3 30B A3B Instruct 2507.
+     Family: Alibaba/Qwen.
+     Architecture: MoE, about 3B active / 30B total.
+     OpenRouter canonical slug: qwen/qwen3-30b-a3b-instruct-2507.
+     Context: 262144 tokens.
+     Price: $0.09 / M input, $0.30 / M output.
+     Preferred provider routing:
+       provider.only = ["siliconflow"]
+       provider.allow_fallbacks = false
+     Backup if SiliconFlow is unavailable before the run:
+       provider.only = ["nebius"] or ["atlas-cloud"].
+
+  2. google/gemma-4-26b-a4b-it
+     Display name: Google: Gemma 4 26B A4B.
+     Family: Google/Gemma.
+     Architecture: MoE, about 4B active / 26B total.
+     OpenRouter canonical slug: google/gemma-4-26b-a4b-it-20260403.
+     Context: 262144 tokens.
+     Price: $0.06 / M input, $0.33 / M output at the cheapest endpoint.
+     Preferred provider routing:
+       provider.only = ["deepinfra"]
+       provider.allow_fallbacks = false
+     Reason for using DeepInfra rather than the absolute cheapest DekaLLM
+     endpoint:
+       the price difference is negligible and DeepInfra is a clearer pinned
+       provider for replication. If minimizing cost is the only criterion, use
+       provider.only = ["dekallm"] instead.
+
+  3. deepseek/deepseek-v4-flash
+     Display name: DeepSeek: DeepSeek V4 Flash.
+     Family: DeepSeek.
+     Architecture: MoE.
+     OpenRouter canonical slug: deepseek/deepseek-v4-flash-20260423.
+     Context: 1048576 tokens.
+     Price: $0.14 / M input, $0.28 / M output.
+     Preferred provider routing:
+       provider.only = ["deepseek"]
+       provider.allow_fallbacks = false
+     Backup if direct DeepSeek routing is unavailable before the run:
+       provider.only = ["deepinfra"], ["siliconflow"], or ["parasail"].
+
+  4. meta-llama/llama-4-maverick
+     Display name: Meta: Llama 4 Maverick.
+     Family: Meta/Llama.
+     Architecture: MoE, 17B active / 128 experts.
+     OpenRouter canonical slug:
+       meta-llama/llama-4-maverick-17b-128e-instruct.
+     Context: 1048576 tokens.
+     Price: $0.15 / M input, $0.60 / M output on DeepInfra.
+     Preferred provider routing:
+       provider.only = ["deepinfra"]
+       provider.allow_fallbacks = false
+     Reason for choosing Maverick over Scout:
+       Scout is cheaper at its DeepInfra endpoint, but that endpoint was not
+       healthy at lookup time. Maverick is the stronger Meta entry and still
+       cheap at these volumes.
+
+  5. mistralai/mistral-small-2603
+     Display name: Mistral: Mistral Small 4.
+     Family: Mistral.
+     Architecture: dense, 24B class.
+     OpenRouter canonical slug: mistralai/mistral-small-2603.
+     Context: 262144 tokens.
+     Price: $0.15 / M input, $0.60 / M output.
+     Preferred provider routing:
+       provider.only = ["mistral"]
+       provider.allow_fallbacks = false
+     Role:
+       dense-architecture anchor and European-lab anchor.
+
+  6. z-ai/glm-5.1
+     Display name: Z.ai: GLM 5.1.
+     Family: Zhipu/Z.ai.
+     Architecture: MoE, frontier-tier total parameter count.
+     OpenRouter canonical slug: z-ai/glm-5.1-20260406.
+     Context: 202752 tokens.
+     Price: $1.05 / M input, $3.50 / M output on the cheapest stable endpoint.
+     Preferred provider routing:
+       provider.only = ["deepinfra"]
+       provider.allow_fallbacks = false
+     Note:
+       This is not as cheap as the planning note originally assumed. Keep it as
+       the one frontier-tier anchor. If the budget cap becomes binding, replace
+       it before running anything with z-ai/glm-4.7-flash at $0.06 / M input
+       and $0.40 / M output on DeepInfra.
+
+Provider pinning rule:
+  Do not encode providers by changing the model string. OpenRouter provider
+  routing is request metadata:
+
+    provider = {
+      "only": ["deepinfra"],
+      "allow_fallbacks": false
+    }
+
+  Freeze both the model id and the provider routing block in main.yaml.
+  If a provider must be changed before the first pilot call, change it once,
+  log the reason, and re-freeze the manifest. Do not switch providers after
+  seeing outcomes.
+
+Retired from the clean main run:
+  Mistral Small Creative.
+  Llama 3.3 70B.
+  GPT-OSS 120B.
+  Qwen3 235B.
+  Trinity Large.
+  MiniMax M2-Her.
+
+Reason:
+  The new run should not look like a legacy convenience sample. It should be a
+  frozen May 2026 roster of current, cheap, family-diverse models.
+
+Alternative story:
+  Capability gradient.
+
+If using this story instead, pick a within-family ladder and analyze whether
+effect size changes with capability. Do not present that as broad cross-family
+robustness.
+
+Recommended rows:
+
+  Signal benchmark:
+    1000 rows x 3 arms x 5 main models
+
+  Sender-side surveillance:
+    1000 rows x 2 arms x 5 main models
+
+  Message controls:
+    1000 rows x 3 controls x 3 models where relevant
+
+  Direct/coded:
+    1000 rows x 2 arms x 2 models
+
+  Pre-belief factorial:
+    1000 rows x 4 arms x 1 model, plus Llama optional
+
+  Cross-task:
+    1000 rows x 4 arms x 1 model, plus Mistral optional
+
+Pilot:
+  50 rows per new arm before full run.
+
+Appendix replacement rule:
+  If any frozen main model becomes unavailable before pilot execution, replace
+  it before any outcomes are inspected. The replacement must be:
+    new enough for the May 2026 roster;
+    under roughly $0.25 / M input and $0.75 / M output, unless it is explicitly
+    the frontier-tier anchor;
+    from a different family when possible.
+
+
+13. WHAT TO DROP OR DEMOTE
+==========================
+
+Drop from main text unless the new paper needs them:
+
+  - broad Bayesian persuasion / infodesign section;
+  - propaganda dose response;
+  - many small generator variants;
+  - large hypothesis family with weak or unrelated tests;
+  - claims about exact Bayesian rationality;
+  - post-decision belief wedge as main mechanism evidence.
+
+Keep as appendix only if cheap and already supported:
+
+  - temperature robustness;
+  - agent count robustness;
+  - network density robustness;
+  - text baseline;
+  - generator style robustness;
+  - punishment-risk elicitation.
+  - human-speech external-validity comparison.
+
+Reason:
+  The clean paper should be sharper: surveillance changes language, changed
+  language changes coordination, and codedness/publicness is causally tested.
+
+
+13.1 External-validity hook
+---------------------------
+
+Make external validity offensive, not defensive.
+
+Question:
+  Do LLM-generated coded messages resemble documented features of real
+  surveilled or censored human communication?
+
+Design:
+  Build a small comparison corpus from a real surveilled context or from
+  published datasets. Candidate domains:
+
+    Egyptian social media / protest-era speech around 2011-2013.
+    Chinese microblog/censorship datasets used in the collective-action
+    censorship literature.
+    Publicly available dissident or censored-speech corpora from published
+    studies.
+
+Do not overclaim:
+  This is not a causal human validation. It is a linguistic external-validity
+  check.
+
+Features:
+  coded metaphor frequency
+  direct regime/action term frequency
+  hedge density
+  euphemism/deniability markers
+  sentiment
+  specificity
+  risk/fear language
+
+Figure:
+  One appendix figure comparing:
+
+    baseline LLM messages
+    surveilled LLM messages
+    human coded/surveilled speech
+
+Strong result:
+  Surveilled LLM messages move toward the human coded/surveilled corpus on the
+  same dimensions where baseline messages differ.
+
+If no suitable corpus is available:
+  Say "Dependency needed" and keep the external-validity section honest.
+
+
+14. ANALYSIS PLAN
+=================
+
+One analysis script should produce one clean stats file:
+
+  CLEAN_RUN/artifacts/verified_stats.json
+
+It should read:
+
+  CLEAN_RUN/output/**/periods.parquet
+  CLEAN_RUN/output/**/agents.parquet
+  CLEAN_RUN/message_banks/*.parquet
+  CLEAN_RUN/plans/main.yaml
+
+Primary tables:
+
+  Table 1: Experiment arms and sample sizes.
+  Table 2: Signal benchmark by model.
+  Table 3: Sender-side surveillance effects by model.
+  Table 4: Mechanism tests.
+  Table 5: Cross-task decomposition.
+
+Primary figures:
+
+  Figure 1: Signal benchmark, pure/scramble/flip.
+  Figure 2: Sender-side surveillance join curves.
+  Figure 3: Message text shift, direct to coded.
+  Figure 4: Direct/coded intervention effects.
+  Figure 5: Pre-decision beliefs and actions.
+  Figure 6: Cross-task decomposition.
+
+Inference rules:
+
+  Use paired tests for matched task-cell comparisons.
+  Use bootstrap by country-period for composite effects.
+  Report model-specific effects before pooled effects.
+  Report exact row counts and parse/API errors.
+  Test arm-conditional parse/API error rates.
+  Run missing-response sensitivity if error rates differ by arm.
+  Power interaction terms, not only main effects.
+  Do not interpret null placebos as equivalence unless powered for equivalence.
+
+Pre-registration:
+  The analysis script and manifest are frozen before main runs. The paper should
+  be able to say which outcomes, exclusions, comparisons, and power targets were
+  pre-registered.
+
+
+15. PAPER STRUCTURE IMPLIED BY THIS PLAN
+========================================
+
+Title direction:
+  Speaking in Code: When Everyone Knows the Regime Is Weak, Can Surveillance
+  Still Keep Them Home?
+
+Alternative mechanism-forward subtitle:
+  How Surveillance Reshapes the Publicness of Communication
+
+Abstract structure:
+  1. State coordination problem.
+  2. Describe sender-side surveillance design.
+  3. Show surveillance reduces joining.
+  4. Show messages shift direct to coded.
+  5. Show direct/coded intervention isolates mechanism.
+  6. Show cross-task decomposition separates generic degradation from
+     coordination-specific suppression.
+
+Main sections:
+
+  1. Introduction.
+  2. Conceptual framework: information, publicness, and coordination.
+  3. Experimental environment.
+  4. Benchmark: prose private signals generate threshold-like action.
+  5. Sender-side surveillance.
+  6. Mechanism: codedness, beliefs, and cross-task decomposition.
+  7. External validity: comparison to human coded speech.
+  8. Limitations.
+
+Key discipline:
+  Do not say "LLMs are Bayesian citizens."
+  Say "LLM agents provide a controlled language environment for isolating a
+  communication channel."
+
+
+16. BUILD ORDER
+===============
+
+Step 1: Build clean_run schema and manifest runner.
+  Deliverable:
+    pilot.yaml runs pure, comm, surveillance, and direct/coded toy arms.
+
+Step 2: Build parquet output and QC.
+  Deliverable:
+    every pilot arm writes periods.parquet, agents.parquet, qc.json.
+
+Step 3: Build message bank machinery.
+  Deliverable:
+    direct/coded message pairs with automated and manual QC.
+
+Step 4: Run pilots.
+  Arms:
+    pure
+    scramble
+    flip
+    comm_baseline
+    comm_surveillance_sender_only
+    direct_replay
+    coded_replay
+    prebelief 2 x 2
+    cross-task 2 x 2
+
+Step 4.5: Freeze pre-registration.
+  Deliverables:
+    CLEAN_RUN/preregistration.md
+    CLEAN_RUN/artifacts/power_cross_task_interaction.json
+    frozen main.yaml
+    frozen analyze.py hash
+
+Step 5: Inspect with vd.
+  Save 5-row samples and summary stats.
+
+Step 6: Run main suite.
+  Start with DeepSeek V4 Flash.
+  Then Llama 4 Maverick.
+  Then Qwen3 30B A3B Instruct 2507.
+  Then Gemma 4 26B A4B IT and Mistral Small 4.
+  Run GLM-5.1 last because it is the costliest anchor.
+
+Step 7: Analyze.
+  Produce verified_stats.json, tables, and figures from CLEAN_RUN only.
+
+Step 8: Rewrite paper around the clean design.
+
+
+17. PILOT PASS/FAIL CRITERIA
+============================
+
+Before full runs, the pilot must show:
+
+  - all expected files are written;
+  - exact matching works for fixed-message comparisons;
+  - direct/coded message bank passes factual-equivalence QC;
+  - direct/coded balance table passes on non-coded dimensions;
+  - pre-decision beliefs are populated before decisions;
+  - higher-order publicness belief fields are populated;
+  - decision_context is none in sender-side surveillance;
+  - message_stage_context is full only in sender-side surveillance;
+  - individual_bet prompt contains no coordination payoff;
+  - parse error rate below 2% in every arm;
+  - API error rate below 2% in every arm, or failures are explainable and
+    rerunnable;
+  - arm-conditional error-rate differences are below 1 percentage point or
+    missing-response sensitivity is triggered.
+
+If any pilot fails:
+  Fix the design or code. Do not scale a flawed arm.
+
+
+18. DEPENDENCIES
+================
+
+Required:
+  OPENROUTER_API_KEY.
+  uv environment.
+  vd for data inspection.
+  A clean output root under CLEAN_RUN/output.
+
+New code needed:
+  clean manifest runner.
+  parquet schema writer.
+  message bank builder.
+  direct/coded QC.
+  clean analysis root support.
+  power analysis for interaction terms.
+  pre-registration artifact writer.
+
+Use existing code only where it cleanly supports these pieces:
+  briefing generation;
+  LLM calls;
+  decision parsing;
+  network construction;
+  fixed-message replay;
+  pre-decision beliefs;
+  individual-bet task.
+
+If the existing code fights the design, write a small clean wrapper rather than
+contorting the plan.
+
+
+19. FINAL SUCCESS STANDARD
+==========================
+
+The clean run is successful if the final paper can defend this sequence:
+
+  1. Prose private signals produce threshold-like action.
+  2. Sender-side surveillance lowers joining with no receiver warning.
+  3. The message distribution shifts from direct to coded language.
+  4. Randomized direct/coded replay shows codedness lowers coordination while
+     preserving first-order factual content and balancing other language
+     dimensions.
+  5. Pre-decision beliefs show the wedge is not merely post-hoc rationalization,
+     and higher-order publicness beliefs move more than first-order state
+     beliefs.
+  6. Matched cross-task decomposition separates generic message degradation from
+     coordination-specific publicness loss, with the interaction powered from
+     pilot variance.
+  7. Cross-model rotation shows the effect travels through messages.
+  8. Human-speech comparison shows the coded-message features are not just an
+     LLM curiosity.
+
+That is the elegant version of the project. Everything else is support.

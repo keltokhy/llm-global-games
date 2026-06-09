@@ -1,0 +1,4697 @@
+CHILLING EFFECTS:
+ONLINE SURVEILLANCE AND WIKIPEDIA USE
+Jonathon W. Penney†
+
+ABSTRACT
+This Article discusses the results of the first empirical study providing evidence of
+regulatory “chilling effects” of Wikipedia users associated with online government
+surveillance. The study explores how traffic to Wikipedia articles on topics that raise
+privacy concerns for Wikipedia users decreased after the widespread publicity about
+NSA/PRISM surveillance revelations in June 2013. Using an interdisciplinary research
+design, the study tests the hypothesis, based on chilling effects theory, that traffic to
+privacy-sensitive Wikipedia articles reduced after the mass surveillance revelations. The
+Article finds not only a statistically significant immediate decline in traffic for these
+Wikipedia articles after June 2013, but also a change in the overall secular trend in the
+view count traffic, suggesting not only immediate but also long-term chilling effects
+resulting from the NSA/PRISM online surveillance revelations. These, and other results
+from the case study, not only offer evidence for chilling effects associated with online
+surveillance, but also offer important insights about how we should understand such
+chilling effects and their scope, including how they interact with other dramatic or
+significant events (like war and conflict) and their broader implications for privacy, U.S.
+constitutional litigation, and the health of democratic society. This study is among the
+first to evidence—using either Wikipedia data or web traffic data more generally—how
+government surveillance and similar actions may impact online activities, including access
+to information and knowledge online.
+DOI: http://dx.doi.org/10.15779/Z38SS13
+© 2016 Jonathon W. Penney.
+† The author would like to thank Victoria Nash, Urs Gasser, Joss Wright, Ron
+Deibert, J. Nate Mathias, Paul Kelly, Ryan Budish, Jamie Baxter, Kendra Albert, Andy
+Sellars, Molly Sauter, Masashi Crete-Nishihata, Yana Welinder, Michelle Paulson,
+Geoff Brigham, David Abrams, Bernie Black, Mordechai Kremnizer, Adam Chilton,
+Adi Leibovitch, Kate Litvak, James W. Coleman, Aurelie Ouss, Ben Perryman, Dahlia
+Othman, Elissa Berwick, Ari Waldman, Meredith Whittaker, Vern Paxon, Daniel
+Villar-Onrubia, Wenming Xu, Yehonatan Givati, Jeff Knockel, Jed Crandall, Phillipa
+Gill, and Derek Bambauer for comments, advice, and/or suggestions. The author would
+also like to thank participants for his talks at the 2015 Internet Law Work in Progress
+Conference, Santa Clara Law School, Santa Clara University, March 2015; the Berkman
+Center for Internet & Society, Harvard University, May 2015; the 2015 Free and Open
+Communications on the Internet (FOCI) workshop, USENIX Security Symposium,
+Washington, D.C., August 2015; and the Inaugural Society for Empirical-Legal Studies
+(SELS) Global Workshop for Junior Empirical Legal Scholars, Hebrew University,
+Jerusalem, Israel, December 2015. The author, in particular, would like to thank Josh
+Furman and the BTLJ editorial team for their invaluable assistance and suggestions.
+
+118
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+TABLE OF CONTENTS
+I.
+
+INTRODUCTION ...............................................................................119
+
+II.
+
+CHILLING EFFECTS THEORY AND RESEARCH
+AFTER SNOWDEN ............................................................................125
+A.
+B.
+C.
+D.
+
+III.
+
+METHOD AND DESIGN ..................................................................134
+A.
+B.
+C.
+
+IV.
+
+NON-MODEL EMPIRICAL FINDINGS .........................................145
+MODEL-BASED EMPIRICAL FINDINGS......................................146
+1.
+First Set of Results ................................................................147
+2.
+Outliers: The “Exogenous Shock” of War.................................149
+3.
+Second Set of Results—A Lasting Chilling Effect? ..................151
+4.
+Final Results with Comparator Groups ................................. 153
+
+IMPLICATIONS ..................................................................................161
+A.
+B.
+C.
+D.
+
+VI.
+
+WHY WIKIPEDIA TRAFFIC? ........................................................134
+RESEARCH DESIGN AND DATA SELECTION .............................137
+METHOD OF ANALYSIS ...............................................................143
+
+RESULTS ...............................................................................................145
+A.
+B.
+
+V.
+
+CHILLING EFFECTS THEORY .....................................................125
+POST-SNOWDEN: NEW URGENCY, NEW
+OPPORTUNITIES FOR RESEARCH ...............................................129
+PRISM/NSA REVELATIONS: A REFERENCE POINT FOR
+STUDY ...........................................................................................130
+HYPOTHESIS .................................................................................134
+
+EMPIRICAL EVIDENCE FOR REGULATORY CHILLING
+EFFECTS........................................................................................161
+THE IMPACT OF WAR AND OTHER EXOGENOUS
+EVENTS .........................................................................................164
+CONSTITUTIONAL LITIGATION .................................................165
+SURVEILLANCE, WIKIPEDIA, AND DEMOCRATIC
+SOCIETY ........................................................................................169
+
+LIMITATIONS.....................................................................................171
+
+VII. CONCLUSION AND FUTURE DIRECTIONS .............................172
+APPENDIX ............................................................................................174
+
+2016]
+
+I.
+
+CHILLING EFFECTS
+
+119
+
+INTRODUCTION
+
+On March 10, 2015, the American Civil Liberties Union, on behalf of
+the Wikimedia Foundation and eight other organizations, filed a lawsuit
+against the United States Department of Justice and the National Security
+Agency (NSA) challenging the constitutionality of NSA online
+surveillance:
+This lawsuit challenges the suspicionless seizure and searching of
+internet traffic by the National Security Agency (“NSA”) on U.S.
+soil. The NSA conducts this surveillance, called “Upstream”
+surveillance, by tapping directly into the internet backbone inside
+the United States—the network of high-capacity cables,
+switches, and routers that today carry vast numbers of
+Americans’ communications with each other and with the rest of
+the world. In the course of this surveillance, the NSA is seizing
+Americans’ communications en masse while they are in transit,
+and it is searching the contents of substantially all international
+text-based communications—and many domestic communications
+as well—for tens of thousands of search terms. The surveillance
+exceeds the scope of the authority that Congress provided in the
+FISA Amendments Act of 2008 (“FAA”) and violates the First
+and Fourth Amendments.1
+
+An Op-Ed published the same day in The New York Times, coauthored by Wikipedia Founder Jimmy Wales and Wikimedia
+Foundation’s Executive Director Lila Tretikov, explained the lawsuit was
+necessary because “pervasive surveillance” caused “a chilling effect” that
+stifled the “freedom of expression” and “free exchange” of ideas on
+Wikipedia,2 the collaborative online encyclopedia that is global in both
+content and scope—it contains over 30 million articles available in over
+200 languages and is among the ten most visited websites globally.3
+1. Complaint for Declaratory and Injunctive Relief at 1, Wikimedia Found. v.
+NSA, No. 1:15-cv-00662-RDB, 2015 WL 1033734, (D. Md. Mar. 10, 2015),
+https://www.aclu.org/files/assets/wikimedia_v2c_nsa_-_complaint.pdf [https://perma.cc/
+3YNL-3BQR] [hereinafter Complaint]. For a definition of mass surveillance, see Ben
+Beaumont, Easy Guide to Mass Surveillance, AMNESTY INTERNATIONAL (Mar. 18, 2015),
+https://www.amnesty.org/en/latest/campaigns/2015/03/easy-guide-to-mass-surveillance
+[https://perma.cc/6YC2-23CN].
+2. Jimmy Wales & Lila Tretikov, Opinion, Stop Spying on Wikipedia Users, N.Y.
+TIMES (Mar. 10, 2015), http://www.nytimes.com/2015/03/10/opinion/stop-spying-on
+-wikipedia-users.html [https://perma.cc/CV36-P4XG].
+3. See Judit Bar-Ilan & Noa Aharony, Twelve Years of Wikipedia Research,
+PROCEEDINGS OF THE 5TH ACM CONF. ON WEB SCI. 243, 243 (2014); Stefanie
+Hilles, To Use or Not to Use? The Credibility of Wikipedia, 10:3 PUB. SERV. Q. 245 (2014);
+David J. McIver & John S. Brownstein, Wikipedia Usage Estimates Prevalence of
+Influenza-Like Illness in the United States in Near Real-Time, 10:4 PLOS
+
+120
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+However, like previous constitutional challenges to NSA surveillance,4 the
+lawsuit was not heard on the merits but dismissed in October for lack of
+standing.5 Wikimedia Foundation, the lead complainant, intends to
+appeal.6
+The idea that government surveillance is harmful to free expression
+and association is not new, nor is skepticism about its empirical and legal
+basis. In the 1972 Supreme Court case Laird v. Tatum, for example, the
+complainants argued that broad government surveillance and data
+gathering unconstitutionally chilled their rights.7 The Court rejected the
+COMPUTATIONAL BIOLOLOGY 1, 1 (2014). Wikipedia provides a wealth of information
+about its number of articles, editors, page views, etc. See Wikimedia Statistics,
+WIKIMEDIA, http://stats.wikimedia.org/#fragment-14 [https://perma.cc/8DYN-CRP8].
+4. See, e.g., Clapper v. Amnesty Int’l, 133 S. Ct. 1138, 1152 (2013) (dismissing a
+constitutional challenge to NSA surveillance practices for lack of standing).
+5. Wikimedia Foundation v. NSA, Case 1:15-cv-00662-RDB, 2015 WL 6460364
+(D. Md. Oct. 23, 2015).
+6. Michelle Paulson & Geoff Brigham, District Court Grants Government’s Motion
+to Dismiss Wikimedia v. N.S.A., Appeal Expected, WIKIMEDIA BLOG (Oct. 23, 2015),
+http://blog.wikimedia.org/2015/10/23/wikimedia-v-nsa-lawsuit-dismissal [https://perma
+.cc/88XF-3V9T], stating:
+Unfortunately, the court did not actually rule on whether the NSA’s
+upstream surveillance is legal or illegal. Judge T.S. Ellis III, the
+presiding judge, dismissed the case on standing grounds. We
+respectfully disagree with the Court’s decision to dismiss. There is no
+question that Upstream surveillance captures the communications of
+both the user community and the Wikimedia Foundation itself. We
+believe that our claims have merit. In consultation with our lawyers at
+the ACLU, we will review the decision and expect to appeal to the
+Fourth Circuit Court of Appeals.
+7. Laird v. Tatum, 408 U.S. 1, 13–14 (1972). Laird stated:
+[The respondents’] claim, simply stated, is that they disagree with the
+judgments made by the Executive Branch with respect to the type and
+amount of information the Army needs, and that the very existence of
+the Army’s data-gathering system produces a constitutionally
+impermissible chilling effect upon the exercise of their First
+Amendment rights. That alleged ‘chilling’ effect may perhaps be seen
+as arising from respondents’ very perception of the system as
+inappropriate to the Army’s role under our form of government, or as
+arising from respondents’ beliefs that it is inherently dangerous for the
+military to be concerned with activities in the civilian sector, or as
+arising from respondents’ less generalized yet speculative
+apprehensiveness that the Army may at some future date misuse the
+information in some way that would cause direct harm to respondents.
+Allegations of a subjective ‘chill’ are not an adequate substitute for a
+claim of specific present objective harm or a threat of specific future
+harm.
+Chilling effects theory is discussed in more detail in Section II.A of this Article.
+
+2016]
+
+CHILLING EFFECTS
+
+121
+
+claim due to lack of standing, finding that the surveillance did not
+constitute an “objective harm or a threat of specific future harm.”8 The
+decision reflected a deep skepticism about both the potential chilling
+effects and attendant harms of surveillance.9 Such “judicial skepticism” has
+persisted over the decades.10 In a 2013 case, Clapper v. Amnesty
+International, the Court cited to Laird to dismiss a challenge to the legality
+of NSA surveillance authorized by the Foreign Intelligence Surveillance
+Act (FISA), and noted that chilling effects fears were “too speculative.”11
+Skepticism about chilling effects is not confined to courts. Legal
+commentators have long questioned the existence or scope of surveillance
+related chilling effects, and they have also expressed skepticism as to
+whether the premises of chilling effects theory can be empirically
+substantiated. Even Frederick Schauer, who offered an early classic
+statement of chilling effects theory and doctrine, admitted in 1978 that its
+empirical assumptions about human behavior were “most likely
+unprovable.”12 Nearly a decade after Schauer, Vincent Blasi observed that
+the notion of “chilling effects” on supposed “fearful and overly risk-averse”
+speakers was “oft-criticized” and based on “crude behavioral speculation.”13
+More recently, Leslie Kendrick, after surveying both literature and case
+law, emphasized the theory’s “weak” and “flimsy” empirical basis and
+concluded additional research was required for the “unsubstantiated
+empirical judgments” of chilling effects claims.14 Also recently, Margot
+Kaminski and Shane Witnov have acknowledged certain social science
+studies that corroborate forms of chilling effects, but nevertheless call for
+more empirical work on surveillance and its impact in a “number of critical
+areas,” including the existence, magnitude, and persistence of surveillance
+related chilling effects.15
+
+8. Id. at 15.
+9. See Margot E. Kaminski & Shane Witnov, The Conforming Effect: First
+Amendment Implications of Surveillance, Beyond Chilling Speech, 49 U. RICH. L. REV. 465,
+480 (2015).
+10. Id. at 482.
+11. Clapper v. Amnesty Int’l, 133 S. Ct. 1138, 1152 (2013).
+12. Frederick Schauer, Fear, Risk, and the First Amendment: Unraveling the “Chilling
+Effect,” 58 B.U. L. REV. 685, 730 (1978).
+13. Vincent Blasi, The Pathological Perspective and the First Amendment, 85 COLUM.
+L. REV. 449, 482 (1985).
+14. Leslie Kendrick, Speech, Intent, and the Chilling Effect, 54 WM. MARY L. REV.
+1633, 1657 (2013).
+15. Kaminski & Witnov, supra note 9, at 517 (calling for further research on the
+“types of surveillance and surveillance cues that cause chilling effects,” as well as the
+strength and persistence of such chilling effects).
+
+122
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+Privacy theorists, security researchers, and social scientists have also
+expressed skepticism about the possibility of large scale chilling effects
+caused by online surveillance.16 One reason for such skepticism is
+increasing public acceptance of, or desensitization to, privacy and
+surveillance concerns, particularly in new technological contexts.17 Indeed,
+some research in the field suggests that any chilling effects would, at the
+very most, be temporary or ephemeral, as online users have changed their
+behavior in response to shifting norms.18
+16. See, e.g., Daniel Solove, The First Amendment as Criminal Procedure, 82 N.Y.U.
+L. REV. 112, 155 (2007) (“Determining the existence of a chilling effect is complicated by
+the difficulty of defining and identifying deterrence. It is hard to measure the deterrence
+caused by a chilling effect because it is impossible to determine with certainty what
+people would have said or done in the absence of the government activity. Often, the
+primary evidence will be a person’s own assertions that she was chilled, but merely
+accepting such assertions at face value would allow anyone claiming a chilling effect to
+establish one. At the same time, demanding empirical evidence of deterrence is
+impractical because it will often be impossible to produce.”).
+17. See Sandro Nickel, The Double-Edged Effects of Social Media Terror
+Communication: Interconnection and Independence vs. Surveillance and Human Rights
+Calamities, in NEW OPPORTUNITIES AND IMPASSES: THEORIZING AND
+EXPERIENCING POLITICS 255, 263 (Zeynep Guler ed., 2014) (“The majority of the
+population will most probably not fall into self-censoring behavior, a reason for this
+possibly being the desensitization concerning privacy in general, at least co-constituted by
+the very digital experiences of the past decade(s).”); BRUCE SCHNEIER, DATA AND
+GOLIATH: THE HIDDEN BATTLES TO CAPTURE YOUR DATA AND CONTROL YOUR
+WORLD 95–99 (2015) (Schneier, a leading information security expert, speaks of how
+surveillance leads to “conformity” and, in Chapter 6, generally discusses the need to
+change lax and accepting public attitudes about increasing surveillance and its harms);
+David Lyon, Surveillance, Snowden, and Big Data: Capacities, Consequences, Critique, 1
+BIG DATA & SOC’Y 1, 51 (2014) (noting that the constant “ratcheting up” of government
+surveillance in recent times is not just a product of the growth of new technologies, but
+also broader cultural trends accommodating increasing amounts of societal surveillance).
+18. Bernhard Debatin & Jennette P. Lovejoy, Facebook and Online Privacy: Attitudes,
+Behaviors, and Unintended Consequences, 15 J. COMPUTER-MEDIATED COMM. 83
+(2009), http://dx.doi.org/10.1111/j.1083-6101.2009.01494.x [https://perma.cc/DS47
+-9ABX] (documenting Facebook users’ “lax” attitudes about privacy concerns). For
+research or works suggesting online chilling effects would be temporary or ephemeral, see
+Laura Bernescu, When is a Hack not a Hack: Addressing the CFAA’s Applicability to the
+Internet Service Context, U. CHI. LEGAL F. 633 (2013) (arguing that users will quickly
+adopt to changes in the regulatory environment in relation to the Computer Fraud and
+Abuse Act, rendering any “chilling effects” temporary); Chris Rose, The Security
+Implications of Ubiquitous Social Media, 15 INT’L J. MGMT. & INFO. SYS. 35, 37 (2011)
+(noting that increased comfort with using the Internet has led many consumers to
+conform to new norms, particularly on privacy); see also Alessandro Acquisti, Leslie K. John
+& George Loewenstein, What is Privacy Worth?, 42 J. LEGAL STUD. 249, 267–70 (2013),
+https://www.cmu.edu/dietrich/sds/docs/loewenstein/WhatPrivacyWorth.pdf [https://perma
+.cc/LF5V-QRSJ] (advancing explanations for the disconnect between privacy attitudes
+and the lax or loose approach to privacy in practice).
+
+2016]
+
+CHILLING EFFECTS
+
+123
+
+So, the empirical basis for chilling effects theory, and its different
+dimensions, remain controversial. Part of the challenge, as privacy scholars
+like Leslie Kendrick,19 Daniel Solove,20 and Neil Richards21 have noted, is
+the often “intractable empirical difficulties” in designing research to
+demonstrate or measure chilling effects.22 Showing the impact and harms
+of surveillance involves dealing with counterfactuals or proving a
+negative—self-censorship. As such, it is “difficult to establish either the
+presence or the absence of a chilling effect, let alone to measure the extent
+of such an effect.”23 With the absence of empirical research to substantiate
+chilling effects, compounded by the methodological challenges for
+designing and carrying out such research, it is unsurprising skepticism
+about the theory persists.
+Furthermore, with the revelation of widespread Internet surveillance
+by the United States and other Western governments (thanks to the leaks
+and disclosures of Edward Snowden), the need for empirical and
+theoretical study has taken on even greater urgency. This is particularly
+true because of the range of lawsuits filed by companies, citizen groups,
+and organizations to challenge government surveillance and related laws,24
+but beyond the legal arena, it is crucial for understanding the potential
+harms of such surveillance to activities online.
+The empirical case study discussed in this Article attempts to help
+address this research void. Building on a recent study of Google search
+19. Kendrick, supra note 14, at 1638 (“But there are reasons to doubt the chilling
+effect account. A claim of a chilling effect necessarily rests upon suppositions about the
+deterrent effects of law. These suppositions rest in turn upon predictions about the
+behavior of speakers under counterfactual conditions. Meanwhile, the selection of a
+remedy for chilling—such as an intent requirement—rests on similar predictions about
+the remedy’s speech-protective effects. In short, both the detection of a problem and the
+imposition of a remedy involve intractable empirical difficulties.”).
+20. Solove, The First Amendment as Criminal Procedure, supra note 16, at 155
+(“Often, the primary evidence will be a person’s own assertions that she was chilled, but
+merely accepting such assertions at face value would allow anyone claiming a chilling
+effect to establish one. At the same time, demanding empirical evidence of deterrence is
+impractical because it will often be impossible to produce.”).
+21. Neil Richards, The Dangers of Surveillance, 126 HARV. L. REV. 1934, 1964
+(2013) (“This is not to say that individual determinations of the chilling of intellectual
+activities will always be easy. Determining whether a chill to intellectual privacy is
+substantial would certainly present difficult cases at the margins.”).
+22. Kendrick, supra note 14, at 1675.
+23. Id. at 1638.
+24. For a review of the broad range of constitutional litigation arising since the
+Snowden leaks, see generally Edward C. Liu, Andrew Nolan & Richard M. Thompson,
+CONG. RESEARCH SERV., R43459, OVERVIEW OF CONSTITUTIONAL CHALLENGES
+TO NSA COLLECTION ACTIVITIES AND RECENT DEVELOPMENTS 7-5700, 12–18 (2014).
+
+124
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+traffic and Internet surveillance,25 this Article discusses the first original
+empirical study of the impact such surveillance has had on Wikipedia use.
+Consistent with the recent growth of empirical approaches in legal
+research,26 the study uses an interrupted time series (ITS) design27 to
+determine whether traffic for articles that may raise privacy concerns for
+Wikipedia users decreased after the widespread publicity about NSA
+online surveillance activities. In short, this case study asks: Did Wikipedia
+traffic for articles on privacy-sensitive topics decrease after the “exogenous
+shock” of widespread publicity surrounding the surveillance programs in
+June 2013? A hypothesis based on chilling effects theory would hold that
+Internet users will be less likely to view or access such privacy-sensitive
+Wikipedia articles after the revelations. Ultimately, this case study
+provides results consistent with surveillance related chilling effects, among
+other findings. The context of the study is also important. Wikipedia was
+chosen as the focus of this case study for a number reasons, but most
+importantly because any chilling effect on Wikipedia users has far25. Alex Marthews & Catherine Tucker, Government Surveillance and Internet
+Search Behavior (MIT Sloane Working Paper No. 14380, 2015).
+26. For discussion of the empirical and experimental turn in legal research, see
+Daniel E. Ho & Larry Kramer, Introduction: The Empirical Revolution in Law, 65 STAN.
+L. REV. 1195 (2013); see also Adam Chilton & Dustin Tingley, Why the Study of
+International Law Needs Experiments, 52 COLUM. J. TRANS. L. 173, 187–90 (2013)
+(discussing the “growth” of experimental and quasi-experimental methods in legal
+research). See generally Gregory Shaffer & Tom Ginsburg, The Empirical Turn in
+International Legal Scholarship, 106 AM. J. INT’L L. 1 (2012) (also discussing the
+empirical “turn” in international law research).
+27. For discussion of interrupted time series research design, see DONALD T.
+CAMPBELL, JULIAN C. STANLEY & NATHANIEL L. GAGE, EXPERIMENTAL AND
+QUASI-EXPERIMENTAL DESIGNS FOR RESEARCH 37–43 (1966) (discussing the
+components of time series designs and their methodological advantages and limitations);
+Melvin M. Mark, Charles S. Reichardt & Lawrence J. Sanna, Time-Series Designs and
+Analyses, in HANDBOOK OF APPLIED MULTIVARIATE STATISTICS AND
+MATHEMATICAL MODELING 354–55 (2000) (discussing the use of time series designs
+to assess the impact of interventions); see also Carlotta Ching Ting Fok, David Henry &
+James Allen, Research Designs for Intervention Research with Small Samples II: Stepped
+Wedge and Interrupted Time-Series Designs, PREVENTATIVE SCI. 1, 4 (2015)
+http://link.springer.com/article/10.1007/s11121-015-0569-4
+[https://perma.cc/FFX5
+-6CPB] (offering some suggestions to strengthen the methodological dimensions of ITS
+designs to study the impact of health interventions); Robert B. Penfold & Fang Zhang,
+Use of Interrupted Time Series Analysis in Evaluating Health Care Quality Improvements,
+13:6 ACAD. PEDIATRICS S38 (2013) (discussing the advantages and limitations of
+employing time series analysis to understand and explore the impact of health policy
+changes); A.K. Wagner et al., Segmented Regression Analysis of an Interrupted Time Series
+in Medication Use Research, 27 J. CLINICAL PHARMACY & THERAPEUTICS 299 (2002)
+(discussing advantages of using of segmented regression analysis, along with ITS design,
+in the context of health research).
+
+2016]
+
+CHILLING EFFECTS
+
+125
+
+reaching implications. The site, which is growing both in popularity and
+scope, serves as an essential source of information and knowledge online,
+and functions as an important public tool to complement the democratic
+process in promoting collective understanding, decision-making, and
+deliberation.28
+Part II of the Article provides additional context related to chilling
+effects research and the impact of the Edward Snowden disclosures. Part
+III sets out and justifies the case study’s methodology and research design,
+including its focus on Wikipedia. Part IV discusses the results of the
+study: consistent with chilling effects theory, (1) Wikipedia traffic to
+privacy-sensitive articles showed a statistically significant reduction after
+June 2013, and (2) there was a long lasting change in the overall secular
+trend in traffic to such articles. The study’s implications and limitations
+are discussed in Part V and Part VI, respectively. Part VII concludes and
+considers possible directions for future research.
+II.
+
+CHILLING EFFECTS THEORY AND RESEARCH
+AFTER SNOWDEN
+
+This Part begins with a more in-depth discussion of chilling effects
+theory, including leading accounts of its dimensions and assumptions,
+along with an overview of related studies. From there, the Snowden NSA/
+PRISM revelations widely covered in June 2013 are discussed and reframed as presenting a research opportunity to study chilling effects
+theory. Finally, the latter sections develop the research question and
+hypothesis—centered on the Snowden leaks—that form the basis of the
+study discussed in this Article.
+A.
+
+CHILLING EFFECTS THEORY
+
+The idea that government laws or actions might chill people’s free
+activities gained its most prominent early expression in the United States
+during the Cold War. The “chilling effects doctrine,” a legal doctrine in
+First Amendment jurisprudence, took shape in a series of cases decided in
+the 1950s and 60s that dealt with anti-communist state measures.
+Essentially, the doctrine encouraged courts to treat rules or government
+actions that “might deter” the free exercise of First Amendment rights
+“with suspicion.”29
+28. See infra Section III.A.
+29. Richards, supra note 21, at 1949–50. For early cases recognizing the chilling
+effects doctrine, see, for example, Dombrowski v. Pfister, 380 U.S. 479 (1965); Wieman
+v. Updegraff, 344 U.S. 183 (1952).
+
+126
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+But underlying this legal doctrine was a deeper theory with empirical
+assumptions about behavior in relation to government acts—that certain
+state acts may chill or deter people from exercising their freedoms or
+engaging in legal activities. This theory of “chilling effects” received its
+first comprehensive exploration in Schauer’s Fear, Risk, and the First
+Amendment: Unraveling the “Chilling Effects Doctrine,30 described as the
+“definitive treatment” of the theory.31 Schauer conceived of chilling effects
+as primarily resulting from people’s fear of prosecution or legal sanction
+and the uncertainties of the legal process.32 Here, government surveillance
+may chill or deter people from engaging in certain legal (or even desirable)
+online activities because they fear legal punishment or criminal sanction,
+and do not trust the legal system to protect their innocence. Daniel
+Solove’s work has broadened chilling effects theory by theorizing and
+exploring modern surveillance and data gathering, explaining how such
+practices can create a kind of regulatory “environmental pollution” that
+encourages chilling effects and self-censorship.33 While Solove’s approach
+does not discount the sorts of chilling effects Schauer targets, he focuses
+primarily on how government surveillance of online activities creates a
+broader atmosphere of conformity and self-censorship; he is concerned
+with the way regulatory actions—particularly information gathering and
+surveillance—enhance the risk that a person may suffer harms in the
+future (e.g., gathering information about a person’s activities may increase
+the risk they are later “victimized” by identity theft or fraud).34 On this
+account, people are chilled not because they fear actual punishment for
+engaging in certain online activities (as Schauer theorizes), but to avoid
+risks of other kinds, such as the stigma of being labeled or tracked by state
+30. Schauer, supra note 12.
+31. Julie Cohen, A Right to Read Anonymously: A Closer Look at ‘Copyright
+Management’ in Cyberspace, 28 CONN. L. REV. 981, 1011 n.117 (1996) (suggesting
+Schauer’s work was the “definitive treatment”).
+32. Schauer, supra note 12, at 687–89. For applications of chilling effects theory to
+online contexts, scholars at the Berkman Center for Internet & Society at Harvard
+University have been particularly prolific. See, e.g., JONATHAN ZITTRAIN, THE FUTURE
+OF THE INTERNET—AND HOW TO STOP IT 116, 216 (2008) (exploring the potential
+chilling effects of perfect enforcement of legal norms by technology measures as well as
+those caused by citizen surveillance due to the proliferation of devices like smartphones);
+Yochai Benkler, Through the Looking Glass: Alice and the Constitutional Foundations of the
+Public Domain, 66 LAW & CONTEMP. PROBS. 173, 216–18 (2003) (arguing that the
+NET Act and Digital Millennium Copyright Act expand protections for certain legal
+rights online in such a way that will chill expression); Wendy Seltzer, Free Speech
+Unmoored in Copyright’s Safe Harbor: Chilling Effects of the DMCA on the First Amendment,
+24 HARV. J.L. & TECH. 171 (2010) (analyzing chilling effects and the DMCA).
+33. Daniel Solove, A Taxonomy of Privacy, 154 U. PENN. L. REV. 477, 488 (2006).
+34. Id. at 487.
+
+2016]
+
+CHILLING EFFECTS
+
+127
+
+actors as non-conformists, deviants, or criminals, or the broader concern
+that information gathered about such activities may be leaked or disclosed
+publicly, leading to embarrassment or used for nefarious purposes by
+third-parties.35 Such risks and considerations create a societal context that
+encourages self-censorship.36 Both of these accounts will be useful to
+understand and theorize any surveillance related chilling effects observed.37
+Part of the broader picture is the impact of covert surveillance, in
+which people are either unaware of surveillance or are only aware of the
+general possibility of it.38 The Snowden leaks and disclosures, which
+rendered previously covert surveillance public, have placed concerns like
+those Solove explores in urgent and concrete terms,39 and a range of public
+opinion polls and survey-based studies have been conducted to study the
+effects of the disclosures. Studies by PEN America40 and Pew Research
+Center41 provide some empirical foundation for the claim that surveillance
+35. Id. at 496 (discussing the example of how information obtained by surveillance
+was used to discredit and blackmail Martin Luther King, Jr.).
+36. Id. at 495.
+37. The findings in the empirical legal case study discussed in this article may also
+provide insights, in turn, for these theories as well. For example, Schauer theorizes
+chilling effects primarily as a product of individual concerns for actual legal punishment
+or prosecution in an uncertain legal system, while Solove’s account captures broader risks
+and concerns that may also chill—where online users may not actually fear prosecution,
+but prefer not to have governments looking over their shoulder or tracking and compiling
+data about their online activities (even if legal). Both such approaches will likely explain
+or account for instances of surveillance-related chilling effects, but one explanation may
+prove more common than the other.
+38. Solove, A Taxonomy of Privacy, supra note 33, at 494–96 (relating such
+surveillance to Jeremy Bentham’s idea for 19th century “Panopticon” prison design, also
+known as the “Panopticon effect”).
+39. Christopher Slobogin, Standing and Covert Surveillance, 41 PEPP. L. REV. 517,
+520 (2014) (noting that as a result of Snowden’s disclosures, the U.S. federal government
+has been forced to acknowledge previously covert surveillance practices).
+40. FDR GROUP & PEN AMERICAN CENTER, CHILLING EFFECTS: NSA
+SURVEILLANCE DRIVES U.S. WRITERS TO SELF-CENSOR 3–4 (2013), http://www.pen
+.org/sites/default/files/Chilling%20Effects_PEN%20American.pdf [https://perma.cc/5TFK
+-Q8MF] (noting that 28% of the writers surveyed had “curtailed or avoided” certain
+online activities due to “fear of surveillance”); FDR GROUP & PEN AMERICAN
+CENTER, GLOBAL CHILLING: THE IMPACT OF MASS SURVEILLANCE ON
+INTERNATIONAL WRITERS (2015), http://www.pen.org/sites/default/files/globalchilling
+_2015.pdf [https://perma.cc/GJ88-TMY2] (noting that the international community is
+similarly engaging in forms of self-censorship).
+41. KEITH N. HAMPTON ET AL., PEW RES. CTR., SOCIAL MEDIA AND THE
+‘SPIRAL OF SILENCE’ 4 (2014), http://www.pewinternet.org/files/2014/08/PI_Social
+-networks-and-debate_082614.pdf [https://perma.cc/QWP2-5QJS] (finding, for
+example, 86% of respondents less willing to discuss NSA surveillance revelations online,
+than off); LEE RAINIE ET AL., PEW RES. INTERNET PROJECT, AMERICANS’ PRIVACY
+STRATEGIES POST-SNOWDEN 4 (Mar. 16, 2015), http://www.pewinternet.org/files/
+
+128
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+has a chilling effect on people’s activities online, but these survey-based
+studies have important limitations.
+Social science research has long illustrated that self-reported or
+expressed concerns about privacy do not necessarily reflect people’s actual
+behavior online,42 a phenomenon sometimes referred to as the “privacy
+paradox.”43 The reasons for this paradox remain contested. Some attribute
+the disconnect between privacy concerns and actual behavior to
+uninformed decisions, while others point to faulty research and survey
+design. But few disagree that compared to how they actually act, people
+tend to exaggerate privacy concerns, leading to biased or inaccurate results
+in research that relies primarily on self-reported privacy behaviors.44 In
+2015/03/PI_AmericansPrivacyStrategies_0316151.pdf [https://perma.cc/2RQR-MKU4]
+(noting that 25% of those aware of surveillance have “changed the patterns” of their use
+of “technological platforms”); Lee Rainie et al., Anonymity, Privacy, and Security Online,
+PEW RES. CTR. (2013), http://www.pewinternet.org/2013/09/05/anonymity-privacy-and
+-security-online [https://perma.cc/JA3N-Q22E].
+42. See Spyros Kokolakis, Privacy Attitudes and Privacy Behaviour: A Review of
+Current Research on the Privacy Paradox Phenomenon, COMPUTERS & SOC’Y 1 (2015),
+http://www.sciencedirect.com/science/article/pii/S0167404815001017#bib0215 [https://perma
+.cc/BQ6K-HRKS] (providing a comprehensive explanation and review of “information
+privacy paradox” literature); see also Alessandro Acquisti & Ralph Gross, Imagined
+Communities: Awareness, Information Sharing, and Privacy on the Facebook, PROC. 6TH
+WORKSHOP ON PRIVACY ENHANCING TECHNOLOGIES (2006) (finding that Facebook
+user attitudes concerning privacy differed from their actual behavior and privacy practices
+on the platform); J. Alessandro Acquisti, Privacy in Electronic Commerce and the Economics of
+Immediate Gratification, PROC. 5TH ACM CONF. ON ELECTRONIC COMMUNICATION
+(2004), https://www.heinz.cmu.edu/~acquisti/papers/privacy-gratification.pdf [https://perma
+.cc/W5SG-AC93]; Acquisti et al., supra note 18 (advancing, among other things,
+explanations for the disconnect between privacy attitudes and the lax or loose approach to
+privacy in practice); Bettina Berendt, Oliver Günther & Sarah Spiekermann, Privacy in
+E-commerce: Stated References vs. Actual Behavior, 48 COMM. ACM 101, 104 (2005),
+http://www.wiwi.hu-berlin.de/professuren/quantitativ/wi/personen/hl/downloads/BGS.pdf
+[https://perma.cc/V578-88DX] (finding Web users disclosure practices online were
+inconsistent with “stated privacy preferences”); Danah Boyd & Nicole Ellison, Social
+Network Sites: Definition, History, and Scholarship, 13:1 J. COMPUTER-MEDIATED COMM.
+210, 222 (2007), http://onlinelibrary.wiley.com/doi/10.1111/j.1083-6101.2007.00393.x/
+epdf [https://perma.cc/ER64-G6KV] (noting literature on the privacy paradox); Jim
+Harper & Solveig Singleton, With a Grain of Salt: What Consumer Privacy Surveys Don’t
+Tell Us, COMPETITIVE ENTERPRISE INST. (2001), http://www.cei.org/PDFs/with_a_grain
+_of_salt.pdf [https://perma.cc/T28Z-2K7E].
+43. Susan Barnes, A Privacy Paradox: Social Networking in the United States, FIRST
+MONDAY (Sept. 4, 2006), http://firstmonday.org/article/view/1394/1312 [https://perma
+.cc/PQF2-KNM9].
+44. See Kokolakis, supra note 42 (on “privacy paradox” more generally). Alessandro
+Acquisti, for example, has argued that the difference can be explained by the fact that
+people’s privacy decisions are irrational and based on flawed or incomplete information.
+See generally Acquisti et al., supra note 18; see also Harper & Singleton, supra note 42
+
+2016]
+
+CHILLING EFFECTS
+
+129
+
+short, though these survey-based studies provide some helpful empirical
+foundation for chilling effects, more work needs to be done to uncover
+chilling effects in practice.
+B.
+
+POST-SNOWDEN: NEW URGENCY, NEW OPPORTUNITIES FOR
+RESEARCH
+
+The Snowden disclosures about NSA surveillance provide new
+opportunities for chilling effects research. On June 6, 2013, stories in The
+Guardian and The Washington Post detailed previously undisclosed
+information and leaked classified documents about the surveillance
+practices of the United States and other Western governments.45 The
+leaked documents also suggested a range of major technology companies
+were involved with the PRISM program.46 The revelations about PRISM
+were followed by stories in June and subsequent months covering a vast
+array of government surveillance practices and operations, including the
+(arguing that survey designs have been flawed, leading to exaggerated self-reported
+concerns).
+45. The June 2013 Snowden leaks centered in large part on “PRISM,” a secret mass
+electronic surveillance program operated by the NSA, but they also revealed equivalent
+programs operated by the United Kingdom and other countries. The original June 6,
+2013 stories detailed NSA collection of phone records and the PRISM surveillance
+program. Barton Gellman & Laura Poitras, U.S., British Intelligence Mining Data from
+Nine U.S. Internet Companies in Broad Secret Program, WASH. POST (June 6, 2013),
+http://www.washingtonpost.com/investigations/us-intelligence-mining-data-from-nine
+-us-internet-companies-in-broad-secret-program/2013/06/06/3a0c0da8-cebf-11e2-8845-d9
+70ccb04497_story.html [https://perma.cc/Z5YF-8FB8]; Glenn Greenwald, NSA
+Collecting Phone Records of Millions of Verizon Customers Daily, GUARDIAN (June 6, 2013),
+http://www.theguardian.com/world/2013/jun/06/nsa-phone-records-verizon-court-order
+[https://perma.cc/RC4B-NTFJ]. For discussion and analysis of subsequent news stories
+and revelations about other surveillance practices by the U.S. and other governments, see
+David Lyon, Surveillance, Snowden, and Big Data: Capacities, Consequences, Critique, 1
+BIG DATA & SOC’Y 1, 2 (2014); Marthews & Tucker, supra note 25, at 5; see also Amy
+Wu et al., “Whistleblower or Leaker?” Examining the Portrayal and Characterization of
+Edward Snowden in USA, UK, and HK Posts, in NEW MEDIA, KNOWLEDGE PRACTICES &
+MULTILITERACIES 53 (Will W.K. Ma et al. eds., 2014); Vian Bakir, Agenda Building, and
+Intelligence Agencies: A Systematic Review of the Field from the Discipline of Journalism,
+Media, and Communications, 20 INT’L J. PRESS/POL. 131 (2015), http://hij.sagepub.com/
+content/20/2/131.abstract [https://perma.cc/6EDX-3URG]; Keir Giles & Kim
+Hartmann, Socio-political Effects of Active Cyber Defence Measures, 6TH INT’L CONF. ON
+CYBER CONFLICT (CYCON 2014) (2014), http://ieeexplore.ieee.org/xpl/articleDetails.jsp
+?reload=true&arnumber=6916393&sortType%3Dasc_p_Sequence%26filter%3DAND%28
+p_IS_Number%3A6916383%29 [https://perma.cc/4R8M-WTRF]; Jie Qin, Hero on
+Twitter, Traitor on News: How Social Media and Legacy News Frame Snowden, 20 INT’L J.
+PRESS/POL. 166 (2015), http://hij.sagepub.com/content/20/2/166.abstract [https://perma
+.cc/6TGC-KGB7].
+46. Bakir, supra note 45, at 132; Lyon, supra note 45, at 2–3; Marthews & Tucker,
+supra note 25, at 5–6; Qin, supra note 45, at 171.
+
+130
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+monitoring of phone records, e-mails, online chats, and browser
+histories.47 The revelations caused a “media and political storm,” receiving
+widespread coverage both in traditional and new media outlets, and
+sparking a “heated international debate” in the United States, Europe,
+Russia, and beyond.48
+Governments cited the “War on Terror” to defend the surveillance
+programs, and this justification was reflected in media coverage of the
+Snowden revelations, particularly by “legacy” news media.49 The Snowden
+leaks and coverage, as media scholar Vian Bakir notes, highlighted the
+previously limited public awareness about government surveillance
+activities while also augmenting that awareness.50 Indeed, at least in the
+United States, the widespread media coverage has led to greater awareness
+and concern among the general public about government surveillance
+activities and anti-terrorism efforts more generally. A Pew study in 2014
+found that 87% of U.S. adults had heard something about “the
+government collecting information about telephone calls, e-mails, and
+other online communications” as part of “efforts to monitor terrorist
+activity” (with 43% hearing “a lot” and 44% hearing “a little”); another
+80% agreed or strongly agreed that “Americans should be concerned”
+about government surveillance.51 This increased awareness of online
+government surveillance—and the focal point provided by the June 2013
+revelations—presents a unique opportunity for research.
+C.
+
+PRISM/NSA REVELATIONS: A REFERENCE POINT FOR STUDY
+
+The NSA/PRISM surveillance revelations in June 2013 (“June 2013
+revelations”) and widespread surrounding publicity constituted a kind of
+“exogenous shock”—an intervening “focusing event”—that provides a
+47. Lyon, supra note 45, at 2–3; Marthews & Tucker, supra note 25, at 5–6.
+48. Bakir, supra note 45, at 132; Giles & Hartmann, supra note 45, at 24; Marthews
+& Tucker, supra note 25; Qin, supra note 45, at 166.
+49. Bakir, supra note 45, at 133 (“Governments insist that their methods are legal, if
+secret, and necessary to fight the War on Terror and organized crime.”); Marthews &
+Tucker, supra note 25, at 2–6; Nickel, supra note 17, at 255 (“The mentioned surveillance
+programs have always—if ‘revealed’ or publicly debated from start with—been justified by
+their assumed worth in preventing terror attacks, e.g., by Obama after the NSA’s PRISM
+program was revealed.”); Qin, supra note 45, at 178 (finding that a predominant
+“framing” in traditional news media coverage of the Snowden surveillance disclosures
+focused on national security terrorism, along with international relations).
+50. Bakir, supra note 45, at 133.
+51. MARY MADDEN, PUBLIC PERCEPTIONS OF PRIVACY AND SECURITY IN THE
+POST-SNOWDEN ERA, PEW RES. INTERNET PROJECT 2–3 (Nov. 12, 2014),
+http://www.pewinternet.org/files/2014/11/PI_PublicPerceptionsofPrivacy_111214.pdf
+[https://perma.cc/UA7R-QTDZ]. See also Bakir, supra note 45, at 133–34.
+
+2016]
+
+CHILLING EFFECTS
+
+131
+
+helpful reference point for study.52 In policy research, the most prominent
+empirical studies of policy change often focus on the impact of such
+“triggering” events, typically involving significant “unplanned jolts” or
+“shocks” like natural disasters or major economic changes.53 But studies
+have even shown that changes in the tone of media coverage can create
+exogenous pressures that lead to important policy and behavioral
+changes.54 To understand the impact of these focusing events, the event is
+taken as a reference point for study, and observable data before and after
+the event took place are compared.55
+A recent MIT study on Google search traffic by Alex Marthews and
+Catherine Tucker used such a framework to provide an important
+contribution to chilling effect research. Their innovative research design
+treated the June 2013 revelations as an exogenous focusing event, and
+tracked the relative number of searches for certain privacy-sensitive search
+terms before and after June 2013.56 Marthews and Tucker found a
+statistically significant 5% reduction in Google searchers for certain
+privacy-sensitive search terms after June 2013.57 Their study not only
+provides evidence of chilling effects, but also offers a research design that
+may be employed to study chilling effects in other online contexts.
+However, the study had its limitations. First, the dataset in the Google
+study only included search term data though mid-December 2013.
+Without more recent data, it is unclear whether the effects tracked in the
+52. Graeme Boushey, Punctuated Equilibrium Theory and the Diffusion of Innovations,
+40 POL’Y STUD. J. 127, 130 (2012); Marthews & Tucker, supra note 25, at 3.
+53. See William Lowry, Potential Focusing Projects and Policy Change, 34 POL’Y
+STUD. J. 313, 313–15 (2006) (discussing research analyzing the impact on policy (and
+other social and political factors) caused by focusing or intervening events). See also
+Boushey, supra note 52, at 130 (discussing the use of focusing events as reference points
+for policy change studies). See generally FRANK R. BAUMGARTNER & BRYAN D. JONES,
+AGENDAS AND INSTABILITY IN AMERICAN POLITICS (2010) (arguing that dramatic
+policy shifts can, in part, be attributed to important triggering/focusing events); THOMAS
+A. BIRKLAND, AFTER DISASTER: AGENDA SETTING, PUBLIC POLICY, AND FOCUSING
+EVENTS 30–35 (1997) (setting out a framework for studying the impact of “focusing
+events” on policy changes, including the important role, and impact, of news coverage of
+such focusing events); PAUL A. SABATIER & HANK C. JENKINS-SMITH, THE
+ADVOCACY COALITION FRAMEWORK: ASSESSMENT, REVISIONS, AND IMPLICATIONS
+FOR SCHOLARS AND PRACTITIONERS (1993) (examining, more generally, the role and
+impact of external events on policy shifts).
+54. See generally BAUMGARTNER & JONES, supra note 53 (asserting that dramatic
+policy shifts can, at least in part, be attributed to important triggering events).
+55. Boushey, supra note 52, at 130 (discussing how focusing events, and their
+impact, can help understand policy shifts and other changes over time).
+56. Marthews & Tucker, supra note 25, at 5–9.
+57. Id. at 3.
+
+132
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+study had a permanent, or at least longer term, impact. Second, the
+authors obtained their data from Google Trends, which provides Google
+search data in “normalized” or adjusted format.58 The search data is
+normalized in two ways. First, the data represents only a percentage of
+total Google searches for any given term.59 Second, Google “adjusts” the
+search data to render comparisons across regions more easily; these results
+are further “scaled to a range of 0 to 100.”60 This, the authors admitted,
+meant it was “harder to make projections” based on the findings of the
+study (such as resulting “economic outcomes” due to the reduction in
+specific search-related ads) because without raw and unadjusted search
+data, it is difficult to measure on a granular level how people’s Google
+search activities were impacted.61 A third limitation of the study was the
+lack of a genuine control group. The study examined trends before and
+after June 2013, but the there was no opportunity to control the PRISM/
+NSA revelations like a true experimental intervention.62 A fourth
+limitation was the possibility that users were still searching for the same
+search terms but simply using an alternative search engine to Google
+(presumably one not expressly linked to the NSA’s PRISM program).63
+Despite these limits, however, Marthews and Tucker did provide evidence
+of chilling effects in a concrete online context—search.
+Sören Preibusch’s more recent study employed Marthews and Tucker’s
+design centered on the June 2013 revelations, examining Bing search term
+trends and Tor usage data as a proxy for users engaging in “privacyenhancing” activities (Tor is a browser designed to protect privacy and
+anonymity online).64 Preibusch found that while users’ behavior did
+change immediately after the June 2013 revelations, those privacy
+58. Id. at 8.
+59. Where Trends Data Comes From, GOOGLE (2016) https://support.google.com/
+trends/answer/4355213?hl=en&ref_topic=4365599
+[https://perma.cc/7TVA-SWMK]
+(“Google Trends analyzes a percentage of Google web searches to figure out how many
+searches were done over a certain period of time. For example, if you search for tea in
+Scotland in March of 2007, Trends analyzes a percentage of all searches for tea within
+the same time and location parameters.”).
+60. How Trends Data is Adjusted, GOOGLE (2016) https://support.google.com/trends/
+answer/4365533?hl=en&ref_topic=4365599 [https://perma.cc/V4Z9-QF8C] (“Google
+Trends adjusts search data to make comparisons between terms easier. Otherwise, places
+with the most search volume would always be ranked highest. To do this, each data point
+is divided by the total searches of the geography and time range it represents, to compare
+relative popularity. The resulting numbers are then scaled to a range of 0 to 100.”).
+61. Marthews & Tucker, supra note 25, at 8.
+62. The authors note that they only have “quasi” controls. Id. at 6.
+63. Id. at 6–8.
+64. Sören Preibusch, Privacy Behaviors After Snowden, 58 COMM. ACM 48, 48–52 (2015).
+
+2016]
+
+CHILLING EFFECTS
+
+133
+
+behaviors “faded quickly.”65 Like Marthews and Tucker, Preibusch
+acknowledged important limitations. For example, the use of Bing data
+likely “biased” his results, and his selection of data sources was “partly
+pragmatic” in this sense.66 And also like Marthews and Tucker, his dataset
+was temporally limited—only extending from May 2013 to January
+2014.67 In a different but related 2013 study, Yoan Hermstrüwer and
+Stephan Dickert found little evidence of significant chilling effects
+associated with privacy and reputational risks of embarrassing online
+disclosures, leading them to conclude that “dystopian” concerns often
+expressed by privacy scholars about chilling effects and the conforming
+impact surveillance were overstated.68 Again, the researchers
+acknowledged a number of important “caveats” to their findings, most
+notably that they were likely biased due to self-selection by participants
+who had already bound themselves to conforming behavior through their
+choices and involvement in the study itself.69
+The study in this Article builds on the Marthews and Tucker design.
+To document how government surveillance has affected user behavior
+online, the case study’s interrupted time series research design approaches
+the June 2013 revelations as the interrupting “exogenous shock” or
+“focusing event,” and examines whether Wikipedia article traffic for
+certain topics that reasonably raise privacy concerns for Internet users
+decreased following those revelations. But the study also aims to address
+some of the aforementioned limitations of studies of this nature. For
+example, the dataset employed will include data that starts earlier (January
+2012) and extends later (August 2014). Furthermore, the Wikipedia
+article traffic data employed is raw and unadjusted, providing a more
+
+65. Id. at 48, 55.
+66. Id. at 55 (“My analysis of Web search behavior through Microsoft’s Bing search
+engine may have introduced a bias impossible to quantify, should it exist.”).
+67. Id. at 48.
+68. Yoan Hermstrüwer & Stephan Dickert, Tearing the Veil of Privacy Law: An
+Experiment on Chilling Effects and the Right to be Forgotten 22–23 (Preprints of the Max
+Planck Institute for Research on Collective Goods, Working Paper No. 2013/15, 2013),
+http://www.econstor.eu/bitstream/10419/84983/1/757205445.pdf [https://perma.cc/U7L3
+-TRQ9] (detailing an experimental study on chilling effects finding that risks of
+“networked publicity” (exposure online of users’ embarrassing activities) did not affect
+users’ “privacy valuations,” nor “dampen” either “behavioral idiosyncrasies” nor the
+“panoply of different behaviors” involved in the study).
+69. Id. at 25 (“A second critique may be that, in our setting, networked publicity is a
+function of an endogenous choice, making causal inferences about the factors driving
+social norm compliance more difficult. Individuals may have self-selected into networked
+publicity because of their stronger inclination to comply with social norms.”).
+
+134
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+accurate and granular understanding of any observed changes in data
+trends.
+D.
+
+HYPOTHESIS
+
+This case study asks: does the Wikipedia article traffic for the privacy
+concerning topics tracked decrease after the “exogenous shock” of
+widespread publicity surrounding the June 2013 revelations? A hypothesis
+based on chilling effects theory may be stated this way: due to chilling
+effects caused by increased awareness of government surveillance online,
+Internet users will be less likely to view Wikipedia articles on topics that
+raise privacy-related concerns. In providing noteworthy evidence
+suggesting a NSA/PRISM surveillance related chilling effect, this study is
+among the first to do so using web traffic data (instead of survey responses
+or search) and the first to evidence the impact of surveillance chill not only
+on Wikipedia users but on how people seek, and access, information and
+knowledge online more generally. The next Part sets out this case study’s
+research design and methodology, including its focus on Wikipedia.
+III.
+
+METHOD AND DESIGN
+
+A.
+
+WHY WIKIPEDIA TRAFFIC?
+
+This case study focuses on English Wikipedia (i.e., articles with
+content in the English language) and traffic to specific Wikipedia articles
+as a means of exploring chilling effects online. Why Wikipedia? First,
+despite some skepticism as to its accuracy, Wikipedia is an influential
+resource for information and knowledge online. Over 50% of Internet
+users use Wikipedia as a source of information,70 and over a third of
+Americans visit Wikipedia annually, making it one of the top ten most
+popular sites on the Internet. In a study of college students, researchers
+Alison Head and Michael Eisenberg found 52% used Wikipedia
+“frequently.”71 Therefore, if government surveillance is chilling users from
+accessing Wikipedia, then there are implications beyond Wikipedia’s
+function as an online encyclopedia. Researchers have used Wikipedia for a
+broad range of research, relating to both online and offline concerns,
+
+70. Lee Rainie et al., Wikipedia, Past and Present, PEW INTERNET & AM. LIFE
+PROJECT SURV. (Jan. 13, 2013), http://www.pewinternet.org/files/old-media/Files/
+Reports/2011/PIP_Wikipedia.pdf [https://perma.cc/M8J9-UYDG].
+71. Alison J. Head & Michael B. Eisenberg, How Today’s College Students Use
+Wikipedia for Course-Related Research, FIRST MONDAY, Mar. 1, 2010, http://firstmonday
+.org/article/view/2830/2476 [https://perma.cc/7TZZ-9FNK]; Hilles, supra note 3, at
+247.
+
+2016]
+
+CHILLING EFFECTS
+
+135
+
+including theorizing and understanding peer-production,72 mapping
+online knowledge and patterns of local knowledge production,73 and
+investigating the subtle ways that popular information platforms like
+Wikipedia influence far more than just students or researchers seeking
+knowledge online.74 These works all illustrate Wikipedia’s importance
+beyond being a basic source of information, so a chilling effect on
+Wikipedia users would also threaten or negatively impact these other
+important uses and contributions of the site—if people were chilled en
+masse from using Wikipedia over time, it could no longer be used as an
+important focal point for such research.
+Second, there is existing research suggesting media coverage can
+impact Wikipedia use. Research has shown how media coverage and
+“breaking news events” impact Wikipedia editors and other collaborations
+on article content.75 If Wikipedia editors and contributors respond to
+72. See, e.g., YOCHAI BENKLER, THE WEALTH OF NETWORKS: HOW SOCIAL
+PRODUCTION TRANSFORMS 70–74, 101–23, 287–94 (2006) (discussing Wikipedia in
+relation to a range of topics, including “networked information economy,” the “economics
+of social production,” and the nature of Internet culture); Yann Algan, Yochai Benkler,
+Mayo Fuster Morell & Jérôme Hergueux, Cooperation in a Peer Production Economy
+Experimental Evidence from Wikipedia, WORKSHOP ON INFO. SYS. & ECON. (2013),
+https://www.parisschoolofeconomics.eu/IMG/pdf/hergueux_paper-2.pdf [https://perma
+.cc/MGR2-TE4J] (using Wikipedia to study the social foundations of peer contributions
+and production).
+73. See, e.g., Mark Graham, Bernie Hogan, & Ralph K. Straumann, Uneven
+Geographies of User-Generated Information: Patterns of Increasing Informational Poverty, 104
+ANNALS ASS’N AM. GEOGRAPHERS 746 (2014) (using Wikipedia to map patterns of
+global knowledge and information production).
+74. See, e.g., Mark Graham, Internet Geographies: Data Shadows and Digital Divisions
+of Labour, in SOCIETY AND THE INTERNET: HOW NETWORKS OF INFORMATION AND
+COMMUNICATION ARE CHANGING OUR LIVES 99 (Mark Graham & William H.
+Dutton eds., 2014) (using Wikipedia to understand a “digital division” of labor in global
+information production); Shun-Ling Chen, The Wikimedia Foundation and the SelfGoverning Wikipedia Community: A Dynamic Relationship Under Constant Negotiation, in
+CRITICAL POINT OF VIEW: A WIKIPEDIA READER 351, 362 (Geert Lovink &
+Nathaniel Tkacz eds., 2011) (discussing elements of Wikipedia’s governance structure,
+including how it is vulnerable to “chilling effects” and other regulatory problems).
+75. Brian C. Keegan, Emergent Social Roles in Wikipedia’s Breaking News
+Collaborations, in ROLES, TRUST, AND REPUTATION IN SOCIAL MEDIA KNOWLEDGE
+MARKETS 57, 57–79 (Elisa Bertino & Sorin Adam Matei eds., 2015) (reviewing
+literature exploring how Wikipedia covers news events, and the impact those events have
+on Wikipedia collaborative infrastructure and networks, and also providing a brief
+overview of research examining the nature and structure of Wikipedia editor networks
+more generally); Brian C. Keegan, A History of Newswork on Wikipedia, PROC. 9TH INT’L
+SYMP. ON OPEN COLLABORATION, ACM: NEW YORK (2013) (noting, among other
+things, how Wikipedia becomes a focal point for information seekers during breaking
+news events, both as a source of information and to understand the event and share
+information about it); Brian C. Keegan, Darren Gergle & Noshir Contractor, Hot Off the
+
+136
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+media coverage and significant news events, it is reasonable to predict that
+the widely covered surveillance revelations may likewise affect Wikipedia
+users. In short, there is an existing empirical foundation that media
+coverage of an important story like government surveillance could impact
+Wikipedia and its users.
+There are also methodological reasons for this case study’s focus on
+Wikipedia. First, unlike Google Trends, the Wikimedia Foundation
+provides a wealth of data on key elements of its site, including article
+traffic data, which can provide a more accurate picture as to any impact or
+chilling effects identified.76 Second, Wikipedia, a “unique, online,
+collaborative encyclopedia,”77 has over 500 million visitors per month, and
+its collaborative and peer-produced content is growing at a rate of 17,800
+articles per day (as of May 2014, English Wikipedia content includes over
+4.6 million articles).78 In other words, Wikipedia is a massively popular
+medium and one that is also growing in content and scope. As such, any
+observed chilling effect would implicate a large number of Internet users
+doing something wholly legal—accessing information and knowledge in
+an encyclopedia—and chilled or reduced use would run counter to these
+Wikipedia use and content trends.
+Finally, the public policy impact of any observed Wikipedia chilling
+effects is also a consideration. Investigating “chilling effect” claims related
+to Wikipedia use has recently become a matter of important public
+interest, in light of the Wikimedia Foundation lawsuit alleging NSA
+surveillance has had a chilling effect on Wikipedia and its users.79 This
+case study will test and explore these claims.
+
+Wiki: Structures and Dynamics of Wikipedia’s Coverage of Breaking News Events, 57 AM.
+BEHAVIORAL SCIENTIST 595 (2013), http://abs.sagepub.com/content/57/5/595
+[https://perma.cc/TFQ7-UZKT] (analyzing Wikipedia revision history data to explore
+the nature and structure of Wikipedia collaborative efforts in relation to breaking news
+events).
+76. Wikipedia provides a wealth of information about its number of articles, editors,
+page views, etc. Growth per Wikipedia Wiki, WIKIMEDIA, https://stats.wikimedia.org/
+wikimedia/animations/growth/AnimationProjectsGrowthWp.html [https://perma.cc/9PGP
+-UVCY].
+77. See Bar-Ilan & Aharony, supra note 3, at 243.
+78. Hilles, supra note 3, at 245; McIver & Brownstein, supra note 3, at 1.
+79. See Wales & Tretikov, supra note 3. See generally Complaint, supra note 1
+(Wikimedia Foundation is the lead complainant and the only complainant in the lawsuit
+that provides accessible data that can be analyzed for the purposes of this study.).
+
+2016]
+
+B.
+
+CHILLING EFFECTS
+
+137
+
+RESEARCH DESIGN AND DATA SELECTION
+
+This case study uses an interrupted time series (ITS) design.80 An ITS
+design uses a time series, which is a series of measurements or observations
+over time that is “interrupted” by some intervention or exogenous event.
+Such intervention divides the time series into two segments, resulting in
+measurements of time series before and after the intervening event. By
+“comparing” patterns in the time series data before and after the
+interruption, the study can assess the impact of an interrupting
+intervention or an event.81 This study will compare patterns in the data
+before and after the June 2013 revelations.
+Furthermore, this study combines segmented regression analysis with
+its ITS design. Such combination offers a powerful means for exploring
+the effects of interventions, events, or policy changes as long as there is a
+clearly identified time point of intervention.82 Segmented regression is
+useful because it allows a comparison in data levels and trends (like a
+reduction in views of Wikipedia articles over time) before and after an
+intervening event, while helping to isolate the impact of that event by
+controlling for other factors and variables. Because of its capacity to
+visualize observed and analyzed data in a compelling way, ITS design has
+been applied to a range of fields83 and is particularly popular among policy
+researchers.84 It has also been used to explore the effects of laws, policing
+(including surveillance by law enforcement), and other regulatory actions.85
+80. See sources cited supra note 27.
+81. CAMPBELL, STANLEY & GAGE, supra note 27, at 37; Fok, Henry & Allen,
+supra note 27, at 4; Mark & Reichardt, supra note 27, at 354–55; Penfold & Zhang, supra
+note 27, at S39–S40; Wagner et al., supra note 27, at 299.
+82. Fok, Henry & Allen, supra note 27, at 976 (“The [ITS design] is especially
+useful when there is a clearly identified time point of intervention or policy change.”);
+Mark & Reichardt, supra note 27, at 354–55, 383 (“[I]nterrupted time-series designs can
+be among the most credible quasi-experimental designs.”); Penfold & Zhang, supra note
+27, at S38 (stating that ITS design is among the “strongest” where randomized and
+controlled experiments are not possible); Wagner et al., supra note 27, at 299
+(“Interrupted time series [with segmented regression analysis] is the strongest, quasiexperimental design to evaluate longitudinal effects of such time-delimited
+interventions.”).
+83. Mylene Lagarde, How to Do (or Not to Do) . . . Assessing the Impact of a Policy
+Change with Routine Longitudinal Data, 27 HEALTH POL’Y & PLAN. 76, 76 (2011)
+http://heapol.oxfordjournals.org/content/27/1/76.full.pdf [https://perma.cc/HJG7-ZS65]
+(describing how “quasi-experimental” ITS designs employing segmented regression have
+been used in various fields, including environmental studies, economics, and health
+policy).
+84. See, e.g., Benjamin French & Patrick J. Heagerty, Analysis of Longitudinal Data
+to Evaluate a Policy Change, 27:24 STAT. MEDICINE 5005 (2008) (surveying different
+research designs and methods in policy change research); Lagarde, supra note 83, at 76
+
+138
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+This case study uses data on English language Wikipedia article view
+counts from the online service stats.grok.se, a portal maintained by a
+Wikimedia Foundation member. This portal provides access to a range of
+Wikipedia analytics, stats, and data.86 In particular, the portal aggregates
+Wikipedia article view data on a daily and monthly basis.87 This data at
+stats.grok.se has been used in a range of research, including studies
+involving market trends, health information access, and social-political
+change.88
+(describing in detail an ITS design that employs segmented regression as a simple but
+robust method to study policy impact and change); Wagner et al., supra note 27.
+85. See, e.g., Samuel Cameron, The Economics of Crime Deterrence: A Survey of Theory
+and Evidence, 41:2 KYKLOS 301, 314 (1988) (noting economists had begun using ITS
+designs, which then had long been used by criminologists); Daniel S. Nagin, Criminal
+Deterrence Research at the Outset of the Twenty-First Century, 23 CRIME & JUST. 1, 8–12
+(1998) (discussing a range of laws and police operations that have been using ITS
+designs); Lynn W. Phillips & Bobby J. Calder, Evaluating Consumer Protection Laws: II.
+Promising Methods, 14:1 J. CONSUMER AFFAIRS 9 (1980) (surveying literature on
+methods/research designs used to study consumer protection laws, including ITS). For
+some more recent examples, see Carl Bonander, Finn Nilson & Ragnar Andersson, The
+Effect of the Swedish Bicycle Helmet Law for Children: An Interrupted Time Series Study, 51
+J. SAFETY RES. 15 (2014) (used ITS design to explore the impact of a bicycle helmet law
+by examining inpatient data on injured cyclists before and after the law was enacted);
+Becky Briesacher et al., A Critical Review of Methods to Evaluate the Impact of FDA
+Regulatory Actions, 22:9 PHARMACOEPIDEMIOLOGY & DRUG SAFETY 986 (2013)
+(reviewing a range of ITS design studies examining the impact of FDA regulatory actions
+often by exploring health data before and after the FDA action); Benjamin David Décary
+Hétu, Police Operations 3.0: On the Impact and Policy Implications of Police Operations on the
+Warez Scene, 6:3 POL’Y & INTERNET 315 (2014) (exploring the impact of police
+operations and crackdown on the “warez” (online piracy) scene with an ITS design that
+examined data on the output of different warez communities before and after five
+different police operations); Jeffrey T. Ward, Matt R. Nobles, Lonn Lanza-Kaduce, Lora
+M. Levett & Rob Tillyer, Caught in Their Own Speed Trap: The Intersection of Speed
+Enforcement Policy, Police Legitimacy, and Decision Acceptance, 14:3 POLICE Q. 251 (2011)
+(using an ITS design to study the impact certain policy changes have on public opinion
+concerning the legitimacy police action, specifically, comparing speeding citation
+contestation rates before and after the introduction of an advertising campaign labeling
+the intervention city a “speed trap”).
+86. Stats.grok.se is maintained by Domas Mituzas, a Wikipedia developer, past
+Board of Trustee on the Wikimedia Foundation, and present member of its Advisory
+Board. See Frequent Questions, GROK, http://stats.grok.se/about [https://perma.cc/KQZ3
+-XGPZ].
+87. Id.
+88. See, e.g., Michela Ferron & Paolo Massa, WikiRevolutions: Wikipedia as a Lens for
+Studying the Real-Time Formation of Collective Memories of Revolutions, 5 INT’L J. COMM.
+1313 (2011) (examining Wikipedia as a “lens” through which to understand real-time
+social and political upheaval and change); Michaël R. Laurent & Tim J. Vickers, Seeking
+Health Information Online: Does Wikipedia Matter? 16:4 J. AM. MED. INFORMATICS
+ASS’N 471 (2009) (using Wikipedia traffic data from stats.grok.se to study the relevance
+
+2016]
+
+CHILLING EFFECTS
+
+139
+
+Like the Marthews and Tucker study, this case study uses a list of
+keywords the U.S. Department of Homeland Security uses to track and
+monitor social media.89 This list categorizes certain search terms in
+relation to a range of different issues such as “Health Concern,”
+“Infrastructure Security,” and “Terrorism.” According to the DHS
+documents themselves, the list is meant to assist analysts to monitor social
+media to provide “situational awareness and establish a common operating
+picture.”90 Though the methodology for formulating the list is not well
+known, presumably the terms represent ideas or content people associate
+with “terrorism” and other national security matters, which is why
+government officials are interested in tracking the terms online.91
+Using government keyword lists to study government surveillance or
+censorship is not new.92 Here, the DHS keywords provide a helpful basis
+to select Wikipedia articles for the study. To be clear, this keyword list is
+non-random, and it is not chosen based on any assumption that the
+general public is aware of the list or the topics attached. In other words,
+this study does not assume that people are avoiding topics relating to these
+keywords due to the DHS’s media monitoring program. Rather, the list is
+used for pragmatic methodological reasons. Similar to how the list was
+
+of Wikipedia to how people access to health information online); Helen Susannah Moat
+et al., Quantifying Wikipedia Usage Patterns Before Stock Market Moves, 3 SCI. REP. 1
+(2013) (investigating Wikipedia article traffic and usage in relation to stock market
+changes).
+89. The keyword list has been publicly available online since 2012, and was updated
+and re-posted by the DHS in 2013: U.S. DEP’T OF HOMELAND SEC., NATIONAL
+OPERATIONS CENTER MEDIA MONITORING CAPABILITY ANALYST’S DESKTOP
+BINDER (2011), https://epic.org/foia/epic-v-dhs-media-monitoring/Analyst-Desktop
+-Binder-REDACTED.pdf [https://perma.cc/2Z39-XMW9] [hereinafter ANALYST’S
+DESKTOP BINDER]. This was later updated and posted online by the DHS. See U.S.
+DEP’T OF HOMELAND SEC., PRIVACY IMPACT ASSESSMENT FOR THE OFFICE OF
+OPERATIONS COORDINATION AND PLANNING (2013), https://www.dhs.gov/sites/
+default/files/publications/privacy/PIAs/privacy_pia_ops_NOC%20MMC%20Update
+_April2013.pdf [https://perma.cc/9VJN-YKRL] [hereinafter PRIVACY IMPACT
+ASSESSMENT].
+90. PRIVACY IMPACT ASSESSMENT, supra note 89, at 23 app. B; Marthews &
+Tucker, supra note 25, at 3–4.
+91. Marthews & Tucker, supra note 25, at 6.
+92. Jedidiah R. Crandall & Masashi Crete-Nishihata et al., Chat Program Censorship
+and Surveillance in China: Tracking TOM-Skype and Sina UC, FIRST MONDAY, July 1,
+2013, http://firstmonday.org/ojs/index.php/fm/article/view/4628/3727 [https://perma
+.cc/M5FJ-T4D5]; Jeffrey Knockel, Jedidah Crandall & Jared Saia, Three Researchers, Five
+Conjectures: An Empirical Analysis of Tom-Skype Censorship and Surveillance, 16:4 FOCI
+’11: USENIX WORKSHOP ON FREE & OPEN COMM. ON INTERNET (2011),
+https://www.cs.unm.edu/~crandall/foci11knockel.pdf [https://perma.cc/FH8H-JUBA].
+
+140
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+used in the Marthews and Tucker search trends study,93 the DHS
+documents, and the keywords therein, are used to select Wikipedia articles
+that represent the sort of articles that users may be chilled from accessing
+in light of government surveillance.94
+This case study selected forty-eight Wikipedia articles that
+corresponded with the DHS keywords listed as relating to “terrorism.”95
+The full list of the keywords used (including terms such as “dirty bomb,”
+“suicide attack,” “nuclear enrichment,” and “eco-terrorism”) and the
+corresponding English language Wikipedia articles for which “page view”
+counts were collected via stats.grok.se can be found in Table 8 of the
+Appendix.96 The keywords relating to “terrorism” were used to select the
+Wikipedia articles because the U.S. government cited terrorism as a key
+justification for its online surveillance practices. Moreover, much of the
+media and news coverage framed the revelations around terrorism and
+national security.97 Wikipedia articles coinciding with these terrorismrelated topic keywords may include the kind of information or content
+users may avoid accessing in light of potential government surveillance.
+This study aggregated Wikipedia article view counts on a monthly basis
+for the forty-eight Wikipedia articles over a thirty-two month period,
+from the beginning of January 2012 to the end of August 2014. Those
+
+93. Marthews & Tucker, supra note 25, at 3–4.
+94. For example, if the government surveillance is focusing on terrorism online,
+people may have privacy concerns about accessing terrorism-related information online,
+and are thus “chilled” or deterred from accessing.
+95. PRIVACY IMPACT ASSESSMENT, supra note 89, at 27. Locating Wikipedia
+articles coinciding with each keyword was done manually; this was a rather simple
+exercise as there was a Wikipedia article that corresponded perfectly with the vast
+majority of keywords in the “terrorism” DHS keyword category. There were a few
+discrepancies, however: the Wikipedia article “environmental terrorism” was used for the
+keyword “environmental terrorist”; the keyword “target” was excluded as they were too
+many potentially corresponding Wikipedia articles; the Wikipedia article “political
+radicalism” was used for the DHS keyword “radicalism” because there were too many
+potentially corresponding articles; the keyword “enriched” was excluded as it was
+redundant with the included Wikipedia article “nuclear enrichment”; and there were also
+no Wikipedia articles corresponding with DHS keywords “weapons cache,” “suspicious
+substance,” “plot,” and “homegrown.” Wikipedia articles corresponding with the
+remaining 48 DHS “terrorism” related keywords were all included in the study.
+96. For clarity, the raw Wikipedia article “Page View” statistics track total views or
+loads of the Wikipedia articles or pages in question, not unique visitors. See Pageview
+Statistics, WIKIPEDIA.ORG, https://en.wikipedia.org/wiki/Wikipedia:Pageview_statistics
+[https://perma.cc/JSU2-E6PU].
+97. Qin, supra note 45, at 178 (finding that a predominant “framing” in traditional
+news media coverage of the Snowden surveillance disclosures focused on national security
+terrorism, along with international relations).
+
+2016]
+
+CHILLING EFFECTS
+
+141
+
+forty-eight Wikipedia articles corresponded with all DHS keywords listed
+in the “terrorism” category.98
+Although forty-eight is not an extraordinarily large sample size, the
+Wikipedia traffic attracted by these articles represents over 81 million total
+article page views over the course of the study. This means that the
+potential number of Internet users tracked in the study could be several
+millions.99 Moreover, to ensure the sample of forty-eight articles could be
+generalized to a wider sample of content (both terrorism-related and other
+topics that may raise privacy concerns), the study used “crowdsourcing” to
+measure the privacy value of the topics in question, following the approach
+of Marthews and Tucker.100
+Crowdsourcing involves completing certain tasks with the assistance of
+larger pools of online users or “crowds”—recruited through online services
+like Amazon’s Mechanical Turk (MTurk)—and has become a common
+technique for researchers to evaluate research instruments and other
+measures for privacy or privacy-related concerns.101 MTurk is an “open”
+online crowdsourcing platform founded in 2005 that provides a means for
+
+98. PRIVACY IMPACT ASSESSMENT, supra note 89, at 27. The findings in this study
+primarily concern the English speaking world, as only English Wikipedia article view
+counts are tracked in the Wikipedia data.
+99. Thus, though the selection of the forty-eight English Wikipedia articles was not
+random (there is no sampling frame for all terrorism-related Wikipedia articles), the data
+clearly indicates these articles represent a substantial number of Wikipedia users. Though
+a precise number cannot be estimated (the Wikipedia data tracks “Page View” statistics,
+that is, total views or loads of the Wikipedia articles or pages, not unique visitors), the
+data arguably still involves a large number of Internet users—many millions.
+100. Marthews and Tucker similarly recruited independent “raters” to evaluate the
+privacy value of Google search terms in their study. Marthews & Tucker, supra note 25,
+at 3–5.
+101. See, e.g., Berker Agir, Jean-Paul Calbimonte & Karl Aberer, Semantic and
+Sensitivity Aware Location Privacy Protection for the Internet of Things, PRIVACY ONLINE:
+WORKSHOP ON SOC’Y, PRIVACY & SEMANTIC WEB (PRIVON) (2014), http://ceur
+-ws.org/Vol-1316/privon2014_paper5.pdf [https://perma.cc/MB63-55PL]; Margherita
+Bonetto et al., Privacy in Mini-drone Based Video Surveillance, WORKSHOP ON DEIDENTIFICATION FOR PRIVACY PROTECTION MULTIMEDIA (2015), http://infoscience
+.epfl.ch/record/206109 [https://perma.cc/Z4ZT-DVMX]; Pavel Korshunov et al.,
+Crowdsourcing-based Evaluation of Privacy in HDR images, SPIE PHOTONICS EUR. (2014),
+http://proceedings.spiedigitallibrary.org/proceeding.aspx?articleid=1873752 [https://perma
+.cc/YCJ5-YY48]; Pavel Korshunov et al., Framework For Objective Evaluation of Privacy
+Filters, 8856 PROCEEDINGS SPIE APPLICATIONS OF DIGITAL IMAGE PROCESSING
+XXXVI (2013), http://proceedings.spiedigitallibrary.org/proceeding.aspx?articleid=1744325
+[https://perma.cc/XMJ8-D7LB]; Jialiu Lin et al., Expectation and Purpose: Understanding
+Users’ Mental Models of Mobile App Privacy Through Crowdsourcing, PROC. 2012 ACM
+CONF. ON UBIQUITOUS COMPUTING (2012), http://dl.acm.org/citation.cfm?id
+=2370290 [https://perma.cc/Y7ZD-2JJF].
+
+142
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+“task creation,” “recruitment,” “compensation,” and “data collection.”102
+Several studies summarized and documented MTurk’s advantages for
+survey, experimental, and other empirical research. Paolacci and Chandler
+recently concluded, after extensively canvassing existing evidence, that
+researchers may use MTurk for “virtually any study that is feasible to
+conduct online.”103 Indeed, the MTurk service has been validated as a tool
+for a range of research, including research on behavioral economics, and
+decision-making, collective behavior experiments, linguistic and cognitive
+psychological experiments, and, importantly for our purposes, conducting
+survey research.104 Samples recruited with MTurk have been found to be
+“at least as diverse as traditional subject pools” in terms of the general U.S.
+population and “relatively representative” of the U.S. Internet using
+population.105
+A total of 415 independent Internet users participated in the
+crowdsourcing project through MTurk, and they rated each of the fortyeight topics, with which the Wikipedia articles in the data set
+corresponded. The questions were designed to explore the likelihood that
+the topics would raise privacy-related concerns for Internet users. To
+minimize self-selection and response bias (a limitation difficult to avoid in
+non-random sampling), the brief questionnaires were described as merely
+an “Online Information Study” to potential MTurk participants.
+The respondents recruited for the evaluations were similar to other
+MTurk participant pools that are “relatively representative of the
+population of U.S. Internet users.”106 However, the respondents for this
+study were younger, more educated, had slightly lower incomes than the
+broader U.S. Internet population, and were slightly more male than female
+102. Michael Buhrmester, Tracy Kwang & Samuel Gosling, Amazon’s Mechanical
+Turk: A New Source of Inexpensive, Yet High Quality, Data?, 6:1 PERSP. ON PSYCHOL.
+SCI. 3, 3 (2011), http://pps.sagepub.com/content/6/1/3.abstract [https://perma.cc/YQ95
+-ASS7].
+103. Gabriele Paolacci & Jesse Chandler, Inside the Turk: Understanding Mechanical
+Turk as a Participant Pool, 23:3 CURRENT DIRECTIONS PSYCHOL. SCI. 184, 186 (2014),
+http://cdp.sagepub.com/content/23/3/184.abstract [https://perma.cc/XN2G-LGD8].
+104. Matthew J.C. Crump, John V. McDonnell & Todd M. Gureckis, Evaluating
+Amazon’s Mechanical Turk as a Tool for Experimental Behavioral Research, 8:3 PLOS ONE
+e57410, e57410 (2013), http://journals.plos.org/plosone/article?id=10.1371/journal.pone
+.0057410 [https://perma.cc/N5YP-PUYZ].
+105. Panagiotis G. Ipeirotis, Turker Demographics vs. Internet Demographics,
+COMPUTER SCIENTIST BUS. SCH. (2009), http://www.behind-the-enemy-lines.com/2009/
+03/turker-demographics-vs-internet.html [https://perma.cc/NET8-XU47]; Gabriele Paolacci,
+Jesse Chandler & Panagiotis G. Ipeirotis, Running Experiments on Amazon Mechanical
+Turk, 5:5 JUDGMENT & DECISION MAKING 411, 411–12 (2010).
+106. Paolacci, Chandler & Ipeirotis, supra note 105, at 412.
+
+2016]
+
+CHILLING EFFECTS
+
+143
+
+(56% of respondents were male and 44% female). The respondents were
+also highly likely to use “websites and other online resources” for
+information more generally (83.8% were “very likely” and another 15%
+“somewhat likely”) and, in particular, to “stay informed about current
+events” (73.5% were “very likely” and another 22.9% “somewhat likely”).
+Respondents were asked to indicate on a scale of 1 to 5 (1 being very
+unlikely and 5 being very likely): how likely they thought they would be in
+trouble if the U.S. government found out that they accessed information
+about the topic in question (Government Trouble Rating); how “privacysensitive” they viewed each topic as (in this case, 5 being highly sensitive
+and 1 not at all) (Privacy-Sensitive Rating); how likely they would be to
+delete the browser history on their computer after accessing information
+about the topic; and how likely they would avoid viewing or accessing
+information on the topic if they knew the Government was monitoring
+people’s activities online (Avoidance Rating).107
+The results from the crowdsourcing survey are set out in Table 7 of the
+Appendix. On balance, the results from the first three categories suggest
+that the topics raised notable privacy concerns for respondents. The results
+do not suggest, however, that any one category raised overly strong
+concerns. This is not entirely surprising, since there is no particular reason
+why someone would expect to be in “trouble” with the government for
+simply accessing information online when such access is a legal activity.
+However, the rating scores in response to the fourth category were
+noteworthy—things appear to change when people are aware of
+government surveillance. This is apparent from the higher “Avoidance”
+rating of 2.62, which suggests that respondents were overall more likely to
+avoid the topics in question if they knew the government was monitoring
+online activities. In short, the ratings suggest that the topics of the fortyeight Wikipedia articles raise privacy concerns for Internet users,
+particularly when people suspect the government is monitoring them,
+which may lead them to avoid or be chilled from accessing that
+information in particular.
+C.
+
+METHOD OF ANALYSIS
+
+A strength of an ITS design is that there are multiple assessments or
+measures before and after the event or intervention in the time series; such
+multiplicity controls for changes in level and secular trends in the data and
+107. This is not a standard scale, but one developed for this case study. For
+methodological consistency, these questions were designed to track ratings categories
+used by Marthews and Tucker. Marthews & Tucker, supra note 25, at 12, 38.
+
+144
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+increases the robustness of results.108 This case study uses Wikipedia article
+view counts to create a time series over a thirty-two month period from
+January 2012 to August 2014 (n = 32), with the “interruption” or
+intervening event dividing the time series into two segments: before and
+after the June 2013 revelations. Two empirical approaches are used to
+analyze the interrupted time series. The first is a simple comparison of the
+mean number of views for all the Wikipedia articles in the dataset before
+and after June 2013. If there is a chilling effect due to surveillance
+revelations in June 2013, the average or mean number of views for the
+forty-eight Wikipedia articles should be lower for months following June
+2013 than that of the months before. The second is a model-based
+empirical analysis. That is, segmented regression of an interrupted time
+series, which is the recommended method of analysis for ITS designs.109
+The health economist Mylene Lagarde, who has analyzed this method
+comprehensively, has provided an equation that expresses the specification
+for the regression analysis:110
+Yt = 0 + 1 * time + 2 * intervention + 3 * postslope + 1111
+The ITS design controls for “secular trends”—the long-term and nonperiodic trends in the data.112 To strengthen the robustness and validity of
+108. CAMPBELL, STANLEY & GAGE, supra note 27, at 37; Fok, Henry, & Allen,
+supra note 27, at 7; Lagarde, supra note 83; Penfold & Zhang, supra note 27, at S39;
+Wagner et al., supra note 27, at 308.
+109. Penfold & Zhang, supra note 27, at S41–42; Wagner et al., supra note 27, at
+299.
+110. Lagarde, supra note 83, at 79–80.
+111. In this case study, Yt, the “outcome” or dependent variable is the raw aggregate
+total of Wikipedia article views (or “view count”) for the forty-eight articles in the study.
+The time variable includes thirty-two time points in the time series, representing each of
+the thirty-two months in the time series data set from January 2012 to August 2014,
+which is the period of study. So, in this time series data set, the “outcome” or dependent
+variable is the aggregate views of all forty-eight Wikipedia articles totaled on a monthly
+basis, for each of the thirty-two months. For greater clarity, in this model, 0 captures the
+baseline level of the outcome variable at time 0—here, that would be the expected total
+views for all forty-eight Wikipedia articles in the data set at the beginning of the study; 1
+estimates the secular trend or growth rate in the total number of views for the forty-eight
+Wikipedia articles, independently from the “intervention” or intervening event (the June
+2013 surveillance revelations); 2 estimates the immediate impact of the “intervention” or
+the exogenous shock of PRISM/NSA surveillance publicity in June 2013, by reflecting
+the change in the “level” or the total number of views for the Wikipedia articles
+immediately after the June 2013 events; and, finally, 3 reflects any change in the trend of
+the data; that is, any growth or decline in total views for the forty-eight Wikipedia
+articles on a month-to-month basis, after the intervention. Lagarde, supra note 83, at 79–
+80.
+112. Lagarde, supra note 83, at 79.
+
+2016]
+
+CHILLING EFFECTS
+
+145
+
+results, however, additional controls can be included in the model, and,
+where appropriate, auto-correlation can be corrected.113 Here, although a
+true control group was not possible,114 comparator groups were also
+included in the analysis to increase its robustness, including both a
+comparator including security-related Wikipedia articles and another
+including the most popular (most viewed) Wikipedia in 2012, 2013, and
+2014.115 This, as will be explained in Part IV, is done to compare the
+impact of the June 2013 surveillance revelations on both the terrorismrelated Wikipedia articles and other content unlikely to raise privacy
+concerns. Overall Wikipedia use trends are also considered in the analysis
+to help isolate the impact of the June 2013 revelations beyond mere shifts
+in overall English Wikipedia article traffic in the same time period.116
+Again, a prediction based on chilling effects theory is that there will be a
+decrease in the total views of terrorism-related Wikipedia articles after
+June 2013. If, in addition to an immediate drop, any chilling effects are
+more substantial and long-term then the overall long-term article view
+trends in the data may also be affected.
+IV.
+
+RESULTS
+
+A.
+
+NON-MODEL EMPIRICAL FINDINGS
+
+The results discussed in this Section are “non-model” empirical
+findings, that is, these findings do not rely upon a statistical (regression)
+model. Instead, a more basic method of analysis is used whereby the
+average number of Wikipedia article views before and after the “focusing
+event” of June 2013 are compared (see Figure 1).
+
+113. Lagarde, supra note 83, at 79, 81; Mark & Reichardt, supra note 27, at 385;
+Penfold & Zhang, supra note 27, at S42; Wagner et al., supra note 27, at 305.
+114. Online surveillance potentially affects everyone, and there was no opportunity
+before the June 2013 revelations to isolate a control group.
+115. See infra Section IV.B.4.
+116. As previously noted, Wikimedia provides a wealth of information about page
+views. Page Views for Wikipedia, Both Sits, Raw Data, WIKIMEDIA (Nov. 11, 2015),
+http://stats.wikimedia.org/EN/TablesPageViewsMonthlyOriginalCombined.htm
+[https://perma.cc/2JQS-PRG4]. The segmented regression analysis was performed using
+the statistical software package Stata and auto-correlation is controlled for using the
+Prais-Winsten method where necessary. Lagarde, supra note 83, at 79 (recommending
+controlling for auto-correlation when employing this statistical analysis); see also GEORGE
+G. JUDGE ET AL., INTRODUCTION TO THE THEORY AND PRACTICE OF
+ECONOMETRICS (1985).
+
+146
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+4,000,000
+3,500,000
+
+Total Views
+
+3,000,000
+
+2,775,709
+
+2,500,000
+
+2,249,095
+
+2,000,000
+1,500,000
+1,000,000
+500,000
+0
+Pre-June, 2013
+
+Post-June, 2013
+
+Figure 1. Average Monthly View Counts, Pre and Post June 2013. The reduction after
+the June 2013 surveillance revelations may suggest a chilling effect.
+
+A lesser average number of views after June 2013 would be consistent
+with a chilling effect. The difference in mean values before and after June
+2013 is notable—a reduction of 526,614 in the average monthly views for
+the articles, which represents approximately a 19.5% drop in article view
+counts. This is more than the mean differences found in the Google
+search terms study before and after June 2013.117 This reduction is also
+highly statistically significant.118 This itself may constitute evidence of a
+chilling effect. Of course, there are alternative explanations for these
+results. One possible explanation is that overall Wikipedia traffic (and
+thus, all Wikipedia article view counts) decreased after June 2013 for other
+reasons. Perhaps people are using Wikipedia less and less and this data is
+simply reflecting this overall declining trend unrelated to any surveillance
+revelations. So, while these findings are intriguing, a model-based
+empirical analysis is required to control for such variables as the overall
+trends in the data and to arrive at more robust empirical results. Therefore,
+statistical regression models (discussed in the following Section) were used
+to control for things like overall trends in Wikipedia article view traffic.
+
+117. But cf. Marthews & Tucker, supra note 25, at 13–14.
+118. The Cohen’s d value was 1.3286.
+
+2016]
+
+B.
+
+CHILLING EFFECTS
+
+147
+
+MODEL-BASED EMPIRICAL FINDINGS
+
+As noted earlier, the “outcome” or dependent variable in this analysis
+represents the raw aggregate total view counts per month for all Wikipedia
+articles in the data set. Segmented regression of the time series data set—
+“interrupted” by the June 2013 surveillance revelations—analyzes the
+impact of these revelations. Several sets of results are reported here to
+better illustrate findings. Analysis was conducted using Stata statistical
+software.119
+1. First Set of Results
+The first set of results is represented in Table 1 of the Appendix.
+Interestingly, the results indicate there was a reduction of 995,085 views
+immediately following the June 2013 revelations, which is a large, sudden,
+and statistically significant drop in the total view counts for the forty-eight
+Wikipedia articles.120 The total article views as of May 2013 was
+2,960,778, meaning this decline represents an immediate drop-off of over
+30% of overall views. The results also indicate that there was no
+statistically significant change in the secular (or overall long-term) trend in
+the data. In short, because of the large drop in total view counts for the
+forty-eight Wikipedia articles, the data supports the existence of an
+immediate and substantial chilling effect following the June 2013
+revelations. Figure 2 is a graphic visualization of the decrease, and includes
+a scatter plot of the data points in the set and a trend line based on the
+fitted results produced by the regression analysis:
+
+119. Version 11.1.
+120. There is little consensus for the appropriate method to measure effect size for
+single group ITS designs like the one used for this case study. See Larry Hedges, James
+Pustejovsky & William Shadish, A Standardized Mean Difference Effect Size for Single Case
+Designs, 3:3 RES. SYNTHESIS METHODS 224, 225 (2012). The most common method in
+“treatment” studies is the percentage of non-overlapping data (PND), which here is
+clearly above the 80% threshold for a “large” effect size. See generally Thomas E. Scruggs
+& Margo A. Mastropieri, How to Summarize Single-Participant Research: Ideas and
+Applications, 9:4 EXCEPTIONALITY 227 (2001) (proposing the use of non-overlapping
+data metric for summarizing single participant research). However, model diagnostics
+identified two influential outlier data points. The first outlier concerned view counts for
+the Wikipedia articles in the data set in November 2012 (Cooks D value = 0.1644942),
+and the other was for view counts in July 2014 (Cooks D value = 0.4121233). Both of
+these are extreme values and are visible in Figure 2.
+
+148
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+Mid June 2013
+
+Total Views (All 48 Wikipedia Articles)
+
+4000000
+
+3500000
+
+3000000
+
+2500000
+
+2000000
+0
+
+2
+
+4
+
+6
+
+8
+
+10
+
+12
+
+14
+
+16
+
+18
+
+20
+
+22
+
+24
+
+26
+
+28
+
+30
+
+32
+
+Time (Months)
+Trend Pre-June 2013
+
+Trend Post-June 2013
+
+Total Article Views (By Month)
+
+Figure 2. Pre and Post June 2013 Article View Trends (Outliers Included). The sudden
+drop, and flatter trend or slope in the data, after June 2013 surveillance revelations are
+consistent with a chilling effect.
+
+In this graph, the large and statistically significant immediate drop
+(−995,085 page views) over the course of June 2013 can be seen, with the
+trend line (regression/line of best fit) substantially lower immediately after
+June 2013, compared to the trend in the data before June. Also, there was
+no statistically significant change in the secular trend in the data, as the
+slopes in the data before and after June 2013 are comparable: in each, the
+trend in view counts for the sample is modestly increasing overall.
+Though there was not a statistically significant change in the trend of
+the data, the graph still suggests something more than an ephemeral
+chilling effect that dissipates quickly. Rather the data suggests a lasting
+impact on total article views. For example, the total article views as of
+August 2014 (month 32) is still lower than the views in April and May
+2013 (months 15 and 16), the months prior to the revelations. The results
+also suggest that the chilling effect did not influence the long-term trend
+in the data that increased monthly. Though the number of views dropped
+off after June 2013, the trend in the data still increased until November
+2013 (month 23) at a modest but apparent rate on a month-to-month
+basis.
+In sum, the results are consistent with a sharp immediate chilling
+effect, possibly with a lasting impact on total views. However, the rising
+
+2016]
+
+CHILLING EFFECTS
+
+149
+
+secular trend in the Wikipedia article traffic is inconsistent with a
+significant long term chilling effect.
+2. Outliers: The “Exogenous Shock” of War
+Two outliers are clearly apparent in the data. The first is at month 11
+(November 2012) and the second is at month 31 (July 2014). The view
+counts for the articles in the dataset skyrocketed in these months, far
+beyond any other months, either before or after the June 2013 revelations.
+In November 2012, the total views dramatically and temporarily increased,
+approaching almost 4,000,000 total views. In July 2014, views
+exponentially increased far beyond previous or subsequent months. Model
+diagnostics confirm that these are highly influential outliers with extreme
+values.121
+What happened during November 2012 and July 2014 that caused the
+total view counts in the sample to suddenly skyrocket? War and conflict in
+the Middle East are likely the cause. In November 2012, Israel launched
+“Operation Pillar of Defense,” an eight day Israeli Defense Force (IDF)
+operation in Gaza in response to rocket attacks launched by the
+Palestinian militia group Hamas into southern Israel.122 The operation
+officially began on November 14, 2012, and ended on November 21, 2012
+with an Egypt-brokered ceasefire. Then, in July 2014, Israel launched
+“Operation Protective Edge,” which is an IDF operation in Gaza against
+
+121. Best practices for dealing with outliers in cases like this were observed—the
+technique used to identify the “influential” outlier should be indicated (here, Cooks D),
+deletion was used as a method to address the outlier, and results are reported with and
+without the outlier data. See Herman Aguinis, Ryan K. Gottfredson & Harry Joo, BestPractice Recommendations for Defining, Identifying, and Handling Outliers,
+ORGANIZATIONAL RES. METHODS 8, 20–23 (2014), http://orm.sagepub.com/content/
+early/2013/01/11/1094428112470848.abstract [https://perma.cc/6S3B-MPQ5] (Techniques
+for identifying outliers should be indicated. Cooks D is noted (at 8 and 21) as an
+appropriate technique to identify an outlier’s influence globally in a regression (as here).
+Also the authors state (at 22) that influential outliers can be dealt with through deletion
+but “emphasize the importance of reporting the results with and without the chosen
+handling technique, which includes providing an explanation for any differences in the
+results, because the mere presence of influential outliers causes a dilemma in determining
+proper inference about a population based on a sample.”). The Cooks D value of
+0.1286922 for the November 2012 view count and the Cooks D value of 0.3244882 for
+July 2014 are both extreme values.
+122. For a “timeline” of the conflict and the IDF operation against Hamas, see
+TIMELINE: Israel Launches Operation Pillar of Defense Amid Gaza Escalation, HAARETZ
+(Nov. 20, 2012), http://www.haaretz.com/news/diplomacy-defense/timeline-israel-launches
+-operation-pillar-of-defense-amid-gaza-escalation.premium-1.479284 [https://perma.cc/5FXT
+-34YB]; see also Q&A: Israel-Gaza Violence, BBC NEWS (Nov. 22, 2012), http://www.bbc
+.com/news/world-middle-east-28439404 [https://perma.cc/4H5L-N79W].
+
+150
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+Hamas.123 This operation ended after fifty days, with widespread media
+coverage of the thousands of rockets fired from Gaza into Israel and the
+several thousand strikes by IDF on Hamas targets in Gaza.124
+These two high profile conflicts coincide with a dramatic and
+anomalous increase in the view counts during those months for the
+Wikipedia article on “Hamas” in the dataset. Examining more closely the
+view counts for the Hamas article over the thirty-two months in the data
+set, the “Hamas” Wikipedia article view count was 928,533 for November
+2012, and then 1,220,490 for July 2014, which are far beyond the mean
+number of view counts for the article across all months in the study
+(134,574 monthly views). If we exclude these two outlier months, the
+contrast between the view counts for the Hamas article during those two
+months and other months in the dataset is even starker, with the mean
+being 71,912.125 It can be inferred that the media coverage of these two
+conflicts involving Israel and Hamas led to a dramatic increase in Internet
+users seeking information about Hamas on English Wikipedia. This
+conclusion is supported by the fact that view counts for the Wikipedia
+article “Palestinian Liberation Organization” also increased in those same
+months.126 It is also consistent with the findings of Zeitzoff, Kelly, and
+
+123. Information about the operation is available in a Jerusalem Post article. Ben
+Hartman, Fifty Days of Israel’s Gaza Operation, Protective Edge—By the Numbers,
+JERUSALEM POST (Aug. 28, 2014), http://www.jpost.com/Operation-Protective-Edge/
+50-days-of-Israels-Gaza-operation-Protective-Edge-by-the-numbers-372574 [https://perma
+.cc/G64V-LFVW]; Gaza Crisis: Toll of Operations in Gaza, BBC NEWS (Sept. 1, 2014),
+http://www.bbc.com/news/world-middle-east-20388298 [https://perma.cc/QGN6-D536].
+124. Amos Harel, At the Crossroads of a Gaza Ground Operation, HAARETZ (Jul. 12,
+2014), http://www.haaretz.com/news/diplomacy-defense/.premium-1.604601 [https://perma
+.cc/2M6N-MAPY] (“Hamas and Israel are waging an image battle. Their moves are the
+subject of constant media coverage, and, more than in the past, they are using
+information and photos from civilians, through smart phones and social media.”). In fact,
+the widespread media coverage of the Gaza conflict in 2012 led to a dramatic increase in
+social media activity during the 2012 conflict. Thomas Zeitzoff, Does Social Media
+Influence Conflict? Evidence from the 2012 Gaza Conflict, supp. at 2 (Feb. 17, 2015)
+(unpublished manuscript), http://www.zeitzoff.com/uploads/2/2/4/1/22413724/zeitzoff
+_socialmedia_2ndgaza_v2.pdf [https://perma.cc/C8YA-DEJA] (noting that “international
+interest” in the Israeli-Palestinian conflict led “to multiple, competing news organizations
+covering the 2012 Gaza Conflict”).
+125. This is confirmed by the z-scores for those two data points (3.01 and 4.11,
+respectively). Both are outlier values. See generally PETER H. WESTFALL & KEVIN S. S.
+HENNING, UNDERSTANDING ADVANCED STATISTICAL METHODS 247 (2013) (noting
+the “rule of thumb” that an observation with a z-score greater than +3.0 or less than -3.0
+is typically considered an outlier).
+126. However, these increases, although noticeable in the data, were not so extreme
+as to constitute outlier observations. The PLO Wikipedia article view count for
+
+2016]
+
+CHILLING EFFECTS
+
+151
+
+Lotan, who have found that major conflicts, including the 2012 Gaza
+conflict, draw “significantly higher levels” of activity on the social media
+platform Twitter.127 These two influential outliers caused by increased
+traffic to the Hamas article are excluded in the remaining sets of results.
+3. Second Set of Results—A Lasting Chilling Effect?
+Consistent with best practices for dealing with outliers,128 results
+including the outlier “Hamas” Wikipedia article data were reported above.
+A second set of results from the analysis, which excludes the outlier data
+concerning the Hamas article, is presented here and set out in Table 2 of
+the Appendix. Removing the outliers led to new findings.129 Similar to the
+first reported results, there was an immediate and statistically significant
+decrease in view counts following the June 2013 revelations: an immediate
+drop of 693,617 total views. Using the 2,893,553 total article views as of
+May 2013, this decrease represents an immediate drop-off of just under
+25%. This suggests that the revelations in June 2013 are associated with a
+sharp and sudden decrease in traffic consistent with a chilling effect.
+Also importantly, is that after June 2013, there is not only a large and
+immediate drop in views but also a statistically significant change in the
+overall trend in the month-to-month views of the Wikipedia articles.
+Rather than increasing on a monthly basis, the trend after June 2013 has
+completely changed. Due to the statistically significant decrease of 67,513
+monthly views, the overall data trend has shifted from an increase of
+41,421 views per month to a decrease of 26,092 per month. This is
+important because it means that the NSA/PRISM surveillance revelations
+are associated with a longer term, possibly even permanent, decrease in
+web traffic to the Wikipedia pages studied, consistent with a longer term
+(and possibly permanent) chilling effect. Figure 3 illustrates this trend.
+The shifting trend of the data, which in this case is a sudden and
+immediate drop, is particularly consistent with a chilling effect arising
+November 2012 had a z-score of 3.0 while for July 2014, it was 2.61. Neither are outliers.
+For explanation of the usual “rule of thumb” for z-scores and outliers, see id. at 247.
+127. Thomas Zeitzoff, John Kelly & Gilad Lotan, Using Social Media to Measure
+Foreign Policy Dynamics: An Empirical Analysis of the Iranian–Israel Confrontation (2012–
+13), 52 J. PEACE RES. 368, 372 (2015) (among other things, focusing on social media
+data obtained from Twitter to track foreign policy discussions across languages online).
+128. Aguinis et al., supra note 121.
+129. The second set of results were tested for autocorrelation as recommended, see
+Lagarde, supra note 83, at 79. The Durbin-Watson test statistic showed some possibility
+of autocorrelation at lag 1, both the Cumby-Huizinga and Breusch-Godfrey tests showed
+no evidence of autocorrelation across through lag 1-10 (and thus did not reject the null
+hypothesis of no autocorrelation).
+
+152
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+from the June 2013 revelations. If the outlier data relating to Hamas view
+counts is excluded, the decline in page views is less sudden (e.g., 25%
+immediate drop-off if the Hamas data are excluded compared to the 30%
+drop-off if the Hamas data remains in the study). However, regardless of
+whether the Hamas data is included, there is still a substantial and
+statistically significant decrease. Moreover, there is a change in the overall
+trend in the data. Before June 2013, total views of the Wikipedia articles
+in the dataset slowly increase each month. After June 2013, however, with
+the widespread “exogenous shock” of publicity surrounding the NSA/
+PRISM revelations, there is a change in the “slope,” or data trend.
+Without the outlier “Hamas” view counts in July 2014, the total views are
+on a downward path.
+Total Views (47 Wikipedia Articles, Hamas Excluded)
+
+Mid June 2013
+3500000
+
+3000000
+
+2500000
+
+2000000
+
+1500000
+0
+
+2
+
+4
+
+6
+
+8
+
+10
+
+12
+
+14
+
+16
+
+18
+
+20
+
+22
+
+24
+
+26
+
+28
+
+30
+
+32
+
+Time (Months)
+Trend Pre-June 2013
+
+Trend Post-June 2013
+
+Total Article Views (By Month)
+
+Figure 3. Pre and Post June 2013 Article View Trends (Outliers Excluded). The sudden
+drop in views and trend shift—from increasing monthly views over time to decreasing
+after June 2013—is consistent with a significant and long-term chilling effect.
+
+It may be suggested that the reduction in views in June 2013 and then
+a monthly decrease in traffic to these terrorism-related Wikipedia articles
+may simply reflect overall Wikipedia article view traffic trends. This is
+incorrect. Results for an identical ITS for all English Wikipedia article
+views (across all platforms) for the same thirty-two month period can be
+found at Table 3 of the Appendix, and show three distinct differences.
+First, there is no statistically significant shift in the overall article traffic
+
+2016]
+
+CHILLING EFFECTS
+
+153
+
+trend after June 2013. By contrast, there was such a shift in this set of
+results. Second, the overall article view traffic for all English Wikipedia
+articles continues to increase month to month after June 2013 (by
+approximately 114 million views per month). Here, there is a statistically
+significant monthly decline in article views until the end of the thirty-two
+month period. Third, while there is a statistically significant reduction in
+article views over June 2013, the drop off is significantly less (only 15% if
+you go by actual views in May 2013). So, even assuming that a full 15% of
+the drop off for the forty-seven terrorism-related Wikipedia articles is
+simply reflective of background Wikipedia trends, 10% of the reduction in
+article views over June 2013 remains. This, to be clear, is twice the
+noteworthy and statistically significant 5% reduction in Google searches
+for privacy-sensitive terms Marthews and Tucker found after June 2013.130
+All of these observations suggest these findings reflect far more than mere
+background Wikipedia trends.
+In sum, data visualization shows empirical evidence that is consistent
+with a long-term chilling effect due to the surveillance revelations, which
+is not only associated with an immediate drop in views but also a longterm chill on accessing these Wikipedia articles, as users accessed
+information on these topics less and less frequently.
+4. Final Results with Comparator Groups
+This Section presents a final set of results to strengthen the inference
+that the reduction in article views after the June 2013 revelations are a
+result of Wikipedia users’ surveillance-related privacy concerns. Two main
+steps were taken to strengthen this inference in these final results. First, to
+focus on Wikipedia article content most likely to raise privacy concerns for
+users, only the thirty-one articles with the highest combined privacy
+ratings (from the MTurk privacy evaluation) were included.131 Second, a
+comparator/quasi-control132 group of Wikipedia articles was added to the
+analysis. In a classic controlled experiment, a control group is randomly
+130. Marthews & Tucker, supra note 25, at 3.
+131. The articles included can be viewed in Table 7 of the Appendix. Of the original
+47 articles (48 minus Hamas), the median of the combined privacy score was 2. In this
+final set of findings any article with a privacy score less than 2 was removed to focus on
+those articles that should raise the most serious privacy concerns. This left 31 total
+articles, though the Wikipedia article on “Ammonium nitrate” was ultimately excluded,
+as it included views in a month with an extreme z-score (4.91) that was skewing
+regression results. This left a total of 30 articles.
+132. The comparator/control group is considered “quasi” as there was no opportunity
+to isolate a group of Wikipedia users before the June 2013 revelations (because online
+surveillance potentially affects everyone).
+
+154
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+selected from the same population or sampling frame as the experimental
+group.133 The design’s logic is that if you draw from an identical or very
+similar sampling pool, then the only significant difference between the
+testing and the control group is that the latter is not exposed to the
+intervention or treatment; therefore, if the “treatment group” is impacted
+while the control group is not, the inference that the treatment or
+intervention caused any observed impact is strengthened.134 Though true
+experiments are rarely found outside laboratories because they require
+highly controlled settings,135 employing quasi-experimental features in
+research designs like ITS helps strengthen findings and results.136 As with
+experimental designs, a control group employed in an ITS design is ideally
+identical or very similar to the “experimental” group—if possible drawn
+from the same population—but would not “experience” the intervention.137
+Here, results for both the “testing” group—the terrorism-related
+Wikipedia articles—and comparator groups are compared to better
+understand the impact associated with the June 2013 revelations.138
+To create comparator groups as similar as possible to the terrorismrelated Wikipedia articles in this study, two groupings of security-related
+133. See NOREEN L. CHANNELS, SOCIAL SCIENCE METHODS IN THE LEGAL
+PROCESS 58–60 (1985) (introducing experimental design).
+134. Id. at 58–60 (describing the classic experimental design and procedure); see also
+CAMPBELL, STANLEY & GAGE, supra note 27, at 13–34 (providing an extensive
+discussion of different forms of experimental design, and how such designs guard against
+threats to internal and external validity); DAVID DE VALUS, RESEARCH DESIGN IN
+SOCIAL RESEARCH 53–55, 58 (2003) (introducing classic experimental design and
+procedures, and also explaining how use of control groups in experiment design help
+control for unknown factors).
+135. See CHANNELS, supra note 133, at 61 (noting the difficulty of doing experiments
+“outside the laboratory”); MATTHEW DAVID & CAROLE D. SUTTON, SOCIAL
+RESEARCH: AN INTRODUCTION 206 (2d ed., 2011) (discussing some of the challenges
+with using experimental designs in the “social world”).
+136. See Penfold & Zhang, supra note 27, at S43 (noting that while single group ITS
+designs (with segmented regression) can still be carried out in the absence of a proper
+control group, the “strength of inference is weaker in the absence of the counterfactual
+outcome”); Wagner et al., supra note 27, at 306–07 (defending single group ITS designs
+as robust, but also noting and discussing many benefits of employing a control group in
+an ITS design and analysis).
+137. Wagner et al., supra note 27, at 306 (“Ideally, a control group that is identical to
+the study group but does not experience the intervention is followed over the same time
+period as the intervention group. Comparing the effect in the intervention group with
+that in the control group then allows separating the intervention effect from others that
+may have occurred at the same time.”).
+138. Penfold & Zhang, supra note 27, at S40–S41 (noting the importance of
+comparison between the experimental and control groups); Wagner et al., supra note 27,
+at 306 (noting that the experimental and control groups are compared).
+
+2016]
+
+CHILLING EFFECTS
+
+155
+
+Wikipedia articles was created: one, using the “DHS & Other Agencies”
+(or domestic security) keyword category from the Privacy Impact
+Assessment, the same 2013 DHS document used to identify the terrorism
+related articles,139 and a second using the “Infrastructure Security” keyword
+category from the same document.140 The logic of this design choice is
+139. PRIVACY IMPACT ASSESSMENT, supra note 89, at 24. Locating Wikipedia
+articles coinciding with each keyword was again done manually and similarly was very
+simple as there was a Wikipedia article that corresponded perfectly with the vast majority
+of keywords in the “DHS & Other Agencies” keyword category. These were the few
+discrepancies: the Wikipedia article “Bureau of Land Management ” was used for the
+keyword “National Operations Center (NOC)” (there is no article for the “National
+Operations Center (NOC)”, but the NOC is located at the Bureau of Land Management,
+http://www.blm.gov/noc/st/en.html [https://perma.cc/E2VY-3FXB]); also the National
+Security Operations Center (NSOC) is located at the NSA and may bias the group postJune 2013; the Wikipedia article “Espionage” was used for the DHS keyword “agent”
+(being the Wikipedia article for “spy agent”); the Wikipedia article “Task Force 88” was
+used for the keyword “Task Force” as it is an anti-terrorism task force more consonant
+with the other security-related keywords in this category; there were a vast range of
+different articles on emergency/disaster relief organizations the “Red Cross” keyword
+could refer to, so the Wikipedia article for disaster relief/emergency management was
+used); two keywords in the DHS document refers to agencies incorrectly; it refers to the
+“Drug Enforcement Agency (DEA)”, which is the name of an agency in Liberia; this
+article was excluded but views for the Wikipedia acronym page for “DEA” were included
+(which does refer to a U.S. agency); another keyword refers to “Alcohol Tobacco and
+Firearms (ATF)”, an agency that was previously split into two separate agencies, the
+Alcohol and Tobacco Tax and Trade Bureau and the Bureau of Alcohol, Tobacco,
+Firearms, and Explosives; the Wikipedia article for the former agency was included but
+not the latter; this is because the reference to “Explosives” in the name of the agency may
+raise privacy concerns for Internet users therefore biasing the comparator group.
+Wikipedia articles corresponding with the remaining related keywords were all included
+in the first set of results involving this domestic security comparator group available in
+Table 4 of the Appendix. The 25 Wikipedia articles included can be viewed in Table 10
+of the Appendix. In the second set of “refined” results, also available in Table 4 and
+visualized in Figure 4, view counts for the articles “United Nations” and “Federal Bureau
+of Investigation” were excluded as they included views in certain months constituting
+significant outliers. Once these extreme outlier articles were excluded, the model achieved
+good predictive value (Prob > F = 0.00, adj. R2 = 0.5437). A similar analysis was
+undertaken for the terrorism-related articles group with the Wikipedia article on
+“Ammonium nitrate” excluded as an outlier as well. See supra note 143.
+140. PRIVACY IMPACT ASSESSMENT, supra note 89, at 24. Again, locating articles
+was simple as there was a Wikipedia article that corresponded naturally with the vast
+majority of keywords in the “Infrastructure Security” keyword category. These were the
+few discrepancies: the Wikipedia article “Chemical burn” was used for the keyword
+“Chemical fire” (there is no “Chemical fire” article); the article “Information
+infrastructure” was used for the keyword “Computer infrastructure” (there is no
+“Computer infrastructure” article); the article “Telecommunications network” was used
+for the keyword “Communications infrastructure” (there is no “Communications
+infrastructure” article); the article “National Information Infrastructure” was used for the
+keyword “National infrastructure” (there is no “National infrastructure” article); the
+
+156
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+primarily a form of normative matching: while using an identical set of
+Wikipedia articles for a comparator/control group is impossible, terrorism
+and domestic/infrastructure security-related articles comprise closely
+related content and likely attract similar readers and Wikipedia users. The
+three groups of Wikipedia articles could also be created by matching
+articles with keywords from the same DHS document, so the articles are
+being drawn from the same “source,” which renders the groups more
+similar and closely related for comparative purposes. However, in theory,
+viewing terrorism-related Wikipedia content is far more likely to raise
+privacy concerns for Wikipedia users concerned about government
+surveillance than merely viewing information about domestic security
+agencies like “Department of Homeland Security” or “Fusion Centers” or
+articles about infrastructure like “Bridge,” “Port authority,” or
+“Information infrastructure.” As such, article traffic concerning the
+domestic security or infrastructure-related Wikipedia articles in the
+comparator groups should not lead to a June 2013 related chilling effect.
+The hypothesis, based on chilling effects theory, is that users viewing
+terrorism-related Wikipedia articles should, by contrast, be more chilled
+by the surveillance revelations.141 An additional comparator group—
+Popular Wikipedia pages142—is also analyzed and visualized separately for
+article “Electrical grid” was used for the keyword “Grid”; the article “Electric power” was
+used for the keyword “Electric” (there is no article for “Electric”); the article “Power
+outage” was used for the keyword “outage”; the article “Flight cancellation and delays”
+was used for the keyword “Cancelled”; there were no existing Wikipedia articles for
+“CIKR” (Critical Infrastructure & Key Resources) or “NBIC” (National Biosurveillance
+Integration Center), but view counts for articles for each acronym (NBIC/CIKR) were
+nevertheless included; “Electric power transmission” was used for the keyword “Power
+lines” (there is no “Power lines” article); and there was no article corresponding
+“Transportation security” other than the “Transportation Security Administration,”
+which was already included in the domestic security-related comparator, so it was not
+included. There was also no article corresponding with “Service disruption.” All thirtyfour Wikipedia articles included can be viewed in Table 11 of the Appendix.
+141. This is another reason why the keywords under the “DHS & Other Agencies”
+and “Infrastructure” categories in the DHS document were used to select comparator
+groups, as many keywords in the other categories beyond “Terrorism” (e.g., “Cocaine,”
+“Meth Lab,” “HAZMAT and Nuclear,” “nerve agent,” etc.) concern topics or content
+that may very well raise privacy concerns for users aware of government surveillance
+online. As such, these terms would not be appropriate as quasi-controls.
+142. Following Marthews and Tucker’s use of “popular” Google Search terms as
+quasi-controls in their study, this study, for comparative purposes, examined the
+Wikipedia article traffic for the top ten most popular English Wikipedia articles (in terms
+of article views) for each of years 2012, 2013, and 2014 (the years included in the thirtytwo month study period), according to the Wikimedia Tool Lab’s “Wikitrend” reports.
+Trends on Wikipedia, WIKTRENDS, https://tools.wmflabs.org/wikitrends [https://perma
+.cc/VXF8-4GQC] ; see also Marthews & Tucker, supra note 25, at 7–8. This led to a set
+
+2016]
+
+CHILLING EFFECTS
+
+157
+
+illustrative purposes, with a similar chilling effect hypothesis (unlike
+privacy concerning terrorism-related content, the June 2013 revelations
+should have no effect on these pages).
+For the 30 terrorism-related article group, results available in Table 4
+of the Appendix, the reduction in views and reversal in trend are, once
+again, consistent with a significant and potentially long-term chilling
+effect. The immediate drop-off (−225,867) was large, and the trend
+change from increasing views monthly (26,129) to fewer (−38,160) was
+statistically significant at the 99% confidence level. Using the predicted
+views as of May 2013 (854,755), the 225,867 reduction in June represents
+a sudden drop off of approximately 26%.
+By contrast, article views for the full 25 domestic security-related
+Wikipedia articles comparator group (results also in Table 4) show little
+impact, or evidence of chill, associated with the June 2013 revelations. The
+results show no substantial nor statistically significant reduction in views
+in June or change in trends, with very high p values (0.531 and 0.551).
+The small and statistically insignificant reduction of 24,638 in June is
+dwarfed by the 225,867 drop for the terrorism related views. In fact, the
+regression model for these results was not statistically significant
+(Prob > F = 0.4470) and thus no predictive value (Adj. R2 = −0.0084)
+indicating that an analysis based around the June 2013 revelations simply
+does not fit the actual data on article views for these domestic securityrelated articles, nor tell us much about it. This is unlike the terrorismrelated article group, where the model was highly statistically significant
+(Prob > F = 0.0000) with strong predictive value (Adj. R2 = 0.6789). This is
+consistent with a chilling effects hypothesis where terrorism-related
+articles are impacted but security-related articles, that do not raise privacy
+concerns, are not.
+This inference is strengthened through second refined set of results for
+the domestic-security related articles that addresses outlier143 (available in
+Table 4 and visualized in Figure 4), still suggests no significant immediate
+or long term impact due to the June 2013 revelations. There is no
+statistically significant increasing or decreasing monthly view trends for
+the domestic-security related articles. And while there is a drop in views in
+June (90,921), it is not statistically significant and far smaller than the 26%
+of twenty-six Wikipedia articles comparator group, including articles like “Google,”
+“Facebook,” “Breaking Bad,” “Game of Thrones,” and “World War II.” Certain
+Wikipedia articles like “Facebook” and “Google” were in the top ten most popular articles
+for more than one year, hence twenty-six articles instead of thirty. See Table 12 in the
+Appendix for all Wikipedia articles in this comparator group.
+143. See supra note 139.
+
+158
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+A. Terrorism Articles Study Group vs. Domestic Security Comparator Group
+Mid June 2013
+
+Total Views (All Articles)
+
+1000000
+
+800000
+
+600000
+
+400000
+
+200000
+0
+
+2
+
+4
+
+6
+
+8
+
+10
+
+12
+
+14 16 18
+Time (Months)
+
+20
+
+22
+
+24
+
+26
+
+28
+
+30
+
+32
+
+Confidence Interval (95%)
+
+Terrorism Article Trend Pre-June
+
+Terrorism Article Trend Post-June
+
+Terrorism-related Articles
+
+Security Article Trend Pre-June
+
+Security Article Trend Post-June
+
+Security Article Comparator
+
+B. Infrastructure-related Comparator Group
+Mid June 2013
+900000
+
+Total Article Views
+
+800000
+
+700000
+
+600000
+
+500000
+
+400000
+0
+
+2
+
+4
+
+6
+
+8
+
+10
+
+12
+
+14
+
+16
+
+18
+
+20
+
+22
+
+24
+
+26
+
+28
+
+30
+
+32
+
+Time (Months)
+Confidence Interval (95%)
+
+Trend Pre-June 2013
+
+Trend Post-June 2013
+
+Infrastructure Articles (Comparator)
+
+Figure 4: (A) The sudden drop and trend reversal for the terrorism-related articles is
+consistent with chilling effects, while domestic security articles show little impact.
+(B) The infrastructure-related article comparator also shows no June 2013 impact.
+
+2016]
+
+CHILLING EFFECTS
+
+159
+
+drop-off for the terrorism-related Wikipedia articles (−225,867). Using
+predicted article views as of May 2013, this drop represents a reduction of
+a little over 19%. The common drop in June (even if the magnitude is far
+different) likely reflects, in part, a smaller overall reduction in English
+Wikipedia traffic in June 2013 (discussed earlier and apparent in results set
+out in Table 3 of the Appendix).
+In fact, the 15% overall Wikipedia traffic dip in June can almost
+entirely explain the drop for the security articles (with 4% remaining). The
+terrorism-related articles, consistent with a chilling effect hypothesis,
+dropped off an additional 11% in June 2013. Finally, also unlike the
+terrorism article group—which experienced a statistically significant
+negative trend change (38,160 fewer views a month)—the comparator
+group experienced no significant trend change after June 2013.
+Figure 4, which compares results for the terrorism-related articles and
+the refined domestic security-related Wikipedia articles comparator group,
+suggests no substantial impact for the security articles after the June 2013
+revelations—the article view trends suggest a slight dip and then no
+substantial change in monthly views, and certainly no significant shift in
+overall trend comparable to the terrorism-related article group. This, as
+noted, suggests the surveillance revelations had no immediate or
+significant lasting impact on view trends. This stands in contrast to the
+terrorism-related articles in the study that noticeably trend downward
+post-June 2013.
+All of these inferences are even further strengthened when autocorrelation is corrected using the Prais–Winsten method (results also in
+Table 4), with the drop in June 2013 for the terrorism-related articles still
+remaining large and statistically significant (−219,625) (representing a
+25% drop in views) and the overall shift in monthly view trends remains
+substantial and statistically significant (−37,282). By contrast, the
+reduction in June for the security-related articles in these results shrink to
+28,516—a 7% drop that can be entirely explained by overall Wikipedia
+view trends in June—and is now no longer statistically significant. The
+change in monthly view trends also remains insignificant (p = 0.200).
+These results suggest the different impact that June 2013 had on the
+terrorism and security-related articles is even more apparent with a more
+robust regression model, further supporting a chilling effects hypothesis.
+Similarly, the infrastructure related articles results (available in Table 5
+and also visualized in Figure 4 at (B)) indicate no impact from the June
+2013 revelations. Unlike the terrorism-related articles, there is no
+statistically significant drop off in June, only a very small drop of 12,721
+views over the month. Using predicted article views as of May 2013
+
+160
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+(583,415) that is merely a 2% reduction. Also unlike the terrorism-related
+articles group, there is no statistically significant change in the overall view
+trends after June 2013. Before June 2013, there is a decline that continues
+through that month onwards until the end of the study period.
+The popular Wikipedia articles comparator, results in Table 6 and
+visualized in Figure 5 below, show little negative impact associated with
+June 2013. Indeed, the model for these results was also not significant,
+meaning that a model centered on June 2013 does not “fit” data and tells
+us little about actual changes or trends therein. There was drop in views in
+June, but it was not statistically significant. And while views increased
+after June, this was not statistically significant either. Ignoring, for the
+moment, the June 2013 interrupting line and trend lines in Figure 5, the
+data as plotted actually suggests views for these articles are fairly constant
+across the 32 month period and June 2013 plays little to no role in changes
+or trends. These findings are all consistent with a chilling effects
+hypothesis. Just as security or infrastructure-related articles would be
+unaffected by the June 2013 revelations, views for “popular” Wikipedia
+articles like “Google,” Breaking Bad,” or “2014 FIFA World Cup” would
+likewise not be negatively impacted as such content is unlikely to raise
+privacy concerns.
+Mid June 2013
+Total Views (Most Popular Wikipedia Articles)
+
+34000000
+32000000
+30000000
+28000000
+26000000
+24000000
+22000000
+20000000
+18000000
+0
+
+2
+
+4
+
+6
+
+8
+
+10
+
+12
+
+14
+
+16
+
+18
+
+20
+
+22
+
+24
+
+26
+
+28
+
+30
+
+32
+
+Time (Months)
+Trend Pre-June 2013
+
+Trend Post-June 2013
+
+Most Popular Article Views (Comparator)
+
+Figure 5: Much like the security and infrastructure comparators, the popular Wikipedia
+article comparator group also shows little impact from the June 2013 revelations.
+
+2016]
+
+CHILLING EFFECTS
+
+161
+
+All of these findings support a chilling effects theory: that surveillancerelated chill caused the sudden drop during and after June 2013, as well as
+the general trend reversal, for the terrorism-related Wikipedia articles.
+This hypothesis is supported by the fact that there is no indication in the
+findings that the security, infrastructure, or popular Wikipedia articles
+comparator groups were likewise impacted by the June 2013 revelations.
+The explanation, it may be surmised, is the domestic security and
+infrastructure related Wikipedia articles, though similar, are simply
+unlikely to raise privacy concerns for Wikipedia users worried about online
+surveillance. The same can be said for the “popular” articles. Thus, article
+views before and after June 2013 show few noteworthy effects.
+V.
+
+IMPLICATIONS
+
+A.
+
+EMPIRICAL EVIDENCE FOR REGULATORY CHILLING EFFECTS
+
+Skepticism among courts, legal scholars, and empirical researchers has
+persisted about the nature, extent, and even existence of chilling effects
+due, in large part, to a lack of empirical substantiation.144 The results in
+this case study, however, provide empirical evidence consistent with
+chilling effects on the activities of Internet users due to government
+surveillance. And, to be clear, the activity here is not only legal—accessing
+information on Wikipedia—but arguably desirable for a healthy
+democratic society. It involves Internet users informing themselves about
+important topics subject to today’s widespread social, political, moral, and
+public policy debates.145 The large, statistically significant, and immediate
+drop in total views for the Wikipedia articles after June 2013, implies a
+clear and immediate chilling effect. Moreover, the broad and statistically
+significant shift in the overall trend in the data (e.g., the shift from the
+second results excluding outliers) suggests any chilling effects observed
+may be substantial and long-term. This study is among the first to provide
+evidence of such a chilling effect using web traffic data (instead of survey
+responses or search), and it is the first to do so in relation to the potential
+chilling effects on Wikipedia use, thereby demonstrating how government
+144. See Kaminski & Witnov, supra note 9, at 517 (calling for further research on the
+“types of surveillance and surveillance cues that cause chilling effects,” as well further
+research on both the magnitude and persistence of such surveillance related chilling
+effects); see also Kendrick, supra note 14, at 1657; Nickel, supra note 18, at 263; Richards,
+supra note 23, at 1964.
+145. Clark McCauley, Terrorism, Research and Public Policy: An Overview, 3
+TERRORISM & POL. VIOLENCE (SPECIAL ISSUE: TERRORISM RES. & PUB. POL’Y) 126,
+134 (1991) (“Taken together, the financial, social, political, and moral costs of response
+to terrorism constitute a challenge to the democratic capacity to govern.”).
+
+162
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+surveillance potentially affects the way people access and distribute
+information online.
+These results are consistent with chilling effects theory, but arguably
+contradict other research concerning online privacy behaviors. First, the
+substantial body of “privacy paradox” research, involving a diverse range of
+online platforms and contexts, has demonstrated that Internet users’ stated
+concerns about privacy are often not reflected in their online behavior.146
+There have been a range of explanations for this disconnect,147 but one
+common factor offered by behavioral economists is that online users suffer
+from “incomplete information” and “bounded rationality” in making
+decisions about privacy, that is, such decisions are often complex and
+people are limited both by cognitive ability and knowledge.148 However,
+the results here, consistent with the chilling effects hypothesis that users
+are avoiding certain online content due to privacy concerns about
+surveillance, suggest that users are acting both rationally and logically even
+with incomplete information about the true nature and scope of covert
+NSA surveillance practices. In other words, contrary to the “privacy
+paradox,” privacy concerns are being reflected in online behavior.
+Second, as noted earlier in this Article, privacy researchers and legal
+scholars have expressed skepticism about the possibility of large scale or
+long-term chilling effects caused by online surveillance due either to a
+general “desensitization” of privacy concerns in online contexts149 or due to
+the fact that online users adapt quickly to shifting norms, rendering
+chilling effects “temporary.”150 On this count, research has found, a “lax
+attitude” among users toward the benefits of online privacy (compared, for
+example, to the benefits of information disclosure);151 muted user
+
+146. See Annika Bergström, Online Privacy Concerns: A Broad Approach to
+Understanding the Concerns of Different Groups for Different Uses, 53 COMPUTERS IN
+HUMAN BEHAVIOR 419 (2015), http://www.sciencedirect.com/science/article/pii/S07
+47563215300364 [https://perma.cc/7U2Z-R8BC]. See generally Kokolakis, supra note 42
+(providing a comprehensive explanation and review of “information privacy paradox”
+literature).
+147. See, e.g., Kokolakis, supra note 42, at 7–9 (reviewing the various interpretations
+and explanations for paradox).
+148. Id. at 9.
+149. Nickel, supra note 18, at 263.
+150. See Bernescu, supra note 18, at 671 (“However, because consumers in the
+Internet context quickly adapt to changing norms, any such chilling effect will likely be
+temporary.”).
+151. Debatin, supra note 18, at 83, 100–02 (finding that a majority of Facebook users
+in their study disclosed a great deal of personal information despite being aware of privacy
+risks; they attribute this to a “lax attitude”); see also Kokolakis, supra note 42, at 7
+
+2016]
+
+CHILLING EFFECTS
+
+163
+
+responses to reputational or privacy risks associated with embarrassing
+behavior being exposed online;152 and that while negative privacy
+experiences online prompted users to adjust their sharing practices, their
+“social or psychological privacy behaviors” online were unaffected.153 If
+there even were any privacy related chilling effects, such research suggests
+they may muted, ephemeral, or short-term. The findings here also
+contradict these studies, suggesting not only an immediate chilling effect
+associated with the June 2013 surveillance revelations, but a possible
+longer term chill as well. A determination of whether this trend will
+continue further into the future is inherently limited by the data set in this
+study. Nonetheless, the overall downward trend in the data for the months
+studied does provide evidence of a more permanent impact.
+This case study also provides important insights on how to understand
+chilling effects, particularly how they operate online. Though Schauer and
+Solove’s accounts of chilling effects are closely related, there are important
+distinctions between the two. Schauer approached chilling effects as
+mainly resulting from uncertainty in the legal system (e.g., vagueness of
+legislative enactments) and people’s fear of prosecution and legal
+sanction;154 Solove, on the other hand, broadened the theoretical outlook
+by focusing his efforts on surveillance and “executive information
+gathering.”155
+
+(discussing research on the “privacy calculus” where people weigh the benefits of privacy
+over disclosure).
+152. Hermstrüwer & Dickert, supra note 68, at 22–23 (an experimental study on
+chilling effects finding that risks of “networked publicity” (exposure online of users’
+embarrassing activities) did not affect users’ “privacy valuations,” nor did they “dampen”
+either “behavioral idiosyncrasies” or the “panoply of different behaviors” involved in the
+study).
+153. Sabine Trepte, Tobias Dienlin & Leonard Reinecke, Risky Behaviors: How
+Online Experiences Influence Privacy Behavior, in VON DER GUTENBERG-GALAXIS ZUR
+GOOGLE-GALAXIS [FROM THE GUTENBERG GALAXY TO THE GOOGLE GALAXY]
+225, 240 (B. Stark, O. Quiring & N. Jackob eds., 2014) (“After encountering harassing or
+humiliating status posts or messages, users adjusted the information they posted online.
+However, negative experiences did not affect social or psychological privacy behaviors. It
+was shown that the ways that users managed their audiences and friends (social privacy)
+and the kinds of information they shared (psychological privacy) remained unaffected by
+negative experiences.”).
+154. See Schauer, supra note 12, at 693–95 (discussing, among other things, how fear,
+risk, and uncertainty in the legal process as contributing to potential chilling effects).
+155. See Solove, The First Amendment as Criminal Procedure, supra note 16 (exploring
+and analyzing cases wherein government information gathering implicates the First
+Amendment and related “chilling effects”); see also Solove, A Taxonomy of Privacy, supra
+note 33, at 487–89 (identifying surveillance related chilling effects as a “more modern
+privacy problem” that “does not fit” with more traditional conceptions of privacy harms).
+
+164
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+The findings here are consistent with Solove’s approach to chilling
+effects. On his account, people censor themselves and avoid certain
+activities not necessarily out of fear of prosecution but out of concern for
+potential future harms due to privacy violations, embarrassing public
+disclosures, risks of fraud or identity theft, or being labeled a criminal,
+deviant, or non-conformist by state authorities.156 Given the lack of
+evidence of people being prosecuted or punished for accessing information
+on Wikipedia or similar sites before, during, or after the June 2013
+revelations, it is unlikely that actual fear of prosecution can fully explain
+the chilling effects suggested by the findings of this study. Rather, Solove’s
+notion of surveillance-related “pollution”—the broader societal context of
+self-censorship and conformity arising from ubiquitous and large-scale
+surveillance—may be the better explanation.157 This inference is supported
+by the independent privacy evaluation completed by the 415 respondents
+recruited through MTurk. Respondents’ assessments of the forty-eight
+keyword topics indicated that if they knew the government was
+monitoring online activities, they would be more likely to avoid the topics
+in question. In other words, their responses suggested a potential for
+chilling effects relating not to fear of prosecution but the risks, harms, and
+threats associated with government surveillance. This point should not be
+taken too far, however, as the independent evaluators were recruited
+among MTurk users and not Wikipedia users tracked by the article traffic
+data in this study. Therefore, the findings may not hold for Wikipedia
+users or Internet users more generally.
+B.
+
+THE IMPACT OF WAR AND OTHER EXOGENOUS EVENTS
+
+Another important insight from the study is how intervening dramatic
+external pressures or “exogenous shocks” impact chilling effects.
+Notwithstanding the evidence of immediate, substantial, and potentially
+long-term chilling effects due to awareness of government surveillance,
+those chilling effects can be affected or impacted by other dramatic
+intervening events or “exogenous shocks” like war. For instance, the
+impact of the November 2012 and July 2014 Israeli-Hamas conflicts on
+Wikipedia use can be interpreted in two ways within the chilling effects
+156. See Solove, A Taxonomy of Privacy, supra note 33, at 493–99 (reviewing a range
+of instances where surveillance and related information gathering activities can lead to
+chill, self-censorship, inhibition, and other forms of privacy harms).
+157. Id. at 487–88 (discussing how the broader sets of risks caused by government
+practices like surveillance, which can be likened to “environmental harm” or “pollution,”
+also should be understood as having broader societal impact beyond any “mental pain and
+distress” caused to individuals).
+
+2016]
+
+CHILLING EFFECTS
+
+165
+
+framework. First, it could be argued that these instances of high-profile
+armed conflict “ameliorated” the chilling effects caused by publicity and
+public awareness of the NSA/PRISM surveillance, since for at least for
+one of the Wikipedia articles among the forty-eight retrospectively
+analyzed in the case study, view counts dramatically increased as those
+conflicts unfolded. People’s desire to learn about the Israeli-Hamas
+conflicts simply overrode any concerns they may have had about the
+government monitoring information they were accessing online, thus
+reducing chilling effects.
+A second way of interpreting the results, is that the Israeli-Hamas
+conflicts essentially masked a broader chilling effect (apparent once the
+“Hamas” article view data was excluded), by bringing new populations of
+atypical users to Wikipedia who were less aware of, or perhaps concerned
+by, government surveillance. This would seem to support the findings of
+Zeitzoff, Kelly, and Lotan, who have explored how major conflicts
+resulted in “significantly higher levels” of social media activity. They noted
+the emergence of what they called “ephemeral” users who seemed to only
+“tweet” about the 2012 Gaza conflict and nothing else.158 Perhaps those
+visiting the Hamas and Palestinian Liberation Organization articles in
+November 2012 and July 2014 were atypical Wikipedia users and less
+influenced by the specter of government surveillance, but there is nothing
+in this study to directly support this assertion. There is probably some
+truth to both of these explanations. Additional research focusing on this
+question—how exogenous shocks such as war potentially affect chilling
+effects—could offer important insights on this dimension of the results.
+C.
+
+CONSTITUTIONAL LITIGATION
+
+The results in this case study should, first of all, provide empirical
+support for the chilling effects doctrine in First Amendment law.
+Skepticism about the chilling effects doctrine dates back decades, and,
+more recently, scholars have concluded more research is required to
+support the “unsubstantiated empirical judgments” of chilling effects
+claims under the First Amendment (and chilling effects more generally).159
+The results presented here meet this call. Second, evidence of chilling
+effects in this case study may have important implications for a wide array
+of ongoing constitutional litigation brought in relation to government
+surveillance practices. Indeed, a significant challenge for recent lawsuits
+filed against the NSA and the U.S. government, especially those based on
+158. Zeitzoff et al., supra note 127, at 5; Zeitzoff, supra note 124, at 13.
+159. Kendrick, supra note 14, at 1657.
+
+166
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+a chilling effects theory like the Wikimedia Foundation’s complaint, is the
+issue of standing. A key part of this challenge is the nature of government
+surveillance online—it is covert and secretive, so victims are most often
+unaware if they have been personally targeted.160 This is compounded by
+how the Supreme Court has applied standing in cases involving covert
+surveillance. The findings of this study may help plaintiffs overcome
+challenges to standing by providing empirical evidence to ground
+constitutional claims based on chilling effects and related harms in
+objective evidence not subjective claims and fears.
+The Court’s recent decision in Clapper reflected existing legal and
+judicial skepticism concerning chilling effects. In that decision, a five
+Justice majority dismissed as “too speculative” the plaintiffs’ assertion of
+standing based on a likelihood that their activities would be subject to
+surveillance in the future.161 The Court similarly dismissed the additional
+arguments for standing based on “chilling effects,” observing that while
+prior cases found constitutional violations may arise from chilling effects,
+such violations could not arise “merely” from a person’s “knowledge” or
+“concomitant fear” about government activities.162 Relying on its 1973
+decision in Laird, the Court noted that “[a]llegations of a subjective ‘chill’
+are not an adequate substitute for a claim of specific present objective
+harm or a threat of specific future harm.”163 Such surveillance related
+chilling effect claims based on subjective fears were “self-inflicted” injuries,
+the Court concluded, and thus could not provide standing for the
+constitutional claims.164
+Clapper is unlikely the final word on standing based on widespread
+government surveillance. To begin with, the case was decided in February
+of 2013, several months before the Snowden disclosures and the
+widespread publicity concerning the PRISM and other government
+
+160. See Richards, supra note 23, at 1934 (“Although we have laws that protect us
+against government surveillance, secret government programs cannot be challenged until
+they are discovered.”). See generally Slobogin, supra note 39 (analyzing legal standing
+issues in relation to constitutional challenges to NSA and other surveillance related
+practices).
+161. Clapper v. Amnesty Int’l, 133 S. Ct. 1138, 1143 (2013) (“Respondents assert
+that they can establish injury in fact because there is an objectively reasonable likelihood
+that their communications will be acquired under § 1881a at some point in the future.
+But respondents’ theory of future injury is too speculative to satisfy the well-established
+requirement that threatened injury must be ‘certainly impending.’”).
+162. Clapper, 133 S. Ct. at 1152.
+163. Id. (quoting Laird v. Tatum, 401 U.S. 1, 13–14 (1972)).
+164. Id. at 1152–53 (quoting Laird v. Tatum, 401 U.S. 1, 13–14 (1972)).
+
+2016]
+
+CHILLING EFFECTS
+
+167
+
+surveillance programs.165 Moreover, commentators like Neil Richards,
+Luke Milligan, and Christopher Slobogin, among others, have offered
+persuasive criticisms of the Supreme Court’s approach to standing in
+Clapper.166 Richards argues that the Clapper approach to standing affirms a
+“brutal paradox” whereby litigants must prove harms (like chilling effects)
+arising from secretive covert surveillance but the only party that knows—
+the government—is not telling.167 Milligan, on the other hand, offers a
+compelling argument that the Clapper approach to standing and chilling
+effects claims is inconsistent with the text and history of the Fourth
+Amendment, which was originally understood to guarantee freedom not
+just from individual unreasonable searches but also freedom from “fear” of
+such searches.168 Lastly, Slobogin offers a strong criticism of Clapper based
+on political process theory and the separation of powers, arguing that
+chilling effects caused by covert surveillance undermine the political
+process, and as a result citizens should have standing to challenge such
+surveillance in court.169
+
+165. See Slobogin, supra note 39, at 520 (noting that “[t]hanks to Edward Snowden, the
+U.S. federal government has been forced to acknowledge certain surveillance practices,
+while journalists have shed important additional light).
+166. See Luke M. Milligan, The Forgotten Right to be Secure, 65 HASTINGS L.J. 713,
+732–50 (2014) (arguing for a broader approach to standing than recognized in Clapper—
+that would allow earlier Fourth Amendment challenges to concealed government
+investigative techniques—based on the Fourth Amendment’s original understanding as
+defined by its text, history, and structure); Richards, supra note 23, at 1963–64 (arguing,
+based on the notion of “intellectual privacy” and its importance to the democratic
+principle of “self-government,” that surveillance privacy harms should be recognized
+under legal standing doctrines and that Clapper fails to do so); Slobogin, supra note 39, at
+535–41; see also Lexi Rubow, Standing in the Way of Privacy Protections: The Argument for
+a Relaxed Article III Standing Requirement for Constitutional and Statutory Cause of Action,
+29 BERKELEY TECH. L.J. 1007 (2014) (analyzing and critiquing current standing
+doctrine in light of the difficulties of proving privacy harms).
+167. See Richards, supra note 23, at 1944–45.
+168. See Milligan, supra note 160, at 750 (“On the basis of both text and history, the
+Fourth Amendment right “to be secure” can be fairly read to encompass the right to be
+‘protected’ from unreasonable searches and seizures, and quite possibly the right to be
+‘free from fear’ of such government actions. This broader interpretation of ‘to be secure’
+has important implications for prevailing Fourth Amendment rules and procedure
+(arguing that the text and history of the Fourth Amendment supports standing for
+technological chilling effects claims).”).
+169. See Slobogin, supra note 39, at 535–41 (drawing on both Richards and Mulligan
+to argue, among other things, that Clapper and its standing requirements undermine the
+“political process,” which is what the standing process was meant to protect).
+
+168
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+Still, Clapper remains the law and thus presents a difficult standard to
+show injury and standing for “chilling effects” constitutional claims.170 On
+this count, this case study’s empirical findings will have implications for
+present and future litigation. As noted, Clapper emphasized the need for
+evidence beyond “self-inflicted” injuries based on “subjective fears” about
+chilling effects to support standing.171 This case study provides empirical
+support for surveillance-related chilling effects on Wikipedia’s users—not
+on Wikimedia Foundation itself, though it is impacted by virtue of its
+users being chilled—meaning any constitutional claims are neither
+subjective, self-inflicted, nor speculative about future harms. The findings
+also suggest those chilling effects are not trivial or temporary, but may be
+significant, sudden, and with a long-term impact. The plaintiffs in
+Clapper, whose claims about harms due to chilling effects were based on
+costs incurred to avoid government surveillance, argued such harms mostly
+in an empirical vacuum, which left their claims vulnerable to the Laird rule
+that subjective allegations could not create standing. By contrast, this case
+study provides empirical support for Wikimedia Foundation to assert
+harm in its lawsuit against the NSA and Justice Department based on
+chilling effects claims:
+The notion that the N.S.A. is monitoring Wikipedia’s users is
+not, unfortunately, a stretch of the imagination. The harm to
+Wikimedia and the hundreds of millions of people who visit our
+websites is clear: Pervasive surveillance has a chilling effect. It
+stifles freedom of expression and the free exchange of knowledge
+that Wikimedia was designed to enable.172
+
+The results of this case study suggest that the harm produced by
+chilling effects is not a “stretch of the imagination” at all. These findings
+imply the June 2013 surveillance revelations, extensively covered by media,
+had a salient and observable chilling effect on Wikipedia users accessing
+certain Wikipedia articles. Additionally, this case study provides a more
+general empirical foundation for companies, organizations, and other
+institutions whose users may have been “chilled” by government
+surveillance to assert constitutional harms.
+
+170. Slobogin, supra note 39, at 522 (“As the outcome in Clapper illustrates, because
+NSA surveillance is, by design, covert, the standing requirement that plaintiffs allege a
+‘concrete’ injury can pose a serious obstacle to parties trying to challenge it.”).
+171. Clapper v. Amnesty Int’l, 133 S. Ct. 1138, 1152–53 (2013) (quoting Laird v.
+Tatum, 401 U.S. 1, 13–14 (1972)).
+172. Wales & Tretikov, supra note 3.
+
+2016]
+
+CHILLING EFFECTS
+
+D.
+
+SURVEILLANCE, WIKIPEDIA, AND DEMOCRATIC SOCIETY
+
+169
+
+This case study also has implications for the health of democratic
+deliberation among citizens. Surveillance related chilling effects, in
+deterring people from exercising their rights and freedoms, have clear
+implications for individual citizens.173 However, these same chilling effects
+also have implications for the broader health of society, threatening what
+Richards calls “intellectual privacy”—the freedom to read, think, and
+communicate privately—an essential predicate to democracy and “self
+government.”174 Chilling effects are indeed a force for conformity and
+therefore corrosive to “political discourse.”175
+This, in particular, is a problem for Wikipedia. Democratic theorists
+have long pointed to public deliberation as an essential tool to enhance
+collective understanding and decision-making, and Wikipedia has been
+found to be an important complement to this democratic process.176 On
+this count, Wikipedia provides a collaborative model of knowledge
+production that strengthens democracy. A study by Nathaniel Klemp and
+Andrew Forcehimes found that Wikipedia offers enhanced democratic
+deliberation and collective decision-making through its “model” of citizen
+engagement and information exchange.177 And, beyond these important
+contributions, Wikipedia not only remains incredibly popular online—
+every month, Wikipedia is visited by nearly half a billion people from
+almost every country on earth178—but is an increasingly important resource
+for Internet users to quickly and efficiently inform themselves about
+government policies, laws, and actions, thus better equipping them to
+
+173. See Richards, supra note 23, at 1950 (noting that protection against chilling
+effects is necessary to preserve freedom of speech and thought, two important First
+Amendment values).
+174. Richards, supra note 23, at 1959, 1963.
+175. BRUCE SCHNEIER, DATA AND GOLIATH: THE HIDDEN BATTLES TO
+CAPTURE YOUR DATA AND CONTROL YOUR WORLD 95–99 (2015). See also RON
+DEIBERT, BLACK CODE: INSIDE THE BATTLE FOR CYBERSPACE 130–32 (2013);
+Solove, A Taxonomy of Privacy, supra note 33, at 494–99.
+176. Nathaniel Klemp & Andrew Forcehimes, From Town-Halls to Wikis: Exploring
+Wikipedia’s Implications for Deliberative Democracy, 6:2 J. PUB. DELIBERATION 1, 27
+(2007) (finding that the Wikipedia model of online interaction offers a “powerful”
+supplement to traditional face-to-face forms of public deliberation).
+177. Id. at 31–32.
+178. See Michelle Paulson & Geoff Brigham, Wikimedia v. NSA: Wikimedia
+Foundation Files Suit Against NSA to Challenge Upstream Mass Surveillance, WIKIMEDIA
+BLOG (Mar. 10, 2015), http://blog.wikimedia.org/2015/03/10/wikimedia-v-nsa/ [https://perma
+.cc/J44Q-VZJN].
+
+170
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+“enter into deliberations over political decisions.”179 Moreover, Wikipedia
+provides a collaborative model of knowledge production that strengthens
+democracy. Klemp and Forcehimes have also found that Wikipedia offers
+enhanced democratic deliberation and collective decision-making through
+its “model” of citizen engagement and information exchange.180
+The importance of Wikipedia as a source of online knowledge and
+information is highlighted by the data in this case that showed people
+taking to Wikipedia’s “Hamas” article in dramatic numbers in November
+2012 and July 2014 to inform themselves about the Israel-Hamas
+conflicts. Whether these users were typical or atypical Wikipedia users, the
+findings imply that Wikipedia was a key source of information gathering
+about a contentious and globally covered armed conflict. This conclusion
+is consistent with prior research on how people seek information about
+breaking news stories on Wikipedia and how such events impact its
+contributor communities and content.181
+But these findings have potentially troubling implications too. In
+contrast to the war-related outliers represented by the Hamas and
+Palestinian Liberation Organization articles, the case study suggests
+government surveillance may have a long-term chilling effect on this type
+of important Wikipedia use. If people are chilled from informing
+themselves about breaking news stories and other important news events,
+or from researching matters of law, security, and public policy related to
+“terrorism” online, then surveillance-related chilling effects will have
+serious implications for public deliberation about important topics. With
+people potentially chilled or deterred from such basic acts of information
+gathering, people will be less informed and our broader processes of
+democratic deliberation will be weakened. If “intellectual privacy,” as
+Richards argues, is essential to democracy and “self government” in
+guaranteeing the space and freedom to read, think, and communicate
+privately,182 so too is the freedom (free from insidious surveillance-related
+chilling effects) to gather basic information from important platforms and
+resources like Wikipedia that make engaging in acts of thinking,
+communicating, and decision-making, meaningful.
+
+179. See Klemp & Forcehimes, supra note 139, at 31–32 (“Ideally, such potential
+applications of the Wikipedia model would enhance existing forms of face-to-face
+deliberation. The information gathered through such political wikis would help to inform
+citizens and better equip them to enter into deliberations over political decisions.”).
+180. Id.
+181. See sources cited supra note 70–72.
+182. Richards, supra note 23, at 1950, 1963.
+
+2016]
+
+CHILLING EFFECTS
+
+171
+
+Finally, Wikipedia has proven valuable beyond merely being an online
+source of knowledge. As noted earlier, researchers have employed
+Wikipedia and information the Wikimedia Foundation makes available
+online about articles and editing activities for a broad range of online and
+offline research interests.183 As a popular and highly successful
+collaborative peer-production online platform, Wikipedia is invaluable as a
+focal point for research exploring collaborative networks and knowledge
+production, research that is put in doubt if people are chilled from using
+the site due to government surveillance.
+VI.
+
+LIMITATIONS
+
+Notwithstanding the significance of this case study’s findings and their
+attendant implications, they have important limitations. First, the period
+of the study only extends until August 2014. This means that the
+persistence of any chilling effects beyond that point remains an open
+question. Though the findings here suggested a long-term, even
+permanent, chilling effect, this possibility cannot be confirmed or denied
+using existing data. Additional research using more recent data could shed
+some light on this aspect of the study.
+Second, a true experimental design, one with a true control group—
+randomly drawn from the identical subject pool or population—was not
+possible. Given the secrecy surrounding government surveillance practices
+and their potential wide scope, the research design could not be
+strengthened by comparing Wikipedia users affected by surveillance with a
+true control group that had not been exposed to online surveillance; the
+covert nature of the surveillance rendered it impossible to isolate or
+identify such a group of individuals. This is one of the challenges of
+studying chilling effects and the impact of surveillance more generally—
+much of the practices at issue are secret and thus difficult to study
+systematically. Still, a comparator groups were included in the final
+analysis, rendering the final results more robust. Relatedly, it is impossible
+to know (because the data is simply not available) whether Wikipedia
+users chilled or deterred from viewing the articles included in the study
+were in fact viewing the very same content elsewhere. Ideally, this, and
+other confounding factors and variables that may offer alternative
+explanations, would be controlled for in an experimental setting, but like
+all naturalistic or observational studies involving data derived from the
+field (as here), there are variables and factors that cannot be known or
+183. See generally sources cited supra note 73.
+
+172
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+controlled. The ITS design, however, still provides a robust means to
+analyze data where, as here, true experimental designs are not possible.
+Finally, the nature of the Wikipedia data also limited the ways in
+which the research design could have been strengthened in this case study.
+For example, though the study focused on English Wikipedia articles,
+article view counts used to construct the time series data set did not
+distinguish the geographic origins of article views. That distinction would
+have provided some insight as to whether evidence of chilling effects
+varied across geographical regions. Further research attempting to address
+or overcome these limitations would be valuable.
+VII.
+
+CONCLUSION AND FUTURE DIRECTIONS
+
+The evidence of chilling effects illustrated in this case study has
+important implications on multiple fronts. And just as importantly, the
+study’s ITS design, combined with a segmented regression analysis and a
+comparator group, provides a powerful research design and analytical
+method that can be employed by researchers in other contexts to explore
+chilling effects and related regulatory impacts online.
+There are also clear future directions for research. This case study has
+focused primarily on whether the June 2013 surveillance revelations had a
+chilling effect on Wikipedia users and whether there were any immediate
+implications of the findings on that question. But the economic impact of
+those chilling effects, which could shed important light on monetary
+harms stemming from surveillance and other regulatory actions, was not
+explored. As Tucker and Marthews observe in relation to chilling effects
+on Google search,184 the findings here suggest that NSA/PRISM
+programs and other forms of government surveillance may have a
+substantial impact on the bottom line of online service providers and other
+businesses. Since Wikipedia is a non-profit collaborative effort, this angle
+was not explored in depth here; but Wikipedia, like many online service
+providers, survives through user traffic and contributions, both of which
+may be chilled temporarily or permanently by government surveillance. In
+fact, Wikimedia Foundation, the ACLU, and other organizations (like
+The Nation magazine and Human Rights Watch) that are party to the
+184. Marthews & Tucker, supra note 25, at 23 (“From a US competitive standpoint,
+the longer-run effect observed on international Google users’ search behavior indicates
+that knowledge of US government surveillance of Google could indeed affect their
+behavior. At the most limited end of the spectrum, it could steer them away from
+conducting certain searches on US search engines; at the most severe end of the
+spectrum, they might choose to use non-US search engines.”).
+
+2016]
+
+CHILLING EFFECTS
+
+173
+
+lawsuit against the NSA and U.S. Justice Department claim they have
+incurred significant costs to preserve privacy and confidentiality in
+response to the NSA surveillance activities.185 Moreover, it is also
+unknown whether the findings in this case study hold for comparable
+forms of online information resources. Was Wikipedia, given its
+prominence as a popular online information provider, unique in being
+impacted? And were Wikipedia editors and contributors affected
+differently from general Wikipedia users (e.g., users who merely read
+Wikipedia articles, but do not produce or edit them)? Despite the
+evidence established in this case study concerning the existence and scope
+of chilling effects, significant gaps remain in the literature. Further work
+can be done both on Wikipedia and in other online contexts to extend our
+understanding of chilling effects in both North America and abroad.
+Though the true scope of chilling effects still remains to be fully explored
+and analyzed, this case study has aimed to offer a contribution to its
+deeper understanding.
+
+185. See Complaint, supra note 1, at 15, 22, 24, 26.
+
+174
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+APPENDIX
+Table 1: First Results, 48 Terrorism-related Articles Study Group
+Independent Variable
+Coefficient (0)
+Expected Total Views at Beginning of Study
+Secular trend in data (1)
+Change in Views (Monthly) Before 6/2013
+Change in level (2)
+Change in Views Immediately After 6/2013
+Change in slope (3)
+Change in Views (Monthly) After 6/2013
+
+Coefficients
+
+Standard
+Error
+
+P-value
+
+23522364**
+
+171743.1
+
+0.000
+
+47038.28**
+
+16760.41
+
+0.009
+
+−995085.2*
+
+241987.6
+
+0.000
+
+−35517.69
+
+26272.41
+
+0.187
+
+*p < 0.05, **p < 0.01
+Table 2: Second Results, 47 Terrorism-related Articles (Hamas Excluded)
+Independent Variable
+Coefficient (0)
+Expected Total Views at Beginning of Study
+Secular trend in data (1)
+Change in Views (Monthly) Before 6/2013
+Change in level (2)
+Change in Views Immediately After 6/2013
+Change in slope (3)
+Change in Views (Monthly) After 6/2013
+
+Coefficients
+
+Standard
+Error
+
+P-value
+
+2289153**
+
+109751.5
+
+0.000
+
+41420.51**
+
+10710.65
+
+0.001
+
+−693616.9 **
+
+154640.9
+
+0.000
+
+−67513.1**
+
+16789.25
+
+0.000
+
+*p < 0.05, **p < 0.01
+Table 3: Global English Wikipedia Article Views, All Platforms (Millions)
+Independent Variable
+
+Coefficients
+
+Standard
+Error
+
+P-value
+
+Coefficient (0)
+Expected Total Views at Beginning of Study
+
+8313.5**
+
+238.34
+
+0.000
+
+Secular trend in data (1)
+Change in Views (Monthly) Before 6/2013
+
+114.38**
+
+23.26
+
+0.000
+
+Change in level (2)
+Change in Views Immediately After 6/2013
+
+−1535.82**
+
+335.83
+
+0.000
+
+−46.97
+
+36.46
+
+0.208
+
+Change in slope (3)
+Change in Views (Monthly) After 6/2013
+*p < 0.05, **p < 0.01
+
+2016]
+
+CHILLING EFFECTS
+
+175
+
+Table 4: Final Sets of Results—With Comparators
+30 Terrorism-related Wikipedia Articles Study Group
+Results correcting auto-correlation (Prais–Winsten method) in parenthesis
+Independent Variable
+Coefficient (0)
+Expected Total Views at Beginning of Study
+Secular trend in data (1)
+Change in Views (Monthly) Before 6/2013
+Change in level (2)
+Change in Views Immediately After 6/2013
+Change in slope (3)
+Change in Views (Monthly) After 6/2013
+
+Coefficients
+
+Standard
+Error
+
+445534.1**
+39759.4
+(455316.5**) (49923.17 )
+26129.9**
+3880.12
+(25243.94**)
+(4800.76)
+−225867.4**
+56021.35
+(−219625.8**) (65833.74)
+−38160.16**
+6082.19
+(−37282.82 **) (7752.107)
+
+P-value
+0.000
+(0.000)
+0.000
+(0.000)
+0.000
+(0.002)
+0.000
+(0.000)
+
+*p < 0.05, **p < 0.01
+Full 25 Domestic Security-related Wikipedia Articles Comparator Group
+Note: This model’s fit was not significant (Prob > F = 0.447)
+Independent Variable
+Coefficient (0)
+Expected Total Views at Beginning of Study
+Secular trend in data (1)
+Change in Views (Monthly) Before 6/2013
+Change in level (2)
+Change in Views Immediately After 6/2013
+Change in slope (3)
+Change in Views (Monthly) After 6/2013
+
+Coefficients
+
+Standard
+Error
+
+P-value
+
+708187.3**
+
+84366.66
+
+0.00
+
+11135.07
+
+8233.34
+
+0.187
+
+−24638.34
+
+118873.4
+
+0.837
+
+−20465.87
+
+12905.99
+
+0.124
+
+*p < 0.05, **p < 0.01
+Refined 23 Domestic Security-related Articles Group (Outliers Excluded)
+Results correcting auto-correlation (Prais–Winsten method) in parenthesis
+Independent Variable
+
+Coefficients
+
+Standard
+Error
+
+P-value
+
+Coefficient (0)
+Expected Total Views at Beginning of Study
+Secular trend in data (1)
+Change in Views (Monthly) Before 6/2013
+Change in level (2)
+Change in Views Immediately After 6/2013
+Change in slope (3)
+Change in Views (Monthly) After 6/2013
+
+402512.6**
+(424445.7**)
+3090.47
+(145.70)
+−90921.01*
+(28516.32)
+−7022.62
+(7615.21)
+
+23293.73
+(36816.57)
+2273.23
+(3448.036)
+32821.08
+(42574.71)
+3563.36
+(5801.4)
+
+0.000
+(0.000)
+0.185
+(0.967)
+0.010
+(0.508)
+0.059
+(0.200)
+
+*p < 0.05, **p < 0.01
+
+176
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+Table 5: 34 Infrastructure Security-related Articles Comparator Group
+Independent Variable
+Coefficient (0)
+Expected Total Views at Beginning of Study
+Secular trend in data (1)
+Change in Views (Monthly) Before 6/2013
+Change in level (2)
+Change in Views Immediately After 6/2013
+Change in slope (3)
+Change in Views (Monthly) After 6/2013
+
+Coefficients
+
+Standard
+Error
+
+P-value
+
+771772.3**
+
+30948.71
+
+0.000
+
+−11079.82**
+
+3020.28
+
+0.001
+
+−12721.07
+
+43607.01
+
+0.773
+
+2431.84
+
+4734.38
+
+0.612
+
+*p < 0.05, **p < 0.01
+Table 6: 26 Most Popular Wikipedia Articles (2012/2013/2014) Comparator Group
+Note: This model’s fit was not significant (Prob > F = 0.7938)
+Independent Variable
+Coefficient (0)
+Expected Total Views at Beginning of Study
+Secular trend in data (1)
+Change in Views (Monthly) Before 6/2013
+Change in level (2)
+Change in Views Immediately After 6/2013
+Change in slope (3)
+Change in Views (Monthly) After 6/2013
+
+Coefficients
+
+Standard
+Error
+
+P-value
+
+2.58x107**
+
+1920624
+
+0.000
+
+−48458.14
+
+187433.7
+
+0.798
+
+−1716643
+
+2706177
+
+0.531
+
+177324.7
+
+293807.6
+
+0.551
+
+*p < 0.05, **p < 0.01
+Table 7: Independent Rating Results
+Rating Type
+
+Mean Rating
+
+Government Trouble Rating
+Privacy-Sensitive Rating
+Browser History Delete Rating
+Avoidance Rating
+
+1.95
+2.01
+2.00
+2.62
+
+Table 8: Topic Keyword—48 Article Group
+Govern
+Privacy
+Browser
+Avoid-ment
+SensiDelete
+ance
+Trouble
+tive
+
+Topic Keyword
+
+Wikipedia Articles
+
+Al Qaeda
+
+http://en.wikipedia.org/wiki/Al-Qaeda
+
+2.20
+
+2.11
+
+2.21
+
+2.84
+
+Terrorism
+
+http://en.wikipedia.org/wiki/terrorism
+
+2.19
+
+2.05
+
+2.16
+
+2.79
+
+Terror
+
+http://en.wikipedia.org/wiki/terror
+
+1.98
+
+1.96
+
+2.01
+
+2.64
+
+Attack
+
+http://en.wikipedia.org/wiki/attack
+
+1.92
+
+1.91
+
+1.92
+
+2.56
+
+2016]
+
+CHILLING EFFECTS
+
+177
+
+Govern
+Privacy
+Browser
+Avoid-ment
+SensiDelete
+ance
+Trouble
+tive
+
+Topic Keyword
+
+Wikipedia Articles
+
+Iraq
+
+http://en.wikipedia.org/wiki/iraq
+
+1.60
+
+1.74
+
+1.76
+
+2.25
+
+Afghanistan
+
+http://en.wikipedia.org/wiki/
+afghanistan
+
+1.61
+
+1.71
+
+1.75
+
+2.23
+
+Iran
+
+http://en.wikipedia.org/wiki/iran
+
+1.62
+
+1.73
+
+1.78
+
+2.25
+
+Pakistan
+
+http://en.wikipedia.org/wiki/pakistan
+
+1.59
+
+1.71
+
+1.75
+
+2.22
+
+Agro
+
+http://en.wikipedia.org/wiki/agro
+
+1.51
+
+1.80
+
+1.76
+
+2.29
+
+2.20
+
+2.20
+
+2.24
+
+2.92
+
+2.22
+
+2.20
+
+2.22
+
+2.92
+
+2.03
+
+2.16
+
+2.07
+
+2.81
+
+2.18
+
+2.22
+
+2.17
+
+2.99
+
+2.72
+
+2.55
+
+2.50
+
+3.45
+
+2.22
+
+2.21
+
+2.21
+
+2.92
+
+1.84
+
+1.97
+
+1.91
+
+2.55
+
+2.43
+
+2.36
+
+2.39
+
+3.16
+
+2.44
+
+2.39
+
+2.39
+
+3.18
+
+2.49
+
+2.44
+
+2.26
+
+3.24
+
+2.82
+
+2.64
+
+2.53
+
+3.46
+
+2.02
+
+1.96
+
+1.99
+
+2.57
+
+Environmental
+Terrorism
+
+http://en.wikipedia.org/wiki/
+Environmental_terrorism
+http://en.wikipedia.org/wiki/Eco
+Eco-Terrorism
+-terrorism
+Conventional
+http://en.wikipedia.org/wiki/
+Weapon
+Conventional_weapon
+http://en.wikipedia.org/wiki/Weapons
+Weapons Grade
+-grade
+http://en.wikipedia.org/wiki/
+Dirty Bomb
+Dirty_bomb
+Nuclear
+http://en.wikipedia.org/wiki/
+Enrichment
+Nuclear_enrichment
+Nuclear
+
+http://en.wikipedia.org/wiki/nuclear
+
+Chemical
+Weapon
+Biological
+Weapon
+Ammonium
+nitrate
+Improvised
+Explosive Device
+
+http://en.wikipedia.org/wiki/
+Chemical_weapon
+http://en.wikipedia.org/wiki/
+Biological_weapon
+http://en.wikipedia.org/wiki/
+Ammonium_nitrate
+http://en.wikipedia.org/wiki/
+Improvised_explosive_device
+http://en.wikipedia.org/wiki/
+Abu_Sayyaf
+
+Abu Sayyaf
+Hamas
+
+http://en.wikipedia.org/wiki/hamas
+
+1.90
+
+1.93
+
+1.97
+
+2.49
+
+FARC
+
+http://en.wikipedia.org/wiki/FARC
+
+1.83
+
+1.88
+
+1.90
+
+2.46
+
+Irish Republican
+Army
+Euskadi ta
+Askatasuna
+
+http://en.wikipedia.org/wiki/
+Irish_Republican_Army
+http://en.wikipedia.org/w/
+Euskadi_ta_Askatasuna
+
+1.62
+
+1.77
+
+1.83
+
+2.24
+
+1.86
+
+1.88
+
+1.88
+
+2.43
+
+Hezbollah
+
+http://en.wikipedia.org/wiki/hezbollah
+
+1.86
+
+1.90
+
+1.96
+
+2.46
+
+1.76
+
+1.86
+
+1.87
+
+2.39
+
+1.77
+
+1.87
+
+1.91
+
+2.42
+
+1.81
+
+1.89
+
+1.95
+
+2.47
+
+Tamil Tigers
+PLO
+Palestine
+
+http://en.wikipedia.org/wiki/
+Tamil_Tigers
+http://en.wikipedia.org/wiki/
+Palestine_Liberation_Organization
+http://en.wikipedia.org/wiki/
+
+178
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+Topic Keyword
+
+Wikipedia Articles
+
+Liberation Front
+
+Palestine_Liberation_Front
+
+Car bomb
+
+[Vol. 31:1
+
+Govern
+Privacy
+Browser
+Avoid-ment
+SensiDelete
+ance
+Trouble
+tive
+
+http://en.wikipedia.org/wiki/Car_bomb 2.72
+
+2.61
+
+2.50
+
+3.40
+
+Jihad
+
+http://en.wikipedia.org/wiki/jihad
+
+2.15
+
+2.19
+
+2.17
+
+2.89
+
+Taliban
+
+http://en.wikipedia.org/wiki/taliban
+
+2.06
+
+2.03
+
+2.10
+
+2.70
+
+2.25
+
+2.31
+
+2.24
+
+2.97
+
+2.30
+
+2.36
+
+2.29
+
+3.04
+
+2.01
+
+1.98
+
+2.06
+
+2.63
+
+2.05
+
+1.98
+
+2.06
+
+2.60
+
+1.96
+
+1.96
+
+1.97
+
+2.59
+
+http://en.wikipedia.org/wiki/
+Suicide_bomber
+http://en.wikipedia.org/wiki/
+Suicide_attack
+
+Suicide bomber
+Suicide attack
+
+AL Qaeda in the
+http://en.wikipedia.org/wiki/Al
+Arabian
+-Qaeda_in_the_Arabian_Peninsula
+Peninsula
+Al Qaeda in the
+http://en.wikipedia.org/wiki/Al
+Islamic Maghreb
+-Qaeda_in_the_Islamic_Maghreb
+Tehrik-ihttp://en.wikipedia.org/wiki/Tehrik-i
+Taliban Pakistan
+-Taliban_Pakistan
+Yemen
+
+http://en.wikipedia.org/wiki/yemen
+
+1.60
+
+1.72
+
+1.74
+
+2.18
+
+Pirates
+
+http://en.wikipedia.org/wiki/pirates
+
+1.44
+
+1.67
+
+1.67
+
+2.10
+
+Extremism
+
+http://en.wikipedia.org/wiki/extremism 1.64
+
+1.90
+
+1.86
+
+2.40
+
+Somalia
+
+http://en.wikipedia.org/wiki/somalia
+
+1.50
+
+1.68
+
+1.67
+
+2.12
+
+Nigeria
+
+http://en.wikipedia.org/wiki/nigeria
+
+1.48
+
+1.66
+
+1.64
+
+2.07
+
+Political
+radicalism
+
+http://en.wikipedia.org/wiki/
+Political_radicalism
+http://en.wikipedia.org/wiki/Al
+-Shabaab
+http://en.wikipedia.org/wiki/
+nationalism
+http://en.wikipedia.org/wiki/
+recruitment
+http://en.wikipedia.org/wiki/
+fundamentalism
+
+1.75
+
+1.91
+
+1.97
+
+2.48
+
+1.84
+
+1.89
+
+1.89
+
+2.48
+
+1.48
+
+1.71
+
+1.73
+
+2.20
+
+1.74
+
+1.90
+
+1.87
+
+2.54
+
+1.60
+
+1.79
+
+1.80
+
+2.32
+
+1.79
+
+1.89
+
+1.93
+
+2.45
+
+1.95
+
+2.00
+
+2.01
+
+2.62
+
+Al-Shabaab
+Nationalism
+Recruitment
+Fundamentalism
+Islamist
+
+http://en.wikipedia.org/wiki/islamist
+
+MEAN
+
+Table 9: Topic Keyword—30 Terrorism-related Article Study Group
+Topic Keyword
+
+Wikipedia Articles
+
+Combined
+Privacy Rating
+
+Al Qaeda
+
+http://en.wikipedia.org/wiki/Al-Qaeda
+
+2.34
+
+Terrorism
+
+http://en.wikipedia.org/wiki/terrorism
+
+2.30
+
+Terror
+
+http://en.wikipedia.org/wiki/terror
+
+2.15
+
+2016]
+
+CHILLING EFFECTS
+
+179
+
+Topic Keyword
+
+Wikipedia Articles
+
+Combined
+Privacy Rating
+
+Environmental
+Terrorism
+
+http://en.wikipedia.org/wiki/
+Environmental_terrorism
+
+2.39
+
+Eco-terrorism
+
+http://en.wikipedia.org/wiki/Eco-terrorism
+
+2.39
+
+Conventional weapon
+
+http://en.wikipedia.org/wiki/
+Conventional_weapon
+
+2.27
+
+Weapons Grade
+
+http://en.wikipedia.org/wiki/Weapons-grade
+
+2.39
+
+Dirty Bomb
+
+http://en.wikipedia.org/wiki/Dirty_bomb
+
+2.81
+
+Nuclear Enrichment
+
+http://en.wikipedia.org/wiki/
+Nuclear_enrichment
+
+2.39
+
+Nuclear
+
+http://en.wikipedia.org/wiki/nuclear
+
+2.07
+
+Chemical Weapon
+
+http://en.wikipedia.org/wiki/Chemical_weapon
+
+2.59
+
+Biological Weapon
+
+http://en.wikipedia.org/wiki/Biological_weapon
+
+2.60
+
+Improvised Explosive
+Device
+
+http://en.wikipedia.org/wiki/
+Improvised_explosive_device
+
+2.86
+
+Abu Sayyaf
+
+http://en.wikipedia.org/wiki/Abu_Sayyaf
+
+2.14
+
+FARC
+
+http://en.wikipedia.org/wiki/FARC
+
+2.02
+
+Euskadi ta Askatasuna
+
+http://en.wikipedia.org/w/
+Euskadi_ta_Askatasuna
+
+2.01
+
+Hezbollah
+
+http://en.wikipedia.org/wiki/hezbollah
+
+2.05
+
+Palestine Liberation
+Front
+
+http://en.wikipedia.org/wiki/
+Palestine_Liberation_Front
+
+2.03
+
+Car Bomb
+
+http://en.wikipedia.org/wiki/Car_bomb
+
+2.81
+
+Jihad
+
+http://en.wikipedia.org/wiki/jihad
+
+2.35
+
+Taliban
+
+http://en.wikipedia.org/wiki/taliban
+
+2.22
+
+Suicide Bomber
+
+http://en.wikipedia.org/wiki/Suicide_bomber
+
+2.44
+
+Suicide Attack
+
+http://en.wikipedia.org/wiki/Suicide_attack
+
+2.50
+
+AL Qaeda in the
+Arabian Peninsula
+Al Qaeda in the
+Islamic Maghreb
+Tehrik-i-Taliban
+Pakistan
+
+http://en.wikipedia.org/wiki/AlQaeda_in_the_Arabian_Peninsula
+http://en.wikipedia.org/wiki/AlQaeda_in_the_Islamic_Maghreb
+http://en.wikipedia.org/wiki/Tehrik-iTaliban_Pakistan
+
+Political Radicalism
+
+http://en.wikipedia.org/wiki/Political_radicalism
+
+2.03
+
+Al-Shabaab
+
+http://en.wikipedia.org/wiki/Al-Shabaab
+
+2.03
+
+Recruitment
+
+http://en.wikipedia.org/wiki/recruitment
+
+2.01
+
+Islamist
+
+http://en.wikipedia.org/wiki/islamist
+
+2.02
+
+MEAN
+
+2.17
+2.17
+2.12
+
+1.95
+
+180
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+
+[Vol. 31:1
+
+Table 10: Topic Keyword—25 Domestic Security-related Article Comparator Group
+Topic Keyword
+
+Wikipedia Articles
+
+Department of Homeland
+Security
+Federal Emergency
+Management Agency
+
+https://en.wikipedia.org/wiki/
+United_States_Department_of_Homeland_Security
+https://en.wikipedia.org/wiki/
+Federal_Emergency_Management_Agency
+
+Coast Guard
+
+https://en.wikipedia.org/wiki/Coast_guard
+
+Customs and Border
+Protection
+
+https://en.wikipedia.org/wiki/
+Customs_and_Border_Protection
+
+Border patrol
+
+https://en.wikipedia.org/wiki/Border_Patrol
+
+Secret Service
+
+https://en.wikipedia.org/wiki/Secret_Service
+
+Bureau of Land
+Management
+
+https://en.wikipedia.org/wiki/
+Bureau_of_Land_Management
+
+Homeland defense
+
+https://en.wikipedia.org/wiki/Homeland_defense
+
+Agent/Espionage
+
+https://en.wikipedia.org/wiki/Espionage
+
+Task Force 88
+
+https://en.wikipedia.org/wiki/Task_Force_88_(anti
+-terrorist_unit)
+
+Central Intelligence Agency https://en.wikipedia.org/wiki/Central_Intelligence_Agency
+Fusion center
+
+https://en.wikipedia.org/wiki/Fusion_center
+
+DEA
+
+https://en.wikipedia.org/wiki/DEA
+
+Secure Border Initiative
+
+https://en.wikipedia.org/wiki/Secure_Border_Initiative
+
+Federal Bureau of
+Investigation
+Alcohol and Tobacco Tax
+and Trade Bureau
+U.S. Citizenship and
+Immigration Services
+
+Transportation Security
+Administration
+
+https://en.wikipedia.org/wiki/
+Federal_Bureau_of_Investigation
+https://en.wikipedia.org/wiki/
+Alcohol_and_Tobacco_Tax_and_Trade_Bureau
+https://en.wikipedia.org/wiki/
+United_States_Citizenship_and_Immigration_Services
+https://en.wikipedia.org/wiki/
+Federal_Air_Marshal_Service
+https://en.wikipedia.org/wiki/
+Transportation_Security_Administration
+
+Air Marshal
+
+https://en.wikipedia.org/wiki/Air_marshal
+
+Federal Aviation
+Administration
+
+https://en.wikipedia.org/wiki/
+Federal_Aviation_Administration
+
+National Guard
+
+https://en.wikipedia.org/wiki/National_Guard
+
+Federal Air Marshal Service
+
+Disaster Relief / Emergency
+Management
+U.S. Immigration and
+Customs Enforcement
+United Nations
+
+https://en.wikipedia.org/wiki/Emergency_management
+https://en.wikipedia.org/wiki/
+U.S._Immigration_and_Customs_Enforcement
+https://en.wikipedia.org/wiki/United_Nations
+
+2016]
+
+CHILLING EFFECTS
+
+181
+
+Table 11: Topic Keyword—34 Infrastructure Security-Related Article Comparator
+Topic Keyword
+
+Wikipedia Articles
+
+Information security
+
+https://en.wikipedia.org/wiki/Infrastructure_security
+
+Airport
+
+https://en.wikipedia.org/wiki/Airport
+
+Airplane
+
+https://en.wikipedia.org/wiki/Airplane
+
+Chemical burn
+
+https://en.wikipedia.org/wiki/Chemical_burn
+
+CIKR
+
+https://en.wikipedia.org/wiki/CIKR
+
+AMTRAK
+
+https://en.wikipedia.org/wiki/Amtrak
+
+Collapse
+
+https://en.wikipedia.org/wiki/Collapse
+
+Information infrastructure
+
+https://en.wikipedia.org/wiki/Information_infrastructure
+
+Telecommunications
+Network
+
+https://en.wikipedia.org/wiki/
+Telecommunications_network
+
+Telecommunication
+
+https://en.wikipedia.org/wiki/Telecommunication
+
+Critical infrastructure
+
+https://en.wikipedia.org/wiki/Critical_Infrastructure
+
+National Information
+Infrastructure
+
+https://en.wikipedia.org/wiki/
+National_Information_Infrastructure
+
+Metro
+
+https://en.wikipedia.org/wiki/Metro_station
+
+WMATA
+
+https://en.wikipedia.org/wiki/
+Washington_Metropolitan_Area_Transit_Authority
+
+Subway
+
+https://en.wikipedia.org/wiki/Subway
+
+BART
+
+https://en.wikipedia.org/wiki/Bay_Area_Rapid_Transit
+
+MARTA
+
+https://en.wikipedia.org/wiki/
+Metropolitan_Atlanta_Rapid_Transit_Authority
+
+Port Authority
+
+https://en.wikipedia.org/wiki/Port_authority
+
+NBIC
+
+https://en.wikipedia.org/wiki/NBIC
+
+Power grid
+
+https://en.wikipedia.org/wiki/Electrical_grid
+
+Power
+
+https://en.wikipedia.org/wiki/Power
+
+Smart
+
+https://en.wikipedia.org/wiki/Smart
+
+Full body scanner
+
+https://en.wikipedia.org/wiki/Full_body_scanner
+
+Electric power
+
+https://en.wikipedia.org/wiki/Electric_power
+
+Failure
+
+https://en.wikipedia.org/wiki/Failure
+
+Power outage
+
+https://en.wikipedia.org/wiki/Power_outage
+
+Blackout
+
+https://en.wikipedia.org/wiki/Blackout
+
+Brownout
+
+https://en.wikipedia.org/wiki/Brownout
+
+Port
+
+https://en.wikipedia.org/wiki/Port
+
+Dock (maritime)
+
+https://en.wikipedia.org/wiki/Dock_(maritime)
+
+Bridge
+
+https://en.wikipedia.org/wiki/Bridge
+
+Flight Cancellation and
+
+https://en.wikipedia.org/wiki/
+
+182
+
+BERKELEY TECHNOLOGY LAW JOURNAL
+Delay
+
+Flight_cancellation_and_delay
+
+Delay
+
+https://en.wikipedia.org/wiki/Delay
+
+[Vol. 31:1
+
+Electric power transmission https://en.wikipedia.org/wiki/Electric_power_transmission
+Table 12: 26 Most Popular Articles in 2012, 2013, & 2014 Comparator Group
+Topic Keyword
+
+Wikipedia Articles
+
+Facebook
+
+https://en.wikipedia.org/wiki/Facebook
+
+Wiki
+
+http://en.wikipedia.org/wiki/Wiki
+
+Deaths in 2012
+
+https://en.wikipedia.org/wiki/
+Lists_of_deaths_by_year#2012
+
+One Direction
+
+https://en.wikipedia.org/wiki/One_Direction
+
+The Avengers (2012 film)
+
+https://en.wikipedia.org/wiki/The_Avengers_(2012_film)
+
+Fifty Shades of Grey
+
+https://en.wikipedia.org/wiki/Fifty_Shades_of_Grey
+
+2012 phenomena
+
+https://en.wikipedia.org/wiki/2012_phenomenon
+
+Google
+
+https://en.wikipedia.org/wiki/Google
+
+The Dark Knight Rises
+
+https://en.wikipedia.org/wiki/The_Dark_Knight_Rises
+
+The Hunger Games
+
+https://en.wikipedia.org/wiki/The_Hunger_Games
+
+Deaths in 2013
+
+https://en.wikipedia.org/wiki/
+Lists_of_deaths_by_year#2013
+
+Breaking Bad
+
+https://en.wikipedia.org/wiki/Breaking_Bad
+
+G-force
+
+https://en.wikipedia.org/wiki/G-force
+
+World War II
+
+https://en.wikipedia.org/wiki/World_War_II
+
+Youtube
+
+https://en.wikipedia.org/wiki/YouTube
+
+List of Bollywood Films
+2013
+
+https://en.wikipedia.org/wiki/
+List_of_Bollywood_films_of_2013
+
+United States
+
+https://en.wikipedia.org/wiki/United_States
+
+Online shopping
+
+https://en.wikipedia.org/wiki/Online_shopping
+
+Java
+
+https://en.wikipedia.org/wiki/Java
+
+Alive
+
+https://en.wikipedia.org/wiki/Alive
+
+Climatic Research Unit
+email controversy
+
+https://en.wikipedia.org/wiki/
+Lists_of_deaths_by_year#2014
+https://en.wikipedia.org/wiki/
+Climatic_Research_Unit_email_controversy
+
+Amazon.com
+
+https://en.wikipedia.org/wiki/Amazon.com
+
+2014 FIFA World Cup
+
+https://en.wikipedia.org/wiki/2014_FIFA_World_Cup
+
+Ebola virus disease
+
+https://en.wikipedia.org/wiki/Ebola_virus_disease
+
+Game of Thrones
+
+https://en.wikipedia.org/wiki/Game_of_Thrones
+
+Deaths in 2014
+
+

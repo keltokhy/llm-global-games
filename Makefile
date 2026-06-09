@@ -23,6 +23,8 @@ stats:
 # ── Tables ──────────────────────────────────────────────────────────
 tables: stats
 	uv run python analysis/agent_regressions.py
+	uv run python analysis/rationale_theta_checks.py
+	uv run python analysis/nested_campaign_checks.py
 	uv run python analysis/classifier_baselines.py
 	uv run python analysis/render_paper_tables.py
 
@@ -74,6 +76,11 @@ jebo-audit: audit jebo-package
 
 jebo-final-audit: jebo-audit
 	uv run python analysis/check_jebo_final_inputs.py
+
+# ── Revision experiments (require OPENROUTER_API_KEY; issue live API calls) ──
+revision-experiments:
+	uv run python analysis/contamination_audit.py
+	uv run python analysis/decode_messages.py
 
 # ── Clean ───────────────────────────────────────────────────────────
 clean:

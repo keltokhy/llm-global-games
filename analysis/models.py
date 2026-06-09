@@ -53,12 +53,12 @@ MODEL_COLORS = {
 # Compact names for regression tables
 REGRESSION_NAMES = {
     "mistralai--mistral-small-creative": "Mistral",
-    "meta-llama--llama-3.3-70b-instruct": "Llama 70B",
-    "qwen--qwen3-30b-a3b-instruct-2507": "Qwen 30B",
+    "meta-llama--llama-3.3-70b-instruct": "Llama 3.3 70B",
+    "qwen--qwen3-30b-a3b-instruct-2507": "Qwen3 30B",
     "openai--gpt-oss-120b": "GPT-OSS 120B",
-    "qwen--qwen3-235b-a22b-2507": "Qwen 235B",
+    "qwen--qwen3-235b-a22b-2507": "Qwen3 235B",
     "arcee-ai--trinity-large-preview_free": "Trinity",
-    "minimax--minimax-m2-her": "MiniMax",
+    "minimax--minimax-m2-her": "MiniMax M2",
 }
 
 # Models excluded from auto-discovery in figures
@@ -70,5 +70,6 @@ DISPLAY_ORDER = [DISPLAY_NAMES[s] for s in PART1_SLUGS]
 # Primary model slug (first in PART1_SLUGS)
 PRIMARY_SLUG = PART1_SLUGS[0]  # "mistralai--mistral-small-creative"
 
-# construct_validity.py includes Ministral-3B (run for that analysis only)
-CONSTRUCT_VALIDITY_SLUGS = PART1_SLUGS + ["mistralai--ministral-3b-2512"]
+# Exploratory Ministral-3B output exists, but paper-facing model figures use
+# the seven-model roster reported in Table 1.
+CONSTRUCT_VALIDITY_SLUGS = PART1_SLUGS

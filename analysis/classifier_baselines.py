@@ -4,8 +4,8 @@ Text classifier baselines for LLM global game decisions.
 Trains three classifiers on agent briefing text / slider features to predict
 JOIN vs STAY, then tests cross-treatment generalization.  The key finding:
 text classifiers trained on pure-game data cannot reproduce the surveillance
-belief-action wedge, because the briefing text is identical across treatments
--- only the system prompt changes.
+action shift, because the briefing text is identical across treatments
+-- only the message-stage treatment changes.
 
 Classifiers:
   1. Bag-of-words logistic regression (TF-IDF on rendered briefing text)
@@ -45,6 +45,7 @@ from style import join_col as _join_col, logistic as _logistic
 
 MODEL_SLUG = PRIMARY_SLUG
 MODEL_DIR = OUTPUT_ROOT / MODEL_SLUG
+ARCHIVE_MODEL_DIR = PROJECT_ROOT / "_archive" / "infodesign" / "output" / "canonical-csvs" / MODEL_SLUG
 SURV_DIR = OUTPUT_ROOT / "surveillance" / MODEL_SLUG
 
 # ── Keyphrase lists ───────────────────────────────────────────────────
@@ -439,9 +440,9 @@ def main():
 
     if len(df_surv):
         print("\nKey finding: Text classifiers predict surveillance JOIN rates close to")
-        print("pure-game rates, missing the chilling effect.  The belief-action wedge")
-        print("is not attributable to briefing text -- it arises from the surveillance")
-        print("framing in the system prompt.")
+        print("pure-game rates, missing the chilling effect.  The surveillance")
+        print("action shift is not attributable to briefing text -- it arises from")
+        print("the message-stage treatment.")
 
     # ==================================================================
     # B/C Comparative Statics: classifier can't reproduce payoff shifts
@@ -529,6 +530,8 @@ def _bc_comparative_statics() -> dict:
 
     for cond in ["bc_high_cost", "bc_low_cost"]:
         cond_path = MODEL_DIR / f"experiment_infodesign_{cond}_summary.csv"
+        if not cond_path.exists():
+            cond_path = ARCHIVE_MODEL_DIR / f"experiment_infodesign_{cond}_summary.csv"
         if not cond_path.exists():
             continue
         df = pd.read_csv(cond_path)

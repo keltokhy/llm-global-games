@@ -196,6 +196,14 @@ SURVEILLANCE_WARNING_ANONYMOUS = (
     "identities cannot be linked to specific messages."
 )
 
+# Codedness-induction control: instructs the indirect/metaphorical style that
+# surveillance produces, with no monitoring or consequence framing at all.
+STYLE_INSTRUCTION = (
+    "NOTE: As a matter of personal style, write your message in indirect, "
+    "metaphorical language. Avoid naming the regime, security forces, streets, "
+    "or specific actions directly; rely on euphemism and allusion instead."
+)
+
 
 def _communicate_with_warning(warning: str) -> str:
     """Return the baseline communication prompt with exactly one appended warning."""
@@ -205,6 +213,7 @@ def _communicate_with_warning(warning: str) -> str:
 SYSTEM_COMMUNICATE_SURVEILLED = _communicate_with_warning(SURVEILLANCE_WARNING_FULL)
 SYSTEM_COMMUNICATE_SURVEILLED_PLACEBO = _communicate_with_warning(SURVEILLANCE_WARNING_PLACEBO)
 SYSTEM_COMMUNICATE_SURVEILLED_ANONYMOUS = _communicate_with_warning(SURVEILLANCE_WARNING_ANONYMOUS)
+SYSTEM_COMMUNICATE_STYLE = _communicate_with_warning(STYLE_INSTRUCTION)
 
 def _system_decide_comm_surveilled(n_agents=None):
     """Decision prompt with surveillance awareness (for fixed-messages test)."""
@@ -1099,6 +1108,8 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
                 comm_system_base = SYSTEM_COMMUNICATE_SURVEILLED_PLACEBO
             elif surveillance_mode == "anonymous":
                 comm_system_base = SYSTEM_COMMUNICATE_SURVEILLED_ANONYMOUS
+            elif surveillance_mode == "style":
+                comm_system_base = SYSTEM_COMMUNICATE_STYLE
             else:
                 comm_system_base = SYSTEM_COMMUNICATE_SURVEILLED
         else:

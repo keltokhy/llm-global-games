@@ -2,8 +2,8 @@ DATA MANIFEST — output/
 ========================
 
 This directory contains the experiment outputs used by
-paper/paper.tex ("Speaking in Code: How Surveillance Suppresses
-Coordinated Dissent").  Paper asset lineage is recorded in
+paper/paper.tex ("Speaking in Code: Surveillance and Coordinated
+Dissent in a Language-Based Global Game with LLM Agents").  Paper asset lineage is recorded in
 paper/asset_manifest.tsv; scripts/make_data.py declares the runnable
 targets needed to reproduce missing data.
 

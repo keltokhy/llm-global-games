@@ -1,0 +1,39 @@
+{
+  "agent_rows": 0,
+  "arm_summary": [],
+  "arms_declared": 75,
+  "arms_observed": [],
+  "manifest": "/Users/khaled/GitHub/llm-global-games/CLEAN_RUN/plans/main.yaml",
+  "message_banks": [
+    {
+      "accepted_rows": 25000,
+      "factual_equivalence_fail_rate": 0.0,
+      "missing_columns": [],
+      "pass": true,
+      "path": "/Users/khaled/GitHub/llm-global-games/CLEAN_RUN/message_banks/baseline_messages.parquet",
+      "rows": 25000,
+      "style_balance_fail_rate": 0.0
+    },
+    {
+      "accepted_rows": 0,
+      "factual_equivalence_fail_rate": 1.0,
+      "missing_columns": [],
+      "pass": false,
+      "path": "/Users/khaled/GitHub/llm-global-games/CLEAN_RUN/message_banks/baseline_surveillance_matched.parquet",
+      "rows": 15000,
+      "style_balance_fail_rate": 0.6654666666666667
+    },
+    {
+      "accepted_rows": 0,
+      "factual_equivalence_fail_rate": 1.0,
+      "missing_columns": [],
+      "pass": false,
+      "path": "/Users/khaled/GitHub/llm-global-games/CLEAN_RUN/message_banks/direct_coded_pairs.parquet",
+      "rows": 5250,
+      "style_balance_fail_rate": 0.6577142857142857
+    }
+  ],
+  "paired_effects": [],
+  "period_rows": 0,
+  "signal_benchmark": []
+}

@@ -2,21 +2,22 @@
 \centering
 \caption{Cross-generator robustness. Three text rendering styles (baseline, diplomatic cable, journalistic wire) use identical slider functions and evidence items; only prose formatting differs. The Pearson $r(J, A(\theta))$ and logistic cutoff are virtually identical across generators.}
 \label{tab:cross_generator}
-\small
-\resizebox{\columnwidth}{!}{%
+\scriptsize
+\setlength{\tabcolsep}{1.5pt}
 \begin{tabular}{llcccc}
 \toprule
-Model & Generator & $N$ & Mean join & $r(J, A(\theta))$ & Cutoff $\hat{\theta}^*$ \\
+Model & Generator & $N$ & Mean join & $r(J,A)$ [95\% CI] & $\hat{\theta}^*$ \\
 \midrule
-Mistral Small Creative & Baseline & 100 & 0.402 & $+0.83$ & -0.070 \\
-Mistral Small Creative & Cable & 100 & 0.406 & $+0.83$ & -0.057 \\
-Mistral Small Creative & Journalistic & 100 & 0.403 & $+0.83$ & -0.065 \\
+Mistral & Baseline & 100 & 40.2\% & $+0.83$ {\scriptsize $[0.76,0.88]$} & $-0.07$ \\
+Mistral & Cable & 100 & 40.6\% & $+0.83$ {\scriptsize $[0.75,0.88]$} & $-0.06$ \\
+Mistral & Journalistic & 100 & 40.3\% & $+0.83$ {\scriptsize $[0.76,0.88]$} & $-0.06$ \\
 \midrule
-Llama 3.3 70B & Baseline & 100 & 0.354 & $+0.77$ & -0.249 \\
-Llama 3.3 70B & Cable & 100 & 0.362 & $+0.77$ & -0.226 \\
-Llama 3.3 70B & Journalistic & 100 & 0.360 & $+0.78$ & -0.233 \\
+Llama 3.3 70B & Baseline & 100 & 35.4\% & $+0.77$ {\scriptsize $[0.67,0.84]$} & $-0.25$ \\
+Llama 3.3 70B & Cable & 100 & 36.2\% & $+0.77$ {\scriptsize $[0.68,0.84]$} & $-0.23$ \\
+Llama 3.3 70B & Journalistic & 100 & 36.0\% & $+0.78$ {\scriptsize $[0.68,0.84]$} & $-0.23$ \\
 \bottomrule
-\end{tabular}}
-\vspace{0.25em}
-\parbox{\columnwidth}{\footnotesize\emph{Notes:} Information design $\theta$-grid. Three text renderers (baseline intelligence briefing, diplomatic cable, journalistic wire) use identical slider functions and evidence items; only prose formatting differs.}
+\end{tabular}
+\begin{tablenotes}
+\footnotesize\emph{Notes:} $N$ counts country--period rows ($n = 25$ agents per row); mean join in percent. 95\% Fisher-$z$ confidence intervals for $r$ in brackets. Cutoff $\hat{\theta}^*$ from the same logistic specification as Table~\ref{tab:logistic_params}, reported to two decimals. Runs use the core settings ($\sigma = 0.3$, temperature 0.7).
+\end{tablenotes}
 \end{table}

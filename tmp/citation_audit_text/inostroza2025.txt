@@ -1,0 +1,2941 @@
+Theoretical Economics 20 (2025), 763–813
+
+1555-7561/20250763
+
+Adversarial coordination and public information design
+Nicolas Inostroza
+Rotman School of Management, University of Toronto and FTG
+
+Alessandro Pavan
+Department of Economics, Northwestern University and CEPR
+
+We study flexible public information design in global games. In addition to receiving public information from the designer, agents are endowed with exogenous
+private information and must decide between two actions (invest and not invest),
+the profitability of which depends on unknown fundamentals and the agents’ aggregate action. The designer does not trust the agents to play favorably to her
+and evaluates any policy under the “worst-case scenario.” First, we show that the
+optimal policy removes any strategic uncertainty by inducing all agents to take
+the same action, but without permitting them to perfectly learn the fundamentals and/or the beliefs that rationalize other agents’ actions. Second, we identify
+conditions under which the optimal policy is a simple “pass/fail” test. Finally, we
+show that when the designer cares only about the probability the aggregate investment is successful, the optimal policy need not be monotone in fundamentals but
+then identify conditions on payoffs and exogenous beliefs under which the optimal policy is monotone.
+Keywords. Global games, adversarial coordination, Bayesian persuasion, robust
+public information design.
+JEL classification. D83, G28, G33.
+
+1. Introduction
+Coordination plays a major role in many socioeconomic environments. The damages
+to society of miscoordination can be severe and often call for government intervention.
+Think of the possibility of default by major financial institutions in case investors run or
+refrain from rolling over their short-term positions. Such defaults can trigger a collapse
+in financial markets, with severe consequences for the real economy. Confronted with
+such prospects, governments and supervising authorities have incentives to intervene.
+Nicolas Inostroza: Nicolas.inostroza@rotman.utoronto.ca
+Alessandro Pavan: alepavan@northwestern.edu
+A previous version circulated under the title “Persuasion in Global Games with Application to Stress Testing.” For comments and useful suggestions, we thank the referees, Marios Angeletos, Gadi Barlevy, Eddie
+Dekel, Tommaso Denti, Laura Doval, Stephen Morris, Marciano Siniscalchi, Bruno Strulovici, Jean Tirole,
+Xavier Vives, Leifu Zhang, and seminar participants at various conferences and institutions where the paper was presented. Matteo Camboni provided excellent research assistance. Pavan acknowledges financial
+support from the NSF under the grant SES-1730483 and from Bocconi University where part of this research
+was conducted. The usual disclaimer applies.
+© 2025 The Authors. Licensed under the Creative Commons Attribution-NonCommercial License 4.0.
+Available at https://econtheory.org. https://doi.org/10.3982/TE5768
+
+764 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+These interventions often take the form of public information disclosures, such as stress
+testing or, more broadly, releases of information aimed at influencing market beliefs.
+In this paper, we study public information design in markets in which a large number of receivers (e.g., investors in financial markets) must choose whether to play an
+action favorable to the designer (e.g., pledging funds to a financial institution), or an
+“adversarial” action (e.g., refraining from pledging). A policymaker can flexibly design
+a policy disclosing information to market participants about relevant economic fundamentals. The analysis delivers results that are important for various situations in which
+coordination plays a major role, including bank runs, currency crises, and technology
+and standards adoption. In the context of stress testing, the policymaker may represent a supervising authority attempting to prevent a run against the banking sector (see,
+e.g., Henry and Kok (2013) and Homar, Kick, and Salleo (2016)). In the case of currency
+crises, the policymaker may represent a central bank attempting to dissuade speculators from short-selling the domestic currency by releasing information about the bank’s
+reserves and/or domestic economic fundamentals. In the case of technology adoption,
+the policymaker may represent the owners of an intellectual property trying to persuade
+heterogenous market users of the merits of a new product (Lerner and Tirole (2006)).
+The backbone of the model is a global game of regime change in which multiple
+agents must choose between “attacking” a status quo or “refraining from attacking,”
+and where the success of the attack depends on its aggregate size and on exogenous
+fundamentals. In addition to receiving public information from the designer, agents are
+endowed with exogenous private information. The designer does not trust the agents
+to play favorably to her and evaluates any policy of her choice under the “worst-case”
+scenario. That is, when multiple rationalizable strategy profiles are consistent with the
+information disclosed, the designer takes a “robust approach” by looking at the outcome
+that prevails when agents play according to the rationalizable profile least favorable to
+her.1
+We assume the policymaker can flexibly design a policy that disseminates publicly
+information about relevant economic fundamentals. We use the model to address the
+following questions: (a) Are there benefits to preventing market participants from predicting each others’ actions and beliefs? (b) When are simple policies such as pass/fail
+tests optimal? (c) Are there merits to nonmonotone rules that induce the market to play
+favorably for intermediate fundamentals but not necessarily for stronger ones?
+Our first result establishes that, despite the fear of adversarial coordination, the optimal policy satisfies the “perfect coordination property.” In each state, it induces all
+market participants to take the same action, but without creating homogenous beliefs
+among market participants. In other words, the optimal policy completely removes any
+strategic uncertainty while preserving structural uncertainty. Given the public information disclosed, each receiver can perfectly predict the action of any other receiver, but
+not the beliefs that rationalize such actions. For example, an agent who is induced to invest must not be able to determine whether other agents invest because they know that
+1 Such a robust approach is motivated by the applications the analysis is meant for. For example, when
+
+concerned about runs to the banking sector, policymakers typically do not trust the market to play favorably.
+
+Theoretical Economics 20 (2025)
+
+Adversarial coordination and information design 765
+
+the fundamentals are so strong that the investment will always succeed, irrespective of
+the behavior of other agents (e.g., the bank will never default), or because they are confident that other agents will invest. The optimal policy leverages the heterogeneity of the
+agents’ primitive beliefs by making investing dominant for some agents based on their
+first-order beliefs, but only iteratively dominant for others based on their higher-order
+beliefs.2 Under adversarial coordination, preserving uncertainty over beliefs is key to the
+minimization of the risk of an undesirable outcome such as a bank default, a currency
+collapse, or the failure of a new technology to take off. When the designer trusts the
+agents to follow her recommendations, the optimality of the perfect coordination property is straightforward and follows from arguments similar to those establishing the Revelation Principle (e.g., Myerson (1986)). This is not the case under adversarial coordination for information that facilitates perfect coordination may also favor the emergence
+of rationalizable profiles in which some of the agents play adversarially to the designer.
+Our second result shows that, when the economic fundamentals and the agents’ beliefs comove in the sense that states in which fundamentals are strong are also states in
+which most agents expect other agents to expect the fundamentals to be strong, and so
+on, then the optimal policy takes the form of a simple “pass/fail” test, with no further
+information disclosed to the market. It is known that, when the distribution from which
+the agents’ private signals are drawn is log-supermodular, or equivalently, satisfies the
+Monotone Likelihood Ratio Property— in short MLRP—all agents follow monotone (i.e.,
+cut-off ) strategies, no matter the public information. This is because, under MLRP, the
+agents’ “optimism ranking” is preserved under Bayesian updating. If agent j is more optimistic than agent i before the public announcement is made (formally, j’s beliefs dominate i’s beliefs according to the MLRP order), then this continues to be the case after
+any public announcement. When this is the case, disclosing information to the market
+in addition to whether or not the policymaker expects the agents’ investment to succeed when they play adversarially does not help. We also show that MLRP is key to the
+optimality of simple pass/fail policies. When the information the policymaker discloses
+can be used to change the ranking of the agents’ optimism, the policymaker can leverage the optimism reversal to spare more fundamentals from the undesirable outcome
+by disclosing information in addition to whether or not she expects the investment to
+succeed.3
+In the context of stress testing, these results provide a foundation for the optimality
+of simple pass/fail policies. Importantly, optimal stress tests should be transparent, in
+the sense of facilitating coordination among investors, but should not generate consensus among market participants about the soundness of the financial institutions under
+scrutiny.
+2 The optimal policy does not ensure that investing is the unique rationalizable action based on first-
+
+order beliefs for all agents. It relies on a contagion argument through higher-order beliefs to induce all
+agents to invest under the unique rationalizable profile.
+3 When, instead, the designer trusts her ability to coordinate the receivers on the course of action most
+favorable to her, optimal policies always take the form of action recommendations, and hence pass/fail
+policies are optimal, irrespective of the agents’ primitive beliefs. This is not the case under adversarial/robust design.
+
+766 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+Our third result is about the optimality of monotone pass/fail policies, that is, rules
+that grant a pass grade if and only if the exogenous fundamentals are above a given
+threshold. We show that the optimality of such rules is related to the extent to which
+the policymaker’s preferences for a favorable outcome (e.g., for avoiding a bank default)
+vary with the fundamentals. We identify precise conditions involving the policymaker’s
+preferences and the agents’ payoffs and exogenous beliefs under which monotone rules
+are optimal. Such conditions are fairly sharp in the sense that, when violated, one can
+identify instances in which nonmonotone rules strictly outperform monotone ones.4
+The reason is that nonmonotone rules make it more difficult for the agents to commonly learn the fundamentals and hence permit the policymaker to give a pass grade
+to a larger set of fundamentals. When the policymaker’s preferences for the favorable
+outcome (i.e., for avoiding a bank default) do not vary much with the exogenous fundamentals (in particular, when they are constant), nonmonotone rules may be optimal.
+Organization The rest of the paper is organized as follows. Below, we wrap up the introduction with a brief review of the most pertinent literature. Section 2 presents the
+model. Section 3 contains all the results about properties of optimal policies (perfectcoordination, pass/fail, monotonicity). Section 4 discusses how the results accommodate enrichments that are useful in applications (e.g., more general payoffs, as well as
+the possibility that the policymaker faces uncertainty about the outcome induced by
+her information dissemination). Section 5 concludes. The Appendix contains all proofs
+with the exception of the proofs of Examples 2 and 3, which are in the Supplementary Appendix (available at https://econtheory.org/supp/5768/supplement.pdf). The
+manuscript Inostroza and Pavan (2024a) contains additional material. In particular, (a)
+it extends Theorem 1* in the main text (about the optimality of perfectly coordinating
+the market response) to a broader class of economies, (b) discusses the benefits of discriminatory disclosures, when the latter are feasible, and (c) expands the material in
+Section 4.3 discussing the role of the multiplicity of the receivers and their exogenous
+private information for the optimality of monotone rules.
+(Most) pertinent literature The paper is related to a few strands of the literature. The
+first one is the literature on adversarial coordination and unique implementation. See,
+among others, Segal (2003), Winter (2004), Sakovics and Steiner (2012), Frankel (2017),
+Halac, Kremer, and Winter (2020), and Halac, Lipnowski, and Rappoport (2021). These
+papers focus on the design of transfers. Instead, we focus on the design of public information in settings in which the receivers are endowed with exogenous private information. Li, Song, and Zhao (2023), and Morris, Oyama, and Takahashi (2024) consider
+the design of private information in binary supermodular games in which the receivers’
+exogenous information is symmetric. Halac, Lipnowski, and Rappoport (2022) study
+unique implementation when the designer can use a combination of transfers and information provision. Goldstein and Huang (2016) and Galvão and Shalders (2022) also
+4 We also show that the conditions guaranteeing the optimality of monotone rules are more stringent
+
+when the policymaker faces multiple privately-informed receivers than when she faces either a single (possibly privately-informed) receiver, or multiple receivers who possess no exogenous private information.
+
+Theoretical Economics 20 (2025)
+
+Adversarial coordination and information design 767
+
+study public information design in settings in which the receivers possess exogenous
+private information. Goldstein and Huang (2016) restrict the policymaker to binary
+monotone rules, whereas Galvão and Shalders (2022) to partitional structures whereby
+when two states are pooled into the same cell, all in-between states are also pooled into
+the same cell. Related is also Alonso and Zachariadis (2023) who study the complementarity between private and public information. Relative to these works, our paper
+establishes three key results: (a) it proves that inducing all agents to take the same action
+is always optimal, despite the fear of adversarial coordination; (b) it shows why, in general, binary policies are suboptimal but then identifies sharp conditions under which
+such policies are optimal; (c) it shows why, in general, nonmonotone rules permit the
+policymaker to induce a favorable outcome over a larger set of fundamentals but then
+identifies sharp conditions under which optimal policies are monotone.5
+The second strand is the literature on information design with multiple receivers.
+See, among others, Alonso and Camara (2016a), Arieli and Babichenko (2019), Bardhi
+and Guo (2018), Basak and Zhou (2020), Che and Hörner (2018), Doval and Ely (2020),
+Galperti and Perego (2023), Gick and Pausch (2012), Gitmez and Molavi (2022), Heese
+and Lauermann (2021), Laclau and Renou (2017), Mathevet, Perego, and Taneva (2020),
+Shimoji (2021), and Taneva (2019). The key contribution vis-a-vis this literature is in
+showing how the interaction between (a) adversarial coordination and (b) exogenous
+private information among the receivers shapes the optimal provision of public information.6
+The third strand is the literature on global games with endogenous information. Angeletos, Hellwig, and Pavan (2006) and Angeletos and Pavan (2013) study signaling in
+global games. Angeletos and Werning (2006) investigate the role of prices as a vehicle
+for information aggregation. Angeletos, Hellwig, and Pavan (2007) consider a dynamic
+model in which agents learn from the accumulation of private information and from the
+(possibly noisy) observation of past outcomes. Cong, Grenadier, and Hu (2020) consider
+a dynamic setting similar to the one in Angeletos, Hellwig, and Pavan (2007) but allowing
+for policy interventions. Edmond (2013) and Kyriazis and Lou (2024) consider propaganda in global games, in a setting in which the policymaker manipulates the agents’
+private signals. Szkup and Trevino (2015), Yang (2015), Morris and Yang (2022), and
+Denti (2023) study the acquisition of private information in global games. Our paper
+contributes to this strand by identifying properties of flexible public information provision when (a) the sender can commit, and (b) the receivers play adversarially.
+Finally, the paper is related to the literature on stress testing. See Goldstein and Sapra
+(2014) for an overview of some of the early contributions. Bouvard, Chaigneau, and
+de Motta (2015) study a setting where a policymaker must choose between full transparency and full opacity but cannot commit to a disclosure policy. Williams (2017) and
+Goldstein and Leitner (2018) study the design of stress tests when the receivers do not
+possess exogenous private information. Orlov, Zryumov, and Skrzypacz (2023) study the
+joint design of stress tests and precautionary recapitalizations whereas Faria-e Castro,
+5 In particular, Example 3 below shows that nonmonotone rules strictly outperform monotone ones in
+the same environment of Goldstein and Huang (2016).
+6 See Bergemann and Morris (2019) and Kamenica (2019) for an overview on information design.
+
+768 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+Martinez, and Philippon (2016) and Garcia and Panetti (2017) the joint design of stress
+tests and government bailouts. Inostroza (2023) studies regulatory disclosures with multiple audiences of investors who care about different aspects of a financial institution’s
+balance sheet. Alvarez and Barlevy (2021) and Quigley and Walther (2024) study the incentives of banks to disclose balance sheet (hard) information. Corona, Nan, and Gaoqing (2017) study how stress tests disclosures may favor banks’ coordinated risk taking
+in the spirit of Farhi and Tirole (2012). Morgan, Persitani, and Vanessa (2014), Flannery,
+Hirtleb, and Kovner (2017), and Petrella and Resti (2013) conduct an empirical analysis
+of the information provided by stress tests in the US and the EU. Our paper contributes
+to this literature along the following dimensions: (a) it shows that optimal stress tests
+should not create conformism in market participants’ beliefs about exogenous fundamentals but should be sufficiently transparent to eliminate any ambiguity about the
+market response to the tests; (b) it identifies conditions under which simple pass/fail
+policies are optimal; (c) it provides conditions for optimal tests to be monotone (see
+also Inostroza and Pavan (2024b) for a discussion of how the toughness of optimal stress
+tests relates to the type of securities issued by the banks).
+2. Model
+Global games have been used to study the interaction between information and coordination in many socioeconomic environments, including bank runs, debt crises,
+currency attacks, investment in technologies with network externalities, technological
+spillovers, and political change.
+To ease the exposition, hereafter we describe the model and all the results in the
+context of a specific game in the spirit of Rochet and Vives (2004) in which the agents
+are investors (e.g., fund managers, or unsecured bank depositors) deciding whether or
+not to pledge funds to one, or multiple financial institutions, and where these institutions default on their obligations when the size of the aggregate investment is not large
+enough.7 The analysis, however, readily extends to many other global games.
+Players and actions A policymaker designs an information disclosure policy, for example, stress tests, call reports, publication of accounting standards, and disclosure of
+various macro and financial variables that are jointly responsible for the profitability of
+the agents’ decisions. The market is populated by a measure-one continuum of agents
+(the receivers) distributed uniformly over [0, 1]. Each agent may either take a “friendly”
+action, ai = 1, or an “adversarial” action, ai = 0. The friendly action is interpreted as the
+decision to invest (more generally, to “refrain from attacking” a status quo the policymaker wants to preserve). The adversarial action is interpreted as the decision to not
+1
+invest (more generally, to “attack”). We denote by A ≡ 0 ai di ∈ [0, 1] the size of the
+aggregate investment.
+7 Rochet and Vives (2004) consider a three-period economy à la Diamond and Dybvig (1983) but with
+
+heterogenous investors, in which banks may fail early or late. As shown in that paper, the full model admits
+a reduced-form version similar to the one considered here.
+
+Theoretical Economics 20 (2025)
+
+Adversarial coordination and information design 769
+
+Fundamentals and exogenous information Consistently with the rest of the literature,
+we parameterize the relevant fundamentals by θ ∈ R. The fundamentals are exogenous
+to the policymaker’s choice of a disclosure policy. It is commonly believed (by the policymaker and the agents alike) that θ is drawn from a distribution F , absolutely continuous
+over an interval  ⫌ [0, 1], with a smooth density f strictly positive over . In addition,
+each agent i ∈ [0, 1] is endowed with private information summarized by a unidimensional statistic xi ∈ R drawn independently across agents given θ from an absolutely
+continuous cumulative distribution function P(x|θ) with smooth density p(x|θ) strictly
+¯ θ ) containing θ, with θ , ¯
+positive over an (open) interval θ ≡ (θ , 
+θ monotone in
+θ, and with p(x|θ) bounded over (x, θ). The bounds θ , ¯
+θ can be either finite or infinite. For example, when xi = θ + σεi , with εi drawn from a uniform distribution over
+θ = θ + σ. When, instead, xi = θ + σεi , with
+[−1, +1], then for any θ, θ = θ − σ and ¯
+εi drawn from a standard Normal distribution, then for any θ, θ = −∞ and ¯
+θ = +∞.
+Furthermore, in this latter case, P(x|θ) = ((x − θ)/σ ), where  is the cumulative distribution function of the standard Normal distribution. We denote by x ≡ (xi )i∈[0,1] a
+profile of private signals and by X(θ) the collection of all x ∈ R[0,1] that are consistent
+with the fundamentals being equal to θ. As usual, we assume that any pair of signal profiles x, x ∈ X(θ) has the same cross-sectional distribution of signals, with the latter equal
+to P(x|θ).
+Regime outcome The fundamentals θ parameterize the critical size of the aggregate
+investment that is necessary to avoid default (more generally, an undesirable regime
+change). If A > 1 − θ, short-term obligations are met and default is avoided. If, instead,
+A ≤ 1 − θ, default occurs. We denote by r = 1 the event in which default is avoided and
+by r = 0 the event in which default occurs.8
+Dominance regions For any θ ≤ 0, default occurs irrespective of the size of the aggregate investment, whereas for any θ > 1 default is averted with certainty. For θ ∈ (0, 1],
+instead, whether or not default occurs is determined by the behavior of the market.
+Payoffs Each agent’s payoff differential between investing and not investing, u(θ, A),
+is equal to g(θ) > 0 in case default is avoided, and b(θ) < 0 otherwise. In turn, the policymaker’s payoff is equal to W (θ) in case default is avoided, and L(θ) in case of default,
+with W (θ) > L(θ) for all θ. When W and L are invariant in θ, the policymaker’s objective
+reduces to minimizing the probability of default. The functions b, g, W , and L are all
+bounded. For any (θ, A) ∈  × [0, 1], then let
+u(θ, A) ≡ g(θ)1(A > 1 − θ) + b(θ)1(A ≤ 1 − θ),
+U P (θ, A) ≡ W (θ)1(A > 1 − θ) + L(θ)1(A ≤ 1 − θ)
+denote the payoffs of a representative agent and of the policymaker, respectively, when
+the fundamentals are θ and the aggregate investment is A.
+8 The model assumes that, given A and θ, the regime outcome is binary. The case in which default is
+“partial” is qualitatively similar, from a strategic standpoint, to the case where, given A and θ, the regime
+outcome is stochastic and determined by variables that are not observable by the policymaker at the time
+of her public announcements (see the discussion in Section 4).
+
+770 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+Policy Let S be a compact Polish space defining the set of possible signal realizations.
+A policy  = ( S , π ) consists of the set S along with a measurable mapping π :  → ( S )
+specifying, for each θ, a probability distribution over the information disclosed to the
+market.
+Timing The sequence of events is the following:
+(i) The policymaker publicly announces the policy  = ( S , π ) and commits to it.9
+(ii) The fundamentals θ are drawn from the distribution F and the agents’ exogenous
+signals x ∈ X(θ) are drawn from the distribution P(x|θ).
+(iii) The public signal s is drawn from the distribution π(θ) and is publicly observed.
+(iv) Agents simultaneously choose whether or not to invest.
+(v) The regime outcome is determined (i.e., whether or not default occurred) and
+payoffs are realized.
+Adversarial coordination and robust information design The policymaker does not
+trust the market to follow her recommendations and play favorably to her (i.e., invest
+whenever θ > 0).10 Instead, she adopts a robust/conservative approach. She evaluates
+any policy  under the “worst-case” scenario, that is, she assumes that the market plays
+according to the rationalizable strategy profile that is most adversarial to her, among all
+those consistent with the policy .
+Definition 1. Given any policy , the most aggressive rationalizable profile (MARP)
+consistent with  is the strategy profile a ≡ (ai )i∈[0,1] that minimizes the policymaker’s
+ex ante expected payoff over all profiles surviving iterated deletion of interim strictly
+dominated strategies (henceforth IDISDS).
+In the IDISDS procedure leading to MARP, agents use Bayes rule to update their beliefs about the fundamentals θ and the other agents’ exogenous information x ∈ X(θ)
+using the common prior F , the distribution of private signals P(x|θ), and the policy
+. Under MARP, given (x, s), each agent i ∈ [0, 1], after receiving exogenous information x from Nature and endogenous information s from the policymaker, refrains from
+investing whenever there exists at least one conjecture over (θ, A) consistent with the
+above Bayesian updating and supported by all other agents playing strategies surviving
+IDISDS, under which refraining from investing is a best response for the individual.
+Remarks. Hereafter, we confine attention to policies  for which MARP exists.11 Because the game among the agents is supermodular (no matter the prior F , the distribution P from which the exogenous signals are drawn, and the policy ), the strategy
+9 See Leitner and Williams (2023) for a discussion of the commitment assumption in stress testing.
+10 If she did, a simple monotone policy revealing whether or not θ > 0 would be optimal.
+11 Because the state is continuous, in principle, one can think of policies  for which the agents’ common
+
+posteriors are not well-defined or, when combined with the agents’ exogenous information, are such that
+the agents’ hierarchies of beliefs are not well-defined, in which case MARP may not exist.
+
+Theoretical Economics 20 (2025)
+
+Adversarial coordination and information design 771
+
+profile a coincides with the “smallest” Bayes–Nash equilibrium (BNE) of the continuation game among the agents, and minimizes the policymaker’s payoff state by state, and
+not just in expectation. The reason why we consider MARP is that, in general, without
+imposing specific assumptions on F , P, and , the only way the “smallest” BNE can be
+identified is by the iterated deletion of interim strictly dominated strategies. In standard
+global games, the “smallest” BNE is typically identified by assuming the agents’ signals
+are drawn from a distribution P satisfying the monotone likelihood property (MLRP),
+which is also used to guarantee equilibrium uniqueness. Here, we allow for arbitrary
+policies , and do not require that, given , the continuation equilibrium be unique.
+Furthermore, given a policy  = ( S , π ), when describing the agents’ behavior, we do
+not distinguish between pairs (x, s) that are mutually consistent given  (meaning that
+
+the joint density of (x, s) is positive, that is, θ:s∈supp(π(θ)) p(x|θ) dF(θ) > 0) and those that
+are not. Because the policymaker commits to the policy , the abuse is legitimate and
+permits us to ease the exposition. Any claim about the optimality of the agents’ behavior, however, should be interpreted to apply to pairs (x, s) that are mutually consistent
+given .
+3. Properties of optimal policies
+We now introduce and discuss three key properties of optimal policies.
+3.1 Perfect-coordination property
+Definition 2. A policy  = ( S , π ) satisfies the perfect-coordination property (PCP)
+if, for any θ ∈ , any exogenous information x ∈ X(θ), any public announcement s ∈
+supp(π(θ)), and any pair of individuals i, j ∈ [0, 1], ai (xi , s) = aj (xj , s), where a =
+(ai )i∈[0,1] is the most aggressive rationalizable profile (MARP) consistent with the policy .
+A disclosure policy thus has the perfect-coordination property if it coordinates all
+market participants on the same action, after any information it discloses. For any θ ∈ ,
+any s ∈ supp(π(θ)), let r  (θ, s) ∈ {0, 1} denote the regime outcome that prevails when
+agents play according to a , that is, r  (θ, s) = 1 (alternatively, r  (θ, s) = 0) means that
+default does not occur (alternatively, occurs) when, given (θ, s), market participants play
+according to MARP consistent with . That the agents’ signals are drawn independently
+from P(x|θ), conditional on θ, implies that the cross-sectional distribution of signals is
+pinned down by P(x|θ), and hence the regime outcome (i.e., whether default occurs or
+not) is the same across any pair of signal profiles x, x ∈ X(θ), and thus depends only on
+, θ, and s. Hereafter, we say that the policy  is regular if MARP under  is well-defined
+and the regime outcome under a is measurable in (θ, s).
+Theorem 1. Given any regular policy , there exists another regular policy ∗ satisfying
+the perfect-coordination property (PCP) and such that, when the agents play according to
+MARP under both  and ∗ , for any θ, (a) the probability of default under ∗ is the same
+as under , (b) the transition from  to ∗ leads to a Pareto improvement (the policymaker
+is indifferent, no agent is worse off, and some agents are strictly better off ).
+
+772 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+The policy ∗ is obtained from the original policy  by disclosing, for each θ, in addition to the information s ∈ supp(π(θ)) disclosed by the original policy , a second piece
+of information that reveals to the market the regime outcome r  (θ, s) ∈ {0, 1} that prevails at (θ, s) when agents play according to MARP consistent with the original policy ,
+a .
+That, under the new policy ∗ , it is rationalizable for all agents to invest when the
+policy discloses the information (s, r  (θ, s)) = (s, 1), and to refrain from investing when
+the policy discloses the information (s, r  (θ, s)) = (s, 0), is fairly straightforward. In fact,
+the announcement of (s, 1) (alternatively, of (s, 0)) makes it common certainty among
+the agents that θ > 0 (alternatively, that θ ≤ 1).
+The reason why the result is not obvious is that the designer does not content herself
+with one rationalizable profile delivering the desired outcome; she is concerned with the
+possibility of adversarial coordination and, as a result, when she recommends to all the
+agents to invest, she must guarantee that investing is the unique rationalizable action
+for each agent, irrespective of his exogenous signal x. The proof in the Appendix shows
+that when the additional information is r  (θ, s), this is indeed the case.
+To fix ideas, consider first the case where, under the original policy , the regime outcome r  (θ, s) is monotone in θ. The announcement that r  (θ, s) = 1 makes it common
+certainty among the agents that θ > θ̂(s), for some threshold θ̂(s). In this case, all agents
+revise their first-order beliefs about θ upward when receiving the additional information
+that r  (θ, s) = 1. That each agent is more optimistic about the strength of the fundamentals, however, does not guarantee that, under MARP consistent with the new policy ∗ ,
+more agents invest than under the original policy . In fact, the new piece of information changes not only the agents’ first-order beliefs about θ but also their higher-order
+beliefs and the latter matter for the determination of the most-aggressive rationalizable
+profile. More generally, r  (θ, s) need not be monotone in θ. This is because MARP under the original policy  need not entail strategies that are monotone in x. As a result, in
+general, the announcement that r  (θ, s) = 1 need not trigger an upward revision of the
+agents’ beliefs.
+The result in Theorem 1 follows instead from the game being supermodular along
+with the fact that Bayesian updating preserves the likelihood ratio of any two states
+that are consistent with no default under the original policy . Formally, for any s ∈
+supp(π()), any pair of states θ and θ such that (a) s ∈ supp π(θ ) ∩ supp π(θ ), and
+(b) r  (θ , s) = r  (θ , s) = 1, the likelihood ratio of such two states under ∗ is the same
+as under the original policy . This property implies that the posterior beliefs (over )
+of each agent with private signal x who, under the new policy ∗ , receives information
+(s, 1), are a “truncation” of the posterior beliefs the same agent would have had under
+the original policy  after receiving information s. The truncation eliminates from the
+support of the agent’s original beliefs states θ at which, under MARP consistent with the
+original policy  there would have been default, and hence the agent’s payoff differential from investing would have been negative. Because the game is supermodular, under
+any policy , MARP is less aggressive than the most aggressive strategy profile surviving
+n − 1 rounds of IDISDS (in the sense that any agent who invests under the latter profile does so also under MARP, but the opposite is not necessarily true). This means that
+
+Theoretical Economics 20 (2025)
+
+Adversarial coordination and information design 773
+
+the extra information r  (θ, s) = 1 also removes from the support of each agent’s beliefs
+states θ at which the payoff differential from investing is negative under the most aggressive profile surviving n − 1 rounds of IDISDS under . Hence, at any stage n of the
+IDISDS procedure, the truncation makes each agent more willing to invest. That is, any
+agent who would have invested after hearing s under the original policy , also invests
+after hearing (s, 1) under the new policy ∗ . Because this is true for any n, it is also true
+in the limit as n goes to infinity. In other words, after the new policy ∗ announces (s, 1),
+each agent learns that his payoff differential from investing when all other agents play
+according to MARP consistent with the new policy ∗ is strictly positive. Hence, after
+the new policy announces (s, 1), each agent’s unique rationalizable action is to invest,
+irrespective of her private information x.
+When, instead, the new policy ∗ announces (s, 0), each agent learns that the state θ
+is among those at which there would have been default under MARP consistent with the
+original policy  (i.e., r  (θ, s) = 0). The announcement thus makes it common certainty
+among the agents that θ ≤ 1. It is then immediate that, under MARP consistent with the
+new policy ∗ , all agents refrain from investing.
+The policy ∗ thus completely removes any strategic uncertainty. Indeed, when
+(s, r  (θ, s)) = (s, 1) (alternatively, (s, r  (θ, s)) = (s, 0)) is announced, each agent knows
+that, under MARP consistent with the new policy ∗ , all other agents invest (alternatively, refrain from investing), irrespective of their exogenous private information. Importantly, while the policy ∗ removes any strategic uncertainty, it preserves structural
+uncertainty, that is, heterogeneity in the agents’ first and higher-order beliefs about θ.
+As explained in the Introduction, it is essential that agents who invest are uncertain as
+to whether other agents invest because they find it dominant to do so, or because when
+they count on other agents investing, they find it iteratively dominant to do so, which
+requires heterogeneity in posterior beliefs.
+That the policymaker is indifferent between  and ∗ is a direct implication of the
+fact that, for any θ, her payoff depends on A only through the probability of default,
+which is the same across the two policies. That, for any θ, no agent is worse off (and
+some agents are strictly better off ) follows from the fact that, under ∗ , all agents refrain from investing (alternatively, invest) in case of default (alternatively, no default),
+whereas this is not the case under .
+When it comes to disclosures in financial markets, Theorem 1 implies that optimal
+policies should combine the announcement of a pass/fail result (captured by r ∈ {0, 1})
+with the disclosure of additional information (captured by s) whose role is to guarantee that, when a pass grade is given, the extra information s the agents receive from
+the policymaker makes investing the unique rationalizable action. This structure appears broadly consistent with common practice. The theorem, however, says more. It
+indicates that optimal disclosure policies should be transparent about market responses
+but not in the sense of creating conformism in beliefs about fundamentals. Rather, they
+should leave no room to ambiguity as to whether or not default will be averted when a
+pass grade is announced. Preserving heterogeneity in beliefs about fundamentals is key
+to minimizing the probability of default.
+
+774 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+3.2 Pass/fail
+Our next result provides a foundation for policies that take a simple pass/fail form; it
+identifies a key property of the agents’ beliefs under which such policies are optimal.
+Theorem 2. Suppose that p(x|θ) is log-supermodular. Then, given any regular policy  satisfying the perfect-coordination property, there exists a regular binary policy
+∗ = ({0, 1}, π ∗ ) that also satisfies the perfect-coordination property and such that, when
+agents play according to MARP under both  and ∗ , for any θ, the probability of default
+and the payoffs (for each agent and the policymaker) are the same under ∗ and .12
+As anticipated in the Introduction, the log-supermodularity of p(x|θ) (equivalently,
+the assumption that the distribution p(x|θ) from which the agents’ private signals are
+drawn satisfies MLRP)) implies that the policymaker cannot reverse the ranking in the
+agents’ optimism through public announcements. Whenever agent j is more optimistic
+than agent i (in the monotone likelihood-ratio order) based on her exogenous private
+information xj , she continues to be more optimistic after hearing the policymaker’s announcement, irrespectively of the shape of the policy . In turn, this implies that MARP
+is always in monotone strategies, and hence that the policymaker does not benefit from
+disclosing any information beyond the fate of the regime r  (θ, s).
+To see this more formally, take any policy  = ( S , π ) satisfying the perfect coordination property. Given the result in Theorem 1, without loss of optimality, assume that
+ = ( S , π ) is such that S = {0, 1} × S, for some Polish space S, and that, under MARP consistent with , when the policymaker discloses any signal (s, r  (θ, s)) = (s, 1), investing
+is the unique rationalizable action for each agent, irrespective of their exogenous private
+information. Given the policy , let U  (x, (s, 1)|k) denote the expected payoff differential of an agent with exogenous private information x who receives public information
+(s, r  (θ, s)) = (s, 1) and who expects all other agents to invest if and only if their exogenous signal exceeds a cut-off k. No matter the shape of the policy , when p(x|θ) is
+log-supermodular, then MARP associated with the policy  is in monotone (i.e., cut-off )
+strategies. Hence, each agent’s expected payoff differential when all other agents play
+according to MARP can be written as U  (x, (s, 1)|k) for some k that depends on s. That
+the original policy  satisfies the perfect-coordination policy in turn implies that, for any
+s and k such that (k, (s, 1)) are mutually consistent,13 U  (k, (s, 1)|k) > 0. That is, the expected payoff differential of any agent whose private signal x coincides with the cutoff
+k must be strictly positive. If this were not the case, the continuation game would also
+admit a rationalizable profile (in fact, a continuation equilibrium) in which some of the
+agents refrain from investing, thereby contradicting the fact that investing irrespectively
+of x is the unique rationalizable profile following the announcement of (s, 1).
+Now consider a policy ∗ that, for any θ, draws the signal (s, 1) (alternatively, (s, 0))
+from the distribution π(θ) of the original policy  = ( S , π ) but conceals the information
+12 The property that p(x|θ) is log-supermodular means that, for any x , x ∈ R, with x < x , and any
+θ , θ ∈ , with θ > θ , then p(x |θ )p(x |θ ) ≥ p(x |θ )p(x |θ ).
+13 This means that the set θ ∈  such that (a) k ∈  and (b)
+(s, 1) ∈ supp(π(θ)) has strictly positive meaθ
+sure under F .
+
+Theoretical Economics 20 (2025)
+
+Adversarial coordination and information design 775
+
+s and only discloses r = 1 (alternatively, r = 0). By the law of iterated expectations, for all
+∗
+k with (k, (s, 1)) mutually consistent, because U  (k, (s, 1)|k) > 0 then U  (k, 1|k) > 0.
+This implies that the new policy ∗ also satisfies the perfect-coordination property. The
+policymaker can thus drop the additional signals s from the original policy  and still
+guarantee that after r = 1 is announced, investing is the unique rationalizable action
+for all agents. That the probability of default and the payoffs (for each agent and the
+policymaker) are the same under  and ∗ then follows directly from the fact that, for
+any θ, the probability that each agent invests is the same under the two policies, along
+with the fact that signals are payoff-irrelevant when fixing the agents’ behavior.
+The inability to change the ranking in the agents’ beliefs through public announcements is key to the optimality of simple pass/fail policies, as the next example shows.
+Example 1. Suppose that θ is drawn from a uniform distribution over [−1, 2]. Given
+θ, each agent i ∈ [0, 1] receives an exogenous signal xi ∈ {xL , xH }, drawn independently
+across agents from a Bernoulli distribution with probability
+
+ L 
+2/3 if θ ∈ (0, 1/3) ∪ [2/3, 5/6) ∪ [1, 7/6) ∪ [4/3, 5/3)
+p x |θ =
+1/3 if θ ∈ [1/3, 2/3) ∪ [5/6, 1) ∪ [7/6, 4/3) ∪ [5/3, 2).
+The value of p(xL|θ) for θ ∈ [−1, 0] plays no role in this example, so it can be taken
+arbitrarily. Suppose that agents’ payoffs are such that g(θ) = 1−c and b(θ) = −c, for all θ,
+with c ∈ (1/2, 8/15). There exits a deterministic policy that satisfies PCP and guarantees
+that default does not occur for θ > 0, whereas no pass/fail policy can guarantee that
+default does not occur for all θ > 0.14
+♦
+Proof of Example 1. Figure 1 illustrates the signal structure considered in Example 1.
+The dash line depicts the probability of signal xL whereas the solid line the complementary probability of signal xH , as a function of θ.
+Note that the agents’ posterior beliefs under the signal structure of Example 1 can
+be ranked according to FOSD, but not according to MLRP. Each agent observing xH has
+posterior beliefs about θ that dominate those of each agent observing xL in the FOSD
+order. Nonetheless, the ratio p(xH |θ)/p(xL|θ) is not increasing in θ over the entire domain, meaning that p(x|θ) is not log-supermodular and hence posteriors cannot be
+ranked according to MLRP. Also note that, under the payoff specification in the example,
+investing is optimal for an agent assigning probability to default no greater than 1 − c,
+whereas not investing is optimal if such a probability is at least 1 − c.
+To see that there exists no pass/fail policy guaranteeing that default does not occur
+for all θ > 0, note that, by virtue of Theorem 1, if such a policy existed, there would also
+exist a binary policy satisfying PCP and such that π(1|θ) = 0 for all θ ≤ 0 and π(1|θ) = 1
+for all θ > 0, with π(1|θ) denoting the probability that the policy discloses signal 1 when
+14 The example features signals drawn from a distribution with finite support. This property, however, is
+not essential. Conclusions similar to those in the example obtain when the agents’ signals are drawn from a
+continuous distribution. We thank Tommaso Denti for suggesting a similar example with finite signals and
+Leifu Zhang for suggesting an example with continuous signals.
+
+776 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+Figure 1. Suboptimality of simple pass/tail tests.
+
+the fundamentals are θ. Under such a policy, after hearing that s = 1, no matter the
+private signal x, each agent assigns probability 1/2 to θ ∈ [0, 1] and probability 1/2 to
+θ ∈ [1, 2]. Because c > 1/2, each agent expecting all other agents to refrain from investing
+(and hence default to occur for all θ ∈ [0, 1]), then finds it optimal to do the same. Hence,
+under MARP consistent with the above policy, after the signal s = 1 is announced, all
+agents refrain from investing, meaning that the above policy fails to spare types θ ∈ [0, 1]
+from default, when the agents play adversarially.
+To see that, instead, the policymaker can avoid default for all θ > 0 using a richer
+policy, consider the policy  = ( S , π ), with S = {0, (1, mid ), (1, ext )} that, in addition
+to publicly announcing a pass grade, also announces whether the fundamentals are extreme (i.e., θ ∈ (0, 5/6) ∪ (7/6, 2]), or intermediate (i.e., θ ∈ [5/6, 7/6]). Formally, for any
+θ ∈ [−1, 0], π(0|θ) = 1, meaning that the policymaker assigns a failing grade. For any θ ∈
+[5/6, 7/6], instead, π(1, mid|θ) = 1, meaning that the the policymaker announces a pass
+grade and that fundamentals are intermediate. Finally, for any θ ∈ (0, 5/6) ∪ (7/6, 2],
+π(1, ext|θ) = 1, meaning that the policymaker announces a pass grade and that fundamentals are extreme. See Figure 1 for a graphical representation.
+Under such a policy, investing is the unique rationalizable action for any agent observing a pass grade, no matter whether the agent also learns that the fundamentals are
+intermediate or extreme.
+To see this, consider first the case in which the fundamentals are extreme, that is,
+θ ∈ (0, 5/6) ∪ (7/6, 2]. All agents with exogenous information xH find it dominant to
+invest when hearing s = (1, ext ). In fact, even if all other agents refrained from investing,
+the probability that each agent with signal xH assigns to θ > 1 (and hence to the event
+that there is no default) is Pr[θ > 1|xH , ext ] = 8/15 > c, making it dominant to invest.
+As a consequence of this property, each agent with exogenous private information xL
+finds it iteratively dominant to invest. This is because, for any θ ∈ [1/3, 5/6], even if all
+agents with exogenous information equal to xL refrained from investing, the aggregate
+investment from those individuals with information xH would suffice for default not to
+
+Theoretical Economics 20 (2025)
+
+Adversarial coordination and information design 777
+
+occur. This means that the probability that each agent with information xL assigns to
+the event that default does not occur is at least equal to Pr[θ > 1/3|xL , (1, ext )] = 11/15,
+implying that it is optimal for the agent to invest.
+Next, consider the case in which fundamentals are intermediate, that is, θ ∈
+[5/6, 7/6]. In this case, the ranking of the agents’ optimism is reversed, with those agents
+observing the xL signal assigning higher probability to higher states. In particular, because each agent with information xL assigns probability 2/3 > c to θ ≥ 1, any such
+agent finds it dominant to invest. Because, for any θ ∈ (5/6, 1), 1/3 of the agents receives information xL , the minimal size of investment that each agent with signal equal
+to xH can expect at any θ ∈ (5/6, 1) is equal to p(xL|θ) = 1/3 > 1 − θ, implying that even
+if all the less optimistic agents with signal xH refrained from investing, default would not
+occur. But this means that investing is iteratively dominant for those agents receiving
+the xH signal.
+Hence, the proposed policy spares any θ > 0 from default. Because all agents invest
+when they observe a pass grade, no matter whether they learn that the fundamentals
+are extreme or intermediate, one may find it surprising that the policymaker needs to
+provide the extra information. This is a consequence of the policymaker not trusting the
+market to play favorably to her. The extra information is precisely what guarantees the
+uniqueness of the rationalizable action.
+As anticipated above, the benefits from disclosing information in addition to the
+pass (or fail) grade stem from the possibility to reverse the ranking of the agents’ optimism, which is possible only when the distribution p(x|θ) is not log-supermodular.
+In the example above, the most optimistic agents are those observing the xL signals
+when the fundamentals are intermediate, whereas they are those observing the xH signals when the fundamentals are extreme. The reversal in the agents’ optimism in turn
+permits the policymaker to guarantee that investing is the unique rationalizable action
+over a larger set of fundamentals (the entire set θ > 0 in the example).
+The above example also illustrates the failure of the Revelation Principle when the
+policymaker is concerned with unique implementation (equivalently, when the market
+is expected to play according to MARP). It is well known that, in this case, confining
+attention to policies that take the form of action recommendations is with loss of generality. The contribution of Theorem 2 is in showing that, notwithstanding such a qualification, the optimal policy does take the form of action recommendations in the special
+case in which beliefs comove with fundamentals according to MLRP.
+3.3 Monotone rules
+We now turn to the optimality of policies that fail with certainty institutions with weak
+fundamentals and pass with certainty those with strong fundamentals. As anticipated in
+the Introduction, the optimality of such rules crucially depends on whether the policymaker’s preferences for avoiding default when fundamentals are large are strong enough
+to compensate for the possibility that nonmonotone rules may permit her to reduce the
+ex-ante probability of default (i.e., the possibility that default may occur over a set of
+fundamentals of smaller ex ante probability under a nonmonotone rule).
+
+778 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+In this subsection, we identify a condition relating the policymaker’s preferences to
+the agents’ exogenous beliefs and payoffs under which monotone rules are optimal. We
+show that the condition is fairly sharp in that, when violated, one can identify economies
+in which nonmonotone rules do strictly better than monotone ones. These economies
+include many of the examples considered in the literature, for example, Goldstein and
+Huang (2016).
+We assume hereafter that
+
+
+
+
+
+x∈R:
+u θ, 1 − P(x|θ) 1(θ > 0)p(x|θ) dF(θ) ≤ 0 = ∅.
+(1)
+
+
+When Condition (1) is violated, the expected payoff differential between investing and
+not investing is positive for any agent who is informed that fundamentals are nonnegative and who expects each other agent to invest (alternatively, not invest) when receiving a signal above (alternatively, below) hers. In this case, the information-design
+problem is uninteresting because the policymaker can save all θ > 0 through a policy
+that announces whether or not θ > 0. Then, let
+
+
+
+
+
+u θ, 1 − P(x|θ) 1(θ > 0)p(x|θ) dF(θ) ≤ 0 .
+xmax ≡ sup x ∈ R :
+(2)
+
+
+As we show in the Appendix, xmax is an upper bound for the set of cut-offs characterizing
+the strategies consistent with MARP across all disclosure policies  satisfying the perfect
+coordination property.
+For any x, let Θ(x) ≡ {θ ∈  : x ∈ θ } denote the set of fundamentals that, given the
+distribution P(·|θ) from which the agents’ signals are drawn, are consistent with private
+information x.
+Condition M. The following properties hold:
+(i) inf Θ(xmax ) ≤ 0;
+(ii) for any θ0 , θ1 ∈ [0, 1], with θ0 < θ1 , and x ≤ xmax such that (a) θ1 ≤ P(x|θ1 ) and (b)
+x ∈ θ0 ,
+U P (θ1 , 1) − U P (θ1 , 0)
+P
+
+P
+
+U (θ0 , 1) − U (θ0 , 0)
+
+>
+
+p(x|θ1 )b(θ1 )
+.
+p(x|θ0 )b(θ0 )
+
+(3)
+
+Property (i) in Condition M says that the lower bound of the support of the beliefs
+of an agent with signal xmax , where xmax is the threshold defined in (2), is nonpositive
+and, therefore, that according to this agent there is a positive probability that default is
+unavoidable, no matter the aggregate investment. Clearly, this property trivially holds
+when, for any θ, the agents’ signals are drawn from a distribution whose support is large
+enough (and hence, a fortiori, when the noise in the agents’ signals is drawn from a
+distribution with unbounded support, e.g., a Normal distribution).
+Property (ii) of Condition M says that the value the policymaker assigns to avoiding
+default increases with the underlying fundamentals at a large enough rate. Specifically,
+the property requires that the benefit that the policymaker derives from changing the
+
+Adversarial coordination and information design 779
+
+Theoretical Economics 20 (2025)
+
+agents’ behavior (inducing all agents to invest starting from a situation in which no agent
+invests) must increase with the fundamentals at a sufficiently high rate, with the critical
+rate determined by a combination of the agents’ payoffs in case of default and beliefs.
+Theorem 3. Suppose that p(x|θ) is log-supermodular and Condition M holds. Given
+any regular policy  satisfying the perfect-coordination property, there exists a regular deterministic binary monotone policy θ̂ = ({0, 1}, π θ̂ ) that also satisfies the perfectcoordination property and such that, when the agents play according to MARP under both
+ and θ̂ , the policymaker’s ex ante expected payoff is weakly higher under θ̂ than under
+.15
+When Condition M holds, the choice of the optimal policy reduces to the choice of
+the smallest threshold θ̂ such that, when agents commonly learn that θ > θ̂, under the
+unique rationalizable profile, all agents invest irrespective of their exogenous private
+∞
+information. For this to be the case, it must be that, θ̂ u(θ, 1 − P(x|θ))p(x|θ) dF(θ) > 0,
+for any x ∈ R.
+The above problem, however, does not have a formal solution, due to the lack of
+upper semicontinuity of the policymaker’s payoff in θ̂. Notwithstanding these complications, hereafter we follow the pertinent literature and refer to the “optimal monotone
+policy” as the one defined as follows. For any θ ∈ (0, 1), let x∗ (θ) be the critical signal
+threshold such that, when agents follow a cut-off strategy with threshold x∗ (θ), default
+occurs if and only if the fundamentals are below θ.16 Let
+
+
+ ∞
+  ∗
+
+
+ ∗
+∗
+θ ≡ inf θ̂ ≥ 0 :
+u θ̃, 1 − P x (θ)| θ̃ p x (θ)| θ̃ dF( θ̃) ≥ 0 for all θ ∈ [θ̂, 1)
+(4)
+θ̂
+
+be the lowest truncation point θ̂ such that, when the policy reveals that fundamentals
+are above θ̂, then for any possible default threshold θ ∈ [θ̂, 1), if default were to occur for
+fundamentals below θ and not for fundamentals above θ, then the marginal agent with
+signal x∗ (θ) would find it optimal to invest. Hereafter, we assume that θ∗ is well-defined,
+which is always the case when17
+
+
+
+  ∗
+
+
+ ∗
+##
+θ ≡ sup θ ∈ (0, 1) :
+u θ̃, 1 − P x (θ)| θ̃ p x (θ)| θ̃ dF( θ̃) ≤ 0 < 1.
+
+15 The policy θ̂ is such that there exists a threshold θ̂ ∈
+
+[0, 1] such that, for any θ ≤ θ̂, π θ̂ (θ) assigns
+(θ) assigns probability one to s = 1.
+16 For any θ ∈
+(0, 1), the threshold x∗ (θ) is implicitly defined by P(x∗ (θ)|θ) = θ. When the noise in the
+agents’ signals is bounded, the definition of x∗ (θ) can be extended to θ = 0 and θ = 1. When the noise is
+unbounded, abusing notation, one can extend the definition to θ = 0 and θ = 1 by letting x∗ (0) = −∞ and
+x∗ (1) = +∞.
+17 For any θ̂ ∈
+(θ## , 1), and any θ ∈ [θ̂, 1),
+ ∞
+
+ 
+
+ 
+
+
+
+
+
+u θ̃, 1 − P x∗ (θ)| θ̃ p x∗ (θ)| θ̃ dF( θ̃) <
+u θ̃, 1 − P x∗ (θ)| θ̃ p x∗ (θ)| θ̃ dF( θ̃).
+0<
+probability one to s = 0, whereas for any θ > θ̂, π θ̂
+
+
+
+Hence, when θ## < 1, θ∗ is well-defined.
+
+θ̂
+
+780 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+The optimal monotone policy is the one with cut-off θ̂ = θ∗ .18
+The previous literature (e.g., Goldstein and Huang (2016)) characterized the threshold θ∗ by restricting attention to monotone rules. The contribution of Theorem 3 is in
+identifying the conditions under which such rules are optimal. Importantly, these conditions are not met in the works that restrict attention to monotone rules. As the examples below suggest, in those settings, the policymaker can strictly increase her payoff
+through a nonmonotone rule.
+As we show in the Appendix, Property (i) in Condition M guarantees that, starting
+from the optimal monotone policy (the one with cut-off θ∗ ), one cannot perturb the
+policy by assigning a pass grade also to a small interval of fundamentals [θ , θ ], with 0 ≤
+θ < θ < θ∗ , while guaranteeing that investing remains the unique rationalizable action
+when the policymaker announces a pass grade (i.e., when the signal s = 1 is disclosed).
+This property trivially holds when the noise in the agents’ signals is large (and hence, a
+fortiori, when noise is unbounded), but plays a key role when the noise is drawn from a
+bounded interval of small size (see Example 2 below for an illustration).
+Property (ii) of Condition M in turn guarantees that the higher payoff the policymaker obtains, under the new policy, from avoiding default when fundamentals are
+stronger compensates for the possibility that, from an ex ante perspective, the probability of default may be larger under monotone policies than under nonmonotone ones
+(see Example 3 for an illustration of why nonmonotone rules may permit the policymaker to avoid default over a set of fundamentals of larger ex ante probability).
+As anticipated above, Condition M is fairly sharp in the sense that, when violated,
+one can identify economies in which the optimal policy is nonmonotone. We provide
+two such examples below. Example 2 illustrates the role of Property (i) in Condition M,
+whereas Example 3 illustrates the role of Property (ii) in Condition M. These examples
+also illustrate why nonmonotone rules, in general, may reduce the set of fundamentals
+over which default happens.
+Let θMS ∈ (0, 1) be implicitly defined by the unique solution to
+ 1
+0
+
+
+
+u θMS , A dA = 0.
+
+(5)
+
+The threshold θMS corresponds to the value of the fundamentals at which an agent who
+knows θ and holds Laplacian beliefs with respect to the aggregate investment is indifferent between investing and not investing.19 Importantly, θMS is independent of the initial
+common prior F and of the distribution of the agents’ signals.
+18 The reason why this is an abuse is that, under the monotone policy with cut-off θ∗ , in the continuation
+game that starts after the policymaker announces s = 1, there exists a rationalizable profile in which some
+of the agents refrain from investing. However, there exists a monotone policy with cut-off θ̂ arbitrarily close
+to the threshold θ∗ such that, after the policymaker announces s = 1 (equivalently, that θ ≥ θ̂), the unique
+rationalizable profile features all agents investing. Because the policymaker’s payoff under the latter policy
+is arbitrarily close to the one she obtains when all agents invest for θ > θ∗ and refrain from investing when
+θ ≤ θ∗ , the abuse appears justified.
+19 This means that the agent believes that aggregate investment is uniformly distributed over
+[0, 1]. See
+Morris and Shin (2006).
+
+Theoretical Economics 20 (2025)
+
+Adversarial coordination and information design 781
+
+Figure 2. Suboptimality of deterministic binary monotone policies.
+
+Example 2. Suppose that there exist scalars g, b ∈ R, with g > 0 > b, such that, for any
+θ, g(θ) = g, and b(θ) = b. Assume that θ is drawn from a uniform distribution with support [−K, 1 + K], for some K ∈ R++ . Finally, assume that the agents’ exogenous signals
+are given by xi = θ + σ i , with σ ∈ R++ and with each i drawn independently across
+agents from a uniform distribution over [−1, 1], with σ < K/2. Let θσ∗ be the threshold defined in (4), applied to the primitives described in this example.20 There exists
+σ # ∈ (0, K/2) such that (a) inf Θ(x∗σ # (θMS )) > 0, and (b) for all σ ∈ (0, σ # ), starting from
+the optimal monotone policy with cut-off θσ∗ , there exists a deterministic nonmonotone
+policy satisfying the perfect-coordination property and permitting the policymaker to
+avoid default over a set of fundamentals of strictly larger probability measure than the
+optimal monotone policy.
+♦
+The proof is in the Supplementary Appendix. Here, we sketch the key arguments.
+To fix ideas, let g = 1 − c and b = −c, with c ∈ (0, 1), as in Example 1, and recall that,
+under such a payoff specification, investing is optimal when the probability of default is
+no greater than 1 − c, whereas not investing is optimal when such a probability exceeds
+1 − c.
+For any binary policy  = ({0, 1}, π ), and any threshold θ ∈ [0, 1] such that (x∗σ (θ), 1)
+are mutually consistent under , let
+
+
+Vσ (θ) ≡ Uσ x∗σ (θ), 1|x∗σ (θ) ,
+denote the payoff of the marginal agent with signal x∗σ (θ), after the policy  announces
+that s = 1, where Uσ is the function defined after Theorem 2.
+Now, for any θ̂ ∈ , let θ̂ = ({0, 1}, π θ̂ ) be the deterministic, binary, monotone rule
+with cut-off θ̂. Note that the absence of any public disclosure is equivalent to a monotone policy with cut-off θ̂ = min  = −K and that, under such a policy, default occurs if
+and only if θ ≤ θMS = c.
+20 Hereafter, the subscript σ in θ∗ and x∗ is meant to highlight that these thresholds are those for the
+σ
+σ
+
+economy in which the noise in the agents’ exogenous private signals is scaled by σ.
+
+782 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+A necessary and sufficient condition for all agents to invest under MARP consistent
+with the policy θ̂ , after hearing that s = 1, is that, for any possible default threshold
+θ > θ̂, Vσ (θ) > 0. The lowest fundamental in the support of x∗σ (θ)’s beliefs is x∗σ (θ) − σ.
+Hence, when x∗σ (θ) − σ > θ̂, the marginal agent with signal x∗σ (θ) already knows from
+his private information that fundamentals are above θ̂. Because, in the absence of any
+public disclosure, the payoff of the marginal agent is strictly negative for all θ < θMS , this
+implies that the cut-off θσ∗ for the optimal monotone rule is θσ∗ = x∗σ (θMS ) − σ.
+Now to see that the optimal monotone policy is improvable, assume that σ is small
+so that x∗σ (θMS ) − σ > 0. Next, pick γ, δ > 0 small and let θ ≡ x∗σ (θMS − δ) − σ and
+θ ≡ θ − γ, with θ > 0. Consider a binary policy γ,δ = ({0, 1}, πγ,d ), that in addition to
+announcing a pass grade s = 1 when fundamentals are above θσ∗ (as the optimal monoθ̂
+
+
+
+tone rule does) also announces s = 1 when θ ∈ [θ , θ ]. Let Vσ γ,δ (θ) be the payoff of
+the marginal agent with signal x∗σ (θ) under the new rule γ,δ , after the policymaker anθ∗
+
+nounces that s = 1. This payoff is represented in Figure 2 along with the payoff Vσ σ (θ)
+
+
+under the optimal monotone rule. Provided that γ and δ are small, Vσ γ,δ (θ) ≥ 0 for
+
+all θ for which (x∗σ (θ), 1) are mutually consistent under γ,δ , with Vσ γ,δ (θ) = 0 if and
+only if θ = θMS . Starting from γ,δ , one can then further perturb the policy γ,δ by giving a fail grade to banks with fundamentals in [θσ∗ , θσ∗ + ε], with ε > 0 small. The new
+˜
+policy ˜ so constructed is such that Vσ (θ) > 0 for all θ for which (x∗σ (θ), 1) are mutually consistent under ˜, meaning that, when the policymaker announces that s = 1,
+investing is the unique rationalizable action for all agents. The policy ˜ thus satisfies
+the perfect-coordination property and guarantees that default occurs over a set of fundamentals of strictly smaller probability under F than the optimal monotone policy
+∗
+∗
+θσ = ({0, 1}, π θσ ).
+The reason why the nonmonotone policy ˜ constructed in the proof of Example 2
+guarantees that default occurs over a smaller set of fundamentals than the optimal
+monotone policy is that agents receiving signals around θMS are highly sensitive to the
+grade the policy gives to institutions with fundamentals around θMS but not so much so
+to the grade given to fundamentals far from θMS . In the above example with bounded
+noise, an agent receiving a signal x∗σ (θMS ) is not sensitive at all to the grade the policy
+gives to fundamentals below x∗σ (θMS ) − σ because his private signal informs him that
+the fundamentals are above x∗σ (θMS ) − σ. Hence, while it is impossible to amend the
+optimal monotone policy (the one with cut-off θσ∗ = x∗σ (θMS ) − σ) by giving a pass grade
+also to fundamentals slightly below θσ∗ without inducing some of the agents to refrain
+from investing, it is possible to amend the optimal monotone policy by extending the
+pass grade to an interval [θ , θ ] of fundamentals sufficiently “far away” from θσ∗ , while
+continuing to induce all agents to invest under MARP. The reason why such improvements are not feasible under Condition M in Theorem 3 is that Property (i) in Condition M implies that x∗σ (θMS ) − σ < 0, thus making the above construction unfeasible.21
+Interestingly, when θ ∈ [θ , θ ], the assumption of bounded support of the agents’ beliefs
+21 Under Property (i), the marginal agent with signal x∗
+MS does not rule out any fundamental in
+)
+σ (θ
+MS
+θ
+Hence, any perturbation of the optimal monotone policy passing fundamentals to the left of θMS
+
+(0,
+).
+induces the agent to refrain from investing.
+
+Theoretical Economics 20 (2025)
+
+Adversarial coordination and information design 783
+
+implies that a positive-measure set of agents know with certainty that θ ∈ [θ , θ ] and yet,
+under the unique rationalizable profile, all agents invest; this is because, by design, the
+policy ˜ constructed in Example 2 guarantees that, when θ ∈ [θ , θ ], such an event is
+not commonly learned.
+The next example considers an economy in which the noise in the agents’ exogenous signals is drawn from a distribution with an unbounded support (in which case,
+Property (i) in Condition M trivially holds), but Property (ii) is violated.
+Given any binary, deterministic policy  = ({0, 1}, π ) (i.e., any policy such that, for
+any θ, π(θ) is a degenerate Dirac distribution assigning probability 1 either to s = 1 or
+to s = 0), let D = {(θi , θ̄i ] : i = 1,    , N } denote the partition of (0, θMS ] induced by π,
+with N ∈ N, θ1 = 0, and θN = θMS .22 Let d ∈ D denote a generic cell of the partition
+D and, for any θ ∈ (0, θMS ], denote by d  (θ) ∈ D the cell that contains θ. Finally, let
+M() ≡ maxi=1,,N | θ̄i − θi | denote the mesh of D , that is, the Lebesgue measure of the
+cell of D of maximal Lebesgue measure.
+Example 3 below shows that, when the noise in the agents’ information is small, any
+deterministic binary policy of large mesh can be improved upon by a non-monotone deterministic binary policy with a smaller mesh. This property in turn implies that optimal
+policies are highly nonmonotone.
+Example 3. Suppose that θ is drawn from an improper uniform prior over R and that
+the agents’ signals are given by xi = θ + σεi , with εi drawn from a standard Normal distribution.23 Further assume that there exist scalars g, b, W , L ∈ R, with g > 0 > b and
+W > L, such that, for any θ, g(θ) = g, b(θ) = b, W (θ) = W and L(θ) = L. There exists a scalar σ̄ > 0 and a function E : (0, σ̄ ] → R+ , with limσ→0+ E (σ ) = 0, such that, for
+any σ ∈ (0, σ̄ ], in the game in which the noise in the agents’ information is scaled by σ,
+the following is true: given any deterministic binary policy  = ({0, 1}, π ) satisfying the
+perfect-coordination property and such that M() > E (σ ), there exists another deterministic binary policy ∗ with M(∗ ) < E (σ ) that also satisfies the perfect-coordination
+property and such that the ex ante probability of default under ∗ is strictly smaller than
+under .
+♦
+See the Supplementary Appendix for a detailed proof of the result. Here, we discuss the main ideas. Nonmonotone policies permit the policymaker to avoid default
+over a larger set of fundamentals by making it difficult for the agents to commonly
+learn the fundamentals when the latter are between 0 and θMS and the policymaker
+announces a pass grade. Intuitively, if the policymaker assigned a pass grade to an interval (θ , θ ] ⊂ (0, θMS ] of large Lebesgue measure, when σ is small and θ ∈ (θ , θ ], most
+agents would receive private signals xi ∈ (θ , θ ]. No matter the grade assigned to fundamentals outside the interval (θ , θ ], in the continuation game that starts after the
+policymaker announces a pass grade, most agents with signals xi ∈ (θ , θ ] would then
+22 That is, either (a) π(θ) = 0 for all θ ∈ ∪
+i=2k,k≤N (θi , θ̄i ] and π(θ) = 1 for all θ ∈ ∪i=2k−1,k≤N (θi , θ̄i ], or (b)
+π(θ) = 1 for all θ ∈ ∪i=2k,k≤N (θi , θ̄i ] and π(θ) = 0 for all θ ∈ ∪i=2k−1,k≤N (θi , θ̄i ].
+23 The improperness of the prior simplifies the exposition but is not important. The agents’ hierarchies
+of beliefs are still well-defined.
+
+784 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+assign high probability to the joint event that θ ∈ (θ , θ ], that other agents assign high
+probability to θ ∈ (θ , θ ], and so on. When this is the case, it is rationalizable for such
+agents to refrain from investing. Hence, when σ is small, the only way the policymaker
+can guarantee that, when θ ∈ (0, θMS ], the agents invest after hearing a pass grade is by
+dividing the set (0, θMS ] into a collection of disjoint intervals, each of small Lebesgue
+measure. This guarantees that the support of each agent’s posterior beliefs after a pass
+grade is announced is not connected. Connectedness of the supports facilitates rationalizable profiles where some agents refrain from investing.
+Next, suppose that the intervals (θi , θ̄i ] ⊂ (0, θMS ], i = 1,    , N, receiving a pass
+grade are far apart, implying that the policymaker fails an interval (θ , θ ] ⊂ (0, θMS ] of
+large Lebesgue measure (note that this is indeed the case under the optimal monotone
+deterministic rule with cutoff θσ∗ , where θσ∗ is the threshold defined in (4).24 The detailed
+derivations in the Supplementary Appendix then show that, starting from , the policymaker could assign a pass grade to fundamentals in the middle of [θ , θ ] and a fail grade
+to some fundamentals to the right of θ , in such a way that (a) investing continues to be
+the unique rationalizable action for all agents after hearing a pass grade, and (b) the set
+of fundamentals receiving a pass grade under the new policy is strictly larger than under
+the original one. Furthermore, the construction sketched above can be iterated until one
+arrives at a new policy with a mesh smaller than E (σ ) under which default occurs over
+a set of fundamentals of strictly smaller measure than under the original policy. When
+the benefit W (θ) − L(θ) of avoiding default is constant in θ, as in the example above, the
+new policy thus yields the policymaker a strictly higher payoff than the original one.
+Finally, one can show that, when σ is small, a pass grade can be given to all θ >
+MS
+θ + ε, with ε > 0 small, while guaranteeing that all agents invest after the policymaker
+announces the pass grade s = 1.25
+The above properties thus also imply that, if the policymaker is restricted to deterministic policies (arguably, the most relevant case in practice), when the precision of the
+agents’ exogenous information is large, the optimal policy is highly nonmonotone over
+(0, θMS ) and announces a pass grade when fundamentals are above θMS .
+
+4. Extensions
+We first introduce a few enrichments in Section 4.1, then establish the analog of the
+three theorems above for these richer economies in Section 4.2, and then conclude in
+Section 4.3 discussing the role of the multiplicity of the receivers and their exogenous
+private information.
+24 The subscript simply highlights the dependence of the cutoff θ∗ on σ.
+σ
+25 Formally, for any ε > 0, there exists σ(ε) such that, for any σ < σ(ε), given any pass/fail policy  satis-
+
+fying PCP, there exists another pass/fail policy  also satisfying PCP that agrees with  on any θ < θMS and
+gives a pass grade to any θ ≥ θMS + ε.
+
+Theoretical Economics 20 (2025)
+
+Adversarial coordination and information design 785
+
+4.1 Generalizations
+The fundamentals are given by (θ, z), with θ drawn from  according to the absolutely
+continuous cdf F , and with z drawn from [z, z] according to Qθ (z), with the cdf Qθ (z)
+weakly decreasing in θ, for any z.26
+The variable θ continues to parameterize the maximal information the policymaker
+can collect about the fundamentals. The additional variable z parameterizes risk that
+the agents and the policymaker face at the time of the disclosure (e.g., macroeconomic
+variables that are only imperfectly correlated with the fundamentals). As in the baseline
+model, conditional on θ, the private signals x = (xi )i∈[0,1] are i.i.d. draws from an (absolutely continuous) cumulative distribution function P(x|θ), with associated density
+p(x|θ) strictly positive and bounded over the interval θ ∈ R.
+There exists a function R : ×[0, 1]×[z, z] → R such that, given any (θ, A, z), default
+occurs (i.e., r = 0) if, and only if, R(θ, A, z) ≤ 0. The function R is continuous and strictly
+increasing in (θ, z, A). For any (θ, A), the probability of avoiding default is thus given
+by r(θ, A) ≡ P[R(θ, A, z) > 0|θ, A].
+There exist functions Ŵ , L̂ :  × [0, 1] × [z, z] → R such that, given any (θ, A, z), the
+policymaker’s payoff is equal to
+
+
+
+
+Û P (θ, A, z) = Ŵ (θ, A, z)1 R(θ, A, z) > 0 + L̂(θ, A, z)1 R(θ, A, z) ≤ 0 .
+
+(6)
+
+Hence, Ŵ (θ, A, z) is the policymaker’s payoff in case default is avoided, whereas
+L̂(θ, A, z) is her payoff in case of default. Likewise, there exist functions ĝ, b̂ :  × [0, 1] ×
+[z, z] → R such that, given any (θ, A, z), the agents’ payoff differential between investing
+and not investing is equal to
+
+
+
+
+û(θ, A, z) = ĝ(θ, A, z)1 R(θ, A, z) > 0 + b̂(θ, A, z)1 R(θ, A, z) ≤ 0 ,
+
+(7)
+
+with ĝ(θ, A, z) > 0 > b̂(θ, A, z), for any (θ, A, z). For any (θ, A), then let
+
+
+E 1 R(θ, A, z) > 0 ĝ(θ, A, z)|θ, A
+g(θ, A) ≡
+and
+r(θ, A)
+
+
+E 1 R(θ, A, z) ≤ 0 b̂(θ, A, z)|θ, A
+b(θ, A) ≡
+1 − r(θ, A)
+denote the agents’ expected payoff differential in case of no default and in case of default, respectively. Likewise, for any (θ, A), let
+
+
+E 1 R(θ, A, z) > 0 Ŵ (θ, A, z)|θ, A
+W (θ, A) ≡
+r(θ, A)
+
+
+E 1 R(θ, A, z) ≤ 0 L̂(θ, A, z)|θ, A
+L(θ, A) ≡
+1 − r(θ, A)
+
+and
+
+26 All the results extend to the case where Q
+θ (z) has unbounded support. Note that Qθ (z) is not required
+
+to be absolutely continuous in z (in fact, it is not absolutely continuous in the baseline model, where the
+distribution has a mass point of 1 at z = 0).
+
+786 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+denote the policymaker’s expected payoff, again in case of no default and default, respectively.
+The agents’ and the policymaker’s expected payoffs can then be conveniently expressed as a function of θ and A only, by letting
+
+
+u(θ, A) ≡ r(θ, A)g(θ, A) + 1 − r(θ, A) b(θ, A) and
+
+
+U P (θ, A) ≡ r(θ, A)W (θ, A) + 1 − r(θ, A) L(θ, A).
+Hereafter, we assume that |u(θ, A)| is bounded and that there exist θ, θ ∈ R, with θ <
+θ, such that (a) u(θ, 1) < 0 for all θ ≤ θ, (b) u(θ, 0) > 0 for all θ > θ, and (c) u(θ, 1) >
+0 > u(θ, 0) for all θ ∈ (θ, θ]. The thresholds θ and θ define the “critical region” (θ, θ]
+where the sign of the agents’ payoff differential depends on the response of the market.27
+We also assume that both u(θ, A) and U P (θ, A) are nondecreasing in A and such that
+U P (θ, 1) > U P (θ, 0) for all θ ∈ (θ, θ].28
+4.2 Results
+We identify conditions under which Theorems 1–3 extend to these richer economies.
+4.2.1 Perfect-coordination property Given any distribution G ∈  over , say that G
+is “regular” if, when the common posterior over  is G and, for any θ, agents receive
+private signals according to P(·|θ), MARP is well-defined. Then, for any regular G, any
+θ, let A(θ; G) denote the aggregate investment at θ when agents play according to MARP,
+under the common posterior G.
+Condition PC. For any distribution τ ∈
+() over posterior beliefs consistent with the
+
+common prior F (i.e., such that Gτ(dG) = F ), the following condition holds:
+
+
+
+
+≥
+
+ 
+ 
+
+
+
+
+1 u θ, A(θ; G) > 0 U P (θ, 1) + 1 u θ, A(θ; G) ≤ 0 U P (θ, 0) G(dθ) τ(dG)
+
+
+
+
+U P θ, A(θ; G) G(dθ) τ(dG).
+
+27 The critical region can also be defined in terms of the regime outcome.
+
+That is, let θ , θ̄ ∈ R, with
+
+θ < θ̄ , be defined by R(θ , 1, z) = R( θ̄ , 0, z) = 0. Note that default occurs with certainty when θ < θ and
+
+never occurs when θ > θ̄ , no matter (A, z). Because the agents’ payoff differential is strictly negative (al
+ternatively, strictly positive) when there is default (alternatively, when there is no default), (θ, θ] ⊆ (θ , θ ].
+All the results below hold also under this alternative definition. The reason for defining the critical region
+as done above is that it permits us to weaken some of the assumptions by requiring that they hold over a
+smaller set of fundamentals. Clearly, the two definitions coincide when the regime outcome is a deterministic function of (θ, A), as in the baseline model.
+28 That u(θ, A) is monotone in A implies that the continuation game remains supermodular. That
+P
+U (θ, A) is nondecreasing in A implies that, for any , MARP continues to coincide with the “smallest”
+rationalizable profile, that is, the one involving the smallest measure of agents investing. Finally, that for
+any θ in the critical region, the policymaker strictly prefers that all agents invest to no agent investing guarantees that, when the optimal policy has a pass/fail structure, it is obtained by maximizing the probability
+that a pass grade is given when fundamentals are in the critical range.
+
+Theoretical Economics 20 (2025)
+
+Adversarial coordination and information design 787
+
+To appreciate the meaning of Condition PC, suppose that the policymaker, through
+her disclosure policy , generates a distribution τ over common posteriors G over ,
+and that, for any G, agents play according to MARP. Now suppose that, in each state θ,
+the policymaker also informs the agents of the sign of their expected payoff differential
+u(θ, A(θ; G)) under MARP consistent with G. Finally, suppose that, after each posterior G is generated, the additional information induces all agents to invest when they
+learn that u(θ, A(θ; G)) > 0 and not to invest when they learn that u(θ, A(θ; G)) ≤ 0.
+Then the additional information makes the agents better off. Condition PC says that the
+policymaker is also weakly better off. In other words, the condition requires that the policymaker’s and the agents’ payoffs be not too misaligned. Condition PC trivially holds
+when the policymaker faces no aggregate uncertainty (i.e., when each distribution Qθ
+over [z, z] is degenerate), W is weakly increasing in A and L is invariant in A, as in the
+baseline model. For example, in case of stress testing, the condition says that the policymaker prefers more agents to invest in case the bank under examination avoids default,
+but is indifferent as to how many investors pull their money out of the bank when the
+latter defaults. More generally, Condition PC accommodates for the possibility that both
+W and L depend on A, possibly nonmonotonically, provided that, on average, the loss
+to the policymaker from having no agent invest in states θ in which the agents’ expected
+payoff differential (under MARP given the induced common posterior G) is negative is
+more than compensated by the benefit from having all agents invest in states θ in which
+the differential is positive. The average is over both the induced posteriors G and the
+fundamentals θ.
+As in the baseline model, let A (θ, s) denote the aggregate size of investment at θ
+under MARP consistent with , when the policy discloses s.
+Theorem 1*. Given any regular policy  = ( S , π ), there exists another regular policy ∗
+satisfying the perfect-coordination property and such that when under both  and ∗
+agents play according to MARP the following are true: (1) for any θ, no agent is worse
+off under ∗ than under , and some agents are strictly better off; (2) if, for any θ and
+s ∈ supp(π(θ)), the regime outcome is deterministic (i.e., r(θ, A (θ, s)) ∈ {0, 1}), then for
+any θ the probability of default under ∗ is the same as under ; (3) when Condition PC
+holds, the policymaker is better off under ∗ than under .
+Theorem 1* extends Theorem 1 to the richer class of economies under consideration, in which the regime outcome is determined by additional variables that are not
+observable by the policymaker, and where both the policymaker’s and the agents’ payoffs depend on the aggregate investment A beyond its effect on the regime outcome.
+The policy ∗ in the theorem is obtained from the original policy  by disclosing, for
+each θ, in addition to the information s ∈ supp(π(θ)) disclosed by the original policy ,
+a second piece of information that reveals to the market whether at (θ, s), under MARP
+consistent with the original policy , the agents’ expected payoff differential is positive
+or negative. Note in particular that because the sign of the payoff differential in the baseline model is given by the regime outcome, this additional piece of information, in the
+baseline model, coincides with the regime outcome r  (θ, s) ∈ {0, 1}.
+
+788 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+In Inostroza and Pavan (2024a), we show that the perfect-coordination property is
+fairly general and extends to a class of economies even richer than the one introduced in
+Section 4.1 in which (a) the agents’ prior beliefs need not be consistent with a common
+prior, nor be generated by signals drawn independently across agents, conditionally on
+θ, (b) the number of agents is arbitrary (in particular, finitely many agents), (c) payoffs
+can be heterogenous across agents, (d) agents have a level-K degree of sophistication, (e)
+the policymaker may possess imperfect information about the payoff state and/or the
+agents’ beliefs, (f ) the policymaker may engage in flexible discriminatory disclosures
+and disclose different information to different agents. The key property is the possibility for the policymaker to have access to information that is a sufficient statistic of
+the agents’ information when predicting the sign of the agents’ payoff differential under
+MARP. This property holds when, for example, the correlation in the agents’ exogenous
+beliefs originates in public signals the policy maker has access to.29
+4.2.2 Pass/fail policies
+Condition FB. For any x, u(θ, 1 − P(x|θ)) ≥ 0 (alternatively, u(θ, 1 − P(x|θ)) ≤ 0) implies that u(θ , 1 − P(x|θ )) > 0 for all θ > θ (alternatively, u(θ , 1 − P(x|θ )) < 0 for all
+θ < θ).
+Condition FB (which stands for “single crossing from below”) states that, for any
+x, the payoff differential u(θ, 1 − P(x|θ)) from investing when all agents follow a cutoff strategy with cut-off x crosses 0 once from below. The property clearly holds in the
+baseline model where (i) r(θ, A) = 1(A > 1 − θ) and (ii) g(θ) > 0 > b(θ) for all θ. It
+also holds when u(θ, A), in addition to being nondecreasing in A as assumed above, is
+nondecreasing in θ.
+Theorem 2*. Suppose that p(x|θ) is log-supermodular and Condition FB holds. Then,
+given any regular policy  = ( S , π ) satisfying the perfect-coordination property, there exists a regular binary policy ∗ = ({0, 1}, π ∗ ) that also satisfies the perfect-coordination
+property and such that, when agents play according to MARP under both  and ∗ , for
+any θ, the probability of default and the payoffs (for each agent and the policymaker) are
+the same under ∗ and .
+Because  = ( S , π ) satisfies the perfect-coordination property, ∪θ supp(π(θ)) can be
+partitioned in two sets, S1 and S0 , such that, under , all agents invest (alternatively,
+do not invest) when receiving information s ∈ S1 (alternatively, s ∈ S0 ), irrespectively of
+their private signals x. The key step in the proof in the Appendix shows that the logsupermodularity of p(x|θ), together with Condition FB, jointly imply that, under any
+policy, MARP is in cut-off strategies. The reason is the same as the one discussed above
+for the baseline model. In turn, this property implies that all agents continue to invest
+29 We conjecture that, as long as the above sufficient statistic property holds, Theorem 2* and 3* below
+also extend to settings in which the agents’ signals are not conditionally independent given θ. Whether the
+results extend to some environments in which the sufficient statistic property is violated is an interesting
+question for future work.
+
+Adversarial coordination and information design 789
+
+Theoretical Economics 20 (2025)
+
+(alternatively, refrain from investing) when the policymaker “pools the signals” and discloses only that s ∈ S1 (alternatively, that s ∈ S0 ). The arguments are similar to those
+leading to Theorem 2 above. The policy ∗ = ({0, 1}, π ∗ ) is then constructed by letting
+π ∗ (1|θ) = π( S1 |θ) (and π ∗ (0|θ) = π( S0 |θ)) for all θ. Contrary to the baseline model, after
+the policy ∗ discloses signal 1 (alternatively, signal 0), the regime outcome need not be
+deterministic. Nonetheless, the probability of default is the same under the two policies
+ and ∗ and so are the payoffs.30
+4.2.3 Monotone rules First, we extend the definition of xmax to accommodate for the
+fact that, in richer economies, θ need not coincide with 0. That is, we let
+
+
+
+
+
+(8)
+u θ, 1 − P(x|θ) 1(θ > θ)p(x|θ) dF(θ) ≤ 0 .
+xmax ≡ sup x ∈ R :
+
+
+Next, we extend Condition M as follows.
+Condition M*. (i*) inf Θ(xmax ) ≤ θ;
+(ii*) For any θ0 , θ1 ∈ [θ, θ], with θ0 < θ1 , and x ≤ xmax such that (a) u(θ1 , 1 − P(x|θ1 )) ≤
+0 and (b) x ∈ θ0 ,
+
+
+U P (θ1 , 1) − U P (θ1 , 0) p(x|θ1 )u θ1 , 1 − P(x|θ1 )
+
+.
+>
+(9)
+U P (θ0 , 1) − U P (θ0 , 0) p(x|θ0 )u θ0 , 1 − P(x|θ0 )
+(iii*) |u(θ, 1 − P(x|θ))| is log-supermodular over {(θ, x) ∈ [θ, θ] × R : u(θ, 1 − P(x|θ)) ≤
+0}.31
+Property (i*) is similar to Property (i) in Condition M in the baseline model but accommodates for the fact that, in richer economies, θ need not coincide with 0. Property
+(ii*) extends Property (ii) in Condition M to the current environment with richer preferences in which u(θ, A) and U P (θ, A) depend on A over and above the effect that the
+latter variable has on the regime outcome.
+Property (iii*) is a new condition that requires that, for any θ < θ and x < x such
+that u(θ , 1 − P(x |θ )) < 0,
+
+
+
+
+
+
+u θ , 1 − P x|θ
+u θ , 1 − P x |θ
+
+
+
+ ≤  
+ .
+(10)
+u θ , 1 − P x|θ
+u θ , 1 − P x |θ
+Note that u(θ , 1 − P(x|θ )) < 0 implies that u(θ , 1 − P(x|θ )), u(θ , 1 − P(x|θ )), u(θ ,
+1 − P(x |θ )) < 0. The condition thus requires that the relative reduction in the expected losses stemming from the fundamentals improving from θ to θ > θ is larger
+30 As in the baseline model, that payoffs (for each agent and the policymaker) are the same under  and
+∗ follows from the fact that, for any θ, the probability that each agent invests is the same under the two
+policies, along with the fact that signals are payoff-irrelevant when fixing the agents’ behavior.
+31 The log-supermodularity of |u(θ, 1 − P(x|θ))| means that, for any x , x ∈ R, with x < x , and any
+
+θ , θ ∈ , with θ > θ , such that u(θ , 1 − P(x |θ )) ≤ 0,
+ 
+
+
+ 
+
+
+
+
+
+
+u θ , 1 − P x |θ u θ , 1 − P x |θ ≥ u θ , 1 − P x |θ u θ , 1 − P x |θ .
+
+790 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+when agents invest if and only if x > x than when they invest if and only if x > x > x .
+The reduction in the losses u(θ, 1 − P(x|θ)) combines the direct effect of θ on u(θ, A)
+with the indirect effect of θ on A = 1 − P(x|θ) that obtains when the agents follow a
+cut-off strategy whereby they invest if and only if their signals exceed x. The condition
+trivially holds in the baseline model where u(θ, A) < 0 if and only if, given (θ, A), there
+is default (i.e., A ≤ 1 − θ), in which case u(θ, A) = b(θ).
+Theorem 3*. Suppose that p(x|θ) is log-supermodular and Conditions PC, FB, and M*
+hold. Given any regular policy , there exists a regular deterministic binary monotone policy θ̂ = ({0, 1}, π θ̂ ) that satisfies the perfect-coordination property and such that, when
+the agents play according to MARP under both  and θ̂ , the policymaker’s ex ante expected payoff is weakly higher under θ̂ than under .
+To gain some intuition on the role played by the additional requirement in Condition M* (property (iii*)), first observe that the conditions in the theorem imply that Theorems 1* and 2* hold. Given any policy , there thus exists a binary policy  = ({0, 1}, π  )
+satisfying the perfect-coordination property and such that π  (1|θ) = 0 for all θ ≤ θ and
+π  (1|θ) = 1 for all θ > θ and such that the policymaker is weakly better off under  than
+under . The policy  can be constructed following the steps in the proofs of Theorems
+1* and 2*. Now suppose that  is not a deterministic monotone rule (i.e., there is no
+
+θ̂ such that π  (1|θ) = 1(θ ≥ θ̂) for F -almost all θ). As in Section 3.2, let U  (x, 1|x) be
+the expected payoff of an agent with signal x who, under the policy  hears that s = 1,
+and who expects all other agents to invest if and only if their signal exceeds x. Sup
+
+pose that U  (x, 1|x) has a unique global minimum x ≡ arg minx U  (x, 1|x), and that
+x ≤ xmax (these properties are not assumed in the proof but permit us to illustrate the
+role of Property (iii*) in Condition M* in the simplest possible terms). That  satisfies
+
+the perfect-coordination property implies that U  (x, 1|x) > 0, for otherwise it is rationalizable for some of the agents with signal x ≤ x not to invest, after hearing that s = 1
+(the arguments are similar to those in the baseline model). To make things interesting,
+suppose there exist two disjoint intervals of fundamentals − , + ⊂ Θ(x), both consistent with x, such that (a) sup − ≤ inf + , (b) u(θ, 1 − P(x|θ)) ≤ 0 for F -almost all
+θ ∈ − ∪ + , (c) π  (1|θ) > 0 for F -almost all θ ∈ − , and (iv) π  (1|θ) < 1 for F -almost all
+θ ∈ + (as we show in the Appendix, when these properties do not hold there exist trivial
+improvements of the policy  even when Property (iii*) in Condition M* does not hold).
+Then, consider a binary policy ˜ = ({0, 1}, π̃ ) constructed from  by reducing the
+probability of the pass grade s = 1 over the interval − and increasing it over the interval
++ , as in Figure 3. Let
+ +∞
+
+
+
+
+S(x) ≡
+u θ, 1 − P(x|θ) p(x|θ) π̃(1|θ) − π  (1|θ) dF(θ).
+−∞
+
+˜
+
+Suppose that the new policy ˜ is such that S(x) = 0, which implies that U  (x, 1|x) >
+0. Property (iii*), along with the fact that (a) π̃(1|θ) − π  (1|θ) crosses zero from below,
+(b) p(x|θ) is log-supermodular, and (c) Conditions FB holds, guarantees that S(x) ≥ 0
+˜
+for all x < x, which in turn implies that U  (x, 1|x) > 0 for all x < x. The proof in the
+
+Theoretical Economics 20 (2025)
+
+Adversarial coordination and information design 791
+
+Figure 3. Construction of improving policy ˜ = ({0, 1}, π̃ ).
+
+Appendix leverages this property to show how to construct a sequence of perturbations
+of the policy  leading to a new binary policy θ̂ = ({0, 1}, π θ̂ ) that is deterministic and
+θ̂
+
+monotone and such that U  (x, 1|x) > 0 for all x, which guarantees that θ̂ also satisfies
+the perfect-coordination property. That the new policy θ̂ improves over the original
+one  then follows from the fact that the policymaker’s payoff satisfies Property (ii*)—
+the arguments for this last step are similar to those leading to Theorem 3 in the baseline
+model.
+4.3 Discussion: Role of multiplicity of receivers and exogenous private information
+It is worth contrasting the results about the suboptimality of monotone rules (when
+Condition M* is violated) to those for economies featuring either a single privatelyinformed receiver, or multiple receivers with no exogenous private information.
+Single receiver. With a single receiver, the optimal policy is a simple monotone
+pass/fail policy with cutoff equal to θ∗ = 0. This is because, in this model, the policymaker’s and the receiver’s payoffs are aligned (they both want to avoid default when
+possible). With a single receiver, there is no risk of adversarial coordination, and hence
+the optimal policy coincides with the one that the designer would select if she trusted
+the receiver to play favorably to her.
+Things are different when preferences are misaligned. To see this, suppose the policymaker’s payoff is equal to W in case of no default, and L < W in case of default, with
+W , L ∈ R constant, as in Examples 2 and 3 above. However, now suppose that the receiver’s payoff differential between investing and not investing is equal to −g in case
+of default and −b in case of no default, with g > 0 > b. Such a payoff differential may
+reflect the idea that the receiver is a speculator whose payoff is zero when he refrains
+from speculating (equivalently, when he invests), is positive when he speculates and default occurs, and is negative when he speculates and default does not occur. Using the
+results in Guo and Shmaya (2019), one can then show that the optimal policy in this
+
+792 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+case has the interval structure: each type x of the receiver is induced to play the action
+favorable to the policymaker (abstain from speculating) over an interval of fundamentals [θ1 (x), θ2 (x)], with θ1 (x) < 1 < θ2 (x), for all x, and with θ1 (x) decreasing in x and
+θ2 (x) increasing in x. Such a policy requires disclosing more than two signals, and hence
+cannot be implemented through a simple pass/fail test. In contrast, with a continuum
+of heterogeneously informed receivers with the same payoffs as in the variant above,
+the optimal policy is a pass–fail test that is typically nonmonotone in θ.32 Furthermore,
+when the optimal policy is not monotone, it does not have the interval structure, as each
+receiver with signal x is induced to invest over a nonconnected set of fundamentals. The
+reason for these differences is that, with a single receiver, to discourage the latter from
+taking the adversarial action, the policymaker must persuade the receiver that the fundamentals are likely to be above 1, in which case the attack is unsuccessful. With multiple receivers, instead, the policymaker must persuade each receiver that enough other
+receivers are not attacking, which as shown above, is best accomplished by a nonmonotone policy that makes it difficult for the receivers to commonly learn the fundamentals,
+when the latter are between 0 and θMS .33
+Multiple receivers with no exogenous private information. When all receivers have
+the same posterior beliefs, no matter whether payoffs are aligned or misaligned, under
+MARP, each receiver plays the friendly action only if it is dominant to do so. The optimal
+policy is a simple monotone pass/fail policy with cutoff θ∗ implicitly defined by
+ 1
+θ∗
+
+b dF(θ) +
+
+ ∞
+1
+
+g dF(θ) = 0.
+
+The reason why the optimal policy is monotone when the receivers possess no exogenous private information is that the policymaker needs to convince each of them that θ
+is above 1 with sufficiently high probability to make the friendly action dominant.
+5. Conclusions
+We consider the design of public information in coordination settings in which the designer does not trust the receivers to play favorably to her. We show that, despite the fear
+of adversarial coordination, the optimal policy induces all receivers to take the same action. Importantly, while each agent can perfectly predict the action of any other agent,
+he is not able to predict the beliefs that rationalize such actions. We identify conditions
+under which the optimal policy has a pass/fail structure, as well as conditions under
+which the optimal policy is monotone, passing institutions with strong fundamentals
+and failing the others.
+32 This is because, under MARP, all agents play the friendly action if and only if it is iteratively dominant
+
+for them to do so, irrespective of the alignment in payoffs.
+33 Mensch (2021) characterizes general conditions under which the optimal policy is monotone with a
+single, uninformed, receiver. Goldstein and Leitner (2018) study an economy in which these conditions are
+not satisfied and the optimal policy is nonmonotone. The analysis in these works is very different in that
+it does not identify the role that coordination and the receivers’ private information play for the optimal
+policy.
+
+Theoretical Economics 20 (2025)
+
+Adversarial coordination and information design 793
+
+The results are worth extending in a few directions. The analysis assumes that the
+policymaker is Bayesian and knows the distribution from which the agents’ exogenous
+private information is drawn. While this is a natural starting point, in future work it
+would be interesting to investigate how the structure of the optimal policy is affected by
+the policymaker’s uncertainty about the agents’ information sources.34
+Motivated by the applications the analysis is meant for (most notably, stress testing),
+we have confined attention to nondiscriminatory disclosures. In future work, it would
+be interesting to extend the analysis to settings in which agents are endowed with exogenous private information (as assumed here) but the designer can disclose different
+information to different agents (discriminatory policies).
+The analysis in the present paper is static. Many applications of interest are dynamic, with agents coordinating on multiple attacks and/or learning over time (for the
+role of dynamics in global games, see, among others, Angeletos, Hellwig, and Pavan
+(2007)). In future work, it would be interesting to consider dynamic extensions and investigate how the timing of information disclosures is affected by the agents’ behavior
+in previous periods.35
+Finally, the analysis is conducted by assuming that the maximal information that
+the designer can collect about the fundamentals (in the paper, θ) is exogenous. In future work, it would be interesting to accommodate for the possibility that part of this
+information is endogenous. For example, in stress testing, the policymaker may solicit
+information from the same banks that are under scrutiny. This creates an interesting
+screening + persuasion problem in the spirit of the literature on privacy in sequential
+contacting (see, e.g., Calzolari and Pavan (2006a,b), and Dworczak (2020)).36
+Appendix
+ be
+Proof of Theorem 1*. Given any regular policy  = ( S , π ) and any n ∈ N, let T(n)
+the set of strategies surviving n rounds of iterated deletion of interim strictly dominated
+ denoting the entire set of strategy profiles a =
+strategies (IDISDS), with T(0)
+(ai (·))i∈[0,1] ,
+where for any i ∈ [0, 1], ai (x, s) denotes the probability agent i invests, given (x, s).
+ denote the most aggressive profile surviving n rounds
+Let a(n) ≡ (a(n),i (·))i∈[0,1] ∈ T(n)
+ that is most adversarial to the policymaker, in the
+of IDISDS (i.e., the profile in T(n)
+sense that it minimizes the policymaker’s ex ante payoff ).The profiles (a(n) )n∈N can be
+constructed inductively as follows. The profile a(0) ≡ (a(0),i (·))i∈[0,1] prescribes that all
+34 See Dworczak and Pavan (2022) for a notion of robustness in information design that accounts for this
+
+type of ambiguity.
+35 For models of dynamic persuasion, see, among others, Ely (2017) and Basak and Zhou (2022).
+36 Calzolari and Pavan (2006a) considers an auction setting in which the sender is the initial owner of
+a good and where the different receivers are privately-informed bidders in an upstream market who then
+resell in a downstream market. Calzolari and Pavan (2006b) studies information design in a model of sequential contracting with multiple principals, where upstream principals play the role of senders persuading downstream principals (the receivers). Dworczak (2020) contains a general analysis of persuasion in
+mechanism-design environments with aftermarkets in which senders restrict attention to cut-off mechanisms.
+
+794 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+agents refrain from investing, irrespective of (x, s). Next, let Ui (x, s; a) denote the payoff differential between investing and not investing for agent i receiving information
+(x, s) when, under , all other agents follow the strategy in a. Then a(n),i (x, s) = 0 if
+Ui (x, s; a(n−1) ) ≤ 0 and a(n),i (x, s) = 1 if Ui (x, s; a(n−1) ) > 0. MARP consistent with  is
+the profile (ai (·))i∈[0,1] given by ai (·) = limn→∞ a(n),i (·), all i ∈ [0, 1].
+Next, observe that, for any n, there exists a function a(n) (·) such that a(n),i (·) = a(n) (·)
+for all i ∈ [0, 1]. With an abuse of notation, hereafter we thus denote by a the common strategy that all agents follow under MARP consistent with . For any θ and
+s ∈ supp(π(θ)), aggregate investment under MARP consistent with  given (θ, s) is thus
+
+the same for any x, x ∈ X(θ) and is given by A (θ, s) ≡ a (x, s) dP(x|θ).
+Next, consider the policy + = ( S + , π + ), S + ≡ S × {0, 1}, that, for each θ, draws the
+public signal s from the same distribution π(θ) ∈ ( S ) as the original policy , and then,
+for each s it draws, it also announces the sign of the agents’ payoff differential at (θ, s),
+when agents play according to MARP consistent with the original policy . That is, for
+any θ and any s ∈ supp(π(θ)), the new policy + thus announces (s, 1(u(θ, A (θ, s)) >
+0)). In the baseline model of Section 2, the sign of u(θ, A (θ, s)) is uniquely determined
+by the regime outcome r  (θ, s). In that environment, for any θ, and any s ∈ supp(π(θ)),
+the new policy + thus announces (s, r  (θ, s)).
++ and a+ analogously to T  and a above, but with respect to + .
+Define T(n)
+(n)
+(n)
+(n)
+The proof is in three steps. Steps 1 and 2 show that any agent i who, given (x, s), finds
+it dominant (alternatively, iteratively dominant) to invest under , also finds it dominant (alternatively, iteratively dominant) to invest under + when receiving information
+(x, (s, 1)). Step 3 uses the above property to establish that, because the game is super+
+modular and a is “less aggressive” than a (meaning that any agent who, given (x, s),
++
+invests under a also invests under a when receiving information (x, (s, 1)), then, un+
+der a , all agents invest (alternatively, refrain from investing) when receiving information (s, 1) (alternatively, (s, 0)).
++
+Step 1. We prove that {(x, s) : Ui (x, s; a) > 0 ∀a} ⊆ {(x, s) : Ui (x, (s, 1); a) > 0 ∀a},
+for all i ∈ [0, 1]. That is, any agent i who, under , finds it dominant to invest, given
+information (x, s), also finds it dominant to invest under + when receiving information
+(x, (s, 1)).
+First, note that the supermodularity of the game implies that {(x, s) : Ui (x, s; a) >
++
++
+0 ∀a} = {(x, s) : Ui (x, s; a(0) ) > 0} and {(x, s) : Ui (x, (s, 1); a) > 0 ∀a} = {(x, s) : Ui (x,
++
+
+(s, 1); a(0) ) > 0}.
+Now let i (x, s) denote the distribution over  describing the beliefs of agent i ∈
++
+[0, 1] when receiving information (x, s) ∈ R × S under , and i (x, (s, 1)) the corresponding beliefs under + , when receiving information (x, (s, 1)) under + . Bayesian
+updating implies that
+
+
+ 
+
+ 1 u θ, A (θ, s) > 0 
++
+(11)
+i dθ|x, (s, 1) =
+i (dθ|x, s),
+i (1|x, s)
+
+where i (1|x, s) ≡ {θ∈:u(θ,A (θ,s))>0} i (dθ|x, s) is the total probability an agent with
+information (x, s) assigns, under , to fundamentals for which u(θ, A (θ, s)) > 0.
+
+Theoretical Economics 20 (2025)
+
+Adversarial coordination and information design 795
+
+Next, observe that, for any i ∈ [0, 1] and (x, s) ∈ R × S such that
+
+
+
+Ui x, s; a(0) = u(θ, 0)i (dθ|x, s) > 0,
+
+(12)
+
+θ
+
+we also have that
++
++
+Ui x, (s, 1); a(0) i (1|x, s) =
+
+
+
+
+θ
+
+≥
+θ
+
+ 
+
+
+u(θ, 0)1 u θ, A (θ, s) > 0 i (dθ|x, s)
+
+
+u(θ, 0)i (dθ|xi , s) = Ui x, s; a(0) > 0.
+
+The first equality follows from the fact that, under a(0) , no agent invests, along with the
+property of posterior beliefs in (11). The first inequality follows from the monotonicity
+of u(θ, A) in A along with the fact A (θ, s) ≥ 0, which together imply that u(θ, 0) ≤ 0 for
+any θ for which u(θ, A (θ, s)) ≤ 0. The second equality follows from the definition of
+Ui (x, s; a(0) ). Finally, the second inequality follows from (12).
+Thus, any agent for whom investing was dominant after receiving information (x, s)
+under , continues to find it dominant to invest after receiving information (x, (s, 1))
+under + .
+Step 2. Next, take any n > 1. Assume that, for any 1 ≤ k ≤ n − 1, any i ∈ [0, 1],
+
+
+
++
+
++
+⊆ (x, s) : Ui x, (s, 1); a > 0, ∀a ∈ T(k−1)
+.
+(x, s) : Ui (x, s; a) > 0 ∀a ∈ T(k−1)
+
+(13)
+
+Arguments similar to those establishing the result in Step 1 above imply that
+
+
+
++
+
++
+⊆ (x, s) : Ui x, (s, 1); a > 0, ∀a ∈ T(n−1)
+.
+(x, s) : Ui (x, s; a) > 0 ∀a ∈ T(n−1)
+
+(14)
+
+Intuitively, the result follows from the following three properties: (a) because the game is
+
+supermodular, {(x, s) : Ui (x, s; a) > 0 ∀a ∈ T(n−1)
+} = {(x, s) : Ui (x, s; a(n−1) ) > 0}, where
+
+recall that a(n−1) is the most aggressive profile surviving n − 1 rounds of IDISDS (clearly,
++
+
+the same property holds for + ); (b) a(n−1) is “less aggressive” than a(n−1) , in the sense
+that any agent who, given (x, s), invests under a(n−1) also invests under + when receiving information (x, (s, 1)); and (c) the extra information that θ is such u(θ, A (θ, s)) > 0
+removes from the support of the agents’ posterior beliefs states in which the payoff differential from investing is nonpositive under a , and hence also under a(n−1) (recall that
+a(n−1) is more aggressive that a , meaning that any agent who, given (x, s), invests under
+a(n−1) , also invests under a when receiving the same information (x, s)).
+Step 3. Equipped with the results in Steps 1 and 2 above, we now prove that, for all
++
++
+θ ∈  and s ∈ supp(π(θ)) such that u(θ, A (θ, s)) > 0, a (x, (s, 1)) ≡ limn→∞ a(n) (x, (s,
+1)) = 1 for all x. This follows directly from the fact that, as shown above, a (x, s) = 1 ⇒
++
+a (x, (s, 1)) = 1. The announcement that θ is such that u(θ, A (θ, s)) > 0 thus reveals
+to each agent that, when all other agents play according to MARP consistent with the
+new policy + , the payoff differential from investing is strictly positive. Any agent i receiving information (s, 1) under + thus necessarily invests, no matter x. Under the new
+policy + , all agents thus invest when they learn that θ is such that u(θ, A (θ, s)) > 0.
+
+796 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+That they all refrain from investing when they learn that θ is such that u(θ, A (θ, s)) ≤ 0
+follows from the fact that such an announcement makes it common certainty that θ ≤ θ.
+We conclude that the new policy + satisfies the perfect-coordination property.
+That, when the agents play according to MARP, for any θ, no agent is worse off (and
+some agents are strictly better off ) under + than under  follows from the fact that, for
+all s ∈ supp(π(θ)), the following are true: (1) when (θ, s) is such that u(θ, A (θ, s)) > 0, all
+agents who are not investing under  (thus obtaining an expected payoff of zero) invest
+under + (obtaining an expected payoff u(θ, 1) > 0), and all agents who are investing
+under  continue to invest but obtain a larger payoff u(θ, 1) > u(θ, A (θ, s)) because of
+the monotonicity of u(θ, A) in A; (2) when, instead, (θ, s) is such that u(θ, A (θ, s)) ≤ 0,
+all agents who are not investing under  (thus obtaining an expected payoff of zero) continue not to invest under + , whereas all agents who are investing under  (obtaining a
+negative payoff ) now refrain from investing thus obtaining a payoff of zero.
+Next, suppose that, under MARP consistent with , for any θ and s ∈ supp(π(θ)),
+the regime outcome is a deterministic function of (θ, s). Then, for any (θ, s), the sign of
+u(θ, A (θ, s)) is determined by the regime outcome (it is strictly positive when r  (θ, s) =
+1, i.e., when there is no default, and it is weakly negative when r  (θ, s) = 0, i.e., when
+there is default). Because the regime outcome is monotone in A, by inducing all agents
+to invest when u(θ, A (θ, s)) > 0 and not to invest when u(θ, A (θ, s)) ≤ 0, the policy
++ induces the same regime outcome as .
+To see that the policymaker is better off under + than under , for any set of signals S ⊆ S , any θ, let π + (S, 1|θ) (alternatively, π + (S, 0|θ)) denote the probability that
++
+the policy π + selects signals (s, 1) (alternatively, (s, 0)) with s ∈ S. Then let  (S, 1) ≡
+
+ +
++
++
+θ π (S, 1|θ) dF(θ) (alternatively,  (S, 0) ≡ θ π (S, 1|θ) dF(θ)) denote the ex ante
+probability of announcements (s, 1) (alternatively, (s, 0)) with s ∈ S, under the policy
+
++ . Finally, for any S ⊆ S , let  (S ) ≡ π(S|θ) dF(θ) denote the ex ante probability the
+policy  selects signals in S. Condition PC implies that
+
+
+
+S
+
+ 
+ 
+
+
+
+
+1 u θ, A (θ, s) > 0 U P (θ, 1) + 1 u θ, A (θ, s) ≤ 0 U P (θ, 0)  (dθ|s)  (ds)
+
+
+
+≥
+
+S
+
+
+
+U P θ, A (θ, s)  (dθ|s)  (ds).
+
+Hence, the policymaker is better off under + than under .
+The result in the theorem then follows by taking ∗ = + .
+Proof of Theorem 2*. The proof is in 2 steps. Step 1 shows that, when p(x|θ) is logsupermodular and Condition FB holds, then under any regular policy, MARP is in cut-off
+strategies. Step 2 then leverages the result in Step 1 to show that, starting from any policy
+ that satisfies the perfect-coordination property, one can construct a binary policy ∗
+that also satisfies the perfect-coordination property and such that, for any θ, the probability that each agent invests under ∗ is the same as under , which implies the result
+in the theorem.
+
+Theoretical Economics 20 (2025)
+
+Adversarial coordination and information design 797
+
+Step 1. Fix an arbitrary policy  = ( S , π ) and, for any pair (x, s) ∈ R × S , let
+ (θ|x, s) represent the endogenous posterior beliefs over  of each agent receiving ex
+ogenous information x and endogenous information s. Next, let U  (x, s|k) ≡ u(θ, 1 −
+P(k|θ)) (dθ|x, s) denote the expected payoff differential of an agent with information
+(x, s), when all other agents follow a cut-off strategy with cut-off k (i.e., they invest if
+their private signal exceeds k and refrain from investing if it is below k).
+Lemma 1. Suppose that p(x|θ) is log-supermodular and that Condition FB holds. Given
+any policy  = ( S , π ), for any s ∈ S , there exists ξ;s ∈ R such that MARP consistent with
+ is given by the strategy profile a ≡ (ai )i∈[0,1] such that, for any s ∈ S , x ∈ R, i ∈ [0, 1],
+ai (x, s) = 1(x > ξ;s ) with ξ;s ≡ sup{x : U  (x, s|x) ≤ 0} if {x : U  (x, s|x) ≤ 0} = ∅, and
+ξ;s ≡ −∞ otherwise. Moreover, the strategy profile a is a BNE of the continuation game
+that starts with the announcement of the policy .
+;s
+≡ sup{x :
+Proof of Lemma 1. Fix the policy  = (S, π ). For any s ∈ S , let ξ(1)
+
+limk→∞ U (x, s|k) ≤ 0}. Given the public signal s, it is dominant for any agent with pri denotes the set
+vate signal x exceeding ξ1;s to invest. Next, recall that, for any n ∈ N, T(n)
+of strategy profiles that survive the first n rounds of iterated deletion of interim strictly
+dominated strategies (IDISDS), and a(n) ≡ (a(n),i )i∈[0,1] the most aggressive profile in
+
+;s
+ . Observe that the profile a is given by a
+T(n)
+(1)
+(1),i (x, s) = 1(x > ξ(1) ) for all (x, s) ∈ R × S ,
+and all i ∈ [0, 1], and minimizes the policymaker’s payoff not just in expectation but for
+any (θ, s). This follows from the fact that, when nobody else invests, the expected pay
+off differential u(θ, 0) (dθ|x, s) between investing and not investing crosses 0 only
+
+;s
+once and from below at x = ξ(1)
+. The single-crossing property of u(θ, 0) (dθ|x, s) in
+turn is a consequence of the fact that u(θ, 0) crosses 0 only once from below at θ = θ (as
+implied by Condition FB and the definition of θ) along with Property SCB below.
+
+Property SCB. Suppose that the function h : R → R crosses 0 only once from below at
+θ = θ0 (i.e., h(θ) ≤ 0 for all θ ≤ θ0 and h(θ) ≥ 0 for all θ > θ0 ). Let q : R2 → R+ be a
+log-supermodular function and suppose that, for any θ, there is an open interval θ =
+θ ) ⊂ R containing θ such that q(x, θ) > 0 for all x ∈ θ and q(x, θ) = 0 for (almost)
+(θ , ¯
+¯ θ nondecreasing in θ. Choose any (Lebesgue) meaall x ∈ R \ θ , with the bounds θ , 
+
+surable subset  ⊆ R containing θ0 and, for any x ∈ R, let (x; ) ≡  h(θ)q(x, θ) dθ.
+Suppose there exists x ∈ θ0 such that (x ; ) = 0. Then, necessarily, (x; ) ≥ 0 for
+all x ∈ θ0 with x > x , and (x; ) ≤ 0 for all x ∈ θ0 with x < x , with both inequalities strict if (a) {θ ∈  : h(θ) = 0} has strict positive Lebesgue measure, (b) q is strictly
+log-supermodular over R2 .37
+Proof of Property SCB. For any x ∈ R, let x ≡ {θ ∈  : x ∈ θ }. The monotonicity of
+θ in θ implies that x is monotone in x in the strong-order sense. Pick any x ∈ θ0 with
+x > x . That x and x belong to θ0 implies that θ0 ∈ x ∩ x . Next, observe that
+
+
+
+
+
+ x ;  =
+h(θ)q x , θ dθ
+x
+37 That q is strictly log-supermodular over R2 also implies that q(x, θ) > 0 for all
+
+(x, θ) ∈ R2 .
+
+798 Inostroza and Pavan
+
+
+  
+=
+h(θ)q x , θ dθ +
+x ∩x
+
+x \x
+
+Theoretical Economics 20 (2025)
+
+
+
+h(θ)q x , θ dθ
+
+
+
+   q x , θ
+h(θ)q x , θ    dθ
+=
+q x ,θ
+x ∩x ∩(−∞,θ0 )
+
+
+
+   q x , θ
+h(θ)q x , θ    dθ
++
+q x ,θ
+x ∩x ∩(θ0 ,∞)
+
+
+
+h(θ)q x , θ dθ
++
+
+
+x \x
+
+ 
+
+
+  
+
+
+q x , θ 0
+
+h(θ)q x , θ dθ +
+h(θ)q x , θ dθ
+≥  
+q x , θ0
+x ∩x ∩(−∞,θ0 )
+x ∩x ∩(θ0 ,∞)
+
+
+
+h(θ)q x , θ dθ
++
+x \x
+
+
+
+
+
+
+q x , θ 0   
+ x ;  +
+h(θ)q x , θ dθ ≥ 0.
+≥  
+q x , θ0   
+x \x
+=0
+
+The first equality follows from the fact that q(x , θ) = 0 for almost all θ ∈  \ x . The
+second equality follows from the fact that x can be partitioned into x ∩ x and
+x \ x . The third equality follows from noting that q(x , θ) > 0 for all θ ∈ x . The
+first inequality follows from the monotonicity of q(x , θ)/q(x , θ) over x ∩ x as a consequence of q being log-supermodular, along with the fact that θ0 ∈ x ∩ x and the
+assumption that h crosses 0 once from below at θ = θ0 . The second inequality follows
+from the fact that, for any θ ∈ (x \ x ) ∩ (−∞, θ0 ), h(θ) ≤ 0, along with the fact that
+x ∩ (θ0 , +∞) = x ∩ x ∩ (θ0 , ∞), with the last property following from noting that
+the sets x are ranked in the strong-order sense. The last inequality follows from the
+observation that, for any θ ∈ x \ x , h(θ) ≥ 0, which in turn is a consequence of (i)
+the monotonicity of the sets x in x, (ii) the assumption that h crosses 0 only once from
+below at θ = θ0 , and (iii) the assumption that θ0 ∈ x ∩ x .
+Similar arguments imply that, for x < x , (x; ) ≤ 0. The same arguments also
+imply that, when (a) {θ ∈  : h(θ) = 0} has strict positive Lebesgue measure and (b) q is
+strictly log-supermodular over R2 , then (x; ) < 0 for all x < x and (x; ) > 0 for all
+x > x . This completes the proof of Property SCB.
+The facts that (a) the continuation game is supermodular, (b) the density p(x|θ) is
+log-supermodular, and (c) when agents follow monotone strategies, the regime outcome
+;s
+is monotone in θ imply that, for any s ∈ S , there exists a unique sequence (ξ(n)
+)n∈N such
+;s
+that, for any n ≥ 1, a(n) is such that a(n),i (x, s) = 1(x > ξ(n)
+) for all i and all (x, s) ∈ R × S ,
+
+;s
+;s
+as defined above, and with all other cut-offs ξ(n)
+, n > 1, s ∈ S , dewith each ξ(1)
+
+;s
+;s
+≡ sup{x : U  (x, s|ξ(n−1)
+fined inductively by ξ(n)
+) ≤ 0}. Indeed, Condition FB together
+
+;s
+;s
+
+with Property SCB jointly imply that U (x, s|ξ(n−1) ) = u(θ, 1 − P(ξ(n−1)
+|θ)) (dθ|x, s)
+
+Theoretical Economics 20 (2025)
+
+Adversarial coordination and information design 799
+
+;s
+crosses zero once from below in x and, therefore, U  (x, s|ξ(n−1)
+) > 0 if, and only if,
+
+;s
+x > ξ(n)
+.
+
+Let T  ≡ ∩∞
+n=1 Tn denote the set of strategy profiles that survive IDISDS under .
+The most aggressive strategy profile in T  is then given by ai (x, s) ≡ 1(x > ξ;s ) for all
+;s
+;s
+i and all (x, s) ∈ R × S , where, for any s ∈ S , ξ;s ≡ limn→∞ ξ(n)
+. The sequence (ξ(n)
+)n is
+;s
+
+
+monotone and its limit is given by ξ = sup{x : U (x, s|x) ≤ 0} if {x : U (x, s|x) ≤ 0} = ∅,
+and ξ;s ≡ −∞ otherwise. This establishes the first part of the lemma. That the profile
+a is a BNE for the continuation game that starts with the announcement of the policy
+ follows from the fact that, given any s ∈ S , when all agents follow a cut-off strategy
+with cutoff ξ;s , the best response for each agent i ∈ [0, 1] is to invest for xi > ξ;s and to
+refrain from investing for xi < ξ;s . This completes the proof of the lemma.
+
+Step 2. Now take any regular policy  = ( S , π ) satisfying the perfect-coordination
+property. Given the result in Theorem 1, without loss of generality, assume that  =
+( S , π ) is such that S = {0, 1} × Ŝ, for some measurable set Ŝ, and is such that (a) when
+the policy discloses any signal s = ( ŝ, 1), all agents invest and default does not happen,
+whereas (b) when the policy discloses any signal s = ( ŝ, 0), all agents refrain from investing and default happens.
+Equipped with the result in Lemma 1, we show that, starting from  = ( S , π ), one can
+construct a binary policy ∗ = ({0, 1}, π ∗ ) also satisfying the perfect-coordination property and such that the probability of default under ∗ is the same as under . The policy
+
+∗ = ({0, 1}, π ∗ ) is such that, for any θ, π ∗ (1|θ) = Ŝ π(d( ŝ, 1)|θ). That is, for each θ, the
+binary policy ∗ recommends to invest with the same total probability as the original
+policy  discloses signals leading all agents to invest.38
+We now show that, under ∗ , when the policy announces that s = 1, the unique rationalizable action for each agent is to invest. To see this, for any (x, 1) that are mutually
+∗
+consistent given ∗ , let U  (x, 1|k) denote the expected payoff differential for any agent
+with private signal x, when the policy ∗ announces s = 1, and all other agents follow a
+cut-off strategy with cut-off k.39 From the law of iterated expectations, we have that
+
+
+
+∗
+(15)
+U  (x, 1|k) = U  x, ( ŝ, 1)|k ς  (dŝ|x, 1)
+Ŝ
+
+where ς  (·|x, 1) is the probability measure over Ŝ obtained by conditioning on the event
+(x, 1), under . For any signal s = ( ŝ, 1) in the range of π, MARP consistent with  is such
+that ai (x, ( ŝ, 1)) = 1 all x ∈ R, and all i, meaning that investing is the unique rationalizable action after  announces s = ( ŝ, 1). Lemma 1 in turn implies that, for all s = ( ŝ, 1)
+in the range of π, ŝ ∈ Ŝ, all k ∈ R, U  (k, ( ŝ, 1)|k) > 0. From (15), we then have that, for all
+∗
+all k ∈ R, U  (k, 1|k) > 0. In turn, this implies that, given the new policy ∗ , when s = 1
+∗
+is disclosed, under MARP consistent with ∗ , all agents invest, that is, ai (x, 1) = 1 all x,
+all i ∈ [0, 1]. It is also easy to see that, when the policy ∗ discloses the signal s = 0, it becomes common certainty among the agents that θ ≤ θ. Hence, under MARP consistent
+38
+
+
+
+π(θ) assigns to signal ( ŝ, 1).
+Ŝ π(d( ŝ, 1)|θ) represents the total probability that the measure
+
+∗
+39 Recall that
+1) ≡ p(x|θ)π ∗
+dF(θ) > 0.
+1) are mutually consistent under ∗ if p
+(x,
+
+(x,
+
+(1|θ)
+
+800 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+with ∗ , after s = 0 is disclosed, all agents refrain from investing, irrespective of their private signals. The new policy ∗ so constructed thus (a) satisfies the perfect-coordination
+property, and (b) is such that, for any θ, the probability of default under ∗ is the same
+as under .
+Proof of Theorem 3*. The conditions in the theorem imply that Theorems 1* and
+2* hold. Thus, assume that the policy  = ( S , π ) (a) is a regular (possibly stochastic)
+“pass/fail”policy (i.e., S = {0, 1}, with π(1|θ) = 1 − π(0|θ) denoting the probability that
+signal s = 1 is disclosed when the fundamentals are θ), (b) is such that π(1|θ) = 0 for
+all θ ≤ θ and π(1|θ) = 1 for all θ > θ, and (c) satisfies the perfect-coordination property.
+Theorems 1* and 2* imply that, if  does not satisfy these properties, there exists another policy  that satisfies these properties and yields the policymaker a payoff weakly
+higher than . The proof then follows from applying the arguments below to  instead
+of .
+Suppose that  is such that there exists no θ̂ such that π(1|θ) = 0 for F -almost
+all θ ≤ θ̂ and π(1|θ) = 1 for F -almost all θ > θ̂.40 We establish the result by showing
+that there exists a deterministic monotone policy θ̂ = ({0, 1}, π θ̂ ) satisfying the perfectcoordination property that yields the policymaker a payoff strictly higher than .
+Recall that, for the policy  to satisfy the perfect-coordination property, it must be
+that, when the policy discloses the signal s = 1, U  (x, 1|x) > 0 for all x such that (x, 1)
+are mutually consistent, where U  (x, 1|x) is the expected payoff differential of an agent
+with signal x who hears that s = 1 and who expects all other agents to follow a cut-off
+strategy with threshold x.
+Let G denote the set of policies  = ( S , π  ) that, in addition to properties (a) and (b)
+
+above, are such that U  (x, 1|x) ≥ 0 for all x such that (x, 1) are mutually consistent.41
+For any  ∈ G, let U P [] denote the policymaker’s ex ante expected payoff when, under ,
+agents invest after hearing that s = 1 and refrain from investing after hearing that s = 0.
+˜ the set of policies that maximize the policymaker’s payoff
+U P []
+Denote by arg max∈G
+˜
+42
+over G.
+˜ is such that π(1|θ) = 0 for F Step 1 below shows that any  ∈ arg max∈G
+U P []
+˜
+∗
+almost all θ ≤ θ and π(1|θ) = 1 for F -almost all θ > θ∗ , with θ∗ as defined in (4).
+Step 2 then shows that the policymaker’s payoff under the optimal monotone policy
+∗
+∗
+θ = ({0, 1}, π θ ) with cut-off θ∗ can be approximated arbitrarily well by a deterministic
+monotone policy θ̂ = ({0, 1}, π θ̂ ) ∈ G that satisfies the perfect-coordination property,
+thus establishing the theorem.
+Step 1. Given any policy , let
+
+X  ≡ x : (x, 1) -mutually consistent and U  (x, 1|x) = 0 .
+40 If this not the case, then the deterministic monotone policy θ̂ =
+
+({0, 1}, π θ̂ ) with cut-off θ̂ also satisfies
+the perfect-coordination property and yields the policymaker the same payoff as , in which case the result
+trivially holds.
+41 As explained in the main text, some policies  in G need not satisfy the perfect-coordination property,
+
+namely those for which there exists x, with (x, 1) mutually consistent, such that U  (x, 1|x) = 0.
+42 That arg max
+P ˜
+P
+˜∈G U [ ] = ∅ follows from the compactness of G and the upper hemicontinuity of U .
+
+Theoretical Economics 20 (2025)
+
+Adversarial coordination and information design 801
+
+Take any policy  ∈ G for which there exists no θ̂ such that π  (1|θ) = 0 for F -almost
+
+all θ ≤ θ̂ and π  (1|θ) = 1 for F -almost all θ > θ̂. Clearly, if X  = ∅, there exists another
+policy  ∈ G that yields the policymaker a payoff strictly higher than  .43 Thus, assume
+
+
+that X  = ∅, and let x̄ ≡ supX  . Claim A below shows that the set {θ ∈ Θ( x̄) : π  (1|θ) <
+1} has strict positive F -measure. Claim B shows that, given any  ∈ G for which the
+posterior beliefs of the marginal agent with signal x̄ differ from those obtained by Bayes’
+rule conditioning on the event that fundamentals are above some threshold θ̂, there
+exists another policy  ∈ G that yields the policymaker a payoff strictly higher than  .
+Finally, Claim C shows that, under the properties in Condition M*, the only policies  ∈
+G that generate posterior beliefs for the marginal agents with signal x̄ equal to those
+obtained from Bayes’ rule by conditioning on the event that fundamentals are above
+some threshold θ̂ are such that π  (1|θ) = 0 for F -almost all θ ≤ θ∗ and π  (1|θ) = 1 for
+F -almost all θ > θ∗ . Jointly, the three claims thus establish the result that any policy
+ ∈ arg max ˜∈G U P [ ˜], is such that π(1|θ) = 0 for F -almost all θ ≤ θ∗ and π(1|θ) = 1 for
+F -almost all θ > θ∗ .
+Given any x, let θ0 (x) be the fundamental threshold below which the agents’ expected payoff differential is negative and above which it is positive, when all agents follow a cut-off strategy with cut-off x. Because Condition FB holds, θ0 (x) is well-defined.44
+ +∞
+For any policy  = ({0, 1}, π ) ∈ G, let p (x, 1) ≡ −∞ π(1|θ)p(x|θ) dF(θ) denote the joint
+probability density of the exogenous signal x and the endogenous signal s = 1.
+
+
+Claim A. For any  = ({0, 1}, π  ) ∈ G such that X  = ∅, {θ ∈ Θ( x̄) : π  (1|θ) < 1} has strict
+positive F -measure.
+Proof of Claim A. Suppose, by contradiction, that π  (1|θ) = 1 for F -almost all θ ∈
+Θ( x̄). Property (i*) in Condition M* then implies that x̄ > xmax , where xmax is defined
+as in (8). In fact, if this was not the case, the monotonicity of Θ(·) would imply that
+inf Θ( x̄) ≤ inf Θ(xmax ) < θ. That π  (1|θ) = 1 for F -almost all θ ∈ Θ( x̄) would then imply
+that π  (1|θ) = 1 for a set of fundamentals θ < θ of strict positive F -measure, which is
+inconsistent with the assumption that  ∈ G. Thus, necessarily, x̄ > xmax .
+Now suppose that inf Θ( x̄) ≥ θ. That π  (1|θ) = 1 for F -almost all θ ∈ Θ( x̄) means
+that, from the perspective of an agent with signal x̄, the information conveyed by the
+announcement that s = 1 under  is the same as under the monotone deterministic
+
+θ
+policy θ = ({0, 1}, π θ ) with cut-off θ̂ = θ. As a result, U  ( x̄, 1| x̄) = U  ( x̄, 1| x̄). Because
+θ
+x̄ > xmax , and because, by definition of xmax , U  (x, 1|x) > 0 for all x > xmax , it must be
+
+
+that U  ( x̄, 1| x̄) > 0, which contradicts the assumption that x̄ ∈ X  . Hence, it must be
+that inf Θ( x̄) < θ. As explained above, however, this is inconsistent with the assumption
+that  ∈ G.
+43 In fact, because there exists no such a θ̂, there must exists a set
+(θ , θ ) ⊆ [θ, θ̄] of F -positive measure
+over which π  (1|θ) < 1. The policy  can then be obtained from  by increasing π  (1|θ) over such a set.
+Provided the increase is small,  ∈ G. Because U P (θ, 1) > U P (θ, 0) over [θ, θ̄], the policymaker’s payoff
+under  is strictly higher than under  .
+44 When the regime outcome is a function of A and θ only, as in the baseline model, θ
+0 (x) coincides with
+the threshold below which default occurs and above which it does not occur when agents follow a cut-off
+strategy with cut-off x.
+
+802 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+Next, for any  = ({0, 1}, π  ) ∈ G, let
+
+
+
+θH ≡ sup θ ∈  : ∃δ > 0 s.t. π  1|θ < 1 for F-almost all θ ∈ [θ − δ, θ) .
+The result in Claim A above implies that θH is such that θH > inf Θ( x̄).
+
+
+Claim B. Take any  = ({0, 1}, π  ) ∈ G such that X  = ∅. Suppose that
+
+θ ∈ (θ, θH ) : π  (1|θ) > 0 has strict positive F-measure.
+
+(16)
+
+Then there exists another policy  ∈ G that yields the policymaker a payoff strictly higher
+than  .
+Claim B essentially says that, if  ∈ G is not a deterministic monotone rule, and there
+
+exists a x̄ such that U  ( x̄, 1| x̄) = 0, then it is improvable.
+Proof of Claim B. The proof below distinguishes two cases.
+Case 1: θ < θ0 ( x̄) ≤ θH . Consider the policy  ,δ = ({0, 1}, π ,δ ) defined by π ,δ (1|
+θ) = π  (1|θ) for all θ ≤ θ0 ( x̄ + δ), with δ > 0 small so that θ0 ( x̄ + δ) < θH , and π ,δ (1|θ) =
+min{π  (1|θ) + , 1} for all θ > θ0 ( x̄ + δ), with > 0 also small. To see that, when and δ
+are small,  ,δ ∈ G, note that by definition of θ0 (·), for any x, and any θ > θ0 (x), u(θ, 1 −
+P(x|θ)) > 0. This property, together with the monotonicity of θ0 (·), jointly imply that,
+for any x ≤ x̄ + δ,
+ ∞
+
+
+
+
+u θ, 1 − P(x|θ) π  (1|θ)1 θ ≤ θ0 ( x̄ + δ)
+−∞
+
+ 
+
++ min π  (1|θ) + , 1 1 θ > θ0 ( x̄ + δ) p(x|θ) dF(θ)
+ ∞
+
+
+u θ, 1 − P(x|θ) π  (1|θ)p(x|θ) dF(θ).
+≥
+−∞
+
+(17)
+
+To see what justifies the inequality, observe that u(θ, 1 − P( x̄ + δ|θ)) > 0 for θ > θ0 ( x̄ + δ),
+by definition of θ0 (·). Because, for any θ, u(θ, 1 − P(x|θ)) is decreasing in x, we
+then have that, for any x ≤ x̄ + δ, u(θ, 1 − P(x|θ)) > 0 for all θ > θ0 ( x̄ + δ). Because
+ ∈ G, the right-hand side of (17) is nonnegative.45 Hence, for any x ≤ x̄ + δ such
+that (x, 1) are mutually consistent under  ,δ , because the left-hand side of (17) is
+,δ
+,δ
+,δ
+equal to U  (x, 1|x)p (x, 1) and because, for such x, p (x, 1) > 0, we have that
+,δ
+,δ
+U  (x, 1|x) ≥ 0. That U  (x, 1|x) ≥ 0 also for all x > x̄ + δ such that (x, 1) are mutually consistent under  ,δ follows from the fact that, by definition of x̄, for any x ≥ x̄ + δ,
+ +∞
+the function J(x) ≡ −∞ u(θ, 1 − P(x|θ))π  (1|θ)p(x|θ) dF(θ) is bounded away from 0,
+along with the fact that, for any δ > 0, the function family (J ,δ (·)) whose elements
+ +∞
+J ,δ (·) are given by J ,δ (x) ≡ −∞ u(θ, 1 − P(x|θ))π ,δ (1|θ)p(x|θ) dF(θ) is continuous in
+in the sup-norm in a neighborhood of 0.46 Because the new policy  ,δ ∈ G is such that
+45 Either
+(x, 1) are not mutually consistent under  , in which case the right-hand side of (17) is zero, or
+
+
+they are mutually consistent, in which case the right-hand side of (17) is equal to U  (x, 1|x)p (x, 1), which
+
+
+
+
+is nonnegative because p (x, 1) > 0 and U (x, 1|x) ≥ 0.
+46 That is, ∀k > 0, ∃ > 0 so that ∀ 0 < < , |J ,δ
+(x) − J(x)| ≤ k, ∀x ≥ x̄ + δ.
+
+Theoretical Economics 20 (2025)
+
+Adversarial coordination and information design 803
+
+π ,δ (1|θ) ≥ π  (1|θ) for all θ, with the inequality strict over a set of fundamentals θ ∈ (θ, θ̄]
+of F -positive measure, the policymaker’s payoff under  ,δ is strictly higher than under
+ , as claimed.
+Case 2: θH < θ0 ( x̄). Consider the monotone deterministic policy θ = {{0, 1}, π θ }
+with cut-off θ̂ = θ. Then, for any x ≥ x̄,
+ +∞
+
+
+u θ, 1 − P(x|θ) π θ (1|θ)p(x|θ) dF(θ)
+−∞
+
+<
+
+ +∞
+−∞
+
+
+
+u θ, 1 − P(x|θ) π  (1|θ)p(x|θ) dF(θ),
+
+(18)
+
+where the inequality follows from the following facts: (i) π θ (1|θ) = π  (1|θ) for F -almost
+all θ ∈ (−∞, θ]∪[θH , +∞) and (ii) π θ (1|θ) = 1 ≥ π  (1|θ) for F -almost all θ ∈ (θ, θH ), with
+the inequality strict over a set of fundamentals in (θ, θH ) of strictly positive measure
+under F , and (iii) u(θ, 1 − P(x|θ)) < 0 for θ ∈ (θ, θH ) (by the fact that θH < θ0 ( x̄) ≤ θ0 (x)
+along with the definition and monotonicity of the function θ0 (·)).
+
+Furthermore, ( x̄, 1) are mutually consistent under  , that is, p ( x̄, 1) > 0. Because π θ (1|θ) ≥ π  (1|θ) for all θ, ( x̄, 1) are mutually consistent also under θ , that
+θ
+is, p ( x̄, 1) > 0. Observe that, when x = x̄, the left-hand side of (18) is equal to
+θ
+θ
+
+
+U  ( x̄, 1| x̄)p ( x̄, 1) whereas the right-hand side is equal to U  ( x̄, 1| x̄)p ( x̄, 1). By the
+
+θ
+definition of x̄, U  ( x̄, 1| x̄) = 0, which then implies that U  ( x̄, 1| x̄) < 0. By continuity of
+θ
+U  (x, 1|x) in x and the definition of xmax we thus have that x̄ < xmax . This property in
+turn permits us to apply Properties (i*) and (ii*) of Condition M* below.
+Next, let
+
+θL ≡ inf θ ∈  : ∃δ > 0 s.t. π  (1|θ) > 0, with π  (1|·) continuous over [θ, θ + δ) .
+By assumption, {θ ∈ (θ, θH ) : π  (1|θ) > 0} has strict positive F -measure. If θL ≥ θH , then
+there exists another policy  for which θL < θH and such that (a) the policymaker’s
+
+
+payoff under  is the same as under  and (b) U  (x, 1|x) = U  (x, 1|x) for all x. The
+claim (and ultimately the theorem) then follows from applying the arguments below to
+ instead of  . Thus, assume that θL < θH . Furthermore, note that u(θL , 1−P( x̄|θL )) <
+0.47 Also observe that inf Θ( x̄) < θL . This follows from the fact that, as shown above,
+x̄ < xmax , which together with Property (i*) in Condition M* and the monotonicity of
+Θ(·) in x implies that inf Θ( x̄) < θ. Because θL ≥ θ, we thus have that inf Θ( x̄) < θL .
+
+Recall that x̄ is the largest solution to U  (x, 1|x) = 0. This property, together with the
+
+fact that  ∈ G implies that U  (x, 1|x) > 0 for all x > x̄ such that (x, 1) are mutually consistent under  . Next, observe that, for all x ≥ x̄, (x, 1) are mutually consistent under  .
+Because u(θ, 1 − P( x̄|θ)) > 0 for θ > θ0 ( x̄) and u(θ, 1 − P( x̄|θ)) < 0 for θ < θ0 ( x̄) (by def
+inition of θ0 ( x̄)) and because U  ( x̄, 1| x̄) = 0, it must be that sup Θ( x̄) ≥ θ0 ( x̄). Because,
+by definition of case (2), θ0 ( x̄) > θH , this means that sup Θ( x̄) > θH . The monotonicity of
+Θ(·) implies that sup Θ(x) > θH for all x ≥ x̄. Because π  (1|θ) = 1 for F -almost all θ > θH ,
+
+we thus have, for all x ≥ x̄, (x, 1) are mutually consistent under  (and hence U  (x, 1|x)
+is well-defined for all such x).
+47 This follows from the definition of θ x̄), along with Condition FB, and the fact that θ < θ < θ x̄).
+0(
+0(
+L
+H
+
+804 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+
+The continuity of U  (·, 1|·) in x implies that, for any η ∈ (0, xmax − x̄), the function
+U (·, 1|·) is bounded away from zero over [x̄ + η, xmax ]. That is, there exists K > 0 such
+
+that U  (x, 1|x) > K for all x ∈ [x̄ + η, xmax ]. This property, along with (a) the continuity
+
+
+of U  (·, 1|·) in x and (b) the fact that U  ( x̄, 1| x̄) = 0 in turn imply that there exists η ∈
+
+
+(0, xmax − x̄) such that U  (x, 1|x) ≥ U  ( x̄ + η, 1| x̄ + η) > 0 for all x ∈ [x̄ + η, xmax ].
+Now fix η ∈ (0, xmax − x̄) such that
+
+
+
+
+
+
+U  (x, 1|x) ≥ U  ( x̄ + η, 1| x̄ + η) > 0
+
+∀x ∈ [x̄ + η, xmax ].
+
+(19)
+
+For any > 0 small, then let δ( ) be implicitly defined by
+ θL +
+θL
+
+=
+
+
+
+u θ, 1 − P( x̄ + η|θ) π  (1|θ)p( x̄ + η|θ) dF(θ)
+
+ θH
+θH −δ
+
+
+
+
+u θ, 1 − P( x̄ + η|θ) 1 − π  (1|θ) p( x̄ + η|θ) dF(θ).
+
+(20)
+
+Observe that, for > 0 small, δ( ) is also small, and such that
+θL + < θH − δ( ).
+
+(21)
+
+Also, note that u(θ, 1 − P( x̄ + η|θ)) < 0 for all θ ∈ [θL , θH ]. This follows from the fact that
+u(θ, 1 − P( x̄ + η|θ)) > 0 only for θ ≥ θ0 ( x̄ + η) > θ0 ( x̄) > θH .
+Consider the policy  ,η = {{0, 1}, π ,η } defined by the following properties: (a)
+,η
+/ {[θL , θL + ] ∪ [θH − δ( ), θH ]}; (b) π ,η (1|θ) = 0 for all
+π (1|θ) = π  (1|θ) for all θ ∈
+θ ∈ [θL , θL + ]; and (c) π ,η (1|θ) = 1 for all θ ∈ [θH − δ( ), θH ]. Because, for any x ≥ x̄,
+( x̄, 1) are mutually consistent under  , they are also mutually consistent under  ,η .
+This follows from the fact that π ,η (1|θ) = 1 for F -almost all θ > θH along with the fact
+,η
+that sup Θ(x) > θH for all x ≥ x̄, as shown above. Hence, U  (x, 1|x) is well-defined for
+,η
+
+all x ≥ x̄. Also, observe that p ( x̄ + η, 1) need not coincide with p ( x̄ + η, 1). However,
+Condition (20) implies that
+U
+
+,η
+
+sgn
+
+
+
+( x̄ + η, 1| x̄ + η) = U  ( x̄ + η, 1| x̄ + η) > 0.
+
+We now show, for any η ∈ (0, xmax − x̄) satisfying Condition (19), > 0 satisfying
+,η
+Condition (21), and x such that (x, 1) are mutually consistent under  ,η , U  (x, 1|x) ≥
+θ
+0. Recall that, by the definition of xmax , for all x > xmax , U  (x, 1|x) is well-defined and
+strictly positive, implying that
+ +∞
+−∞
+
+
+
+u θ, 1 − P(x|θ) π θ (1|θ)p(x|θ) dF(θ) > 0.
+
+Also recall that, for any x, the payoff differential u(θ, 1 − P(x|θ)) is negative for θ < θ0 (x)
+and positive for θ > θ0 (x), and that, for any x > xmax , θ0 (x) > θ0 (xmax ) > θ0 ( x̄) > θH .
+Because the policy  ,η is such that π ,η (1|θ) = π θ (1|θ) for all θ > θH and π ,η (1|θ) ≤
+π θ (1|θ) for all θ < θH , with the inequality strict over a set of strictly positive measure
+
+Theoretical Economics 20 (2025)
+
+under F , we have that
+ +∞
+−∞
+
+
+
+u θ, 1 − P(x|θ) π ,η (1|θ)p(x|θ) dF(θ)
+
+ +∞
+
+>
+
+Adversarial coordination and information design 805
+
+−∞
+
+
+
+u θ, 1 − P(x|θ) π θ (1|θ)p(x|θ) dF(θ).
+,η
+
+Because the right-hand side is strictly positive, for any x > xmax , U  (x, 1|x) > 0.
+Next, for any θ ∈ [θ, θ̄], let x∗ (θ) be the signal threshold such that, when all agents invest for x > x∗ (θ) and refrain from investing for x < x∗ (θ), the expected payoff differential u( θ̃, 1 − P(x∗ (θ)| θ̃)) is positive if and only if the fundamentals θ̃ are above θ. Observe
+that, for any θ ∈ [θ, θ̄], the existence of such a threshold follows from Condition FB, and
+that x∗ (θ) = −∞ and x∗ ( θ̄) = +∞. Clearly, for any η ∈ (0, xmax − x̄) satisfying Condition
+(19), > 0 satisfying Condition (21), and x ≤ x∗ (θL + ),
+ +∞
+
+
+u θ, 1 − P(x|θ) p(x|θ)π ,η (1|θ) dF(θ) > 0.
+θL
+
+This is because for any x ≤ x∗ (θL + ), θ0 (x) ≤ θL + . The result then follows from
+the fact that, for any x ≤ x∗ (θL + ), π ,η (1|θ) = 0 for all θ ≤ θ0 (x). Hence, for any x ≤
+,η
+x∗ (θL + ) such that (x, 1) are mutually consistent under  ,η , U  (x, 1|x) ≥ 0.
+Next, observe that for any x ∈ (x∗ (θL + ), x∗ (θH − δ( ))],
+ +∞
+
+
+u θ, 1 − P(x|θ) p(x|θ)π ,η (1|θ) dF(θ)
+θL
+
+=
+
+ +∞
+
+
+
+u θ, 1 − P(x|θ) p(x|θ)π  (1|θ) dF(θ)
+
+θL
+
+−
+
+ θL +
+
+
+
+u θ, 1 − P(x|θ) p(x|θ)π  (1|θ) dF(θ)
+
+θL
+
++
+
+ θH
+θH −δ( )
+
+
+
+
+
+u θ, 1 − P(x|θ) p(x|θ) 1 − π  (1|θ) dF(θ) ≥ 0.
+
+To understand the inequality, first observe that the first integral on the right-hand side
+of the equality is nonnegative (if it was strictly negative then (x, 1) would be mutually
+
+consistent under  and U  (x, 1|x) < 0, which is inconsistent with the fact that  ∈ G).
+Second, observe that the integrand function in the second integral on the right-hand
+side of the equality is nonpositive (this follows from the fact that, when x > x∗ (θL + ),
+u(θ, 1 − P(x|θ)) ≤ 0 for all θ ≤ θL + ). Finally, the integrand function in the third integral
+on the right-hand side of the equality is nonnegative (this follows from the fact that when
+x < x∗ (θH − δ( )), u(θ, 1 − P(x|θ)) ≥ 0 for all θ > θH − δ( )). Hence, for any such x, if
+,η
+(x, 1) are mutually consistent under  ,η , it must be that U  (x, 1|x) ≥ 0.
+Next, consider x ∈ (x∗ (θH − δ( )), x∗ (θH )). For any x, let
+ +∞
+
+
+
+
+S(x) ≡
+u θ, 1 − P(x|θ) p(x|θ) π ,η (1|θ) − π  (1|θ) dF(θ),
+θL
+
+806 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+and, for any (x, θ), let q(θ, x) ≡ |u(θ, 1 − P(x|θ))|p(x|θ). Note that, for any
+ 
+
+
+x ∈ x∗ θH − δ( ) , x∗ (θH ) ,
+θ0 (x) ∈ (θH − δ( ), θH ), and
+S(x) =
+
+ θH −δ( )
+
+
+
+
+
+−u θ, 1 − P(x|θ) p(x|θ) π  (1|θ) − π ,η (1|θ) dF(θ)
+
+θL
+
++
++
+
+ θ0 (x)
+θH −δ( )
+
+ θH
+
+
+
+
+
+−u θ, 1 − P(x|θ) p(x|θ) π  (1|θ) − π ,η (1|θ) dF(θ)
+
+
+
+
+
+−u θ, 1 − P(x|θ) p(x|θ) π  (1|θ) − π ,η (1|θ) dF(θ)
+
+θ0 (x)
+
+≥
+
+ θH −δ( )
+θL
+
+ θ0 (x)
+
+
+
+q(θ, x)
+q(θ, x̄ + η) π  (1|θ) − π ,η (1|θ) dF(θ)
+q(θ, x̄ + η)
+
+
+
+q(θ, x)
+q(θ, x̄ + η) π  (1|θ) − π ,η (1|θ) dF(θ)
+θH −δ( ) q(θ, x̄ + η)
+ 
+
+θH
+
+
+q θH − δ( ), x
+
+q(θ, x̄ + η) π  (1|θ) − π ,η (1|θ) dF(θ)
++ 
+q θH − δ( ), x̄ + η θ0 (x)
+ 
+
+θH
+
+
+q θH − δ( ), x
+
+q(θ, x̄ + η) π  (1|θ) − π ,η (1|θ) dF(θ)
+≥ 
+q θH − δ( ), x̄ + η θL
+
+
+q θH − δ( ), x
+ S( x̄ + η) = 0.
+= 
+q θH − δ( ), x̄ + η
++
+
+The first equality follows from the definition of the S(x) function. The first inequality
+follows from the fact that (i) for any θ ≤ θ0 (x), u(θ, 1 − P(x|θ)) < 0, whereas for any
+θ > θ0 (x), u(θ, 1 − P(x|θ)) > 0, and (ii) for θ ∈ [θ0 (x), θH ], π  (1|θ) ≤ π ,η (1|θ). Together,
+these properties imply that
+ θH
+
+
+
+
+
+−u θ, 1 − P(x|θ) p(x|θ) π  (1|θ) − π ,η (1|θ) dF(θ)
+
+θ0 (x)
+
+ 
+
+θH
+
+
+q θH − δ( ), x
+
+q(θ, x̄ + η) π  (1|θ) − π ,η (1|θ) dF(θ).
+≥0≥ 
+q θH − δ( ), x̄ + η θ0 (x)
+
+The second inequality follows from the fact that π  (1|θ) − π ,η (1|θ) turns from positive
+to negative at θ = θH − δ( ) ≤ θ0 (x), along with the fact that, for any θ ∈ [θL , θ0 (x)], the
+function q(θ, x)/q(θ, x̄ + η) is nonincreasing in θ as implied by the log-supermodularity
+of |u(θ, 1 − P(x|θ))|p(x|θ) over {(θ, x) ∈ [0, 1] × R : u(θ, 1 − P(x|θ)) ≤ 0}, which in turn
+follows from Property (iii*) of Condition M* and the assumption that p(x|θ) is logsupermodular. The second equality follows from the fact that θ0 ( x̄ + η) > θ0 ( x̄) > θH ,
+which implies that u(θ, 1 − P( x̄ + η|θ)) ≤ 0 for all θ ≤ θH . Finally, the last equality follows from the fact that, by construction of the policy  ,η , S( x̄ + η) = 0. Hence, for any
+
+Adversarial coordination and information design 807
+
+Theoretical Economics 20 (2025)
+
+x ∈ (x∗ (θH − δ( )), x∗ (θH )), S(x) ≥ 0, which implies that, for any x in this range such
+,η
+that (x, 1) are mutually consistent under  ,η , U  (x, 1|x) ≥ 0.
+Similar arguments imply that, for any x ∈ [x∗ (θH ), x + η],
+S(x) =
+
+ θH
+
+
+
+
+
+−u θ, 1 − P(x|θ) p(x|θ) π  (1|θ) − π ,η (1|θ) dF(θ)
+
+θL
+
+ θH
+
+
+
+q(θ, x)
+q(θ, x̄ + η) π  (1|θ) − π ,η (1|θ) dF(θ)
+θL q(θ, x̄ + η)
+
+
+q θH − δ( ), x
+ S( x̄ + η) = 0,
+≥ 
+q θH − δ( ), x̄ + η
+=
+
+implying that, for such x, too, if (x, 1) are mutually consistent under  ,η , then
+,η
+U  (x, 1|x) ≥ 0 (this result also follows from Property (iii*) of Condition M* along with
+the log-supermodularity of p(x|θ)).
+Thus far, we have established that, for any x ∈ (−∞, x + η) ∪ (xmax , +∞) such that
+,η
+(x, 1) are mutually consistent under  ,η , U  (x, 1|x) ≥ 0. Below we show that there
+exists a ¯ > 0 such that, for any η ∈ (0, xmax − x̄) satisfying Condition (19), and > 0
+satisfying Condition (21), with ∈ [0, ¯ ], the same is true also for any x ∈ [x̄ + η, xmax ]
+such that (x, 1) are mutually consistent under  ,η . For any x, let
+S
+
+,η
+
+(x) ≡
+
+ +∞
+
+
+
+u θ, 1 − P(x|θ) p(x|θ)π ,η (1|θ) dF(θ).
+
+θL
+,η
+
+Note that, for any η, the function family (S  (·)) is continuous in in the sup-norm, in
+a neighborhood of 0. That is, for any z > 0, there exists κ > 0 such that, for any 0 < < κ,
+,η
+0,η
+
+and all x, |S  (x) − S  (x)| ≤ z, where 0,η =  .48 By Condition (19), U  (x, 1|x) is
+bounded away from zero over [x̄ + η, xmax ]. Hence, there exists ¯ > 0 small such that, for
+any η ∈ (0, xmax − x̄) satisfying Condition (19), and ∈ [0, ¯ ], Condition (21) holds and,
+,η
+for any x ∈ [x̄ + η, xmax ], U  (x, 1|x) > 0.49
+Together, the results above thus imply that, for any η ∈ (0, xmax − x̄) satisfying Condition (19), and ∈ [0, ¯ ], the policy  ,η ∈ G.
+We now show that, when Property (ii*) in Condition M* holds, for any η ∈ (0, xmax −
+x̄) satisfying Condition (19), and ∈ [0, ¯ ], the new policy  ,η yields the policymaker an
+expected payoff strictly higher than  . To see this, observe that the policymaker’s payoff
+under any such policy is equal to
+U
+
+P
+
+
+
+,η
+
+=
+
+ θL +
+−∞
+
+P
+
+U (θ, 0) dF(θ) +
+
+ θH
+
+
+
++
+
+θH −δ( )
+
+U P (θ, 1) dF(θ)
+
+
+
+
+π  (1|θ)U P (θ, 1) + 1 − π  (1|θ) U P (θ, 0) dF(θ).
+
+
+(θL + ,θH −δ( ))∪(θH ,+∞)
+
+48 This follows from the fact that |u(θ, A)| and p(x|θ) are both bounded.
+49 Recall that, as established above, for any x ≥ x̄ + η,
+
+(x, 1) are mutually consistent under  ,η .
+
+808 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+Differentiating U P [ ,η ] with respect to , and using the implicit function theorem to
+obtain the derivative of δ( ), we have that
+
+
+dU P  ,η
+= f (θH − δ) 1 − π  (1|θH − δ) U P (θH − δ, 1) − U P (θH − δ, 0) × δ ( )
+d
+− f (θL + )π  (1|θL + ) U P (θL + , 1) − U P (θL + , 0)
+= f (θL + )π  (1|θL + ) U P (θH − δ, 1) − U P (θH − δ, 0)
+
+
+p( x̄ + η|θL + )u θL + , 1 − P( x̄ + η|θL + )
+
+
+×
+p( x̄ + η|θH − δ)u θH − δ, 1 − P( x̄ + η|θH − δ)
+− f (θL + )π  (1|θL + ) U P (θL + , 1) − U P (θL + , 0) .
+Property (ii*) in Condition M*, together with the fact that x̄ ≤ xmax , guarantee that, for
+any η ∈ (0, xmax − x̄) satisfying Condition (19), and ∈ (0, ¯ ], dU P [ ,η ]/d > 0. We conclude that the policy  ¯ ,η ∈ G yields the policymaker a payoff strictly higher than  . This
+completes the proof of Claim S1-B.
+
+
+Claim C. Take any  = ({0, 1}, π  ) ∈ G such that X  = ∅ and
+
+
+θ ∈ (θ, θH ) : π  (1|θ) > 0
+
+has zero F-measure.
+
+(22)
+
+Then π  (1|θ) = 0 for F -almost all θ ≤ θ∗ and π  (1|θ) = 1 for F -almost all θ > θ∗ .
+Claim C says that, if  ∈ G is a deterministic monotone rule, and there exists a x̄ such
+
+∗
+that U  ( x̄, 1| x̄) = 0, then  differs from the optimal monotone rule θ over at most a
+set of fundamentals of zero F -measure.
+Proof of Claim C. Let θH = ({0, 1}, π θH ) be the deterministic monotone policy with
+cut-off θH . Clearly, any x such that (x, 1) are mutually consistent under  is such
+that (x, 1) are also mutually consistent under θH . Furthermore, for any such x,
+θ
+
+U  (x, 1|x) = U  H (x, 1|x) (both properties follow because the two policies differ only
+over sets of zero F -measure).
+Suppose that θH > θ∗ . Below we establish that, in this case, any x such that (x, 1)
+θ
+are mutually consistent under θH is such that U  H (x, 1|x) > 0. Clearly, for any x such
+θ
+that (a) θ0 (x) ≤ θH , and (b) (x, 1) are mutually consistent under θH , U  H (x, 1|x) >
+0. Thus, consider any x such that θ0 (x) > θH , and (b) (x, 1) are mutually consistent
+∗
+under θH . Note first that, for any such x, (x, 1) are mutually consistent also under θ =
+∗
+∗
+({0, 1}, π θ ). This is because π θ (1|θ) ≥ π θH (1|θ) for all θ. Furthermore, for any such x,
+ +∞
+ +∞
+
+
+
+
+u θ, 1 − P(x|θ) p(x|θ) dF(θ) ≥
+u θ, 1 − P(x|θ) p(x|θ) dF(θ).
+(23)
+θH
+
+θ∗
+
+This follows from the fact that u(θ, 1 − P(x|θ)) < 0 for all θ ∈ [θ∗ , θH ]. Hence, for
+θ
+θ∗
+any such x, because U  (x, 1|x) ≥ 0, U  H (x, 1|x) ≥ 0. Now take x = x̄ and recall
+θ
+
+
+that, by definition, U  ( x̄, 1| x̄) = 0. Because U  ( x̄, 1| x̄) = U  H ( x̄, 1| x̄), this means that
+
+Theoretical Economics 20 (2025)
+
+Adversarial coordination and information design 809
+
+θ
+
+U  H ( x̄, 1| x̄) = 0. Property (i*) of Condition M* then implies that inf Θ( x̄) < θ. Hence,
+θ∗
+for x = x̄, the inequality in (23) is strict, which in turn implies that U  ( x̄, 1| x̄) < 0, con∗
+tradicting the assumption that θ ∈ G. Therefore, it must be that θH ≤ θ∗ . However, by
+θ
+definition of θ∗ , if θH < θ∗ , there exists an x such that (a) U  H (x, 1|x) < 0, and (b) (x, 1)
+
+are mutually consistent under θH . Because, for all such x, U  (x, 1|x) is well-defined
+θ
+
+(i.e., (x, 1) are mutually consistent also under  ) and U  H (x, 1|x) = U  (x, 1|x), we thus
+
+have that U  (x, 1|x) < 0, which contradicts the assumption that  ∈ G. Hence, θH = θ∗ .
+This completes the proof of Claim C.
+˜ = ∅ and that any ∗ = ({0, 1}, π ) with
+Step 2. Step 1 implies that arg max∈G
+U P []
+˜
+˜ is such that π(1|θ) = 0 for F -almost all θ ≤ θ∗ and π(1|θ) = 1 for
+U P []
+∗ ∈ arg max∈G
+˜
+∗
+F -almost all θ > θ . The result in the theorem then follows from observing that, given
+any ∗ ∈ arg max ˜∈G U P [ ˜], there exists a nearby deterministic monotone policy θ̂ ∈ G
+
+with cut-off θ̂ = θ∗ + ε̃, for ε̃ > 0 small, such that θ̂ satisfies the perfect-coordination
+θ̂
+
+property (i.e., U  (x, 1|x) > 0 all x such that (x, 1) are mutually consistent under θ̂ ).50
+The continuity of U P [θ̂ ] in θ̂ then implies that, for ε̃ > 0 small, U P [θ̂ ] > U P [], thus
+establishing the result in the theorem.
+References
+Alonso, Ricardo and Odilon Camara (2016a), “Persuading voters.” American Economic
+Review, 106, 3590–3605. [0767]
+Alonso, Ricardo and Konstantinos E. Zachariadis (2023), “Persuading large investors.”
+Available at SSRN 3781499. [0767]
+Alvarez, Fernando and Gadi Barlevy (2021), “Mandatory disclosure and financial contagion.” Journal of Economic Theory, 194, 105237. [0768]
+Angeletos, George-Marios, Christian Hellwig, and Alessandro Pavan (2006), “Signaling
+in a global game: Coordination and policy traps.” Journal of Political Economy, 114,
+452–484. [0767]
+Angeletos, George-Marios, Christian Hellwig, and Alessandro Pavan (2007), “Dynamic
+global games of regime change: Learning, multiplicity, and the timing of attacks.” Econometrica, 75, 711–756. [0767, 0793]
+Angeletos, George-Marios and Alessandro Pavan (2013), “Selection-free predictions in
+global games with endogenous information and multiple equilibria.” Theoretical Economics, 8, 883–938. [0767]
+Angeletos, George-Marios and Iván Werning (2006), “Crises and prices: Information aggregation, multiplicity, and volatility.” American Economic Review, 96, 1720–1736. [0767]
+Arieli, Itai and Yakov Babichenko (2019), “Private Bayesian persuasion.” Journal of Economic Theory, 182, 185–217. [0767]
+50 The arguments are the same as those used in the proof of Claim C for the case θ > θ∗ .
+H
+
+810 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+Bardhi, Arjada and Yingni Guo (2018), “Modes of persuasion toward unanimous consent.” Theoretical Economics, 13, 1111–1149. [0767]
+Basak, Deepal and Zhen Zhou (2020), “Diffusing coordination risk.” American Economic
+Review, 110, 271–297. [0767]
+Basak, Deepal and Zhen Zhou (2022), “Panics and early warnings.” Manuscript, PBCSFNIFR. [0793]
+Bergemann, Dirk and Stephen Morris (2019), “Information design: A unified perspective.” Journal of Economic Literature, 57, 44–95. [0767]
+Bouvard, Matthieu, Pierre Chaigneau, and Adolfo de Motta (2015), “Transparency in the
+financial system: Rollover risk and crises.” The Journal of Finance, 70, 1805–1837. [0767]
+Calzolari, Giacomo and Alessandro Pavan (2006a), “On the optimality of privacy in sequential contracting.” Journal of Economic theory, 130, 168–204. [0793]
+Calzolari, Giacomo and Alessandro Pavan (2006b), “Monopoly with resale.” The RAND
+Journal of Economics, 37, 362–375. [0793]
+Che, Yeon-Koo and Johannes Hörner (2018), “Recommender systems as mechanisms
+for social learning.” Quarterly Journal of Economics, 133, 871–925. [0767]
+Cong, Lin William, Steven R. Grenadier, and Yunzhi Hu (2020), “Dynamic interventions
+and informational linkages.” Journal of Financial Economics, 135, 1–15. [0767]
+Corona, Carlos, Lin Nan, and Zhang Gaoqing (2017), “The coordination role of stress test
+disclosure in bank risk taking. ” Manuscript, Carnegie Mellon University. [0768]
+Denti, Tommaso (2023), “Unrestricted information acquisition.” Theoretical Economics,
+18, 1101–1140. [0767]
+Diamond, Douglas W. and Philip H. Dybvig (1983), “Bank runs, deposit insurance, and
+liquidity.” Journal of Political Economy, 91. [0768]
+Doval, Laura and Jeffrey C. Ely (2020), “Sequential information design.” Econometrica,
+88, 2575–2608. [0767]
+Dworczak, Piotr (2020), “Mechanism design with aftermarkets: Cutoff mechanisms.”
+Econometrica, 88, 2629–2661. [0793]
+Dworczak, Piotr and Alessandro Pavan (2022), “Preparing for the worst but hoping for
+the best: Robust (Bayesian) persuasion.” Econometrica, 90, 2017–2051. [0793]
+Edmond, Chris (2013), “Information manipulation, coordination, and regime change.”
+Review of Economic Studies, 80, 1422–1458. [0767]
+Ely, Jeffrey C. (2017) Beeps. The American Economic Review, 107, 31–53. [0793]
+Farhi, Emmanuel and Jean Tirole (2012), “Collective moral hazard, maturity mismatch,
+and systemic bailouts.” American Economic Review, 102, 60–93. [0768]
+
+Theoretical Economics 20 (2025)
+
+Adversarial coordination and information design 811
+
+Faria-e Castro, Miguel, Joseba Martinez, and Thomas Philippon (2016), “Runs versus
+lemons: Information disclosure and fiscal capacity.” The Review of Economic Studies,
+060. [0767, 0768]
+Flannery, Mark, Beverl Hirtleb, and Anna Kovner (2017), “Evaluating the information in
+the federal reserve stress tests.” Journal of Financial Intermediation, 29, 1–18. [0768]
+Frankel, David M. (2017), “Efficient ex-ante stabilization of firms.” Journal of Economic
+Theory, 170, 112–144. [0766]
+Galperti, Simone and Jacopo Perego (2023), “Games with information constraints: Seeds
+and spillovers.” Manuscript, Columbia GSB. [0767]
+Galvão, Raphael and Felipe Shalders (2022), “Rules versus discretion in central bank
+communication.” International Journal of Economic Theory. [0766, 0767]
+Garcia, Filomena and Ettore Panetti (2017), “A theory of government bailouts in a heterogeneous banking union.” Manuscript, Indiana University. [0768]
+Gick, Wolfgang and Thilo Pausch (2012), “Persuasion by stress testing: Optimal disclosure of supervisory information in the banking sector.” Manuscript, Bundesbank. [0767]
+Gitmez, A. Arda and Pooya Molavi (2023), “Informational Autocrats, Diverse Societies”
+Manuscript, Northwestern University. [0767]
+Goldstein, Itay and Chong Huang (2016), “Bayesian persuasion in coordination games.”
+The American Economic Review, 106, 592–596. [0766, 0767, 0778, 0780]
+Goldstein, Itay and Yaron Leitner (2018), “Stress tests and information disclosure.” Journal of Economic Theory, 177, 34–69. [0767, 0792]
+Goldstein, Itay and Haresh Sapra (2014), “Should banks’ stress test results be disclosed?
+An analysis of the costs and benefits.” Foundations and Trends (R) in Finance, 8, 1–54.
+[0767]
+Guo, Yingni and Eran Shmaya (2019), “The interval structure of optimal disclosure.”
+Econometrica, 87, 653–675. [0791]
+Halac, Marina, Ilan Kremer, and Eyal Winter (2020), “Raising capital from heterogeneous
+investors.” American Economic Review, 110, 889–921. [0766]
+Halac, Marina, Elliot Lipnowski, and Daniel Rappoport (2021), “Rank uncertainty in organizations.” American Economic Review, 111, 757–786. [0766]
+Halac, Marina, Elliot Lipnowski, and Daniel Rappoport (2022), “Addressing strategic uncertainty with incentives and information.” AEA Papers and Proceedings, 112, 431–437.
+[0766]
+Heese, Carl and Stephan Lauermann (2021), “Persuasion and information aggregation
+in elections.” Manuscript, University of Bonn. [0767]
+Henry, Jerome and Christoffer Kok (2013), “A macro stress testing framework for assessing systemic risks in the banking sector.” Manuscript, European Central Bank. [0764]
+
+812 Inostroza and Pavan
+
+Theoretical Economics 20 (2025)
+
+Homar, Timotej, Heinrich Kick, and Carmelo Salleo (2016), “Making sense of the EU
+wide stress test: A comparison with the srisk approach.” Manuscript, European Central
+Bank. [0764]
+Inostroza, Nicolas (2023), “Persuading multiple audiences: Strategic complementarities
+and (robust) regulatory disclosures.” Manuscript, University of Toronto. [0768]
+Inostroza, Nicolas and Alessandro Pavan (2024a), “Adversarial coordination and public
+information design: Additional material.” Manuscript, Northwestern University. [0766,
+0788]
+Inostroza, Nicolas and Alessandro Pavan (2024b), “Bank funding and optimal stress
+tests.” Manuscript, Northwestern University. [0768]
+Kamenica, Emir (2019), “Bayesian persuasion and information design.” Annual Review
+of Economics. (forthcoming). [0767]
+Kyriazis, Panagiotis and Edmund Lou (2024), “(in)effectiveness of information manipulation in regime-change games.” Manuscript, Northwestern University. [0767]
+Laclau, Marie and Ludovic Renou (2017), “Public persuasion.” Manuscript, HEC Paris.
+[0767]
+Leitner, Yaron and Basil Williams (2023), “Model secrecy and stress tests.” The Journal of
+Finance, 78, 1055–1095. [0770]
+Lerner, Josh and Jean Tirole (2006), “A model of forum shopping.” American economic
+review, 96, 1091–1113. [0764]
+Li, Fei, Yangbo Song, and Mofei Zhao (2023), “Global manipulation by local obfuscation.” Journal of Economic Theory, 207, 105575. [0766]
+Mathevet, Laurent, Jacopo Perego, and Ina Taneva (2020), “On information design in
+games.” Journal of Political Economy, 128, 1370–1404. [0767]
+Mensch, Jeffrey (2021), “Monotone persuasion.” Games and Economic Behavior, 130,
+521–542. [0792]
+Morgan, Donald, Stravos Persitani, and Vanessa Savino (2014), “The information value
+of the stress test.” Journal of Money, Credit and Banking, 46. [0768]
+Morris, Stephen, Daisuke Oyama, and Satoru Takahashi (2024), “Implementation via
+information design in binary-action supermodular games.” Econometrica, 92, 775–813.
+[0766]
+Morris, Stephen and Hyun Song Shin (2006), “Global games: Theory and applications.”
+Advances in Economics and Econometrics, 56. [0780]
+Morris, Stephen and Ming Yang (2022), “Coordination and continuous stochastic
+choice.” The Review of Economic Studies, 89, 2687–2722. [0767]
+Myerson, Roger B. (1986), “Multistage games with communication.” Econometrica,
+323–358. [0765]
+
+Theoretical Economics 20 (2025)
+
+Adversarial coordination and information design 813
+
+Orlov, Dmitry, Pavel Zryumov, and Andrzej Skrzypacz (2023), “The design of macroprudential stress tests.” The Review of Financial Studies, 36, 4460–4501. [0767]
+Petrella, Giovanni and Andrea Resti (2013), “Supervisors as information producers: Do
+stress tests reduce bank opaqueness?” Journal of Banking and Finance, 37, 5406–5420.
+[0768]
+Quigley, Daniel and Ansgar Walther (2024), “Inside and outside information.” The Journal of Finance. [0768]
+Rochet, Jean-Charles and X. Vives (2004), “Coordination failures and the lender of last
+resort: Was bagethor right after all?” Journal of the European Economic Association, 2,
+1116–1147. [0768]
+Sakovics, Jozsef and Jakub Steiner (2012), “Who matters in coordination problems?”
+American Economic Review, 102, 3439–3461. [0766]
+Segal, Ilya (2003), “Coordination and discrimination in contracting with externalities:
+Divide and conquer?” Journal of Economic Theory, 113, 147–181. [0766]
+Shimoji, Makoto (2021), “Bayesian persuasion in unlinked games.” International Journal
+of Game Theory, 1–31. [0767]
+Szkup, Michal and Isabel Trevino (2015), “Information acquisition in global games of
+regime change.” Journal of Economic Theory, 160, 387–428. [0767]
+Taneva, Ina (2019), “Information design.” American Economic Journal: Microeconomics,
+11, 151–185. [0767]
+Williams, Basil (2017), “Stress tests and bank portfolio choice.” Manuscript, Imperial
+College. [0767]
+Winter, Eyal (2004), “Incentives and discrimination.” American Economic Review, 94,
+764–773. [0766]
+Yang, Ming (2015), “Coordination with flexible information acquisition.” Journal of Economic Theory, 158, 721–738. [0767]
+
+Co-editor Simon Board handled this manuscript.
+Manuscript received 7 July, 2023; final version accepted 18 August, 2024; available online 9
+September, 2024.
+
+

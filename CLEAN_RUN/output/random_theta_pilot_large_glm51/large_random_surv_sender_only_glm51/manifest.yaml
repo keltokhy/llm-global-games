@@ -1,0 +1,49 @@
+arm:
+  model: z-ai/glm-5.1-20260406
+  provider:
+    only:
+    - deepinfra
+    allow_fallbacks: false
+  n_agents: 10
+  n_countries: 1
+  n_periods: 250
+  seed: 6160
+  theta_grid_mode: random_normal
+  z_country_sd: 0.3
+  z_period_sd: 0.05
+  theta_sd: 1.0
+  sigma: 0.3
+  benefit: 1.0
+  cost: 1.0
+  max_concurrent: 50
+  llm_max_retries: 5
+  llm_empty_retries: 12
+  temperature: 0.7
+  expected_rows: 250
+  power_target: larger_random_theta_pilot
+  exclusion_rules:
+  - drop API-error and unparseable decisions from join_fraction_valid
+  - report parse and API error rates by arm
+  - trigger JOIN/STAY/drop missing-response sensitivity if arm error rates differ
+    by more than 1 percentage point
+  extra_body:
+    reasoning:
+      enabled: false
+  arm_id: large_random_surv_sender_only_glm51
+  claim: sender_side_surveillance
+  role: writer_and_reader
+  message_source: live
+  message_transform: none
+  decision_task: coordination
+  message_stage_context: surveillance_full
+  decision_context: none
+  belief_timing: none
+  belief_information: none
+  output_dir: /Users/khaled/GitHub/llm-global-games/CLEAN_RUN/output/random_theta_pilot_large_glm51/large_random_surv_sender_only_glm51
+  primary_outcomes:
+  - join_fraction_valid
+  - message_sent
+  preregistered_comparisons:
+  - treatment: large_random_surv_sender_only_glm51
+    control: large_random_comm_baseline_glm51
+  api_base_url: https://openrouter.ai/api/v1

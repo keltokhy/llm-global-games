@@ -2,16 +2,20 @@
 \centering
 \caption{Surveillance isolation checks. Placebo: monitored for research, no consequences. Anonymous: messages aggregated anonymously. Neither deviates significantly from the communication baseline.}
 \label{tab:surveillance_variants}
-\footnotesize
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{lccccc}
+\scriptsize
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{llccccc}
 \toprule
-Variant & $N$ & Mean join & $r(J, A(\theta))$ & $\Delta$ (pp) & $p$ \\
+Model & Variant & $N$ & Mean join & $r(J,A)$ & $\Delta$ (pp) & $p$ \\
 \midrule
-Placebo & 200 & 0.414 & +0.73 & +0.3 & 0.935 \\
-Anonymous & 200 & 0.412 & +0.73 & +0.1 & 0.979 \\
+Mistral & Placebo & 200 & 41.4\% & $+0.73$ & $+0.3$ & 0.935 \\
+ & Anonymous & 200 & 41.2\% & $+0.73$ & $+0.1$ & 0.979 \\
+\addlinespace
+Llama 3.3 70B & Placebo & 1000 & 41.2\% & $+0.71$ & $-0.3$ & 0.940 \\
+ & Anonymous & 1000 & 40.5\% & $+0.72$ & $-1.1$ & 0.814 \\
 \bottomrule
 \end{tabular}
-\vspace{0.25em}
-\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model (Mistral Small Creative). Placebo: agents told monitoring is for research purposes only (no consequences). Anonymous: messages aggregated before delivery. $\Delta$: change vs.\ communication baseline (pp). $p$-value from two-sample $t$-test.}
+\begin{tablenotes}
+\footnotesize\emph{Notes:} Placebo: agents told monitoring is for research purposes only (no consequences). Anonymous: messages aggregated before delivery. $N$ counts country--period rows ($n = 25$ agents per row). $\Delta$: change vs.\ the same model's communication baseline (pp), with $p$ from a two-sample $t$-test against that baseline. Communication-baseline arms: Mistral: $N = 1000$, mean join 41.1\%; Llama 3.3 70B: $N = 100$, mean join 41.6\%.
+\end{tablenotes}
 \end{table}

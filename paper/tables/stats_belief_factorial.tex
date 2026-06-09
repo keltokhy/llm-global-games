@@ -22,28 +22,37 @@
 \providecommand{\BFCellN}{12,500}
 
 % Surveillance effect (comm -> surv), messages excluded
-\providecommand{\BFSurvDeltaBelNoMsg}{-0.4}
+% Deltas are computed from the displayed (rounded) cell means so the
+% printed cells and deltas are internally consistent.
+\providecommand{\BFSurvDeltaBelNoMsg}{-0.3}
 \providecommand{\BFSurvDeltaBelNoMsgP}{0.34}
+\providecommand{\BFSurvDeltaBelNoMsgPText}{= 0.344}
 
 % Surveillance effect (comm -> surv), messages included
-\providecommand{\BFSurvDeltaBelMsg}{-5.7}
+\providecommand{\BFSurvDeltaBelMsg}{-5.8}
 \providecommand{\BFSurvDeltaBelMsgP}{0.001}
+\providecommand{\BFSurvDeltaBelMsgPText}{<0.001}
 \providecommand{\BFSurvDeltaSOBMsg}{-8.2}
 \providecommand{\BFSurvDeltaSOBMsgP}{0.001}
+\providecommand{\BFSurvDeltaSOBMsgPText}{<0.001}
 
 % Surveillance effect on SOB, messages excluded
-\providecommand{\BFSurvDeltaSOBNoMsg}{-0.1}
+\providecommand{\BFSurvDeltaSOBNoMsg}{0.0}
 \providecommand{\BFSurvDeltaSOBNoMsgP}{0.89}
+\providecommand{\BFSurvDeltaSOBNoMsgPText}{= 0.891}
 
 % Message effect on beliefs (with - without messages)
-\providecommand{\BFMsgEffectComm}{+7.1}
-\providecommand{\BFMsgEffectSurv}{+1.8}
+\providecommand{\BFMsgEffectComm}{+7.2}
+\providecommand{\BFMsgEffectSurv}{+1.7}
 
-% Action shifts
-\providecommand{\BFActionDeltaPP}{-11.4}
+% Action shifts (join rates are displayed in percent, so deltas use
+% the rounded percent endpoints)
+\providecommand{\BFActionDeltaPP}{-11.3}
 \providecommand{\BFActionDeltaNoMsgPP}{-11.4}
-\providecommand{\BFActionDeltaMsgPP}{-11.4}
+\providecommand{\BFActionDeltaMsgPP}{-11.3}
 \providecommand{\BFActionDeltaP}{0.001}
+\providecommand{\BFActionDeltaPText}{<0.001}
+\providecommand{\BFActionDeltaNoMsgPText}{<0.001}
 
 % Pre-decision elicitation (messages-included only; the pre+nomsg cell
 % was not collected before mistral-small-creative was retired).
@@ -55,5 +64,6 @@
 \providecommand{\BFSurvMsgJoinPre}{30.8\%}
 \providecommand{\BFSurvDeltaSOBMsgPre}{-8.9}
 \providecommand{\BFSurvDeltaSOBMsgPreP}{0.001}
+\providecommand{\BFSurvDeltaSOBMsgPrePText}{<0.001}
 \providecommand{\BFSurvDeltaBelMsgPre}{-5.4}
-\providecommand{\BFSurvDeltaJoinMsgPrePP}{-15.0}
+\providecommand{\BFSurvDeltaJoinMsgPrePP}{-15.1}

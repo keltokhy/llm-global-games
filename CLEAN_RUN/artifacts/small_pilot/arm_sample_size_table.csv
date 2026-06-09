@@ -1,0 +1,8 @@
+arm_id,claim,model,role,n_agents,n_countries,n_periods,expected_rows,message_source,message_transform,decision_task,belief_timing,belief_information
+small_pure_qwen30,language_signal,qwen/qwen3-30b-a3b-instruct-2507,reader_only,5,1,20,20,none,none,coordination,none,none
+small_scramble_qwen30,language_signal,qwen/qwen3-30b-a3b-instruct-2507,reader_only,5,1,20,20,none,none,coordination,none,none
+small_flip_qwen30,language_signal,qwen/qwen3-30b-a3b-instruct-2507,reader_only,5,1,20,20,none,none,coordination,none,none
+small_comm_baseline_qwen30,sender_side_surveillance,qwen/qwen3-30b-a3b-instruct-2507,writer_and_reader,5,1,20,20,live,none,coordination,none,none
+small_surv_sender_only_qwen30,sender_side_surveillance,qwen/qwen3-30b-a3b-instruct-2507,writer_and_reader,5,1,20,20,live,none,coordination,none,none
+small_direct_replay_qwen30,direct_coded_mechanism,qwen/qwen3-30b-a3b-instruct-2507,reader_with_fixed_messages,5,1,20,20,message_bank,direct,coordination,pre,messages_included
+small_coded_replay_qwen30,direct_coded_mechanism,qwen/qwen3-30b-a3b-instruct-2507,reader_with_fixed_messages,5,1,20,20,message_bank,coded,coordination,pre,messages_included

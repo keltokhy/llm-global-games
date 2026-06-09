@@ -1,6 +1,6 @@
 \begin{table}[t]
 \centering
-\caption{Narrative-stakes conditions: classifier vs.\ actual LLM behavior. Actual join rates shift by ${\approx}\,50$~pp across strategic-stakes framing conditions; the classifier, trained on briefing-body text features alone, cannot predict this shift.}
+\caption{Narrative-header conditions: classifier vs.\ actual LLM behavior. Actual join rates shift sharply across strategic-stakes framing conditions; the classifier, trained on briefing-body text features alone, cannot predict this header-induced shift.}
 \label{tab:bc_classifier}
 \footnotesize
 \setlength{\tabcolsep}{4pt}
@@ -8,9 +8,12 @@
 \toprule
 Condition & $N$ & Classif.\ pred. & Actual & Gap (pp) \\
 \midrule
-Baseline ($\theta^* = 0.50$) & 270 & 40.9\% & 40.9\% & +0.0 \\
+Baseline (no header) & 270 & 40.9\% & 40.9\% & $+0.0$ \\
+High-cost header & 270 & 40.9\% & 19.0\% & $+21.9$ \\
+Low-cost header & 270 & 40.9\% & 69.3\% & $-28.4$ \\
 \bottomrule
 \end{tabular}
-\vspace{0.25em}
-\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model (Mistral Small Creative). Logistic classifier trained on baseline slider features. Gap = classifier-predicted join rate $-$ actual LLM join rate (pp).}
+\begin{tablenotes}
+\footnotesize\emph{Notes:} Primary model (Mistral Small Creative). $N$ counts country--period rows on the information-design $\theta$-grid ($n = 25$ agents per row). Logistic classifier trained on baseline slider features from the briefing body. Gap = classifier-predicted join rate $-$ actual LLM join rate (pp). The sign convention is the reverse of Table~\ref{tab:bc_statics}, which reports $\Delta = $ actual $-$ baseline: because the classifier's prediction stays near the baseline rate, a header that lowers actual joining shows up there as a negative $\Delta$ and here as a positive Gap of approximately the same magnitude. High/low rows are the two narrative-header conditions on the information-design grid, not numeric payoff-ladder endpoints.
+\end{tablenotes}
 \end{table}

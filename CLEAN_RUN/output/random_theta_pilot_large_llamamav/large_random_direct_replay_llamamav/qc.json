@@ -1,0 +1,14 @@
+{
+  "agent_rows": 2500,
+  "agents_exists": true,
+  "api_error_rate": 0.0,
+  "expected_rows_match": true,
+  "missing_agent_columns": [],
+  "missing_period_columns": [],
+  "output_dir": "/Users/khaled/GitHub/llm-global-games/CLEAN_RUN/output/random_theta_pilot_large_llamamav/large_random_direct_replay_llamamav",
+  "parse_error_rate": 0.0,
+  "pass": true,
+  "period_rows": 250,
+  "periods_exists": true,
+  "surveillance_leak_pass": true
+}

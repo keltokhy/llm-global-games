@@ -1,0 +1,25 @@
+model_key,model_name,arm
+deepseekv4,DeepSeek V4 Flash,coded
+deepseekv4,DeepSeek V4 Flash,comm
+deepseekv4,DeepSeek V4 Flash,direct
+deepseekv4,DeepSeek V4 Flash,surveillance
+gemma4,Gemma 4 26B A4B,coded
+gemma4,Gemma 4 26B A4B,comm
+gemma4,Gemma 4 26B A4B,direct
+gemma4,Gemma 4 26B A4B,surveillance
+glm51,GLM 5.1,coded
+glm51,GLM 5.1,comm
+glm51,GLM 5.1,direct
+glm51,GLM 5.1,surveillance
+llamamav,Llama 4 Maverick,coded
+llamamav,Llama 4 Maverick,comm
+llamamav,Llama 4 Maverick,direct
+llamamav,Llama 4 Maverick,surveillance
+mistral4,Mistral Small 4,coded
+mistral4,Mistral Small 4,comm
+mistral4,Mistral Small 4,direct
+mistral4,Mistral Small 4,surveillance
+qwen30,Qwen3-30B-A3B,coded
+qwen30,Qwen3-30B-A3B,comm
+qwen30,Qwen3-30B-A3B,direct
+qwen30,Qwen3-30B-A3B,surveillance

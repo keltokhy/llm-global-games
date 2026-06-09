@@ -1,0 +1,26 @@
+{
+  "declared_arm_counts": {
+    "cross_task_decomposition": 8,
+    "direct_coded_mechanism": 6,
+    "sender_side_surveillance": 12
+  },
+  "declared_expected_period_rows": {
+    "cross_task_decomposition": 8000,
+    "direct_coded_mechanism": 6000,
+    "sender_side_surveillance": 12000
+  },
+  "dependency_needed": [
+    "CLEAN_RUN/output/pilot/**/periods.parquet for cross-task pilot arms",
+    "pilot clustered variance and within-cell replay correlation",
+    "QC-passing CLEAN_RUN/message_banks/direct_coded_pairs.parquet for mechanism pilots"
+  ],
+  "manifest": "/Users/khaled/GitHub/llm-global-games/CLEAN_RUN/plans/main.yaml",
+  "power_rules": {
+    "alpha": 0.05,
+    "cross_task_estimand": "coordination_specific = coord_delta - bet_delta",
+    "main_run_rule": "main rows must be computed from pilot interaction variance; do not assume 1000 rows is enough",
+    "primary_cross_task_regression": "join ~ surveillance_message * coordination_task + task-cell controls",
+    "target_power": 0.8
+  },
+  "status": "dependency_needed"
+}

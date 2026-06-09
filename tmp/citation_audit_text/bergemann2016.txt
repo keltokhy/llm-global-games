@@ -1,0 +1,3366 @@
+INFORMATION DESIGN: A UNIFIED PERSPECTIVE
+By
+Dirk Bergemann and Stephen Morris
+
+February 2017
+
+COWLES FOUNDATION DISCUSSION PAPER NO. 2075
+
+COWLES FOUNDATION FOR RESEARCH IN ECONOMICS
+YALE UNIVERSITY
+Box 208281
+New Haven, Connecticut 06520-8281
+http://cowles.yale.edu/
+
+Information Design: A Uni…ed Perspective
+Dirk Bergemanny
+
+Stephen Morrisz
+
+February 17, 2017
+
+Abstract
+Fixing a game with uncertain payo¤s, information design identi…es the information structure and
+equilibrium that maximizes the payo¤ of an information designer.
+
+We show how this perspective
+
+uni…es existing work, including that on communication in games (Myerson (1991)), Bayesian persuasion (Kamenica and Gentzkow (2011)) and some of our own recent work. Information design has a
+literal interpretation, under which there is a real information designer who can commit to the choice
+of the best information structure (from her perspective) for a set of participants in a game.
+
+We
+
+emphasize a metaphorical interpretation, under which the information design problem is used by the
+analyst to characterize play in the game under many di¤erent information structures.
+
+Keywords: Information design, Bayesian persuasion, correlated equilibrium, incomplete information, robust predictions, information structure.
+JEL Classification: C72, D82, D83.
+
+We acknowledge …nancial support from NSF Grants SES 0851200 and 1459899. Versions of the paper were presented
+at the Delhi School of Economics Winter School, the 2016 AEA meetings, the North American Summer Meeting of the
+Econometric Society, the Gerzensee Summer Symposium in Economic Theory, the Becker Friedman Institute conference on
+Frontiers and Economic Theory and Computer Science, the Harris lecture at Harvard University and the 2016 fall Finance
+Theory group conference at Princeton. Some of the material in this paper was previewed in Bergemann and Morris
+(2016b). We have bene…ted from discussions and correspondence about the material in this paper with Ben Brooks, Laura
+Doval, Je¤ Ely, Francoise Forges, Drew Fudenberg, Olivier Gossner, Tibor Heumann, Atsushi Kajii, Emir Kamenica, Rohit
+Lamba, Laurent Mathevet, Roger Myerson, Tymo…y Mylanov, Eran Shmaya and Jonathan Weinstein; and from valuable
+research assistance from Ian Ball, Denis Shishkin, Áron Tóbiás and Xinyang Wang.
+y
+Department of Economics, Yale University, New Haven, U.S.A., dirk.bergemann@yale.edu.
+z
+Department of Economics, Princeton University, Princeton, U.S.A., smorris@princeton.edu.
+
+1
+
+Contents
+1 Introduction
+
+3
+
+2 Information Design
+
+7
+
+2.1
+
+2.2
+
+An Investment Example . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+9
+
+2.1.1
+
+Single Player without Prior Information . . . . . . . . . . . . . . . . . . . . . . .
+
+9
+
+2.1.2
+
+Single Player with Prior Information . . . . . . . . . . . . . . . . . . . . . . . . .
+
+11
+
+2.1.3
+
+Many Players without Prior Information . . . . . . . . . . . . . . . . . . . . . . .
+
+12
+
+2.1.4
+
+Many Players with Prior Information . . . . . . . . . . . . . . . . . . . . . . . . .
+
+14
+
+Issues in Information Design illustrated by the Examples . . . . . . . . . . . . . . . . . .
+
+15
+
+2.2.1
+
+Public versus Private Signals; and Instrumental versus Intrinsic Motivation for
+Preferences Over Correlation . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.2.2
+
+15
+
+Bayes Correlated Equilibrium Outcomes
+and Information Design without Concavi…cation . . . . . . . . . . . . . . . . . .
+
+19
+
+2.2.3
+
+Tightening Obedience Constraints and Bayes Correlated Equilibrium Outcomes .
+
+20
+
+2.2.4
+
+Metaphorical Information Design: Robust Predictions and Maxmin Objectives .
+
+23
+
+3 Information Design with Private Information and the Relation to Mechanism Design 24
+3.1
+
+Information Design when Players’Prior Information is not known to the Designer
+
+. . .
+
+24
+
+3.2
+
+The Investment Example Re-Visited . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+27
+
+3.3
+
+General Mechanism Design . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+31
+
+3.4
+
+Incomplete Information Correlated Equilibrium . . . . . . . . . . . . . . . . . . . . . . .
+
+32
+
+3.4.1
+
+Belief Invariance . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+32
+
+3.4.2
+
+Join Feasibility . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+33
+
+4 Information Design with Adversarial Equilibrium and Mechanism Selection
+
+35
+
+4.1
+
+Adversarial Equilibrium Selection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+35
+
+4.2
+
+Adversarial Mechanism Design . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+39
+
+5 Conclusion
+
+39
+
+6 Appendix
+
+41
+
+2
+
+1
+
+Introduction
+
+A set of players have state-dependent preferences over a set of outcomes. Consider the problem of an
+"information designer" who can commit to providing information about the states to the players to serve
+her ends, but has no ability to change the mechanism (or force the players to make particular action
+choices). A mechanism here describes the set of players, their available actions and a mapping from
+action pro…les to outcomes. Contrast this "information design" problem with the "mechanism design"
+problem, where a "mechanism designer" can commit to a mechanism for the players to serve her ends,
+but has no ability to provide the players with any additional information (or force the players to make
+particular action choices).1 In each case, the problem is sometimes studied with a restricted choice set.
+In the information design problem, we could restrict the designer to choose whether the players are given
+no information or complete information about the environment. In the mechanism design problem, we
+could restrict the designer to choose between a …rst price and a second price auction. However, in each
+case, there is a revelation principle argument that allows for the analysis of all information structures
+or all mechanisms respectively. For the mechanism design problem, we can restrict attention to direct
+mechanisms where the players’action sets are equal to their type sets. Conversely, for the information
+design problem, we can restrict attention to information structures where the players’ type sets are
+equal to their action sets. In this paper, using this observation, we consider static information design
+problems when all information structures are available to the designer.
+One purpose of the paper is to provide an overview of information design that uni…es a number of
+literatures sometimes treated as distinct. If we assume that there are many players, but the information
+designer (or "mediator") has no informational advantage over the players, this problem reduces to the
+analysis of communication in games (Myerson (1991), Section 6.3) and, more generally, the literature
+on correlated equilibrium in incomplete information games (Forges (1993)). If there is only one player
+(or "receiver") but the information designer (or "sender") has an informational advantage over the
+player, the problem reduces to the "Bayesian persuasion" problem (Kamenica and Gentzkow (2011)).
+Some of our recent work corresponds to the information design problem when there are both many
+players and the information designer has an informational advantage over the players (Bergemann and
+Morris (2013b), (2016a)). The set of outcomes that can arise in this setting corresponds to a version
+of incomplete information equilibrium ("Bayes correlated equilibrium") that allows outcomes to be
+1
+
+We follow Taneva (2015) in our use of the term "information design" in this context. This statement of the mechanism
+
+design problem is a narrow one corresponding to what Myerson (1991) (Section 6.4) calls "Bayesian collective choice
+problems." We discuss how what we are calling information design …ts into the broader mechanism design literature in
+Section 3.3.
+
+3
+
+conditioned on states that the players do not know.
+A second purpose of the paper is to highlight a distinction between literal information design and
+metaphorical information design. The information design problem has a literal interpretation (given
+above): there really is an information designer (or mediator, or sender) who can commit to provide
+extra information to players to serve her own interests. While the commitment assumption may be
+problematic in many settings, it provides a useful benchmark. But the information design formulation
+might also be a metaphor that the analyst uses as a tool. For example, we might be interested in
+…nding an upper bound (across information structures) on the aggregate variance of output in a given
+economy with idiosyncratic and common shocks to agents’ productivity (Bergemann, Heumann, and
+Morris (2015)). We can understand this as an information design problem, where the information
+designer is interested in choosing an information structure to maximize aggregate variance in output.
+But in this case, we do not have in mind that there is an actual information designer maximizing
+aggregate variance. We will discuss other cases below where information design is metaphorical.
+To survey the literature, and to provide some graphical illustrations, we use a family of two player,
+two action, two state and two signal examples to survey the literature. We start with the leading
+example of Bayesian persuasion (with a single player/receiver with no prior information) from the work
+of Kamenica and Gentzkow (2011). We can use extensions of this example - with many players and
+prior information - to illustrate many of the key ideas in the survey. Three key substantive and general
+insights are illustrated in these examples. First, it is often optimal for the information designer to
+selectively obfuscate information. This insight is familiar from the one player without prior information
+case. Second, the information designer has less ability to manipulate outcomes in his favor if players
+have more prior information: if the players are endowed with their own information, the designer has less
+in‡uence over the information structure that they end up with. This insight can already be illustrated
+in the one player case. But we will also describe a general partial order on information structures generalizing the Blackwell order for the one player case - which characterizes the right de…nition of
+"more information" in this context (Bergemann and Morris (2016a)). Third, we can ask whether the
+information designer prefers to give the information to players in a public or in a private message. Of
+course, this last question only arises once we have multiple players. Public information is optimal if the
+information designer wants perfect correlation between players’actions; otherwise private information
+will be optimal. While the information designer may have intrinsic preferences over whether players’
+actions are correlated (or not), the designer may care about correlation for purely instrumental reasons:
+if there are strategic complementarities between the players’actions, she may want to correlate players’
+actions to relax the obedience constraints on her ability to attain speci…c outcomes. The converse holds
+4
+
+for strategic substitutability. We will illustrate the case when there are only instrumental preferences
+over correlation.
+The examples will also illustrate a methodological point. The information design problem can be
+solved in two steps. First, we can identify the set of outcomes that could be induced by the information
+designer. Second, we can identify which outcome would be preferred by the information designer. This
+too parallels the mechanism design literature: we can …rst identify which outcomes are implementable,
+and then identify the one most preferred by the designer. As noted above, in the information design
+problem, the set of implementable outcomes corresponds to the set of Bayes correlated equilibria. This
+approach reduces the problem to a linear program.
+Our analysis of information design focusses what we will sometimes call the omniscient case: the
+information designer knows not only the payo¤-relevant state of the world, but also knows the players’
+prior information about the state and others’ information. We also consider information design with
+private information, where players’ prior information is not known by the information designer, even
+though she knows everything about the payo¤-relevant states (which are in turn not known by the
+players). There are two cases to consider here: an information designer may be able to condition on the
+reported realizations of the players’ signals even if she does not know them (information design with
+elicitation) or she may be unable to do so (information design without elicitation). If the information
+designer has no information of her own, then these three scenarios (omniscient, private information with
+elicitation and private information without elicitation) correspond to versions of incomplete information
+correlated equilibrium: in the terminology of Forges (1993), the Bayesian solution, communication
+equilibrium, and strategic form correlated equilibrium, respectively.
+Once the information designer has picked the information structure, the players decide how to play
+the resulting game of incomplete information. There may be multiple Bayes Nash equilibria of the
+resulting game. In our treatment of the information design problem, we have been implicitly assuming
+that the designer can pick which equilibrium is played. Under this maintained assumption, we can appeal
+to the revelation principle, and focus attention on information structures where the signal space is set
+equal to the action space, and the signals have the interpretation that they are action recommendations.
+In the single player case, this maintained equilibrium selection assumption is without loss of generality.
+But just as the revelation principle breaks down in mechanism design if the designer does not get to pick
+the best equilibrium (as in Maskin (1999)), it similarly breaks down for information design.2 We follow
+Mathevet, Perego, and Taneva (2016) in formally describing a notion of maxmin information design,
+2
+
+This point has been highlighted by Carroll (2016) and Mathevet, Perego, and Taneva (2016).
+
+5
+
+where an information designer gets to pick an information structure but the selected equilibrium is the
+worst one for the designer. We note how some existing work can be seen as an application of maxmin
+information design, in particular, an extensive literature on "robustness to incomplete information"
+(Kajii and Morris (1997)).
+This paper focusses on static settings when all information structures are allowed, and free, and there
+is a single information designer. This allows an appeal to the revelation principle. Of course, there are
+many (static) settings where the impact of di¤erent information structures has been studied, without
+allowing all information structures. Two classic examples would be information sharing in oligopoly
+(Novshek and Sonnenschein (1982)) and the linkage principle in auction theory (Milgrom and Weber
+(1982)). Optimal information design in dynamic settings has been studied recently in applications of
+Ely, Frankel, and Kamenica (2015), Ely (2017) and Xandri (2016). Doval and Ely (2016) study a general
+class of optimal dynamic information design problems. Horner and Skrzypacz (2016) surveys work on
+information design more generally in dynamic settings. Kamenica and Gentzkow (2014) consider the
+case of costly information and Gentzkow and Kamenica (2017) allow for multiple information designers.
+Our main results are in Section 2, where we describe the information design problem and review
+it using our examples. We also discuss private versus public signals, intrinsic versus instrumental
+preferences over correlation, the two step procedure for solving information design problems, ordering
+information, the widely used concavi…cation in information design (instead of pure linear programming
+methods) and metaphorical information design interpretations. In Section 3, we describe what happens
+when players’ prior information is not known by the information designer; this discussion allows us
+to locate the information design problem within the broad overview of mechanism design proposed by
+Myerson (1982) and with a larger literature on incomplete information correlated equilibrium reviewed
+by Forges (1993). In Section 4, we discuss the role of equilibrium selection.
+Given the synthetic treatment of the literature, there is much terminology that has been introduced
+and used in di¤erent contexts (including by us in prior work), and which is inconsistent or redundant.
+To give one example, what we are calling an "information designer" has in previous work been called a
+sender, a mediator, a principal and a mechanism designer. We are eclectic in our labelling, compromising
+between the use of familiar terminology and having a uni…ed language.
+
+6
+
+2
+
+Information Design
+
+Throughout the paper, we will …x a …nite set of players and a …nite set of payo¤ states of the world.
+There are I players, 1; 2; :::; I, and we write i for a typical player. We write
+the world and
+
+for a typical element of
+
+for the payo¤ states of
+
+.
+
+A "basic game" G consists of (1) for each player i, a …nite set of actions Ai and a utility function
+ui : A
+
+! R, where we write A = A1
+
+G = (Ai ; ui )Ii=1 ; ;
+
+AI ; and (2) a full support prior
+
+Thus S =
+
+( ). Thus
+
+. An "information structure" S consists of (1) for each player i, a …nite set of
+
+types or "signals" Ti ; and (2) a signal distribution
+(Ti )Ii=1 ;
+
+2
+
+:
+
+!
+
+(T ), where we write T = T1
+
+TI .
+
+.
+
+Together, the "payo¤ environment" or "basic game" G and the "belief environment" or "information
+structure" S de…ne a standard "incomplete information game" (G; S). While we use di¤erent notation,
+this division of an incomplete information game into the "basic game" and the "information structure"
+is a common one in the literature, see, for example, Gossner (2000).
+We are interested in the set of decision rules
+
+:T
+
+!
+
+(A) that can be induced by an information
+
+designer. In this section, we will consider the leading case where the designer can condition on the state
+and on the players’prior information, if they have any. In this context, we will sometimes refer to the
+omniscient information designer. In the next section, we will consider the case where prior information
+of the players is private, and hence the information designer cannot access these private information
+unless she induces the players to reveal this additional information.
+Assuming that the information designer knows the true state
+
+2
+
+and the signal vector t 2 T ,
+
+obedience will be the key restriction on decision rules. Obedience is the requirement that if the information designer privately communicated information as stochastic action recommendations according
+to , the players would want to follow the recommendation.
+De…nition 1 (Obedience)
+Decision rule
+
+:T
+
+!
+
+(A) is obedient for (G; S) if, for each i = 1; :::; I, ti 2 Ti and ai 2 Ai , we
+
+have
+
+a
+
+a
+
+i 2A
+
+i 2A
+
+X
+
+i ;t
+
+i 2T
+
+X
+
+i ;t
+
+i 2T
+
+i; 2
+
+ui ((ai ; a i ) ; ) ((ai ; a i ) j (ti ; t i ) ; ) ((ti ; t i ) j )
+ui
+
+a0i ; a i ;
+
+((ai ; a i ) j (ti ; t i ) ; ) ((ti ; t i ) j )
+
+i; 2
+
+for all a0i 2 Ai .
+7
+
+( )
+( );
+
+(1)
+
+Bergemann and Morris (2016a) de…ne a Bayes correlated equilibrium (BCE) to be a decision rule
+satisfying obedience.
+Proposition 1 An omniscient information designer can attain decision rule
+
+if and only if it is a
+
+Bayes correlated equilibrium.
+By "can attain decision rule" we mean that there exists a (perhaps indirect) communication rule
+that gives rise to this decision rule in Bayes Nash equilibrium.3 In this (and later) propositions, we
+omit formal statements and proofs that correspond to revelation principle arguments. Bergemann and
+Morris (2016a) give a formal statement and proof of this proposition as Theorem 1, adapting standard
+characterizations of correlated equilibrium. These arguments are closely related to the arguments invoked for the revelation principle in mechanism design. In particular, we show that it is without loss
+of generality to focus on a set of signals that equals the set of actions to be taken by the agents thus a "direct mechanism" - and to generate and recommend actions in such way that they satisfy the
+obedience condition - thus a "truthful mechanism". A formal statement also appears in Section 4.
+Now if we let v : A
+
+! R be the ex post objective of the information designer, then the utility
+
+of the information designer from decision rule
+VG;S ( ) =
+
+X
+
+is
+v (a; ) (ajt; ) (tj )
+
+( ).
+
+(2)
+
+a2A;t2T; 2
+
+The (omniscient) information design problem is then to pick a BCE
+
+to maximize VG;S ( ). When there
+
+is a single player with no prior information, the information design problem reduces to the benchmark
+Bayesian persuasion problem described by Kamenica and Gentzkow (2011).4 In this case, the single
+player is called the "receiver" and the information designer is called the "sender". In the next subsection, we describe in detail a series of examples to illustrate some key ideas about information design.
+
+3
+
+We do not discuss information design under solution concepts other than Bayes Nash equilibrium in this paper.
+
+Mathevet, Perego, and Taneva (2016) study information design under bounded level rationalizability and Inostroza and
+Pavan (2017) under full rationalizability.
+4
+This problem was also studied by Rayo and Segal (2010) and Ostrovsky and Schwarz (2010).
+
+8
+
+2.1
+
+An Investment Example
+
+We will …rst consider the following benchmark setting. There is a bad state (B) and a good state (G).
+The two states are equally likely. There is one player (the "…rm"). The …rm can decide to invest or not
+invest. The payo¤ from not investing is normalized to 0. The payo¤ to investing is
+
+1 in the bad state
+
+and x in the good state, with 0 < x < 1. These payo¤s are summarized in the following matrix:
+bad state B
+invest
+
+1
+
+not invest
+2.1.1
+
+good state G
+:
+
+x
+
+0
+
+(3)
+
+0
+
+Single Player without Prior Information
+
+We begin the analysis when the …rm has no prior information about the state (beyond the uniform
+prior). Together with the above assumptions about the payo¤ matrix, the …rm would therefore choose
+to not invest if it had no additional information.
+We will assume that an information designer (the "government") is interested in maximizing the
+probability of investment. This example is (modulo some changes in labelling) the leading example in
+Kamenica and Gentzkow (2011). We will describe this example …rst, but then use variations to illustrate
+more general points. We will …rst consider the case in which the …rm has no information about the
+state. A decision rule
+the true state
+
+:
+
+!
+
+(A) now speci…es the probability of investment p conditional on
+
+2 fB; Gg. Thus a decision rule is a pair (pB ; pG ). We can think of a decision rule as
+
+a (stochastic) action recommendation from the government. If the recommendations are obeyed, the
+outcome - the ex ante distribution over states and actions - is given by
+(a j )
+
+( )
+
+invest
+not invest
+
+bad state B
+
+good state G
+
+1
+2 pB
+1
+2 (1
+
+1
+2 pG
+1
+2 (1
+
+pB )
+
+:
+pG )
+
+If the …rm receives a recommendation to invest, it will update its beliefs about the state by Bayes’rule,
+and the …rm’s ex ante expected utility from following the invest recommendation will be the expression
+on the left hand side of the inequality below. If the …rm were to disobey the recommendation and chose
+to not invest, then its payo¤ would be zero. This gives rise to the following inequality as the obedience
+constraint.
+
+1
+2 pB
+(
+1
+1
+2 pB + 2 pG
+
+1
+2 pG
+x
+1
+2 pB + 2 pG
+
+1) + 1
+
+9
+
+0.
+
+(4)
+
+This can be rearranged to give:
+pB
+.
+x
+
+pG
+
+(5)
+
+There is an analogous obedience constraint corresponding to the recommendation not to invest.
+The obedience conditions re‡ect the fact that the …rm may be given information (that we do not need
+to describe explicitly by the revelation principle) that leads it to act di¤erently across the two states,
+hence pB and pG may di¤er. Because the …rm would not invest in either state with no information - by
+our maintained assumption that x < 1 - the binding obedience constraint will be the one corresponding
+to investment, i.e., inequality (5). We see that the highest probability of investment is the decision rule
+with pG = 1 and pB = x.
+We illustrate the set of BCE decision rules for the case where x = 55=100 in Figure 1. Any decision
+rule (pB ; pG ) that is the blue shaded area can arise as some BCE. We observe that the feasible set of
+BCE does not depend on the government’s preference.
+Insert Figure 1: Investment Probabilities with Uninformed Player: x = 55=100
+Now any BCE decision rule corresponds to optimal behavior under some information structure S.
+By the revelation principle for the BCE, it su¢ ces to give the …rm a binary information structure S to
+implement any BCE decision rule in the binary action environment. For the outcome that maximizes
+the probability of investment, it su¢ ces to generate a no investment recommendation with probability
+1
+
+x if the state is bad, and otherwise give the …rm an investment recommendation:
+
+invest
+not invest
+
+bad state B
+
+good state G
+
+1
+2x
+1
+2 (1
+
+1
+2
+
+x)
+
+:
+
+(6)
+
+0
+
+This will give rise to the outcome that has the …rm investing whenever the signal is good and not
+investing when the signal is bad. Thus a government trying to encourage investment will obfuscate the
+states of the world in order to maximize investment. By pooling bad and good states in this way, the
+…rm is made indi¤erent between investing or not after the good signal realization, and the indi¤erence is
+broken in favor of investment. The bad state is completely isolated in the bad signal. Finally, we observe
+that under complete information the …rm would always invest in the good state and never invest in
+the bad state. We thus have described three di¤erent information structures, zero information, partial
+information, and complete information that support the three vertices of the above investment triangle.
+
+10
+
+2.1.2
+
+Single Player with Prior Information
+
+We remain with the investment example where there is still only one …rm, but now the …rm has some
+prior information about the true state that it receives independently of the government.5 In particular,
+the …rm has a type (or receives a signal) which is "correct" with probability q > 1=2. Formally, the …rm
+observes its type t 2 fb; gg with probability q conditional on the true state being B or G; respectively:
+S
+
+bad state B
+
+good state G
+
+bad signal b
+
+q
+
+1
+
+good signal g
+
+1
+
+q
+
+q
+
+:
+
+q
+
+Here, signals refer to the prior information that …rms are endowed with. Conditional on the type of
+the …rm, the analysis of the obedience constraints reduces immediately to the analysis of the previous
+section, but where the …rm has an updated belief, q or 1
+
+q, depending on the type. We nonetheless
+
+analyze this problem because we want to trace the ex ante implications of a player’s prior information
+for information design. A decision rule now speci…es the probability of investment p t conditional on
+the true state
+
+2 fB; Gg and the type t 2 fb; gg. Thus a decision rule is now a vector, a quadruple:
+p t = (pBb ; pBg ; pGb ; pGg ) :
+
+(7)
+
+We can solve the problem - conditional on state and type - as before. For example, the obedience
+constraint for the recommendation to invest after receiving a good type g now becomes:
+(1
+
+(1 q) pBg
+( 1) +
+q) pBg + qpGg
+(1
+
+qpGg
+x
+q) pBg + qpGg
+
+0.
+
+(8)
+
+However, we are interested in what we can say about the joint distribution of states and actions ex ante,
+integrating out the types. One can show that there is a lower bound on investment in the good state
+given by:
+1
+
+pG = q
+
+q
+x
+
+;
+
+(9)
+
+which approaches 1 as q approaches 1. The set of BCE is illustrated in Figure 2. More prior information
+shrinks the set of BCE since the obedience constraints become tighter. Once q reaches 1, the …rm knows
+the state and the information designer has no ability to in‡uence the outcome. We return to the issue
+of comparing information structures in Section 2.2.3.
+Insert Figure 2: Investment Probabilities with Informed Player: x = 55=100
+5
+
+Some detailed calculations for this example appear in the Appendix.
+
+11
+
+2.1.3
+
+Many Players without Prior Information
+
+We can now generalize the analysis to two …rms and return to the assumption that the …rms have no
+prior information. So now there are two …rms each with no prior information. We assume for now that
+the government wants to maximize the sum over each individual …rm’s probability of investment. If
+there is no strategic interaction between …rms, the previous analysis can be carried out …rm by …rm
+and will thus be unchanged.
+But we now perturb the problem to make it strategic, assuming that each …rm gets an extra payo¤ "
+if both invest, where " may be positive or negative. Thus we can write …rm 1’s payo¤ for the incomplete
+information game as:
+…rm 2
+
+…rm 2
+
+…rm 1
+
+=B
+
+invest
+
+invest
+
+1+"
+
+not invest
+
+not invest
+…rm 1
+
+1
+
+0
+
+0
+
+=G
+
+invest
+
+not invest
+
+invest
+
+x+"
+
+x
+
+not invest
+
+0
+
+0
+
+(10)
+
+We can focus on symmetric decision rules, given the symmetry of the basic game, for any symmetric
+objective of the information designer. To see why, note that if we found an asymmetric maximizing
+decision rule, the decision rule changing the names of the …rms would also be optimal and so would the
+(symmetric) average of the two decision rules. Therefore, we will continue to write p for the probability
+that each …rm will invest in state
+
+2 fG; Bg; but we will now write r for the probability that both
+
+invest. Thus a decision rule is a vector (pB ; rB ; pG ; rG ). A decision rule can now be represented in a
+table as
+=B
+
+invest
+
+not invest
+
+invest
+
+rB
+
+pB
+
+not invest
+
+pB
+
+rB
+
+=G
+
+rB
+
+1 + rB
+
+2pB
+
+invest
+
+not invest
+
+invest
+
+rG
+
+pG
+
+not invest
+
+pG
+
+rG
+
+To ensure that all probabilities are non-negative, we require that for all
+max f0; 2p
+
+1g
+
+r
+
+:
+
+rG
+
+1 + rG
+
+(11)
+
+2pG
+
+2 fB; Gg :
+
+p .
+
+The …rm has an incentive to invest when told to invest if
+1
+1
+1
+pB + pG x + (rB + rG ) "
+2
+2
+2
+
+0;
+
+(12)
+
+and an incentive to not invest when told to not invest if
+1
+(1
+2
+
+pB ) +
+
+1
+(1
+2
+
+pG ) x +
+
+1
+(pB
+2
+
+12
+
+rB + pG
+
+rG ) "
+
+0:
+
+Since x < 1, (12) is always the binding constraint and - for j"j su¢ ciently close to 0 - we can rewrite it
+by the same reasoning as in Section 2.1.1 as
+pB
+x
+
+pG
+
+"
+(rB + rG ) .
+x
+
+(13)
+
+Now maximizing the sum of the probabilities of each …rm investing corresponds to maximizing pB , (or
+pB + pG , but we will have pG = 1 always) subject to (13). For …xed x < 1 and j"j
+
+0, it is clearly
+
+optimal to have …rms always invest when the state is good (so pG = 1 and rG = 1) and it is not possible
+to get both …rms to always invest when the signal is bad.
+If " > 0, (13) implies that it is optimal to choose rB as large as possible given pB . Thus we will set
+rB = pB . Substituting these variables into expression (13), we have
+pB
+x
+
+1
+
+"
+(pB + 1) ,
+x
+
+and so it is optimal to set
+pB = rB =
+
+x+"
+1 "
+
+and we can summarize the optimal decision rule in the following table:
+=B
+
+invest
+
+not invest
+
+invest
+
+x+"
+1 "
+
+0
+
+not invest
+
+0
+
+1 x 2"
+1 "
+
+=G
+
+invest
+
+not invest
+
+invest
+
+1
+
+0
+
+not invest
+
+0
+
+0
+
+This decision rule entails a public signal: there is common certainty among the …rms that they always
+observe the same signal.
+If " < 0, it remains optimal to have both …rms always enter when the state is good (pG = rG = 1).
+But now we want to minimize rB given (pB ; pG ; rG ). To reduce cases, let us assume that x > 21 and
+restriction attention to j"j
+
+x
+
+1
+2 . In this case, it will be optimal to set rB = 0.
+
+Substituting these
+
+expressions into (13), we have
+1
+
+pB
+x
+
+"
+.
+x
+
+Thus we will now have
+pB = x + "
+and we can summarize the optimal decision rule in the following table:
+=B
+
+invest
+
+not invest
+
+invest
+
+0
+
+x+"
+
+not invest
+
+x+"
+
+1
+
+2x
+
+=G
+
+2"
+13
+
+invest
+
+not invest
+
+invest
+
+1
+
+0
+
+not invest
+
+0
+
+0
+
+:
+
+Under this decision rule, …rms told to invest know neither whether the state is good or bad, nor if the
+other …rm is investing or not. Thus signals are private to each …rm. Given that - in the bad state - each
+…rm will invest with (roughly) probability x and will not with (roughly) probability 1
+
+x, the above
+
+information structure minimizes the unconditional correlation of the signals across …rms (or equivalently
+minimizes the negative correlation conditional on the bad state.)
+Strategic complementarities increase the private return from investing if the other player invests
+as well. Below we display the set of investment probabilities that can be attained by the government
+while varying the size of the strategic e¤ect ". As the strategic e¤ect " increases, the boundaries of
+the investment probabilities attainable by the government shift outwards as illustrated in Figure 3. As
+the strategic complementarity increases (or strategic substitutability decreases), the government can
+support a larger probability of investment in both states. The intermediate case of " = 0 reduces to the
+case of single player, and hence reduces to the area depicted earlier in Figure 1.
+Insert Figure 3: Investment Probability with Negative or Positive Strategic Term ".
+
+2.1.4
+
+Many Players with Prior Information
+
+We analyzed the case of two players with prior information in Bergemann and Morris (2016a). Here, we
+illustrate this case without formally describing it. As in the single player case, an increase in players’
+prior information limits the ability of the designer to in‡uence the players’ choices. Consequently,
+the impact of prior information on the set of attainable investment probabilities with many players is
+similar to one player case. In Figure 4 we illustrate the set of attainable investment probabilities under
+increasing prior information with strategic complementarities. The strategic complementarities gives
+rise to a kink in the set of attainable probabilities (pB ; pG ) unlike in the single player case depicted
+earlier in Figure 2.
+Insert Figure 4: Investment Probability with Two Players with Prior Information,
+with Strategic Term "=3/10.
+
+14
+
+2.2
+
+Issues in Information Design illustrated by the Examples
+
+Let us draw out the signi…cance of these examples. One basic point that has been extensively highlighted
+(e.g., by Kamenica and Gentzkow (2011) and the following Bayesian persuasion literature) is that when
+there is a con‡ict between the designer and the player(s), it will in general be optimal for the designer
+to obfuscate: that is, hide information from the player(s) in order to induce him to make choices that
+are in the designer’s interests. And conditional on obfuscation being optimal, it may not be optimal to
+hide all information, but will in general be optimal to partially reveal information. This issue already
+arises in the one player with no prior information case.
+In this section, we draw out a number of additional insights about information design that emerged
+from the examples. First, we observe that information will be supplied to players publicly or privately
+depending on whether the designer would like to induce positive or negative correlation in players’
+actions; we also discuss designers’ possible intrinsic or instrumental reasons for wanting positive or
+negative correlation. Second, we note that in our one player with prior information case, more prior
+information constrains the ability of the designer to control outcomes; we discuss the many player
+generalization of this observation. Third, we note that the information design problem can be used
+to address many important questions where there is not a literal information designer. In particular,
+understanding the set of outcomes that an information designer can induce corresponds to identifying
+that set of all outcomes that could arise for some information structure. Finally, we discuss the elegant
+approach of using "concavi…cation" to characterize and provide insight into the information designer’s
+problem; we did not use this above, rather we gave a purely linear programming representation of the
+problem. We discuss an extension of the concavi…cation approach to the many player case but note
+limitations of the concavi…cation approach, both in the one player case and (even more) in the many
+player case.
+2.2.1
+
+Public versus Private Signals; and Instrumental versus Intrinsic Motivation for
+Preferences Over Correlation
+
+An information designer will often have preferences over whether players’ actions are correlated with
+each other, or not. The many players without prior information case illustrates the point that if the
+designer wants players’actions to be correlated, it will be optimal to give them public signals and if he
+wants players’actions to be uncorrelated, he will give them private signals. However, there are di¤erent
+reasons why the designer might want to induce positive or negative correlation in actions.
+In our analysis of the two player without prior information case, we made the assumption that the
+
+15
+
+information designer wanted to maximize the sum of the probabilities that each player invests. Thus
+we assumed that the information designer did not care whether players’actions were correlated or not.
+Put di¤erently, we assumed that the information designer had no intrinsic preferences over correlation.
+Yet, despite this assumption we observed that the information designer wants - for instrumental reasons
+- to induce correlated behavior when players’actions are strategic complements, and to induce negative
+correlation when there were strategic substitutes among the players. This in turn generated the insight
+that the designer would like to generate public signals when there are strategic complementarities and to
+generate private signals when there are strategic substitutes. The reason for this instrumental objective
+is that under strategic complements, the designer can slacken obedience constraints by correlating play,
+with the opposite mechanism under strategic substitutes.
+We now describe three environments where there will be only instrumental concerns about correlation. First, Mathevet, Perego, and Taneva (2016) consider an environment with one-sided strategic
+complementarities. The designer cares about the action of a …rst player who cares about the action of
+a second player who has no strategic concerns, i.e., does not care about the …rst player’s action. In
+this case, the information designer does not have intrinsic preferences over correlation (because she only
+cares about the …rst player’s action) but has an instrumental incentive to correlate actions because she
+can use information design to in‡uence the action of the second player and correlate behavior in order
+to slacken the …rst player’s obedience constraint. In the formulation of Mathevet, Perego, and Taneva
+(2016), the information designer is a manager, the …rst player is a worker and the second player is a
+supervisor.
+Second, Bergemann and Morris (2016a) consider an environment with two sided strategic complementarities but where a non-strategic payo¤ externality removes intrinsic preferences over correlation.
+To illustrate this, suppose that we take our many player with no prior information example from Section
+?, but now suppose that - in addition to the existing payo¤s - each …rm would like the other …rm to
+invest. In the following payo¤ table, we are assuming that each …rm gets an extra payo¤ of z > 0 if the
+other …rm invests:
+=B
+
+invest
+
+invest
+not invest
+
+not invest
+
+1+"+z
+z
+
+1
+0
+
+=G
+
+invest
+
+not invest
+
+invest
+
+x+"+z
+
+x
+
+not invest
+
+z
+
+0
+
+Observe that this change in payo¤s has no impact on the …rms’best responses: neither …rm can in‡uence
+whether the other …rm invests. But now suppose that the government is interested in maximizing the
+sum of the …rms’payo¤s. Consider the case that z is very large. As z becomes larger and larger, the
+16
+
+government’s objective will approach maximizing the sum of the probabilities that each …rm invests. In
+this sense, the government’s instrumental preference for correlation is micro-founded in the benevolent
+government’s desire to make each …rm invest in the interests of the other …rm. This example illustrates
+a distinctive point about strategic information design. Recall that in the one player case, it is always
+optimal for the designer to fully reveal all information in order to allow the player to take an action
+that is optimal given their shared preferences. In the many player case, however, the players themselves
+may not act in their joint interest for the usual (non-cooperative strategic) reasons. In this case - as in
+the above example - a benevolent information designer might want to obfuscate information.
+For a last case with only instrumental concerns over correlation, Bergemann and Morris (2013b)
+considered quantity (Cournot) competition in a market, where the information designer wants to maximize the sum of the …rms’payo¤s, i.e., the industry pro…ts.6 A continuum of …rms choose output where
+there is uncertainty about the intercept of the demand curve, i.e., the level of demand. In this case,
+the information designer would like the …rms’total output to be correlated with the level of demand,
+but total pro…ts do not depend on the correlation of …rms’output conditional on the level of aggregate
+output. However, …rms would like their actions to be negatively correlated (because the game is one
+of strategic substitutes); but they too would also like output to be correlated with the state. The information designer can induce players to make total output choices that are closer to the optimal level
+but allow them to negatively correlate their output. In the optimal outcome (for some parameters),
+…rms observe conditionally independent private signals about the state of demand, trading o¤ these two
+objectives.7
+Having considered the case where the information designer cares about correlation for instrumental
+but not intrinsic reasons, we can also consider the opposite case where the information designer cares
+about correlation for intrinsic but not instrumental reasons. We can illustrate this case with the example
+of Section 2.1.3 also. Suppose that the payo¤s remain the same, but now the government would like to
+maximize the probability that at least one …rm invests, so that the government has intrinsic preferences
+over correlation. But in this case - under our maintained assumption that x > 12 - it is possible to
+6
+
+This corresponds to a large literature on information sharing in oligopoly following Novshek and Sonnenschein (1982).
+
+7
+
+In this setting, the information designer would like to induce …rms to lower output on average, but cannot do so. The
+
+designer can only in‡uence correlation.
+
+17
+
+ensure that one …rm always enters. Consider the following decision rule:
+=B
+
+invest
+
+not invest
+
+invest
+
+0
+
+1
+2
+
+not invest
+
+1
+2
+
+0
+
+=G
+
+invest
+
+not invest
+
+invest
+
+1
+
+0
+
+not invest
+
+0
+
+0
+
+If " were equal to 0, this decision rule would be obedient, with all constraints holding strictly: a …rm told
+to not invest would have a strict incentive to obey, since it would know that the state was bad; a …rm told
+to invest would have a strict incentive to obey, since its expected payo¤ will be 23 x
+
+1
+2
+
+> 0. Because
+
+the obedience constraints hold strictly, this decision rule will continue to be obedient, for positive or
+negative ", as long as j"j is su¢ ciently small. Note that the government’s objective, of maximizing the
+probability that at least one …rm invests, necessitates private signals. Ely (2017) describes a setting
+like this example where private signals are optimal for this intrinsic reason. Bergemann, Heumann,
+and Morris (2015) show that in a world where each player wants to set his action equal to the sum of
+a common shock and an idiosyncratic shock, aggregate volatility is maximized when players observe
+signals that are a weighted sum of the shocks, but with more weight on the common shock. This is true
+in a setting where there is no strategic interaction between the players (a special case in that paper),
+and information cannot in‡uence each player’s average action, but only their correlation.8 Arieli and
+Babichenko (2016) provides an elegant characterization of optimal information design when players
+have binary actions and the information designer has an intrinsic motive for correlation, but there is no
+strategic interaction - and thus no instrumental motive for caring about correlation. With supermodular
+payo¤s, public signals are optimal whereas with submodular payo¤s private signals are optimal.
+In many cases, the designer’s preferences over correlation will not be exclusively instrumental or
+intrinsic. In the paper described above on bounding aggregate variance (Bergemann, Heumann, and
+Morris (2015)), we also consider the strategic case where …rms do care about other …rms’ level of
+output. In this case, strategic substitutes will act as a constraint on the ability of the designer to
+maximize aggregate volatility, and he will have an incentive to make information more private than he
+otherwise would.
+8
+
+In this work and others, we have considered the information design problem in basic games with linear best responses
+
+and normally distributed payo¤ states, and where we restrict attention to normal and symmetric information structures.
+These works thus illustrate information design ideas within a rich but not complete general class of information structures.
+
+18
+
+2.2.2
+
+Bayes Correlated Equilibrium Outcomes
+and Information Design without Concavi…cation
+
+We have described a "two step" approach to solving information design problems. First, provide a linear
+algebraic characterization of implementable outcomes, meaning the set of joint distributions over actions
+and states that can be induced by some information structure that the information designer might choose
+to give the players. The set of implementable outcomes is exactly the set of Bayes correlated equilibria
+(BCE). Second, we select among the BCE the one that is optimal for the information designer. This
+second step implicitly identi…es the optimal information structure. The …rst problem is solved by …nding
+the set of outcomes that satisfy a set of linear (obedience) constraints. The second problem corresponds
+to maximizing a linear objective subject to linear constraints. Both steps of this problem are well
+behaved. There is a separate reason why we might pursue this two step procedure: for many questions
+of interest, it is critical to …rst understand the set of BCE outcomes. The next two sub-sections describe
+two contexts where the structure of the BCE outcomes is the focus of the analysis.
+However, there is an important "one step" approach to information design: concavi…cation. In the
+one person problem, we can identify the payo¤ that the information designer receives for any given
+probability distribution over state, subject to the fact that the player will make an optimal choice. But
+the information designer has the ability to split the player’s beliefs about the state, i.e., supply the
+player with information that will induce any set of posteriors over the states of the world, subject to
+the constraint that the prior over states is a convex combination of those posteriors. This implies that
+the set of attainable payo¤s for the information designer, as a function of prior distributions of states,
+is the concavi…cation of the set of payo¤s of the designer in the absence of information design. This
+concavi…cation argument (building on Aumann and Maschler (1995)) is the focus of both Kamenica
+and Gentzkow (2011) and the large and important literature inspired by their work. We call this a
+"one step" approach, because it avoids the …rst step of characterizing the BCE, and works from the
+beginning with the information designer’s objective. The many players case is signi…cantly harder than
+the single player case, as it is no longer the set of probability distributions over states that matter, but
+rather the set of (common prior) subsets of the universal type space of Mertens and Zamir (1985) that
+are relevant for strategic analysis. Mathevet, Perego, and Taneva (2016) describe this generalization of
+concavi…cation for the many player case.
+Concavi…cation and its many player analogue are important for two reasons. First, they o¤er
+structural insights into the information design problem. Second, they provide a method for solving
+information design problems. As a solution method, the concavi…cation approach and its generalization
+
+19
+
+do not always help without some special structure. Our own work on (one player) price discrimination,
+Bergemann, Brooks, and Morris (2015), relies heavily on linear programming; but while the solution
+must correspond to the concavi…cation of an objective function, it is very di¢ cult to visualize the
+concavi…cation argument or provide a proof using it. Although linear programming methods do not
+always help either: in our work on (many player) auctions, Bergemann, Brooks, and Morris (2017),
+neither generalized concavi…cation nor linear programming results are used in stating or proving our
+results (although linear programming played an important role in supplying conjectures for the results).
+2.2.3
+
+Tightening Obedience Constraints and Bayes Correlated Equilibrium Outcomes
+
+There is never any reason for an information and/or mechanism designer to provide players with more
+information than that they will use in making their choices. Giving more information will impose
+more incentive constraints on players’choices, and thus reduce the ability of an information designer to
+attain outcomes that are desirable for him. In dynamic mechanism design, giving players information
+about others’ past reports will tighten truth-telling constraints. Myerson (1986) emphasizes that a
+similar observation is true in dynamic problems of communication in games where the extra information
+imposes more obedience constraints. Recall that in our language, communication in games corresponds
+to information design when the information designer has no information of her own.
+Our examples have illustrated this general observation: giving players more information will impose
+more obedience constraints and thus reduce the set of (BCE) outcomes that can occur. However, the
+examples illustrate a more subtle point that is the focus of Bergemann and Morris (2016a): it is not
+only adding additional signals that reduce the set of outcomes that can occur; it is also possible to
+construct a partial order on arbitrary information structures that exactly characterizes the notion of
+"more informed" that corresponds to adding more obedience constraints.
+This was illustrated in our one player with prior information example. In that example, the set
+of implementable BCE outcomes shrunk in size as the accuracy q of the prior information increased
+(as illustrated in Figure 2). As q increases, we are intuitively giving the player more information but
+not by simply giving the player more signals. We will now informally describe how this observation
+can be generalized in many directions. First, this result will continue to hold in the one player case
+for more general games (i.e., decision problems) and orderings on information. In the one player case,
+an information structure reduces to an experiment in the sense of Blackwell (1951), (1953). If an
+experiment is more informative than another in Blackwell’s sense, then - in any decision problem - the
+set of BCE outcomes for a given experiment is smaller under the more informative experiment. There
+
+20
+
+is also a converse. If an experiment is not more informative than another, then one can …nd a decision
+problem and an outcome that is a BCE for the …rst experiment but not for the second.
+Taken together, there is now an elegant set of connections between Blackwell’s theorem and the
+information design problem. Blackwell describe a natural statistical ordering on experiments: one
+experiment is more informative than another if the former is su¢ cient for the latter, meaning that
+the latter can be attained by adding noise to the former. We have described an incentive ordering on
+experiments: one experiment is more incentive constrained than another if the set of BCE outcomes
+under the former experiment is smaller (re‡ecting the tighter obedience constraints) in every decision
+problem (or one player basic game). Generalizing the above example, one can show in general that this
+incentive ordering is equivalent to the statistical ordering. (This result is the one player special case of
+the main result (for many player information structures) from Bergemann and Morris (2016a).)
+The incentive ordering is conceptually di¤erent from the feasibility ordering studied in Blackwell
+(1951), (1953). Say that one experiment is more valuable than another if the set of outcomes (joint
+distributions over actions and states) that can be induced by decision rules mapping signals to action
+is larger - in any decision problem - under the …rst experiment. Nonetheless, one can show that there
+is a three way equivalence between (i) the su¢ ciency ordering; (ii) the more valuable ordering; and (iii)
+the incentive constrained ordering. Blackwell’s theorem shows an equivalence between (i) and (ii). The
+result described in the previous paragraph showed the equivalence between (i) and (iii). Bergemann and
+Morris (2013a) discuss the trichotomy of statistical, feasibility and more incentive constrained orderings,
+as well as the one player special case, in more detail.
+The de…nition of the incentive ordering generalizes to the many player case. Bergemann and Morris
+(2016a) characterize the many player statistical ordering (individual su¢ ciency) that is equivalent to
+the incentive ordering in the many player case. Individual su¢ ciency is de…ned as follows. Fix two
+information structures. A combined information structure is one where players observe a pair of signals,
+corresponding to the two information structures, with the marginal on signal pro…les of each information
+structure corresponding to the original information structures. Thus there are many combinations of
+any two information structures, corresponding to di¤erent ways of correlating signals across the two
+information structures. One information structure is now individually su¢ cient for another if there is a
+combined information structure such that each player’s signal in the former information structure is a
+su¢ cient statistic for his beliefs about the state of the world and others’signals in the latter information
+structure. A subtle feature of this ordering is that one information structure being individually su¢ cient
+for another neither implies nor is implied by the property that players’joint information in the former
+case is su¢ cient (in Blackwell’s sense) for their joint information in the latter case. But the resulting
+21
+
+ordering has a number of natural properties. Two information structures are individually su¢ cient for
+each other if and only if they correspond to the same beliefs and higher order beliefs about states, and
+di¤er only in the redundancies of the type identi…ed in Mertens and Zamir (1985). One information
+structure is individually su¢ cient for another only if we can get from the latter to the former by
+providing additional information and removing redundancies.
+How does this relate to a many player feasibility ordering? Suppose that we consider belief invariant
+decision rules, where a player’s recommended action under the decision rule does not reveal more
+information to a player about the state and other players’signals than he had before the recommendation
+(belief invariance is discussed more formally in Section 3.4). Say that an information structure is more
+valuable than another if the set of outcomes (joint distribution over action pro…les and states) that can
+be induced by belief invariant decision rules is larger - in all basic games - under the former information
+structure. Now Bergemann and Morris (2016a) show that there is a equivalence in the many player case
+between individual su¢ ciency and more valuable orderings. In Section 3.4, we will say that a decision
+rule is a belief invariant Bayes correlated equilibrium if it satis…es obedience and belief invariance. Now
+if we look at games of common interests (where players have identical payo¤s), an information structure
+is more valuable than another if it gives a higher (common) payo¤ in the best belief invariant Bayes
+correlated equilibrium. One can show that our individual su¢ ciency ordering is equivalent to the more
+valuable than ordering. This result closely follows Lehrer, Rosenberg, and Shmaya (2010), who give a
+statistical characterizations of the more valuable than ordering under di¤erent versions of incomplete
+information correlated equilibrium.
+A common observation is that in strategic situations, there is no many player analogue of Blackwell’s
+ordering: see, for example, Neyman (1991), Gossner (2000), and Bassan, Gossner, Scarsini, and Zamir
+(2003). The above discussion provides a interesting perspective. Intuitively, there are two e¤ects of
+giving players more information in a strategic setting. First, it allows players to condition on more
+informative signals, and thus - in the absence of incentive constraints - attain more outcomes. Second,
+more information can reduce the set of attainable outcomes by imposing more incentive constraints
+on players’behavior. The value of information in strategic situations is ambiguous in general because
+both e¤ects are at work. Following Lehrer, Rosenberg, and Shmaya (2010), we can abstract from the
+second (incentive) e¤ect by focussing on common interest games. Here, more information in the sense
+of individual su¢ ciency translates into more attainable outcomes. But looking at Bayes correlated
+equilibria abstracts from the …rst (feasibility) e¤ect, by allowing the information designer to supply any
+information to the players. Now, more information in the sense of individual su¢ ciency translates into
+less attainable outcomes.
+22
+
+2.2.4
+
+Metaphorical Information Design: Robust Predictions and Maxmin Objectives
+
+Mechanism design sometimes has a literal interpretation. Thus - in some settings - a seller may be
+able to commit to an auction for selling an object. In other settings, the mechanism design problem is
+studied even though there does not exist a mechanism designer able to commit. For example, suppose
+that we are interested in a buyer and seller bargaining over an object. There may be no rules for how
+the players bargain and no one who could enforce such rules. Nonetheless, Myerson and Satterthwaite
+(1983) studied what would be the optimal mechanism for realizing gains from trade, because it bounds
+what could happen under any bargaining protocol that ends up being used. In this sense, there is not
+a literal mechanism designer, but we are rather using the language of mechanism design for another
+purpose.
+Similarly for information design. The simplest interpretation of the information design problem
+is that there is an actual information designer who can commit to choosing the players’ information
+structure in order to achieve a particular objective. In many contexts, this commitment assumption
+may not be plausible.9
+In both cases, the role of the "designer" may be metaphorical rather than literal. In our own
+applications of information design, we have mostly been interested in such problems. Consider an
+information designer who minimizes revenue in a …rst price auction, for a given symmetric distribution
+of values. By …nding the solution to this problem, we are identifying a lower bound on revenue for the
+seller that holds across all information structures (Bergemann, Brooks, and Morris (2017)). Consider
+an information designer who seeks to maximize the variance of aggregate output in an economy where
+players face common and idiosyncratic shocks. By …nding a solution to this problem, we identify an
+upper bound on the variance of aggregate output (Bergemann, Heumann, and Morris (2015)).
+More generally, the set of Bayes correlated equilibria characterizes the set of outcomes that can arise
+with extra information, for a given basic game and prior information structure. If there are properties
+that hold for all Bayes correlated equilibria, we have identi…ed predictions that are robust to the exact
+information structure. In our work on third degree price discrimination (Bergemann, Brooks, and Morris
+(2015)), we characterize the set of welfare outcomes that can arise across all information structures (or
+market segmentations). Thus we show that there are essentially no robust predictions about welfare.
+On the other hand, it is a robust prediction in our work on auctions that revenue can at least attain
+a certain strictly positive lower bound. In Bergemann, Brooks, and Morris (2017), we highlight this
+9
+
+Forges and Koessler (2005) observe that conditioning of players’exogenous information makes sense if players’types
+
+are ex post veri…able.
+
+23
+
+interpretation of the information design problem.
+Caplin and Martin (2015) adopt a similar, metaphorical, approach to the recovery of preference
+orderings and utility from choice data. They allow for the possibility that the decision maker is subject
+to imperfect perception while satisfying Bayes law and iterated expectation. They ask what they can
+learn from the observed choice data about the underlying preference pro…le without making strong
+assumptions on the information available to the decision-maker at the moment of choice. In related
+work, Caplin and Dean (2015) develop a revealed preference test giving conditions under which apparent
+choice "mistakes" can be attributed to optimal costly information acquisition by the player in the
+presence of imperfect information.
+
+3
+
+Information Design with Private Information and the Relation to
+Mechanism Design
+
+In the previous section, we considered the scenario where the designer knows not only the true state
+but also the players’ prior information about the state. We now consider what happens when the
+information designer does not have access to players’prior information but still knows the state. Here
+we consider two alternative assumptions about the designer’s ability to condition recommendations on
+players’prior information. If the designer does not know the players’prior information but can elicit
+their information, then we have information design with elicitation. If the designer does not know the
+players’information and cannot elicit it, we have information design without elicitation.
+
+3.1
+
+Information Design when Players’Prior Information is not known to the Designer
+
+When the information designer cannot observe players’prior information, she may or may not be able
+to ask the players about it. In the former case of information design with elicitation, she will be able
+to condition the information that she provides on reports from players about their information. In the
+latter case of information design without elicitation, she can only send information that does not depend
+of players’prior information.
+In the case of information design with elicitation, the revelation principle still implies that we can
+restrict attention to the case where the information sent by the information designer consists of action
+recommendations. However, we will now require an incentive compatibility condition that entails truthtelling as well as obedience, so that the information designer can only condition on a player’s signal if
+
+24
+
+the player can be given an incentive to report it truthfully. Following Myerson (1991) (Section 6.3),
+we can think of the information designer choosing a decision rule
+can choose a deviation
+
+i : Ai ! Ai with the interpretation that
+
+:T
+
+!
+
+(A) but each player
+
+i (ai ) is the action chosen by player i
+
+if the information designer recommended action ai . The decision rule
+
+is incentive compatible if each
+
+player does not have an incentive to deviate:
+De…nition 2 (Incentive Compatible)
+A decision rule
+
+:T
+
+!
+
+(A) is incentive compatible for (G; S) if for each i = 1; : : : ; I and
+
+ti 2 Ti ,
+
+(ai ;a
+
+X
+
+i )2A; t i 2T i ;
+
+X
+
+(ai ;a
+
+i )2A; t i 2T i ;
+
+for all t0i 2 Ti and
+
+i : Ai ! Ai .
+
+ui ((ai ; a i ); ) ((ai ; a i )j(ti ; t i ); ) ((ti ; t i )j ) ( )
+2
+
+ui (( i (ai ); a i ); ) ((ai ; a i )j(t0i ; t i ); ) ((ti ; t i )j ) ( )
+2
+
+The displayed inequality will be referred to as player i’s type-ti incentive constraint. It ensures that
+player i, after observing signal ti , …nds it optimal to report his signal truthfully and then takes whichever
+action the designer recommends. Thus it builds in both truth-telling and obedience. In addition, the
+notion of incentive compatibility requires that the decision rule is immune to "double deviations" in
+which the player misreports his type and disobeys the recommendation by the designer. Thus, incentive
+compatibility implies but is not implied by separately requiring truthtelling and obedience.
+Proposition 2 An information designer with elicitation can attain a decision rule if and only if it is
+incentive compatible.
+In the case of information design without elicitation, the designer cannot condition on players’
+types, but can o¤er a vector of recommendations to each player, where the individual entry is the
+recommendation to a speci…c type of the player. We denote player i’s set of pure strategies by Bi = Ai Ti
+with generic element bi : Ti ! Ai . We denote by B =
+
+I B
+i=1 i
+
+and a generic element is given by
+
+b = (b1 ; : : : ; bI ) 2 B. We will abuse notation somewhat by writing b(t) or (bi (ti ); b i (t i )) to mean
+(b1 (t1 ); : : : ; bI (tI )) 2 A:
+We are interested in strategy recommendations
+
+25
+
+:
+
+!
+
+(B).
+
+De…nition 3 (Public Feasibility)
+A decision rule
+:
+
+!
+
+: T
+
+!
+
+(A) is publicly feasible if there exists a strategy recommendation
+
+(B) such that for each a 2 A, t 2 T , and
+(ajt; ) =
+
+2
+X
+
+with (tj ) > 0,
+(bj ):
+
+fb2B:b(t)=ag
+
+In this case, we say that
+
+is induced by .
+
+When I = 1, public feasibility is a vacuous restriction. Every decision rule
+strategy recommendation
+
+is induced by the
+
+given by
+(bj ) =
+
+Y
+
+(b(t)jt; ):
+
+t2T
+
+Under this choice of , the components b(t) of the strategy for di¤erent types t are drawn independently.
+When I > 1, however, public feasibility is a substantive restriction. By recommending to a particular
+player a strategy rather than an action, the designer can condition that player’s action on his type. By
+judiciously choosing a distribution over B, the designer can even correlate the players’strategies. But
+she cannot correlate one player’s strategy on another player’s type.
+We are not interested in all strategy recommendations, but rather those that are obedient in the
+sense de…ned earlier in De…nition 1. Below we adapt the de…nition to account for the larger space of
+strategies, b, rather than actions, a.
+De…nition 4 (Publicly Feasible Obedience)
+A decision rule
+
+:T
+
+!
+
+ated strategy recommendation
+ti 2 Ti , and bi 2 Bi ,
+b
+
+b
+
+for all a0i 2 Ai .
+
+(A) is publicly feasible obedient if it is publicly feasible and the associ:
+
+X
+
+i 2B i ;t i 2T i ;
+
+X
+
+i 2B i ;t i 2T i ;
+
+!
+
+(B) satis…es obedience in the sense that for each i = 1; : : : ; I,
+
+ui ((bi (ti ); b i (t i )); ) ((bi ; b i )j ) ((ti ; t i )j ) ( )
+2
+
+ui ((a0i ; b i (t i )); ) ((bi ; b i )j ) ((ti ; t i )j ) ( )
+2
+
+The displayed inequality will be referred to as player i’s (ti ; bi )- publicly feasible obedience constraint.
+It ensures that player i, after observing signal ti and receiving the recommendation bi , …nds it optimal
+to take the action bi (ti ) prescribed by the strategy bi for his type ti .
+Proposition 3 An information designer without elicitation can attain a decision rule if and only if it
+is publicly feasible obedient.
+26
+
+3.2
+
+The Investment Example Re-Visited
+
+We reconsider the investment example introduced earlier in Section 2.1 but now allow the …rm to possess
+private information. The government does not know the realization of the signal that the …rm observes
+but can elicit it. So we have a screening problem where the government o¤ers a recommendation which
+induces a probability of investing as a function of the reported signal and the true state. Kolotilin, Li,
+Mylovanov, and Zapechelnyuk (2015) refer to this informational environment as "private persuasion".10
+We now have three sets of constraints. First, each type has to truthfully report his signal; second,
+each type has to be willing to follow the recommendation, the obedience constraints; and third, double
+deviations, by means of misreporting and disobeying at the same time must not be pro…table.
+A decision rule now speci…es the probability of investment p t conditional on the true state
+
+2
+
+fB; Gg and the reported type t 2 fb; gg. Thus, as before in Section 2.1.2, a decision rule is now a
+vector p t = (pBb ; pBg ; pGb ; pGg ). The information designer o¤ers a recommendation (stochastically) as
+a function of the true state and the reported type. A truthful reporting constraint is described below
+for a good type t = g. The obedience conditions are as in Section 2.1.2 in the absence of private
+information. The truthtelling constraint for the good type t = g is:
+qpGg x
+
+(1
+
+q) pBg
+
+qpGb x
+
+(1
+
+q) pBb
+
+(15)
+
+q) pGg x
+
+qpBg :
+
+(16)
+
+and correspondingly for the bad type t = b :
+(1
+
+q) pGb x
+
+qpBb
+
+(1
+
+By misreporting and then following the resulting recommendation afterwards, each type can change the
+probability of investing. We can write the above two truthtelling constraints in terms of a bracketing
+inequality:
+1
+
+q
+q
+
+x (pGg
+
+pGb )
+
+(pBg
+
+pBb )
+
+q
+1
+
+q
+
+x (pGg
+
+pGb ) :
+
+(17)
+
+These inequalities are useful to highlight how in the bad state the di¤erential in the recommendation
+for bad and good type are bounded, below and above , by the di¤erential in the recommendation in the
+good state. Notice also that since
+1
+q
+10
+
+q1
+q
+<
+x;
+x
+1 q
+
+The name "private persuasion" is motivated by an alternative interpretation: there is a continuum population cor-
+
+responding to the player, and types correspond to elements of the population. Bergemann, Bonatti, and Smolin (2015)
+analyze this environment with monetary transfers.
+
+27
+
+the above bracketing inequality requires that
+(pGg
+
+pGb )
+
+0; (pBg
+
+pBb )
+
+0;
+
+thus the conditional probability of investing has to be larger for the good type than the bad type in
+either state.11
+With these additional constraints, the set of outcomes that can arise in equilibrium under information
+design with elicitation is weakly, and typically strictly, smaller than under an omniscient designer, i.e.,
+the case in the previous section where the designer knows the players’prior information. The truthtelling
+constraints impose restrictions on how the di¤erences in the conditional probabilities across types can
+vary across states. These impose additional restrictions on the ability of the government to attain either
+very low or very high investment probabilities in both states as highlighted by equation (17).
+Figure 5 illustrates the case where x = 0:9 and q = 0:7; the dark red region corresponds to the
+outcomes that can arise under information design with elicitation; adding in the pink region, we get
+back to the triangle that corresponds to omniscient information design where the designer knows players’
+prior information.
+Insert Figure 5: Investment Probability with Private Information.
+We could also consider a government, who does not know the signal of the …rm and cannot even
+elicit it. Kolotilin, Li, Mylovanov, and Zapechelnyuk (2015) call this scenario "public persuasion." Such
+information design without elicitation has been the focus of the recent literature.
+Clearly, the designer can replicate any decision rule without elicitation with a decision rule with
+elicitation. This inclusion holds without any restrictions on the state space, the number of players, or
+the players’actions. In the speci…c investment example above, with a single player, two states, and two
+actions, the converse happens to be true as well. That is, the information designer can attain any decision
+rule with elicitation with one that does not use elicitation. In other words, in the binary setting and
+with a single player, there is no need for elicitation. The designer can induce any incentive compatible
+decision rule by recommendations alone. We state and proof these two results in the appendix as
+Proposition 5 and 6.
+Kolotilin, Li, Mylovanov, and Zapechelnyuk (2015) showed such an equivalence under a di¤erent set
+of assumptions. It breaks down as soon as any one of the three hypotheses regarding the environment
+11
+
+As the di¤erence in the probability of investing has to be nonnegative in both states, it can be shown that the possibility
+
+of double deviations does not impose any additional restriction on the behavior of the player. This is a special feature of
+the the present binary action, binary state environment.
+
+28
+
+fails to hold. We illustrate the failure of the equivalence result with a minor generalization of the
+investment example. In particular, in a single player environment, we allow the player to either consider
+a small or a large investment. For completeness, we present examples where one of the other two
+hypotheses fails in the appendix.
+We end this section with an extension of the earlier investment example that allows us to observe
+the proper nesting between the set of outcomes without prior information, with prior information but
+an omniscient designer, with elicitation and …nally without elicitation. For the purpose of this example,
+it will be su¢ cient to focus on the case of a single player.
+Consider the basic investment example with I = 1,
+
+= fB; Gg, uniform prior, and symmetric types
+
+that are correct with probability q > 1=2. We now add an additional investment decision, to invest
+small, to the set of feasible actions of the player. The decision to invest small comes with a higher
+rate of return but smaller total return than the (regular) investment decision. The payo¤ from a small
+investment is
+
+1=2 in the bad state and y 2 (x=2; x) in the good state:
+bad state B
+
+good state G
+
+invest
+
+1
+
+x
+
+invest small
+
+1
+2
+
+y
+
+not invest
+
+0
+
+0
+
+For simplicity, in our subsequent decision we restrict attention to decision rules that put zero probability
+on the small investment in equilibrium. We note that the small investment decision still plays a role in the
+characterization of incentive compatible decision rules as it is a feasible action to the player. It will hence
+generate additional obedience constraints that the designer has to respect as the player has now two
+possible deviations from the recommended action, one of which is invest at a small scale. The decision
+rules –restricted to invest and not invest –can still be represented by a vector p t = (pBb ; pBg ; pGb ; pGg )
+that records the probability of investing.
+As a benchmark, …rst suppose the player has no prior information. Then a decision rule that never
+recommends the small investment can be represented as a pair (pB ; pG ) 2 [0; 1]2 that speci…es the
+probability of the large investment in each state. When the …rm has no prior information, there are two
+binding obedience constraints, one for the big investment against the small investment:
+pG x
+
+pB
+
+pG y
+
+29
+
+1
+pB ;
+2
+
+(18)
+
+and one for the no investment against the small investment:12
+0
+
+(1
+
+pG )y
+
+1
+(1
+2
+
+pB ) :
+
+(19)
+
+The equilibrium regions are depicted in Figure 6. If the …rm has no prior information, the government
+faces only the above two constraints. The set of attainable decision rules is described by the light red
+area. In contrast to the setting with two investment levels analyzed earlier, there is now a kink in the
+area of attainable decision rule that re‡ects a change in the binding obedience constraint, from zero
+investment to small investment.
+If we consider the case in which the …rm has prior information, then we consider the three di¤erent
+communication protocols for the government. An omniscient designer faces the obedience constraints
+that we analyzed earlier in Section 2.1.2, except that now the …rm has two possible ways to disobey.
+If the government does not observe the signal, but can elicit the information from the …rm then we
+have truthtelling constraints as described by (15) and (16). Finally, a designer without elicitation faces
+additional obedience constraints that rule out deviations conditional on a particular strategy recommendation. The corresponding areas in Figure 6 illustrate that the sequence of additional constraints from
+omniscient to elicitation to no elicitation imposing increasingly more restrictions on the government and
+hence generate a sequence of strictly nested sets. We already discussed how the …rst three regimes o¤er
+an increasing number of constraints. It remains to discuss the impact of elicitation. With elicitation,
+the player only learns the designer’s recommendation for one type, namely the type that he reports.
+But a designer who cannot elicit must reveal her action recommendations for all types. This enables
+a player to contemplate additional contingencies and hence deviations. With three possible actions, as
+in this example, there are two additional deviations that take advantage of this …ner information. In
+particular, the good type can disobey the recommendation to invest by deviating to invest small only
+when the designer also recommends not to invest to the bad type. Likewise, the bad type can disobey
+the recommendation not to invest by deviating to invest small only when the designer also recommends
+to invest to the high type. The additional options for the player induce further constraints on the
+information designer. Naturally, these additional deviations were not available in the binary action environment. And in fact the absence of these large set of deviations accounts for the equivalence between
+elicitation and no elicitation in the binary action and state environment.13
+12
+
+The other two possible incentive constraints, namely for the big investment recommendation not to invest all, and for
+
+no investment recommendation to invest big are supplanted by the above two.
+13
+We mentioned earlier that double deviations were not relevant in the binary environment in the sense that they do not
+add additional restrictions. This changes in the richer environment here where the communicating designer indeed faces
+additional restrictions coming from the possibility of double deviations.
+
+30
+
+We conclude with a few observations about the comparative statics with respect to the information
+structure. As the precision of the information q decreases towards 1=2, the inner three regions expand
+outwards and converge to the no prior information equilibrium set. By contrast, as the precision q
+increases towards 1, the three inner regions contract and converge to the singleton (0; 1).
+Insert Figure 6: Investment Probability under Different Information Design
+Scenarios.
+
+3.3
+
+General Mechanism Design
+
+In the introduction, we contrasted information design with mechanism design as follows:
+Consider the problem of an "information designer" who can commit to providing information
+to the players to serve his ends, but has no ability to change the mechanism (or force the
+players to take particular action choices). A mechanism here describes the set of players, their
+available actions and a mapping from action pro…les to outcomes. Contrast this "information
+design" problem with the "mechanism design" problem, where a "mechanism designer" can
+commit to a mechanism for the players to serve his ends, but has no ability to provide
+the players with any additional information (or force the players to make particular action
+choices).
+This narrow de…nition of mechanism design assumes that players have no control over their actions
+and that the mechanism designer has no information of her own to provide to the players. Myerson (1982) describes a class of Bayes incentive problems, which constitutes a very broad de…nition of
+mechanism design (see also Myerson (1987)). In this broad vision, players may have control over some
+actions e¤ecting outcomes but the mechanism designer may be able to commit to pick other outcomes
+as a function of the players’reports. For example, in many classical mechanism design problems with
+individual rationality constraints, players do have control over some actions: participation versus nonparticipation. And even if the mechanism designer may not have any information that is unavailable
+to the players, he can - via the mechanism - implicitly control the information that players have about
+each other. Myerson (1991) then labels the case where the mechanism designer has no direct control
+over outcomes "Bayesian games with communication" (Section 6.3); and the setting where the designer
+has complete control over outcomes "Bayesian collective choice problems" (Section 6.4). Thus what we
+are calling information design corresponds to Myerson’s Bayesian games with communication with the
+31
+
+proviso that the mediator brings his own information to the table, rather than merely re-distributing
+others’information.
+There is also an important literature on informed players who can commit to choosing outcomes as
+a function of messages, where they are called informed principals (Myerson (1983)). But in this setting,
+the information designer (principal) is typically assumed to be able to commit to a mechanism but can
+do so only after receiving his information; players do not interact strategically; and the principal is
+choosing the contract/mechanism; see Mylovanov and Troeger (2012), (2014) and Perez-Richet (2014)
+for recent contributions. By contrast, we have a principal who cannot pick a contract/mechanism but
+can commit to a disclosure rule prior to observing her information, in an environment with multiple
+players interacting strategically.
+
+3.4
+
+Incomplete Information Correlated Equilibrium
+
+We can also relate information design to old and new work on incomplete information correlated equilibrium. This literature describes how di¤erent communication and recommendation protocols under
+private information a¤ect the set of the attainable equilibrium outcomes. For our purpose, it is useful
+to identify two kinds of constraints in the literature on incomplete information correlated equilibrium:
+feasibility conditions (constraints on what kind of information decision rules can condition on) and incentive compatibility conditions (what decision rules are consistent with optimal behavior). In the paper
+so far, we have introduced one feasibility condition - public feasibility (De…nition 3); and three incentive
+constraints, obedience (De…nition 1), incentive compatibility (De…nition 2) and publicly feasible obedience (De…nition 4). Recall that Bayes correlated equilibrium - our characterization of outcomes that
+can induced by an omniscient information designer - imposed only obedience. To conclude a discussion
+of incomplete information correlated equilibrium, we will discuss two further feasibility conditions.
+3.4.1
+
+Belief Invariance
+
+Consider the requirement that the information designer can correlate players’ actions, but without
+changing players’beliefs and higher order beliefs about the state of the world. This is formalized as:
+De…nition 5 (Belief Invariant)
+Decision rule
+
+: T
+
+!
+
+(A) is belief invariant for (G; S) if,
+
+of t i , where
+i (ai j (ti ; t i ) ;
+
+),
+a
+
+X
+
+i 2A i
+
+32
+
+i (ai j (ti ; t i ) ;
+
+i ((ai ; a i ) j (ti ; t i ) ;
+
+)
+
+) is independent
+
+for each t i 2 T i .
+We then say that a decision rule is a belief invariant Bayes correlated equilibrium if it satis…es belief
+invariance and obedience. It is not obvious how this feasibility condition arises under an information
+design interpretation: if the designer can condition his information on , why not allow him to change
+beliefs and higher order beliefs?
+There are couple of conceptual reasons why one might nonetheless be interested in belief invariant
+BCE. First, Dekel, Fudenberg, and Morris (2007) have shown that the solution concept of interim correlated rationalizability characterizes the implications of common certainty of rationality and players’
+beliefs and higher order beliefs. The solution concept builds in belief invariance. Liu (2015) observes
+that the set of interim correlated rationalizable actions corresponds to the set of actions that can be
+played in a subjective incomplete information correlated equilibrium. If the common prior assumption
+is then imposed, then this corresponds to belief invariant Bayes correlated equilibria. Thus the solution concept of belief invariant BCE is the "right" one for understanding the implications of common
+knowledge assumptions.
+Second, Mathevet, Perego, and Taneva (2016) consider a situation where the information designer
+can convey information only about beliefs and higher-order beliefs, but is not able to send additional
+information about correlation. Now the set of belief invariant BCE once some higher-order belief
+information has been sent is equal to the set of BCE. Bergemann and Morris (2016a) describe how
+an arbitrary information structure can be decomposed into information about beliefs and higher-order
+beliefs and additional belief-invariant signals.
+3.4.2
+
+Join Feasibility
+
+Twenty …ve years ago, Forges (1993) (see also Forges (2006)) gave an overview of incomplete information
+correlated equilibrium. A maintained assumption in that literature was that the information designer (or
+"mediator") did not bring any information of her own to the table, but simply re-arranged information,
+telling players privately about others’information. This can be formalized as:
+De…nition 6 (Join Feasibility)
+Decision rule
+ajt;
+
+0
+
+:T
+
+! A is join feasible for (G; S) if
+
+for each t 2 T , a 2 A, and ;
+
+0
+
+2
+
+(ajt; ) is independent of , i.e.,
+
+(ajt; ) =
+
+.
+
+Thus join feasibility requires that the information designer can send information only about the
+type pro…le of the players and thus can only condition on the type pro…le. Join feasibility is imposed
+33
+
+implicitly in some work on incomplete information correlated equilibrium - Forges (1993) integrates out
+uncertainty other than the players’types - but explicitly in others, e.g., Lehrer, Rosenberg, and Shmaya
+(2010).
+As noted in the introduction, information design adds to the old incomplete information correlated
+literature the twist that the designer brings information of her own to the table. In turn, this allows
+the designer to choose the optimal design and provision of the information to the players.
+Forges’1993 paper was titled "Five Legitimate De…nitions of Correlated Equilibrium in Incomplete
+Information Games" and Forges (2006) introduced a sixth one. The feasibility and incentive conditions
+described so far allow us to completely describe the six solution concepts she discusses:
+1. A Bayesian solution is a decision rule satisfying join feasibility and obedience.
+2. A belief invariant Bayesian solution is a decision rule satisfying join feasibility, belief invariance
+and obedience.
+3. A agent normal form correlated equilibrium is a decision rule satisfying join feasibility, public
+feasibility (which implies belief invariance) and obedience.
+4. A communication equilibrium is a decision rule satisfying join feasibility and incentive compatibility (which implies obedience)
+5. A strategic form correlated equilibrium is a decision rule satisfying join feasibility and publicly
+feasible obedience (which implies belief invariance, public feasibility, obedience and incentive compatibility).
+Thus the Bayesian solution, communication equilibrium and strategic form correlated equilibrium
+correspond to omniscient information design, information design with elicitation and information design
+without elicitation, respectively. The belief invariant Bayesian solution and the agent normal form
+correlated equilibrium do not have natural interpretations.
+Forges (1993) noted inclusions implied by these de…nitions. In particular, if we write (n) for the set
+of incomplete information correlated equilibria of type n above, we have
+(5)
+
+(3)
+
+(2)
+
+(5)
+
+(4)
+
+(1)
+
+(1) and
+
+Forges (1993) reports examples showing that these inclusions are the only ones that can be shown, i.e.,
+there exist decision rules that (i) are Bayesian solutions but not belief invariant BCE or communication
+34
+
+equilibria; (ii) are belief invariant Bayes solutions but not a communication equilibria or an agent normal
+form correlated equilibria; (iii) are communication equilibria but not belief invariant Bayesian solutions;
+(iv) are belief invariant Bayesian solutions and communication equilibria but not agent normal form
+equilibria; (v) are agent normal form correlated equilibria but not communication equilibria; (vi) are
+agent normal form correlated equilibria and communication equilibria.
+Forges (1993) discusses one more solution concept: the universal Bayesian solution. The universal
+Bayesian equilibria correspond - in our language - to the set of Bayes correlated equilibria that would
+arise under join feasibility if players had no information.
+
+4
+
+Information Design with Adversarial Equilibrium and Mechanism
+Selection
+
+We have so far examined settings where the revelation principle holds: we can without loss of generality
+assume that the set of signals, or types, is equal to the set of actions. We now consider two natural
+extensions of information design where the revelation principle breaks down.
+
+4.1
+
+Adversarial Equilibrium Selection
+
+In Section 2, it was implicitly assumed that the information designer could, having designed the information structure, also select the equilibrium to be played. With one player the equilibrium selection
+problem reduces to breaking ties and is not of substantive interest. However, Carroll (2016) and Mathevet, Perego, and Taneva (2016) highlighted that this issue is of …rst order importance in the many
+player case, and that the revelation principle argument breaks down and alternative arguments must be
+used. Mathevet, Perego, and Taneva (2016) have given a representation of the maxmin problem where
+the players have no prior information and the information designer picks the best information structure
+anticipating that the equilibrium least advantageous for her will be played.
+For our representation, we de…ne a "communication rule" for the information designer. Players
+have the prior information encoded in the information structure S =
+
+(Ti )Ii=1 ;
+
+designer sends each player i an extra message mi 2 Mi , according to rule
+M = M1
+
+MI . A communication rule is then C = (Mi )Ii=1 ;
+
+:T
+
+. The information
+!
+
+(M ), where
+
+. Now the basic game G, the prior
+
+information structure S and the communication rule C describe a Bayesian game (G; S; C). A strategy
+for player i in this game is a mapping bi : Ti
+
+Mi !
+
+35
+
+(Ai ). A communication rule C and strategy
+
+pro…le b will now induce a decision rule
+(ajt; ) =
+
+0
+
+X
+
+(mjt; ) @
+
+m2M
+
+Y
+
+i=1;:::;I
+
+1
+
+bi (ai jti ; mi )A .
+
+We will write EG;S (C) for the set of Bayes Nash equilibria of the game with communication rule C.
+We can now give a more formal statement of Proposition 1:
+Proposition 4
+Decision rule
+
+is a Bayes correlated equilibrium of (G; S) if and only if there exists a communica-
+
+tion rule C and a Bayes Nash equilibrium b 2 EG;S (C) which induce .
+This is a revelation principle argument that was formally stated as Theorem 1 in Bergemann and
+Morris (2016a).
+Recall that in Section 2, we de…ned the information designer’s utility from BCE :
+VG;S ( ) =
+
+X
+
+( ) (tj ) (ajt; ) v (a; ) .
+
+;t;a
+
+We can also de…ne the information designer’s utility from communication rule C and strategy pro…le b:
+0
+1
+X
+X
+Y
+VG;S (C; b) =
+( ) (tj ) @
+(mjt; )
+bi (ai jti ; mi )A v (a; ) .
+m2M
+
+;t;a
+
+i=1;:::;I
+
+Let us consider the problem of an information designer who can pick both the communication rule and
+the equilibrium and is thus solving the problem
+max
+C
+
+max
+
+VG;S (C; b) .
+
+b2EG;S (C)
+
+Proposition 4 established that
+
+max
+C
+
+max
+
+b2EG;S (C)
+
+VG;S (C; b) =
+
+max
+
+2BCE(G;S)
+
+VG;S ( ) .
+
+But now consider the problem of an information designer who can pick the communication rule but
+wants to maximize his utility in the worst equilibrium and is thus solving the problem
+max
+C
+
+min
+
+VG;S (C; b) .
+
+b2EG;S (C)
+
+Of course, the minmax problem
+min max VG;S (C; b) .
+C b2EG;S (C)
+
+36
+
+is a reinterpretation of maxmin problem where objective is replaced by
+
+VG;S (C; b).
+
+We now discuss three applications where maxmin (or, equivalently, minmax) information design
+problems have been motivated and studied; in each application, players have prior information. First,
+Carroll (2016) considers the problem of bilateral trade where he wants to know the worst possible gains
+from trade for a given distribution over the known private values of a buyer and a seller. If we picked
+the worst equilibrium we could always support no trade with probability one, so instead he considers
+the best equilibrium. This is equivalent to having an information designer pick an information structure
+to maximize the ine¢ ciency of trade anticipating that the buyer and seller will play an equilibrium that
+minimizes ine¢ ciency (i.e., maximizes the gains from trade).
+Second, Goldstein and Huang (2016) and Inostroza and Pavan (2017) consider a global game models
+of regime change, and the problem of an information designer trying to minimize the probability of
+regime change. As in Carroll’s bilateral trade problem, the problem is not interesting if the designer
+is able to pick the equilibrium as well as the information structure: in this case, he can prevent the
+possibility of ine¢ cient outcomes by creating common knowledge of payo¤s and picking the good equilibrium. To make the problem interesting, they study the maxmin problem. While Goldstein and Huang
+(2016) restrict attention to a simple class of threshold disclosure rules without elicitation, Inostroza and
+Pavan (2017) allow for general disclosure with and without elicitation.
+
+Note that our description of
+
+maxmin information design above considered the omniscient case, where the designer could condition
+on the players’ prior information, but Goldstein and Huang (2016) and Inostroza and Pavan (2017)
+are considering environments where the players’information is private, so the de…nition of the maxmin
+information design would have to be suitably adapted.
+Finally, a literature on robustness to incomplete information (Kajii and Morris (1997)) can be
+understood as an information design problem. We will give an example to illustrate this connection.
+We will consider a slightly adapted version of the incomplete information investment game discussed
+earlier with payo¤s:
+=B
+
+invest
+
+not invest
+
+=G
+
+invest
+
+not invest
+
+invest
+
+x; x
+
+1; 0
+
+invest
+
+x; x
+
+x; 0
+
+not invest
+
+0; 1
+
+not invest
+
+0; 1
+
+0; 0
+
+0; 0
+
+for some 0 < x < 1, where player 1 knows the true state and the probability of state G is ", and
+" is small. Assume that the prior information is that player 1 knows the state and player 2 knows
+nothing. Thus player 1 has a dominant strategy to invest in state G, while there are multiple equilibria
+in the complete information game corresponding to state B. In this setting, we can study the standard
+37
+
+information design (with prior information) described above. Suppose that the information designer
+wants to maximize the probability that at least one player invests. Maintaining the assumption that
+the designer can pick the equilibrium, the answer is trivial. The information designer can simply give
+the players no additional information and there will be an equilibrium where players always invest.
+But what if the information designer anticipated that the worst equilibrium would be played? This
+is a maxmin information design problem described above. What information structure would the information designer choose and what would be the induced probability that at least one player invests? It is convenient to describe information structures using the language of partitions. Consider
+the information structure with state space
+
+= f1; 2; :::; ::; 1g where player 1 observes the partition
+
+(f1g ; f2; 3g ; f4; 5g ; :::; f1g) and player 2 observes the partition (f1; 2g ; f3; 4g ; :::; f1g). Let payo¤s
+be given by
+
+= G at state 1 and by
+
+state ! 6= 1 be "
+
+1 q
+q
+
+!
+
+= B everywhere else. For some q > 21 , let the probability of
+
+and so the probability of state 1 is 1
+
+q
+2q 1 " (if " is su¢ ciently small).
+
+This information structure could arise from the prior information described above (only player 1 can
+distinguish between states B and G) and communicating additional information.
+
+Now suppose that
+
+1
+; this condition implies that a player assigning probability q to the other player investing will
+q > 1+x
+
+always have a strict incentive to invest. Following the induction argument of Rubinstein (1989), invest
+is the unique rationalizable action for both players at all states ! 6= 1. To see this observe that at
+state 1, player 1 has a dominant strategy to invest. Now player 2 with information set f1; 2g has a
+dominant strategy to invest, since he attaches probability q to player 1 investing. Now suppose that
+we have established that both players are investing at information sets of the form f!; ! + 1g if !
+
+k.
+
+Now consider the player with information set fk + 1; k + 2g. He attaches probability q to the other
+player being at information set fk; k + 1g and therefore investing. So the player with information set
+fk + 1; k + 2g will invest. This argument establishes that it is possible to ensure that - if " is su¢ ciently
+
+1
+small - both players invest with probability 2qq 1 ". Since this is true for any q > 1+x
+, it implies that it
+
+is possible to get both players to invest with probability arbitrarily close to
+1
+1= (1 + x)
+"=
+".
+2= (1 + x) 1
+1 x
+The information structure we used to get arbitrarily close to this bound was (countably) in…nite, but
+we can also get arbitrarily close using …nite information structures. Arguments from Kajii and Morris
+(1997) imply that information structures in this class are (arbitrarily close to) optimal for the information
+designer. To get a ‡avor of the argument, say that a player p-believes an event if he attaches probability
+at least p to the event occurring, and that there is common p-belief of that event if each player p-believes
+it, each player p-believes that both p-believe it, and so on. One can show that not invest is rationalizable
+38
+
+x
+x
+-belief that payo¤s correspond to state B. But since x < 1, 1+x
+> 12 and
+only if there is common 1+x
+
+one can show that if the event that payo¤s are given by state B has probability at least 1
+
+", then -
+
+x
+for su¢ ciently small " - the ex ante probability that there is common 1+x
+-belief that the state is B is
+
+at least 1
+
+1
+1 x ". This establishes that the bound is tight.
+
+If x > 1, similar arguments can be used to
+
+show that the information designer can ensure that both players invest with probability 1.
+Arguments from Kajii and Morris (1997) and the follow up literature (Ui (2001) and Morris and Ui
+(2005)) can be used to analyze maxmin payo¤s more generally when - as in the above example - the
+incomplete information game has each player either knowing that payo¤s are given by a …xed complete
+information game or having a dominant strategy.
+
+4.2
+
+Adversarial Mechanism Design
+
+We considered an information designer who was choosing additional information for the players, holding
+…xed the basic game and players’prior information. But what if the information designer had to pick the
+information structure not knowing what the basic game, or mechanism, was going to be? In particular,
+suppose that the choice of mechanism was adversarial. Again, we will lose the revelation principle.
+Once the information designer has picked the information structure (and thus the set of signals), the
+adversarial mechanism designer could pick a mechanism with a di¤erent set of messages.
+Bergemann, Brooks, and Morris (2016a) consider the problem of an information designer picking
+an information structure for a set of players with a common value of an object to minimize revenue,
+anticipating that an adversarial mechanism designer will then pick a mechanism to maximize revenue
+(the minmax problem). This gives an upper bound on the revenue of the seller of a single object who
+is picking a mechanism anticipating that the worst information structure will be chosen (the maxmin
+problem). Bergemann, Brooks, and Morris (2016a) identify circumstances where these are equal. Du
+(2016) constructs elegant bounds for the latter problem. Both problems are studied without the common
+prior assumption by Chung and Ely (2007).
+
+5
+
+Conclusion
+
+We have provided a uni…ed perspective for a rapidly expanding literature on Bayesian persuasion and
+information design. We have highlighted a duality with mechanism design: in mechanism design, a
+mechanism is picked for a given information structure, while in information design, an information
+structure is picked for a given mechanism. In contrast with the recent literature on Bayesian persuasion
+that is concerned with a single player (receiver), we emphasized the implications of information design
+39
+
+for many player strategic environments. We presented a two step approach to information design:
+…rst identify the set of attainable outcomes by means of some information structure; then identify the
+optimal information structure. We have described the close connection between information design and
+the earlier literature on correlated equilibrium with incomplete information; but whereas players are
+receiving real payo¤ relevant information in the information design problem, in the older correlated
+equilibrium literature, the designer (mediator) was merely providing correlating devices.
+We have drawn a sharp contrast between information design and mechanism design. But - as argued
+in Myerson (1982) and Myerson (1987) and discussed in Section 3.3 - there are settings where a designer
+can control some outcomes (as a function of players’messages), but cannot control others and then can
+only use information to in‡uence the outcomes outside her control. As one moves into dynamic settings,
+the overlap becomes more central, as in Calzolari and Pavan (2006b) and Bergemann and Pesendorfer
+(2007). A speci…c setting where the interaction between mechanism design and information design has
+recently been studied is the area of markets with resale in which the information disclosed in the …rst
+stage fundamentally a¤ects the interaction in the resale market, see for example Calzolari and Pavan
+(2006a), Dworczak (2016), Carroll and Segal (2016) and Bergemann, Brooks, and Morris (2016b).
+
+40
+
+.
+
+6
+
+Appendix
+
+Additional Computation for Section 2.1.2 We observed in Section 2.1.1 that absent any information the …rm does not invest. For the private information of the …rm to change the "default" behavior
+under no private information, it has to be that the …rm is investing after receiving the good signal, or
+that
+qx + (1
+
+q) ( 1)
+
+1
+
+0,x
+
+q
+q
+
+1
+:
+1+x
+
+,q
+
+(20)
+
+In other words, the information q has to be su¢ ciently precise to induce a change in the behavior
+if absent any information the expected payo¤ from investing exceeded the expected payo¤ from not
+investing.
+Now, as the information designer is adopting a recommendation policy (pBb ; pBg ; pGb ; pGg ), the …rm
+will have an incentive to invest (when told to invest) if
+1
+(1
+2
+
+1
+q) pBg + qpGg x
+2
+
+0 , pGg
+
+1
+
+q pBg
+;
+q
+x
+
+(21)
+
+and an incentive to not invest (when told to not invest) if
+0
+
+1
+(1
+2
+
+q) (1
+
+1
+pBg ) + q (1
+2
+
+pGg ) x , pGg
+
+1
+
+q pBg
++1
+q
+x
+
+1
+
+q1
+:
+q x
+
+(22)
+
+The above two incentive constraints pertain to the recommendations conditional on having a good type
+g. A similar pair of incentive constraints apply to the recommendations conditional on having a bad
+type b.
+As long as the private information of the …rm is su¢ ciently noisy, or q
+
+1= (1 + x), the binding
+
+constraint is (21) as in the uninformed case; otherwise it is the inequality (22) that determines the
+conditional probabilities. The obedience conditions for the …rm observing a bad type b are derived in an
+analogous manner. The obedience conditions are de…ned type by type and we compute the restrictions
+on the conditional probabilities averaged across types. Now the decision rule (pBb ; pBg ; pGb ; pGg ) will
+induce behavior (pB ; pG ) integrating over types t 2 fb; gg.
+The behavior of the equilibrium set is illustrated in Figure 2. Note that the sets becomes smaller
+as the …rm’s private information improves. Intuitively, the …rm’s private information limits the government’s ability to in‡uence the …rm’s decision as the private information tightens the obedience
+constraints. We observe that the boundary that describes the sets of obedient decision rules maintains
+a constant slope, (1
+
+q) =qx; and it is only the intercept that moves upward. Moreover, the slope is
+41
+
+identical with the one described in the problem of the uninformed …rm. The lowest probability of investing for the good state is achieved if there is zero probability of investing in the bad state as derived
+earlier in (9).
+Additional Results for Section 3.2 For a given Bayesian game (G; S), let CM (G; S), respectively,
+N E(GS), denote the set of decision rules that can be attained by a communicating, respectively, noncommunicating designer.
+Proposition 5
+For each (G; S), we have
+NE(G; S)
+Proof. Let
+show that
+
+2 N E(G; S), and let
+
+CM(G; S):
+
+be an obedient strategy recommendation that induces . To
+
+2 CM(G; S), we will verify that
+
+is incentive compatible.
+
+Fix player i, types ti ; t0i 2 Ti , and a function
+
+i : Ai ! Ai .
+
+For each strategy bi 2 Bi , take a0i =
+
+0
+i (bi (ti )) in player i’s (ti ; bi ) publicly feasible obedience constraint. Then sum the resulting inequalities
+
+over bi 2 Bi . After regrouping the summation, we have
+0
+1
+X
+X
+@
+ui ((bi (ti ); b i (t i )); ) ((bi ; b i )j )A (ti ; t i j ) ( )
+t
+
+t
+
+i 2T i ;
+
+X
+
+i 2T i ;
+
+2
+
+2
+
+(bi ;b
+
+0
+@
+
+i )2B
+
+X
+
+(bi ;b
+
+ui ( i (bi (t0i )); b i (t i ));
+
+i )2B
+
+1
+
+((bi ; b i )j )A (ti ; t i j ) ( ):
+
+We focus on the term in parentheses on each line. In the …rst line, group the summation according to
+the value of (bi (ti ); b i (t i )) and use the fact that
+X
+
+(ai ;a
+
+induces
+
+to obtain
+
+ui ((ai ; a i ); ) ((ai ; a i )j(ti ; t i ); ):
+
+i )2A
+
+In the second line, group the summation according to the value of (bi (t0i ); b i (t i )) and use the fact that
+induces
+
+to obtain
+
+X
+
+(ai ;a
+
+ui (( i (ai ); a i ); ) ((ai ; a i )j(t0i ; t i ); ):
+
+i )2A
+
+Substituting these expressions into the inequality gives player i’s type-ti incentive constraint with deviation t0i ; i . Since i; ti ; t0i ; i are all arbitrary, the proof is complete.
+
+42
+
+Proposition 6
+Let (G; S) be a Bayesian game with I = 1. If jAj = 2 and j j = 2, then
+NE(G; S) = CM(G; S):
+Proof. By Proposition 5, it su¢ ces to prove N E(G; S)
+notation. Label the states and actions so that
+
+CM(G; S). First, we simplify the
+
+= fG; Bg and A = f0; 1g. If either action is weakly
+
+dominant, the desired result can be veri…ed by directly computing N E(G; S) and CM(G; S). Therefore,
+we assume u(1; G)
+
+u(0; G) and u(1; B)
+
+u(0; B) are each nonzero and have opposite signs. Then
+
+without loss, we may assume the payo¤s take the form u(0; G) = u(0; B) = 0, u(1; B) =
+
+1 and
+
+u(1; G) = x > 0.14
+
+by a
+
+Action 1 can be interpreted as investment. We will represent a decision rule
+
+vector p = (p t )( ;t)2
+
+T , where p t =
+
+(1j ; t). For each signal t 2 T , let
+q(t) =
+
+(G) (tjG)
+;
+(t)
+
+where (t) = (G) (tjG) + (B) (tjB) > 0 by assumption.
+Let p = (p t ) 2 CM(G; S). To show that p 2 N E(G; S), we will explicitly construct an obedient
+strategy recommendation
+
+that induces p. Let t; t0 2 T and set q = q(t) and q 0 = q(t0 ). The incentive
+
+compatibility of p implies
+
+Taking (1
+
+q0; 1
+
+qpGt x
+
+(1
+
+q)pBt
+
+qpGt0 x
+
+(1
+
+q)pBt0 ;
+
+q 0 pGt0 x
+
+(1
+
+q 0 )pBt0
+
+q 0 pGt x
+
+(1
+
+q 0 )pBt :
+
+q) and (q 0 ; q) linear combinations of these two inequalities respectively yields
+(q
+
+So q(t) < q(t0 ) implies p t
+
+q 0 )(pGt
+
+pGt0 )x
+
+p t0 for
+
+0 and (q
+
+q 0 )(pBt
+
+pBt0 )
+
+0:
+
+2 fG; Bg. In the case q = q 0 , both inequalities must hold with
+
+equality so
+q(pGt
+and hence pGt
+
+pGt0 i¤ pBt
+q(t1 )
+
+14
+
+pGt0 ) = (1
+
+pBt0 );
+
+pBt0 . Therefore, we can label the signals t1 ; : : : ; tn so that
+q(tn )
+
+and
+
+p t1
+
+First, swap the labels G and B if needed to obtain u(1; G)
+
+u(1; G)
+
+q)(pBt
+
+p tn for
+
+= B; G:
+
+(23)
+
+u(0; G) > 0. Then rescale the utility function so that
+
+u(0; G) = 1. Finally, translate the functions u( ; G) and u( ; B) separately so that u(0; G) = u(0; B) = 0. The
+
+separate translations may change the agent’s preferences over states but not over actions.
+
+43
+
+To simplify notation, de…ne q` = q(t` ) for each ` = 1; : : : ; n; set p t0 = 0 and p tn+1 = 1 for all . For
+each k = 1; : : : ; n + 1, de…ne the cuto¤ strategy bk by
+8
+>
+<1 if ` k;
+k
+b (t` ) =
+>
+:0 otherwise.
+
+In particular b1 is unconditional investment, and bn+1 is unconditional non-investment. De…ne the
+
+stochastic strategy recommendation
+8
+>
+<p t
+k
+(bj ) =
+>
+:0
+
+By (23), p tk
+that
+
+p tk 1
+
+:
+
+!
+
+(B) by
+if b = bk for some k = 1; : : : ; n + 1;
+
+p tk 1
+
+otherwise.
+
+0, so ( j ) is a probability distribution for each
+
+2 fG; Bg. It is easy to check
+
+induces the decision rule p.
+
+To complete the proof, we verify that
+
+is obedient. For each ` = 1; : : : ; n and k = 1; : : : ; n + 1, type
+
+t` ’s expected utility from investing, conditional on being recommended bk , is
+U`jk = q` (pGtk
+
+pGtk 1 )x
+
+(1
+
+q` )(pBtk
+
+pBtk 1 ):
+
+Since both expressions in parentheses are nonnegative, U`jk is weakly increasing in `. Therefore, for
+types t` with `
+
+k,
+
+U`jk
+
+Ukjk = (qk pGtk x
+
+(1
+
+qk )pBtk )
+
+qk pGtk 1 x
+
+(1
+
+qk )pBtk 1
+
+0;
+
+where the last inequality holds by incentive compatibility. Similarly, for types t` with ` < k,
+U`jk
+
+Uk 1jk = (qk 1 pGtk x
+
+(1
+
+qk 1 )pBtk )
+
+qk 1 pGtk 1 x
+
+(1
+
+qk 1 )pBtk 1
+
+0:
+
+The last two inequalities establish the obedience of , so the proof is complete.
+Now we return to the main problem of …nding (pBb ; pBg ; pGb ; pGg ). To compare these decision rules
+to the benchmark we will ultimately integrate over the signals to compute the probability of investment
+in each state. Formally,
+(pBb ; pBg ; pGb ; pGg ) ! ((1
+
+q)pBg + qpBb ; qpGg + (1
+
+44
+
+q)pGb ) :
+
+With an informed receiver, the omniscient designer faces four obedience constraints:
+1
+g , qpGg x
+
+(1
+
+q)pBg
+
+qpGg y
+
+1
+b , (1
+
+q)pGb x
+
+qpBb
+
+(1
+
+0
+g , q(1
+
+pGg )y
+
+0
+b , (1
+
+q)(1
+
+1
+
+q
+2
+
+(1
+
+q
+2
+
+q)pGb y
+
+pBg
+
+0;
+
+(24a)
+
+q
+pBb
+2
+
+0:
+
+(24b)
+
+pBg )
+
+0;
+
+(24c)
+
+pBb )
+
+0:
+
+(24d)
+
+q
+(1
+2
+
+pGb )y
+
+1
+
+We have only ruled out pro…table truthful deviations to the small investment, but it can be shown that
+this implies that there are no pro…table truthful deviations to not invest or to invest. An information
+designer with elicitation faces four additional constraints ruling out non-truthful deviations:
+qpGg x
+
+(1
+
+q)pBg
+
+qpGb x
+
+(1
+
+q)pBb ;
+
+qpGg x
+
+(1
+
+q)pBg
+
+q(pGb x + (1
+
+pGb )y)
+
+(1
+
+q)pGb x
+
+qpBb
+
+(1
+
+q)pGg x
+
+(1
+
+q)pGb x
+
+qpBb
+
+(1
+
+q)pGg y
+
+qpBg ;
+q
+pBg :
+2
+
+(25a)
+(1
+
+q)
+
+1 + pBb
+;
+2
+
+(25b)
+(25c)
+(25d)
+
+Again, it is su¢ cient to consider a smaller class of deviations because the high type …nds investment more
+attractive than the low type does. Formally, CM(G; S) is the set of p 2 [0; 1]4 satisfying (24a)-(25d).
+Now we determine the additional constraints faced by an information designer without elicitation. Since there are only two signals, we may represent each strategy b : T ! A as an ordered pair
+
+(b(g); b(b)) 2 A2 . (In the second component, the letter b is used in two di¤erent ways, to denote a
+strategy and a signal.) The strategy b = (not invest; invest) can never be obedient for both types, so
+for any p 2 N E(G; S), there is only one candidate , namely
+((0; 0)j ) = 1
+
+p g;
+
+((0; 1)j ) = 0;
+((1; 0)j ) = p g
+
+p b;
+
+((1; 1)j ) = p b ;
+for each
+
+2 fB; Gg. A non-communicating designer faces two additional obedience constraints, which
+
+prevent deviations following the recommendation (invest;not invest):
+q(pGg
+(1
+
+pGb )x
+
+q)(pGg
+
+(1
+
+q)(pBg
+
+pBb )
+
+q(pGg
+
+pGb )y
+
+q
+(pBg
+2
+
+pBb )
+
+0:
+
+45
+
+pGb )y
+
+1
+
+q
+2
+
+(pBg
+
+pBb );
+
+(26a)
+(26b)
+
+Formally, N E(G; S) is the set of decision rules in E(G; S) satisfying (26a) and (26b).
+After some algebra, we can see that (26a) is equivalent to
+1
+g
+
+1
+b + pGb (2q
+
+1)(x
+
+y) + pBb (2q
+
+1)=2:
+
+(27)
+
+When p puts positive probability on investing after a bad signal, (27) eliminates decision rules for which
+(24a) has little slack. Similarly, (26b) is equivalent to
+0
+b
+
+0
+g
+
+(1
+
+pGg )(2q
+
+1)y
+
+(1
+
+pBg )(2q
+
+1)=2:
+
+(28)
+
+When p puts positive probability on not investing after a good signal, (28) eliminates decision rules for
+which (24d) has little slack.
+Example 1 (Two Agents) Suppose I = 2,
+
+= fB; Gg, A1 = A2 ={invest, not invest}, and
+
+ui (ai ; a i ; ) = u(ai ; ) with u as in the opening example given by (3). Each player i receives a conditionally independent signal ti 2 fg; bg that is correct with probability qi > 1=2. Suppose q1 > q2 , so that
+player 1 receives a more accurate signal. Consider the following decision rule: both players invest if
+player 1’s signal is good and neither agent invests if player 1’s signal is bad. For x su¢ ciently near one,
+this decision rule is incentive compatible. However, it is not even publicly feasible because following any
+strategy recommendation, player 2’s choice of action will depend on her own signal, not on player 1’s.
+Example 2 (Three States) Consider the single player, single investment setting of the opening example given by (3), but now split the bad state into two bad states B1 and B2 , each with prior probability
+1=4 and the same payo¤ s as in state B of the original example. Suppose the agents receive a completely
+uninformative binary signal t taking values t1 and t2 with equal probability. Consider the following
+decision rule: type ti invests precisely in states G and Bi . For x 2 (1=2; 1), this decision rule is incentive compatible. It is uniquely induced by recommending (b(t1 ); b(t2 )) = (invest; invest) in state G;
+(b(t1 ); b(t2 )) = (invest;not invest) in state B1 ; and (b(t1 ); b(t2 )) = (not invest;invest) in state B2 . However, this strategy recommendation perfectly reveals the state of the world, so the agent can pro…tably
+deviate to his …rst-best strategy of investing i¤ the state is G. Therefore, the decision rule is not publicly
+feasible obedient.
+
+46
+
+References
+Arieli, I., and Y. Babichenko (2016): “Private Bayesian Persuasion,” Discussion paper, Technion.
+Aumann, R., and M. Maschler (1995): Repeated Games with Incomplete Information. MIT Press.
+Bassan, B., O. Gossner, M. Scarsini, and S. Zamir (2003): “Positive value of information in
+games,” International Journal of Game Theory, 32(1), 17–31.
+Bergemann, D., A. Bonatti, and A. Smolin (2015): “Designing and Pricing Information,”Discussion paper, Yale University and MIT and University of Bonn.
+Bergemann, D., B. Brooks, and S. Morris (2015): “The Limits of Price Discrimination,”American
+Economic Review, 105, 921–957.
+Bergemann, D., B. Brooks, and S. Morris (2016a): “Informationally Robust Auction Design,”
+Discussion paper, Yale University, University of Chicago and Princeton University.
+Bergemann, D., B. Brooks, and S. Morris (2016b): “Optimal Auction Design in a Common Value
+Model,” Discussion paper, Yale University, University of Chicago and Princeton University.
+(2017): “First Price Auctions with General Information Structures: Implications for Bidding
+and Revenue,” Econometrica, 85, 107–143.
+Bergemann, D., T. Heumann, and S. Morris (2015): “Information and Volatility,” Journal of
+Economic Theory, 158, 427–465.
+Bergemann, D., and S. Morris (2013a): “Bayes Correlated Equilibrium and Comparison of Information Structures,” Discussion Paper 1822R, Cowles Foundation for Research in Economics, Yale
+University.
+(2013b): “Robust Predictions in Games with Incomplete Information,” Econometrica, 81,
+1251–1308.
+(2016a): “Bayes Correlated Equilibrium and the Comparison of Information Structures in
+Games,” Theoretical Economics, 11, 487–522.
+(2016b): “Information Design, Bayesian Persuasion, and Bayes Correlated Equilibrium,”American Economic Review Papers and Proceedings, 106(5), 586–591.
+
+47
+
+Bergemann, D., and M. Pesendorfer (2007): “Information Structures in Optimal Auctions,”Journal of Economic Theory, 137, 580–609.
+Blackwell, D. (1951): “Comparison of Experiments,”in Proc. Second Berkeley Symp. Math. Statist.
+Probab., pp. 93–102. University of California Press, Berkeley.
+Calzolari, G., and A. Pavan (2006a): “Monopoly with Resale,” RAND Journal of Economics, 37,
+362–375.
+(2006b): “On the Optimality of Privacy in Sequential Contracting,” Journal of Economic
+Theory, 130, 168–204.
+Caplin, A., and M. Dean (2015): “Revealed Preference, Rational Inattention, and Costly Information
+Acquisition,” American Economic Review, 105, 2183–2203.
+Caplin, A., and D. Martin (2015): “A Testable Theory of Imperfect Perception,”Economic Journal,
+125, 184–202.
+Carroll, G. (2016): “Informationally Robust Trade and Limits to Contagion,” Journal of Economic
+Theory, 166, 334–361.
+Carroll, G., and I. Segal (2016): “Robustly Optimal Auctions with Unknown Resale Opportunities,” Discussion paper, Stanford University.
+Chung, K.-S., and J. Ely (2007): “Foundations of Dominant Strategy Mechanisms,” Review of
+Economic Studies, 74, 447–476.
+Dekel, E., D. Fudenberg, and S. Morris (2007): “Interim Correlated Rationalizability,” Theoretical Economics, 2, 15–40.
+Doval, L., and J. Ely (2016): “Sequential Information Design,”Discussion paper, California Institute
+of Technology and Northwestern University.
+Du, S. (2016): “Robust Mechanisms under Common Valuation,” Discussion paper, Simon Fraser University.
+Dworczak, P. (2016): “Mechanism Design with Aftermarkets: Cuto¤ Mechanisms,”Discussion paper,
+Stanford University.
+Ely, J. (2017): “Beeps,” American Economic Review, 107, 31–53.
+48
+
+Ely, J., A. Frankel, and E. Kamenica (2015): “Suspense and surprise,” Journal of Political
+Economy, 123(1), 215–260.
+Forges, F. (1993): “Five Legitimate De…nitions of Correlated Equilibrium in Games with Incomplete
+Information,” Theory and Decision, 35, 277–310.
+(2006): “Correlated Equilibrium in Games with Incomplete Information Revisited,” Theory
+and Decision, 61, 329–344.
+Forges, F., and F. Koessler (2005): “Communication Equilibria with Partially Veri…able Types,”
+Journal of Mathematical Economics, 41, 793–811.
+Gentzkow, M., and E. Kamenica (2017): “Competition in persuasion,” The Review of Economic
+Studies, 84(1), 300–322.
+Goldstein, I., and C. Huang (2016): “Bayesian Persuasion in Coordination Games,” American
+Economic Review, 106, 592–596.
+Gossner, O. (2000): “Comparison of Information Structures,” Games and Economic Behavior, 30,
+44–63.
+Horner, J., and A. Skrzypacz (2016): “Learning, Experimentation and Information Design,” Discussion paper, Yale University and Stanford University.
+Inostroza, N., and A. Pavan (2017): “PersuasIon in Global Games with Application to Stress
+Testing,” Discussion paper, Northwestern University.
+Kajii, A., and S. Morris (1997): “The Robustness of Equilibria to Incomplete Information,”Econometrica, 65, 1283–1309.
+Kamenica, E., and M. Gentzkow (2011): “Bayesian Persuasion,”American Economic Review, 101,
+2590–2615.
+Kamenica, E., and M. Gentzkow (2014): “Costly Persuasion,” American Economic Review, 104,
+457–462.
+Kolotilin, A., M. Li, T. Mylovanov, and A. Zapechelnyuk (2015): “Persuasion of Privately
+Informed Receiver,” Discussion paper.
+
+49
+
+Lehrer, E., D. Rosenberg, and E. Shmaya (2010): “Signaling and Mediation in Games with
+Common Interest,” Games and Economic Behavior, 68, 670–682.
+Liu, Q. (2015): “Correlation and Common Priors in Games with Incomplete Information,” Journal of
+Economic Theory, 157, 49–75.
+Maskin, E. (1999): “Nash Equilibrium and Welfare Optimality,” Review of Economic Studies, 66,
+23–38.
+Mathevet, L., L. Perego, and I. Taneva (2016): “Information Design: The Belief-Hierarchy
+Approach,” Discussion paper, New York University.
+Mertens, J., and S. Zamir (1985): “Formalization of Bayesian Analysis for Games with Incomplete
+Information,” International Journal of Game Theory, 14, 1–29.
+Milgrom, P., and R. Weber (1982): “A Theory of Auctions and Competitive Bidding,” Econometrica, 50, 1089–1122.
+Morris, S., and T. Ui (2005): “Generalized potentials and robust sets of equilibria,” Journal of
+Economic Theory, 124(1), 45–78.
+Myerson, R. (1982): “Optimal Coordination Mechanism in Generalized Principal-Agent Problems,”
+Journal of Mathematical Economics, 10, 67–81.
+Myerson, R. (1983): “Mechanism design by an informed principal,” Econometrica, 51, 1767–1797.
+Myerson, R. (1986): “Multistage Games with Communication,” Econometrica, 54, 323–358.
+(1987): “Bayesian Equilibrium and Incentive-Compatibility: An Introduction,”in Social Goals
+and Social Organization: Essays in Memory of Elisha Pazner, ed. by L. Hurwicz, D. Schmeidler, and
+H. Sonnenschein, pp. 229–259. Cambridge University Press, Cambridge.
+Myerson, R. (1991): Game Theory. Harvard University Press, Cambridge.
+Myerson, R., and M. Satterthwaite (1983): “E¢ cient Mechanisms for Bilateral Trading,”Journal
+of Economic Theory, 28, 265–281.
+Mylovanov, T., and T. Troeger (2012): “Informed Principal Problems in Environments with
+Generalized Private Values,” Theoretical Economics, 7, 465–488.
+
+50
+
+(2014): “Mechanism Design by An Informed Principal: Private Values with Transferable
+Utility,” Review of Economic Studies, 81, 1668–1707.
+Neyman, A. (1991): “The Positive Value of Information,”Games and Economic Behavior, 3, 350–355.
+Novshek, W., and H. Sonnenschein (1982): “Ful…lled Expectations Cournot Duopoly with Information Acquisition and Release,” Bell Journal of Economics, 13, 214–218.
+Ostrovsky, M., and M. Schwarz (2010): “Information Disclosure and Unraveling in Matching
+Markets,” American Economic Journal: Microeconomics, 2, 34–63.
+Perez-Richet, E. (2014): “Interim Bayesian Persuasion: First Steps,” American Economic Review
+Papers and Proceedings, 104, 469–474.
+Rayo, L., and I. Segal (2010): “Optimal Information Disclosure,”Journal of Political Economy, 118,
+949–987.
+Rubinstein, A. (1989): “The Electronic Mail Game: Strategic Behavior under ‘Almost Common
+Knowledge’,” American Economic Review, 79, 385–391.
+Taneva, I. (2015): “Information Design,” Discussion paper, University of Edinburgh.
+Ui, T. (2001): “Robust equilibria of potential games,” Econometrica, 69(5), 1373–1380.
+Xandri, J. P. (2016): “Credible Reforms: A Robust Implementation Approach,” Discussion paper,
+Princeton University.
+
+51
+
+

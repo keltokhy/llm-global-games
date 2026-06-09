@@ -1,6 +1,15 @@
 {
   "corresponding_author": {
     "name": "Khaled Eltokhy",
-    "email": "keltokhy@gradcenter.cuny.edu"
+    "email": "keltokhy@gradcenter.cuny.edu",
+    "postal_address": "Department of Economics, The Graduate Center, CUNY, 365 Fifth Avenue, New York, NY 10016, USA",
+    "phone": "+1 212-817-7000"
+  },
+  "funding_statement": "This research did not receive any specific grant from funding agencies in the public, commercial, or not-for-profit sectors.",
+  "acknowledgments_statement": "None.",
+  "submission_declaration": {
+    "approved_by_all_authors": true,
+    "not_under_consideration_elsewhere": true,
+    "not_previously_published_except_allowed_preprint": true
   }
 }

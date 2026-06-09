@@ -1,0 +1,2 @@
+running pilot_coded_replay_mistral -> /Users/khaled/GitHub/llm-global-games/CLEAN_RUN/output/pilot/pilot_coded_replay_mistral
+pilot_coded_replay_mistral: completed 2 period rows

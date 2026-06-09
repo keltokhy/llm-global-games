@@ -1,24 +1,25 @@
 \begin{table*}[t]
 \centering
-\caption{Model summary. Columns report period-level task rows in the pure, communication, and falsification (scramble+flip) suites. All runs use $N=25$ agents per row and $\sigma=0.3$.}
+\caption{Model summary. Columns report period-level task rows in the pure, communication, and falsification (scramble+flip) benchmark suites. These core suites use $n=25$ agents per row and $\sigma=0.3$; Appendix~\ref{sec:robustness} varies agent count.}
 \label{tab:models}
 \footnotesize
 \setlength{\tabcolsep}{4pt}
-\begin{tabular}{llccc}
+\begin{tabular}{lllccc}
 \toprule
-Model & Arch. & Pure & Comm & Falsif. \\
+Model & Identifier (OpenRouter) & Arch. & Pure & Comm & Falsif. \\
 \midrule
-Mistral Small Creative & Mistral & 1000 & 1000 & 300 \\
-Llama 3.3 70B & Llama & 100 & 100 & 200 \\
-Qwen3 30B & Qwen (MoE) & 100 & 100 & 200 \\
-GPT-OSS 120B & GPT & 200 & 200 & 1000 \\
-Qwen3 235B & Qwen (MoE) & 200 & 1000 & 200 \\
-Trinity Large & Arcee & 100 & 100 & 200 \\
-MiniMax M2-Her & MiniMax & 100 & 100 & 200 \\
+Mistral Small Creative & {\scriptsize\texttt{mistralai/mistral-small-creative}} & Mistral & 1000 & 1000 & 300 \\
+Llama 3.3 70B & {\scriptsize\texttt{meta-llama/llama-3.3-70b-instruct}} & Llama & 100 & 100 & 200 \\
+Qwen3 30B & {\scriptsize\texttt{qwen/qwen3-30b-a3b-instruct-2507}} & Qwen (MoE) & 100 & 100 & 200 \\
+GPT-OSS 120B & {\scriptsize\texttt{openai/gpt-oss-120b}} & GPT & 200 & 200 & 1000 \\
+Qwen3 235B & {\scriptsize\texttt{qwen/qwen3-235b-a22b-2507}} & Qwen (MoE) & 200 & 1000 & 200 \\
+Trinity Large & {\scriptsize\texttt{arcee-ai/trinity-large-preview\_free}} & Arcee & 100 & 100 & 200 \\
+MiniMax M2-Her & {\scriptsize\texttt{minimax/minimax-m2-her}} & MiniMax & 100 & 100 & 200 \\
 \midrule
-\textbf{Total} & & \textbf{1800} & \textbf{2600} & \textbf{2300} \\
+\textbf{Total} & & & \textbf{1800} & \textbf{2600} & \textbf{2300} \\
 \bottomrule
 \end{tabular}
-\vspace{0.25em}
-\parbox{\textwidth}{\footnotesize\emph{Notes:} 7 models spanning 6 architecture families. Counts are period-level task rows with 25 agents each. Mistral includes appended batches; duplicate-cell accounting is reported in the main text and Table~\ref{tab:comm_estimators}. All runs use $\sigma = 0.3$ and temperature $= 0.7$ unless otherwise stated.}
+\begin{tablenotes}
+\footnotesize\emph{Notes:} Seven models spanning six architecture families; the identifier column gives each model's OpenRouter slug. Subsequent tables abbreviate Mistral Small Creative as Mistral, Trinity Large as Trinity, and MiniMax M2-Her as MiniMax M2. Counts are period-level task rows with 25 agents each in the core benchmark suites. Mistral includes appended batches; duplicate-cell accounting is reported in the main text and Table~\ref{tab:comm_estimators}. The communication total of 2,600 counts rows as collected; 1 Trinity Large row (all 25 agent calls failing at the provider) yields no valid join fraction, so Table~\ref{tab:comm_estimators} counts 2,599 valid communication rows. Models were accessed as hosted snapshots via the OpenRouter API; archived run manifests record a February 2026 collection window, and raw request--response pairs are cached with the run outputs. Core runs use $\sigma = 0.3$ and temperature $= 0.7$ unless otherwise stated.
+\end{tablenotes}
 \end{table*}

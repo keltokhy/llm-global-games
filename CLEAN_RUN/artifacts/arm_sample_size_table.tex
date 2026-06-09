@@ -1,0 +1,13 @@
+\begin{tabular}{lllllllllllll}
+\toprule
+arm id & claim & model & role & n agents & n countries & n periods & expected rows & message source & message transform & decision task & belief timing & belief information \\
+\midrule
+pilot\_pure\_mistral & language\_signal & mistralai/mistral-small-2603 & reader\_only & 5 & 1 & 2 & 2 & none & none & coordination & none & none \\
+pilot\_scramble\_mistral & language\_signal & mistralai/mistral-small-2603 & reader\_only & 5 & 1 & 2 & 2 & none & none & coordination & none & none \\
+pilot\_flip\_mistral & language\_signal & mistralai/mistral-small-2603 & reader\_only & 5 & 1 & 2 & 2 & none & none & coordination & none & none \\
+pilot\_comm\_baseline\_mistral & sender\_side\_surveillance & mistralai/mistral-small-2603 & writer\_and\_reader & 5 & 1 & 2 & 2 & live & none & coordination & none & none \\
+pilot\_surv\_sender\_only\_mistral & sender\_side\_surveillance & mistralai/mistral-small-2603 & writer\_and\_reader & 5 & 1 & 2 & 2 & live & none & coordination & none & none \\
+pilot\_direct\_replay\_mistral & direct\_coded\_mechanism & mistralai/mistral-small-2603 & reader\_with\_fixed\_messages & 5 & 1 & 2 & 2 & message\_bank & direct & coordination & pre & messages\_included \\
+pilot\_coded\_replay\_mistral & direct\_coded\_mechanism & mistralai/mistral-small-2603 & reader\_with\_fixed\_messages & 5 & 1 & 2 & 2 & message\_bank & coded & coordination & pre & messages\_included \\
+\bottomrule
+\end{tabular}

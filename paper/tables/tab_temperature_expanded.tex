@@ -2,29 +2,30 @@
 \centering
 \caption{Temperature robustness across three models. The pure global game is run at varying LLM decoding temperatures. The correlation $r(J, A(\theta))$ is stable across all temperatures and models.}
 \label{tab:temperature_expanded}
-\small
-\resizebox{\columnwidth}{!}{%
+\scriptsize
+\setlength{\tabcolsep}{3pt}
 \begin{tabular}{llcccc}
 \toprule
 Model & $T$ & $N$ & Mean join & $r(J, A(\theta))$ & Cutoff $\hat{\theta}^*$ \\
 \midrule
-Mistral Small & T=0.3 & 100 & 0.412 & $+0.83$ & -0.049 \\
-Mistral Small & T=0.7 & 100 & 0.406 & $+0.82$ & -0.079 \\
-Mistral Small & T=1.0 & 100 & 0.410 & $+0.86$ & -0.039 \\
+Mistral & T=0.3 & 100 & 41.2\% & $+0.83$ & $-0.05$ \\
+Mistral & T=0.7 & 100 & 40.6\% & $+0.82$ & $-0.08$ \\
+Mistral & T=1.0 & 100 & 41.0\% & $+0.86$ & $-0.04$ \\
 \midrule
-Llama 70B & T=0.3 & 100 & 0.364 & $+0.78$ & -0.210 \\
-Llama 70B & T=0.5 & 100 & 0.360 & $+0.78$ & -0.219 \\
-Llama 70B & T=0.7 & 100 & 0.361 & $+0.78$ & -0.220 \\
-Llama 70B & T=1.0 & 100 & 0.360 & $+0.78$ & -0.215 \\
-Llama 70B & T=1.2 & 100 & 0.358 & $+0.78$ & -0.227 \\
+Llama 3.3 70B & T=0.3 & 100 & 36.4\% & $+0.78$ & $-0.21$ \\
+Llama 3.3 70B & T=0.5 & 100 & 36.0\% & $+0.78$ & $-0.22$ \\
+Llama 3.3 70B & T=0.7 & 100 & 36.1\% & $+0.78$ & $-0.22$ \\
+Llama 3.3 70B & T=1.0 & 100 & 36.0\% & $+0.78$ & $-0.22$ \\
+Llama 3.3 70B & T=1.2 & 100 & 35.8\% & $+0.78$ & $-0.23$ \\
 \midrule
-Qwen 235B & T=0.3 & 100 & 0.392 & $+0.83$ & -0.117 \\
-Qwen 235B & T=0.5 & 100 & 0.392 & $+0.82$ & -0.112 \\
-Qwen 235B & T=0.7 & 100 & 0.392 & $+0.84$ & -0.110 \\
-Qwen 235B & T=1.0 & 100 & 0.398 & $+0.83$ & -0.105 \\
-Qwen 235B & T=1.2 & 100 & 0.397 & $+0.83$ & -0.121 \\
+Qwen3 235B & T=0.3 & 100 & 39.2\% & $+0.83$ & $-0.12$ \\
+Qwen3 235B & T=0.5 & 100 & 39.2\% & $+0.82$ & $-0.11$ \\
+Qwen3 235B & T=0.7 & 100 & 39.2\% & $+0.84$ & $-0.11$ \\
+Qwen3 235B & T=1.0 & 100 & 39.8\% & $+0.83$ & $-0.11$ \\
+Qwen3 235B & T=1.2 & 100 & 39.7\% & $+0.83$ & $-0.12$ \\
 \bottomrule
-\end{tabular}}
-\vspace{0.25em}
-\parbox{\columnwidth}{\footnotesize\emph{Notes:} Pure treatment, varying LLM decoding temperature across three models.}
+\end{tabular}
+\begin{tablenotes}
+\footnotesize\emph{Notes:} Pure treatment, varying LLM decoding temperature. $N$ counts country--period rows ($n = 25$ agents per row); mean join in percent. Mistral was run at only three temperatures (0.3, 0.7, 1.0) because the hosted endpoint was retired before the 0.5 and 1.2 cells could be collected; Llama 3.3 70B and Qwen3 235B cover the full five-point ladder.
+\end{tablenotes}
 \end{table}

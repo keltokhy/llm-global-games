@@ -1,0 +1,99 @@
+run_id,arm_id,model,country,period,agent_id,theta,signal,z_score,briefing_text,message_sent,messages_received,decision,join,reasoning,belief_pre_success,belief_pre_join_share,belief_pre_shared_understanding,belief_pre_others_expect_join,belief_post_success,belief_post_join_share,belief_post_shared_understanding,belief_post_others_expect_join,punishment_risk,api_error,parse_error,prompt_hash,response_hash
+large_random_flip_deepseekv4-20260508T012524Z,large_random_flip_deepseekv4,deepseek/deepseek-v4-flash-20260423,0,0,0,2.2084435727029392,2.1147667398322523,5.892923746459016,"PRIVATE BRIEFING
+
+BOTTOM LINE: Everything points in the same direction: the regime is weaker than it has been in living memory.
+ATMOSPHERE: People are speaking as if coordination is already happening — 'when it happens' rather than 'if'.
+
+EVIDENCE:
+  - [Elite Cohesion] a cabinet reshuffle was announced and then reversed within the same day (overwhelming convergence — every channel telling the same story independently)
+  - [Security Forces] soldiers stationed at a key installation have been rotated out and replaced with untested units (near-unanimous confirmation from every reliable source)
+  - [Money And Logistics] This removes any serious doubt that barely perceptible — government payments are arriving on schedule, and contracts are being honored
+  - [Street Mood] gatherings disperse quickly and conversation turns careful when outsiders approach — the trend settling back toward normal
+  - [Information Control] the state broadcaster went off-air for several hours with no explanation — the trend settling back toward normal
+  - [Personal Observations] your workplace is functioning normally — no unusual absences or anxious corridor talk
+  - [Diplomatic Signals] foreign airlines have quietly added extra flights out of the capital — route changes driven by demand, not schedule — the trend settling back toward normal
+  - [Institutional Functioning] the national statistics office delayed a scheduled data release without explanation — they're hiding something or can't agree on what to publish
+
+UNCERTAINTIES:
+  - How deep the fractures go — surface-level dysfunction can mask either deeper rot or functioning parallel systems.
+  - How much of the disarray is structural versus a temporary response to a specific crisis.",,[],JOIN,True,"JOIN
+
+The evidence clearly shows the regime is in unprecedented disarray—a reversed cabinet reshuffle, untested troops, and a broadcaster going dark all point to deep weakness. The atmosphere of impending coordination makes this the moment to act.",,,,,,,,,,False,False,5f50fd634af7a306a8b8e9bdbee4d4eccd4d6574efc022a55fa8a87533d8f678,0fc58461f54e927913ef4d4483bc8ea81d8e7024cddc174572b24bb903b5402d
+large_random_flip_deepseekv4-20260508T012524Z,large_random_flip_deepseekv4,deepseek/deepseek-v4-flash-20260423,0,0,1,2.2084435727029392,2.1960190916218854,6.163764919091126,"PRIVATE BRIEFING
+
+BOTTOM LINE: If you were looking for a textbook picture of a regime approaching collapse, this is close to what you'd expect.
+ATMOSPHERE: The sense of isolation has broken — people realize they're not alone, and they're acting on it.
+
+EVIDENCE:
+  - [Elite Cohesion] a senior figure who usually keeps a high profile has gone conspicuously quiet (overwhelming convergence — every channel telling the same story independently)
+  - [Security Forces] security units that normally move as one are showing friction — quiet stalling, paperwork excuses (overwhelming convergence — every channel telling the same story independently)
+  - [Money And Logistics] a well-connected accountant says several elite-linked firms are quietly restructuring their debts (overwhelming convergence — every channel telling the same story independently)
+  - [Street Mood] religious leaders are making unusually pointed sermons about justice and change
+  - [Information Control] VPN usage has spiked dramatically and the regime hasn't responded — either they can't detect it or can't be bothered — the trend settling back toward normal
+  - [Personal Observations] routine government services are running without the delays that usually signal internal chaos (overwhelming convergence — every channel telling the same story independently)
+  - [Diplomatic Signals] the regime's ambassador to a key ally was recalled for 'consultations' — a move that suggests the ally is distancing — the trend settling back toward normal
+  - [Institutional Functioning] public hospitals are reporting supply shortages for items that were available last month — the procurement system is breaking down (overwhelming convergence — every channel telling the same story independently)
+
+UNCERTAINTIES:
+  - Whether any of the apparent weakness is being deliberately staged to flush out opponents.
+  - Whether the top is losing control, or intentionally tightening the circle and freezing everyone else out.",,[],JOIN,True,"JOIN
+The evidence overwhelmingly indicates a regime in genuine decline, with elite fractures, security force friction, and collapsing logistics—the risks of a trap are outweighed by the opportunity to act while the system is vulnerable.",,,,,,,,,,False,False,94e42fb05375af5b18d7a9e488f98ac9bb199e2ae3eda554a60d87d94eff7cc7,d41523e0b1ef10743b29913349b3b08553743787c447c447af7c1907774cc4b4
+large_random_flip_deepseekv4-20260508T012524Z,large_random_flip_deepseekv4,deepseek/deepseek-v4-flash-20260423,0,0,2,2.2084435727029392,2.2299600201679795,6.276901347578106,"PRIVATE BRIEFING
+
+BOTTOM LINE: Everything points in the same direction: the regime is weaker than it has been in living memory.
+ATMOSPHERE: Strangers are approaching each other to talk about 'the situation' — the trust radius has expanded dramatically.
+
+EVIDENCE:
+  - [Elite Cohesion] a senior figure who usually keeps a high profile has gone conspicuously quiet
+  - [Security Forces] an informant in the security services says internal surveillance has shifted from opposition to other security units (near-unanimous confirmation from every reliable source)
+  - [Money And Logistics] the black-market premium on hard currency has actually narrowed
+  - [Street Mood] This is hard to escape the conclusion that hairline — a normally restless neighborhood feels calm and settled — children playing, shops busy, nothing unusual
+  - [Information Control] state media contradicted itself twice in the same broadcast — the trend settling back toward normal
+  - [Personal Observations] This removes any serious doubt that past the point of concealment — someone you barely know stopped you on the street and asked quietly 'have you heard anything?'
+  - [Diplomatic Signals] This removes any serious doubt that past the point of concealment — international shipping companies have reclassified the country as higher-risk for cargo insurance
+  - [Institutional Functioning] teachers at government schools haven't been paid in six weeks and are staging informal slowdowns
+
+UNCERTAINTIES:
+  - How deep the fractures go — surface-level dysfunction can mask either deeper rot or functioning parallel systems.
+  - Whether the top is losing control, or intentionally tightening the circle and freezing everyone else out.",,[],JOIN,True,"JOIN
+
+The evidence strongly indicates the regime is fragile, with cracks in elite cohesion, security forces, and institutional functioning, and the expanded trust radius suggests a tipping point may be near. While uncertainties remain, the risks of staying passive outweigh the potential for change.",,,,,,,,,,False,False,ce7f5bac1e8a4d1419f65db350d0e58a16a1f7e0ae7eb1a53b62455cb85046ca,60f3a3c1dfc4638a8af4988a073b958b8e2027498a4969597ddf38e1c276eaf7
+large_random_flip_deepseekv4-20260508T012524Z,large_random_flip_deepseekv4,deepseek/deepseek-v4-flash-20260423,0,0,3,2.2084435727029392,2.5643547853134048,7.391550564729523,"PRIVATE BRIEFING
+
+BOTTOM LINE: Everything points in the same direction: the regime is weaker than it has been in living memory.
+ATMOSPHERE: Conversations have shifted from whispers to open talk. People are less afraid of being overheard.
+
+EVIDENCE:
+  - [Elite Cohesion] a cabinet reshuffle was announced and then reversed within the same day (overwhelming convergence — every channel telling the same story independently)
+  - [Security Forces] military families in the capital have been seen moving belongings to relatives in the provinces (overwhelming convergence — every channel telling the same story independently)
+  - [Money And Logistics] a banker you know says capital flows look stable — no unusual outflows — the trend decelerating and losing whatever energy it had
+  - [Street Mood] a normally apolitical professional class — doctors, teachers, lawyers — has started organizing quietly — the trend settling back toward normal
+  - [Information Control] independent media outlets are operating but finding it difficult to gain audience — the regime's narrative dominance is structural — the trend settling back toward normal
+  - [Personal Observations] the local clinic has been quietly stocking extra supplies, according to a nurse you know — the trend decelerating and losing whatever energy it had
+  - [Diplomatic Signals] international trade delegations continue to arrive on schedule — commercial confidence is intact — the trend settling back toward normal
+  - [Institutional Functioning] the courts are functioning normally, including cases that touch on politically sensitive issues — the trend settling back toward normal
+
+UNCERTAINTIES:
+  - Whether the top is losing control, or intentionally tightening the circle and freezing everyone else out.
+  - If the economic deterioration is perceived by ordinary people as the regime's fault or as bad luck.",,[],STAY,False,"STAY
+The evidence is mixed: elite confusion and security force movements suggest weakness, but institutional functioning and economic stability remain normal, making a successful uprising uncertain and risky.",,,,,,,,,,False,False,41617f54b93dd230d3ba9cb69a78498f565661c8bebb6ff40f4fc39e86ccf380,b92cc6f6b970759198e760cb9b82f0216ff84267433f1a6e960a8f136e41f257
+large_random_flip_deepseekv4-20260508T012524Z,large_random_flip_deepseekv4,deepseek/deepseek-v4-flash-20260423,0,0,4,2.2084435727029392,2.3009757524101557,6.513620455052028,"PRIVATE BRIEFING
+
+BOTTOM LINE: If you were looking for a textbook picture of a regime approaching collapse, this is close to what you'd expect.
+ATMOSPHERE: There's an almost festive quality to the defiance — the secrecy has dropped away and people feel liberated by it.
+
+EVIDENCE:
+  - [Elite Cohesion] key positions have been left unfilled for weeks, suggesting internal deadlock (overwhelming convergence — every channel telling the same story independently)
+  - [Security Forces] military families are not making unusual preparations — life on base feels normal (near-unanimous confirmation from every reliable source)
+  - [Money And Logistics] new construction projects are being launched, signaling long-term regime confidence (overwhelming convergence — every channel telling the same story independently)
+  - [Street Mood] the mood at a local tea house has changed from grumbling to something more purposeful — people are comparing notes — the trend settling back toward normal
+  - [Information Control] censorship is getting sloppier — critical posts survive longer before deletion
+  - [Personal Observations] This removes any serious doubt that past the point of concealment — a colleague returned from a business trip and said foreign contacts were asking unusually pointed questions about stability
+  - [Diplomatic Signals] the World Bank just praised the country's recent fiscal management — institutional approval is a stability signal (near-unanimous confirmation from every reliable source)
+  - [Institutional Functioning] a scheduled census operation was indefinitely postponed — the state can't organize basic logistics right now
+
+UNCERTAINTIES:
+  - Whether any of the apparent weakness is being deliberately staged to flush out opponents.
+  - If the regime has foreign backers who might intervene to prop it up at the last moment.",,[],JOIN,True,"JOIN
+
+The evidence points to a regime in visible decay—elite deadlock, logistical failures, and sloppy censorship outweigh isolated stability signals like new construction or World Bank praise. The festive defiance and purposeful mood on the street suggest a tipping point where collective action could succeed, and the risk of a staged trap is outweighed by the chance to seize this opening.",,,,,,,,,,False,False,a254e2464bff6ace18041301ff738ba7e2f3e2d8f4944d258d8737f849ac2f21,d60fb32c0cd1425738c6420a887c4c7d1bd325ec3fb297485ab4aebb27dfa523

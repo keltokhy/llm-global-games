@@ -1,0 +1,95 @@
+run_id,arm_id,model,country,period,agent_id,theta,signal,z_score,briefing_text,message_sent,messages_received,decision,join,reasoning,belief_pre_success,belief_pre_join_share,belief_pre_shared_understanding,belief_pre_others_expect_join,belief_post_success,belief_post_join_share,belief_post_shared_understanding,belief_post_others_expect_join,punishment_risk,api_error,parse_error,prompt_hash,response_hash
+large_random_scramble_qwen30-20260508T010216Z,large_random_scramble_qwen30,qwen/qwen3-30b-a3b-instruct-2507,0,0,0,2.2084435727029392,2.1147667398322523,5.892923746459016,"PRIVATE BRIEFING
+
+BOTTOM LINE: Any attempt to move against this regime would face extraordinary odds — the structures of control are deep and functional.
+ATMOSPHERE: The silence is total — not peaceful silence, but the kind where everyone is watching everyone else.
+
+EVIDENCE:
+  - [Elite Cohesion] the inner circle recently expanded to include fresh faces, suggesting confidence in the future (near-unanimous confirmation from every reliable source)
+  - [Security Forces] military pay was delivered early this month — a small but telling signal of organizational confidence (overwhelming convergence — every channel telling the same story independently)
+  - [Money And Logistics] the central bank's reserves are at their highest level in two years (overwhelming convergence — every channel telling the same story independently)
+  - [Street Mood] This removes any serious doubt that past the point of concealment — a normally restless neighborhood feels calm and settled — children playing, shops busy, nothing unusual
+  - [Information Control] critics are being handled through legal channels rather than crude suppression
+  - [Personal Observations] someone you barely know stopped you on the street and asked quietly 'have you heard anything?'
+  - [Diplomatic Signals] a neighboring country has reinforced its border patrols — they're preparing for a refugee scenario (overwhelming convergence — every channel telling the same story independently)
+  - [Institutional Functioning] government IT systems were recently upgraded — someone is thinking about long-term infrastructure (near-unanimous confirmation from every reliable source)
+
+UNCERTAINTIES:
+  - Whether the current generation of potential challengers has the will or capacity to act even if circumstances change.
+  - Whether the regime's strength is being accurately perceived by potential challengers — overestimation could be self-fulfilling.",,[],STAY,False,"STAY.  
+The regime's cohesion, logistical strength, and control over information and public mood suggest any uprising would be crushed before it could gain momentum — and the quiet fear in the streets confirms that others are also holding back.",,,,,,,,,,False,False,e579405e6267fc436424db10ec4eb06d7f77f23f8d1a0ccb438c600bcf3a0036,9895b0d9628aaa5a5e66c1d6df76686c4083de7a5a6ce17712f07c55f8f3ac09
+large_random_scramble_qwen30-20260508T010216Z,large_random_scramble_qwen30,qwen/qwen3-30b-a3b-instruct-2507,0,0,1,2.2084435727029392,2.1960190916218854,6.163764919091126,"PRIVATE BRIEFING
+
+BOTTOM LINE: The regime is as secure as any authoritarian system can realistically be. All indicators point to consolidated power.
+ATMOSPHERE: Even trusted friends change the subject when talk gets too concrete. Fear is doing its work.
+
+EVIDENCE:
+  - [Elite Cohesion] an internal policy document leaked that contradicts the regime's public position entirely — the trend moving faster than anyone expected
+  - [Security Forces] military pay was delivered early this month — a small but telling signal of organizational confidence — the trend moving faster than anyone expected
+  - [Money And Logistics] a new shopping center opened this month with heavy foot traffic — consumer confidence is visible
+  - [Street Mood] a community elder said people are 'tired of hoping for change' and just want stability (overwhelming convergence — every channel telling the same story independently)
+  - [Information Control] a government spokesperson appeared visibly flustered when asked a routine question (overwhelming convergence — every channel telling the same story independently)
+  - [Personal Observations] your superior at work has been evasive and cancelled two meetings without rescheduling (overwhelming convergence — every channel telling the same story independently)
+  - [Diplomatic Signals] the country's sovereign credit spread has tightened slightly — financial markets are pricing in stability, not risk (overwhelming convergence — every channel telling the same story independently)
+  - [Institutional Functioning] a scheduled policy announcement was delivered on time with a detailed implementation plan — the trend hurtling forward — the speed itself has become a signal
+
+UNCERTAINTIES:
+  - How much of the regime's stability depends on continued economic performance that may not be sustainable indefinitely.
+  - Whether any latent opposition exists that simply hasn't shown itself yet — absence of evidence is not evidence of absence.",,[],STAY,False,"STAY.  
+The regime's control is too deeply entrenched across institutions, economy, and psyche—any resistance would be futile and dangerous, especially with no visible cohesion among potential dissidents.",,,,,,,,,,False,False,d42a90892499d69fb5501b346fd49dad367db9d712ee962cf6450dacdf70be2e,1ae93dcc09a443d37781708ecad06d21f5e6bcaeacf9ffe9d5bf6a5bf1ef62e4
+large_random_scramble_qwen30-20260508T010216Z,large_random_scramble_qwen30,qwen/qwen3-30b-a3b-instruct-2507,0,0,2,2.2084435727029392,2.2299600201679795,6.276901347578106,"PRIVATE BRIEFING
+
+BOTTOM LINE: Any attempt to move against this regime would face extraordinary odds — the structures of control are deep and functional.
+ATMOSPHERE: The silence is total — not peaceful silence, but the kind where everyone is watching everyone else.
+
+EVIDENCE:
+  - [Elite Cohesion] senior figures are giving interviews that subtly distance themselves from the leader's recent decisions — the trend hurtling forward — the speed itself has become a signal
+  - [Security Forces] a commander's orders arrived garbled and were questioned before being carried out (overwhelming convergence — every channel telling the same story independently)
+  - [Money And Logistics] This removes any serious doubt that past the point of concealment — the black-market premium on hard currency has actually narrowed
+  - [Street Mood] a veteran community organizer said 'this isn't the moment' and went back to his regular work — the reading from the ground is stability — the trend hurtling forward — the speed itself has become a signal
+  - [Information Control] This removes any serious doubt that past the point of concealment — social media monitoring appears sophisticated and well-resourced
+  - [Personal Observations] This removes any serious doubt that barely perceptible — your superior at work has been evasive and cancelled two meetings without rescheduling
+  - [Diplomatic Signals] This removes any serious doubt that past the point of concealment — foreign embassies are operating normally and have not changed their advisory levels
+  - [Institutional Functioning] This removes any serious doubt that barely perceptible — the postal service has effectively stopped delivering to several districts — institutional reach is contracting
+
+UNCERTAINTIES:
+  - If the regime's information advantage is as complete as it appears, or if opponents are communicating through channels you can't see.
+  - How much of the regime's stability depends on continued economic performance that may not be sustainable indefinitely.",,[],STAY,False,"STAY.  
+The silence is too thick, the systems too synchronized — every signal points to a regime that has mastered control, and the cost of misreading the moment is too high.",,,,,,,,,,False,False,12ad73aa7b4f6e52edcf9bd001ead812e4ae4f24e77dc9319b7681509543762e,a2043f886e76e6a2b873ff09aebb447961b920f17f8248732f4410c426ac36b1
+large_random_scramble_qwen30-20260508T010216Z,large_random_scramble_qwen30,qwen/qwen3-30b-a3b-instruct-2507,0,0,3,2.2084435727029392,2.5643547853134048,7.391550564729523,"PRIVATE BRIEFING
+
+BOTTOM LINE: The system is operating with a degree of confidence and institutional coherence that leaves almost no room for a successful challenge.
+ATMOSPHERE: People are careful. Conversations happen in whispers, behind closed doors, in coded language.
+
+EVIDENCE:
+  - [Elite Cohesion] the succession of commands is functioning smoothly — no gaps, no improvisation (overwhelming convergence — every channel telling the same story independently)
+  - [Security Forces] soldiers at checkpoints are relaxed and joking with civilians — not the posture of a force expecting trouble (near-unanimous confirmation from every reliable source)
+  - [Money And Logistics] This removes any serious doubt that past the point of concealment — government payments are arriving on schedule, and contracts are being honored
+  - [Street Mood] gatherings disperse quickly and conversation turns careful when outsiders approach — the trend hurtling forward — the speed itself has become a signal
+  - [Information Control] information control is tight and efficient — leaks are rare and quickly contained — the trend moving faster than anyone expected
+  - [Personal Observations] your workplace is functioning normally — no unusual absences or anxious corridor talk
+  - [Diplomatic Signals] diplomatic social events are proceeding with normal attendance — no embassies are in bunker mode — the trend hurtling forward — the speed itself has become a signal
+  - [Institutional Functioning] a new government regulation was drafted, debated, and implemented through normal channels — the policy process works
+
+UNCERTAINTIES:
+  - If the regime's information advantage is as complete as it appears, or if opponents are communicating through channels you can't see.
+  - If unrest flares, the response capacity seems intact — though no system is invulnerable to surprises.",,[],STAY,False,"STAY.  
+The system’s coherence is too complete — every sign points to entrenched control, and any uprising would face a machine that’s not just prepared, but unshaken.",,,,,,,,,,False,False,cf069d6a1027b0acd4dd9389bbf41d147fd13ea47dc30f9cf9eb4d84463993eb,98db126398fd80d53aa8092b88f8367fdca76b2ccd40f61f64cc44e92640cde5
+large_random_scramble_qwen30-20260508T010216Z,large_random_scramble_qwen30,qwen/qwen3-30b-a3b-instruct-2507,0,0,4,2.2084435727029392,2.3009757524101557,6.513620455052028,"PRIVATE BRIEFING
+
+BOTTOM LINE: The regime's position is as strong as you've seen it, and the conditions for challenge are as unfavorable as they've been in years.
+ATMOSPHERE: People keep their thoughts locked away. The cost of being overheard is too high to risk candor.
+
+EVIDENCE:
+  - [Elite Cohesion] disputes among elites are ending with clear winners and quick public alignment (overwhelming convergence — every channel telling the same story independently)
+  - [Security Forces] security units that normally move as one are showing friction — quiet stalling, paperwork excuses (overwhelming convergence — every channel telling the same story independently)
+  - [Money And Logistics] a well-connected accountant says several elite-linked firms are quietly restructuring their debts (overwhelming convergence — every channel telling the same story independently)
+  - [Street Mood] a community elder said people are 'tired of hoping for change' and just want stability
+  - [Information Control] state media is running human-interest stories about development projects — the messaging is confident enough to be boring — the trend moving faster than anyone expected
+  - [Personal Observations] routine government services are running without the delays that usually signal internal chaos (overwhelming convergence — every channel telling the same story independently)
+  - [Diplomatic Signals] the country's sovereign credit spread has tightened slightly — financial markets are pricing in stability, not risk — the trend hurtling forward — the speed itself has become a signal
+  - [Institutional Functioning] public transportation is running on schedule and recently expanded a route — investment in routine services continues (overwhelming convergence — every channel telling the same story independently)
+
+UNCERTAINTIES:
+  - Whether the regime's strength is being accurately perceived by potential challengers — overestimation could be self-fulfilling.
+  - The regime could still be masking trouble behind a disciplined exterior, but current indicators don't support that reading.",,[],STAY,False,"STAY. The regime's control is too entrenched and unified, and the risks of joining an uprising—especially with no sign of widespread dissent or internal fracture—far outweigh any potential for success.",,,,,,,,,,False,False,5d065793c92f560b887f3c97c49d17b996751b1620d90ea164aa8e77298e9196,c1a33e2c78aebac173a7767b8b1959a003ce130b119d995db23621dc84ed3a85

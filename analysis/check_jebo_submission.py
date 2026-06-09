@@ -118,9 +118,9 @@ def _check_cover_letter() -> None:
     tex = tex_path.read_text()
     required_phrases = [
         "Journal of Economic Behavior \\& Organization",
-        "Speaking in Code: How Surveillance Suppresses Coordinated Dissent",
+        "Speaking in Code: Surveillance and Coordinated Dissent in a Language-Based Global Game with LLM Agents",
         "global game",
-        "belief--action wedge",
+        "sender-side surveillance effect",
     ]
     missing = [phrase for phrase in required_phrases if phrase not in tex]
     if missing:

@@ -1,0 +1,2 @@
+running fine_direct_replay_qwen30 -> /Users/khaled/GitHub/llm-global-games/CLEAN_RUN/output/fine_grid_pilot/fine_direct_replay_qwen30
+fine_direct_replay_qwen30: completed 34 period rows

@@ -1,0 +1,2744 @@
+Journal of Economic Theory 108 (2003) 1–44
+
+Equilibrium selection in global games with
+strategic complementarities
+David M. Frankel,a,* Stephen Morris,b and Ady Pauznerc
+a
+
+Cornell University, USA
+b
+Yale University, USA
+c
+Eitan Berglas School of Economics, Tel Aviv University, Tel Aviv 69978, Israel
+Received 30 January 2001; ﬁnal version received 27 November 2001
+
+Abstract
+We study games with strategic complementarities, arbitrary numbers of players and actions,
+and slightly noisy payoff signals. We prove limit uniqueness: as the signal noise vanishes, the
+game has a unique strategy proﬁle that survives iterative dominance. This generalizes a result
+of Carlsson and van Damme (Econometrica 61 (1993) 989–1018) for two-player, two-action
+games. The surviving proﬁle, however, may depend on ﬁne details of the structure of the noise.
+We provide sufﬁcient conditions on payoffs for there to be noise-independent selection.
+r 2003 Elsevier Science (USA). All rights reserved.
+JEL classification: C72; D82
+Keywords: Equilibrium selection; Global games; Strategic complementarities; Supermodular games
+
+1. Introduction
+In two-player, two-action games with common knowledge of payoffs, there often
+exist two strict Nash equilibria. Carlsson and van Damme [5] showed a remarkable
+result: if each player instead observes a noisy signal of the true payoffs, and if the ex
+ante feasible payoffs include payoffs that make each action strictly dominant, then as
+the noise becomes small, iterative strict dominance eliminates all equilibria but one.
+In particular, if there are two Nash equilibria in the underlying complete information
+*Corresponding author.
+E-mail addresses: dmf@cornell.edu (D.M. Frankel), stephen.morris@yale.edu (S. Morris), pauzner@
+post.tau.ac.il (A. Pauzner).
+0022-0531/02/$ - see front matter r 2003 Elsevier Science (USA). All rights reserved.
+PII: S 0 0 2 2 - 0 5 3 1 ( 0 2 ) 0 0 0 1 8 - 2
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+2
+
+game, then the risk-dominant equilibrium [14] must be played in the game with small
+noise. Carlsson and van Damme called the noisy game with dominance regions a
+‘‘global game.’’
+Carlsson and van Damme’s result can be reconstructed in two logically separate
+parts. First, there is a limit uniqueness result: as the noise in the global game becomes
+arbitrarily small, for almost any payoffs there is a unique action that survives
+iterative elimination of dominated strategies. The second is a noise-independent
+selection result: as the noise goes to zero, the equilibrium played (for a given
+realization of the payoffs) is independent of the distribution of the noise.
+In this paper, we extend Carlsson and van Damme’s model to many player, many
+action games.1 Our main assumption is that the actions can be ranked such that
+there are strategic complementarities: an increase in one player’s action raises the
+incentive for other players to raise their own actions. We show that the limit
+uniqueness result generalizes. In contrast, the noise-independent selection result does
+not hold in general. We present a counterexample (a two-player, four-action
+symmetric game) in which the equilibrium selected in the limit as the noise goes to
+zero does depend on the structure of the noise. We proceed to identify sufﬁcient
+conditions for noise-independent selection to hold in games with a ﬁnite number of
+players.
+We consider the following setting. An unknown state of the world yAR is drawn
+according to some prior. Each player i observes the signal y þ nZi ; where n > 0 is a
+scale factor and Zi is a random variable with density fi : Our main assumptions are (1)
+strategic complementarities: for any state y; each player’s best response is weakly
+increasing in the actions of her opponents; (2) state monotonicity: for any given
+opposing action proﬁle, a player’s best response is increasing in the state y; and (3)
+dominance regions: at sufﬁciently low (high) states y; each player’s lowest (highest)
+action is strictly dominant. Call this global game GðnÞ: Under these and some
+technical continuity assumptions, we show that limit uniqueness holds: as the noise
+scale factor n goes to zero, there is an essentially unique2 strategy proﬁle surviving
+iterated deletion of dominated strategies in GðnÞ: In this unique surviving strategy
+proﬁle, each player’s action is a nondecreasing function of her signal. Moreover, for
+almost all states y; players play a Nash equilibrium of the complete information
+game with payoff parameter y:
+We also show that there may not be noise-independent selection: the particular
+Nash equilibrium played at a state y may depend on the noise densities fi : This
+implies that different equilibria of a given complete-information game g may be
+selected, depending on the global game in which g is embedded. We proceed to
+identify conditions on the payoffs of complete-information games g that guarantee
+noise-independent selection. In particular, if g is a local potential game in which each
+player’s payoffs are quasiconcave in her own action, then there is noise-independent
+1
+
+Our results also generalize the extensions of Carlsson and van Damme [6] and Kim [16], who show
+limit uniqueness in games with ﬁnitely many identical players and two actions, under a uniform prior
+assumption.
+2
+That is, for almost all signals.
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+3
+
+selection at g: a unique Nash equilibrium of g must be played in the limit as the
+signal errors shrink, regardless of the global game in which g is embedded.
+Local potential games include both the potential games of Monderer and Shapley
+[19] and games with low p-dominant equilibria of Morris, Rob, and Shin [20] and
+Kajii and Morris [15]. In particular, local potential games include (1) all two-player,
+two-action games; (2) all many-player, two-action games with symmetric payoffs;
+and (3) all two-player, three-action games with symmetric payoffs. In each of these
+cases, we characterize the selected equilibrium.3
+Strategic complementarities are present in many settings, including macroeconomic coordination failures, technology adoption, oligopoly, R&D competition,
+coordination in teams, arms races, and pretrial bargaining.4 In a number of recent
+applied papers, the global games approach has been used to select a unique
+equilibrium. Examples include models of currency crises (Morris and Shin [21]),
+bank runs (Goldstein and Pauzner [11]) and debt pricing (Morris and Shin [22]).5
+However, the applications have generally been limited to situations with
+homogenous agents and two actions. Our results make it possible to apply the
+global games approach to a wider class of games. In particular, our model allows for
+arbitrary mixtures of large and small (inﬁnitesimal) players, who can choose their
+actions from arbitrary compact sets.6 (For ease of exposition, we assume a ﬁnite
+number of players ﬁrst and later generalize the model to include continua of players.)
+This paper also contributes to a large literature on games with strategy
+complementarities, also known as supermodular games. These games were ﬁrst
+studied as a class by Topkis [26] and are further analyzed by Vives [28] and Milgrom
+and Roberts. The connection between our ﬁndings and existing results on
+supermodular games is discussed in the conclusion.
+The remainder of this paper is organized as follows. The base model, with a ﬁnite
+number of players, is presented in Section 2. We prove limit uniqueness in Section 3
+and partially characterize the unique equilibrium in Section 4. In Section 5, we show
+that Carlsson and van Damme’s noise-independence result does not generalize.
+Section 6 introduces conditions on the payoffs of the game (own action
+quasiconcavity and the existence of a local potential maximizer) that sufﬁce for
+noise-independent selection and discusses classes of games that satisfy the
+conditions. In Section 7, we show that the limit uniqueness and partial
+characterization results generalize to models with large and small players. Section
+8 concludes. All proofs are relegated to the appendix.
+3
+
+In cases (1) and (2), there is own-action quasiconcavity since there are only two actions. In case (3),
+noise-independent selection holds even without own-action quasiconcavity.
+4
+See Milgrom and Roberts for a survey of applications.
+5
+Morris and Shin [23] survey such applications and describe sufﬁcient conditions for limit uniqueness in
+games with a continuum of identical players and two actions, under slightly weaker technical assumptions
+than those assumed in this paper. Their results incorporate other applications of global games such as
+Morris and Shin [21,22].
+6
+Note that any ﬁnite set of actions is compact. For recent applications of our more general results, see,
+e.g., Goldstein [10] (four actions, continuum of players) and Goldstein and Pauzner [12] (two actions, two
+continua of players).
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+4
+
+2. The game
+The global game GðnÞ is deﬁned as follows. The set of players is f1; y; Ig:7 A state
+yAR is drawn from the real line according to a continuous density f with connected
+support. Each player i observes a signal xi ¼ y þ nZi ; where n > 0 is a scale factor
+and each Zi is distributed according to an atomless density fi with support contained
+in the interval ½12; 12 : The signals are conditionally independent: Zi is independent of
+Zj for all iaj:
+The action set of player i; Ai D½0; 1 ; can be any closed, countable union of closed
+intervals and points that contains 0 and 1.8 If player i chooses action ai AAi ; her
+payoff is ui ðai ; ai ; yÞ; ai ¼ ðaj Þjai denotes the action proﬁle of i’s opponents.
+Let Dui ðai ; a0i ; ai ; yÞ be the difference in the utility of player i from playing ai
+versus a0i against the action proﬁle ai when the payoff parameter is y:9 Let us write
+ai Xa0i if actions are weakly higher under ai than under a0i : if aj Xa0j for each jai:
+We make the following assumptions on payoff functions.
+A1. Strategic complementarities: A player’s incentive to raise her action is weakly
+increasing in her opponents’ actions: if ai Xa0i and ai Xa0i then for all y;
+Dui ðai ; a0i ; ai ; yÞXDui ðai ; a0i ; a0i ; yÞ:
+A2. Dominance regions: For extreme values of the payoff parameter y; the extreme
+actions are strictly dominant: there exist thresholds yoy% ; where ½y  n; %y þ n is
+contained in the interior of the support of f; such% that, for all% i and for all
+opposing action proﬁles ai ; Dui ð0; ai ; ai ; yÞ > 0 if ai a0 and ypy; and
+%
+Dui ð1; ai ; ai ; yÞ > 0 if ai a1 and yX %y:
+If each player’s action space is ﬁnite, we can replace A2 by the weaker assumption:
+A20 : Unique equilibrium regions: For extreme values of the payoff parameter, the
+equilibrium is unique: there exist thresholds yoy% in the interior of the support
+%
+of y such that for all yoy; the complete information
+game in which the payoff
+%
+function of each player i is ui ð ; yÞ has a unique equilibrium ða1 ; y; aI Þ; for all
+%
+%
+y > y% ; the complete information game with payoffs ui ð ; yÞ has a unique
+equilibrium ða% 1 ; y; a% I Þ: By Theorem 6 in Milgrom and Roberts [18], ai pa% i for
+%
+all i: We assume that ai oa% i for at least one player i:
+%
+Note that under assumption A1; A20 is equivalent to requiring that there is a
+unique action proﬁle surviving iterated deletion of strictly dominated strategies if
+ye½y; y% (Milgrom and Roberts [18]).
+%
+7
+
+The case of a continuum of players is treated in Section 7.
+S
+That is, Ai is a closed union of disjoint closed intervals M
+m¼1 ½bm ; cm where MX1 can be inﬁnity.
+(Isolated points are represented by setting bm ¼ cm :) Requiring Ai to include 0 and 1 is not restrictive since
+a player’s highest and lowest actions can always be normalized to 0 and 1, respectively, by rescaling the
+payoff functions.
+9
+That is, Dui ðai ; a0i ; ai ; yÞ ¼ ui ðai ; ai ; yÞ  ui ða0i ; ai ; yÞ:
+8
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+5
+
+A3. State monotonicity: Higher states make higher actions more appealing: there is
+a K0 > 0 such that for all ai Xa0i and y; y0 A½y; y% ; yXy0 ; Dui ðai ; a0i ; ai ; yÞ 
+%
+Dui ðai ; a0i ; ai ; y0 ÞXK0 ðai  a0i Þðy  y0 Þ:
+A4. Payoff continuity: Each ui ðai ; ai ; yÞ is continuous in all arguments.
+If player i’s action space is ﬁnite, continuity with respect to ai is vacuous. The
+following assumption is also vacuous if action sets are ﬁnite.
+A5. Bounded derivatives: A player’s utility is Lipschitz continuous in her own action
+and her marginal utility of raising her action is Lipschitz continuous in other
+players’ actions. More precisely,
+(a) for each y and ai ; there exists a constant K1 such that for all ai ; a0i ;
+jDui ðai ; a0i ; ai ; yÞjpK1 jai  a0i j;
+(b) for each y there exists a constant K2 such that for all ai ; a0i ; ai ; and a0i ;
+X
+jaj  a0j j: ð1Þ
+jDui ðai ; a0i ; ai ; yÞ  Dui ðai ; a0i ; a0i ; yÞjpK2 jai  a0i j
+jai
+
+A pure strategy for player i is a function si : R-Ai : A pure strategy profile is a
+vector of pure strategies, s ¼ ðsi ÞIi¼1 : The proﬁle s is increasing if si ðxi Þ is weakly
+increasing in xi for all i; it is left (right) continuous if each si is left (right) continuous.
+Proﬁle s0 is higher than proﬁle s ðs0 XsÞ if s0i ðxi ÞXsi ðxi Þ for all i and xi AR: A mixed
+strategy is a probability distribution over pure strategies, and a mixed strategy proﬁle
+is an assignment of mixed strategies to players.10 (Players are not restricted to pure
+strategies.)
+
+3. Limit uniqueness
+Our solution concept is iterative strict dominance. First, we eliminate pure
+strategies that are strictly dominated, as rational players will never pick (i.e., put
+positive weight on) such strategies. Then we eliminate a player’s pure strategies that
+are strictly dominated if her opponents are known to mix only over the pure
+strategies that survived the prior round of elimination; and so on. Theorem 1 shows
+10
+
+More precisely, we follow Aumann [2] in modelling a mixed strategy for player i as a function si from
+[0,1] (representing the possible outcomes of player i’s randomizing device) to the space AR
+i (representing
+the space of pure strategies, which are functions from R to Ai ). Thus, si ðyÞ is the pure strategy played by i
+if her randomizing device yields the value y: Following Aumann, we restrict players to mixed strategies si
+for which the corresponding function h: ½0; 1 R-Ai deﬁned by hðy; xi Þ ¼ si ðyÞðxi Þ is measurable. This
+property ensures that a mixed strategy and a distribution on the type space R induces a distribution of
+actions. With this assumption, players are able to calculate their expected payoffs against any vector of
+opposing mixed strategies.
+
+6
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+that as the signal errors shrink to zero, this process selects an essentially unique
+Bayesian equilibrium of the game.
+Theorem 1. GðnÞ has an essentially unique strategy profile surviving iterative strict
+dominance in the limit as n-0: It is an increasing pure strategy profile. More precisely,
+there exists an increasing pure strategy profile sn such that if, for each n > 0; sn is a
+pure strategy profile that survives iterative strict dominance in GðnÞ; then
+limn-0 sni ðxi Þ ¼ sni ðxi Þ for almost all xi AR:
+3.1. Intuition for limit uniqueness
+To see the intuition, consider the case of a symmetric, two-player game with a
+continuum of actions ðAi ¼ ½0; 1 Þ: Assume that the two players have the same
+distribution of signal errors and that their prior over y is uniform over a large
+interval that includes ½y  n; y% þ n : (At the end of this section we explain how the
+argument works with a% nonuniform prior.) Further assume that a player’s payoff
+function is strictly concave in her own action, so that her best response does not
+jump in response to small changes in her posterior distribution over the state y or her
+opponent’s action. Recall that a pure strategy is a function from a player’s signal xi
+to an action ai A½0; 1 ; and players can choose mixtures over these pure strategies.
+By the assumption of dominance regions (A2), we know that a player who
+observes a signal above some threshold must choose ai ¼ 1: This means that no
+player will ever choose (i.e., put positive weight on) a pure strategy that lies below the
+curve in Fig. 1.
+Knowing this, a player will never choose a strategy below the best response to this
+curve. This relies on strategic complementarities (A1): any pure strategy that lies
+above the curve would have a best response that lies weakly above the best response
+to the curve. So the best response to the curve is a new lower bound on the pure
+strategies that can ever be played. We iterate this process ad inﬁnitum, and denote
+the limit by S (Fig. 2). Note that S is a symmetric equilibrium of the game (and thus
+%
+% and that any strategy that survives iterative strict
+survives iterative
+strict dominance)
+dominance lies weakly above S; and so S is the smallest strategy surviving iterative
+%
+%
+strict dominance.
+By a symmetric argument, there must exist a largest strategy surviving iterated
+% which must lie above
+deletion of strictly dominated strategies, which we denote by S;
+
+Fig. 1.
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+7
+
+Fig. 2.
+
+Fig. 3.
+
+S (see Fig. 3). Now if we show that S% must equal S; we will have established the
+%
+%
+existence
+of a unique strategy proﬁle surviving iterative
+strict dominance. This
+strategy for proving the dominance solvability of a game was discussed in Milgrom
+and Roberts [18].
+Our argument establishing that S and S% must coincide exploits the monotonicity
+% where each property is used in the following
+properties A1 and A3. We will note
+argument. Because of the dominance regions, the strategy S% must prescribe playing 0
+for low enough signals. Thus, there is a translation of S that lies entirely to the left of
+%
+S% and touches S% at at least one point (see Fig. 4). Label this translated curve S̃: Let
+the amount of the translation be d: Let xn be the signal corresponding to the point at
+which S% and S̃ touch. Finally, write an for the best response of a player who has
+observed signal xn and believes that his opponent is following strategy S̃:
+Since both S% and S are equilibria, we know that
+%
+% n Þ ¼ Sðxn þ dÞ:
+ð2Þ
+Sðx
+%
+% we know by strategic complementarities (A1) that
+But since S̃ is everywhere above S;
+% n Þ:
+an XSðx
+
+ð3Þ
+
+We will now show that with a uniform prior over y; an must be strictly less than
+Sðxn þ dÞ unless S̃ and S coincide. Since this inequality would contradict (2) and (3),
+%
+%
+the two curves must coincide. As S% lies entirely between them, it must also coincide
+with S; this will show that a unique equilibrium survives iterative strict dominance.
+%
+
+8
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+Fig. 4.
+
+With a uniform prior over y; the posterior of a player with signal xn over the error
+in her signal, xn  y; is exactly the same as the posterior of a player with signal xn þ d
+over the error in her signal, xn þ d  y: Since the signal error of the player’s
+opponent is independent of y; the player’s posterior over the difference between her
+signal error and that of her opponent is also the same if her signal is xn as if her
+signal is xn þ d: But the difference between the two players’ signal errors is just the
+difference between their signals: ðxi  yÞ  ðxj  yÞ ¼ xi  xj : Thus, a player’s
+posterior over the difference between her signal and that of her opponent is the
+same at xn as at xn þ d: Hence, since S̃ is an exact translation of S; a player who
+%
+observes xn and thinks that her opponent will play according to S̃ expects the same
+action distribution as a player who observes xn þ d and thinks that the opponent will
+play according to S: But assumption A3 implies that a player’s optimal action is
+strictly increasing %in her estimate of y; controlling for her opponent’s action
+distribution. Hence, if d > 0; then an must be less than Sðxn þ dÞ: Since in fact an is
+%
+at least Sðxn þ dÞ; d must equal zero, and thus S and S% coincide if the prior over y is
+%
+%
+uniform.
+The same property still holds with a general prior, in the limit as the signal errors
+shrink to zero. When the signal errors are small, a player can be sure that the true
+payoff parameter y is very close to her signal. Consequently, her prior over y is
+approximately uniform for the small interval of values of y that are still possible
+given her signal. (Recall that the model assumes a continuous prior over y and a
+ﬁnite, very small support of the signal errors.) Thus, the above argument still holds in
+the limit: d must shrink to zero (and thus S and S% must coincide) as the signal errors
+%
+become small.
+
+4. A partial characterization
+Theorem 2 partially characterizes the surviving equilibria of the global game when
+the noise is small. It states that in the limit, for all but a vanishing set of payoff
+parameters y; players play arbitrarily close to some pure strategy Nash equilibrium
+of the complete information game with payoffs ui ð ; y0 Þ for some y0 that is arbitrarily
+close to y: The intuition is that for small signal errors, players can precisely estimate
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+9
+
+both the payoff parameter y and, for most signals, what other players will do.11
+Since players are best responding to beliefs that are arbitrarily precise, the result
+must be very close to a Nash equilibrium of a nearby underlying complete
+information game.
+For any e > 0 and n > 0; let Qðe; nÞ be the set of parameters y for which the
+surviving strategy proﬁles in GðnÞ do not all prescribe that players play e-close to
+some common pure strategy Nash equilibrium of some complete information game
+whose payoff parameter is e-close to y: More precisely, Qðe; nÞ is the set of
+parameters y for which there is no Nash equilibrium action proﬁle aA Ii¼1 Ai ; of the
+complete information game with payoffs ðui ð ; y0 ÞÞIi¼1 for some y0 A½y  e; y þ e ; such
+that for every strategy sn surviving iterative strict dominance in GðnÞ; jsni ðyÞ  ai jpe
+for all i: Theorem 2 shows that for any e > 0; this set becomes arbitrarily small as n
+shrinks to zero.
+Theorem 2. In GðnÞ in the limit as n-0; for almost all payoff parameters y; players
+play arbitrarily close to some pure strategy Nash equilibrium of the complete
+information game with payoffs ui ð ; y0 Þ for some y0 that is arbitrarily close to y: More
+precisely, for any e > 0 there is a %n > 0 such that for any no %n; Qðe; nÞ is contained in a
+finite union of closed intervals of R whose measure is less than e:12
+Theorem 2 has an interesting implication for symmetric games with a continuum
+of actions. Suppose that the action played in a locally stable (unstable) equilibrium
+of the underlying complete information game with payoff parameter y
+monotonically rises (falls) as y rises.13 Then by Theorems 1 and 2, any strategy
+proﬁle that survives iterative dominance must almost always prescribe that
+players play a stable Nash equilibria of the underlying complete information
+game. The strategy cannot coincide with an unstable Nash equilibrium of the
+underlying game as y rises since surviving strategies are nondecreasing in players’
+signals.
+This implication is illustrated in Fig. 5. The dashed line shows the set of Nash
+equilibria of the underlying complete information games with payoff parameters
+equal to xi : The upwards (downwards) sloping segments correspond to the locally
+stable (unstable) Nash equilibria of these games. The bold curve illustrates how the
+essentially unique surviving strategy proﬁle in the global game GðnÞ must look in the
+limit as n shrinks. It must coincide with a stable Nash equilibrium except at points
+where it jumps from a lower stable equilibrium to a higher one.
+11
+
+With small signal errors, there cannot be many signals at which players are very uncertain about
+opponents’ possible actions. Otherwise, over a wide range of signals, opponents’ strategies would have to
+rise considerably for small increases in their signals. (Recall that strategies must be weakly increasing when
+the signal errors are small.) This is impossible since the action space is bounded.
+12
+For any e; the number of intervals in the union is independent of n: The number is ﬁnite for any given e
+but may grow without bound as e shrinks to zero.
+13
+‘‘Locally stable’’ refers to the traditional notion in which the best response function intersects the 45
+line at a slope of less than 1.
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+10
+
+Fig. 5.
+
+5. Noise-independent selection: a counterexample
+In showing limit uniqueness, we began with a given noise structure and scaled it
+down by taking the scale factor n to zero. Our result does not imply that the selected
+equilibrium is independent of the structure of the noise (i.e., of the densities fi ).
+Carlsson and van Damme’s [5] result implies that noise-independent selection
+holds in 2 2 games. Their proof method does not rely on properties of the game’s
+payoffs. This method can be generalized to additional classes of games, but not to
+all. To obtain some intuition, suppose the game has two players, each with the same
+ﬁnite action set A% and the same payoff function, and each player’s noise term has the
+same symmetric distribution f : Assume that each player follows the same increasing
+strategy, s: R- %
+A: As n-0; what beliefs does each player have over the action of her
+opponent at the critical point where she switches from one action to another? Recall
+that for small n; each player’s posterior belief about the other’s signal is computed
+approximately as if she had a uniform prior over y:
+Suppose ﬁrst that there are two actions, 0 and 1. Consider a symmetric equilibrium
+given by a pure strategy proﬁle s satisfying
+(
+sðxÞ ¼
+
+0
+
+if xoc;
+
+1
+
+if xXc:
+
+A player observing signal c will assign probability 12 to her opponent’s choosing
+action 0 and probability 12 to her opponent’s choosing action 1. This is independent
+of the choice of c and the distribution f : Thus as the noise goes to zero, c must
+converge to the payoff parameter at which the player is indifferent between the two
+actions if she has a 50/50 conjecture over her opponent’s action. This is simply the
+symmetric version of Carlsson and van Damme’s [5] result.
+Now suppose that there are three actions, 0, 12; and 1, so that
+8
+>
+< 0 if xoc1 ;
+sðxÞ ¼ 12 if c1 pxoc2 ;
+>
+:
+1 ifc2 px:
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+11
+
+A player observing signal c1 will assign probability 12 to her opponent choosing action
+0, some probability l to her opponent choosing action 12; and probability 12  l to her
+opponent choosing action 1; a player observing signal c2 will assign probability 12  l
+to her opponent choosing action 0, probability l to her opponent choosing action 12
+and probability 12 to her opponent choosing action 1. For any distribution f ; we can
+choose c1 and c2 so that l takes any value in ½0; 12 : In other words, the distribution of
+noise does not affect the limiting conjectures that each player may end up having
+over her opponent’s actions.
+This implies noise-independent selection: any proﬁle ðc1 ; c2 Þ that is an equilibrium
+as n-0 under a noise structure f must also be an equilibrium under any other noise
+structure f 0 : To see why, let us distinguish between two cases. In the ﬁrst, c1  c2
+does not shrink to 0 as n-0: This means that l converges to 12: for sufﬁciently small
+n; a player with signal c1 is indifferent between 0 and 12 and thinks that her opponent
+will play 0 or 12 with equal probabilities; a player with signal c2 is indifferent between 12
+and 1 and puts equal probabilities on her opponent’s playing 12 and 1. These signals
+clearly must converge to particular payoff parameters, independent of the structure
+of the signal errors (since the player’s beliefs are independent of f ).
+In the second case, limn-0 ðc1  c2 Þ ¼ 0: Here, l need not converge to 12: But if we
+replace the signal error structure f with some other structure f 0 ; we can construct an
+equilibrium near the one given by f by simply adjusting the gap between c1 and c2 so
+as to keep l the same under f 0 as under f : Since the gap between c1 and c2
+asymptotically shrinks to zero, we can make this adjustment without changing the
+limit to which both cutoffs converge. Thus, under f 0 there is a sequence of equilibria
+of the global game that converges to the same limit as the sequence of equilibria
+under f : This explains why there is noise-independent selection. In the next section,
+we show that there is noise-independent selection for two-player, three-action,
+symmetric-payoff games, even with general asymmetric noise distributions fi :
+With four or more actions, the above property ceases to hold. The set of
+conjectures a player can have over her opponent’s action can depend on the structure
+of the noise. With three actions, each proﬁle ðc1 ; c2 Þ gave rise to one unknown, l;
+which could be adjusted arbitrarily by changing the distance between c1 and c2 : With
+four actions, each proﬁle ðc1 ; c2 ; c3 Þ gives rise to three unknowns. This is illustrated in
+Fig. 6. The density centered at each threshold ci represents the posterior distribution
+over the signal of the opponent of a player whose signal is ci : The area under the
+segment marked b (respectively, c) of the posterior of a player with signal c3 is the
+probability she assigns to her opponent’s having seen a signal between c1 and c2
+(respectively, between c2 and c3 ).14
+
+14
+Likewise, the area under the segment marked c (respectively, b) of the posterior of an agent with signal
+c3 is the probability she assigns to her opponent’s having seen a signal between c2 and c3 (respectively,
+between c1 and c2 ). By symmetry of the signal errors, the two areas marked a are equal, as are the two
+areas marked c: Also by symmetry, the probability that an opponent of an agent with signal c1 sees a signal
+between c2 and c3 must equal a þ c  b; as indicated.
+
+12
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+Fig. 6.
+
+The three probabilities a; b; and c are a minimal set of probabilities that sufﬁce to
+determine the action distributions expected by players at each of the thresholds.
+However, by altering the proﬁle we have only two degrees of freedom: we can change
+c3  c2 and c2  c1 : This means that if we change the noise structure f ; we will not
+necessarily be able to adjust the proﬁle in order to preserve the action distribution
+seen by players at each of the thresholds c1 ; c2 ; and c3 : Thus, if f changes, we may
+not be able to keep the players indifferent between adjacent actions simply by
+adjusting the distance between the thresholds. It may also be necessary to shift the
+entire proﬁle in order to change the payoff parameter that each player sees. In other
+words, changing the noise structure may alter the signals at which the unique
+surviving strategy proﬁle jumps between any two actions. This is what it means for
+the equilibrium to depend on the structure of the noise.
+Theorem 3. There exists a two-person, four-action game satisfying A12A5 in which
+for different noise structures, different equilibria are selected in the limit as the signal
+errors vanish.
+Theorem 3 is proved by constructing such a game. It is clear from the proof that
+noise-independent selection would continue to fail if the payoffs of the game were
+perturbed by a small amount.
+
+6. A sufﬁcient condition for noise-independent selection
+The preceding counterexample shows that for certain complete information
+games, different ways of embedding them into global games (with different noise
+structures) can lead to different predictions. That is, the payoffs of the complete
+information game may not tell us which equilibrium will be selected. We now focus
+on the complete information game corresponding to some parameter y and
+identify conditions on payoffs of that game that guarantee that a particular
+equilibrium will be selected in the limit regardless of the noise structure. We will
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+13
+
+show that there is noise-independent selection in that game if (a) its payoffs
+are own-action quasiconcave and (b) it has a strategy proﬁle that is a local potential
+maximizer.
+A complete information game g ¼ ðg1 ; y; gI Þ is a collection of payoff functions,
+with each gi : A-R: For any player i; let Ai be the set of all opposing action vectors
+ðaj Þjai : The complete information game g is own-action quasiconcave if for all i and
+opposing action proﬁles ai AAi and for all constants c; the set fai : gi ðai ; ai ÞXcg is
+convex.15 It has local potential maximizer an if there is a function vðaÞ
+(where a ¼ ðai ÞIi¼1 is an action proﬁle), called a local potential function, which is
+strictly maximized by an ; such that against any action proﬁle ai AAi ; if
+moving i’s action a bit closer to ani raises v; then this also raises i’s payoff. More
+formally:
+Deﬁnition 1. Action proﬁle an is a local potential maximizer (LP-maximizer) of the
+complete information game g if there exists a local potential function v: A-R such
+that vðan Þ > vðaÞ for all aaan and, for each i; a function mi : ai -Rþ such that for all
+ai AAi and ai AAi ;
+1. If ai > ani then there is an a0i AAi that is strictly less than ai ; such that for all a00i AAi
+lying in ½a0i ; ai ;
+vða00i ; ai Þ  vðai ; ai Þpmi ðai Þ½gi ða00i ; ai Þ  gi ðai ; ai Þ :
+
+ð4Þ
+
+2. If ai oani then there is an a0i AAi that is strictly greater than ai ; such that for all
+a00i AAi lying in ½ai ; a0i ; (4) holds.
+The local potential function generalizes the notion of a potential function in
+Monderer and Shapley [19]. A potential function is a common payoff function v on
+action proﬁles such that the change in a player’s payoff from switching from one
+action to another is always the same as the change in the potential function. For a
+local potential function, we make the weaker requirement that the payoff change
+from switching away from an is always less (after multiplying by a constant) than the
+change in the potential function.
+Importantly, the LP-maximizer property guarantees that a proﬁle is a strict Nash
+equilibrium if payoffs are own-action quasiconcave:
+Lemma 1. If an is an LP-maximizer of the own-action quasiconcave complete
+information game g; then an is a strict Nash equilibrium.
+The main result of this section (stated formally at the end) is that in the global
+game, if the payoffs at y are own-action concave and have an LP-maximizing action
+15
+Unlike concavity, this does not imply that the slope of i’s payoff is decreasing in her action. It only
+guarantees that there are no local maxima other than the global maxima (which could be a single action or
+an interval).
+
+14
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+proﬁle an ; then in the limit as the signal errors vanish, any strategy proﬁle that
+survives iterative strict dominance must assign to each player i the action ani at the
+signal y: Thus, there is noise-independent selection at y: the proﬁle an depends only
+on the payoffs at y and not on the shape of the signal errors.
+An intuition is as follows. For concreteness, let us regard v as God’s utility
+function. God is pleased when people take steps that are in their self-interest: ‘‘God
+helps those who help themselves’’ (Benjamin Franklin, Poor Richard’s Almanack,
+1732). More precisely, a change in a player’s action pleases God (i.e., raises v) if and
+only if it raises the player’s own payoff. Not all games have a local potential
+function; in those that do not, God does not have a preference ordering over strategy
+proﬁles. For example, in matching pennies, God must want player A to play B’s
+action but must also want B to play the opposite of A’s action, since both are best
+responses. There is no preference ordering with this property.
+Suppose for simplicity that the game is symmetric and has a ﬁnite set of actions
+and that a player’s utility depends directly on her signal, rather than on y (which is
+approximately true anyway when the signal errors are small). Suppose also
+that for the complete information game corresponding to each signal x; there is a
+local potential function vx ð Þ; which is maximized when all players take some
+action anx : vx ð Þ represents God’s preferences over action proﬁles when the payoff
+parameter equals x: Assume that anx is nondecreasing in x: Fig. 7 depicts anx as a
+function of x:
+We can interpret the function depicted in Fig. 7 as a strategy proﬁle: if player i’s
+signal is xi ; the proﬁle instructs her to play anxi : This proﬁle is very pleasing to God,
+since each player plays according to the action proﬁle that maximizes God’s utility if
+the payoff parameter equals her signal (which it approximately does for small signal
+errors). However, God may not be entirely pleased near the points of discontinuity
+of the strategy proﬁle, since there might be miscoordination: some players will get
+signals above the threshold and others below, so a potential-maximizing strategy
+proﬁle will not generally be played. But God is pleased as punch if the payoff
+parameter y is at least n away from any point of discontinuity since then players
+coordinate on the potential-maximizing action.
+Starting with this proﬁle, let us imagine what happens if we let players take turns
+in best responding.16 Critically, God likes it when people best respond, since she
+wants them to do what is in their best interests. Thus, seeing a player best respond
+can only increase God’s pleasure. But since the original proﬁle depicted in Fig. 7 is
+already very pleasing to God, iterative best response cannot lead us to stray far from
+this proﬁle. In particular, at a distance of more than n from any discontinuity of the
+original strategy proﬁle, the proﬁle cannot change, since for signals received here
+players are already playing the proﬁle that is most pleasing to God. Moreover, the
+limit of the iterations must be an equilibrium, since the best response to the limit is
+the limit itself.17 However, any equilibrium must survive iterative strict dominance.
+16
+That is, player 1 switches to her best response, then 2 best responds to the resulting proﬁle, and so on,
+repeatedly cycling through the players.
+17
+In this intuition we assume such a limit exists.
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+15
+
+Fig. 7.
+
+By limit uniqueness, for small n; all strategies surviving iterative strict dominance
+must be close to this limiting equilibrium, which itself must be close to the original
+proﬁle depicted in Fig. 7. This implies that for small n; players must play close to the
+potential-maximizing action in any strategy proﬁle that survives iterative strict
+dominance, regardless of the noise structure.
+Theorem 4. Let sn be either the left- or the right-continuous version of the unique
+strategy profile surviving iterative strict dominance in GðnÞ in the limit as n-0: If the
+complete information game at some payoff parameter y is own-action quasiconcave and
+has an LP-maximizer an ; then sn ðyÞ ¼ an ; regardless of the noise structure.
+The LP-maximizer conditions of Deﬁnition 1 are rather complex. In Sections 6.1
+and 6.2, we describe simpler conditions that are sufﬁcient for an action proﬁle to be
+an LP-maximizer. In Sections 6.3–6.5, we apply those results to give a complete
+characterization of the LP-maximizer in certain special classes of games.
+6.1. Weighted potential maximizers
+One sufﬁcient condition for an to be a local potential maximizer is that an is a
+weighted potential maximizer. This is a slight generalization of Monderer and Shapley’s
+[19] notion of an action proﬁle that maximizes a potential function for a game.
+Deﬁnition. Action proﬁle an is a weighted potential maximizer (WP-maximizer)
+of g if there exists a vector mARIþ and a weighted potential function v: A-R with
+vðan Þ > vðaÞ for all aaan ; such that for all i; ai ; a0i AAi and ai AAi ;
+vðai ; ai Þ  vða0i ; ai Þ ¼ mi ½gi ðai ; ai Þ  gi ða0i ; ai Þ :
+6.2. p-Dominance conditions
+Let p ¼ ðpi ÞIi¼1 : The notion of p-dominance is a many player, many action game
+generalization of risk dominance (see Kajii and Morris [15]). An action proﬁle an is
+p-dominant if it is a best response for each player i if she puts weight at least pi on her
+opponents’ playing according to an :
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+16
+
+Deﬁnition 2. Action proﬁle an is p-dominant in g if
+X
+
+li ðai Þgi ðani ; ai ÞX
+
+ai
+
+X
+
+li ðai Þgi ðai ; ai Þ;
+
+ai
+
+for all i; ai AAi and li ADðAi Þ with li ðani ÞXpi :
+For low enough p; p-dominance is a sufﬁcient condition for an action proﬁle to be
+an LP-maximizer.
+Lemma 2 (Morris and Ui [24]). If action profile an is p-dominant for some p with
+PI
+n
+i¼1 pi o1; then a is an LP-maximizer.
+6.3. Two-player, two-action games with two strict Nash equilibria
+Let I ¼ 2 and A1 ¼ A2 ¼ f0; 1g: Let g1 ð0; 0Þ > g1 ð1; 0Þ; g1 ð1; 1Þ > g1 ð0; 1Þ;
+g2 ð0; 0Þ > g2 ð0; 1Þ and g2 ð1; 1Þ > g2 ð1; 0Þ; so (0,0) and (1,1) are both strict Nash
+equilibria. Now let
+g1 ð0; 0Þ  g1 ð1; 0Þ
+;
+g1 ð0; 0Þ  g1 ð1; 0Þ þ g1 ð1; 1Þ  g1 ð0; 1Þ
+g2 ð0; 0Þ  g2 ð0; 1Þ
+qn2 ¼
+:
+g2 ð0; 0Þ  g2 ð0; 1Þ þ g2 ð1; 1Þ  g2 ð1; 0Þ
+
+qn1 ¼
+
+A weighted potential function v is given by the following matrix:
+
+(0,0) is a WP-maximizer if qn1 þ qn2 > 1 and ð1; 1Þ is a WP-maximizer if qn1 þ qn2 o1:
+Thus, generically, there is a WP-maximizer. The WP-maximizer is the risk dominant
+equilibrium in the sense of Harsanyi and Selten [14].
+6.4. Many-player, two-action games with symmetric payoffs
+Let Ai ¼ f0; 1g for each i and suppose gi ðai ; ai Þ ¼ gðai ; ai Þ depends only on ai
+and the number of players jai who play 1. Let xðnÞ be the relative payoff to playing
+1 versus 0 when n other players play 1 (i.e., xðnÞ ¼ gð1; ai Þ  gð0; ai Þ for any ai in
+which n players play 1). Assume strategic complementarities: i.e., xðnÞ is increasing
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+17
+
+in n: Let the potential function be
+(P
+m1
+k¼0 xðkÞ if the number of players playing 1 in a is m > 0;
+vðaÞ ¼
+0
+if no players play 1 in a:
+Also set mi ¼ 1 for all i: One can easily verify that 1 ¼ ð1; y; 1Þ is the WP-maximizer
+PI1
+P
+if I1
+k¼0 xðkÞ > 0 and that 0 is the WP-maximizer if
+k¼0 xðkÞo0: Thus generically
+in this class of games, there exists a WP-maximizer.
+An equivalent characterization of the WP-maximizer is the following.
+Suppose that a player believes that the number of her opponents playing
+action 1 is uniformly distributed (between 0 and I  1). If action 1 is a best response
+to that conjecture, then the action proﬁle 1 is the WP-maximizer; if 0 is a best
+response to that conjecture, then 0 is the WP-maximizer. These are equivalent since
+PI1
+1
+k¼0 xðkÞ is just the relative payoff to playing 1 if one has such beliefs. This case
+I
+(two actions, many players) was ﬁrst studied by Carlsson and van Damme [6] and
+Kim [16], who obtained the same result using different techniques in more restrictive
+settings.
+This characterization extends naturally to the case of a continuum of players (not
+R1
+formally treated here). In such games, the formula becomes 0 xðnÞ dn; where xðnÞ is
+the relative payoff to playing 1 versus 0 when a proportion n of the other players
+play 1. Such two-action, symmetric payoff games with continuum of players have
+been the focus of the applied literature using global games discussed in the
+introduction.
+6.5. Two-player, three-action games with symmetric payoffs
+Let I ¼ 2; A1 ¼ A2 ¼ f0; 1; 2g; g1 ða1 ; a2 Þ ¼ g2 ða2 ; a1 Þ ¼ wa1 a2 ; where wxx > wyx for
+all yax and wxy  wx0 y > wxy0  wx0 y0 if x > x0 and y > y0 : Write Dxy
+x0 y0 for twice the
+net expected gain of choosing action x0 rather than y0 against a 50/50 conjecture on
+whether the opponent will choose action x or y: Thus
+0
+0
+0
+0
+Dxy
+x0 y0 ¼ wx x þ wx y  wy x  wy y :
+
+yx
+xy
+xy
+xy
+Note that Dxy
+x0 y0 ¼ Dx0 y0 and Dx0 y0 ¼ Dy0 x0 : Note that Dxy > 0 implies that action
+proﬁle ðx; xÞ pairwise risk dominates action proﬁle ðy; yÞ: Now we have the following
+complete (for generic games) characterization of the LP-maximizers:
+*
+
+12
+21
+(0,0) is the LP-maximizer if D01
+01 > 0 and either (1) D12 > 0 or (2) D21 > 0 and
+D02
+D02
+10
+12
+01 o 21 :
+D01 D21
+
+12
+(1,1) is the LP-maximizer if D10
+10 > 0 and D12 > 0:
+21
+10
+01
+* ð2; 2Þ is the LP-maximizer if D
+21 > 0 and either (1) D10 > 0 or (2) D01 > 0 and
+*
+
+D02
+D02
+10
+> D12
+21 :
+D01
+21
+01
+
+18
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+The following example illustrates these conditions:
+
+21
+02
+02
+(0,0) is the LP-maximizer, since D01
+01 ¼ 3; D21 ¼ 1; D10 ¼ 2 and D12 ¼ 1: Note that
+(2,2) pairwise risk dominates both (1,1) and (0,0), but nonetheless is not the LPmaximizer.
+Proving the above claims (i.e., constructing the local potential functions) involves
+tedious algebra. Here, we will just note two cases to illustrate the issues.
+12
+Case 1: D10
+10 > 0 and D12 > 0: Consider the following local potential function:
+
+for some small but strictly positive e: Setting an ¼ ð1; 1Þ and m1 ð0Þ ¼ m1 ð2Þ ¼ m2 ð0Þ ¼
+m2 ð2Þ ¼ 1; one can verify that the conditions of Deﬁnition 1 are satisﬁed.
+D02
+
+D02
+
+01
+
+21
+
+21
+02
+02
+10
+12
+Case 2: D01
+01 > 0; D21 > 0; D10 > 0; D12 > 0 and D01 oD21 : Consider the following
+
+local potential function:
+
+for some small but strictly positive e and positive l1 and l2 such that
+02
+D21
+21 l1 D12
+o o 02 :
+01 l
+D01
+2 D10
+
+Setting an ¼ ð0; 0Þ; m1 ð1Þ ¼ m2 ð1Þ ¼ l1 ; m1 ð2Þ ¼ m2 ð2Þ ¼ l2 ; one can verify that the
+conditions of Deﬁnition 1 are satisﬁed.
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+19
+
+7. A continuum player generalization
+The results stated above are for a ﬁnite set of players. However, many applications
+of global games assume a continuum (or several different continua) of players. We
+now show that our limit uniqueness results (Theorems 1 and 2) extend to this case.
+We make the following changes to the global game GðnÞ: The set of players,
+denoted I; is partitioned into a ﬁnite set T of ‘‘types’’ (subsets) of players. Each type
+contains either a single player or a continuum of identical players of ﬁnite measure.
+This can capture, e.g., the presence of both large and small players. For each player
+iAI let tðiÞAT be the type of i: the element of T to which i belongs. Each player i
+observes a signal xi ¼ y þ nZi ; where each Zi is distributed according to an atomless
+density ftðiÞ with support contained in the interval ½12; 12 : Signals are conditionally
+independent.18
+Let At denote the action set of players of type t: Let OðiÞ be the set of types of
+player i’s opponents.19 If a type-t player i chooses action ai AAt ; her payoff is
+ut ðai ; ai ; yÞ; ai ¼ ðat̂ Þt̂AOðiÞ denotes the action proﬁle of i’s opponents, where at̂ is
+the cumulative distribution function of actions chosen by type-t̂ players.20 This
+implies that opponents of a given type are interchangeable: the c.d.f. of their actions
+is all that player i cares about and all that the action proﬁle ai captures. We assume
+players always play measurable action proﬁles (those that can be expressed as a
+vector of c.d.f.’s). Note that all players of a given type have the same action set,
+signal error distribution, and payoff function.21
+Let Dut ðai ; âi ; ai ; yÞ ¼ ut ðai ; ai ; yÞ  ut ðâi ; ai ; yÞ: Let us write ai Xâi if actions
+are weakly higher under ai than under âi : if at̂ ðcÞpât̂ ðcÞ for each opposing type
+t̂AOðiÞ and for all c: For any tAT; we deﬁne the distance jat  ât j to be the largest
+difference in actions between players with the same rank in the two distributions.22
+We make the same assumptions A1–A5 on payoff functions as in the ﬁnite player,
+where ai is now understood to be the collection of opponents’ cdfs deﬁned above
+and we replace each ui with utðiÞ and each Dui with DutðiÞ :23 Note that in this case,
+18
+If there is a continuum of players of type t; we assume that the realized distribution of the error terms
+ðZi ÞiAt in this type is given by ft with probability one.
+19
+It is equal to T unless tðiÞ is a singleton, in which case OðiÞ ¼ T  tðiÞ:
+20
+That is, at̂ ðcÞ is the proportion of type-t̂ agents who play actions less than or equal to c: If t̂ is a
+singleton fjg; then at̂ ðcÞ equals one if j’s action is no greater than c and zero otherwise.
+21
+Agents of different types can also be identical.
+22
+That is,
+
+jat  ât j ¼ supfk: for all ai AAt ; either at ðai þ kÞpât ðai Þ or ât ðai þ kÞpat ðai Þg:
+23
+
+In A2, ða1 ; y; aI Þ and ða% 1 ; y; a% I Þ become ðai ÞiAI and ða% i ÞiAI ; respectively. Condition (b) in
+%
+%
+%
+Assumption A5 becomes: for each y there is a K2 such that for all ai ; âi ; ai ; and âi ;
+X
+jat  ât j:
+jDutðiÞ ðai ; âi ; ai ; yÞ  DutðiÞ ðai ; âi ; âi ; yÞjpK2 jai  âi j
+tAOðiÞ
+
+20
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+assumption A5 now has bite even in ﬁnite action games, since in this case there exist
+pairs of opponents’ action proﬁles that are different but arbitrarily close.
+The generalizations of Theorems 1 and 2 are as follows:
+Theorem 5. GðnÞ has an essentially unique strategy profile surviving iterative
+strict dominance in the limit as n-0: In this profile, all players of a given type
+play the same increasing, pure strategy. More precisely, there exists an increasing
+pure strategy profile ðsnt ÞtAT such that if, for each n; sn is a strategy profile that
+survives iterative strict dominance in GðnÞ; then limn-0 sni ðxi Þ ¼ sntðiÞ ðxi Þ for almost all
+xi AR:
+For any e > 0 and n > 0; let Qðe; nÞ be the set of parameters y for which
+the surviving strategy proﬁles in GðnÞ do not all prescribe that players play e-close
+to the same pure strategy Nash equilibrium of some complete information game
+whose payoff parameter is e-close to y: More precisely, Qðe; nÞ is the set of
+parameters y for which there is no Nash equilibrium action proﬁle aA tAT At ; of the
+complete information game with payoffs ðut ð ; y0 ÞÞtAT for some y0 A½y  e; y þ e ;
+such that for every strategy ðsni ÞiAI surviving iterative strict dominance in GðnÞ;
+jsni ðyÞ  atðiÞ jpe for all i:
+Theorem 6. In GðnÞ in the limit as n-0; for almost all payoff parameters y; players
+play arbitrarily close to some pure strategy Nash equilibrium of the complete
+information game with payoffs ut ð ; y0 Þ for some y0 that is arbitrarily close to y: More
+precisely, for any e > 0 there is a n% > 0 such that for any non% ; Qðe; nÞ is contained in a
+finite union of closed intervals of R whose measure is less than e:24
+
+8. Concluding remarks
+8.1. Contagion arguments
+Our limit uniqueness argument generalizes the ‘‘infection’’ arguments of Carlsson
+and van Damme [5] and Morris et al. [20]. (A precursor to this literature is
+Rubinstein [25].) However, providing a general argument for the case of many
+actions requires a signiﬁcant extension of that logic. The intuition is most closely
+related to results in Burdzy, Frankel, and Pauzner [3] and its extension, Frankel and
+Pauzner [9].25 These papers study dynamic models with complete information. There
+is a continuum of players who switch between two actions. There are frictions, so
+that players change actions asynchronously. Instantaneous payoffs depend on a
+
+24
+As in Theorem 2, the number of intervals in the union is ﬁnite and independent of n for any ﬁxed e:
+This number may grow without bound as e shrinks to zero.
+25
+These papers are further extended in Frankel [8] and Levin [17].
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+21
+
+parameter that follows a Brownian motion. This payoff parameter can reach
+‘‘dominance regions’’ in which either action is strictly dominant.
+These papers show that a unique equilibrium survives iterative dominance.
+While the details are different,26 there is an analogy. In both cases, players play
+against opponents in different but nearby ‘‘states’’: the value of the Brownian
+motion at the moment when the opponent picks her action in those papers
+and a player’s payoff signal in our paper. This local interaction gives rise to a
+contagion effect that begins in the dominance regions and spreads throughout
+the state space. The whole state space is affected because the interaction
+structure is stationary: the probability of playing against an agent who sees
+a state at given distance from one’s own state is independent of one’s
+own state.27 Using this property, a translation argument as in Section 3
+implies that the lowest and highest strategies surviving iterative dominance must
+coincide.
+
+8.2. Supermodular games
+Our global game belongs to the class of supermodular games, ﬁrst studied by
+Topkis [26] and further analyzed by Vives [28] and Milgrom and Roberts [18].28
+Arguments in that literature establish (1) the existence of a largest and smallest
+strategy proﬁle surviving iterated deletion of strictly dominated strategies; (2) that
+the largest and smallest strategy proﬁles are themselves equilibria; and (3) that those
+largest and smallest strategies are monotonic in players’ signals. In global games, an
+additional property holds: the largest and smallest strategy proﬁles coincide in the
+limit as the signal errors vanish. Thus, there is a unique, monotonic equilibrium in
+the limit.
+In the light of this interpretation, it is natural to ask if there still exists exactly
+one monotonic equilibrium when the supermodularity assumption (A1) is
+weakened (see [1]). The answer may be yes, if a player’s best response rises when
+her opponents switch from one monotonic strategy to a higher monotonic strategy.
+This might be proved using something like the translation argument of Section 3.
+(We have not checked this rigorously as it is beyond the scope of this paper).
+However, without A1 we cannot show that iterative dominance yields a unique
+
+26
+
+In particular, the vertical axis in Burdzy, Frankel, and Pauzner [3] captures not the opponent’s action
+but the population action distribution; the horizontal axis captures the current value of the Brownian
+motion rather than the payoff signal; and the curves in that paper slope downwards rather than upwards.
+27
+In our paper, a player’s signal asymptotically has no effect on her posterior belief that her opponent’s
+signal differs from hers by a given amount. In Burdzy, Frankel, and Pauzner [3], the stationarity of
+Brownian motion implies that the payoff parameter a player sees when choosing her action has no effect
+on the probability that she will meet an opponent who will have chosen his action when the payoff
+parameter will have shifted by a given amount.
+28
+To be more precise, the uniform prior game is a supermodular game and our continuity arguments
+establish that nonuniform prior games are close to the supermodular game when noise is small.
+
+22
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+equilibrium; in particular, we cannot rule out the existence of other, non-monotonic
+equilibria.29
+8.3. Noise-independent selection and robustness
+Our example in which noise-independent selection fails is for a two-player, fouraction symmetric payoff game. This example is minimal in the sense that noiseindependent selection must hold with two-players and symmetric payoffs if there are
+fewer than four actions. However, noise-independent selection can fail in games with
+three players if payoffs are asymmetric, as shown by Carlsson [4]. One application is
+Corsetti, Dasgupta, Morris, and Shin [7], who study models of currency attacks in
+which noise-independent selection can fail.
+Our noise-independent selection results are related to work on the robustness of
+equilibria to incomplete information (Kajii and Morris [15]). A Nash equilibrium of
+a complete information game is robust to incomplete information if every incomplete
+information game in which payoffs are almost always given by that complete
+information game has an equilibrium in which that Nash equilibrium is almost
+always played. Kajii and Morris showed that risk-dominant equilibria of two-player,
+two-action games and, more generally, p-dominant equilibria of many-player, manyP
+action games with Ii¼1 pi o1 are robust to incomplete information. Ui [27] has
+shown that potential maximizing action proﬁles are robust to incomplete
+information.30 The global games introduced by Carlsson and van Damme [5] and
+studied in this paper represent a different way of adding an intuitively small amount
+of incomplete information about payoffs. However, one can show that if a complete
+information game has a robust equilibrium, then that equilibrium must be the noiseindependent selection. The sufﬁcient conditions for noise-independent selection in
+this paper are, in fact, also sufﬁcient for robustness to incomplete information (see
+Morris and Ui [24]).
+
+Acknowledgments
+We thank Itzhak Gilboa and seminar participants at the University of California,
+Berkeley, the Harvard-MIT Theory Workshop, John Hopkins University, Princeton
+University, Tel Aviv University, the University of Pennsylvania, the Eighth World
+29
+Morris and Shin [23] show that among binary action symmetric payoff continuum player games, a
+single crossing property on payoffs and a monotone likelihood ratio property on signals implies the
+existence of a unique monotonic equilibrium. However, there is no guarantee that there do not exist
+nonmonotonic equilibria. The bank run game of Goldstein and Pauzner [11] belongs to this class. By
+assuming that noise is uniformly distributed, Goldstein and Pauzner [11] are able to show the existence of a
+unique equilibrium, which is monotonic, but their argument does not show that the game is dominance
+solvable.
+30
+In the absence of strategic complementarities, the potential maximizing action proﬁle actually satisﬁes
+a slightly weaker notion of robustness to incomplete information.
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+23
+
+Congress of the Econometric Society, and the Federal Reserve Bank of Minneapolis
+for helpful comments.
+
+Appendix
+We ﬁrst prove Theorems 5 and 6, for the continuum player extension of Section 7.
+Our main Theorems 1 and 2 follow as special cases of these results.
+Proof of Theorem 5. The proof has two parts. In the ﬁrst (Lemma 3), we consider a
+simpliﬁed game in which a player’s prior over y is uniform over some very large
+interval that includes ½y; y% ; and her payoff depends directly on her signal rather than
+%
+on y: Because of the prior,
+if a player’s signal is not in a dominance region, then her
+posterior over the difference between her signal and those of other players is
+independent of her signal, so we can show that a unique (up to discontinuities),
+increasing strategy proﬁle survives iterative strict dominance even without taking the
+signal error scale factor n to zero. The argument generalizes the translation argument
+used in the intuition.
+In the second part of the proof, we show that the original game ‘‘converges’’
+to the simpliﬁed one as the signal errors shrink. That is, a player’s posterior
+over the differences between her signal and those of other players becomes
+approximately independent of her own signal (Lemma 4). Moreover, in the
+limit it does not matter whether a player’s payoffs depends on her signal or on y
+since these become arbitrarily close. As a result, the strategy proﬁles surviving
+iterative dominance in the original and simpliﬁed games converge to each other
+(Lemma 5).
+For each type tAOðiÞ; let zt be the realized c.d.f. of normalized differences between
+signals of type-t players and the signal of i: zt ðcÞ is the proportion of players jAt for
+x x
+whom j n i pc:31 Let Zi be the set of all vectors of the form ðzt ÞtAOðiÞ : Let
+*ptðiÞ ðzjxi ; nÞ be player i’s density over zAZi in the game GðnÞ given i’s signal xi and
+the scale factor n:
+The simpliﬁed game is deﬁned as follows. Let the state y be drawn uniformly from
+some large interval that includes ½y  n; y% þ n and let player i’s payoff depend on her
+signal xi instead of the state. Thus% utðiÞ ðai ; ai ; xi Þ is player i’s payoff if action proﬁle
+ðai ; ai Þ is chosen and she observes signal xi : Note that with a uniform prior on
+states, player i’s posterior p* tðiÞ ðzjxi ; nÞ is independent of her signal xi and the scale
+factor n; so we can write it as ptðiÞ ðzÞ:
+Lemma A1 shows that each game Gn ðnÞ has an essentially unique strategy proﬁle
+surviving iterative strict dominance. In this proﬁle, all players of a given type play
+essentially the same pure, increasing strategy.
+
+31
+zt depends on the realizations of players’ signals and is thus a random variable. For example, if t is a
+x x
+singleton type fjg; then zt ðcÞ equals one if j n i pc and zero else.
+
+24
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+Lemma A1. For each n > 0 there exists a weakly increasing strategy profile s * n such
+that any profile s that survives iterative strict dominance in G n ðnÞ must (a) be weakly
+n
+increasing in xi for all i and (b) agree with si* except perhaps at the (at most countably
+n
+many) signals xi at which si* ðxi Þ is discontinuous. Moreover, s * n prescribes the same
+strategy for all players of a given type.
+Proof. For any player i of type t; let Zt be the set of all possible vectors z ¼
+ðzt ÞtAOðiÞ of normalized differences between i’s opponents signals and her own signal.
+For any pure strategy proﬁle s ¼ ðst ÞtAT (which, as the notation indicates, prescribes
+the same strategy st for all players of type t), let ai ðs; xi ; z; nÞ denote the opposing
+action distribution that a player i faces if she sees the signal xi ; others play according
+to s; z is the vector of normalized signal differences, and n is the scale factor. More
+precisely, ai ðs; xi ; z; nÞ ¼ ðat ÞtAOðiÞ where at ðcÞ is the proportion of players jAt for
+whom the prescribed action st ðxi þ nzj Þ is no greater than c:
+Let BRt ðs; xi Þ be the set of optimal actions for a player i of type t who sees signal xi
+and whose opponents play according to the pure strategy s ¼ ðst̂ Þt̂AT :
+BRt ðs; xi Þ ¼ arg max Ept ½ut ðai ; ai ðs; xi ; z; nÞ; xi Þ ;
+at AAt
+R
+where for any function hðzÞ; Ept ½hðzÞ ¼ zAZi pt ðzÞhðzÞ dz: Note that by assumption
+A4 and the theorem of the maximum, BRt must be upper hemicontinuous in xi ; even
+if s is discontinuous. (Because of the noise in the signals, i’s posterior over the
+distribution of opponents’ actions changes continuously in her signal.)
+We ﬁrst do iterated dominance to establish a lower bound on the actions players
+can choose for each signal. We deﬁne a sequence of strategy proﬁles sk  ðskt ÞtAT for
+k ¼ 0; 1; y as follows. Let s0 be the constant proﬁle in which all players play 0 for
+any signal. Let skþ1 be the smallest best response to sk : skþ1
+ðxi Þ ¼ min BRt ðsk ; xi Þ:
+t
+k
+Assumptions A1 and A3 imply that (i) st ðxi Þ is weakly increasing in xi for all ðt; kÞ
+and (ii) skt ðxi Þ is weakly increasing in k for all ðt; xi Þ: Assumption A2 implies skt ðyÞ ¼
+%
+0 and skt ðy% Þ ¼ 1 for all types t and for kX1: Let s be deﬁned by st ðxi Þ ¼
+%
+%
+limk-N skt ðxi Þ: A player i seeing signal xi must choose an action that is at least
+stðiÞ ðxi Þ: By induction, st is weakly increasing. Since BRt is upper hemicontinuous
+%
+%
+and (by an induction argument) min BRt ðs; xi Þ is weakly increasing in xi ; st ðxi Þ must
+%
+%
+be left continuous.
+We next construct an upper bound on players’ actions. For any lAR; let ŝ be the
+right-continuous version of s (i.e., ŝt ðxi Þ ¼ limek0 st ðxi þ eÞ) and let sl ¼ ðslt ÞtAT be
+%
+%
+the translation of ŝ to the left by l: for all t and xi ; slt ðxi Þ ¼ ŝt ðxi þ lÞ: Let l0 be large
+enough that, for all t; slt 0 ðyÞ ¼ 1; since sl0 is weakly increasing, a player of type t with
+signal xi will never play an action that is greater than slt 0 ðxi Þ: Now let lk be the
+smallest number such that no type-t player who expects others to play according to
+slk1 will ever play above slt k :
+lk ¼ inf fl : slt ðxi ÞXmax BRt ðslk1 ; xi Þ8t; xi g:
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+25
+
+Assumptions A1 and A3 imply that lk is weakly decreasing in k: Let lN ¼
+limk-N lk ; and denote s% ¼ slN : (Note that lN X0 since the iterations cannot go
+beyond s:)
+%
+By construction,
+a type-t player who sees signal xi will never play an action that
+exceeds s%t : s%t ðxi ÞXmax BRt ðs%; xi Þ for all xi : We will show by contradiction that
+lN ¼ 0: s% and s coincide. This means that the strategies in any proﬁle that survives
+%
+iterative dominance
+in G n ðnÞ must be weakly increasing functions that agree with s at
+%
+all points of continuity. This will prove the lemma since a monotonic function can
+have at most a countable number of discontinuities.
+Claim A1. There is a player i and a signal xni such that s%i ðxni  eÞomax BRi ðs%; xni þ eÞ
+for all e > 0:
+Proof. Since s% is the limit of the iterations from the left, for all e > 0 there is a player
+i and a signal xi such that s%i ðxi  eÞomax BRi ðs%; xi Þ: (Otherwise let e0 be such that
+there is no i and xi for which s%i ðxi  e0 Þomax BRi ðs%; xi Þ; deﬁne l0N ¼ lN  e0 : The
+limit of the iterations must be no greater than l0N ; a contradiction.) Since the number
+of players is ﬁnite and each s%i is weakly increasing, there must be a particular player i
+such that for all e > 0; s%i ðxi ðeÞ  eÞomax BRi ðs%; xi ðeÞÞ for some xi ðeÞ: Deﬁne x0i ðeÞ ¼
+xi ð2eÞ  e; we know that for all e > 0; s%i ðx0i ðeÞ  eÞomax BRi ðs%; x0i ðeÞ þ eÞ: Since for
+all e; x0i ðeÞA½y; y% ; there is a convergent subsequence of x0i ðeÞ as e-0; let xni be the
+limit. For all e > 0; s%i ðxni  eÞomax BRi ðs%; xni þ eÞ: (Why: we can take e0 small
+enough that s%i ðx0i ðe0 Þ  e=2Þomax BRi ðs%; x0i ðe0 Þ þ e=2Þ and jx0i ðe0 Þ  xni joe=2; hence,
+s%i ðx0i ðe0 Þ  e=2ÞXs%i ðxni  eÞ and max BRi ðs%; x0i ðe0 Þ þ e=2Þpmax BRi ðs%; xni þ eÞ:) &
+We claim that if lN > 0; then for some e > 0;
+max BRi ðs%; xni þ eÞp max BRi ðŝ; xni þ lN  eÞ
+p ŝi ðxni þ lN  eÞ ¼ s%i ðxni  eÞ:
+Only the ﬁrst inequality is nontrivial. In the two cases (i.e., i getting signal xni þ e and
+expecting others to play s% versus i getting signal xni þ lN  e and expecting others to
+play ŝ), the distributions of action proﬁles i expects to see become identical as e-0:
+Let
+âi ¼ max BRi ðŝ; xni þ lN  eÞ;
+a% i ¼ max BRi ðs%; xni þ eÞ:
+We must show that a% i pâi : We know that âi is strictly better than any higher action if
+i gets signal xni þ lN  e and expects others to play ŝ: for all ai > âi ;
+Ept ðDutðiÞ ðai ; âi ; ai ðŝ; x̂i ; z; nÞ; x̂i ÞÞo0 where x̂i ¼ xni þ lN  e: We claim that
+Ept ðDutðiÞ ðai ; âi ; ai ðs%; x% i ; z; nÞ; x% i ÞÞo0 where x% i ¼ xi þ e: (This will imply a% i pâi :)
+Since the action distributions played by i’s opponents in the two situations differ by
+the order of e while the payoff parameter differs by lN  2e; assumptions A3 and A5
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+26
+
+imply:
+Ept ðDutðiÞ ðai ; âi ; ai ðs%; x% i ; z; nÞ; x% i ÞÞ  Ept ðDutðiÞ ðai ; âi ; ai ðŝ; x̂i ; z; nÞ; x̂i ÞÞ
+p  K0 ðai  âi ÞðlN  2eÞ þ K2 ðai  âi ÞjTjoðeÞ
+e-0
+
+- K0 ðai  âi ÞlN
+
+which is negative if lN > 0: (jTj denotes the number of types in the game and oðeÞ
+denotes a term that is on the order of e:) This establishes that lN ¼ 0:
+When all action sets are ﬁnite, assumption A2 can be replaced by A20 by use of the
+following claim.
+Claim A2. Suppose all action sets are finite and assume A1; A20 ; A3; A4; and A5:
+Let a ¼ ðat ÞtAT and a% ¼ ða% t ÞtAT be the unique Nash equilibrium strategy profiles of the
+%
+%
+underlying complete information game for payoff parameters yoy and for y > y% ;
+respectively.32 There is a constant K such that for any increasing %pure equilibrium
+strategy profile s of G n ðnÞ that assigns the same strategy to all players of a given type, a
+must be played for all signals below y0 ¼ y  Kn and a% must be played for all signals%
+%
+%
+above %y0 ¼ y% þ Kn:
+Proof. For any positive integer n; consider the signal vector given by xi ¼ y  nn for
+all i: Since a is the unique Nash equilibrium when payoffs equal y  nn; the%only way
+%
+that s can prescribe
+something other than a at this signal vector %is if some player i is
+uncertain (expecting s to be played) about %the action played by one of her opposing
+types: if, for some tAOðiÞ; st ðxÞ takes on more than one value for signals
+xA½y  ðn þ 1Þn; y  ðn  1Þn :33 Since s is monotonic and each action set is ﬁnite,
+this %conditionP
+can% hold for at most a ﬁnite set of positive integers n: In particular, if
+0
+xoy ¼ y  n tAT jAt j then st ðxÞ ¼ at for all t: Likewise, a% must be played for
+P
+%
+%
+%
+signals above y% 0 ¼ y% þ n tAT jAt j: &
+We now iterate from above to obtain an upper bound on the set of equilibrium
+strategies. For all t; let ŝ0t ðxi Þ ¼ 1 for all xi AR and let skþ1
+ðxi Þ ¼ max BRt ðsk ; xi Þ: Let
+t
+k
+ŝ be deﬁned by ŝt ðxi Þ ¼ limk-N ŝt ðxi Þ: A player i seeing signal xi must choose an
+action that is at most ŝtðiÞ ðxi Þ: By induction, ŝt is weakly increasing and since ŝ is a
+best response to itself, it is an equilibrium of Gn ðnÞ: By Claim A2, under ŝ players
+must play a for signals below y0 and a% for signals above y% 0 :
+%
+%
+32
+
+As implied by the notation, these unique equilibria must prescribe the same action for all players of a
+given type. Else the players of a given type would be indifferent between two different actions. But then if
+all switched to (say) the higher of these actions and we then performed iterative best response in the
+complete information game, we would (by A1) converge to a different Nash equilibrium in which all
+players’ actions were weakly higher and some were strictly higher. This contradicts the assumption that
+there is a unique Nash equilibrium.
+33
+Because of the bounded supports, player i knows that all other players’ signals will be within n of
+xi ¼ y  nn:
+%
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+27
+
+For any lAR; let sl denote the translation of the right-continuous version of s to
+%
+the left by l: Let l0 be large enough that, for all t and signals xi ; slt 0 ðxi ÞXŝt ðxi Þ:
+(l0 ¼ y% 0  y0 will sufﬁce.) Players cannot choose actions that lie above sl0 : The rest of
+%
+the proof proceeds as before: we iterate from the left using translations slk until we
+reach a limit, and prove (using identical arguments) that this limit must equal s: &
+%
+Lemma A2 shows that as n-0; players’ posteriors over normalized signal
+differences GðnÞ; *ptðiÞ ðzjxi ; nÞ; converge to the posteriors in G n ðnÞ: For any
+probability measure m on Zi ; let Ce ðmÞ be the set of probability measures that
+differ from m by no more than e for any subset of Zi :
+(
+)
+Ce ðmÞ 
+
+m0 : sup jmðSÞ  m0 ðSÞjpe :
+SCZi
+
+Lemma A2. For any e > 0 and compact interval B ¼ ½b0 ; b1 such that ½b0  n; b1 þ n
+is contained in the interior of the support of f; there exists n% > 0 such that
+*ptðiÞ ð jxi ; nÞACe ðptðiÞ ð ÞÞ for all xi AB and all np %n:
+Proof. Denote
+0
+1 1 fðxi þ ny Þ
+y A½2;2
+rðnÞ ¼ sup
+0 :
+xi AB min 0
+1 1 fðxi þ ny Þ
+y A½2;2
+
+max 0
+
+Since the support of f includes ½b0  n; b1 þ n ; f has a strictly positive minimum
+value over this interval. Since f is also continuous, max 0 1 1 fðxi þ ny0 Þ 
+y A½2;2
+
+0
+
+miny0 A½1;1 fðxi þ ny Þ converges to 0 as n-0 uniformly for xi A½b; b : Hence,
+22
+0
+1
+max 0 1 1 fðxi þ ny0 Þ  min 0 1 1 fðxi þ ny0 Þ
+y A½2;2
+y A½2;2
+A
+rðnÞ ¼ sup @1 þ
+min 0 1 1 fðxi þ ny0 Þ
+xi AB
+y A½2;2
+
+-1 as n-0:
+Since the support of each fi is contained in the interval ½12; 12 ; for all xi AB;
+pi ðzÞ
+pp* i ðzjxi ; nÞprðnÞpi ðzÞ:
+rðnÞ
+ 
+x y
+If t is a singleton type fjg; let Gt ðzt ; y; xi ; nÞ ¼ ft j n : If t is a continuum type, let
+Gt ðzt ; y; xi ; nÞ be the Dirac delta function [13, p. 276] that equals inﬁnity if zt is the
+c.d.f. of normalized signal differences between the signals of type-t players and the
+signal xi if the distribution of type-t signal errors is ft and the true parameter is y:
+x x
+Since zt ðcÞ is the proportion of players jAt for whom j n i pc or, equivalently, for
+x y
+
+0
+whom j’s signal error j n is no greater than c þ xi y
+n ; Gt ðzt ; y; xi ; nÞ ¼ N iff zt ðcÞ ¼
+
+
+ft c þ xi ny for all c and Gt ðzt ; y; xi ; nÞ ¼ 0 otherwise. Letting y0 ¼ xi ny;
+
+28
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+Gt ðzt ; y; xi ; nÞ ¼ Gt ðzt ; y0 ; 0; 1Þ: By Bayes’s Rule,
+x y Q
+RN
+i
+Pr ðz&xi Þ
+tAOðiÞ Gt ðzt ; y; xi ; nÞ dy
+y¼N fðyÞfi
+n
+x y
+¼
+RN
+*ptðiÞ ðzjxi ; nÞ ¼
+i
+Pr ðxi Þ
+dy
+y¼N fðyÞfi
+n
+RN
+0
+0 Q
+0
+0
+tAOðiÞ Gt ðzt ; y ; 0; 1Þ dy
+y0 ¼N fðxi þ ny Þfi ðy Þ
+R
+¼
+:
+N
+0
+0
+0
+y0 ¼N fðxi þ ny Þfi ðy Þ dy
+
+ðA1Þ
+
+ðA2Þ
+
+Thus, for
+
+Z any SCZi ;
+Z
+
+
+
+
+p
+ðzjx
+;
+nÞ
+dz
+
+p
+ðzÞ
+dz
+*
+i
+i
+i
+
+
+zAS
+zAS
+
+
+Z
+
+1
+1
+p
+pi ðzÞ dz max rðnÞ  1;
+rðnÞ
+zAS
+
+
+1
+pmax rðnÞ  1;
+1 :
+&
+rðnÞ
+Lemma A3 uses the above results to show that as the signal noise shrinks, players’
+behavior in GðnÞ converges to the unique outcome of G n ðnÞ: Write sn (s%n ) for the left
+(right) continuous version of s * n ; the essentially unique equilibrium of% the game G n ðnÞ:
+By Lemma A1, sn and s%n each prescribes the same strategy for all players of a given type.
+%
+Lemma A3. For any e > 0; there exists n% > 0 such that for all npn% and any strategy
+profile sn of GðnÞ surviving iterated deletion of strictly dominated strategies,
+s%ni ðxi þ eÞXsni ðxi ÞXsni ðxi  eÞ:
+%
+Proof. We ﬁrst reiterate some deﬁnitions from the proof of Lemma A1. For any
+player i of type t; Zt is the set of all possible vectors z ¼ ðzt ÞtAOðiÞ of normalized
+differences between i’s opponents signals and her own signal. For any pure strategy
+proﬁle s ¼ ðst ÞtAT (which prescribes the same strategy st for all players of type t),
+ai ðs; xi ; z; nÞ is the opposing action distribution that player i faces if she sees the
+signal xi ; others play according to s; and z is the vector of normalized signal
+differences.
+We begin with a claim.
+Claim A3. Let s ¼ ðst ÞtAT be a weakly increasing strategy profile satisfying
+Ept ½Dut ðst ðxi Þ; ai ; ai ðs; xi ; z; nÞ; xi Þ X0
+for all iAI; xi AR and ai pst ðxi Þ (where t is the type of i).
+Then, for any e > 0 and for any compact interval BCR; there exists d > 0; such that
+Ep0t ½Dut ðst ðxi Þ; ai ; ai ðs; xi ; z; nÞ; xi þ eÞ > 0
+for all iAI; p0t ACd ðpt Þ; xi AB and ai ost ðxi Þ:
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+29
+
+Proof. For all d > 0 and p0i ACd ðpi Þ;
+Ep0t ½Dut ðst ðxi Þ; ai ; ai ðs; xi ; z; nÞ; xi þ eÞ
+(
+)
+ð1  dÞEpt ½Dut ðst ðxi Þ; ai ; ai ðs; xi ; z; nÞ; xi þ eÞ
+X
+þdDut ðst ðxi Þ; ai ; 0i ; xi þ eÞ
+"
+# 9
+8
+>
+>
+Du
+ðs
+ðx
+Þ;
+a
+;
+a
+ðs;
+x
+;
+z;
+nÞ;
+x
+þ
+eÞ
+t
+t
+i
+i
+i
+i
+i
+>
+>
+>
+>
+>
+=
+< ð1  dÞEpt Dut ðst ðxi Þ; ai ; ai ðs; xi ; z; nÞ; xi Þ dz >
+X
+>
+>
+>
+>
+þð1  dÞEpt ½Dut ðst ðxi Þ; ai ; ai ðs; xi ; z; nÞ; xi Þ
+>
+>
+>
+>
+;
+:
+þdDut ðst ðxi Þ; ai ; 0i ; xi þ eÞ:
+By A3, we can ﬁnd a constant K2 > 0 such that for all xi in the compact interval B;
+the ﬁrst term is at least ð1  dÞK2 eðst ðxi Þ  ai Þ: The second term is at least 0, by the
+premise of the lemma. By A5 there is a constant K3 such that the third term is at least
+dK3 ðst ðxi Þ  ai Þ: Thus the sum is at least ðð1  dÞK2 e  dK3 Þðst ðxi Þ  ai Þ: This
+d
+oKK23e: &
+expression must be positive (for all ai ost ðxi Þ) if we choose d such that 1d
+By construction of s; we know that for all bXe; i ¼ 1; y; I and xi AR
+%
+Ept ½Dut ðst ðxi  bÞ; ai ; ai ðs; xi  b; z; nÞ; xi  bÞ X0
+%
+for all ai pst ðxi  bÞ: This implies (by Lemma A2 and Claim A3) that there exists *n
+% all np*n; bXe and x AR;
+such that for
+i
+ 
+
+b
+X0
+E *pt ð jxi ;nÞ Dut st ðxi  bÞ; ai ; ai ðs; xi  b; z; nÞ; xi 
+2
+%
+for all Zai pst ðxZi  bÞ:34 This implies (changing
+notation only) that
+
+
+N
+%
+*ft ðz; yjxi ; nÞDut st ðxi  bÞ; ai ; ai ðs; xi  b; z; nÞ; xi  b
+2
+%
+zAZi
+y¼N
+dz dyX0
+for all ai pst ðxi  bÞ; where  Q
+%
+fðyÞfi xi y
+t̂AOðiÞ Gt̂ ðzt̂ ; y; xi ; nÞ
+n
+*
+xi y
+ft ðz; yjxi ; nÞ ¼
+RN
+dy
+n
+y¼N fðyÞfi
+is the density of ðz; yÞ given xi : Now if nob2 we have by assumption A3 that
+Z
+Z N
+* t ðz; yjxi ; nÞDut ðst ðxi  bÞ; ai ; ai ðs; xi  b; z; nÞ; yÞ dz dyX0
+f
+%
+y¼N
+zAZi
+ðA:3Þ
+Assuming A2, Claim A3 implies this for xi  bA½y; y% : For xi  b not in this interval, the result holds
+%
+since st ðxi  bÞ must be either 0 or 1, depending on which is dominant at the payoff parameter xi  b:
+%
+Assuming A20 instead of A2, Claim A3 implies this for xi  bA½y0  *n; %y0 þ *n ; where y0 and y% 0 are deﬁned
+%
+%
+near the end of the proof of Lemma A1. Below y0 ; a must be played; above y% 0 ; a% must be played. Thus,
+%
+changing the distribution of z leaves the integral unchanged.
+34
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+30
+
+for all ai ost ðxi  bÞ: Set np %n ¼ minf2e ; *ng: Consider the strategy proﬁle s0 where
+%
+s0t ðxi Þ ¼ st ðxi  bÞ: By Eq. (A.3), we know that, in GðnÞ; each player’s best response
+%
+0
+to s is always at least s0 :
+Since this is true for any bXe; this ensures that iterated deletion of strictly
+dominated strategies (using translations of s as in the proof of Lemma A1), cannot
+% (using a symmetric version of Claim
+lead below snt ðxi  eÞ: A symmetric argument
+%
+A3, whose proof is analogous) gives the upper bound. &
+Finally, we show that as the signal errors shrink, the essentially unique surviving
+strategy proﬁle in the simpliﬁed game G n ðnÞ converges to a limit.
+Lemma A4. There is a weakly increasing strategy profile s, which prescribes the same
+strategy for all players of a given type, such that for any e > 0 there is a n% > 0 such that
+for all non% and any strategy profile sn surviving iterative strict dominance in G n ðnÞ; the
+maximum horizontal distance between sn and s is e: i.e., sni ðxi þ eÞ > si ðxi Þ > sni ðxi  eÞ
+for all i and xi :
+Proof. To prove this, we will show that the surviving proﬁles are a Cauchy sequence.
+Fix e > 0 and consider any n0 ; n00 ; such that n% > n0 > n00 ; where n% will be speciﬁed later.
+0
+00
+Let sn and sn survive iterative strict dominance in G n ðn0 Þ and G n ðn00 Þ; respectively.
+(Note that these are equilibria of the corresponding games.) We will show that the
+0
+00
+00
+0
+maximum horizontal distance between sn and sn is e: i.e., snt ðx þ eÞ > snt ðxÞ >
+00
+snt ðx  eÞ for all types t and signals x:
+0
+We will transform sn into a strategy proﬁle ŝ and then do iterative dominance in Gn ðn00 Þ
+00
+0
+using translations of ŝ; and show that the limit (which bounds sn ) is within e of sn :
+We deﬁned Q1 ðn; e0 Þ above to be such that in any surviving proﬁle in G n ðnÞ; each
+player i who sees a signal that is not in Q1 ðn; e0 Þ can bound the action of each
+opponent j within an intervalof length e0 : By Claim A5 below, there is a n% > 0 such
+0
+
+that if n0 on% ; Qn1 ¼ Q1 n0 ; 2e KK20I is contained in a ﬁnite union of closed intervals of the
+
+form ½2nn0 ; 2ðn þ 1Þn0 (each of length 2n0 ) for integer n; the measure of this union is
+less than 2e :
+0
+0
+0
+We transform sn into ŝ as follows. For signals x outside of Qn1 ; let ŝt ðxÞ ¼ snt ðxÞ:
+0
+For signals in any maximal interval35 ½z  d; z þ d in Qn1 ; we compress the segment
+0
+of sn horizontally by the ratio of n00 and n0 and patch the remaining gaps with a
+constant action proﬁle. More precisely, for each signal xA½z  d; z þ d ; let:
+
+ŝt ðxÞ ¼
+
+35
+
+8
+>
+<
+>
+:
+
+0
+
+00
+
+0
+
+00
+
+snt ðz  dÞ if xpz  d nn0 ;
+
+0
+0
+00
+00
+snt ðz þ ðx  zÞnn00 Þ if xA z  dnn0 ; z þ dnn0 ;
+snt ðz þ dÞ if xXz þ dnn0 :
+0
+
+More precisely, ½z  d; z þ d is a union of contiguous intervals in Qn1 that is not contiguous to any
+0
+other interval in Qn1 :
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+31
+
+We now perform iterative dominance in Gn ðn00 Þ using translations of ŝ from the
+left, yielding an bound from the left on the proﬁles surviving iterative dominance in
+the game. Suppose the iterations stop at a horizontal distance l to the left of ŝ: Let
+this translation be sl : We ﬁrst assume that both that the action space is ½0; 1 and the
+strategies surviving iterative dominance are continuous functions of players’ signals,
+and the best response correspondence is always single valued. Later we consider the
+general case. Under these assumptions, there is a type t and a signal x such that slt ðxÞ
+00
+equals BRnt ðsl ; xÞ; the best response to sl in the game G n ðn00 Þ for a type-t player with
+signal x:
+0
+First suppose x þ leQn1 : This means that x corresponds to the part of sl that
+was not altered in the construction of ŝ: In this case we show directly that the bound
+0
+sl is within a horizontal distance of e from sn : Suppose i got the signal x þ l in the
+0
+game G n ðn0 Þ and expected her opponents to play according to sn : Then she could
+place each opponent j’s action within an interval Ij of length 2e KK20I : By construction, if
+i gets signal x in Gn ðn00 Þ and expects others to play proﬁle sl ; she can place each
+opponent’s action within the same interval Ij : (By Claim A5 below, each interval in
+0
+Qn1 is of measure at least 2n0 and n00 on0 : Thus, by construction of sl ; the signals at
+which an opponent j plays actions outside of Ij can also be ruled out if i sees signal
+x:) This means that in the two cases (i.e., i getting signal x þ l in Gn ðn0 Þ and
+0
+expecting others to play sn versus i getting signal x in G n ðn00 Þ and expecting
+others to play sl ), i expects approximately the same opponents’ actions; more
+precisely, each action differs by no more than 2e KK20I ; the length of Ij : By Assumptions
+A3 and A5, the change in ut following a unit change in any opposing type’s
+action is no more than K2 while the change in ut following a unit change in y (which
+in G n equals the player’s signal) is at least K0 : Thus, for slt ðxÞ to be a best response a
+player who expects sl ; the difference l in signals between the two cases must be less
+than e:
+0
+0
+Now suppose x þ lAQn1 : Denote the maximal interval in Qn1 in which this signal
+00
+00
+lies by ½z  d; z þ d : We can assume WLOG that x þ lA½z  dnn0 ; z þ dnn0 ; otherwise,
+x must be on a horizontal part of sl ; but the iterations cannot have been blocked at
+0
+such a point. We now consider the signal y ¼ z þ ðx þ l  zÞnn00 : This is the reverse
+0
+translation of x þ l and has the property that slt ðxÞ ¼ snt ðyÞ: We will argue that the
+action distribution seen in each case is almost the same. A player seeing y and
+0
+playing against sn in G n ðn0 Þ knows that her opponents’ signals will be in the interval
+Y ¼ ½y  n0 ; y þ n0 : We split Y into two parts. For opponents’ signals in the part of
+0
+Y that lies in ½z  d; z þ d ; the actions prescribed by sn are, by construction,
+identical to the actions prescribed by sl at the corresponding signals in Gn ðn00 Þ: For
+opponents’ signals lying outside, these signals lie in an interval of length at most n0
+0
+that is contained in the complement of Qn1 : We know that for each type t; the actions
+0
+prescribed by snt for such signals all lie in an interval It of size at most 2e KK20I : By
+construction of sl ; for each player of type t; the actions prescribed by sl for the
+
+32
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+corresponding signals in Gn ðn00 Þ are also in It : Thus, the above argument implies that
+00
+0
+jx  yjoe: sn cannot anywhere lie more than e to the left of sn : This completes the
+proof for the continuous case.
+We now explain how the proof changes in the general case. The construction and
+0
+iterations are as before. However, we let sn be the right continuous version of the
+essentially unique surviving proﬁle in G n ðn0 Þ: This ensures that its transformation ŝ is
+also right continuous, so the limit sl is an upper bound on strategies chosen in
+00
+G n ðn00 Þ: We also can no longer assume that slt ðxÞ ¼ BRnt ðsl ; xÞ for some t and x: We
+can say only that (a) sl lies above its highest best response: a type-t player who sees
+signal x will never play an action that exceeds the right continuous version of slt ; and
+(b) sl cannot be translated to the right without falling below its highest best response
+somewhere: more precisely, as in Claim A1, there must be a type t and a signal x such
+00
+that slt ðx  e0 Þomax BRnt ðsl ; x þ e0 Þ for all e0 > 0:36
+For e0 E0; let x  e0 in the game G n ðn00 Þ with proﬁle sl correspond to y  e0 in
+0
+G n ðn0 Þ with proﬁle sn : players with these signals ﬁnd themselves at corresponding
+points on the two action proﬁles and thus are prescribed to take the same action. We
+claim that if l > e; then for e0 very small relative to l;
+00
+
+0
+
+0
+
+0
+
+max BRnt ðsl ; x þ e0 Þpmax BRnt ðsn ; y  e0 Þpsnt ðy  e0 Þ ¼ slt ðx  e0 Þ:
+Only the ﬁrst inequality is nontrivial. Between the two cases (i.e., a player getting
+signal x þ e0 in Gn ðn00 Þ and expecting others to play sl versus a player getting signal
+0
+y  e0 in G n ðn0 Þ and expecting others to play sn ), the possible actions of each
+opponent differ by no more than 2e KK20I þ oðe0 Þ: Let
+0
+
+0
+
+a0t ¼ max BRnt ðsn ; y  e0 Þ;
+00
+
+alt ¼ max BRnt ðsl ; x þ e0 Þ:
+We must show that alt pa0t : By deﬁnition, a0t is strictly better than any higher action if
+0
+a type-t player i gets signal y  e0 in G n ðn0 Þ and expects others to play sn : for all
+0
+at > a0t ; Ept ðDut ðat ; a0t ; ai ðsn ; y  e0 ; z; n0 Þ; y  e0 ÞÞo0; where the expectation is based
+on the signal distribution in G n ðn0 Þ: We claim that a0t is also strictly better than any
+higher action if a type-t player i gets signal x þ e0 in Gn ðn00 Þ and expects others to play
+sl : for all at > a0t ; Ept ðDut ðat ; a0t ; ai ðsl ; x þ e0 ; z; n00 Þ; x þ e0 ÞÞo0: Since the possible
+actions of each of i’s opponents differ by no more than 2e KK20I þ oðe0 Þ in the two
+situations while the payoff parameter differs by at least l  2e0  e=2; assumptions
+
+36
+
+In the general case, the best response is a correspondence rather than a function.
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+33
+
+A3 and A5 imply:
+Ept ðDut ðat ; a0t ; ai ðsl ; x þ e0 ; z; n00 Þ; x þ e0 ÞÞ
+0
+
+ Ept ðDut ðat ; a0t ; ai ðsn ; y  e0 ; z; n0 Þ; y  e0 ÞÞ
+p  K0 ðat  a0t Þ ðl  2e0  e=2Þ þ K2 ðat  a0t ÞI
+
+
+
+e K0
+þ oðe0 Þ
+2 K2 I
+
+
+
+- K0 ðat  a0t Þðe  lÞ
+
+e0 -0
+
+which is negative if l > e: This proves the lemma. &
+Theorem 5 follows immediately from this result and Lemmas A1, A3 and A4.
+
+&
+
+The following three claims were used in the proofs of Lemma A4 and will be used
+in the proof of Theorem 6.
+For any e > 0 and n > 0; let Q0 ðn; eÞ be the set of parameters y for there is some
+n
+strategy proﬁle sn * ¼ ðst * ÞtAT that survives iterative strict dominance in G n ðnÞ and
+some strategy proﬁle sn ¼ ðsni ÞiAI that survives iterative strict dominance in GðnÞ for
+n
+which jst * ðyÞ  sni ðyÞj > e for some i of type t: (Unlike sn * ; sn has not been shown to
+assign the same strategy to all players of a given type.)
+Claim A4. For any e > 0 there is a n% > 0 such that for all non% ; Q0 ðn; eÞ is contained in
+a union of at most 4jTj=e closed intervals of R; the total measure of the union is less
+than e:
+Proof. Let sn * and sn be any strategies surviving iterative strict dominance in G n ðnÞ
+and GðnÞ; respectively. By Lemma A3, for any e0 > 0; there exists %n > 0 such that for
+all npn% ;
+s%nt ðy þ e0 ÞXsni ðyÞXsnt ðy  e0 Þ;
+%
+where t is i’s type and s%n and sn are, respectively, the right continuous and left
+%
+continuous versions of the essentially
+unique surviving strategy proﬁle of G n ðnÞ: In
+n*
+addition, by Lemma A1, any s that survives in G n ðnÞ must be weakly increasing, so
+n
+
+s%nt ðy þ e0 ÞXst * ðyÞXsnt ðy  e0 Þ:
+%
+n
+
+Thus, the absolute difference between sni ðyÞ and st * ðyÞ is bounded by s%nt ðy þ e0 Þ 
+snt ðy  e0 Þ: We now divide the real line into intervals In ¼ ½ne0 ; ðn þ 1Þe0 for integral n:
+% M be the set of such intervals for which there is a yAI and a player i of some
+Let
+0
+n
+type t for whom, for some sn * and sn surviving iterative strict dominance in G n ðnÞ
+n
+and GðnÞ; jsni ðyÞ  st * ðyÞjXe: Clearly, Q0 ðn; eÞDM0 : By the preceding argument,
+s%nt ðy þ e0 Þ  snt ðy  e0 ÞXe; so s%nt ððn þ 2Þe0 Þ  snt ððn  1Þe0 ÞXe: By deﬁnition of s%n and
+% 0 Þ for any z > z0 ; so
+%
+sn ; snt ðzÞXs%nt ðz
+% % n
+ðA:4Þ
+s%t ððn þ 2Þe0 Þ  s%nt ððn  2Þe0 ÞXe:
+
+34
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+Since s%nt is weakly increasing and in ½0; 1 for each t; the set of integers n and types t
+for which (A.4) holds is at most 4jTj=e: Thus, M0 is a ﬁnite set and the total measure
+of M0 is at most 4jTje0 =e: For this measure to be less than e; it sufﬁces to take
+e0 oe2 =4jTj: &
+Claim A5 shows that when signal errors are small, for most signals players
+can closely approximate what other players will do. For any n > 0 and
+e > 0; let Q1 ðn; eÞ be the set of parameters y such that after removing
+strategies that do not survive iterative strict dominance in G n ðnÞ; there are types
+tat̂ such that conditional on a player of type t getting signal y; the set of
+actions a type-t̂ player might take are not contained in an interval of length e:
+Each player j who sees a signal that is not in Q1 ðn; eÞ can bound the action
+of each opponent i within an interval of length e: Claim A5 shows that Q1 ðn; eÞ
+is of measure less than e for small enough n: This claim is also used in the proof of
+Lemma A4.
+Claim A5. For any e > 0 there is a n% > 0 such that for all non% ; Q1 ðn; eÞ is contained in
+a union of at most 5jTj=e intervals of the form ½2nn; ð2n þ 2Þn for integral n; the total
+measure of the union is less than e:
+Proof. Since each signal error is at most n=2 and since s%n and sn are upper and lower
+bounds on the strategies that survive iterative strict dominance% in G n ðnÞ; a necessary
+condition for y to be in Q1 ðn; eÞ is that for some type t; s%nt ðy þ nÞ  snt ðy  nÞ > e:
+% M be the
+Divide the real line into intervals In ¼ ½2nn; ð2n þ 2Þn for integral n: Let
+1
+set of such intervals for which there is a yAIn and a type t for which s%nt ðy þ nÞ 
+snt ðy  nÞ > e: Clearly, Q1 ðn; eÞDM1 : By deﬁnition of s%n and sn ; snt ðzÞXs%nt ðz0 Þ for any
+% %
+z% > z0 ; so
+s%nt ðð2n þ 4ÞnÞ  s%nt ðð2n  1ÞnÞ > e:
+
+ðA:5Þ
+
+Since s%nt is weakly increasing and in ½0; 1 for each t; the set of integers n and types t
+for which (A.4) holds is at most 5jTj=e: Thus, M1 is a ﬁnite union of intervals whose
+total measure is at most 5jTjn=e: For this measure to be less than e; it sufﬁces to take
+noe2 =5jTj: &
+The next claim uses the prior one to show that for almost all payoff parameters y;
+strategies that survive iterative strict dominance in G n ðnÞ must prescribe at y that
+players play close to some Nash equilibrium of some complete information game
+with payoff parameter close to y: More precisely, let Q2 ðe; nÞ be the set of parameters
+y for which there is no action proﬁle a ¼ ðat ÞtAT with the following two properties:
+(1) for some y0 A½y  e; y þ e ; the complete information game with payoffs
+ðut ð; y0 ÞÞtAT has a Nash equilibrium in which all players of type t play at ; (2) for
+n
+every strategy s * n surviving iterative strict dominance in G n ðnÞ; jst* ðyÞ  at jpe for
+all types t:
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+35
+
+Claim A6. For any e > 0 there is a n% > 0 such that for all non% ; Q2 ðn; eÞ is contained in
+a finite union of closed intervals of R whose measure is less than e: The number of
+intervals in the union can depend on e but not on n:
+Proof. Fix e > 0: Recall that Q1 ðn; ZÞ is the set of signals x such that, after
+removing strategies that do not survive iterative strict dominance in G n ðnÞ;
+there are types tat̂ such that conditional on a type-t player getting signal x; the
+set of actions type-t̂ players choose are not contained in an interval of length Z:
+By Claim A5, for any Z > 0 there is a %nZ > 0 such that for all no %nZ ; Q1 ðn; ZÞ is
+contained in a ﬁnite union of closed intervals whose measure is less than Z: But for
+any Z;
+Q2 ðn; eÞ ¼ ½Q2 ðn; eÞ-Q1 ðn; ZÞ , ½Q2 ðn; eÞ-QC
+1 ðn; ZÞ ;
+
+ðA:6Þ
+
+C
+where QC
+1 ðn; ZÞ is the complement of Q1 ðn; ZÞ: Every signal x in Q2 ðn; eÞ-Q1 ðn; ZÞ has
+the property that on getting it, each player knows to within Z what players of all
+types will do in Gn ðnÞ (since xAQC
+1 ðn; ZÞ) yet there is no Nash equilibrium ðat ÞtAT of
+the complete information game with payoff parameter yA½x  e; x þ e such that
+each at is e-close to the action prescribed for type t in the essentially unique
+equilibrium of G n ðnÞ at the signal x:
+We will show that for ﬁxed e > 0; there is an Z% e such that for ZpZ% e ; the set
+Q2 ðn; eÞ-QC
+Ze ; eg and n ¼ %nZ ; we
+1 ðn; ZÞ is empty for any n: Thus, by setting Z ¼ min f %
+ensure that (a) for all no %n; Q1 ðn; ZÞ (and thus Q2 ðn; eÞ-Q1 ðn; ZÞ) is contained in a
+ﬁnite union of closed intervals whose measure is less than e; and (b) since ZpZ% e ; the
+set Q2 ðn; eÞ-QC
+1 ðn; ZÞ is empty. By (10), this will prove Claim A6.
+Suppose instead that the set Q2 ðn; eÞ-QC
+1 ðn; ZÞ is nonempty for arbitrarily small Z;
+where n can depend on Z: This means that there are arbitrarily small positive Z’s such
+that for some y; even though in G n ðnÞ each player i with signal y has the utility
+function utðiÞ ð; yÞ and best responds to a belief that each opponent j’s action is in
+some interval of length Z that contains j’s true action (while follows from
+n
+yAQC
+1 ðn; ZÞ), the action proﬁle the players play in G ðnÞ is not e-close to any Nash
+equilibrium of the game with payoff parameter y0 A½y  e; y þ e (which is the
+meaning of yAQ2 ðn; eÞ). Let Z0 > Z1 > ? be a sequence of such Z’s that converges to
+zero. For each Zk take some yk AQ2 ðn; eÞ-QC
+1 ðn; Zk Þ and consider the action proﬁle
+n
+k
+*
+ðat ÞtAT ¼ ðst ðyk ÞÞtAT : By construction, each of these action proﬁles differs by at
+least e from any Nash equilibrium. Since each type’s action space is compact and
+each yk must lie in the compact region ½y; y% ;37 there is a subsequence of the Zk ’s such
+%
+that the corresponding sequence ðak ; yk Þ converges to some limit ðaN ; yN Þ: By
+continuity of the payoff functions (axiom A4), each action aN
+t is a best response if a
+
+If the action spaces are ﬁnite, axiom A2 is replaced by the weaker A20 so yk may not lie in ½y; y% : But by
+%
+Claim A2, since any strategy proﬁle surviving iterative strict dominance in Gn ðnÞ is an equilibrium of
+Gn ðnÞ; it must prescribe that agents play Nash equilibria of the underlying complete information game for
+any ye½y  Kn; y% þ Kn : Since each yk is in Q2 ðn; eÞ; each yk must lie in a compact interval (in
+%
+½y  Kn; y% þ Kn ), which is all the proof requires.
+%
+37
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+36
+
+type-t player knows her opponents are playing according to aN and the payoff
+parameter is yN : Thus, aN is a Nash equilibrium of the underlying complete
+information game when the payoff parameter is yN : But then for high enough k; ak
+is e-close to the Nash equilibrium aN of the complete information game with payoff
+parameter yN ; which itself must be e-close to yk : Thus, ðak ; yk Þ does not satisfy the
+condition assumed of it.38 &
+Proof of Theorem 6. Theorem 6 follows immediately from Claims A4–A6 since
+Qðe; nÞCQ0 ðe=2; nÞ,Q2 ðe=2; nÞ: &
+Proof of Theorem 3. Let the actions be 0; 1=3; 2=3; and 1; t so that a strategy proﬁle
+takes the form
+8
+0 if xoc1 ;
+>
+>
+>
+< 1 if c pxoc ;
+1
+2
+sðxÞ ¼ 32
+>
+if c2 pxoc3 ;
+>
+>
+:3
+1 if c3 px:
+A player observing signal c1 will assign probability 12 to her opponent choosing action
+0; some probabilities l and m to her opponent choosing actions 13 and 23; respectively,
+and probability 12  l  m to her opponent choosing action 1: A player observing
+signal c2 will assign probability 12  l to her opponent choosing action 0; probability
+l to her opponent choosing action 13; some probability Z to her opponent choosing 23;
+and probability 12  Z to her opponent choosing action 1: A player seeing signal c3
+will assign probability 12 to her opponent playing 1; Z to her opponent choosing 23;
+some probability n to her opponent choosing 13; and probability 1  Z  n to her
+opponent choosing 0: Hence, each proﬁle gives rise to four unknowns, l; m; Z; and n;
+as claimed.
+We now present a speciﬁc counterexample with four actions, in which the
+equilibrium selected in the limit depends on the noise. Let I ¼ 2; A1 ¼ A2 ¼
+f0; 13; 23; 1g and let GðnÞ and ĜðnÞ be two games satisfying the assumptions of Section
+2; these two games are identical except that in GðnÞ; Z1 and Z2 are distributed
+according to the density
+f ðZÞ ¼ 1
+on the interval ½12; 12 ; in ĜðnÞ; Z1 and Z2 are distributed according to the density
+ˆ
+fðZÞ ¼ 2  4jZj
+38
+
+We thank Itzhak Gilboa for suggesting this proof.
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+37
+
+on the interval ½12; 12 : Note that under a uniform prior on y; the resulting symmetric
+distributions of z ¼ Z1  Z2 have support ½1; 1 and densities
+pðzÞ ¼ 1  jzj;
+8
+2
+>
+< 2ð1 þ zÞ
+#pðzÞ ¼ 1  2z2
+>
+:
+2ð1  zÞ2
+
+if  1pzp  12;
+if  12pzp12;
+if
+
+1
+2pzp1:
+
+Assume that uð ; yn Þ ¼ gn ð Þ; where gn is given by the following symmetric
+matrix:
+
+One may verify that this is a game of strategic complementarities, with payoffs
+quasiconcave in own actions, since gni ðai þ 13; aj Þ  gni ðai ; aj Þ is strictly decreasing in ai
+and strictly increasing in aj :
+Let strategy proﬁle ŝ½k be deﬁned by
+
+ŝi ½k ðxi Þ ¼
+
+8
+0
+>
+>
+>
+<1
+3
+2
+>
+>
+>3
+
+:
+
+1
+
+if xi ok  14;
+if k  14pxi ok;
+if kpxi ok þ 14;
+if k þ 14pxi :
+
+Lemma A5. Let the interaction structure be given by #p: There exists e# > 0 and d# > 0
+# yn þ d# and payoffs are always given by uð ; yn Þ; the best
+such that if yA½yn  d;
+response to strategy profile ŝ½k is less than or equal to ŝ½k þ #e :
+Proof. If player 1 observes x1 ; she believes that x2  x1 is distributed according to #p:
+If she believes that her opponent is following strategy ŝ2 ½k ; her conjectures over her
+
+38
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+opponents’ actions are the following:
+
+One may verify that if player 1 observes signal k  14 and has payoffs given by
+uð ; yn Þ; then she strictly prefers action 0 to action 13 (since
+1
+23
+17
+1
+19
+2ð344Þ þ 96ð64Þ þ 96ð456Þ þ 12ð854Þ ¼  4 o0). Similarly, if player 1 observes signal
+k and has payoffs given by uð ; yn Þ; she strictly prefers action 13 to action 23 (since
+25
+23
+23
+25
+25
+96ð600Þ þ 96ð200Þ þ 96ð400Þ þ 96ð415Þ ¼ 96o0) and if player 1 observes signal
+n
+k þ 14 and has payoffs given by uð ; y Þ; she strictly prefers action 23 to action 1: By
+continuity, these strict preferences will be maintained for signals in a small
+neighborhoods of those cutoff points and for payoffs in a small neighborhood of
+uð ; yn Þ: &
+Now consider the game ĜD ðn; yn Þ; which is like Ĝn ðnÞ; except that the payoff
+functions are replaced by
+8
+>
+u ða; yÞ
+if ypy;
+>
+< i %
+%
+n
+D
+ui ða; yÞ ¼ ui ða; y þ #dÞ if ypypyn þ #d;
+>
+%
+>
+: u ða; y% Þ
+#
+if yXyn þ d:
+i
+
+Corollary A1. In the game ĜD ðn; yn Þ; any strategy s satisfying iterated deletion of
+strictly dominated strategies satisfies spŝ½yn þ d#  n ; thus si ðxi Þ ¼ 0 for all xi pyn þ
+d#  2n:
+Proof. By induction, verify that if strategy proﬁle s survives k þ 1 rounds of deletion
+of strictly dominated strategies, then spŝ½max ðy  n þ k#e; yn þ d#  nÞ : &
+%
+Now we have:
+Lemma A6. If sn is the essentially unique equilibrium of Ĝn ðnÞ; then sni ðxi Þ ¼ 0 for all
+xi pyn þ d#  n:
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+39
+
+But now let strategy proﬁle s½k be deﬁned by
+8
+7
+0 if xi ok  25
+;
+>
+>
+>
+< 1 if k  7 px ok;
+i
+25
+si ½k ðxi Þ ¼ 32
+7
+>
+if kpxi ok þ 25
+;
+>
+>
+:3
+7
+1 if 25pk þ xi :
+Lemma A7. Let the interaction structure be given by p: There exists e > 0 and d > 0
+such that if yA½yn  d; yn þ d and payoffs were always given by uð ; yn Þ; the best
+response to strategy profile s½k is more than or equal to s½k  e :
+Proof. If player 1 observes x1 ; she believes that x2  x1 is distributed according to p:
+If she believes that her opponent is following strategy ŝ2 ½k ; her conjectures over her
+opponents’ actions are the following:
+
+7
+One may verify that if player 1 observes signal k  25
+and her payoffs are given by
+n
+uð ; y Þ; then she strictly prefers action 13 to action 0 (since
+1
+301
+203
+121
+83
+2 ð344Þ þ 1250 ð64Þ þ 1250 ð456Þ þ 1250 ð854Þ ¼ 625 > 0). Similarly, if player 1 observes
+n
+signal k and her payoffs are given by uð ; y Þ; she strictly prefers action 23 to action 13
+7
+and if player 1 observes signal k þ 25
+and her payoffs are given by uð ; yn Þ; she strictly
+2
+prefers action 1 to action 3: By continuity, these strict preferences will be maintained
+for signals in a small neighborhoods of those cutoff points and for payoffs in a small
+neighborhood of uð ; yn Þ: &
+
+But now mimicking the above argument, we have:
+Lemma A8. If sn is the essentially unique equilibrium of G n ðnÞ; then sni ðxi Þ ¼ 1 for all
+xi Xyn  d þ n:
+Proof of Lemma 1. Consider any player i: In the continuous action space case, for
+any dA½0; ci ;
+0 > vðani þ d; ani Þ  vðani ; ani ÞXmi ðani Þðgi ðani þ d; ani Þ  gi ðani ; ani ÞÞ;
+so gi ðani þ d; ani Þogi ðani ; ani Þ: By own-action quasiconcavity, gi ðani ; ani Þ exceeds
+gi ðai ; ani Þ for any ai > ani : An analogous argument shows the same for any ai oani : A
+similar proof applies in the case of ﬁnite actions. &
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+40
+
+Proof of Theorem 4. For each iAI; let gi ðai ; ai Þ be a payoff function with the
+%
+property that action 0 is strictly dominant. Fix some yn AR and consider the global
+n
+game G nn ðn; y Þ with uniform prior, some noise structure ðfi ÞiAI ; and payoff
+functions
+(
+ui ðai ; ai ; xi Þ ¼
+%
+
+ui ðai ; ai ; yn Þ
+gi ðai ; ai Þ
+%
+
+if xi Xyn ;
+if xi oyn :
+
+Suppose that action proﬁle an ¼ ðani ÞiAI is an LP-maximizer of the complete
+information game g ¼ ðui ð ; yn ÞÞiAI and that this game is own-action quasiconcave.
+For now, ﬁx n ¼ 1: We will be interested in left continuous, weakly increasing
+strategy proﬁles in which no player i ever chooses an action above ani : (The same
+argument works for right-continuous strategies.) Any such strategy can be
+represented by a function zi : ½0; ani -R where zi ðai Þ is the highest signal at which
+player i plays an action less than or equal to ai :
+We wish to deﬁne the unique left continuous best response to strategy proﬁle z in
+the game G nn ðn; yn Þ: Note that the assumption that an is an LP-maximizer (and thus,
+by Lemma 1, a strict Nash equilibrium) and the strategic complementarities
+assumption imply that the best response to z will itself involve each player i choosing
+an action less than or equal to ani : We write bðzÞ ¼ ðbi ðzÞÞiAI for this best response.
+To give an explicit expression for bi ðzÞ; ﬁrst write szi i for player i’s strategy written
+in standard notation, i.e., szi i ðxi Þ ¼ min fai : zi ðai ÞXxi g: (It is correct to take the min
+because of left continuity.) For any player i; let ðxi ; xi Þ denote the vector of signal
+realizations. Let Xi be the space of all signal vectors xi : Write szii ðxi Þ ¼
+z
+
+z
+
+ðsj j ðxj ÞÞjai and sz ðxÞ ¼ ðsj j ðxj ÞÞjAI :
+If player i observes xi oyn ; action 0 is dominant. If she observes xi Xyn ;
+her payoff to choosing action ai ; if she believes her opponents are following
+strategies zi ; is
+Z
+
+Z
+yAR
+
+xi AXi
+
+gi ððai ; szii ðxi ÞÞ; xi Þ
+
+Y
+
+!
+fj ðxj  yÞ dxi dy:
+
+jai
+
+Thus an action less than or equal to ai is a best response if
+(
+
+(Z
+
+Z
+gi
+
+min arg max
+a0i AAi
+
+Y
+jai
+
+yAR
+
+!
+
+xi AXi
+
+)
+
+ 
+
+a0i ; szii ðxi Þ ; xi
+)
+
+fj ðxj  yÞ dxi dy pai :
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+41
+
+Recall that zi ðai Þ is the largest value of xi at which an action less than or equal to ai is
+played under i’s strategy. Thus bi ðzÞðai Þ is the maximum of yn and
+(
+
+(
+
+Z
+
+Z
+
+max xi : min arg max
+a0i AAi
+
+Y
+
+yAR
+
+!
+
+)
+
+xi AXi
+
+gi ðða0i ; szii ðxi ÞÞ; xi Þ
+
+)
+
+fj ðxj  yÞ dxi dy pai :
+
+jai
+
+Now deﬁne39
+V ðzÞ ¼
+
+Z
+
+Z an
+
+Z an
+I
+
+1
+
+?
+y
+
+a1 ¼0
+
+ðvðaÞ  vðan ÞÞ dFI ðzI ðaI Þ  yÞ?dF1 ðz1 ða1 Þ  yÞ dy:
+
+aI ¼0
+
+Intuitively, V ðzÞ is the expected value of vðaÞ  vðan Þ; conditional on yXyn  12: The
+expectation is taken with respect to an improper prior, so this expression will only be
+well deﬁned if each player plays ani for high enough signals; i.e., if zi ðani Þ is ﬁnite for
+all i: Otherwise V ðzÞ will equal N; since vðaÞovðan Þ for all aaan :
+Now consider the sequence z0 ; z1 ; y; where z0i ðai Þ ¼ yn for all i and ai A½0; ani ; and
+zn ¼ bðzn1 Þ for all n > 0: An induction argument shows that this is an increasing
+sequence: zni ðai ÞXzn1
+ðai Þ for all n; i; and ai : Moreover, V ðz0 Þ is ﬁnite and negative.
+i
+We will show that V ðzn Þ is increasing in n: Thus, V ðlimn-N zn Þa  N: This implies
+that in the limiting strategy proﬁle limn-N zn ; each player i plays ani if her signal is
+high enough.
+Let z ¼ zn for any nX0: Deﬁne dF i ðai jyÞ to be
+dFI ðzI ðaI Þ  yÞ ?dFiþ1 ðziþ1 ðaiþ1 Þ  yÞ dFi1 ðbðzÞi1 ðai1 Þ  yÞ
+? dF1 ðbðzÞ1 ða1 Þ  yÞ:
+This is the probability of the action proﬁle ai at the state y if players i  1 and under
+play according to bðzÞ while players i þ 1 and above play according to z: We separate
+39
+
+In order to accommodate action sets that can include both intervals and points, the integrals are
+S
+interpreted as follows. Let Ai ¼ M
+m¼1 ½bm ; cm where MX1 can be inﬁnity and the intervals are disjoint.
+R an
+(Isolated points are represented by setting bm ¼ cm :) We deﬁne aii¼0 f ðai Þ dgðai Þ to equal
+M
+X
+
+Z cm
+
+m¼1
+
+ai ¼bm
+
+f ðai Þ dgðai Þ þ
+
+M
+1
+X
+
+f ðbmþ1 Þ½gðbmþ1 Þ  gðcm Þ :
+
+m¼1
+
+One can verify that the standard integration by parts formula holds using this deﬁnition:
+Z an
+Z an
+i
+i
+f ðai Þ dgðai Þ ¼ f ðani Þgðani Þ  f ð0Þgð0Þ 
+gðai Þ df ðai Þ:
+ai ¼0
+
+ai ¼0
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+42
+
+V ðbðzÞÞ  V ðzÞ into a telescopic sum and then integrate each summand by parts:
+Z (Z a n
+I Z
+X
+i
+V ðbðzÞÞ  V ðzÞ ¼
+ðvðai ; ai Þ  vðan ÞÞ d
+i¼1
+
+"
+
+ai ¼0
+
+ai
+
+y
+
+#)
+Fi ðbðzÞi ðai Þ  yÞ
+dF i ðai jyÞ dy
+Fi ðzi ðai Þ  yÞ
+Z Z (
+I
+X
+ðvðai ; ai Þ  vðan ÞÞ
+¼
+i¼1
+
+"
+
+
+
+y
+
+ai
+
+#)ani
+
+
+ dF i ðai jyÞdy
+
+Fi ðzi ðai Þ  yÞ
+a ¼0
+(Z n " i
+#
+Z
+Z
+I
+a
+X
+i
+Fi ðbðzÞi ðai Þ  yÞ
+Fi ðbðzÞi ðai Þ  yÞ
+
+ai ¼0
+
+ai
+
+y
+
+i¼1
+
+Fi ðzi ðai Þ  yÞ
+)
+
+ðvðai ; ai Þ  vðai  dai ; ai ÞÞ
+
+dF i ðai jyÞ dy:
+
+Since no action above ani is played in either strategy proﬁle, bðzÞi ðani Þ ¼ zi ðani Þ ¼ N;
+so
+(
+
+"
+
+#)ani
+
+
+ðvðai ; ai Þ  vða ÞÞ
+
+
+Fi ðzi ðai Þ  yÞ
+ai ¼0
+"
+#
+Fi ðbðzÞi ðai Þ  yÞ
+n
+¼ ðvð0; ai Þ  vða ÞÞ
+X0
+Fi ðzi ðai Þ  yÞ
+n
+
+Fi ðbðzÞi ðai Þ  yÞ
+
+since an maximizes v and since bðzÞi ð0ÞXzi ð0Þ: Thus,
+V ðbðzÞÞ  V ðzÞX 
+
+I
+X
+i¼1
+
+Z Z
+y
+
+ai
+
+(Z
+
+ani
+
+ai ¼0
+
+"
+
+Fi ðbðzÞi ðai Þ  yÞ
+Fi ðzi ðai Þ  yÞ
+)
+
+½vðai ; ai Þ  vðai  dai ; ai Þ
+
+#
+
+dF i ðai jyÞ dy:
+
+But for any ai and y; Fi ðbðzÞi ðai Þ  yÞ  Fi ðzi ðai Þ  yÞ is just the probability that a
+signal is observed between zi ðai Þ and bðzÞi ðai Þ—the interval where under z player i
+plays more than ai and her best response to z is to play something no greater than ai :
+If instead players 1 through i  1 play according to bðzÞ; player i’s best response in
+this interval is still no greater than ai by strategic complementarities. Therefore, by
+own-action quasiconcavity, player i’s payoff, conditional on getting a signal in this
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+43
+
+interval, must be weakly decreasing "in her own action:# for a0i AAi ; a0i pai ;
+Z Z
+Fi ðbðzÞi ðai Þ  yÞ
+½gi ðai ; ai Þ  gi ða0i ; ai Þ
+dF i ðai jyÞ dyp0:
+Fi ðzi ðai Þ  yÞ
+y
+ai
+Since ai pani ; vðai ; ai Þ  vðai  dai ; ai Þpgi ðai ; ai Þ  gi ðai  dai ; ai Þ by the LPmaximizer condition. Thus,
+V ðbðzÞÞ  V ðzÞ
+I
+X Z Z Z ani
+X
+½vðai ; ai Þ  vðai  dai ; ai Þ
+i¼1
+
+"
+
+X
+
+y
+
+ai
+
+ai ¼0
+
+Fi ðbðzÞi ðai Þ  yÞ
+
+Fi ðzi ðai Þ  yÞ
+I
+X Z Z Z an
+i
+
+i¼1
+
+"
+
+y
+
+ai
+
+ai ¼0
+
+#
+dF i ðai jyÞ dy
+mi ðai Þ½gi ðai ; ai Þ  gi ðai  dai ; ai Þ
+
+#
+Fi ðbðzÞi ðai Þ  yÞ
+dF i ðai jyÞ dy
+Fi ðzi ðai Þ  yÞ
+
+X0
+as claimed.
+This implies that for all i and ai A½0; ani ; zni ðai Þ converges to some ﬁnite upper
+1
+bound zN
+i ðai Þ as n grows. Let ŝ be this upper bound written in standard notation
+(i.e., ŝ1i ðxi Þ ¼ min fai : zN
+i ðai ÞXxi g). This is the smallest strategy proﬁle surviving
+iterated deletion of strictly dominated strategies in G nn ð1; yn Þ; moreover, there exists
+a c > 0 such that ŝ1i ðxi Þ ¼ ani for all i and xi Xyn þ c:
+Changing n is equivalent to relabeling the game G nn ðn; yn Þ: Thus if we write ŝn for
+the unique strategy proﬁle surviving iterated deletion of strictly dominated strategies
+n
+n
+n
+in Gnn ðn; yn Þ; we have ŝn ðxi Þ ¼ ŝ1 ðxi y
+n Þ: This in turn implies that ŝi ðxi Þ ¼ ai for all
+n
+xi Xy þ nc:
+But now if sn is the essentially unique equilibrium of G n ðnÞ; we have that sn Xŝn
+(this is true because the game G n ðnÞ has everywhere higher best responses than the
+game Gnn ðn; yn Þ). So we have:
+Lemma A9. For all e > 0; there exists %n such that for all np %n; sni ðyn þ eÞXani :
+A symmetric construction gives:
+Lemma A10. For all e > 0; there exists %n such that for all np %n; sni ðyn  eÞpani :
+These two lemmas imply that if sn is the left continuous limit of sn as n-0; then
+sni ðyÞpani if yoyn and sni ðyÞXani if y > yn : By left continuity, sni ðyn Þ ¼ ani : This
+proves the theorem. &
+
+44
+
+D.M. Frankel et al. / Journal of Economic Theory 108 (2003) 1–44
+
+References
+[1] S. Athey, Single crossing properties and the existence of pure strategy equilibria in games of
+incomplete information, Econometrica 69 (2001) 861–890.
+[2] R.J. Aumann, Mixed and behavior strategies in inﬁnite extensive games, in: M. Dresher, L.S.
+Shapley, A.W. Tucker (Eds.), Advances in Game Theory, Annals of Mathematics Studies, Vol. 52,
+Princeton University Press, Princeton, NJ, 1964.
+[3] K. Burdzy, D. Frankel, A. Pauzner, Fast equilibrium selection by rational players living in a changing
+world, Econometrica 69 (2001) 163–189.
+[4] H. Carlsson, Global games and the risk dominance criterion, Working paper, University of Lund,
+1989.
+[5] H. Carlsson, E. van Damme, Global games and equilibrium selection, Econometrica 61 (1993)
+989–1018.
+[6] H. Carlsson, E. van Damme, Equilibrium selection in stag hunt games, in: K. Binmore, A. Kirman,
+A. Tani (Eds.), Frontiers of Game Theory, MIT Press, Cambridge, MA, 1993.
+[7] G. Corsetti, A. Dasgupta, S. Morris, H.S. Shin, Does one soros make a difference?: A theory of
+currency attacks with large and small traders, Working paper, 2001.
+[8] D. Frankel, Shocks and Business Cycles, Working Paper, Cornell University, 2002.
+[9] D. Frankel, A. Pauzner, Resolving indeterminacy in dynamic settings: the role of shocks, Quart. J.
+Econom. 115 (2000) 283–304.
+[10] I. Goldstein, Interdependent banking and currency crises in a model of self-fulﬁlling beliefs, Working
+paper, Tel Aviv University, 2000.
+[11] I. Goldstein, A. Pauzner, Demand deposit contracts and the probability of bank runs, Working
+paper, Tel Aviv University, 2000.
+[12] I. Goldstein, A. Pauzner, I. Goldstein, A. Pauzner, Demand deposit contracts and the probability of
+bank runs, Working paper, Tel Aviv University, 2001.
+[13] M.D. Greenberg, Advanced Engineering Mathematics, Prentice-Hall, Englewood Cliffs, NJ, 1998.
+[14] J. Harsanyi, R. Selten, A General Theory of Equilibrium Selection in Games, MIT Press, Cambridge,
+1988.
+[15] A. Kajii, S. Morris, The robustness of equilibria to incomplete information, Econometrica 65 (1997)
+1283–1309.
+[16] Y. Kim, Equilibrium selection in N-person coordination games, Games Econom. Behavior 15 (1996)
+203–227.
+[17] J. Levin, A note on global equilibrium selection in overlapping generations games, Working paper,
+Stanford University, 2001.
+[18] P. Milgrom, J. Roberts, Rationalizability, learning, and equilibrium in games with strategic
+complementarities, Econometrica 58 (1990) 1255–1277.
+[19] D. Monderer, L. Shapley, Potential games, Games Econom. Behavior 14 (1996) 124–143.
+[20] S. Morris, R. Rob, H.S. Shin, p-Dominance and belief potential, Econometrica 63 (1995) 145–157.
+[21] S. Morris, H.S. Shin, Unique equilibrium in a model of self-fulﬁlling currency attacks, Amer.
+Econom. Rev. 88 (1998) 587–597.
+[22] S. Morris, H.S. Shin, Coordination risk and the price of debt, Yale Cowles Discussion Paper No.
+1241, 1999.
+[23] S. Morris, H.S. Shin, Global games: theory and applications in: M. Dewatripont, L. Hansen, S.
+Turnoksky (Eds.), Advances in Economic Theory and Econometrics: Proceedings of the Eighth
+World Congress of the Econometric Society, Cambridge University Press, Cambridge, forthcoming.
+[24] S. Morris, T. Ui, Generalized potentials and robust sets of equilibria, Working paper, 2001.
+[25] A. Rubinstein, The electronic mail game: strategic behavior under almost common knowledge, Amer.
+Econom. Rev. 79 (1989) 385–391.
+[26] D. Topkis, Equilibrium points in nonzero-sum n-person supermodular games, SIAM J. Control
+Optim. 17 (1979) 773–787.
+[27] T. Ui, Robust equilibria of potential games, Econometrica 69 (2001) 1373–1380.
+[28] X. Vives, Nash equilibria with strategic complementarities, J. Math. Econom. 9 (1990) 305–321.
+
+

@@ -284,11 +284,12 @@ def make_figure(baseline_results: list[dict], departure_results: list[dict]):
     if departure_results:
         ddf = pd.DataFrame(departure_results)
 
-        # Aggregate across models per treatment
-        treatments = ["pure", "comm", "surveillance"]
-        treatment_colors = {"pure": C_PURE, "comm": C_COMM, "surveillance": C_SURV}
-        treatment_labels = {"pure": "Pure (self-check)",
-                            "comm": "Communication",
+        # Pure (self-check) residuals are ~0 by construction (in-sample
+        # logistic fit), so plotting them produces invisible bars; show only
+        # the out-of-treatment departures and note the benchmark in text.
+        treatments = ["comm", "surveillance"]
+        treatment_colors = {"comm": C_COMM, "surveillance": C_SURV}
+        treatment_labels = {"comm": "Communication",
                             "surveillance": "Surveillance"}
 
         # Group by model + treatment for a grouped bar chart
@@ -300,8 +301,8 @@ def make_figure(baseline_results: list[dict], departure_results: list[dict]):
 
         if models_with_departure:
             y_pos = np.arange(len(models_with_departure))
-            bar_h = 0.25
-            offsets = {"pure": -bar_h, "comm": 0, "surveillance": bar_h}
+            bar_h = 0.32
+            offsets = {"comm": -bar_h / 2, "surveillance": bar_h / 2}
 
             for treatment in treatments:
                 vals = []
@@ -321,24 +322,27 @@ def make_figure(baseline_results: list[dict], departure_results: list[dict]):
             ax.set_yticks(y_pos)
             ax.set_yticklabels([SHORT_NAMES.get(s, s) for s in models_with_departure],
                                fontsize=7)
-            ax.set_xlabel("Mean residual (actual $-$ predicted)")
+            ax.set_xlabel("Mean residual (actual $-$ predicted join rate)")
             ax.set_title("B. Cross-treatment departure", loc="left")
-            ax.legend(loc="lower right", fontsize=6)
+            ax.legend(loc="upper left", fontsize=6)
             ax.xaxis.grid(True, linewidth=0.3, alpha=0.28, color=C_GRID)
             ax.set_axisbelow(True)
 
-            # Annotate aggregate stats
+            # Annotate aggregate stats (in percentage points for readability)
             comm_resid = ddf[ddf["treatment"] == "comm"]["mean_residual"]
             surv_resid = ddf[ddf["treatment"] == "surveillance"]["mean_residual"]
             text_parts = []
             if len(comm_resid) > 0:
-                text_parts.append(f"Comm mean: {comm_resid.mean():+.3f}")
+                text_parts.append(
+                    f"Comm mean: {comm_resid.mean() * 100:+.1f} pp")
             if len(surv_resid) > 0:
-                text_parts.append(f"Surv mean: {surv_resid.mean():+.3f}")
-            if text_parts:
-                ax.text(0.97, 0.97, "\n".join(text_parts),
-                        transform=ax.transAxes, fontsize=6.5,
-                        va="top", ha="right", bbox=ANNOT_BOX)
+                text_parts.append(
+                    f"Surv mean: {surv_resid.mean() * 100:+.1f} pp")
+            text_parts.append("Pure self-check $\\approx$ 0 by construction")
+            # Below the legend, in the empty upper-left region
+            ax.text(0.02, 0.80, "\n".join(text_parts),
+                    transform=ax.transAxes, fontsize=6,
+                    va="top", ha="left", bbox=ANNOT_BOX)
 
     fig.align_labels()
     plt.tight_layout()

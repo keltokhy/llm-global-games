@@ -1,0 +1,1997 @@
+Information Manipulation, Coordination
+and Regime Change∗
+Chris Edmond†
+First draft: October 2003. This draft: August 2007
+
+Abstract
+This paper studies endogenous information manipulation in games where a population can
+overthrow a regime if individuals coordinate. The benchmark game has a unique equilibrium
+and in this equilibrium propaganda is effective if signals are sufficiently precise. Despite
+playing against perfectly rational individuals, a regime is able to manipulate information in
+a way that exploits heterogeneity in individual beliefs so that at equilibrium its chances of
+surviving are higher than they otherwise would be. This result is robust to alternative payoffs
+where the regime cares only for survival and to a number of alternative information structures,
+including situations where individuals have access to high-quality private information that is
+entirely uncontaminated by the regime.
+Keywords: global games, hidden actions, signal-jamming, propaganda, bias.
+JEL classifications: C72, D82, D84.
+
+In coordination games, the information available to agents is a crucial determinant of equilibrium
+outcomes. Typically, the truthfulness of that information is never in question. But when some
+players choose what information to release, that information is likely to be biased.1 The optimal
+amount of bias used by senders of information will depend on the way that receivers typically
+filter their information. In many settings, receivers find it easy to infer bias from their signals
+and information manipulation has no effect on equilibrium beliefs. In a coordination setting,
+however, the way that an individual receiver filters information will also depend on the filtering
+behavior of others. In equilibrium, senders may be able to manipulate information so as to exploit
+heterogeneity in receivers’ beliefs and thereby affect outcomes.
+This is an extensively revised version of a chapter from my UCLA dissertation. Previous versions of this paper
+circulated under the title ‘Information and the limits to autocracy’.
+†
+Department of Economics, Stern School of Business, New York University. Email: hcedmond@stern.nyu.edui.
+I would particularly like to thank Andrew Atkeson, Catherine de Fontenay, and Christian Hellwig for their encouragement and many helpful discussions. I also thank Marios Angeletos, Costas Azariadis, Heski Bar-Isaac, Ignacio
+Esponda, Stephen Morris, Alessandro Pavan, Andrea Prat, Hyun Shin, Adam Szeidl, Laura Veldkamp, Iván Werning and seminar participants at the ANU, Boston University, the University of Chicago, the Federal Reserve Bank of
+Minneapolis, La Trobe University, the London School of Economics, the University of Melbourne, MIT, Northwestern University, Oxford University, the University of Rochester, UC Irvine, University College London and UCLA
+for their comments and suggestions.
+1
+Important recent contributions to the study of endogenous information in coordination games include Angeletos,
+Hellwig, and Pavan (2006, 2007) and Angeletos and Werning (2006).
+∗
+
+1
+
+This paper studies the use of biased information to manipulate outcomes in coordination games
+of regime change.2 In these games, there are two outcomes of interest — either the preservation of
+a status quo or its overthrow.3 I show that a regime with an interest in ensuring society coordinates
+on the status quo may be able to manipulate information to achieve that outcome in equilibrium.
+Section 1 outlines the model. Individuals with an interest in preserving the status quo are
+treated as a single agent playing against a heterogeneous population of small agents. Each small
+player can take either an action that adversely affects the regime or an action that supports it.
+The actions of the small players are strategic complements. If enough people take the action that
+undermines the regime, then it is overturned. As in Morris and Shin (1998) and similar models,
+the ability of the regime to prevail is determined by a single parameter. Individuals are imperfectly
+informed about this parameter and in principle may coordinate either on overturning the regime or
+on living with the status quo. In this paper, however, the regime is endowed with the ability to take
+a costly hidden action that influences the distribution of information. In the benchmark model,
+this signal-jamming technology allows the regime to shift the mean of the distribution from which
+individuals sample so that individuals receive information that at face-value suggests the regime
+is difficult to overthrow. Rational individuals understand that their information is contaminated
+by the regime’s propaganda and evaluate their signals accordingly.
+This paper makes two contributions. I first show that this coordination game with endogenous
+information manipulation has a unique equilibrium. I then show that signal-jamming is effective
+in equilibrium when the intrinsic precision of the signal distribution is high. As signal precision
+becomes increasingly high, so does the ex ante probability of the regime surviving. This suggests
+that a regime’s propaganda apparatus will be more useful to it when individuals are receiving, from
+a technological standpoint, intrinsically high quality signals. Perhaps the information technology
+revolution may not be as threatening to autocratic regimes as is sometimes supposed.4
+Equilibrium uniqueness is proved in Section 2. A key intermediate result is that, despite the
+regime’s manipulation, in any candidate equilibrium individuals’ assessments of the probability of
+the regime being overthrown are monotonic in their signals. This makes it possible to use ‘global
+games’ arguments along the lines of Carlsson and van Damme (1993) and Morris and Shin (1998).5
+In particular, it is possible to first show that there exists a unique equilibrium when strategies are
+restricted to be monotone and then to show that this is the only equilibrium which survives the
+iterative elimination of strictly dominated strategies.
+Cheli and Della-Posta (2002) study a coordination game where individuals’ signals are exogenously biased. By
+contrast, this paper studies an equilibrium problem where the amount of bias introduced by the regime has to be
+compatible with rational beliefs on the part of information receivers.
+3
+The underlying coordination game employed in this paper has been used for many applications, including
+currency and debt crises, bank runs, and political unrest. See, for example, Obstfeld (1986, 1996), Morris and Shin
+(1998, 2003, 2004), Chamley (1999) and Atkeson (2000). See also Cooper (1999) and Chamley (2004, 237-267) for
+textbook overviews with many additional applications.
+4
+See Kalathil and Boas (2003) for a discussion of the conventional wisdom on the role of information in undermining authoritarian regimes. They argue that the revolution in communication technologies like the internet is
+not likely to help in overthrowing such regimes.
+5
+Carlsson and van Damme (1993) introduced the term ‘global game’ to describe coordination games of incomplete
+information.
+2
+
+2
+
+The effectiveness of signal-jamming when signals are precise is proved in Section 3. In equilibrium regimes are overthrown if their type is below an endogenous threshold. If a regime manipulates
+it generates a signal distribution with an artificially high mean that is strictly greater than the
+threshold. So if signals are precise, in this situation many individuals have signals suggesting the
+regime will survive. And consequently it is rational for any individual, when contemplating the
+beliefs of others, to assign relatively high probability to the event that they mostly have signals
+near this artificially high mean. At the margin this makes any individual less likely to attack and so
+the aggregate mass who do is relatively low. This in turn makes it more likely that the regime does
+in fact manipulate and create an artificially high signal mean thereby validating the original beliefs. Two things are critical to this argument. First, different types of regimes must take different
+actions so that there is uncertainty about the amount by which individuals should discount their
+signals: if all regimes took the same action, it would be easy to undo. Second, individuals must
+be imperfectly coordinated. If individuals were perfectly coordinated and information precise, all
+regimes that could be overthrown would be overthrown.
+The equilibrium uniqueness result contrasts with Angeletos, Hellwig, and Pavan (2006), who
+were the first to emphasize endogenous information in global coordination games. Angeletos, Hellwig, and Pavan (2006) have in mind situations where a regime’s policy choice (e.g., a central bank’s
+interest rate in anticipation of a speculative attack) provides an additional signal about the regime’s
+type. Since individual strategies may or may not condition on the signal, this gives rise to both
+pooling and separating equilibria. In this paper, however, individuals’ information is contaminated
+by a behind-the-scenes choice of the regime (e.g., pressure on a recalcitrant editor or general) that
+is commonly known to be possible but cannot be observed. Individuals have to disentangle the
+truth from the effects of the hidden action. Signal-jamming games like this typically have fewer
+equilibria than their signaling counterparts. For example, in Angeletos, Hellwig, and Pavan (2006)
+a pooling equilibrium occurs if all individuals believe that the regime will not intervene, for then
+the regime has no incentive to make a costly intervention. The regime is ‘trapped’ in an inactive
+policy equilibrium where the regime merely validates the belief that it will not intervene. But
+in this paper if all individuals believe that the regime will not take any action, the regime has a
+powerful incentive to manipulate information so there can be no pooling equilibrium.
+Traditional theories of strategic information transmission, such as Crawford and Sobel (1982)
+and Matthews and Mirman (1983), focus on a sole information receiver. In this paper there is
+instead a large cross-section of signal receivers. Since the incentives of the sender to manipulate
+depend on the aggregate behavior of the receivers and since individual actions are strategic complements, implicitly, each individual solves a filtering problem that depends simultaneously on the
+solutions to the filtering problems of all other receivers.
+Section 4 shows that results are robust to alternative payoffs for the regime that give it no direct
+incentive to manipulate. Section 5 extends the model to cover alternative information structures,
+including situations where some information is uncontaminated by the regime’s manipulation and
+an alternate technology for the regime where its actions directly affect signal precision.
+
+3
+
+1
+
+Model of information manipulation and regime change
+
+There is a unit mass of citizens, indexed by i ∈ [0, 1]. Citizens are ex ante identical. After drawing
+a signal (discussed below) each citizen decides whether to subvert the regime, si = 1, or not,
+R1
+si = 0. The population mass of subversives is S := 0 si di. If a citizen subverts, she pays a fixed
+opportunity cost p > 0.
+The citizens face a regime indexed by a hidden state variable, denoted θ, that is the regime’s
+private information. The type θ is normalized such that the regime is overthrown if and only if
+θ < S. The payoff to a citizen is
+u(si , S, θ) = si (1{θ < S} − p)
+
+(1)
+
+where 1 denotes the indicator function. Individual actions si and the population aggregate S are
+strategic complements: the more citizens subvert the regime, the more likely it is that the regime is
+overthrown and so the more likely it is that any individual citizen’s best action is to also subvert.
+After learning θ, a regime may take a hidden action a ≥ 0 that incurs a convex cost C(a)
+where C(0) = 0, C 0 (a) > 0 for a > 0 and C 00 (a) ≥ 0 for all a. I begin by assuming that the regime
+obtains a benefit θ − S from remaining in power. The regime is not just concerned with remaining
+in power but also wants to keep S small when it does survive. If θ < S, the regime is overthrown
+and obtains an outside option with value normalized to zero. The payoff to a regime is therefore
+B(S, θ) − C(a)
+
+(2)
+
+where B(S, θ) := 1{θ ≥ S}(θ − S).
+
+nature
+selects θ
+
+regime
+takes a(θ)
+
+citizens observe xi
+form posteriors π(θ|xi )
+take actions s(xi )
+
+ aggregate mass S =
+s(xi )f (xi |θ, a(θ))dxi
+
+if θ < S regime overthrown
+if θ ≥ S regime survives
+
+payoﬀs
+
+Figure 1: The timing of the model.
+Following a regime’s hidden action a, each citizen simultaneously draws an idiosyncratic signal
+xi := θ+a+εi where the noise εi is independent of θ and is IID normally6 distributed with mean zero
+√
+√
+and precision α (that is, variance α−1 ). So the density of signals is f (xi |θ, a) := αφ( α(xi −θ−a))
+where φ denotes the standard normal density. I begin by assuming that citizens have common
+priors for θ and that this prior is the (improper) uniform distribution over the whole real line.7
+The realization of the signal xi is informative for both the type of the regime θ and the hidden
+action a. This action is itself informative about the regime’s type and rational citizens take this
+account when forming their beliefs. In equilibrium, the action taken by a regime and the beliefs
+of citizens will need to be mutually consistent. The timing of the model is shown in Figure 1.
+Normality is assumed for the sake of exposition. The critical assumption is that the support of εi is unbounded.
+In previous drafts of this paper I dealt with more general continuous distributions. Details are available on request.
+7
+I discuss informative priors and heterogeneous priors in Section 5 below.
+6
+
+4
+
+1.1
+
+Equilibrium
+
+A symmetric perfect Bayesian equilibrium is an individual’s posterior density π(θ|xi ), individual
+subversion decision s(xi ), mass of subversives S(θ, a) and hidden actions a(θ) such that
+f (xi |θ, a(θ))
+f (xi |θ, a(θ))dθ
+−∞
+Z ∞
+
+u(si , S(θ, a(θ)), θ)π(θ|xi )dθ
+s(xi ) ∈ argmax
+si ∈{0,1}
+−∞
+Z ∞
+s(xi )f (xi |θ, a)dxi
+S(θ, a) =
+
+π(θ|xi ) = R ∞
+
+(3)
+(4)
+(5)
+
+−∞
+
+a(θ) ∈ argmax {B(S(θ, a), θ) − C(a)}
+
+(6)
+
+a≥0
+
+The first condition says that a citizen with information xi takes into account the regime’s
+manipulation a(θ). The second says that given these beliefs, s(xi ) is chosen to maximize its
+expected payoff. The third condition aggregates individual decisions to give the mass of subversives.
+The final condition says that the actions a(θ) maximize the regime’s payoff. In equilibrium, the
+regime is overthrown if R(θ) := 1{θ < S(θ, a(θ))} = 1 while the regime survives if R(θ) = 0.
+
+1.2
+
+Discussion of model
+
+Regime’s payoffs. Conditional on surviving a regime obtains benefit θ − S and so has a direct
+aversion to S. Regimes prefer to avoid a Prague Spring or a Tiananmen Square. There are two
+distinct motivations for this. First, suppressing a riot is likely to be resource costly to the regime
+and it seems natural for this cost to be increasing in the mass of rioters. Second, loosely speaking, a
+benefit θ − S provides a simple way of modeling aversion to information generated by observations
+of large S. For example, in a dynamic version of this model citizens would observe (possibly with
+noise) the mass of people who have in the past attempted to overthrow the regime. The size of
+previous attacks contains information about θ — in particular, low S is associated with high θ
+— and so by keeping S low even when it will survive this period, the regime may have another
+tool for convincing individuals not to attack.8 Section 4 below shows that the main results of this
+paper go through when payoffs are instead determined by B(S, θ) = 1{θ ≥ S}θ so that the regime
+cares only about survival.
+Absence of free-rider problems. If a citizen is almost sure the regime will be overthrown she will
+subvert and will not free-ride on others. Although this seems unappealing, a bad free-rider problem
+is simply one of many factors that might lead to a high opportunity cost p. To see this formally,
+suppose citizens get a larger expected payoff if they were actively involved in the downfall of the
+More crudely, observations of large S might be able to convince foreign powers that it would be easy to assist
+the regime’s opponents it in bringing the regime down. The θ − S specification also facilitates comparison with
+Angeletos, Hellwig, and Pavan (2006), ensuring that the information structure is the only difference.
+8
+
+5
+
+regime.9 Specifically, if the regime is overthrown a citizen gets random payoff w ∈ {w, w} with
+w < w and Pr(w = w) := µ(si ) with 0 ≤ µ(1) < µ(0) ≤ 1. That is, a citizen may free-ride but if
+they do so they face a higher probability of being caught and penalized by getting only w. Then
+if the utility cost of subverting the regime is normalized to 1 and a citizen believes the regime will
+be overthrown with probability P (xi ), she will participate if and only if
+P (xi )[w − µ(1)(w − w)] − 1 ≥ P (xi )[w − µ(0)(w − w)]
+equivalently, if and only if
+P (xi ) ≥
+
+1
+=: p
+(w − w)(µ(0) − µ(1))
+
+(7)
+
+If p ≥ 1 it can never be rational for a citizen to participate in subversion. To make the model
+interesting, then, we need:
+Assumption 1. The opportunity cost of subversion is not too high: p < 1.
+Intuitively, free-riding is less of a problem if the probability of being caught out is sufficiently
+high or if the penalty from being caught is sufficiently severe. With this assumption, free-riding is
+possible in principle but does not occur in equilibrium.
+Interpretation of hidden actions. The hidden action a ≥ 0 of the regime gives it the ability to choose
+the common component of individual beliefs and the potential to bias the information that citizens
+receive. If a > 0 citizens draw from a signal distribution that at face value suggests the regime will
+be more difficult to overthrow. This represents a situation where it is common knowledge that the
+regime is able to exert pressure on editors, force recalcitrant generals to stand on parade, etc — so
+as to depict itself as difficult to overthrow — but where it is not possible to observe that pressure
+or manipulation directly and it instead must be inferred. In Section 5 below I endow citizens with
+informative priors for θ, thereby giving individuals extra information that is independent of a.
+
+1.3
+
+Exogenous information benchmarks
+
+Two important special cases of the model are when: (i) the regime’s type is common knowledge, or
+(ii) hidden actions are prohibitively expensive. In each case, citizens have exogenous information.
+If θ is common knowledge, costly hidden actions are pointless and a(θ) = 0 all θ. The model
+reduces to the coordination game used by Obstfeld (1986, 1996) to discuss self-fulfilling currency
+crises. If θ < 0, any crowd S ≥ 0 can overthrow the regime. It is optimal for any individual to
+subvert, all do so, and the regime is overthrown. If θ ≥ 1, no crowd can overthrow the regime. It
+is optimal for any individual to not riot, none do, and the regime survives. If θ ∈ [0, 1), the regime
+Perhaps it is more likely that a citizen will secure an influential position in the new regime if she participated
+in the overthrow of the old regime. Or perhaps retribution is exacted on those who are thought to have let others
+take the risks in overthrowing the regime. See, respectively, Jackson (2001) and Frommer (2005) for discussion of
+the retribution exacted on collaborators after the liberation of France and Czechoslovakia from Nazi rule.
+9
+
+6
+
+is ‘fragile’ and multiple self-fulfilling equilibria can be sustained. For example, if each individual
+believes that everyone else will riot, it will be optimal for each citizen to do so and S = 1 > θ
+leads to the regime’s overthrow and the vindication of the initial expectations.
+If hidden actions are prohibitively expensive, a(θ) = 0 all θ and each citizen has private signal
+xi = θ + εi . Because each citizen has a signal of the regime’s type, expectations are no longer
+arbitrary. As discussed by Carlsson and van Damme (1993), Morris and Shin (1998) and subsequent
+literature, this introduces the possibility of pinning down a unique equilibrium outcome.10 In this
+equilibrium, strategies are threshold rules: there is a unique type θ∗ such that the regime is
+overthrown for θ < θ∗ and a unique signal x∗ such that a citizen subverts for x < x∗ .
+∗
+Proposition 1. (Morris-Shin): The unique equilibrium thresholds x∗MS , θMS
+simultaneously solve
+
+√
+∗
+− x∗MS ) = p
+(8)
+Φ α (θMS
+√
+
+∗
+∗
+∗
+Φ α (xMS − θMS ) = θMS
+(9)
+∗
+where Φ denotes the standard normal cumulative distribution. In particular, θMS
+= 1 − p independent of α.
+∗
+The first condition says that if the regime’s threshold is θMS
+, a citizen with signal xi = x∗MS will
+
+be indifferent between subverting or not. The second condition says that if the signal threshold
+∗
+will be indifferent. In the analysis below, I will say that a
+is x∗MS , a regime with type θ = θMS
+∗
+= 1 − p.
+regime’s hidden action technology is effective if in equilibrium θ∗ < θMS
+
+To understand the consequences of information sets that are a function of the regime’s manipulation, we need to study a more difficult equilibrium problem where the regime’s manipulation is
+not trivial and citizens internalize a regime’s incentives.
+
+2
+
+Unique equilibrium with hidden actions
+
+The first main result of this paper is:
+Theorem 1. There is a unique perfect Bayesian equilibrium. The equilibrium is monotone in the
+sense that there exist thresholds x∗ and θ∗ such that s(xi ) = 1 for xi < x∗ and zero otherwise while
+R(θ) = 1 for θ < θ∗ and zero otherwise.
+Details of the proof are given in Appendix A. The proof shows that (i) there is a unique equilibrium when agents’ strategies are restricted to be monotone, and (ii) that the unique monotone
+equilibrium is the only equilibrium which survives the iterative elimination of (interim) strictly
+dominated strategies.11
+This result depends on a relatively diffuse common prior. See Hellwig (2002) and Morris and Shin (2000,
+2003, 2004) for discussion of the possibility of multiple equilibria in coordination games when public information is
+sufficiently informative. Public information is introduced into the model with hidden actions in Section 5 below.
+11
+The proof strategy is similar to Carlsson and van Damme (1993) and Morris and Shin (1998) but details differ
+because of the endogenous information.
+10
+
+7
+
+The unique monotone equilibrium. Let x̂, θ̂ denote candidates for the thresholds in a monotone
+equilibrium and let a(θ|x̂) denote a candidate for the regime’s hidden actions taking x̂ as given.
+Because of the additive signals, x = θ + a + ε, a unit increase in θ and a unit increase in x perfectly
+offset each other in terms of their effect on the regime’s desired action. Given this, equilibrium
+actions will depend only on the difference12 θ − x̂ and can be written a(θ|x̂) = a(θ − x̂).
+Taking x̂ as given the mass of citizens facing the regime is
+Z x̂
+√
+f (xi |θ, a)dxi = Φ[ α(x̂ − θ − a)]
+Ŝ(θ + a) :=
+
+(10)
+
+−∞
+
+Since the regime has access to an outside option normalized to zero, its problem can be written
+V (θ) := max[0, W (θ)]
+
+(11)
+
+where W (θ) is the best payoff regime θ can get if it is not overthrown
+h
+i
+W (θ) := max θ − Ŝ(θ + a) − C(a)
+a≥0
+
+(12)
+
+Using the envelope theorem and the definition of Ŝ(θ + a) in equation (10) shows that W 0 (θ) > 1
+all θ. And since W (θ) < 0 for θ < 0 and W (1) > 0, by the intermediate value theorem there is a
+unique θ̂ ∈ [0, 1) such that W (θ̂) = 0. Using (11), the regime is overthrown if and only if θ < θ̂.
+For θ ≥ θ̂, the actions of the regime solve
+h
+i
+a(θ − x̂) ∈ argmax θ − Ŝ(θ + a) − C(a) ,
+
+θ ≥ θ̂
+
+a≥0
+
+(13)
+
+Threshold θ̂ is found from
+W (θ̂) = θ̂ − Ŝ[θ̂ + a(θ̂ − x̂)] − C[a(θ̂ − x̂)] = 0
+
+(14)
+
+Taking x̂ as given, equations (13)-(14) determine the threshold θ̂ and the hidden actions a(θ − x̂)
+that characterize the solution to the regime’s problem.
+Given the solution to the regime’s problem, a citizen with signal xi assigns probability P (θ̂, xi )
+to the regime being overthrown
+R θ̂ √ √
+αφ[ α(xi − θ)]dθ
+P (θ̂, xi ) := Pr(θ < θ̂|xi ) = R ∞ √ −∞ √
+αφ[ α(xi − θ − a(θ − x̂))]dθ
+−∞
+
+(15)
+
+where the numerator uses the fact that the regime takes no action for θ < θ̂. The most important
+properties of P : R × R → [0, 1] are:
+Lemma 1. The function P is continuous, strictly increasing in θ̂ and strictly decreasing in xi , and
+for any x̂ ∈ R satisfies
+P (θ̂, xi ) = P (θ̂ − x̂, xi − x̂)
+
+(16)
+
+Technically, the candidate action profile a(θ − x̂) also depends on θ̂, but the only reason for keeping track of this
+dependence is to demarcate the region where a = 0 from the region where a > 0. Since this is easy to remember, I
+suppress the dependence on θ̂ wherever this ought to cause no confusion.
+12
+
+8
+
+A citizen with signal xi will subvert the regime if and only if P (θ̂, xi ) ≥ p. Therefore given the
+solution to the regime’s problem as implied by (13)-(14), the signal threshold x̂ solves
+P (θ̂, x̂) = P (θ̂ − x̂, 0) = p
+
+(17)
+
+To calculate a monotone equilibrium, we first solve the decision problem in (13) for arbitrary x̂, θ̂.
+This gives a family of hidden actions a(θ − x̂) which can be used to construct the P function in
+(15). Since P is continuous and strictly increasing in θ̂ with P (−∞, 0) = 0 and P (∞, 0) = 1, there
+is a unique difference θ∗ − x∗ ∈ R such that P (θ∗ − x∗ , 0) = p. This solution can be plugged into
+(14) to obtain a unique threshold θ∗ ∈ [0, 1) so that we know both θ∗ and x∗ ∈ R separately. The
+equilibrium hidden actions are then a(θ) := a(θ − x∗ ).
+Iterative elimination of dominated strategies. We can now go on to show that there is no other
+equilibrium. From Lemma 1, there exist unique signals x < x such that
+P (0, x) = p = P (1, x)
+
+(18)
+
+Since p ∈ (0, 1) and P is continuous with P (0, ∞) = 0 and P (1, −∞) = 1 both x and x are finite.
+Any citizen with a sufficiently low signal xi < x has posterior Pr(θ < 0|xi ) > p and finds it strictly
+dominant to subvert the regime. Similarly, any citizen with a sufficiently high signal xi > x has
+posterior Pr(θ < 1|xi ) < p and finds it strictly dominant to not subvert the regime.
+Now suppose that almost all citizens subvert the regime if and only if they have signals x < x̂.
+Then (13) and (14) determine a threshold θ̂ and hidden actions a(θ − x̂). In this situation, the
+expected gain from subverting to a citizen with signal xi is P (θ̂ − x̂, xi − x̂) − p. Since P is
+continuous and strictly decreasing in xi with P (θ̂ − x̂, −∞) = 1 and P (θ̂ − x̂, ∞) = 0 for any θ̂ − x̂,
+for each x̂ ∈ R there is a unique signal ψ(x̂) such that
+P (θ̂ − x̂, ψ(x̂) − x̂) = p
+
+(19)
+
+where θ̂ implicitly depends on x̂ from (13) and (14). When other citizens subvert the regime if
+and only if they have signals x < x̂, a citizen with xi finds it optimal to subvert the regime if and
+only if they have xi < ψ(x̂). The most important properties of ψ : R → R are:
+Lemma 2. The function ψ is continuous and has a single fixed point x∗ = ψ(x∗ ) with ψ 0 (x∗ ) ∈
+(0, 1). Moreover ψ(x̂) < x∗ for all x̂ < x∗ and ψ(x̂) > x∗ for all x̂ > x∗ .
+We can now use ψ to iteratively eliminate strictly dominated strategies.13 We build up a sequence
+{xn }∞
+n=0 by iterating on ψ starting from the initial condition x0 := x. Since ψ is continuous, has a
+unique fixed point x∗ = ψ(x∗ ) with ψ 0 (x∗ ) ∈ (0, 1) and ψ(xn ) < x∗ for all xn < x∗ , this sequence is
+strictly monotone increasing, bounded above by x∗ and converges to x∗ in the limit. Similarly, the
+sequence {xn }∞
+n=0 obtained by iterating on ψ starting from x0 := x is strictly monotone decreasing,
+bounded below by x∗ and converges to x∗ in the limit.
+Given the properties of ψ as listed in Lemma 2, the remaining arguments are standard in the literature [Morris
+and Shin (1998, 2003) or for a textbook discussion Chamley (2004)]. They are outlined here for completeness.
+13
+
+9
+
+Intuitively, these sequences represent the elimination of strictly dominated strategies ‘from
+below’ and ‘from above’. For example, even if no-one else subverts the regime, a citizen with
+signal xi < x1 = ψ(x0 ) will find it optimal to subvert the regime. Therefore all citizens with
+signals x < x1 have s(x) = 1. But if so, all citizens with signals less than x2 = ψ(x1 ) also find it
+optimal to subvert the regime. And so on. After n iterations, the only candidates for a citizen’s
+equilibrium strategy all have the property that s(xi ) = 1 for xi < xn and similarly s(xi ) = 0 for
+xi > xn with s(xi ) arbitrary for xi ∈ [xn , xn ]. In the limit as n → ∞, the only strategy that
+survives the elimination of strictly dominated strategies is the one with s(xi ) = 1 for xi < x∗ and
+s(xi ) = 0 otherwise. In short, the unique monotone equilibrium is the only equilibrium.
+
+2.1
+
+Discussion
+
+Signaling vs. signal-jamming. Theorem 1 contrasts with Angeletos, Hellwig, and Pavan (2006),
+who were the first to emphasize endogenous information in a global games context. In their
+model, individuals get one noisy observation of θ plus one observation of a signal a chosen at
+cost C(a) by the regime which may also be informative for θ. Individual strategies s(xi , a) may
+condition on a. In this signaling game, there is typically an uninformative pooling equilibrium and
+many separating equilibria. For example, if each individual expects no manipulation, individual
+strategies and hence the aggregate mass S will be independent of a. Given this, the regime has no
+incentive to manipulate and so validates the original expectation.
+In this paper, individuals get one noisy observation of the sum θ + a and so cannot condition
+their strategies on a. Loosely speaking, signal-jamming games like this typically have fewer equilibria than the corresponding signaling game because there is less freedom to specify the signal
+receiver’s beliefs about θ. For example, in this paper the impossibility of conditioning on a almost
+immediately rules out the existence of a perfectly pooled equilibrium: to see why, suppose that all
+individuals believe that no manipulation takes place. The best payoff a regime can get if it is not
+overthrown W (θ) is strictly increasing in θ and there is a unique θ̂ ∈ [0, 1) such that the regime is
+overthrown for all θ < θ̂ [as in equation (12) above]. Each regime θ ≥ θ̂ will have an incentive to
+take an action a(θ) ≥ 0 (strictly positive if C 0 (0) is not too large). If so, rational individuals will
+not believe that no manipulation takes place and there cannot be a pooling equilibrium.
+Apart from questions of equilibrium uniqueness, the presence of a signal-jamming technology
+also raises the issue of whether the signal sender, the regime, is effective in its goal of deterring
+citizens from participating. This parallels the debate in the industrial organization literature on
+limit pricing and entry deterrence. In Milgrom and Roberts (1982) an incumbent firm may price
+below its static monopoly price to signal that it has low costs in the hope of deterring entry. This
+game has a pooling equilibrium and many separating equilibria where the incumbent’s price is
+indeed below its monopoly price but where limit pricing is ineffective in that a rational entrant
+correctly infers the incumbent’s costs from its price and so enters exactly when it would if the
+incumbent’s costs were observable. By contrast, Matthews and Mirman (1983) study a signaljamming problem where the entrant observes the incumbent’s price with noise. They show there is
+10
+
+often a unique equilibrium and that it exhibits both limit pricing and successful entry deterrence.14
+Imperfectly coordinated signal receivers. In traditional models of strategic information transmission like Crawford and Sobel (1982) and Matthews and Mirman (1983) there is one sender and
+one receiver. But in this paper and in Angeletos, Hellwig, and Pavan (2006) there is a large
+cross-section of signal receivers. Since the incentives of the sender to manipulate depend on the
+aggregate behavior of the receivers and since individual actions are strategic complements, implicitly, each individual receiver’s filtering problem depends simultaneously on the solution to the
+filtering problem of all other receivers. If some citizens believe the regime is manipulating, they
+will conclude that the regime will survive (since only regimes with θ ≥ θ∗ actively manipulate)
+and will not subvert. Because of the strategic complementarity, this will make other individuals
+less likely to subvert.
+That receivers are imperfectly coordinated gives rise to effects absent from the traditional
+one sender/one receiver game. As discussed in Section 3.3 below, when precision is very high
+and citizens are imperfectly coordinated, signal-jamming is maximally effective: as the precision
+α → ∞, all the fragile regimes with θ ∈ [0, 1) survive. But if instead citizens are perfectly
+coordinated then all the regimes with θ ∈ [0, 1) are overthrown.15
+
+3
+
+Equilibrium information manipulation
+
+The second main result of this paper is that the regime’s signal-jamming technology becomes
+more effective as the precision α increases. Section 3.1 prepares the ground by characterizing
+equilibrium hidden actions. Section 3.2 and Section 3.3 show that signal-jamming can be effective
+in equilibrium even when the regime is playing against rational citizens who internalize the regime’s
+incentives. To give intuition for this, I first use a simple example with constant marginal costs
+before turning to more general convex costs. Section 3.4 characterizes the equilibrium bias a regime
+injects into individual beliefs.
+Terminology. Throughout this section I draw a distinction between whether signal-jamming occurs
+in equilibrium (when a(θ) > 0 for some θ) and whether it is effective. I measure the effectiveness of
+signal-jamming by its ability to reduce the regime’s threshold θ∗ relative to the Morris-Shin level
+∗
+of θMS
+= 1 − p (as in Proposition 1). A lower θ∗ increases the regime’s ex ante survival probability
+
+by making it more likely that nature draws a θ ≥ θ∗ . For high enough α the regime has θ∗ < 1 − p
+so that endowing a regime with a signal-jamming technology allows it to survive in more states
+than it would in the Morris-Shin world.
+I say that the regime benefits from lower θ∗ even though this does not necessarily increase the
+regime’s payoff. In principle, it might be the case that lower θ∗ is achieved through large, costly
+See Wilson (1992), Riley (2001, 455-459) and Tirole (1988, 364-374) for further discussion.
+∗
+Similarly in Angeletos, Hellwig, and Pavan (2006) if agents cannot coordinate θ∗ can be any θ ∈ (0, θMS
+] where
+∗
+θMS = 1 − p < 1, but if agents can coordinate then as α → ∞ regime change occurs for all θ < 1.
+14
+15
+
+11
+
+actions that give the regime a lower payoff than they would achieve in the Morris-Shin world. But
+it turns out that as precision α → ∞ and θ∗ falls, hidden actions also become small so that the
+fall in θ∗ represents a genuine increase in payoffs, at least in the limit.
+
+3.1
+
+Regime’s hidden actions
+
+In equilibrium, hidden actions a(θ) are characterized by the first order necessary condition16
+C 0 (a) =
+
+√
+
+√
+αφ[ α(x∗ − θ − a)],
+
+θ ≥ θ∗
+
+(20)
+
+The marginal benefit of an action is the associated reduction in the mass of subversives and at an
+interior solution this is equated to C 0 (a). For signal-jamming to occur (meaning a(θ) > 0 for at
+least some θ), the cost function either has to be either (i) strictly convex, or (ii) if marginal costs
+√
+are constant, C 0 (a) = c all a, then the level of c cannot be ‘too high’: c < αφ(0) =: c. If either of
+these conditions is satisfied, then actions are zero for all θ < θ∗ before jumping up discontinuously
+to a positive value at the threshold θ∗ . As the fundamentals of the regime become strong, costly
+actions taken to generate a favorable signal distribution begin to encounter diminishing returns
+and the action profile dies to zero. Figure 2 illustrates.
+
+action, a(θ)
+
+0.4
+0.3
+strictly convex costs
+0.2
+0.1
+0
+−6
+
+−4
+
+−2
+
+0
+
+2
+
+4
+
+6
+
+8
+
+10
+
+12
+
+10
+
+12
+
+action, a(θ)
+
+4
+3
+2
+
+constant marginal costs
+
+1
+0
+−6
+
+−4
+
+−2
+
+0
+
+2
+4
+regime type, θ
+
+6
+
+8
+
+Figure 2: Equilibrium hidden actions a(θ).
+Even if some regimes manipulate information in equilibrium, it is not necessarily the case
+that the existence of the signal-jamming technology is to the regime’s benefit. To understand
+when a regime does benefit from the signal-jamming technology, I first specialize to the case of
+constant marginal costs. This example allows for explicit calculations showing that signal-jamming
+is effective when the signal precision α is sufficiently high.
+The first order condition (20) for a(θ) > 0 may have zero, one or two solutions. In the event of two solutions,
+only the higher solution satisfies the second order condition.
+16
+
+12
+
+3.2
+
+Signal-jamming example: constant marginal costs
+
+√
+Let C(a) := ca for some constant c ∈ (0, c) where c := αφ(0) so that a(θ) > 0 for some θ. Then
+manipulating equation (20) shows that interior solutions to the regime’s problem are given by
+a(θ) = x∗ + γ − θ,
+
+θ ∈ [θ∗ , θ∗∗ )
+
+(21)
+
+where θ∗∗ := x∗ + γ and where
+s
+√
+
+2
+αφ(0)
+γ :=
+log
+>0
+α
+c
+
+(22)
+
+In this case, the signal-jamming is particularly acute. All regimes that manipulate information
+pool on the same distribution of signals. Citizens receive signals xi = x∗ + γ + εi that are locally
+completely uninformative about θ.
+More precise information makes signal-jamming effective. In the absence of manipulation, higher
+precision α makes signals more tightly clustered around the true θ? Does this kind help citizens
+overthrow fragile regimes θ ∈ [0, 1) that survive only because of imperfect coordination? In the
+∗
+Morris-Shin case, the answer is ‘no’: the equilibrium threshold θMS
+= 1 − p is invariant to the
+
+precision of the private information.17 With endogenous information manipulation matters are
+even worse for the citizens: a regime’s signal-jamming is more effective for high values of α than
+for low values.
+To see this formally, use (21) and rearrange (14) and (17) to get
+√
+Φ[ α(θα∗ − x∗α )] =
+
+
+√
+p  ∗
+c(xα − θα∗ + γα ) + Φ(− αγα )
+1−p
+
+(23)
+
+and
+√
+θα∗ = c(x∗α − θα∗ + γα ) + Φ(− αγα )
+
+(24)
+
+where subscript α acknowledges dependence on the signal precision. For each α > 0, these two
+equations uniquely determine x∗α , θα∗ [solve (23) for the unique difference θα∗ − x∗α and then plug
+into (24) to get θα∗ ]. The equilibrium mass of subversives that makes the regime indifferent is
+
+√
+
+√
+√
+αφ(0)
+∗
+Sα := Φ(− αγα ) = Φ − 2 log
+(25)
+c
+The mass Sα∗ is strictly decreasing in α and Sα∗ → 0+ as α → ∞. High α helps the regime engineer
+a small mass of subversives. In turn, this means that as α → ∞ all regimes with θ ≥ 0 will survive.
+To see this note for large α solutions to equation (23) are approximately the same as solutions to
+
+1{θα∗ − x∗α ≥ 0} = −
+
+p
+c(θα∗ − x∗α )
+1−p
+
+(26)
+
+See Proposition 1 for more discussion. The invariance of the state threshold to the signal precision is an artifact
+of the assumption of a diffuse prior for θ. I test the robustness of my comparative statics results to informative
+priors in Section 5 below.
+17
+
+13
+
+The only solution to equation (26) is θα∗ − x∗α = 0. So as α → ∞, solutions to equation (23)
+approach zero too. From equation (24) we now know that θα∗ → 0+ . Therefore, the signaljamming technology is effective when the precision α is large enough. For large α the regime’s
+∗
+threshold θα∗ is less than the Morris-Shin level of θMS
+= 1 − p and the regime’s survival probability
+
+is correspondingly higher.
+Intuition for the result. Why does a higher α help signal-jamming regimes? If a regime manipulates,
+then from (21), it generates a signal distribution with an artificially high mean that is strictly
+greater than the threshold, x∗ + γ = θ∗∗ > θ∗ . So if signals are precise, in this situation many
+individuals have signals suggesting the regime will survive. And consequently it is rational for any
+individual, when contemplating the beliefs of others, to assign relatively high probability to the
+event that they mostly have signals near this artificially high mean θ∗∗ > θ∗ . At the margin this
+makes any individual less likely to attack and so the aggregate mass S who do is relatively low.
+This in turn makes it more likely that the regime does in fact manipulate and create an artificially
+high signal mean thereby validating the original beliefs. Two things are critical to this argument.
+First, different types of regimes must take different actions so that there is uncertainty about the
+amount by which individuals should discount signals: if all regimes took the same action, it would
+be easy to undo. And second, as discussed below, individuals must be imperfectly coordinated.
+From a technological standpoint, signals may be intrinsically precise (of high quality). But
+this does not necessarily translate into reduced posterior uncertainty for individuals. The direct
+effect of higher α is to reduce posterior uncertainty, but there is also an indirect effect through the
+regime’s hidden actions. Suppose the regime’s policy was linear, a(θ) = a0 (α) + a1 (α)θ for some
+coefficients a0 (α), a1 (α) (this can’t be true in equilibrium, but it’s instructive nonetheless). If so,
+citizens would have normal posteriors with precision α[1+a1 (α)]2 . Then if α → ∞ but a1 (α) → −1
+sufficiently fast, the signals xi have no local information about θ even when α is large. The example
+with constant marginal cost has slope coefficient exactly −1 whenever a regime manipulates and
+so in this case signals are locally uninformative about θ.
+
+3.3
+
+Signal-jamming: the general case
+
+The effectiveness of signal-jamming when α is large extends to the case of general convex costs:
+Theorem 2. As the signal precision α → ∞ the limiting equilibrium thresholds and hidden action
+profile are
+lim θα∗ = 0+ ,
+
+α→∞
+
+lim x∗α = 0+ ,
+
+α→∞
+
+and
+
+lim aα (θ) = 0+
+
+α→∞
+
+for all θ
+
+If in addition the cost of information manipulation is strictly convex, C 00 (a) > 0 all a, then as
+α → 0+ the limiting equilibrium thresholds and hidden action profile are
+lim θα∗ = 1− ,
+
+α→0+
+
+lim x∗α = +∞,
+
+α→0+
+
+and
+
+lim aα (θ) = 0+
+
+α→0+
+
+14
+
+for all θ
+
+So for high enough α the signal-jamming technology is maximally effective. Moreover, there is a
+partial converse.18 If costs are strictly convex then for low enough α the signal-jamming technology
+∗
+is ineffective in that θ∗ > θMS
+= 1 − p. If so, regimes would want to be able to credibly commit to
+not use the signal-jamming technology.
+To characterize signal-jamming in the general case, rearrange (21) to get an alternative implicit
+characterization of the hidden actions
+s
+√
+
+2
+αφ(0)
+∗
+log
+,
+a(θ) = x − θ +
+α
+C 0 [a(θ)]
+
+θ ≥ θ∗
+
+(27)
+
+which is (21) generalized to arbitrary convex costs but at the expense of losing the closed-form
+solution. By implicitly differentiating with respect to θ and rearranging, it’s possible to show
+that a0 (θ) ≥ −1 with strict equality if C 00 (a) > 0. But as α → ∞, regimes that manipulate
+have a0 (θ) → −1 so that signals are locally uninformative. Moreover, since generally a(θ∗ ) > 0,
+the signal mean for a regime that intervenes is strictly larger than θ∗ so that signal-jamming is
+effective as α becomes sufficiently large because each individual worries about a large number of
+others drawing signals that suggest the regime is not going to be overthrown.
+Numerical examples. With general cost functions the model cannot be solved analytically. Figure 3
+shows θα∗ as a function of precision α under the assumption that C(a) := 0.5a2 for three levels
+of p. The higher the individual opportunity cost p, the lower the threshold and the thresholds
+are decreasing in the signal precision. In these examples, the speed of convergence to the limit is
+faster if p is high and slower if p is low. Regimes that inhabit a world where the individual cost of
+subversion p is high may benefit most from a given increase in α.
+Interpretation. These results suggest that a regime’s less overt propaganda apparatus (pressure
+exerted on editors, generals forced to stand on parade, etc) will be more useful when individuals are
+receiving, from a technological standpoint, intrinsically high quality signals. In equilibrium signals
+may be very uninformative, but that is precisely because the regime is co-opting the technology
+to its own ends.19 A regime will want to exert a strong influence over the media when the signal
+precision is high enough.
+Role of imperfect coordination. Disaggregated information is essential to the regime’s ability to
+benefit from higher signal precision. To see this, suppose that citizens were perfectly coordinated
+and able to act as a large agent of mass one who could force regime change for all θ < 1 (as
+detailed in Appendix B). Suppose also that this mass receives one signal x with precision α that
+√
+As discussed following equation (21) if the marginal cost at zero is too large C 0 (0) > c := αφ(0), then the
+cost of information manipulation is so high that the model reduces to the standard Morris-Shin game. When we
+take α → ∞ this bound does not matter. When we take α → 0+ this bound will be violated. Consequently, the
+second part of Theorem 2 deals only with the case of strictly convex costs.
+19
+A clear example of a regime co-opting new technologies for propaganda purposes is the sponsored diffusion of
+the cheap Volksempfänger radio set in 1930s Germany. By 1939, 70% of households owned a set — the highest
+proportion in the world at the time (Zeman, 1973, 34-62).
+18
+
+15
+
+1
+p = 0.25
+p = 0.50
+p = 0.75
+
+0.9
+0.8
+
+threshold θ*
+
+0.7
+0.6
+0.5
+
+solid line means benchmark specification,
+dashed line means regime cares only for survival
+
+0.4
+0.3
+0.2
+0.1
+0
+0
+
+50
+
+100
+signal precision, α
+
+150
+
+200
+
+∗
+= 1 − p all α. With information manipulation,
+Figure 3: In the Morris-Shin game, thresholds are θMS
++
+∗
+large α implies θα → 0 , so in the limit all ‘fragile’ regimes with θ ∈ [0, 1) survive. Solid lines show
+the benchmark specification while dashed lines show the alternative specification where the regime
+cares only about survival (see Section 4 below). In either case, better information increases a regime’s
+likelihood of survival. All calculations use C(a) := 0.5a2 .
+
+is contaminated by the regime’s action. As in the benchmark model, for high precision the regime
+receives almost no benefit from taking a costly action and a(θ) → 0 for all θ as α → ∞. But if
+citizens are coordinated, they then know that x → θ and so attack if and only if x = θ < 1. If
+citizens are perfectly coordinated, all fragile regimes with θ ∈ [0, 1) are wiped out. But if citizens
+are imperfectly coordinated all fragile regimes with θ ∈ [0, 1) survive.
+
+3.4
+
+Equilibrium bias
+
+Suppose that a citizen with signal xi was ‘naive’ and believed she lived in the Morris-Shin world
+where no manipulation takes place. Her posterior expectation for θ would equal xi . As a simple
+measure of any bias in equilibrium beliefs, let b(xi ) denote the difference between the rational
+expectation of θ and the naive expectation
+Z ∞
+b(xi ) :=
+θπ(θ|xi ) − xi
+
+(28)
+
+−∞
+
+If b(xi ) > 0, the regime’s propaganda has successfully induced this citizen to believe that θ is
+relatively high. Otherwise, if b(xi ) < 0, this citizen believes θ is relatively low. The average
+R
+b(xi )f (xi |θ, a(θ))dxi = −a(θ) ≤ 0, so on average the population generally discounts signals.
+Depending on α either (i) no-one is induced to believe that θ is relatively high, or (ii) there is
+disagreement about whether θ is relatively high or not. If α is sufficiently high, the distribution
+of xi is almost degenerate for any θ so the average b can only be non-positive if each b(xi ) ≤ 0
+for all xi . Alternatively, if α is sufficiently low, then the conditional expectation of θ is almost
+16
+
+independent of xi and so there exist some xi who are fooled in equilibrium, b(xi ) > 0. The top
+
+bias in signal, b(x)
+
+panel of Figure 4 illustrates.
+
+0
+low precision
+−0.05
+
+−40
+
+actual vs. expected hidden actions
+
+high precision
+
+−0.1
+−30
+
+−20
+
+−10
+0
+10
+individual signal, x
+
+20
+
+30
+
+40
+
+6
+
+8
+
+0.4
+actual action, a(θ)
+
+0.3
+0.2
+expected action of
+individual with signal x
+
+0.1
+0
+−8
+
+−6
+
+−4
+−2
+0
+2
+4
+individual signal, x, and regime type, θ
+
+Figure 4: Equilibrium bias: if signal precision is low, some citizens believe the regime’s propaganda and
+have bias b(xi ) > 0, but this does not happen if signal precision is high (top panel). While citizens on
+averageRdiscount their signals, they may not discount their signals enough. There are many θ such that
+a(θ) ≥ a(θ)π(θ|xi )dθ for every xi (bottom panel).
+Citizens on average discount their information in an attempt to filter out the regime’s manipulation. But this does not mean they discount their signals enough. The bottom panel of Figure 4
+shows the relationship between a(θ), which is the amount by which citizens should discount their
+R
+information, and a(θ)π(θ|xi )dθ, which is the amount that someone with xi does discount their
+signal. Critically, there are regimes with θ ≥ θ∗ that engage in more manipulation in equilibrium
+than is believed by any citizen. Citizens ‘under-discount’ the manipulation done by fragile regimes
+just above the threshold θ∗ . Similarly, since a(θ) = 0 for θ < θ∗ and a(θ) → 0 for large θ, most
+citizens ‘over-discount’ the manipulation done by either very weak or very strong regimes.
+The model that delivers these results is stylized and it’s natural to question its robustness. To
+investigate this, Section 4 extends the model to consider regimes that only care about survival.
+Regimes still benefit from better information. Alternative information structures are covered in
+Section 5: for some but not all of these structures, regimes benefit from better information.
+
+4
+
+Regime cares only about survival
+
+Let the payoff to a regime be B(S, θ) − C(a) where now
+B(S, θ) = 1{θ ≥ S}θ
+
+(29)
+
+so that a regime cares about S only to the extent that a high S makes it harder to survive.
+17
+
+Characterization of equilibrium. With these payoffs only fragile regimes with θ ∈ [0, 1) could possi√
+ble have an incentive to manipulate. The mass of subversives is S(θ, a) = Φ[ α(x∗ − θ − a)] and if
+an action a(θ) > 0 is chosen, it is set at just the right level to ensure that θ = S(θ, a). Specifically
+1
+a(θ) = x∗ − θ − √ Φ−1 (θ),
+α
+
+θ ∈ [θ∗ , θ∗∗ )
+
+(30)
+
+and zero otherwise. Any higher an action would incur a cost for no benefit. The upper boundary
+√
+θ∗∗ ∈ [θ∗ , 1) is the unique solution to θ∗∗ = Φ[ α(x∗ − θ∗∗ )].
+Given a signal threshold x∗ , equation (30) determines the action policy and the threshold below
+which the regime is overthrown is determined by θ∗ = C[a(θ∗ )]. This implicitly determines θ∗ as
+a function of x∗ . The action profile in (30) can then be used to calculate posterior beliefs for a
+citizen with signal xi as in equation (15) and this implicitly determines a threshold x∗ as a function
+of θ∗ . An equilibrium is calculated by simultaneously solving these two conditions for x∗ , θ∗ .
+It turns out that as, in the benchmark specification, signal-jamming is effective when α is high:
+θα∗ → 0+ as α → ∞.
+Constant marginal costs revisited. To provide intuition for this, it’s helpful to again specialize to
+the case where C(a) := ca and to consider the case when α is large. Let x∗α , θα∗ and aα (θ) denote the
+equilibrium objects in the benchmark economy and let x̂∗α , θ̂α∗ and âα (θ) denote the same objects
+in the economy where the regime cares only about survival.
+From (21) we have approximately aα (θ) = max[0, x∗α − θ] when α is large. But from (30) we
+also have approximately âα (θ) = max[0, x̂∗α − θ] when α is large. So if x∗α = x̂∗α , then aα (θ) = âα (θ)
+for each θ. The thresholds θα∗ , θ̂α∗ are determined similarly: θα∗ is determined by θα∗ = caα (θα∗ ) from
+(24) when α → ∞ and if the regime cares only about survival θ̂α∗ = câα (θ̂α∗ ) for any α. So again
+if x∗α = x̂∗α , then aα (θα∗ ) = âα (θ̂α∗ ) so that θα∗ = θ̂α∗ . But for either payoff specification for the
+regime the signal threshold is uniquely determined by the citizen indifference condition (17) once
+the hidden actions and state threshold are known. So for large α indeed x∗α = x̂∗α and the entire
+equilibrium will be approximately the same under either specification.
+To further check robustness, I have solved the model numerically with strictly convex costs
+and when α is small. Figure 3 shows θα∗ as a function of α for various levels of p. The qualitative
+similarity between the model with the benchmark payoffs and the alternative payoffs is clear even
+for relatively low α.
+
+5
+
+Alternative information structures
+
+Until now, improvements in the quality of information were modeled as increases in the precision
+α. But in the benchmark model there is only one kind of information and it is affected by the
+regime’s action. Section 5.1 allows citizens to have clean sources of information uncontaminated
+by the regime’s actions. Section 5.2 changes the technology available to the regime, giving it the
+ability to manipulate the precision of signal information rather than the signal mean.
+18
+
+5.1
+
+Uncontaminated information
+
+I first consider the case where citizens are endowed with a second private signal independent of the
+regime’s a and then turn to the case of a public signal. This second exercise connects the model to
+recent papers in the global games literature regarding the differential effects of private and public
+information on equilibrium uniqueness.
+Heterogeneous informative priors. Let citizens have two idiosyncratically noisy signals
+xi = θ + a + εx,i
+zi = θ
++ εz,i
+
+(31)
+
+where εz,i is normal noise with precision αz independent of εx,i which has precision αx . The zi
+signals can be treated as heterogeneous priors and unlike xi are not contaminated by the regime’s
+choice of a. This is equivalent to idiosyncratically noisy information on the hidden action, say
+yi = a + ξi where yi := xi − zi and ξi := εx,i − εz,i .
+A monotone equilibrium consists of hidden actions a(θ), state threshold θ∗ and signal thresholds x∗ (zi ) such that a citizen with xi , zi subverts if xi < x∗ (zi ). Unfortunately, it is difficult to
+provide an analytic characterization of the equilibrium with both contaminated and uncontaminated private information, so the discussion below merely provides some numerical examples. The
+key finding is that an exogenous increase in the precision of uncontaminated information αz may
+still reduce θ∗ . See Appendix C for details on the computations.
+0.25
+
+αz = 0.5
+
+0.15
+
+0.1
+αz = 2.5
+
+0.05
+
+0
+−6 −4 −2
+
+αz = 2.5
+
+4
+
+αz = 0.5
+
+signal threshold x(z)
+
+action, a(θ)
+
+0.2
+
+6
+
+2
+
+0
+
+−2
+
+−4
+
+0
+2
+4
+6
+regime type, θ
+
+8
+
+10 12
+
+−6
+−6
+
+−4
+−2
+0
+2
+4
+uncontaminated signal, z
+
+6
+
+Figure 5: As precision αz of uncontaminated private information increases, regimes near θ∗ take smaller
+actions a(θ) but diminishing returns do not set in at such low values of θ. Citizens give more weight to
+their uncontaminated information so x∗ (zi ) is steeper: for low zi it takes a higher contaminated xi to
+induce subversion.
+Figure 5 shows the actions a(θ) and the thresholds x∗ (zi ) for αz = αx = 0.5 and for αz = 2.5.
+As the uncontaminated information increases in quality, regimes with types larger than θ∗ take
+19
+
+0.76
+p = 0.25
+
+0.74
+0.72
+increase in precision of uncontaminated private signal
+0.7
+0.5
+
+1
+
+1.5
+
+2
+
+2.5
+
+3
+
+3.5
+
+4
+
+4.5
+
+5
+
+threshold θ*
+
+0.52
+0.5
+p = 0.50
+0.48
+0.46
+0.5
+
+1
+
+1.5
+
+2
+
+2.5
+
+3
+
+3.5
+
+4
+
+4.5
+
+5
+
+0.28
+0.26
+p = 0.75
+
+0.24
+0.22
+0.2
+0.5
+
+1
+
+1.5
+2
+2.5
+3
+3.5
+4
+precision of uncontaminated private signal, α
+
+4.5
+
+5
+
+z
+
+Figure 6: Thresholds θ∗ as function of precision of uncontaminated private information αz . In these
+examples a regime may benefit even from an increase in the quality of ‘clean’ information. Equilibrium
+thresholds are relatively insensitive to αz .
+smaller actions. But when αz is high, diminishing returns do not set in so quickly: a(θ) is noticeably
+positive for more θ. The right hand panel shows the corresponding thresholds x∗ (zi ); these are
+decreasing because if an individual gets a low zi it takes a high xi to induce subversion. As αz
+increases, x∗ (zi ) becomes steeper so that the zi are weighed more heavily and it takes, for example,
+an even bigger xi to compensate for a low zi .
+Figure 6 shows θ∗ as a function of the uncontaminated precision αz for various opportunity
+costs p. The θ∗ are lower than the Morris-Shin levels 1 − p so that signal-jamming is effective and
+are decreasing in the precision αz of the uncontaminated private information. But compared to
+the model with only contaminated information, the effects of an increase in αz on θ∗ are small.
+These examples are only suggestive of what can happen in equilibrium. But it is clear that
+introducing uncontaminated private information does not necessarily overturn the results of Section 3. A clean information revolution may still increase the survival probability of a regime.
+Common informative priors/public signal. Let citizens have a public signal
+xi = θ + a + εx,i
+z = θ
++ εz
+
+(32)
+
+The realization of z is common knowledge and again is an uncontaminated signal of θ.
+If no hidden actions are possible, the model reduces to a setup studied by Angeletos and
+Werning (2006), Hellwig (2002), Metz (2002), and Morris and Shin (2000, 2003) and others. For
+each z, a monotone equilibrium is a threshold x∗ (z) such that individuals subvert if xi < x∗ (z) and
+a θ∗ (z) such that regimes are overthrown if θ < θ∗ (z). It is well known that if public information
+is too precise relative to private information, there may be multiple monotone equilibria [see, e.g.,
+20
+
+Hellwig (2002) and Morris and Shin (2003, 2004)]. If public information is too precise, there is
+‘approximate’ common knowledge of θ. Hellwig (2002) derived a sufficient condition for a unique
+√
+√
+monotone equilibrium in a game of this kind, namely αz / αx < 2π. In the discussion that
+follows, I assume that this is satisfied.
+What happens if the precision of private information increases? As αx → ∞ for given αz (or
+as αz → 0 for given αx ) the public signal becomes uninformative and we revert to the Morris-Shin
+game with x∗ (z) → θ∗ (z) and θ∗ (z) → 1 − p independent of the realization of the public signal z.
+If the quality of private information is sufficiently good, the public information z is irrelevant.
+Metz (2002) characterized the direction from which θ∗ (z) converges to 1 − p as αx → ∞. If the
+parameters p or z are favorable to the regime, then θ∗ (z) % 1 − p but if the parameters p or z are
+unfavorable to the regime, θ∗ (z) & 1 − p. Why? Both xi and z are informative about θ, but only
+xi is informative about the role of coordination. Also, it is common knowledge that signals are
+bunched around θ and that every citizen gives weight to their idiosyncratic signal in proportion to
+its quality. Now consider an economy with high z (which suggests the regime is going to be difficult
+to beat, since high z is correlated with high θ). For moderate αx , citizens will give some weight to
+this public signal and will be less inclined to engage in subversion. So for moderate precision, θ∗ (z)
+is low and the ex ante survival probability of the regime is high. But as αx increases, the influence
+of the high realized z diminishes because everybody knows that everybody gives less weight to z
+when αx increases. In the limit, only the opportunity cost p matters and θ∗ (z) % 1 − p. I refer to
+this as the coordination effect from increasing idiosyncratic signal precision.
+With hidden actions the coordination effect is dominant for low αx and θ∗ (z) is increasing in
+αx if p or z is high but decreasing in αx if p or z is low. But the coordination effect is limited:
+when αx is large, people ignore z and the effects of further increase in αx are almost nil. Now
+recall the basic hidden action model with no public signal: the state threshold approached zero as
+the idiosyncratic signal precision became large. So we expect for high αx , the existence of a public
+signal is almost immaterial and the hidden action effect of information manipulation is dominant.
+Figure 7 suggests that this intuition is correct. When primitives are favorable to the regime,
+the coordination effect and the hidden action effect pull in opposing directions. The coordination
+effect tends to drive the equilibrium threshold up and to reduce the survival probability of the
+regime. But for high αx the coordination effect is irrelevant while the hidden action effect still
+matters. In this case, the thresholds have a ‘hump-shaped’ look and asymptote to zero. But if
+primitives are unfavorable to the regime, both the coordination and hidden action effects are in
+the regime’s favor and reinforce each other. In this case, the threshold is monotone decreasing
+and asymptotes to zero. If primitives are unfavorable to the regime, there is a large benefit from
+information manipulation (this contrasts with the benchmark model where regimes with favorable
+primitives benefitted more from a given increase in αx ).
+Uncontaminated public information does not undo the central message of the hidden actions
+∗
+model. For high αx signal-jamming is effective, θ∗ < θMS
+= 1 − p. Better private information may
+increase the regime’s ex ante survival probability. But perhaps this is not the most interesting
+
+21
+
+1
+uncontaminated public information:
+regime more likely to survive if private signal is precise enough
+
+0.9
+0.8
+
+threshold θ
+
+*
+
+0.7
+
+p = 0.25
+
+0.6
+0.5
+0.4
+0.3
+0.2
+0.1
+0
+0
+
+p = 0.75
+10
+
+20
+
+30
+
+40
+50
+60
+signal precision, α
+
+70
+
+80
+
+90
+
+100
+
+x
+
+Figure 7: Thresholds θ∗ as functions of αx . Dashed lines show the thresholds when there are no hidden
+actions. Solid lines show θ∗ when hidden actions contaminate the private information. If primitives are
+favorable (say p = 0.75), the coordination effect identified by Metz (2002) and the hidden action effect
+pull in opposite directions, giving rise to a ‘hump-shaped’ function. If primitives are unfavorable to the
+regime (say p = 0.25), both forces drive θ∗ down.
+comparative static. What if the precision of the public signal increases? Then we run into the
+√
+√
+problem of multiplicity. For given αx , the inequality αz / αx < 2π will eventually be violated and
+there are multiple monotone equilibria. In this case, we lose the ability to draw sharp conclusions.
+What if both the precisions of the public and private information increase together? Then if the
+bound on the relative precision of the public information is satisfied the analysis goes through
+√
+essentially as above. At a given level of the relative precision αz / αx , the threshold may be
+increasing or decreasing (depending on the relative strengths of the coordination effect and the
+√
+hidden action effect), but as the ratio αz / αx becomes small the hidden action effect dominates.
+
+5.2
+
+Manipulating signal precision
+
+Until now, signal manipulation entered in an additive way: xi := θ + a + εi . With this specification
+the action shifts the mean of the signal distribution without (directly) influencing the precision.
+Now let signals be xi := θ + εi with the precision of εi given by
+
+
+1
++ Φ(a) ,
+α>0
+β(a) := α
+2
+
+(33)
+
+With this specification, negative actions a < 0 are possible and we need to reinterpret the cost
+function C. When a > 0, the regime sets a precision β(a) > α and when a < 0, the regime sets a
+precision β(a) < α. Accordingly, I refer to α as the intrinsic precision of private information.
+In equilibrium, hidden actions a(θ) are characterized by the first order necessary condition
+hp
+iα
+p
+C 0 (a) = (θ − x∗ ) β(a)φ
+β(a)(θ − x∗ ) ,
+θ ≥ θ∗
+(34)
+2
+22
+
+0.05
+a > 0, regime makes
+signals more precise
+
+0.04
+0.03
+
+α = 2.50
+
+action, a(θ)
+
+0.02
+α = 0.50
+
+0.01
+0
+−0.01
+−0.02
+
+a < 0, regime makes
+signals noisier
+
+−0.03
+−0.04
+−0.05
+
+−2
+
+0
+
+2
+
+4
+6
+regime type, θ
+
+8
+
+10
+
+12
+
+Figure 8: Equilibrium hidden actions a(θ) when regime can manipulate signal precision. For intermediate θ it may be optimal for the regime to ‘muddy’ the signal, a(θ) < 0, relative to the benchmark α.
+For high θ it is optimal for the regime to clarify its strength, a(θ) > 0.
+Actions are zero for θ < θ∗ before jumping discontinuously at θ∗ . If x∗ > θ∗ , the jump is down
+but if x∗ < θ∗ the jump is up. Intuitively, if the regime has intermediate type θ ∈ [θ∗ , x∗ ) then it
+worsens the signal noise relative to α (it muddies the signal). Otherwise, if θ > x∗ then the regime
+finds it worthwhile to clarify its position of strength and so increase the signal precision relative
+to α. Figure 8 illustrates with parameters chosen so x∗ > θ∗ and the profile jumps down at θ∗ .
+Transparency. In related work Bannier and Heinemann (2005) and Heinemann and Illing (2002)
+study higher signal precision (more ‘transparency’) in the Morris-Shin game by allowing the regime
+to choose the individuals’ signal precision to minimize the probability of a successful attack. But
+in their formulation the regime’s choice of precision does not depend on its type θ and so when
+forming beliefs individuals can take this precision as exogenous. In Figure 8, a regime reduces
+transparency in this sense if θ ∈ [θ∗ , x∗ ) and increases transparency if θ > x∗ .
+
+6
+
+Final remarks
+
+The coordination games studied in this paper are deliberately stylized so as to focus attention on the
+use of information manipulation as a tool for influencing equilibrium outcomes. In keeping things
+simple, I have abstracted from issues that might play a role in the development of a more complete
+model of information, coordination and regime change. For example, information accumulation
+over time, non-simultaneous moves by groups of citizens and strategic communication between
+individuals might all be important components of a richer analysis. Moreover, for some applications
+it might be desirable to have several ‘large’ players with competing interests over equilibrium
+23
+
+outcomes (for example, if one large player has an interest in the status quo while a rival large
+player seeks its overthrow). In such situations, individuals beliefs and equilibrium outcomes would
+depend on the interactions between several hidden actions each of which is trying to push beliefs
+in a different direction.
+
+A
+
+Proofs
+
+Proof of Proposition 1. (Morris-Shin): Let x̂, θ̂ denote candidate thresholds. Posterior be√
+liefs of a citizen with xi facing threshold θ̂ are Pr(θ < θ̂|xi ) = Φ[ α(θ̂ − xi )]. A citizen with xi
+√
+will subvert if and only if Φ[ α(θ̂ − xi )] ≥ p. This probability is continuous and monotonically
+decreasing in xi , so for each θ̂ there is a unique signal for which a citizen is indifferent. Similarly, if
+√
+the regime faces a threshold rule about x̂ it faces mass Ŝ(θ) = Φ[ α(x̂−θ)]. A regime θ will not be
+√
+overthrown if and only if θ ≥ Φ[ α(x̂ − θ)]. The probability on the right hand side is continuous
+and monotonically decreasing in θ, so for each x̂ there is a unique state for which a regime is indif∗
+ferent. The Morris-Shin thresholds x∗MS , θMS
+simultaneously solve these best response conditions
+as equalities. It is straightforward to verify that there is only one solution to these equations and
+∗
+= 1 − p independent of α.
+
+that θMS
+Proof of Lemma 1. Fix a x̂ ∈ R and, for notational simplicity, write θ for the state threshold
+and x for an individual’s signal. From (15), the probability P (θ, x) that an individual with x
+assigns to the regime’s type being less that θ can be written
+P (θ, x) =
+
+A(θ − x)
+A(θ − x) + B(θ, x)
+
+(35)
+
+where
+√
+
+A(θ − x) := Φ[ α(θ − x)],
+
+Z ∞
+and B(θ, x) :=
+
+√
+
+√
+αφ[ α(x − ξ − a(ξ − x̂))]dξ
+
+(36)
+
+θ
+
+Since A0 > 0 and Bθ < 0, Pθ > 0 for all θ, x. But Px < 0 if and only if A0 /A > −Bx /B. Calculating
+the derivatives shows that this is equivalent to
+R∞ 0 √
+R∞√
+√
+√
+[
+φ
+α(x
+−
+y(ξ))]dξ
+α(x
+−
+y(ξ))φ[
+α(x − y(ξ))]dξ
+R∞ √
+= θ
+(37)
+H[ α(x − θ)] > − Rθ∞ √
+φ[ α(x − y(ξ))]dξ
+φ[ α(x − y(ξ))]dξ
+θ
+θ
+where H(w) := φ(w)/[1 − Φ(w)] > 0 denotes the standard normal hazard function for w ∈ R,
+where y(ξ) := ξ + a(ξ − x̂) is the mean of the signal distribution if ξ ≥ θ, and where the equality
+follows from a property of the standard normal density: φ0 (w) = −wφ(w) for all w. Now define a
+density ϕ(ξ|x) > 0 by
+√
+φ[ α(x − y(ξ))]
+ϕ(ξ|x) := R ∞ √
+,
+ξ ∈ [θ, ∞)
+(38)
+φ[ α(x − y(ξ 0 ))]dξ 0
+θ
+Then after a slight rearrangement of terms in (37), Px < 0 if and only if
+
+
+Z ∞
+√
+√
+√
+H[ α(x − θ)] − α(x − θ) > α θ −
+y(ξ)ϕ(ξ|x)dξ
+θ
+
+24
+
+(39)
+
+Since the hazard function satisfies H(w) > w all w ∈ R and α > 0 it is sufficient that
+Z ∞
+y(ξ)ϕ(ξ|x)dξ ≥ θ
+
+(40)
+
+θ
+
+But since y(ξ) := ξ + a(ξ − x̂), ξ ≥ θ, and a(ξ − x̂) ≥ 0, condition (40) is always satisfied.
+Therefore Px < 0. Finally, using the representation of P given in (35), we have that for P (θ, x) =
+P (θ − x̂, x − x̂) it is sufficient that B(θ, x) = B(θ − x̂, x − x̂). From (36) and using the linear change
+of variables ξ 0 := ξ − x̂ we have
+Z ∞
+√ √
+B(θ, x) =
+αφ[ α(x − x̂ − ξ 0 − a(ξ 0 ))]dξ 0 = B(θ − x̂, x − x̂)
+(41)
+θ−x̂
+
+Therefore P (θ, x) = P (θ − x̂, x − x̂) too.
+
+
+
+Proof of Lemma 2. Since P (θ, x) is continuously differentiable in x, an application of the
+implicit function theorem to (19) shows that ψ is continuous. Fixed points of ψ satisfy x∗ = ψ(x∗ ).
+Equivalently, by Lemma 1, they satisfy P [θ(x∗ ) − x∗ , 0] = p, where, in a slight abuse of notation,
+θ(x̂) is the critical state in the regime’s problem (13)-(14). Since Pθ > 0 with P (−∞, 0) = 0 and
+P (∞, 0) = 1, by the intermediate value theorem there is a unique ∆ ∈ R such that P (∆, 0) = p.
+Applying the implicit function theorem to (13)-(14) gives
+√
+√
+αφ{ α[x̂ − θ(x̂) − a(θ(x̂) − x̂)]}
+0
+√
+√
+∈ (0, 1)
+(42)
+θ (x̂) =
+1 + αφ{ α[x̂ − θ(x̂) − a(θ(x̂) − x̂)]}
+Since θ(−∞) = 0 and θ(∞) = 1, there is a unique x∗ ∈ R such that θ(x∗ ) − x∗ = ∆, hence ψ has
+a unique fixed point, the same x∗ . Now from (19), we have
+ψ 0 (x̂) = 1 +
+
+Pθ [θ(x̂), ψ(x̂)]
+[1 − θ0 (x̂)]
+Px [θ(x̂), ψ(x̂)]
+
+(43)
+
+By Lemma 1, Pθ > 0 and Px < 0 and θ0 (x̂) ∈ (0, 1) from (42). Therefore ψ 0 (x̂) < 1 for all x̂. To see
+that ψ 0 (x∗ ) > 0, first notice that it is sufficient that Pθ (θ∗ , x∗ )/Px (θ∗ , x∗ ) ≥ −1 where θ∗ := θ(x∗ ).
+Calculating the derivatives shows that this is true if and only if
+Z ∞
+√ 0√
+√
+∗
+∗
+αφ [ α(y(t) − x∗ )]dt ≤ 0
+(44)
+φ[ α(y(θ ) − x )] +
+θ∗
+
+where again y(t) = t + a(t) is the mean of the signal distribution from which a citizen is sampling
+if the regime has type t ≥ θ∗ . To show that this condition always holds, we need to consider
+two separate cases: (i) where costs are linear, and (ii) where costs are strictly convex. If costs are
+linear, then a(t) = max[0, x∗ +γ −t] where γ > 0 [as in equation (21)]. Calculating the integral and
+√
+then simplifying shows that (44) holds if and only if −αγφ( αγ)a(θ∗ ) ≤ 0 which is true because
+a(θ∗ ) ≥ 0. Now consider case (ii) where costs are strictly convex. From the optimality conditions
+for the regime’s choice of action we have that a(t) > 0 for all t ≥ θ∗ and
+√ √
+αφ[ α(y(t) − x∗ )] = C 0 [a(t)], t ≥ θ∗
+(45)
+Differentiating with respect to t gives
+√
+αφ0 [ α(y(t) − x∗ )]y 0 (t) = C 00 [a(t)]a0 (t),
+
+t ≥ θ∗
+25
+
+(46)
+
+Using the associated second order condition shows that y 0 (t) > 0 for t ≥ θ∗ . Since y is invertible,
+a change of variables shows that (44) holds if and only if
+Z ∞
+√
+a0 (t)
+φ0 [ α(y(t) − x∗ )] 0 dt ≥ 0
+(47)
+y (t)
+θ∗
+Using (46) we equivalently have the condition
+Z ∞ 0√
+φ [ α(y(t) − x∗ )]2
+dt ≥ 0
+C 00 [a(t)]
+θ∗
+
+(48)
+
+which is true since the integrand is non-negative. Therefore, Pθ (θ∗ , x∗ )/Px (θ∗ , x∗ ) ≥ −1 and so
+from equation (43), ψ 0 (x∗ ) > 0.
+Finally, ψ(x̂) < x∗ for every x̂ < x∗ is proven by contradiction. Suppose not. Then by
+continuity of ψ there exists x̃ < x∗ such that ψ(x̃) = x∗ . By the definition of ψ in (19) this implies
+P [θ(x̃) − x̃, ψ(x̃) − x̃] = p and so by Lemma 1 and ψ(x̃) = x∗ simply P [θ(x̃), x∗ ] = p. But by (42)
+and the hypothesis x̃ < x∗ we must also have θ(x̃) < θ(x∗ ) and since P is strictly increasing in θ
+we have
+p = P [θ(x̃), x∗ ] < P [θ(x∗ ), x∗ ] = p
+
+(49)
+
+which is the needed contradiction. Therefore ψ(x̂) < x∗ for every x̂ < x∗ . A symmetric argument
+shows ψ(x̂) > x∗ for every x̂ > x∗ .
+
+Proof of Theorem 1. First, there is a unique equilibrium if strategies are restricted to be
+monotone. To show this, first solve (13) for arbitrary x̂, θ̂. This provides the family a(θ − x̂) which
+is used to construct the P function in (15). Then from Lemma 1 there is a unique ∆ ∈ R such
+that P (∆, 0) = p. Plugging this value into (14) gives the unique θ∗ ∈ [0, 1) such that the regime
+is overthrown if and only if θ < θ∗ and then the unique x∗ such that a citizen subverts if and only
+if xi < x∗ is x∗ = θ∗ − ∆. The equilibrium profile of hidden actions is then a(θ) := a(θ − x∗ ). By
+Lemma 2, this x∗ is the unique fixed point of the ψ function.
+To show that there is no other equilibrium, we show that the only strategy profile for the citizens
+that survives the iterative elimination of (interim) strictly dominated strategies is the monotone
+strategy s(x) = 1 if and only if x < x∗ . Recall that when almost all citizens subvert if their signal
+is less than x̂, a citizen with x subverts if and only if x < ψ(x̂). Let x0 := x and x0 := x [as in
+∞
+(18)]. Now generate {xn }∞
+n=0 from xn+1 = ψ(xn ) and generate {xn }n=0 from xn+1 = ψ(xn ). By
+Lemma 2, ψ is continuous, has a unique fixed point x∗ = ψ(x∗ ) with ψ 0 (x∗ ) ∈ (0, 1) and ψ(xn ) < x∗
+for all xn < x∗ . Therefore, the sequence {xn }∞
+n=0 is bounded above, strictly monotone increasing
+∗
+and so converges xn % x as n → ∞. Similarly, the sequence {xn }∞
+n=0 is bounded below, strictly
+∗
+monotone decreasing and so converges xn & x . After n iterations, the only candidates for an
+equilibrium strategy all have s(x) = 1 for x < xn and s(x) = 0 for x > xn with s(x) arbitrary for
+x ∈ [xn , xn ]. In the limit as n → ∞, the only strategy that survives the elimination of strictly
+dominated strategies is the one with s(x) = 1 for x < x∗ and s(x) = 0 otherwise. Therefore the
+only equilibrium is the unique monotone equilibrium.
+
+Proof of Theorem 2. For each precision α, there is a unique equilibrium. I find a unique
+solution to a constrained problem consisting of the original system of nonlinear equations plus a
+set of constraints that govern the asymptotic behavior of the endogenous variables. But, because
+the equilibrium conditions have a unique solution for each α, the solution to the original problem
+and to the constrained problem coincide.
+26
+
+The equilibrium conditions can be written
+Z ∞
+√ √
+√
+∗
+∗
+αφ[ α(x∗α − θ − aα (θ − x∗α ))]dθ
+(1 − p)Φ[ α (θα − xα )] = p
+
+(50)
+
+∗
+θα
+
+and
+√
+θα∗ = Φ[ α(x∗α − θα∗ − aα (θα∗ − x∗α ))] + C[aα (θα∗ − x∗α )]
+with actions characterized by
+√ √
+C 0 [aα (θ − x∗α )] = αφ[ α(x∗α − θ − aα (θ − x∗α ))],
+
+(51)
+
+θ ≥ θα∗
+
+(52)
+
+Now let α → ∞. The auxiliary constraints that govern the asymptotic behavior of the endogenous variables are assumed to be
+√
+√
+(53)
+lim α(x∗α − θα∗ − aα (θα∗ − x∗α )) = lim α(θα∗ − x∗α ) = −∞
+α→∞
+
+α→∞
+
+If condition (53) holds, from (51) we have θα∗ = C[aα (θα∗ − x∗α )]. Similarly, if (53) holds, then
+√
+Φ[ α (θα∗ − x∗α )] → 0 and the value of the integral on the right hand side of (50) converges to zero.
+From (50) and (52), this requires
+Z ∞
+lim
+C 0 [aα (θ − x∗α )]dθ = 0
+α→∞
+
+∗
+θα
+
+Since θα∗ ∈ [0, 1] and C 0 [aα (θ − x∗α )] ≥ 0 and is uniformly continuous in α , this can only be true
+if aα (θ − x∗α ) → 0+ for all θ ≥ θα∗ . But then if aα (θα∗ − x∗α ) → 0+ , C[aα (θα∗ − x∗α )] → 0+ and so
+θα∗ → 0+ too. Finally, if both constraints are to hold simultaneously for large α, x∗α − θα∗ is positive
+and x∗α − θα∗ − aα (θα∗ − x∗α ) is negative. For both constraints to have the same sign, x∗α can neither
+diverge nor converge to either a strictly positive or a strictly negative number. So x∗α → 0+ . Hence
+we have found a solution to the constrained problem.
+Now for the second part of the Theorem. Recall that for this part we assume strictly convex
+√
+costs. Let α → 0+ such that αx∗α → ∞ holds. Then x∗α → ∞. Since θα∗ ∈ [0, 1], we have
+√
+α (x∗α − θα∗ ) → ∞ and the integral on the right hand side of (50) must converge to zero. Hence,
+by (52), aα (θ − x∗α ) → 0+ for all θ ≥ θα∗ (the strict convexity of C is assumed here so that (52)
+holds for all θ even as α → 0+ ; with constant marginal costs, this would not be true). But if
+√
+aα (θα∗ − x∗α ) → 0+ , θα∗ ∈ [0, 1], and αx∗α → ∞, then (51) requires that θα∗ → 1− . Once again we
+have found a solution to the constrained problem.
+
+
+B
+
+The role of coordination: regime vs. single agent
+
+This appendix highlights the role of imperfect coordination in enabling the regime to survive even
+when signals are precise. Suppose to the contrary that citizens are perfectly coordinated and receive
+one x := θ + a + ε. Collectively, they can overthrow the regime if θ < 1. In a monotone equilibrium
+the mass attacks the regime, S(x) = 1, if and only if x < x∗ where x∗ solves Pr(θ < 1|x∗ ) = p.
+The regime now faces aggregate uncertainty. It does not know what value of x will realize. The
+regime chooses its hidden action to maximize its expected payoff
+Z ∞
+√
+max[0, θ − S(x)]f (x|θ, a)dx − C(a) = − min[θ, 1]Φ[ α(x∗ − θ − a)] − C(a)
+(54)
+−∞
+
+27
+
+Regimes with θ < 0 are necessarily overthrown in equilibrium and so never engage in costly
+manipulation. For simplicity, suppose that costs are strictly convex, C 00 (a) > 0. If so, all regimes
+with θ > 0 will choose some positive manipulation, even regimes that ex post are overthrown. The
+key first order necessary condition for the regime’s choice of action a(θ) is
+√ √
+min[θ, 1] αφ[ α(x∗ − θ − a) = C 0 (a), θ ≥ 0
+(55)
+(As usual, there may be two solutions to this first order condition: if so, the smaller is eliminated
+by the second order condition). An equilibrium of this game is constructed by simultaneously
+determining a(θ) and the x∗ that solves Pr(θ < 1|x∗ ) = p.
+Standard arguments show that taking as given x∗ the regime’s optimal action a(θ) → 0+ as
+α → ∞. Given this policy by the regime, the probability of overthrowing the regime Pr(θ < 1|x) →
+1{x < 1} as α → ∞. Therefore, x∗ → 1. With arbitrarily precise information, the regime takes
+no action and so x is very close to θ. The mass attacks only if it believes θ < 1 and since x is close
+to θ attacks only if x < 1. This leads to the downfall of any fragile regime θ ∈ [0, 1). By contrast,
+Theorem 2 tells us that if citizens are imperfectly coordinated then for precise information any
+fragile regime θ ∈ [0, 1) survives.
+
+C
+
+Heterogeneous priors: uncontaminated private information
+
+Individuals have a second idiosyncratically noisy observation zi := θ + εz,i in addition to xi :=
+θ + a + εx,i . An equilibrium consists of functions a(θ) and x∗ (zi ) and a scalar θ∗ where a citizen
+subverts if xi ≤ x∗ (zi ). In what follows, let fX (xi |θ, a) and fZ (zi |θ) denote the signal densities and
+let â(θ), x̂(zi ) and θ̂ denote candidates for the equilibrium objects.
+The posterior beliefs of a citizen with signals xi , zi facing a threshold rule about the point θ̂
+and manipulation policy â(θ) are summarized by
+R θ̂
+π̂(θ|xi , zi )dθ
+Pr(θ < θ̂|xi , zi ) = R−∞
+∞
+π̂(θ|xi , zi )dθ
+−∞
+where π̂(θ|xi , zi ) := fX [xi |θ, â(θ)]fZ (zi |θ). A citizen with signals xi , zi will then subvert if and only
+if Pr(θ < θ̂|xi , zi ) ≥ p. Given θ̂ and â(θ), this implicitly defines a marginal citizen with signal zi
+by
+Pr(θ < θ̂|x̂(zi ), zi ) = p
+
+(56)
+
+The hidden actions for the regime are â(θ) = 0 for θ < θ̂ and otherwise
+h
+i
+θ ≥ θ̂
+â(θ) ∈ argmax θ − Ŝ(θ, a) − C(a) ,
+
+(57)
+
+a≥0
+
+where the mass of subversives is
+Z ∞ Z x̂(zi )
+Z ∞
+Ŝ(θ, a) =
+fX (xi |θ, a)fZ (zi |θ)dxi dzi =
+FX (x̂(zi )|θ, a)fZ (zi |θ)dzi
+−∞
+
+−∞
+
+(58)
+
+−∞
+
+and the cutoff θ̂ is determined by the indifference condition
+θ̂ = Ŝ[θ̂, â(θ̂)] + C[â(θ̂)]
+
+(59)
+
+I solve this model numerically. I first guess values x̂n (zi ), θ̂n (say) and then solve the optimization problem in (57) for the associated hidden actions ân+1 (θ). I then use θ̂n and the implied ân+1 (θ)
+to compute revised estimates of the thresholds x̂n+1 (zi ) from (56) and use ân+1 (θ) and x̂n+1 (zi ) to
+compute a new θ̂n+1 from the single condition (59). I iterate until the process converges. More
+details and Matlab code are available on request.
+28
+
+References
+Angeletos, G.-M., C. Hellwig, and A. Pavan (2006): “Signaling in a global game: Coordination and policy traps,” Journal of Political Economy, 114(3), 452–484. 1, 3, 5, 10, 11
+(2007): “Dynamic global games of regime change: Learning, multiplicity, and the timing
+of attacks,” Econometrica, 75(3), 711–756. 1
+Angeletos, G.-M., and I. Werning (2006): “Crises and prices: Information aggregation,
+multiplicity and volatility,” American Economic Review, 96(5), 1720–1736. 1, 20
+Atkeson, A. (2000): “Discussion,” in NBER Macroeconomics Annual, ed. by B. S. Bernanke,
+and K. Rogoff, pp. 162–171. MIT Press. 2
+Bannier, C. E., and F. Heinemann (2005): “Optimal transparency and risk-taking to avoid
+currency crises,” Journal of Institutional and Theoretical Economics, 161, 374–391. 23
+Carlsson, H., and E. van Damme (1993): “Global games and equilibrium selection,” Econometrica, 61(5), 989–1018. 2, 7
+Chamley, C. P. (1999): “Coordinating regime switches,” Quarterly Journal of Economics,
+114(3), 869–905. 2
+(2004): Rational herds: Economic models of social learning. Cambridge University Press.
+2, 9
+Cheli, B., and P. Della-Posta (2002): “Self-fulfilling currency attacks with biased signals,”
+Universita di Pisa. 2
+Cooper, R. W. (1999): Coordination games: Complementarities and macroeconomics. Cambridge University Press. 2
+Crawford, V. P., and J. Sobel (1982): “Strategic information transmission,” Econometrica,
+50(6), 1431–1451. 3, 11
+Frommer, B. (2005): National cleansing: Retribution against Nazi collaborators in postwar
+Czechoslovakia. Cambridge University Press. 6
+Heinemann, F., and G. Illing (2002): “Speculative attacks: Unique equilibrium and transparency,” Journal of International Economics, 58, 429–450. 23
+Hellwig, C. (2002): “Public information, private information, and the multiplicity of equilibria
+in coordination games,” Journal of Economic Theory, 107, 191–222. 7, 20, 21
+Jackson, J. (2001): France: The dark years, 1940-1944. Oxford University Press. 6
+Kalathil, S., and T. C. Boas (2003): Open networks, closed regimes: The impact of the
+internet on authoritarian rule. Carnegie Endowment for International Peace. 2
+Matthews, S. A., and L. J. Mirman (1983): “Equilibrium limit pricing: The effects of private
+information and stochastic demand,” Econometrica, 51(4), 981–996. 3, 10, 11
+Metz, C. (2002): “Private and public information in self-fulfilling currency crises,” Zeitschrift fur
+Nationalokonomie, 76(1), 65–85. 20, 21, 22
+29
+
+Milgrom, P., and J. Roberts (1982): “Limit pricing and entry under incomplete information:
+An equilibrium analysis,” Econometrica, 50(2), 443–460. 10
+Morris, S., and H. S. Shin (1998): “Unique equilibrium in a model of self-fulfilling currency
+attacks,” American Economic Review, 88(3), 587–597. 2, 7, 9
+(2000): “Rethinking multiple equilibria in macroeconomic modeling,” in NBER Macroeconomics Annual, ed. by B. S. Bernanke, and K. Rogoff, pp. 139–161. MIT Press. 7, 20
+(2003): “Global games: Theory and applications,” in Advances in Economics and Econometrics: Theory and Applications, ed. by M. Dewatripont, L. P. Hansen, and S. J. Turnovsky.
+Cambridge University Press. 2, 7, 9, 20, 21
+(2004): “Coordination risk and the price of debt,” European Economic Review, 48(1),
+133–153. 2, 7, 21
+Obstfeld, M. (1986): “Rational and self-fulfilling balance-of-payments crises,” American Economic Review, 76(1), 72–81. 2, 6
+(1996): “Models of currency crises with self-fulfilling features,” European Economic
+Review, 40(3–5), 1037–1047. 2, 6
+Riley, J. G. (2001): “Silver signals: Twenty-five years of screening and signaling,” Journal of
+Economic Literature, 39(2), 432–478. 11
+Tirole, J. (1988): The theory of industrial organization. MIT Press. 11
+Wilson, R. (1992): “Strategic models of entry deterrence,” in Handbook of game theory, ed. by
+R. J. Aumann, and S. Hart. North-Holland/Elsevier Science. 11
+Zeman, Z. (1973): Nazi propaganda. Oxford University Press, second edn. 15
+
+30
+
+

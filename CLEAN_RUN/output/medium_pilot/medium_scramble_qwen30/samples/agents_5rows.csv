@@ -1,0 +1,91 @@
+run_id,arm_id,model,country,period,agent_id,theta,signal,z_score,briefing_text,message_sent,messages_received,decision,join,reasoning,belief_pre_success,belief_pre_join_share,belief_pre_shared_understanding,belief_pre_others_expect_join,belief_post_success,belief_post_join_share,belief_post_shared_understanding,belief_post_others_expect_join,punishment_risk,api_error,parse_error,prompt_hash,response_hash
+medium_scramble_qwen30-20260507T205759Z,medium_scramble_qwen30,qwen/qwen3-30b-a3b-instruct-2507,0,0,0,-2.0,-2.093676832870687,-6.978922776235623,"PRIVATE BRIEFING
+
+BOTTOM LINE: The regime's ability to project power has degraded to the point where its survival is an open question.
+ATMOSPHERE: The sense of isolation has broken — people realize they're not alone, and they're acting on it.
+
+EVIDENCE:
+  - [Elite Cohesion] This removes any serious doubt that past the point of concealment — the inner circle's public appearances have dropped sharply, suggesting withdrawal
+  - [Security Forces] a mid-ranking officer was seen meeting privately with opposition-linked figures (near-unanimous confirmation from every reliable source)
+  - [Money And Logistics] a prominent businessman known for his regime connections has quietly sold off assets (overwhelming convergence — every channel telling the same story independently)
+  - [Street Mood] This removes any serious doubt that past the point of concealment — a normally apolitical professional class — doctors, teachers, lawyers — has started organizing quietly
+  - [Information Control] state media contradicted itself twice in the same broadcast
+  - [Personal Observations] a reliable contact who usually knows everything said 'I honestly don't know what's happening'
+  - [Diplomatic Signals] the regime's ambassador to a key ally was recalled for 'consultations' — a move that suggests the ally is distancing (overwhelming convergence — every channel telling the same story independently)
+  - [Institutional Functioning] the national statistics office delayed a scheduled data release without explanation — they're hiding something or can't agree on what to publish
+
+UNCERTAINTIES:
+  - How much of the disarray is structural versus a temporary response to a specific crisis.
+  - If the regime has foreign backers who might intervene to prop it up at the last moment.",,[],JOIN,True,"JOIN. The regime's collapse is not just possible—it’s unfolding. The erosion of elite cohesion, security forces' quiet defections, and the public's mobilization signal that the moment for change is here. Waiting risks missing the window—or being left behind as others act.",,,,,,,,,,False,False,cf4dc3112c7ded8565ca5d72cf0396efa9ad92107a36da08b822c4d622f04884,52491640717717c8244b36eae15c7a4e7cf950ea086063f881f4123365993881
+medium_scramble_qwen30-20260507T205759Z,medium_scramble_qwen30,qwen/qwen3-30b-a3b-instruct-2507,0,0,1,-2.0,-2.012424481081054,-6.708081603603513,"PRIVATE BRIEFING
+
+BOTTOM LINE: The institutional foundations that held this regime together are visibly crumbling.
+ATMOSPHERE: People are making plans, not just venting. The conversations have a logistical quality now.
+
+EVIDENCE:
+  - [Elite Cohesion] the leader made a rare public appearance with all senior figures present — a deliberate show of solidarity (overwhelming convergence — every channel telling the same story independently)
+  - [Security Forces] weapons inventory checks have been quietly suspended — someone doesn't want accountability right now (overwhelming convergence — every channel telling the same story independently)
+  - [Money And Logistics] a well-connected accountant says several elite-linked firms are quietly restructuring their debts — the trend settling back toward normal
+  - [Street Mood] a normally apolitical professional class — doctors, teachers, lawyers — has started organizing quietly (overwhelming convergence — every channel telling the same story independently)
+  - [Information Control] This removes any serious doubt that barely perceptible — information control is tight and efficient — leaks are rare and quickly contained
+  - [Personal Observations] the local clinic has been quietly stocking extra supplies, according to a nurse you know
+  - [Diplomatic Signals] foreign correspondents who had left are returning — they smell a story
+  - [Institutional Functioning] a routine government audit was abruptly cancelled, raising questions about what it might have found — the trend settling back toward normal
+
+UNCERTAINTIES:
+  - How deep the fractures go — surface-level dysfunction can mask either deeper rot or functioning parallel systems.
+  - If the economic deterioration is perceived by ordinary people as the regime's fault or as bad luck.",,[],JOIN,True,"JOIN. The regime’s cohesion is visibly fraying—elite solidarity, security accountability, and information control are all showing cracks. The quiet preparations by professionals and the return of foreign journalists signal that something significant is unfolding, and inaction risks being complicity.",,,,,,,,,,False,False,cbf07ab4a6266bbf8377afe10e88ac239981dc56fb4fdd705fc05f6024595d6b,0c18d6da3e2608f38190bd48d1d2da4fbb53855a6831b40fcd07294bbf3aca15
+medium_scramble_qwen30-20260507T205759Z,medium_scramble_qwen30,qwen/qwen3-30b-a3b-instruct-2507,0,0,2,-2.0,-1.9784835525349598,-6.594945175116533,"PRIVATE BRIEFING
+
+BOTTOM LINE: If you were looking for a textbook picture of a regime approaching collapse, this is close to what you'd expect.
+ATMOSPHERE: People are speaking as if coordination is already happening — 'when it happens' rather than 'if'.
+
+EVIDENCE:
+  - [Elite Cohesion] a veteran regime fixer known for quiet problem-solving has been sidelined without explanation — the trend settling back toward normal
+  - [Security Forces] an officer your contact trusts said his unit would 'wait for written orders' before acting (near-unanimous confirmation from every reliable source)
+  - [Money And Logistics] business figures who usually hedge are moving money and families out with coordinated urgency — the trend settling back toward normal
+  - [Street Mood] This removes any serious doubt that past the point of concealment — taxi drivers — usually a reliable barometer — are talking about regime change as realistic
+  - [Information Control] the regime's daily press briefing has been cancelled three times this week — they can't decide what to say (overwhelming convergence — every channel telling the same story independently)
+  - [Personal Observations] your neighbor, who works in a ministry, has started keeping a packed bag by the door (overwhelming convergence — every channel telling the same story independently)
+  - [Diplomatic Signals] foreign embassies have quietly updated their travel advisories with unusually specific warnings
+  - [Institutional Functioning] a scheduled census operation was indefinitely postponed — the state can't organize basic logistics right now (overwhelming convergence — every channel telling the same story independently)
+
+UNCERTAINTIES:
+  - Whether the military's silence means they're loyal, undecided, or waiting for the right moment.
+  - If the economic deterioration is perceived by ordinary people as the regime's fault or as bad luck.",,[],JOIN,True,"JOIN. The regime's institutional decay is too systemic and widespread to be coincidental — silence from security forces, elite abandonment, mass capital flight, and street-level acceptance of change signal a collapse in progress. Waiting risks being left behind in the aftermath.",,,,,,,,,,False,False,eb19f9103fff2368295bd8666ab8924a8a70becc8b818169e01ef19e29da2972,6e8c414dd43b17cecf31bbbf9991d3da0393b96b3ada7e629a3ccae61842dbd4
+medium_scramble_qwen30-20260507T205759Z,medium_scramble_qwen30,qwen/qwen3-30b-a3b-instruct-2507,0,0,3,-2.0,-1.6440887873895345,-5.480295957965115,"PRIVATE BRIEFING
+
+BOTTOM LINE: Everything points in the same direction: the regime is weaker than it has been in living memory.
+ATMOSPHERE: People are making plans, not just venting. The conversations have a logistical quality now.
+
+EVIDENCE:
+  - [Elite Cohesion] a veteran regime fixer known for quiet problem-solving has been sidelined without explanation (overwhelming convergence — every channel telling the same story independently)
+  - [Security Forces] a well-connected retired general privately described the current officer corps as 'demoralized and fracturing' (near-unanimous confirmation from every reliable source)
+  - [Money And Logistics] fuel prices have spiked at the pump despite no change in official policy
+  - [Street Mood] graffiti critical of the regime appeared overnight in a central location and hasn't been cleaned (overwhelming convergence — every channel telling the same story independently)
+  - [Information Control] information control is tight and efficient — leaks are rare and quickly contained (overwhelming convergence — every channel telling the same story independently)
+  - [Personal Observations] a neighbor who works in security mentioned casually that 'nothing unusual' is happening (overwhelming convergence — every channel telling the same story independently)
+  - [Diplomatic Signals] foreign airlines have quietly added extra flights out of the capital — route changes driven by demand, not schedule
+  - [Institutional Functioning] This is hard to escape the conclusion that past the point of concealment — civil servants are reporting contradictory instructions from different parts of the bureaucracy
+
+UNCERTAINTIES:
+  - If the economic deterioration is perceived by ordinary people as the regime's fault or as bad luck.
+  - Whether the security apparatus would follow orders to suppress a large-scale mobilization, or stand aside.",,[],JOIN,True,"JOIN. The regime’s internal fractures and widespread logistical planning suggest a moment of vulnerability. The silence from those in power — even the security neighbor’s casual “nothing unusual” — feels like the calm before collapse. If this is the moment, staying home risks being left behind.",,,,,,,,,,False,False,75d79c4dadbfb730bdf490c0348ebabe7aed9ceb7f069efcfe6d72cf6d1d6ae5,2e03fd2269436aceb57ae2156e4da3d50c0760c228cc93653ecf5445dd1476f1
+medium_scramble_qwen30-20260507T205759Z,medium_scramble_qwen30,qwen/qwen3-30b-a3b-instruct-2507,0,0,4,-2.0,-1.9074678202927837,-6.3582260676426126,"PRIVATE BRIEFING
+
+BOTTOM LINE: The institutional foundations that held this regime together are visibly crumbling.
+ATMOSPHERE: There's an almost festive quality to the defiance — the secrecy has dropped away and people feel liberated by it.
+
+EVIDENCE:
+  - [Elite Cohesion] senior figures are giving interviews that subtly distance themselves from the leader's recent decisions — the trend settling back toward normal
+  - [Security Forces] This removes any serious doubt that past the point of concealment — a military supply convoy was rerouted without explanation, suggesting logistical confusion
+  - [Money And Logistics] a logistics company just signed a five-year contract with the government — they're not worried about regime change (overwhelming convergence — every channel telling the same story independently)
+  - [Street Mood] street talk has shifted from complaint to anticipation — people speak as if change is imaginable — the trend settling back toward normal
+  - [Information Control] a well-known journalist who was previously silenced has resumed publishing critical pieces without consequence (overwhelming convergence — every channel telling the same story independently)
+  - [Personal Observations] This removes any serious doubt that past the point of concealment — your landlord — a regime supporter — quietly asked whether you had relatives abroad, 'just in case'
+  - [Diplomatic Signals] This is hard to escape the conclusion that past the point of concealment — a foreign military attaché was spotted meeting with opposition figures at a hotel — either poorly concealed or deliberately visible
+  - [Institutional Functioning] building permits that normally take a week are taking months, with no one willing to sign off (overwhelming convergence — every channel telling the same story independently)
+
+UNCERTAINTIES:
+  - Whether the security apparatus would follow orders to suppress a large-scale mobilization, or stand aside.
+  - If the economic deterioration is perceived by ordinary people as the regime's fault or as bad luck.",,[],JOIN,True,"JOIN. The regime’s foundations are visibly breaking down, and the widespread, independent confirmation across every sector—elite dissent, logistical chaos, media revival, and even personal warnings from loyalists—suggests a tipping point has been reached. The atmosphere of open defiance means that collective action is no longer just possible, but probable.",,,,,,,,,,False,False,f195437fbeddbd2fddc4a963e37e74103c5bccaaf59a0273945b79126173a114,5ead1a106fd3fdf96f83d2ee007a9d8376b8625a4533c411e96f2e776b4749e6

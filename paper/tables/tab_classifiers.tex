@@ -1,18 +1,19 @@
 \begin{table}[t]
 \centering
-\caption{Classifier baselines. Accuracy and AUC are 5-fold CV on pure-treatment data. ``Pred.\ join (surv.)'' is the classifier's predicted join rate when applied to surveillance-treatment briefings; ``Actual'' is the LLM's observed rate. The gap measures the surveillance wedge invisible to text classifiers.}
+\caption{Classifier baselines. Accuracy and AUC are 5-fold CV on pure-treatment data. ``Pred.\ join (surv.)'' is the classifier's predicted join rate when applied to surveillance-treatment briefings; ``Actual'' is the LLM's observed rate. The gap measures the surveillance action shift invisible to briefing-body text classifiers.}
 \label{tab:classifiers}
-\small
-\resizebox{\columnwidth}{!}{%
+\scriptsize
+\setlength{\tabcolsep}{2pt}
 \begin{tabular}{lccccc}
 \toprule
-Classifier & Acc. & AUC & Pred.\ join (surv.) & Actual (surv.) & Gap \\
+Classifier & Acc. & AUC & Pred.\ (surv.) & Actual & Gap \\
 \midrule
-BoW TF-IDF & 88.4\% & 0.947 & 40.5\% & 27.6\% & 13.0~pp \\
-Slider logistic & 88.4\% & 0.941 & 40.4\% & 27.6\% & 12.8~pp \\
-Keyphrase & 60.2\% & 0.594 & 8.4\% & 27.6\% & -19.2~pp \\
+BoW TF-IDF & 88.5\% & 0.947 & 40.6\% & 27.6\% & $+13.0$~pp \\
+Slider logistic & 88.4\% & 0.941 & 40.4\% & 27.6\% & $+12.8$~pp \\
+Keyphrase & 60.2\% & 0.594 & 8.4\% & 27.6\% & $-19.2$~pp \\
 \bottomrule
-\end{tabular}}
-\vspace{0.25em}
-\parbox{\columnwidth}{\footnotesize\emph{Notes:} Primary model (Mistral Small Creative). Accuracy and AUC from 5-fold cross-validation on pure-treatment data. Gap = classifier-predicted join rate $-$ actual LLM join rate under surveillance (pp).}
+\end{tabular}
+\begin{tablenotes}
+\footnotesize\emph{Notes:} Primary model (Mistral Small Creative). Accuracy and AUC from 5-fold cross-validation on pure-treatment data. Training sample: the primary model's pure arm (1{,}000 country--period rows, 25 agents per row, $25{,}000$ agent decisions); each CV fold trains on 80\% and tests on the held-out 20\%. The surveillance application scores all 1{,}000 surveillance-arm rows ($25{,}000$ agent decisions). Gap = classifier-predicted join rate $-$ actual LLM join rate under surveillance (pp).
+\end{tablenotes}
 \end{table}

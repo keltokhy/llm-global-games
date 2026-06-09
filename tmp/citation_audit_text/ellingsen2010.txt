@@ -1,0 +1,1918 @@
+When Does Communication Improve Coordination?
+By T ORE E LLINGSEN AND ROBERT Ö STLING
+We study costless pre-play communication of intentions among inexperienced
+players. Using the level-k model of strategic thinking to describe players' beliefs, we fully characterize the effects of pre-play communication in symmetric
+2 2 games. One-way communication weakly increases coordination on Nash
+equilibrium outcomes, although average payoffs sometimes decrease. Twoway communication further improves payoffs in some games, but is detrimental in others. Moving beyond the class of symmetric 2 2 games, we nd that
+communication facilitates coordination in common interest games with positive
+spillovers and strategic complementarities, but there are also games in which
+any type of communication hampers coordination.
+JEL: C72.
+Keywords: Pre-play communication, cheap talk, coordination, level-k, cognitive hierarchy.
+Some people nd themselves in a new strategic situation. How can they best coordinate their
+actions? Since they cannot rely on precedence, maybe they should start talking? If so, what
+are the exact reasons why communication helps? These fundamental questions crop up in many
+disciplines, including evolutionary biology, psychology, political science, and economics.1
+Farrell (1987, 1988) and Matthew Rabin (1990, 1994) provide formal analyses of costless
+communication, or cheap talk, as a means to convey intentions and thereby improve coordination
+among rational players in games with complete information.2 While the models are insightful,
+we argue that they make problematic assumptions concerning players' beliefs, and that recent
+models of strategic thinking offer alternative assumptions that better t our intuitions and the
+available experimental evidence.
+To put our arguments into perspective, let us brie y review some of the literature. Farrell
+(1987) studies communication in a Battle of the Sexes game (Figure 1). Farrell assumes that
+behavior will correspond to the symmetric mixed strategy Nash equilibrium if players cannot
+communicate. He also assumes that message pairs .“H ”;“L”/ and .“L”;“H ”/ that are consistent
+with a pure strategy equilibrium will induce play of that equilibrium. Based on these assumptions,
+he shows that with two-way communication there are better symmetric mixed strategy equilibria
+than the no-communication equilibrium. Payoffs improve with the number of communication
+Ellingsen: Department of Economics, Stockholm School of Economics, Box 6501, SE–113 83 Stockholm, Sweden
+(e-mail: tore.ellingsen@hhs.se). Östling: Institute for International Economic Studies, Stockholm University, SE–106
+91 Stockholm, Sweden (e-mail: robert.ostling@iies.su.se). The paper grew out of Ellingsen and Östling (2006). A
+previous version appeared as Paper 1 of Östling's (2008) Ph.D. dissertation. We have bene ted greatly from the detailed
+comments from Vincent P. Crawford and several anonymous referees. We are also grateful for helpful discussions with
+Colin F. Camerer, Drew Fudenberg, Botond Koszegi, Joseph Tao-yi Wang and many seminar participants. Financial
+support from the Torsten and Ragnar Söderberg Foundation and the Jan Wallander and Tom Hedelius Foundation is
+gratefully acknowledged.
+1 For evolutionary biology, see e.g., Steven Pinker and Paul Bloom (1990) and Martin A. Nowak (2006, Chapter
+13); for psychology, see e.g., Norbert L. Kerr and Cynthia M. Kaufmann-Gilliland (1994); for political science, see e.g.,
+Thomas C. Schelling (1966, Chapter 7), and for economics, see e.g., Joseph Farrell and Garth Saloner (1988) or David
+Genesove and Wallace P. Mullin (2001).
+2 For a non-technical introduction to the literature on cheap talk about intentions, see Farell and Rabin (1996), especially pages 110–116. An early precursor is Robert J. Aumann (1974). See also Roger Myerson (1989), who emphasizes
+that cheap talk can communicate both own intended actions (“promises”) and desires about others' actions (“requests”).
+Like most of the literature, we focus on the former.
+1
+
+2
+
+H
+L
+
+H
+0; 0
+1; 3
+
+L
+3; 1
+0; 0
+
+F IGURE 1. BATTLE OF THE S EXES
+
+H
+L
+
+H
+9; 9
+8; 0
+
+L
+0; 8
+7; 7
+
+F IGURE 2. S TAG H UNT
+
+rounds, but full ef ciency is unattainable because players have con icting interests over the two
+ef cient equilibria.
+Although the symmetric Nash equilibrium assumption makes some sense in the Battle of the
+Sexes, it is not generally a convincing assumption about the behavior of inexperienced players
+in the absence of communication; rational reasoning alone is insuf cient to support equilibrium
+(see, e.g., Aumann and Adam Brandenburger 1995). In their subsequent work, Farrell and Rabin
+instead make the weaker assumption that the outcome without communication will be rationalizable. One drawback of this approach is that rationalizability provides no prediction about
+behavior in many games, including Battle of the Sexes. Absent a prediction for the game without
+communication, a speci c prediction for the game with communication does not suf ce to say
+whether communication improves coordination or not.
+Another objection to Farrell and Rabin's approach is that one-way communication sometimes
+works excessively well, especially in coordination games like Stag Hunt (Figure 2).3 In Stag
+Hunt, all outcomes are again rationalizable without communication. Farrell (1988) suggests that
+one-way communication suf ces to attain coordination on the ef cient outcome .H; H /, because
+the message “H ” is self-committing. That is, if sending the message “H ” convinces the receiver
+that the sender intends to play H , the best response is for the receiver to play H , and thus the
+sender has an incentive to play according to the own message. Aumann (1990) objects that
+even a sender who has decided to play L has an incentive to induce the opponent to play H .
+That is, the message “H ” is not self-signaling. Relatedly, Pei-yu Lo (2007) demonstrates that
+the message “L” is weakly dominated under the two assumptions that players have common
+knowledge about the meaning of the language and believe their opponent to behave rationally
+given this knowledge. As a consequence, only message “H ” is used, and both action H and L
+survive iterated elimination of weakly dominated strategies.
+Addressing Aumann's critique, Farrell and Rabin (1996, page 114) acknowledge that their
+theory is not entirely satisfactory, but suggest that it has the right implications: “[A]lthough we
+see the force of Aumann's argument, we suspect that cheap talk will do a good deal to bring [the
+players] to the stag hunt.” Are Farrell and Rabin right? The experimental evidence on behavior in
+Stag Hunt games is somewhat con icting, but it consistently shows that communication improves
+coordination. For example, in an experiment by Gary Charness (2000) one-way communication
+induces substantial coordination on the ef cient equilibrium. In the prior experiment by Russell
+Cooper et al. (1992) one-way communication improves players willingness to play H , but twoway communication does so to a greater extent; see Section III for a more detailed discussion of
+3 Since Stag Hunt is the prototype representation of coordinated hunting situations, it is an apt touchstone for theories
+of communication. Indeed the bene ts from coordinated hunting of large animals has been proposed as an explanation
+for why language has emerged (see, e.g., Pinker and Bloom 1990, Section 5.3).
+
+3
+
+H
+L
+
+H
+11; 11
+10; 10
+
+L
+0; 10
+10; 9
+
+F IGURE 3. V ULNERABILITY G AME
+
+the evidence.
+To summarize, Farrell and Rabin's approach leaves open at least three questions. First and
+foremost, when does communication improve coordination? Second, why does communication
+of intentions matter even in situations when messages apparently fail to be self-signaling? Third,
+might bilateral communication sometimes generate more coordination than unilateral communication, and if so why?
+In a nutshell, we argue that rationalizability is an inappropriate assumption about inexperienced players' beliefs, and that more realistic assumptions help to answer all the above three
+questions. One shortcoming of rationalizability we have already mentioned: Too often, it imposes no restriction on beliefs. Another shortcoming is that it sometimes imposes unrealistically
+strong restrictions on beliefs. To x ideas, consider the Vulnerability Game in Figure 3.4
+In the Vulnerability Game, playing H is strategically risky for the row player, whereas L
+is safe. We intuitively believe that many row players would be unwilling to risk losing 10 in
+order to gain 1.5 We also believe that communication by the column player can increase the
+row player's willingness to play H . By sending the pre-play message “H ”, the column player
+provides some reassurance to the row player, who as a result comes to regard action H less risky.
+We think it is this sort of intuition that explains why communication has an effect in Stag Hunt.
+However, the intuition is inadmissible in Farrell and Rabin's framework. Since L is a dominated
+action for the column player, .H; H / is the unique rationalizable outcome, and thus ought to
+obtain whether players communicate or not. Rationalizability assumes not only that players are
+rational, but also that players believe with probability 1 that their opponents are rational.6 In
+the Vulnerability Game, the row player's rm belief that the column player is rational eliminates
+the need for communication. We propose instead that it is exactly the doubt about the column
+player's rationality that induces the row player to pay attention to the column player's message.
+If some players doubt that their opponent is rational, what do they believe? Data from Beauty
+Contest games led Rosemarie Nagel (1995) to suggest that people's implicit beliefs about others' behavior can often be characterized as follows: Some people believe that their opponents
+randomize uniformly. Other people believe that their opponents best respond to the belief that
+opponents randomize uniformly. Others again believe that their opponents believe that opponents
+believe that opponents randomize uniformly. The corresponding formal model is known as the
+level-k model. Level-0 players, who may or may not be assumed to exist in reality, randomize
+uniformly. Level-1 players believe that their opponent is level-0. Level-2 players believe that
+their opponents are level-1; and so on. The level-k model was rst studied by Dale O. Stahl and
+Paul W. Wilson (1994, 1995) and Nagel (1995) and has the virtue of offering a structural nonequilibrium approach to the analysis of people's initial behavior in unfamiliar games. A natural
+extension of the level-k model is to assume that a level-k player believes that the opponent is
+drawn from a distribution of more primitive player types; see Colin F. Camerer, Teck-Hua Ho
+and Juin-Kuan Chong (2004) for an analysis of the ensuing cognitive hierarchy model. These
+models successfully organize data on the behavior of inexperienced players in a wide variety of
+4 The Vulnerability Game is inspired by the game in Figure 1.4 of Drew Fudenberg and Jean Tirole (1991).
+
+5 For related arguments and evidence, see Robert Rosenthal (1981), and T. Randolph Beard and Richard O. Beil Jr.
+(1994).
+6 Indeed, all players are assumed to believe that all players believe that all players believe that...etc...all players are
+rational.
+
+4
+
+settings.7
+The level-k model straightforwardly explains why some row players would play L in the Vulnerability Game. A level-1 row player thinks it is equally likely that the column player plays L
+and H; and since 10 > 5:5 it is better for the row player to play L. A drawback of the level-k
+model is that higher level row players all believe with probability 1 that their opponent understands the game well enough to not play a dominated strategy. Thus, these players all prefer H ,
+and would continue to do so independently of the difference between their .H; H /-payoff and
+their .L ; H /-payoff, as long as it is positive. The cognitive hierarchy model, on the other hand,
+predicts that the behavior of higher level player types is sensitive to this payoff difference, since
+no player completely rules out the possibility that the opponent is of level-0. These considerations
+notwithstanding, we focus attention on the error-free level-k model due to its greater simplicity.
+See Appendix 3 (available online) for a detailed analysis applying the cognitive hierarchy model.
+Observe that both the level-k model and the cognitive hierarchy model assume that all players
+at level 1 or higher behave rationally given their beliefs. Thus, players' messages will also be
+chosen to maximize expected payoffs. However, to fully pin down behavior we need to specify
+the choice of message when players are indifferent between several messages. Following Stefano
+Demichelis and Jörgen W. Weibull (2008), we assume that whenever the truthful message is in
+the indifference set, players are truthful. That is, they have a weak (lexicographic) preference for
+being honest.8 This weak preference for honesty is key to several of our results. For example, in
+the Vulnerability Game, a level-1 row player is affected by the column player's message precisely
+because it is believed to be honest.
+The lexicographic truthfulness assumption is strong enough to determine the messages of level0. Since level-0 players are indifferent between all actions, they are also truthful. Observe that an
+alternative and more direct justi cation of level-0 truthfulness is to assume credulity on the part
+of level-1; this is the essentially the approach taken by Crawford (2003). If level-0 does not exist,
+except in the minds of level-1 players, the two assumptions are behaviorally similar.
+In symmetric two-player games with one-way communication, we show that the truthfulness
+of level-0 is contagious: A level-1 receiver plays a best response to the received message. Since
+level-1 behavior constitutes level-2 players' model of the world, and the game is symmetric, a
+level-2 sender will send a truthful message that corresponds to the sender's favorite Nash equilibrium. Analogous reasoning proves that, in this class of games, all player types communicate
+their intentions honestly under one-way communication. However, contagious honesty does not
+imply that one-way communication suf ces to induce an ef cient outcome. For example, in the
+Stag Hunt game above, level-1 players would send and play L.
+Let us now brie y describe our main results. For parameter choices that are typical in the
+level-k literature, the following is true for symmetric 2 2 games: (i) One-way communication
+improves average payoffs in Stag Hunt games with a con ict between ef ciency and strategic risk,
+such as that in Figure 2, and in some but not all mixed motive (Chicken) games. (ii) Two-way
+communication may yield higher average payoffs than one-way communication, but only in Stag
+Hunt games with a con ict between ef ciency and strategic risk and in mixed motive games with
+7 See Stahl and Wilson (1994, 1995), Nagel (1995), Ho, Camerer and Keith Weigelt (1998), Miguel A. Costa-Gomes,
+Vincent P. Crawford and Bruno Broseta (2001), Camerer, Ho and Chong (2004), Costa-Gomes and Crawford (2006),
+Crawford and Nagore Iriberri (2007a), Costa-Gomes, Crawford and Iriberri (2009) for various normal form game applications of the level-k and cognitive hierarchy models based on laboratory data. Crawford and Iriberri (2007b) and
+Isabelle Brocas et al. (2009) study games with private information using the level-k model. Crawford et al. (2009) use
+it to study optimal auction design. Toshiji Kawagoe and Hirokazu Takizawa (2008) apply the level-k model to an extensive form game, the centipede game. Östling et al. (2009) and Alexander L. Brown, Camerer and Dan Lovallo (2009)
+estimate cognitive hierarchy and level-k models using eld data. See also footnote 9 for references to level-k analyses of
+communication.
+8 There is considerable experimental evidence that many people assign strictly positive utility to behaving honestly
+(e.g., Ellingsen and Magnus Johannesson, 2004b and the references therein), and our results would be largely the same
+with positive utility from honesty. However, the analysis is simpler if the preference is lexicographically small.
+
+5
+
+high miscoordination payoffs. (iii) In mixed motive games with high miscoordination payoffs,
+average payoffs can be lower with communication than without. An additional nding is that if
+players have suf ciently high-level beliefs, both one-way and two-way communication entail the
+ef cient outcome in Stag Hunt. This conclusion holds not only in the limit as k goes to in nity;
+it suf ces that both players perform at least two thinking steps.
+Extending our analysis to larger games and/or relaxing the symmetry assumption, we nd that
+both one-way and two-way communication facilitates coordination in all two-player common
+interest games: When both players make at least two thinking steps, there is always coordination
+on (the best) Nash equilibrium in these games. If there are more than two players, a similar result
+holds under the additional assumptions of positive spillovers and strategic complementarities.
+On the other hand, it is easy to identify games in which communication erodes coordination.
+The reason is that players have an incentive to deceive the opponent by misrepresenting their
+intentions. Even if the game has a unique pure strategy equilibrium, players can obtain large nonequilibrium payoffs if they successfully fool their opponent. When players make few thinking
+steps, they may end up playing non-equilibrium strategies that are either more or less pro table
+than equilibrium.
+Crawford (2003) is the seminal study of communication of intentions with level-k beliefs.
+Crawford studies a special class of zero-sum games, namely Hide and Seek games, with one-way
+communication. Our work adapts Crawford's approach in order to study a different (and larger)
+class of games, while considering both one-way and two-way communication.9 The resulting
+sets of applications are quite different. Where Crawford's paper studies deception, ours predominantly studies mutually bene cial coordination. Other related literature is discussed in Section
+IV.
+I.
+
+Model
+
+Let G D hN ; A; ui denote some normal form game between jN j players where N denotes
+the set of players, Ai denotes the nite set of actions for player i, A D j2N A j denotes the
+set of feasible action pro les, u i : A ! R is player i's von Neumann-Morgenstern utility function, and u is the vector of all players' utility functions. We refer to G as an action game. Let
+0 N .G/ denote the game G preceded by one round of pre-play communication, where the subset
+N
+N of the players are allowed (by nature) to send a message. Let Mi D Ai be the set of
+feasible messages for a communicating player i and let Mi D Ai [ . Let M D j2N M j and
+M D j2N M j denote the corresponding sets of feasible message pro les. By convention, a
+non-communicating player sends an empty message . The nonempty messages are assumed
+to articulate a statement about the sender's intention (rather than for example a statement about
+which action the sender desires from the receiver).10 Let player i's message and action be denoted m i and ai , respectively. A strategy of the game 0 N .G/ for player i is a message m i 2 Mi
+and a mapping f i : M ! Ai de ning the action for any message pro le.
+To begin with, we focus attention on symmetric and generic 2 2 games.11 The two actions
+are labeled H and L. The utilities associated with each outcome are denoted u H H , u H L , u L H and
+u L L . In the game G preceded by one-way communication, 0 I .G/, one of the players is allowed
+to send one of two messages, h and l, before the action game G is played. Although from player
+9 Recently, Erik Wengström (2008) has applied the level-k model to study communication in a price competition game.
+Hongbin Cai and Joseph Tao-Yi Wang (2006), Kawagoe and Takizawa (2009) and Wang, Michael Spezio and Camerer
+(2009) have adapted Crawford's model to study one-sided cheap talk in sender-receiver games with private information.
+10 Admittedly, the language we allow is quite restrictive, but it matches the communication protocol used in many
+laboratory experiments. See Section II.C for a discussion of alternative protocols.
+11 There is a tension between genericity and symmetry, but none of our results are knife-edge with respect to symmetry.
+For the purpose of this paper, we consider a game to be generic if no player obtains exactly the same payoff for two
+different pure strategy pro les. We restrict attention to symmetric and generic games merely in order to keep down the
+number of cases under consideration. In section II.B, however, we discuss an asymmetric 2 2 game.
+
+6
+
+i's point of view, the game in which he is a receiver is quite separate from the game in which he
+is a sender, it is convenient to write the two strategies jointly. From now on we thus say that a
+strategy si for player i of the full game 0 I .G/ prescribes what message m i to send and action
+ai to take as sender, and a mapping f i : fh; lg ! fH; Lg from received messages to actions as
+receiver. We write a pure strategy of player i (given the received message m j ) as
+si D m i ; ai ; f i m j D h ; f i m j D l :
+For example, s1 D hh; H; L ; Li means that player 1 sends the message h and takes the action H
+if he is the sender, while playing L whenever acting as receiver.
+Observe that we neglect unused strategy components by restricting attention to the reduced
+normal form. In other words, we do not specify what action a player would take in the counterfactual case when he sends another message than the message speci ed by his strategy.
+In the game with two-way communication, 0 I I .G/, both players simultaneously send a message m i 2 fh; lg before G is played.12 A strategy si for player i of the full game is therefore given
+by a message m i and a mapping f i : fh; lg ! fH; Lg from the opponent's message to actions. A
+pure strategy of player i (given the message m j sent by player j) can thus be written
+si D m i ; f i m j D h ; f i m j D l :
+For example, s1 D hh; H; Li means that player 1 sends the message h, but plays according to the
+received message (i.e., plays H if player 2 sends message h and L if player 2 plays message l).
+Players' behavior depends on their beliefs, which are given by the player's number of thinking
+steps. A player of type 0 (or level-0), henceforth called a T0 player, is assumed to understand
+only the set of strategies, and not how these strategies map into payoffs. Thus, T0 makes a
+uniformly random action plan, sticking to this plan independently of any message from the opponent. (Hearing the opponent's intended action is of little help to a player who does not understand
+which game is being played.) Importantly, since T0 players do not understand how their own or
+their opponent's actions map into payoffs, or how their messages may affect their opponent's
+action, they are indifferent concerning their own messages.13
+For positive integers k, a Tk player chooses a best response to (the behavior that the Tk player
+expects from) a Tk 1 opponent. In particular, T1 plays a best response to T0 . When k
+2; Tk
+players will sometimes observe unexpected messages. In this case Tk assumes that the message
+comes from a Tk l player, where l k is the smallest integer that makes Tk 's inference consistent. (As we shall see, T0 sends all messages with positive probability, so l 2 f1; ::; kg always
+exists.) Let pk denote the proportion of type k in the player population. As we shall see, players
+who perform more than one thinking step often, but not always, behave alike. Therefore, it is
+convenient to let TkC denote player types that perform at least k thinking steps. Below, we sometimes say that players with a higher k are more advanced than players with a lower k. However,
+observe that the word “advanced” is a bit of a misnomer, since the beliefs of high k players will
+often be incorrect in some games (e.g., the Beauty Contest). (In the cognitive hierarchy model,
+higher level players also make more accurate predictions, and so are more truly advanced.)
+When a player is indifferent about actions in G, we assume that the player randomizes uniformly. However, when the player is indifferent about what pre-play message to send, we assume
+that there is randomization only in case the player is unable to predict the own action—which can
+12 Simultaneous messages may appear to be an arti cial assumption. However, besides preserving symmetry, the case
+of simultaneous messages may capture the notion from models with sequential communication that the rst and the last
+speaker may both have an impact.
+13 The only cognitive requirement for the T strategy, beyond knowing the set of actions, is memory of the own sent
+0
+message. Although some cognition is involved here, we take the view that memorizing a message is much simpler than
+computing expected payoffs and linking them to actions.
+
+7
+
+only happen under two-way communication. Otherwise, indifferent players send truthful messages (or more precisely, a message that conveys the action that the player expects to be playing).
+The assumption re ects the notion that people are somewhat averse to lying, but it does so without incurring the notational burden of introducing explicit lying costs into the model. While such
+lexicographic preference for truthfulness is an apparently weak assumption, one of its immediate
+implications is that the message by T0 reveals the intended action. Or to put it even more starkly,
+T1 believes in received messages. (In Section I.C we explore alternative assumptions regarding
+how T0 treat messages.)
+In Appendix 1 we explicitly characterize the strategies of all player types. Of course, some
+player types are more representative of actual behavior than others; indeed, econometric studies
+tend to identify signi cant fractions of T1 ; T2 and T3 only (e.g., Costa-Gomes, Crawford and
+Broseta 2001 and Costa-Gomes and Crawford 2006).14 For some of our results we thus refer to
+type distributions consisting exclusively of players of these three types. Accordingly, we say that
+p D . p0 ; p1 ; :::/ is a standard type distribution if pk > 0 for all k 2 f1; 2; 3g and pk D 0 for all
+k2
+= f1; 2; 3g.
+A.
+
+Examples
+
+Consider the Stag Hunt game in Figure 2. Absent communication, T1 best responds to the
+uniformly randomizing T0 by playing the risk dominant action L. Understanding this, the best
+response of T2 is to play L as well. Indeed, by induction any player T1C plays L. For any type
+distributions with p0 D 0, the unique outcome is the risk dominant equilibrium .L ; L/.15 The
+level-k model hence provides a rationale for why players play the risk dominant equilibrium in
+two-player coordination games without communication.
+If players can communicate, one-way communication suf ces to induce play of H by all types
+T2C . The analysis starts by considering the behavior of T0 (as imagined by T1 ). By assumption, a T0 sender randomizes uniformly over L and H , while sending the corresponding truthful
+message. A T0 receiver randomizes uniformly over L and H . As a sender, T1 best responds by
+playing the risk dominant action L, and due to the lexicographic preference for truthfulness sends
+the honest message l. As a receiver, T1 believes that messages are honest and thus plays L following the message l and H following the message h. Consider now T2 . A T2 sender believes to be
+facing a T1 receiver who best responds to the message, so T2 sends h and plays H . A T2 receiver,
+expects to receive an l message and therefore play L. If receiving a counterfactual h message,
+T2 thinks it is sent by a truthful T0 sender and therefore plays H . It is easily checked that all
+T2C behave like T2 , implying that there will be coordination on the payoff dominant equilibrium
+whenever two T2C players meet and communicate. In other words, the level-k model not only
+shows that it is feasible for advanced players to coordinate on the payoff dominant equilibrium,
+but that the unique outcome is that they will do so. Note in particular how reassurance plays a
+crucial role in the example. When a receiver gets a message h, the receiver is reassured that the
+sender will play H , and is therefore also willing to play H: Even if the message h is actually
+only self-signaling for level-0 senders, it is self-committing for all other types, and this suf ces
+to attain ef cient coordination as long as both parties perform at least two thinking steps.
+In Stag Hunt, the reassurance role of communication is strengthened even more when both
+players send messages. Under such two-way communication, T1 trusts the received message and
+responds optimally to it. Expecting to play either action with equal probability, T1 sends both
+14 Empirical applications of the cognitive hierarchy model tend to yield a more sizeable fraction of T . However, the
+0
+reason is typically that the model is estimated without an error term, or that the model imposes an assumption about the
+distribution of types (e.g., Poisson).
+15 Note that this is not about equilibrium selection in the ordinary sense. Players do not select among the set of
+equilibria, but best-respond to the behavior of lower-step thinkers. Their behavior ultimately results from the uniform
+randomization of T0 , which explains the parallel to risk dominance.
+
+8
+TABLE 1—ACTION PROFILES PLAYED IN S TAG H UNT WITH COMMUNICATION
+0 I .G/ (one-way communication)
+0R
+1R
+1 H H; 1 L L
+0S
+Uniform
+2
+2
+1
+1
+LL
+1S
+2 LL; 2 L H
+1
+1
+2S
+HH
+2 H H; 2 H L
+
+2R
+1 H H; 1 L L
+2
+2
+LL
+HH
+
+H
+L
+
+H
+0; 0
+1; 3
+
+0 I I .G/ (two-way communication)
+0
+1
+1 H H; 1 L L
+0
+Uniform
+2
+2
+1
+1
+1
+Uniform
+2 H H; 2 L L
+1 H H; 1 H L
+2
+HH
+2
+2
+
+2
+
+1 H H; 1 L H
+2
+2
+
+HH
+HH
+
+L
+3; 1
+a; a
+
+F IGURE 4. M IXED MOTIVE GAME
+
+messages with equal probability. T2 believes that the opponent listens to messages, and therefore
+sends h and plays H irrespective of the received message. T3C players believe that the opponent
+will play H and they therefore play H and send an h message. If they receive an unexpected l
+message, they believe it comes from T1 and therefore play H anyway (as T1 will respond to the
+received h message by playing H ). Note that under two-way communication, T2C players are so
+certain that the opponent will play H that they play H irrespective of the received message. This
+is an important case in which the cognitive hierarchy model predicts a different strategy. Because
+T2 players in the cognitive hierarchy model nd it likely that the opponent is a truthful T0 player,
+they respond to messages under reasonable parameter assumptions (see Appendix 3, available
+online, for details).
+Table 1 summarizes the action pro les that will result in the Stag Hunt under one-way and
+two-way communication. The notation 1S indicates a player of type 1 in the role of sender, and
+so on. “Uniform” indicates that all four outcomes are equally likely.
+Communication entails perfect coordination on the payoff dominant equilibrium whenever T2C
+players meet. However, one-way and two-way communication differ in two respects whenever
+T1 players are involved. With one-way communication, T1 senders play L and the risk dominant
+equilibrium therefore results whenever T1 senders play against a T1C opponent. Under twoway communication, however, there is miscoordination in half of the cases when two T1 players
+meet. Thus, there is a trade-off when choosing the optimal communication structure between
+coordination on either equilibria and achieving the payoff dominant equilibrium more often. For
+standard type distributions, two-way communication entails higher expected payoffs than oneway communication as long as p1 2 .0; 2=3/.
+In Stag Hunt, communication increases players' payoff because it brings suf ciently much
+reassurance for players to coordinate on the risky but payoff dominant equilibrium. In mixed
+motive games such as Battle of the Sexes and Chicken, communication instead serves the role
+of con ict resolution. To see this, consider the mixed motive game depicted in Figure 4, where
+a < 3 and a 6D 2. If a D 0, then this is a Battle of the Sexes, whereas it is a Chicken game if
+a > 0. The outcome for this game depends on whether L or H is the risk dominant action, i.e.,
+whether a ? 2. For simplicity, we disregard the possibility that a D 2, but allow the “Battle of
+the Sexes” possibility that a D 0 (although this makes the game non-generic).
+First consider the case of no communication. T1 then plays the risk dominant action, i.e., L
+if a > 2 and H if a < 2. T2 responds optimally by playing H if a > 2 and L if a < 2. The
+behavior of more advanced players continues to alternate, odd types playing L if a > 2 and H
+otherwise, whereas even types play H if a > 2 and L otherwise. The outcome therefore depends
+
+9
+TABLE 2—ACTION PROFILES PLAYED IN MIXED MOTIVE GAMES ( A > 2)
+G (no communication)
+0
+0
+Uniform
+1
+1
+Odd
+2 L H; 2 L L
+1
+1
+Even
+2 H L; 2 H H
+
+Odd
+1 H L; 1 LL
+2
+2
+LL
+HL
+
+Even
+1 L H; 1 H H
+2
+2
+LH
+HH
+
+0 I .G/ (one-way communication)
+0R
+1R
+1 H L; 1 L H
+0S
+Uniform
+2
+2
+1 L H; 1 L L
+L
+H
+1S
+2
+2
+1 H L; 1 H H
+2S
+HL
+2
+2
+
+2R
+
+1 H L; 1 L H
+2
+2
+
+LH
+HL
+
+on the type distribution, but there will generally be many instances of miscoordination.16
+One-way communication powerfully resolves the con ict inherent in such games with two
+pure asymmetric equilibria. If H is the risk dominant action, then T1C senders send h and play
+H , whereas T1C receivers optimally respond to messages. If instead L is risk dominant, a T1
+sender sends l and plays L, whereas T2C senders continue to send h and play H: One-way communication therefore implies that T1C players always coordinate on an equilibrium. Except in
+the case when L is risk dominant and the sender is of type T1 ; coordination is on the sender's
+preferred equilibrium (supposing p0 D 0).
+It is unsurprising that one-way communication can resolve the con ict and achieve coordination in games with two asymmetric equilibria. However, our analysis also reveals the novel
+possibility that in some versions of Chicken some players propose and play their least favorite
+equilibrium. T1 senders play their risk-dominant action which may not correspond to their preferred equilibrium, whereas T2 senders are con dent in reaching their preferred equilibrium.
+Table 2 shows the outcomes that will result without communication and with one-way communication, demonstrating the improved coordination on equilibrium outcomes.
+Although one-way communication entails more equilibrium coordination than no communication, more coordination need not raise players' average payoffs. If a > 2, then players prefer the
+.L ; L/ outcome to ending up in either equilibrium with equal probability. If the type distribution
+is such that the .L ; L/ outcome results suf ciently often without communication, average payoffs
+are thus higher without communication. For example, when a D 5=2 and there is a standard type
+distribution with p2 < 1=3, then average payoffs are lower under one-way communication than
+under no communication.
+Suppose players could choose whether to engage in communication or not, and that the allocation of roles is random. Each player type k would then consider the own expected payoff in each
+regime conditional on meeting a player of type k 1. To illustrate that players may prefer not to
+communicate, we consider the case when a D 0, i.e., the Battle of the Sexes. Absent communication, T3 believes that the opponent will play L and thus obtains the preferred equilibrium payoff.
+With one-way communication and a random allocation of roles, however, T3 expects to end up in
+either equilibrium with equal probability. That is, T3 expects to be better off if communication is
+impossible.
+B.
+
+Results
+
+In this section we generalize the ndings from the previous section to all symmetric and generic
+2 2 games, disregarding (the measure zero class of) games in which neither action is risk dominant. Throughout the section, we assume that G belongs to this class of games. There are three
+broad classes of such games. The rst class of games are the dominance solvable ones, like
+Prisoners' Dilemma. We use the convention of labelling the dominant action of these games
+H (igh). The second class are coordination games, where we follow the example above and label
+16 The outcome without communication does generally not resemble the symmetric mixed strategy equilibrium, but
+may happen to do so for certain combinations of payoff con gurations and type distributions.
+
+10
+
+the actions corresponding to the payoff dominant equilibrium H (igh). The third class of games
+are mixed motive games like the one in Figure 4. For this class of games, we label the action
+corresponding to a player's preferred equilibrium H (igh). In Appendix 1, we completely characterize behavior of all player types k 2 N for these three classes of games. These characterizations
+provide the foundation for the results in this section, where we focus on average outcomes under
+standard type distributions.
+Our rst result states the conditions under which one-way communication serves to increase
+players' average payoffs relative to no communication.
+PROPOSITION 1: Given a standard type distribution, the average payoff associated with 0 I .G/
+exceeds the average payoff associated with G if and only if (i) G is a coordination game with a
+con ict between risk and payoff dominance, or (ii) G is a mixed motive game that satis es either
+a. L is risk dominant and
+1
+2
+
+p2 .1
+
+p2 / .u H L C u L H / > p22 u H H C .1
+
+p2 /2 u L L ;
+
+or
+b. H is risk dominant and
+1
+2
+
+p2 .1
+
+p2 / .u H L C u L H / > .1
+
+p2 /2 u H H C p22 u L L .
+
+PROOF:
+In Appendix 2.
+If we replace p2 by p E , the probability that players think an even number of steps, Proposition
+1 generalizes straightforwardly to all type distributions in which p0 D 0. In our examples, we
+have already explained why one-way communication improves average payoffs in Stag Hunt,
+and indicated why it sometimes fails to improve payoffs in mixed motive games. An implication
+of Proposition 1 is that one-way communication raises the average payoff in the Battle of the
+Sexes.17 (To see this, recall that in Battle of the Sexes 0 D u H H D u L L < u L H < u H L , which
+implies that H is risk dominant and that condition (b) in Proposition 1 is satis ed.) Proposition 1 also implies that communication does not improve average payoffs in dominance solvable
+games. For Chicken, the impact of communication hinges more delicately on parameters, and
+communication may even serve to reduce payoffs.
+COROLLARY 2: Given a standard type distribution, the average payoff associated with 0 I .G/
+is smaller than the average payoff of G if and only if G is a game of Chicken that satis es either
+a. L is risk dominant and
+1
+2
+
+p2 .1
+
+p2 / .u H L C u L H / < p22 u H H C .1
+
+p2 /2 u L L ;
+
+or
+b. H is risk dominant and
+1
+2
+
+p2 .1
+
+p2 / .u H L C u L H / < .1
+
+p2 /2 u H H C p22 u L L .
+
+17 Note that this does not contradict the statement at the end of Section I.A that T prefers not to communicate in the
+3
+Battle of the Sexes. Proposition 1 refers to payoffs averaged across player types, while the earlier remark referred only to
+T3 's payoff given that he is certain that he faces a T2 opponent.
+
+11
+
+PROOF:
+In Appendix 2.
+Since H is risk dominant in Battle of the Sexes, one-way communication suf ces to attain
+perfect coordination on the speaker's preferred equilibrium outcome. Thus, we here have a case
+in which the prediction from the level-k model coincides with the prediction from Farrell (1988).
+The ineffectiveness of cheap talk in dominance solvable games is also analogous. More generally,
+the two approaches share the property that communication, if anything, pulls players towards
+Nash equilibria in symmetric 2 2 games.
+PROPOSITION 3: For any distribution of types, the frequency of coordination on pure strategy
+Nash equilibrium pro les is weakly greater in 0 I .G/ than in G.
+PROOF:
+In Appendix 2.
+The pull towards Nash equilibria is so strong that one-way communication entails equilibrium
+play whenever two T1C meet. Moreover, T2C always play the action corresponding to the sender's
+preferred equilibrium.
+COROLLARY 4: For type distributions with p0 D 0, players in 0 I .G/ always coordinate on
+pure strategy Nash equilibrium pro les. If in addition p1 D 0, players in 0 I .G/ always coordinate on the sender's preferred equilibrium.
+PROOF:
+Follows directly from Tables A1 to A4 in the proof of Proposition 3.
+Unlike one-way communication, two-way communication may destroy not only average payoffs but also coordination on equilibrium outcomes. For example, suppose there are only T1
+players and let G be a coordination game in which payoff and risk dominance coincide. Then
+0 I I .G/ entails miscoordination in half of the cases, because T1 sends random messages while
+listening to received messages. By contrast, in G and in 0 I .G/ two T1 players always play the
+payoff and risk dominant equilibrium. Our model therefore captures the intuition that two-way
+communication can bring noise in the form contradictory messages.
+Nevertheless, there are important classes of games in which two-way communication outperforms one-way communication.
+PROPOSITION 5: Given a standard type distribution, the average payoff associated with 0 I I .G/
+exceeds the average payoff associated with 0 I .G/ if and only if (i) G is a coordination game in
+which L is the risk dominant action and .4 3 p1 / u H H C p1 .u L H C u H L / > .4 p1 / u L L ; or
+(ii) G is a mixed motive game with a type distribution satisfying the following condition:
+1C
+
+2 . p1
+
+1/ . p1 1 C 2 p3 /
+uLL uH H
+<
+:
+u L H C u H L 2u H H
+p12 C 4 p32
+
+PROOF:
+In Appendix 2.
+The Stag Hunt game in Figure 2 belongs to the rst class of games identi ed by Proposition 5.
+For that particular game, two-way communication yields higher expected payoff than one-way
+communication whenever p1 2 .0; 2=3/. The second class of games identi ed in Proposition 5
+is harder to specify because of the cycling patterns of behavior under two-way communication
+in mixed motive games. However, for two-way communication to be bene cial, the payoff when
+
+12
+
+both players play L must be suf ciently high (at least .u H L C u L H /=2) and in addition the type
+distribution has to be such that the miscoordination outcome .L ; L/ happens suf ciently often
+with two-way communication. For example, with only T3 players, the outcome is .L ; L/ under
+two-way communication, whereas such players coordinate on an asymmetric equilibrium with
+one-way communication.
+C.
+
+Robustness
+
+How robust are our results to the assumptions that we have made about players' behavior?
+The largest difference in comparison with other level-k applications is that we assume that
+players have a weak preference for truthfulness. If players have no preference for truthfulness,
+communication ceases to have any effect whatsoever in our model: behavior is the same in 0 I .G/,
+0 I I .G/ and G. This speci cation is strongly at odds with the evidence that communication
+matters in many game experiments.
+Another alternative hypothesis is that all players prefer to be truthful, but that the most primitive types also respond systematically to received messages. The idea is that (if the actions of both
+players have the same label), the receiver could imitate or differentiate based on the sender's message. The most natural way to account for such imitation is to allow heterogeneous T1 players,
+some believing that receivers randomize, others believing that receivers imitate.18 With one-way
+communication, this implies that some T1 players believe T0 receivers randomize, whereas others
+believe that they imitate. With two-way communication, some T1 players believe that opponents
+are truthful, whereas other believe they imitate. Let us now consider the consequences of this
+speci cation.
+First consider the Stag Hunt in Figure 2. Under one-way communication, T1 senders who believe that receivers imitate send the message h and play H . This in turn implies that T2 receivers
+respond to messages as if they were truthful irrespective of which kind of T1 sender they think
+they face. Under one-way communication, the only difference compared to our original assumption is that there will be somewhat more coordination on .H; H / since some T1 senders now play
+H . Under two-way communication, T1 players who believe that opponents imitate send h and
+play H instead of responding to received messages. T2 players therefore optimally send h and
+play H irrespective of which type of T1 player they meet. Since miscoordination only occurs
+whenever two T1 players that send random messages meet, there will now be more equilibrium
+coordination compared to the standard case.
+Second, consider one-way communication in the Battle of the Sexes. While T1 receivers, and
+hence T2 senders, behave as before, T1 senders that believe they face imitators now send l and
+play H . This behavior seems implausible, and the fraction of such T1 players must therefore be
+small. However, irrespective of how small a proportion they constitute, T2 receivers now play
+L irrespective of what message they receive. This implies that T3 senders send h and play H .
+Under a standard type distribution, the outcome in terms of observed action pro les is thus the
+same as before.
+Although some details of the analysis change with the introduction of heterogeneous T1 players, we conclude that the main mechanisms are robust to this modi cation.
+Another cause for concern is our assumption about how unexpected messages are treated. An
+alternative assumption to ours is that Tk believes that unexpected messages are truthful. This
+would not change any our results for one-way communication, but with two-way communication
+18 An alternative is to let T assume that some fraction of T imitates rather than randomizes. In this case, T is
+1
+0
+1
+sophisticated enough to consider heterogeneity among T0 . We do not think this is plausible, and the consequences are
+counterfactual too: Consider one-way communication in the Battle of the Sexes. If there is heterogeneity among T0 ,
+T1 will send l and play H —believing that some opponents ignore their message, whereas others imitate their message
+and play L. Since p1 is typically estimated to be quite high, the implication is that sending l and playing H would be a
+relatively common practice.
+
+13
+
+U
+V
+W
+
+X
+5 ;5
+50; 50
+4; 4
+
+Y
+50; 50
+2; 4
+3 ;3
+
+Z
+2; 4
+4 ;3
+3; 3
+
+F IGURE 5. H IGH R ISK G AME
+
+it would imply that T3C responds to messages (rather than always playing H ) in coordination
+games as well as slightly different behavior of T3C in mixed motive games. (See also the discussion following Observation 7 about the sensitivity to the assumption about unexpected messages
+for the behavior of T3C in mixed motive games.) In Appendix 3 (available online), we consider
+the cognitive hierarchy model in which no messages are unexpected (because all players take
+into account that the opponent might be T0 ) and show that, with the possible exception of T3C in
+mixed motive games, our results are robust.
+II.
+
+Extensions
+
+So far, we have con ned attention to symmetric 2 2 games. In principle it is straightforward
+to extend the analysis to games with more players and strategies. In this section, we show that the
+reassurance property of communication extends to two-player games in which players' interests
+are suf ciently well aligned. When attractive non-equilibrium outcomes are present, however,
+senders might try obtain these by deceiving the opponent. The possibility of deception implies
+that one-way communication may hamper coordination on Nash equilibria. In addition, we show
+that multilateral communication in N -player games facilitiates coordination in a class of common
+interest games.
+A.
+
+Two-player common interest games
+
+The Stag Hunt example illustrates that pre-play communication facilitates the play of a risky
+payoff dominant equilibrium. Since our model does not assume equilibrium play, it is also
+applicable to situations in which players realistically fail to play a unique and ef cient Nash
+equilibrium—such as the High Risk game, devised by Margaret Gilbert (1990) and reproduced
+in Figure 5 (in which best replies are marked with asterisks).19 Absent communication, the levelk model predicts that two T5C players coordinate on the unique pure strategy equilibrium .U; X /,
+whereas all lower level players fail to do so.20 In contrast, one-way and two-way communication implies that T2C coordinate on equilibrium. That is, substantially fewer thinking steps are
+required to reach equilibrium with communication than without.21
+19 Experimental results of Anthony Burton and Martin Sefton (2004) con rm the prevalence of coordination failure in
+one-shot play of the High Risk game, but demonstrate that players learn to play the equilibrium after having played a
+number of practice rounds with the same opponent.
+20 To see this, note that T plays W and Z since these are the risk dominant actions. Using the best responses indicated
+1
+in Figure 5 it follows that T2 plays V and X , T3 plays U and Y , T4 plays W and X , and nally that T5C plays U and X .
+A referee makes the following additional observation: “Replace 50 by x. If anyone is playing U or V in a rst
+encounter with the game [...], the number of such players should decline as x increases.” We agree. This is another case
+in which the cognitive hierarchy model offers a richer and more realistic prediction than level-k.
+21 To see this, rst consider one-way communication. A T row sender sends w and plays W , while a column sender
+1
+sends z and plays Z . A T1 receiver best responds to messages. A T2C row sender therefore sends u and plays U ,
+while a column sender sends x and plays X , while a T2C receiver best responds to messages. Now consider twoway communication. T1 believes the opponent is truthful and therefore best responds to messages and randomize what
+message to send. A T2C row player therefore sends u and plays U while a column player sends x and plays X .
+
+14
+
+W
+X
+
+Y
+3 ;2
+0; 0
+
+Z
+4 ;0
+3; 1
+
+F IGURE 6. A SYMMETRIC 2 X 2 GAME
+
+The positive effect of communication in the High Risk game extends to all nite and normal
+form two-player games which has a payoff dominant equilibrium that gives strictly higher payoffs
+to both players than all other outcomes of a game, i.e., to all common interest games. For this class
+of games it is straightforward to show that T2C coordinate on the payoff dominant equilibrium.
+The underlying mechanism is that since T1 listens and best responds to messages, T2 can achieve
+the best possible outcome by sending and playing the payoff dominant equilibrium.
+PROPOSITION 6: Let G be a two-player common interest game. For type distributions with
+p0 D p1 D 0, players in 0 I .G/ and 0 I I .G/ always coordinate on the payoff dominant Nash
+equilibrium.
+PROOF:
+See Appendix 2.
+B.
+
+Other two-player games
+
+In common interest games and in symmetric 2 2 games with one-way communication, players always represent their intentions truthfully. In other classes of games, however, this is not
+necessarily the case. Crawford (2003) already shows how deception arises naturally in a level-k
+model of communication in Hide-and-Seek games. Deception can also arise in an asymmetric
+dominance solvable 2 2 game with a unique pure strategy equilibrium. Consider the game in
+Figure 6.
+The game's unique pure strategy equilibrium is .W; Y /. Since W and Y are the risk dominant
+actions, T1C players coordinate on the .W; Y / equilibrium if they are not allowed to communicate. Now consider one-way communication. Suppose that the row player acts as sender and the
+column player acts as receiver. The T1 sender sends w and plays W , while a T1 receiver best
+responds to received messages. A T2 sender therefore sends x, but plays W , while a T2 receiver
+best responds to messages. T3 sends x but plays W , while a T3 receiver ignores messages and
+always plays Y . Whenever T3C players meet, the resulting outcome is equilibrium play, unlike
+when lower level players meet. In contrast to Proposition 3, one-way communication entails
+less equilibrium coordination than no communication unless all players carry out three or more
+thinking steps.
+Proposition 3 does not generalize to symmetric two-player games with more than two actions
+either. To see this, consider the game in Figure 7.22 This symmetric 3 3 game has a unique
+pure strategy equilibrium, .H; H /, for all q > 1, but the game also has the asymmetric outcomes
+.H; L/ and .L ; H / that are attractive either to the row or column player. Since there is a third
+strategy, D, which has L as its best response, some senders will try to use this strategy to deceive
+the other player into playing L.
+Speci cally, consider the case when q D 1 and pre-play communication is not possible. In that
+case T1 would play H since it is the best action to take if the opponent randomizes uniformly,
+and T2C would best respond by playing H . One-way communication, however, makes it more
+dif cult to reach equilibrium. A T1 sender sends h and plays H , while a T1 receiver best responds
+22 This game is non-generic, but the analysis is analogous in the generic case.
+
+15
+
+H
+L
+D
+
+H
+4=q ; 4=q
+0; .4 C 1=q/
+0; 0
+
+L
+.4 C 1=q/ ; 0
+0; 0
+1; 1
+
+D
+0; 0
+1 ;1
+0; 0
+
+F IGURE 7. S YMMETRIC 3 X 3 GAME
+
+H1
+L1
+D1
+H2
+L2
+D2
+::
+:
+HQ
+LQ
+DQ
+
+H1
+4; 4
+0; 5
+0; 0
+0; 0
+0; 0
+0; 0
+::
+:
+
+L1
+5; 0
+0; 0
+1; 1
+0; 0
+0; 0
+0; 0
+::
+:
+
+D1
+H2
+L2
+0; 0 0; 0
+0; 0
+1; 1 0; 0
+0; 0
+0; 0 0; 0
+0; 0
+0; 0 2; 2 4:5; 0
+0; 0 0; 4:5 0; 0
+0; 0 0; 0
+1; 1
+::
+::
+::
+:
+:
+:
+0; 0 0; 0 0; 0 0; 0
+0; 0
+0; 0 0; 0 0; 0 0; 0
+0; 0
+0; 0 0; 0 0; 0 0; 0
+0; 0
+
+D2
+0; 0
+0; 0
+0; 0
+0; 0
+1; 1
+0; 0
+::
+:
+
+HQ
+0; 0
+0; 0
+0; 0
+0; 0
+0; 0
+0; 0
+::
+
+:
+0; 0
+4 4
+0; 0 0; 0
+Q; Q
+0; 0 0; 0 0; 4 C Q1
+0; 0 0; 0
+0; 0
+
+LQ
+0; 0
+0; 0
+0; 0
+0; 0
+0; 0
+0; 0
+
+DQ
+0; 0
+0; 0
+0; 0
+0; 0
+0; 0
+0; 0
+
+0; 0
+0; 0
+4 C Q1 ; 0 0; 0
+0; 0
+1; 1
+1; 1
+0; 0
+
+F IGURE 8. S YMMETRIC 3Q X 3Q GAME
+
+(as indicated by the asterisks in Figure 7) to the received message. A T2 sender sends d, but
+plays H , while a T2 receiver best responds to received messages. A T3 sender sends d and
+plays H , while a T3 receiver plays H irrespective of the received message. A T4C sender is
+indifferent about what message to send and is thus truthful, sending h and playing H ; a T4C
+receiver ignores messages and plays H . We conclude that T3C coordinate on .H; H / and that
+one-way communication consequently lowers equilibrium coordination unless all players make
+three or more thinking steps.
+A modi cation of the game illustrates how the number of thinking-steps required to reach
+equilibrium may increase linearly with the size of the game. Consider the 3Q 3Q game shown
+in Figure 8. It has the game in Figure 7 on the main diagonal and zero payoffs elsewhere.
+Let messages be denoted m q , with m 2 fh; l; dg and q 2 f1; 2; :::; Qg with Q > 1. Without
+communication, T1C plays H1 as in the 3 3 game. However, when one-way communication
+is allowed, all players must make at least 2Q C 2 thinking steps in order to coordinate on the
+unique equilibrium .H1 ; H1 /. To see why, note rst that T1 through T3 will behave as in the 3 3
+game, but that receivers will best-respond to all messages m q with q 2 f2; 3; :::; Qg; believing
+those messages to come from T0 . A T4 sender therefore sends d2 and plays H2 in order to get the
+outcome .H2 ; L 2 / which is preferred over .H1 ; H1 /. T5 receivers do not believe in d2 messages
+and therefore play H2 if either h 2 , l2 or d2 is played. In turn, T6 senders send d3 and play H3 in
+order to induce the .H3 ; L 3 / outcome. The inductive argument continues like this up until T2QC1
+sends d Q and plays H Q . A T2QC2 sender cannot hope to get anything better than .H1 ; H1 / and
+therefore sends h 1 and plays H1 , whereas a T2QC2 receiver plays Hq whenever h q ; dq or lq is
+played (for all q).
+This example illustrates that the number of thinking steps required to play equilibrium increases with the size of the game. Since the number of thinking steps required is unrealistically
+high, in these games players coordinate better if they are unable to communicate.
+
+16
+
+C.
+
+Other communication protocols
+
+Like much of the cheap talk literature, we have here considered communication of intentions.
+Messages are of the form “I plan to play...”. What would happen if players communicated requests instead, that is if messages were of the form “I want you to play...”? While the model still
+admits a notion of truthfulness, the analysis would be quite different. For example, it is no longer
+clear that T1 players should care about the messages that they receive, since T0 players' requests
+may reveal nothing about their intentions. We thus expect that credulity will play a more important role than truthfulness in this case. Speci cally, communication might now affect behavior if
+T1 senders believe that receivers are credulous in the sense that they ful ll requests.
+The paper only considers the communication of intentions by interested parties. A natural
+avenue for future research is to study the communication of desires or recommendations, by
+players themselves as well as by more or less interested third parties such as managers.23
+We do not allow communicating players to be silent, but it is of course possible to do so. Since
+players are assumed to have a slight preference for truthfulness, they might prefer to be silent
+when they do not know what action they are going to take in the action game (as T1 under twoway communication in coordination games). Thus, a suitably extended model will have speci c
+predictions regarding silence as well.
+Another natural extension is to consider multiple rounds of communication. Crawford (2007)
+has already used the level-k model to analyze longer conversations in the Battle of Sexes. He
+demonstrates that longer bilateral conversations improve coordination rates in a way that is qualitatively similar to, but quantitatively and intuitively different from, the equilibrium analysis of
+Farrell (1987).
+D.
+
+Multilateral communication
+
+Communication may also facilitate play of a potentially risky payoff dominant equilibrum in
+games with more than two players. In this section we show that for all nite common interest
+games with strategic complementarities and positive spillovers, multilateral pre-play communication facilities play of the payoff dominant equilibrium whenever T2C play the game.
+We restrict attention to games with unique best responses. The actions of each players are
+assigned integers f1; 2; :::; a i g. Such a game has strategic complementarities if best responses
+are non-decreasing in the opponents' actions, i.e., if a i a 0 i implies B Ri .a i / B Ri a 0 i .
+Finally, a game has positive spillovers if the own payoff increases in the opponents' actions, i.e.,
+0
+if a i a 0 i implies i .ai ; a i /
+i ai ; a i . Note that the payoff dominant equilibrium of a
+common interest game with positive spillovers involves all players choosing their highest actions,
+a D .a 1 ; a 2 ; :::; a n /.24
+PROPOSITION 7: Let G be a nite common interest game with unique best responses, strategic
+complementarities and positive spillovers. For type distributions with p0 D p1 D 0, players in
+0 N .G/ always coordinate on the payoff dominant Nash equilibrium of G.
+PROOF:
+See Appendix 2.
+23 For experimental evidence bearing on these issues, see for example John B. van Huyck, Ann B. Gillette and Raymond
+C. Battalio (1992), Roberto Weber et al. (2001) and Jordi Brandts and David J. Cooper (2007).
+24 To see this, suppose the payoff dominant equilibrium is some pro le a 6D a. Then at least one player has an action
+ai > ai available that by positive spillovers gives the opponents the same or higher payoffs, contradicting the assumption
+that a is the payoff dominant equilibrium that yields strictly higher payoffs to all players than all other outcomes of the
+game.
+
+17
+
+To better understand the intution behind Proposition 7, consider the Weak-link game. In a
+Weak-link game, each player picks an integer from 1 to M. Payoffs are such that all players
+want to play the minimum of what the opponents play, but all players are better off if everybody
+chooses higher numbers. Any strategy pro le in which all players choose the same number
+constitutes a Nash equilibrium, and the payoff dominant equilibrium involves all players playing
+M. Note that the Weak-link game is essentially a Stag Hunt game with more than two strategies.
+(For a more detailed exposition of the Weak-link game see for example Camerer 2003, Chapter 7.)
+If the Weak-link game is preceeded by multilateral communication, T1 sends a random message
+and best responds by playing the minimum of the received messages. A T2 player faces N 1
+opponents that play the minimum of the received messages, so T2C best responds by also playing
+the minimum of all received messages, but sends the message m (so that the best outcome occurs
+if all other players sent m). Hence, as long as there are no T0 and T1 players, there will be perfect
+coordination on the payoff dominant equilibrium.
+Note that the logic of this argument breaks down if only a subset of the players is allowed to
+send a message. To see this, suppose that all but one player is allowed to send a message. Then it
+is generally no longer optimal for T1 to play the minimum of the received message pro le since
+one opponent's action is unpredictable, which in turn implies that T2 does not play the minimum
+of the received messages, which would be required to guarantee play of the payoff dominant
+equilibrium.
+III.
+
+Evidence
+
+The level-k model of pre-play communication is primarily a model to explain initial responses,
+i.e., the behavior of players that play a game for the rst time. If players gain experience of the
+game and the population of players, they are likely to change their model of opponents' behavior
+or perhaps think further and proceed to higher levels of reasoning. In experimental work on preplay communication, players typically play the same game in several rounds. Strictly speaking,
+most of the available evidence is thus inadequate for our purposes.
+Another dif culty is that experimenters rarely elicit subjects' von Neumann-Morgenstern utilities. Instead, payoffs are typically monetary. In order to interpret the behavior as evidence of
+beliefs, experimenters thus have to assume a particular relationship between monetary allocations
+and utility. For example, they may assume that subjects maximize their own expected monetary
+payoff. However, subjects frequently have other goals; for example, it would be ludicrous to interpret Dictator game giving as evidence that subjects are confused about the game's payoffs. In
+principle, we should always distinguish games (involving utilities) from game forms (involving
+monetary payoffs).
+With these caveats in mind, and continuing to con ate games and game forms, let us brie y
+discuss some of the most relevant communication experiments.
+Two papers contrast one-way and two-way communication in Stag Hunt games. Cooper et
+al. (1992) report that average coordination on the payoff dominant equilibrium is 0 percent
+without communication, 53 percent with one-way communication and 91 percent with two-way
+communication. This study therefore suggests that communication plays a reassurance role, as
+emphasized by Crawford (1998).25 By contrast, in a Stag Hunt game with somewhat different
+relative payoffs, Burton, Graham Loomes and Sefton (2005) nd that one-way communication
+results in 52 percent coordination on the payoff dominant equilibrium, whereas two-way communication entailed average coordination on the payoff dominant equilibrium of only 34 percent.
+Both papers nd that behavior varies substantially across sessions, indicating that heterogeneity
+in early rounds of the game affect players choices in later rounds. Burton, Loomes and Sefton
+(2005) also collect data on some of their individual subjects' complete strategies (plans). By far
+25 Relatedly, Ellingsen and Johannesson (2004a) identi es a reassurance role of communication in hold-up games with
+multiple equilibria.
+
+18
+
+the most common strategy, in our notation, is hh; H; Li. According to the level-k model, this
+strategy should only be used by half of the T1 players. On the other hand, the strategy is used by
+all T2C in the cognitive hierarchy model (under the weak assumption that the average of the type
+distribution is below 7). Thus the cognitive hierarchy model ts the data better.
+In addition to the two studies comparing one-way and two-way communication, there are also
+a few studies of the Stag Hunt game that investigate either one-way or two-way communication.
+John Duffy and Nick Feltovich (2002) nd that one-way communication entails coordination on
+the payoff dominant equilibrium in 84 percent of the cases with one-way communication and
+in 61 percent of the cases without communication. Charness (2000) studies the effect of oneway communication in three versions of the Stag Hunt and nds 86 percent coordination on the
+payoff dominant equilibrium with one-way communication. Kenneth Clark, Stephen Kay and
+Sefton (2001) study two-way communication in two different Stag Hunt games. In the rst game,
+based on Cooper et al. (1992), playing L yields the same payoff irrespective of the opponents
+behavior. In this game, coordination on the payoff dominant equilibrium is 2 percent without
+communication and 70 with two-way communication. In a more standard Stag Hunt game, they
+nd that coordination on the payoff dominant equilibrium occurs in only 19 percent of the cases
+with two-way communication. Hence, it appears possible that the bene cial effects of two-way
+communication in Cooper et al. (1992) is sensitive to their choice of payoff matrix.
+On the other hand, the hypothesis that multilateral communication plays a major role in creating reassurance is more consistently supported by evidence from Weak-link games (see the previous subsection for a de nition); see in particular Andreas Blume and Andreas Ortmann (2007).
+Camerer and Weber (2007) summarize the existing evidence as follows: “Taken together, the
+above results suggest that communication can help solve even the most dif cult coordination
+problems, with relatively large numbers of players and where the minimum effort determines the
+entire group's output. However, the communication required to get large groups to ef ciency
+is extreme—players must all send messages and have public knowledge of messages.” This is
+precisely what Proposition 7 predicts, under the additional prerequisite that all players are suf ciently advanced.
+For mixed motive games the picture also seems clear, although the consistency in this case
+may be due to the low number of studies. Cooper et al. (1989) nd that one-way communication
+results in a high degree of coordination in Battle of the Sexes. Averaged over several rounds of
+play, Cooper et al. (1989) report that one-way communication increases coordination from 48
+percent without communication to 95 percent with one-way communication. With one round of
+two-way communication, coordination is 55 percent.26 For a comparison of this evidence with
+the prediction of Rabin's (1994) cheap talk model, see Costa-Gomes (2002).
+To summarize, we believe that more experimental work is needed in order to test the theory laid
+out in this paper. Such a test should focus on players' initial responses to several different games,
+which would allow a clearer separation of types. Costa-Gomes and Crawford (2006) illustrates
+how this can be done. It would also be useful to directly test the assumption about T0 players.
+Since T0 players mainly exist in the minds of other players, we need data on players' beliefs.
+Such data can be generated not only through belief elicitation (e.g., Costa-Gomes and Georg
+Weizsäcker 2008), but also by response time measurement (e.g., Camerer et al. 1993 and Ariel
+Rubinstein 2007), information search (e.g., Camerer et al. 1993, Costa-Gomes, Crawford and
+Broseta 2001 and Costa-Gomes and Crawford 2006) and through neuroimaging (e.g., Meghana
+Bhatt and Camerer 2005).
+
+26 It should be noted, however, that Cooper et al. (1989) allow the players to be silent and that 27 percent of the players
+in the two-way treatment, and 5 percent in the one-way treatment, choose to do so.
+
+19
+
+IV.
+
+Other Related Literature
+
+Throughout, we take for granted that players have access to a common language. That is, we
+take an eductive approach to communication. A substantial fraction of the literature on cheap
+talk starts from the opposite presumption that messages are not inherently meaningful; instead,
+messages may or may not acquire meaning in equilibrium—where equilibrium is a steady state of
+an evolutionary process of random matches between pre-programmed players; see, for example,
+Akihiko Matsui (1991), Karl Wärneryd (1991), Yong-Gwan Kim and Joel Sobel (1995), Luca
+Anderlini (1999) and Abhijit Banerjee and Weibull (2000). We view the eductive and evolutionary approaches as complementary. While the evolutionary approach can explain how language
+emerges in “old” games, it is less appropriate for our question of how an existing language will
+be used by inexperienced players in “new” games.
+There are also evolutionary models in which language has some pre-existing meaning (Blume
+1998 and Demichelis and Weibull 2008). Interestingly, Blume (1998) proves that two-way communication can be superior to one-way communication in games with strategic risk, such as Stag
+Hunt. Blume's result requires that messages have some small a priori information content. For
+example, players may have a slight preference for playing .H; H / if both players sent the message “H ” and the expected payoffs to playing H and L are otherwise equal. As Blume notes,
+his assumption amounts to assuming some small amount of gullibility on the part of receivers. In
+our eductive model, honesty of level-0 senders is instead what drives the superiority of two-way
+communication in the Stag Hunt game. Note also the parallel between our Proposition 7 and
+Blume's Proposition 5 which both demonstrate the effectiveness of multilateral communication
+in common interest games. Demichelis and Weibull (2008) nd that both one-way and twoway communication induces ef cient equilibria when players have lexicographic preferences for
+truthfulness.
+We focus on communication of intentions in complete information games and consequently
+ignore communication of private information. Crawford and Sobel (1982) and Jerry R. Green
+and Nancy L. Stokey (2007) (originally written in 1981) are seminal contributions to the study
+of strategic information transmission. See Navin Kartik (2008) and the references therein for
+analyses of strategic information transmission with positive lying costs.
+V.
+
+Conclusion
+
+Coordination of behavior in new strategic situations is facilitated by communication. Since
+communication seeks to affect the beliefs of others, assumptions about initial beliefs are central to the analysis. Our starting point is that prevailing assumptions about initial beliefs in the
+strategic communication literature, as captured by the rationalizability assumption, are problematic. Thus, we consider the role of communication within the two other general models of initial
+beliefs that have won widespread acceptance, namely the level-k and cognitive hierarchy models. Our analysis demonstrates that these models generate sharp predictions that are often, if not
+always, intuitively plausible.
+We see two immediate avenues for future research. First, there is a need for evidence that
+systematically distinguishes the effects of preferences, beliefs and rationality. In particular, identi cation of beliefs is only possible when preferences and rationality are controlled for. The
+task is not easy, since direct elicitation of beliefs tends to yield quite different measures than
+revealed measures of beliefs, possibly because direct elicitation affect the depth of subjects'
+strategic thinking; see Costa-Gomes and Weizsäcker (2008). Cleaner evidence would help us
+to evaluate existing models of beliefs and to suggest new ones, and it would clarify the status
+of previously puzzling experimental evidence concerning the effect of communication in games
+like Stag Hunt. Secondly, we entirely lack evidence concerning the effects of communication
+in many of the other games studied in this paper. Experimental evidence on such games would
+allow a true out-of-sample test of the theory.
+
+20
+
+REFERENCES
+Anderlini, Luca. 1999. “Communication, Computability, and Common Interest Games.” Games
+and Economic Behavior, 27: 1–37.
+Aumann, Robert, and Adam Brandenburger. 1995. “Epistemic Conditions for Nash Equilibrium.” Econometrica, 63(5): 1161–1180.
+Aumann, Robert J. 1974. “Subjectivity and Correlation in Randomized Strategies.” Journal of
+Mathematical Economics, 1(1): 67–96.
+Aumann, Robert J. 1990. “Nash Equilibria are not Self-Enforcing.” In Economic DecisionMaking: Games, Econometrics and Optimization. , ed. Jean J. Gabszewicz, Jean-François
+Richard and Laurence A. Wolsey, Chapter 10, 201–206. Amsterdam:Elsevier.
+Banerjee, Abhijit, and Jörgen W. Weibull. 2000. “Neutrally Stable Outcomes in Cheap-Talk
+Coordination Games.” Games and Economic Behavior, 32(1): 1–24.
+Beard, T. Randolph, and Richard O. Beil Jr. 1994. “Do People Rely on the Self-interested
+Maximization of Others? An Experimental Test.” Management Science, 40(2): 252–262.
+Bhatt, Meghana, and Colin F. Camerer. 2005. “Self-Referential Thinking and Equilibrium as
+States of Mind in Games: fMRI Evidence.” Games and Economic Behavior, 52(2): 424–459.
+Blume, Andreas. 1998. “Communication, Risk, and Ef ciency in Games.” Games and Economic
+Behavior, 22(2): 171–202.
+Blume, Andreas, and Andreas Ortmann. 2007. “The Effects of Costless Pre-play Communication: Experimental Evidence from Games with Pareto-ranked Equilibria.” Journal of Economic
+Theory, 132(1): 274–290.
+Brandts, Jordi, and David J. Cooper. 2007. “It's What You Say, Not What You Pay: An Experimental Study of Manager-Employee Relationships in Overcoming Coordination Failure.”
+Journal of the European Economic Association, 5(6): 1223–1268.
+Brocas, Isabelle, Juan D. Carillo, Colin F. Camerer, and Stephanie W. Wang. 2009. “Measuring Attention and Strategic Behavior in Games with Private Information.” Mimeo.
+Brown, Alexander L., Colin F. Camerer, and Dan Lovallo. 2009. “To Review or Not to Review? Limited Strategic Thinking at the Movie Box Of ce.” Mimeo.
+Burton, Anthony, and Martin Sefton. 2004. “Risk, Pre-play Communication and Equilibrium.”
+Games and Economic Behavior, 46(1): 23–40.
+Burton, Anthony, Graham Loomes, and Martin Sefton. 2005. “Communication and Efciency in Coordination Game Experiments.” In Experimental and Behavioral Economics.
+Vol. 13 of Advances in Applied Microeconomics, , ed. John Morgan, 63–85. Greenwich:JAI
+Press.
+Cai, Hongbin, and Joseph Tao-Yi Wang. 2006. “Overcommunication in Strategic Information
+Transmission Games.” Games and Economic Behavior, 56(1): 7–36.
+Camerer, Colin F. 2003. Behavioral Game Theory. Princeton:Princeton University Press.
+Camerer, Colin F., and Roberto Weber. 2007. “Experimental Organizational Economics.”
+Forthcoming in Handbook of Organizational Economics.
+Camerer, Colin F., Eric J. Johnson, Talia Rymon, and Sankar Sen. 1993. “Cognition and
+Framing in Sequential Bargaining for Gains and Losses.” In Frontiers of Game Theory. , ed.
+Ken Binmore, Alan Kirman and Piero Tani, 27–48. Cambridge:MIT Press.
+Camerer, Colin F., Teck-Hua Ho, and Juin-Kuan Chong. 2004. “A Cognitive Hierarchy Model
+of Games.” Quarterly Journal of Economics, 119(3): 861–898.
+Charness, Gary. 2000. “Self-Serving Cheap Talk: A Test of Aumann's Conjecture.” Games and
+Economic Behavior, 33(2): 177–194.
+Clark, Kenneth, Stephen Kay, and Martin Sefton. 2001. “When are Nash Equilibria Self-
+
+21
+
+Enforcing? An Experimental Analysis.” International Journal of Game Theory, 29(4): 495–
+515.
+Cooper, Russell, Douglas V. DeJong, Robert Forsythe, and Thomas W. Ross. 1989. “Communication in the Battle of the Sexes Game: Some Experimental Results.” RAND Journal of
+Economics, 20(4): 568–587.
+Cooper, Russell, Douglas V. DeJong, Robert Forsythe, and Thomas W. Ross. 1992. “Communication in Coordination Games.” Quarterly Journal of Economics, 107(2): 739–771.
+Costa-Gomes, Miguel A. 2002. “A Suggested Interpretation of Some Experimental Results on
+Pre-play Communication.” Journal of Economic Theory, 104: 104–136.
+Costa-Gomes, Miguel A., and Georg Weizsäcker. 2008. “Stated Beliefs and Play in Normalform Games.” Review of Economic Studies, 75(3): 729–762.
+Costa-Gomes, Miguel A., and Vincent P. Crawford. 2006. “Cognition and Behavior in TwoPerson Guessing games: An Experimental Study.” American Economic Review, 96: 1737–1768.
+Costa-Gomes, Miguel A., Vincent P. Crawford, and Bruno Broseta. 2001. “Cognition and
+Behavior in Normal-Form Games: An Experimental Study.” Econometrica, 69(5): 1193–1235.
+Costa-Gomes, Miguel A., Vincent P. Crawford, and Nagore Iriberri. 2009. “Comparing Models of Strategic Thinking in Van Huyck, Battalio, and Beil's Coordination Games.” Journal of
+the European Economic Association, 7: 365–376.
+Crawford, Vincent P. 1998. “A Survey of Experiments on Communication via Cheap Talk.”
+Journal of Economic Theory, 78(2): 286–298.
+Crawford, Vincent P. 2003. “Lying for Strategic Advantage: Rational and Boundedly Rational
+Misrepresentation of Intentions.” American Economic Review, 93(1): 133–149.
+Crawford, Vincent P. 2007. “Let's Talk It Over: Coordination via Preplay Communication with
+Level-k Thinking.” Mimeo.
+Crawford, Vincent P., and Joel Sobel. 1982. “Strategic Information Transmission.” Econometrica, 50: 1141–1152.
+Crawford, Vincent P., and Nagore Iriberri. 2007a. “Fatal Attraction: Salience, Naivete,
+and Sophistication in Experimental Hide-and-Seek Games.” American Economic Review,
+97(5): 1731–1750.
+Crawford, Vincent P., and Nagore Iriberri. 2007b. “Level-k Auctions: Can a Non-Equilibrium
+Model of Strategic Thinking Explain the Winner's Curse and Overbidding in Private-Value Auctions?” Econometrica, 75(6): 1721–1770.
+Crawford, Vincent P., Tamar Kugler, Zvika Neeman, and Ady Pauzner. 2009. “Behaviorally
+Optimal Auction Design: An Example and Some Observations.” Journal of the European Economic Association, 7: 377–387.
+Demichelis, Stefano, and Jörgen W. Weibull. 2008. “Language, Meaning and Games - A Model
+of Communication, Coordination and Evolution.” American Economic Review, 98(4): 1292–
+1311.
+Duffy, John, and Nick Feltovich. 2002. “Do Actions Speak Louder Than Words? An Experimental Comparison of Observation and Cheap Talk.” Games and Economic Behavior, 39(1): 1–
+27.
+Ellingsen, Tore, and Magnus Johannesson. 2004a. “Is There a Hold-Up Problem?” Scandinavian Journal of Economics, 106: 475–494.
+Ellingsen, Tore, and Magnus Johannesson. 2004b. “Promises, Threats, and Fairness.” Economic Journal, 114: 397–420.
+Ellingsen, Tore, and Robert Östling. 2006. “Organizational Structure as the Channeling of
+Boundedly Rational Pre-play Communication.” SSE/EFI Working Paper Series in Economics
+and Finance No 634, Stockholm School of Economics.
+
+22
+
+Farrell, Joseph. 1987. “Cheap Talk, Coordination, and Entry.” RAND Journal of Economics,
+18(1): 34–39.
+Farrell, Joseph. 1988. “Communication, Coordination and Nash Equilibrium.” Economic Letters, 27(3): 209–214.
+Farrell, Joseph, and Garth Saloner. 1988. “Coordination Through Committees and Markets.”
+RAND Journal of Economics, 19(2): 235–252.
+Farrell, Joseph, and Matthew Rabin. 1996. “Cheap Talk.” Journal of Economic Perspectives,
+10(3): 103–118.
+Fudenberg, Drew, and Jean Tirole. 1991. Game Theory. Cambridge:MIT Press.
+Genesove, David, and Wallace P. Mullin. 2001. “Rules, Communication, and Collusion: Narrative Evidence from the Sugar Institute Case.” American Economic Review, 91(3): 379–398.
+Gilbert, Margaret. 1990. “Rationality, Coordination, and Convention.” Synthese, 84(1): 1–21.
+Green, Jerry R., and Nancy L. Stokey. 2007. “A Two-person Game of Information Transmission.” Journal of Economic Theory, 135(1): 90–104.
+Ho, Teck-Hua, Colin F. Camerer, and Keith Weigelt. 1998. “Iterated Dominance and Iterated
+Best Response in Experimental “p-Beauty Contests”.” American Economic Review, 88(4): 947–
+969.
+Kartik, Navin. 2008. “Strategic Communication with Lying Costs.” Review of Economic Studies,
+forthcoming.
+Kawagoe, Toshiji, and Hirokazu Takizawa. 2008. “Level-k Analysis of Experimental Centipede Games.” Mimeo.
+Kawagoe, Toshiji, and Hirokazu Takizawa. 2009. “Equilibrium Re nement vs. Level-k Analysis: An Experimental Study of Cheap-talk Games with Private Information.” Games and Economic Behavior, 66(1): 238–255.
+Kerr, Norbert L., and Cynthia M. Kaufman-Gilliland. 1994. “Communication, Commitment and Cooperation in Social Dilemmas.” Journal of Personality and Social Psychology,
+66(3): 513–529.
+Kim, Yong-Gwan, and Joel Sobel. 1995. “An Evolutionary Approach to Pre-play Communication.” Econometrica, 63(5): 1181–1193.
+Lo, Pei-yu. 2007. “Language and Coordination Games.” Mimeo.
+Matsui, Akihiko. 1991. “Cheap Talk and Cooperation in Society.” Journal of Economic Theory,
+54(2): 245–258.
+Myerson, Roger. 1989. “Credible Negotiation Statements and Coherent Plans.” Journal of Economic Theory, 48(1): 264–303.
+Nagel, Rosemarie. 1995. “Unraveling in Guessing Games: An Experimental Study.” American
+Economic Review, 85(5): 1313–1326.
+Nowak, Martin A. 2006. Evolutionary Dynamics. Cambridge:Belknap Press of Harvard University Press.
+Östling, Robert. 2008. Bounded Rationality and Endogenous Preferences. Stockholm:Stockholm School of Economics.
+Östling, Robert, Joseph Tao-yi Wang, Eileen Chou, and Colin F. Camerer. 2009. “Testing
+Game Theory in the Field: Swedish LUPI Lottery Games.” SSE/EFI Working Paper Series in
+Economics and Finance No. 671, Stockholm School of Economics.
+Pinker, Steven, and Paul Bloom. 1990. “Natural Language and Natural Selection.” Behavioral
+and Brain Sciences, 13(4): 707–784.
+Rabin, Matthew. 1990. “Communication Between Rational Agents.” Journal of Economic Theory, 51(1): 144–170.
+
+23
+
+H
+L
+
+H
+uHH; uHH
+uLH ; uH L
+
+L
+uH L; uLH
+uLL; uLL
+
+F IGURE A1. S YMMETRIC 2 X 2 GAME
+
+Rabin, Matthew. 1994. “A Model of Pre-Game Communication.” Journal of Economic Theory,
+63(2): 370–391.
+Rosenthal, Robert. 1981. “Games of Perfect Information, Predatory Pricing and the Chain Store
+Paradox.” Journal of Economic Theory, 25(1): 92–100.
+Rubinstein, Ariel. 2007. “Instinctive and Cognitive Reasoning: A Study of Response Times.”
+Economic Journal, 117: 1243–1259.
+Schelling, Thomas C. 1966. Arms and In uence. New Haven:Yale University Press.
+Stahl, Dale O., and Paul W. Wilson. 1994. “Experimental Evidence on Players' Models of
+Other Players.” Journal of Economic Behavior and Organization, 25(3): 309–327.
+Stahl, Dale O., and Paul W. Wilson. 1995. “On Players' Models of Other Players: Theory and
+Experimental Evidence.” Games and Economic Behavior, 10(1): 33–51.
+van Huyck, John B., Ann B. Gillette, and Raymond C. Battalio. 1992. “Credible Assignments
+in Coordination Games.” Games and Economic Behavior, 4(1): 606–626.
+Wang, Joseph Tao-yi, Michael Spezio, and Colin F. Camerer. 2009. “Pinocchio's Pupil: Using
+Eyetracking and Pupil Dilation To Understand Truth-telling and Deception in Sender-Receiver
+Games.” American Economic Review, forthcoming.
+Wärneryd, Karl. 1991. “Evolutionary Stability in Unanimity Games with Cheap Talk.” Economic Letters, 36(4): 375–378.
+Weber, Roberto, Colin F. Camerer, Yuval Rottenstreich, and Marc Knez. 2001. “The Illusion of Leadership: Misattribution of Cause in Coordination Games.” Organization Science,
+12(5): 582–598.
+Weibull, Jörgen W. 1995. Evolutionary Game Theory. Cambridge:MIT Press.
+Wengström, Erik. 2008. “Price Competition, Level-k Theory and Communication.” Economics
+Bullentin, 3(66): 1–15.
+Appendix 1: Characterization of Behavior
+We here characterize behavior in all symmetric and generic 2 2 games using the level-k
+model. Consider the symmetric 2 2 game in Figure A1.
+We assume that this game is generic in the sense that none of the four different payoffs
+(u H H ; u H L ; u L H and u L L ) are identical. Depending on the relations u H H 7 u L H and u L L 7
+u H L , we can divide the class of generic 2 2 games into three familiar types of games as shown
+in Figure A2.27
+If we were only interested in Nash equilibria, there would be only one prediction for each of
+these games. For the level-k model, however, these games will be divided into subclasses with
+different predictions. The most important distinction is indicated by the dashed line in Figure A2.
+This condition corresponds to whether u L L u H L 7 u H H u L H , i.e., whether u L H C u L L 7
+u H H C u H L . This means that action H is risk dominant above the dashed line in Figure A2,
+whereas action L is risk dominant below it. For tractability, we disregard the cases when neither
+action is risk dominant throughout the paper.
+27 The classi cation of symmetric games follows Weibull (1995, Section 1.5.3) closely.
+
+24
+
+LL-HL
+Dominance solvable
+(e.g. Prisoners' Dilemma)
+
+Coordination games
+(e.g. Stag Hunt)
+
+HH-LH
+Mixed motive games
+(e.g. Battle of the Sexes)
+
+Dominance solvable
+(e.g. Prisoners' Dilemma)
+
+F IGURE A2. T HE FOUR TYPES OF GENERIC AND SYMMETRIC 2 X 2 GAMES
+
+Dominance solvable games
+Dominance solvable games are easiest to analyze, but also least interesting. In a dominance
+solvable game, players always have an incentive to play the dominant action, and neither one-way
+or two-way communication affect the actions players take.
+We assume u H L > u L L and u H H > u L H so that H (igh) is the dominant action. The case
+when L is the dominant action is symmetric.
+OBSERVATION 1: If players cannot communicate, T1C plays the dominant action H . If players
+can communicate, then both one-way and two-way communication implies that T1C sends h and
+plays H irrespective of any received messages.
+PROOF:
+Since H is a dominant action, T1C players play H irrespective of the believed behavior of the
+opponent. With the possibility to communicate, this also implies that there are no players that
+respond to messages, and T1C players are therefore indifferent about sending h or l. (Sending l
+would have been bene cial if some players responded to messages and u H L > u H H as in the
+Prisoners' Dilemma.) However, since players have a lexicographic preference for truthfulness,
+they send h.
+For dominance solvable 2 2 games, communication plays no role. Except for some miscoordination due to T0 playing the dominated action, all players play the dominant action. Since the
+proof only relies on the fact that each player has a strictly dominant strategy, the result extends to
+all normal form two-player games in which both players have a strictly dominant action.
+Coordination games
+Behavior in coordination games depends crucially on payoff and risk dominance. Since we
+restrict attention to generic games, one of the equilibria has to be payoff dominant. Let us without
+loss of generality assume that H (igh) is the payoff dominant equilibrium, i.e., u H H > u L L .
+OBSERVATION 2: (No communication) T1C plays the risk dominant action.
+
+25
+
+PROOF:
+T1 players believe that the opponent randomizes uniformly and therefore plays the risk dominant action. T2 players best respond and play the same risk dominant action, and so on.
+Absent communication, T1 plays the best response to a uniformly randomizing T0 opponent,
+which is the risk dominant action. Since this is a coordination game, more advanced players best
+respond by playing the same action.
+OBSERVATION 3: (One-way communication) If H is the risk dominant action, T1C sends h
+and plays H as sender and responds to messages as receiver. If L is the risk dominant action, T1
+sends l and plays L as sender and responds to messages as receiver. T2C sends h and plays H as
+sender and responds to messages as receiver.
+PROOF:
+First consider the case when H is risk dominant. T1 plays hh; H; H; Li (facing randomizing
+T0 receivers and truthful T0 senders). A T2 sender believes that the receiver best-responds to the
+sent message and therefore sends h and plays H . A T2 receiver believes that the sender will send
+h and play H , but if T2 receives message l, he believes it comes from a truthful T0 sender. T2C
+therefore plays hh; H; H; Li.
+Now consider the case when L is risk dominant. Then, T1 plays hl; L ; H; Li. T2C believes
+that the opponent responds to messages and that all messages are truthful and therefore play
+hh; H; H; Li.
+When risk and payoff-dominance coincide, one-way communication is suf cient to achieve
+coordination among T1C players. When there is a con ict between risk and payoff dominance,
+there is still perfect coordination among T1C players, but there is more play of the risk dominant
+equilibrium (since a T1 sender plays the action corresponding to that equilibrium).
+OBSERVATION 4: (Two-way communication) T1 randomizes messages and responds to received messages, whereas T2C sends h and plays H .
+PROOF:
+T1 believes that the opponent is truthful and therefore best responds to the received message,
+while sending random messages (not knowing what action will be taken). T2 believes that the
+opponent responds to messages and therefore sends and plays H irrespective of the message
+received (since T1 sends a random message). T3 therefore sends h and plays H . Receiving an
+unexpected l message, T3 also plays H , believing the opponent to be T1 . More advanced players
+reason in the same way and thus also play hh; H; H i.
+Mixed motive games
+Two common examples of 2 2 mixed motive games are Chicken or Hawk-Dove and Battle of
+the Sexes. In order for the game to have mixed motive, we assume u H L > u L L and u L H > u H H .
+Without loss of generality, we further assume that u H L > u L H so that each player prefer the
+equilibrium where he is the one to play H (igh). If u L L D u H H D 0, then this game is the Battle
+of the Sexes, whereas it is a Chicken game if u L L > u H H . Battle of the Sexes is a non-generic
+game, but the results in this section hold also for the Battle of the Sexes.
+OBSERVATION 5: (No communication) If H is the risk dominant action, then Tk plays H if k
+is odd and L if k is even. If L is the risk dominant action, then Tk plays L if k is odd and H if k
+is even.
+
+26
+
+PROOF:
+T1 plays the risk dominant action and Tk best-responds to the behavior of Tk 1 , which generates
+the alternating behavior.
+With no possibility to communicate, there is little players can do to coordinate on either of the
+asymmetric equilibria and behavior therefore alternates over thinking steps. One-way communication, on the other hand, provides a way to resolve the con ict in the game.
+OBSERVATION 6: (One-way communication) If H is the risk dominant action, then T1C sends
+h and plays H as sender and responds to messages as receiver. If L is the risk dominant action,
+then T1 sends l and plays L as sender and responds to messages as receiver. T2C sends h and
+plays H as sender and responds to messages as receiver.
+PROOF:
+First let H be the risk dominant action. A T1 sender faces a randomizing receiver and therefore
+plays H and sends h. A T1 receiver, on the other hand, responds to the sent message, believing it
+comes from a truthful T0 opponent. T2C can get the preferred equilibrium as sender and therefore
+sends h and plays H , while responding to messages as receiver. If instead L is the risk dominant
+action, a T1 sender instead sends and plays L, but otherwise behavior is unchanged.
+In general, senders play their preferred equilibrium and receivers yield and play their least
+preferred equilibrium. However, if the preferred equilibrium does not coincide with the risk
+dominant action, T1 senders send and play their least preferred equilibrium.28
+OBSERVATION 7: (Two-way communication) T1 sends h and l with equal probabilities and
+responds to messages. The behavior of T2C players cycles in thinking steps of six as follows:
+hh; H; H i,hl; L ; Li,hh; L ; H i,hh; H; H i,hl; L ; H i,hh; L ; H i.
+PROOF:
+T1 believes that the opponent is truthful and therefore sends random messages, but responds
+to the message sent. T2 believes that the opponent responds to messages and therefore plays
+hh; H; H i. T3 expects to receive a truthful h message, and thus sends l and plays L. If receiving
+an l message, T3 believes it comes from a T1 opponent and therefore plays L (believing the
+opponent will play H ). T4 expects to play H and therefore sends h. If receiving the message
+h, T4 believes it comes from a T2 opponent and therefore responds by playing L. T5 thinks
+the opponent responds to messages and therefore plays H and sends h. Believing an l message
+comes from a T3 opponent, T5 subsequently plays H . T6 expects to play L and therefore sends
+l, but plays H upon receiving an l message (believing it comes from a T3 opponent). T7 expects
+to play H and sends an h message, playing L if receiving an h message. T8 sends h and plays
+H; playing H if he receives an l message, just like T2 . T9 plays hl; L ; Li just like T3 . Since the
+behavior of eight and nine-level players is just like two- and three-level players, and the rationale
+for T4C did not depend on the behavior of T0 or T1 , behavior continues to cycle like this.
+Note that the behavior of T0 ; T1 ; T2 , and T3 is identical to Crawford (2007). However, T4
+responds to received messages in our model, but always plays H in Crawford (2007). The difference stems from the fact that we assume that whenever T4 receives the message h, the inference
+28 The result when L is risk dominant is sensitive to the assumption that T
+1C players have lexicographic preferences
+for truthfulness. Without that preference, level-1 senders would send random messages. Then, the behavior of higher
+level players would alternate and entail many instances of miscoordination.
+
+27
+
+is that it comes from a T2 player that will actually play H , whereas Crawford (2007) assumes
+that T4 believes an h message is a mistake by a T3 opponent who will play L anyway.29
+Comparing one-way and two-way communication, it is clear that two-way communication will
+lead to several instances of miscoordination. However, as pointed out by Crawford (2007), the
+degree of coordination may still be higher than predicted by Farrell (1987) and Rabin (1994).
+Finally, note the parallel to coordination games that risk-dominance only plays a role with
+one-way communication. The underlying reason is the strategic uncertainty resulting from randomizing T0 receivers.
+Appendix 2: Proofs
+Proof of Proposition 1
+From Observation 1 we know that communication has no effect in dominance solvable games.
+Similarly, for coordination games when H is risk dominant, Observation 2 and 3 show that communication has no effect. In coordination games when L is risk dominant, however, Observation
+2 and 3 show that one-way communication results in either .L ; L/ or .H; H /, whereas no communication results in .L ; L/. As long as there is a positive fraction of T2C players, one-way
+communication therefore results in higher expected payoffs.
+For mixed motive games, rst suppose L is risk dominant. From Observation 6 we know that
+one-way communication always induces coordination when T1C play, so the expected payoff for
+a player playing the game is .u H L C u L H /=2. However, as noted in Observation 5, no communication results in miscoordination when two odd-level players meet as well as when two even-level
+players meet. Under the standard type distribution, a player's average payoff is
+p22 u H H C p2 .1
+
+p2 / u H L C .1
+
+p2 / p2 u L H C .1
+
+p2 /2 u L L :
+
+One-way communication results in higher expected payoff whenever
+1
+2
+
+p2 .1
+
+p2 / .u H L C u L H / > p22 u H H C .1
+
+p2 /2 u L L .
+
+Now let H be the risk dominant outcome. The expected payoff for communicating players is
+unchanged, whereas the condition for one-way communication to result in higher expected payoff
+is
+1
+p2 .1 p2 / .u H L C u L H / > .1 p2 /2 u H H C p22 u L L :
+2
+Proof of Corollary 2
+From the proof of Proposition 1 it follows directly that one-way communication only decreases
+average payoffs if one of the conditions hold with opposite inequality. To see why the corresponding game is a Chicken, suppose rst that L is risk dominant. The rst condition in Proposition 1
+for one-sided communication to decrease expected payoffs is
+(1)
+
+1
+2
+
+p2 .1
+
+p2 / .u H L C u L H / < p22 u H H C .1
+
+p2 /2 u L L :
+
+29 Also note that although our T behaves as in Crawford (2007), the rationale for their behavior is slightly different.
+3
+T3 in our framework believes an l message comes from a T1 opponent that sends random messages. Since T3 sent the
+message l, the player believes that the opponent will play H and they therefore play L. In Crawford (2007), a T3 player
+that receives the counterfactual message l believes that it was a mistake by the T2 opponent and therefore plays L anyway.
+
+28
+TABLE A1—ACTION PROFILES PLAYED IN COORDINATION GAMES (L RISK DOMINANT )
+G (no communication)
+0
+1
+1
+1
+0
+Uniform
+2 LL; 2 L H
+1 LL; 1 L H
+1
+L
+L
+2
+2
+
+0 I .G/ (one-way communication)
+0R
+1R
+1
+1
+0S
+Uniform
+2 H H; 2 L L
+1 LL; 1 L H
+L
+L
+1S
+2
+2
+1
+1
+2S
+HH
+2 H H; 2 H L
+
+2R
+
+1 H H; 1 L L
+2
+2
+
+LL
+HH
+
+TABLE A2—ACTION PROFILES PLAYED IN COORDINATION GAMES (H RISK DOMINANT )
+G (no communication)
+0
+1
+1 H H; 1 H L
+0
+Uniform
+2
+2
+1
+1
+1
+HH
+2 H H; 2 H L
+
+0 I .G/ (one-way communication)
+0R
+1R
+1 H H; 1 L L
+0S
+Uniform
+2
+2
+1 H H; 1 H L
+1S
+HH
+2
+2
+
+We know that u H L > u L L , u L H > u H H and u H L > u L H , implying u H H < .u L H C u H L / =2.
+Suppose that u L L .u L H C u H L / =2. Then the right hand side of (1) satis es
+p22 u H H C .1
+
+1
+1
+p2 /2 u L L < p22 .u L H C u H L / C .1 p2 /2 .u L H C u H L /
+2
+2
+1
+p2 .1 p2 / .u L H C u H L / :
+D
+2
+
+This implies that (1) cannot hold, and therefore the condition fails unless u L L > .u L H C u H L / =2.
+This implies that u L L > u H H , which implies that it is a Chicken. An analogous argument can be
+made when H is risk dominant.
+Proof of Proposition 3
+From Observation 1 we know that communication has no effect in dominance solvable games.
+From Observation 2 and 3, we know that the outcomes of coordination games in which L is
+the risk dominant action. These are given in Table A1. Pairwise comparison of the cells in Table
+A1 reveals that one-way communication entails weakly more coordination.
+If instead H is risk dominant, the outcomes are given in Table A2. The degree of coordination
+is again the same or higher with one-way communication than without communication.
+Now consider mixed motive games. Observations 5 and 6 yield the outcomes reported in Table
+A3 when L is risk dominant. Pairwise comparisons of cells reveal that the degree of coordination
+is the same or higher with one-way communication.
+TABLE A3—ACTION PROFILES PLAYED IN MIXED MOTIVE GAMES (L RISK DOMINANT )
+G (no communication)
+0
+0
+Uniform
+1
+1
+Odd
+2 L H; 2 L L
+1 H L; 1 H H
+Even
+2
+2
+
+Odd
+1 H L; 1 LL
+2
+2
+LL
+HL
+
+Even
+1 L H; 1 H H
+2
+2
+LH
+HH
+
+0 I .G/ (one-way communication)
+0R
+1R
+1 H L; 1 L H
+0S
+Uniform
+2
+2
+1
+1
+1S
+LH
+2 L H; 2 L L
+1 H L; 1 H H
+2S
+HL
+2
+2
+
+2R
+
+1 H L; 1 L H
+2
+2
+
+LH
+HL
+
+29
+TABLE A4—ACTION PROFILES PLAYED IN MIXED MOTIVE GAMES (H RISK DOMINANT )
+G (no communication)
+0
+0
+Uniform
+1
+1
+Odd
+2 H L; 2 H H
+1
+1
+Even
+2 L H; 2 L L
+
+Odd
+1
+1
+2 L H; 2 H H
+HH
+LH
+
+Even
+1 H L; 1 LL
+2
+2
+HL
+LL
+
+0 I .G/ (one-way communication)
+0R
+1R
+1 H L; 1 L H
+0S
+Uniform
+2
+2
+1
+1
+HL
+1S
+2 H L; 2 H H
+
+TABLE A5—ACTION PROFILES PLAYED IN MIXED MOTIVE GAMES
+0 I I .G/ (two-way communication)
+1
+2
+3
+1 Uniform
+LH
+HL
+2
+HL
+HH
+HL
+3
+LH
+LH
+LL
+
+Finally, when H is risk dominant, the outcomes are given in Table A4. Again the degree of
+coordination is the same or higher for one-way communication for all combinations of types.
+Proof of Proposition 5
+As Observation 1 shows, communication plays no role in dominance solvable games, so twoway communication cannot increase expected payoffs. In coordination games in which H is risk
+dominant, Observation 3 and 4 imply that 0 I .G/ and 0 I I .G/ yield identical outcomes unless two
+T1 players meet. In 0 I .G/, players then coordinate on .H; H /, whereas there is miscoordination
+in 0 I I .G/. Thus 0 I .G/ is weakly better than 0 I I .G/ in this case. When instead L is the risk
+dominant action, T1 senders always play L. The average payoff associated with 0 I .G/ is thus
+p1 .1
+
+p1 / u L L C p1 .1
+
+p1 / u H H C .1
+
+p1 / .1
+
+p1 / u H H C p12 u L L :
+
+The average payoff associated with 0 I I .G/ is
+2 p1 .1
+
+p1 / u H H C .1
+
+p1 / .1
+
+p1 / u H H C
+
+1 2
+p .u L L C u H H C u L H C u H L / :
+4 1
+
+Two-way communication thus yields higher payoff whenever
+.4
+
+3 p1 / u H H C p1 .u L H C u H L / > .4
+
+p1 / u L L .
+
+Now consider mixed motive games. Observation 6 shows that for T1C players, 0 I .G/ entails
+perfect coordination, implying an average payoff of .u L H C u H L / =2. As shown in Observation
+7, matters are generally more complicated for 0 I I .G/ since behavior cycles over six thinking
+steps. Table A5 provides the resulting outcomes when con ning attention to standard type distributions.
+We know that .u L H C u H L / =2 > u H H . However, if u L L > .u L H C u H L / =2 then twoway communication might be preferable. Two-way communication is preferable to one-way
+
+30
+
+communication whenever
+p2 p1 C p1 p3 C p2 p3 C
+
+1 2
+p .u H L C u L H / C
+4 1
+
+p32 C
+
+1 2
+p uLL C
+4 1
+>
+
+Letting p2 D .1
+
+p1
+
+p22 C
+
+1 2
+p uHH
+4 1
+
+1
+.u L H C u H L / :
+2
+
+p3 / we can rewrite this as
+
+uLL uH H
+2 . p1
+>1C
+u L H C u H L 2u H H
+
+1/ . p1 1 C 2 p3 /
+:
+p12 C 4 p32
+
+A necessary condition for this inequality to hold is that u L L > .u L H C u H L / =2. This follows
+from the fact that the minimum of the right hand side is 1=2, whereas the left hand side can only
+be larger than 1=2 if u L L > .u L H C u H L / =2.
+Proof of Proposition 6
+First consider 0 I .G/. A T1 sender sends and plays the action that is optimal given that the
+opponent randomizes uniformly over actions. If there are several optimal actions, T1 plays each
+of them with equal probability and sends a truthful message. As a receiver, T1 best responds
+to messages. Since the payoff dominant equilibrium gives the highest possible payoff, T2 sends
+and plays the corresponding action as sender, while best responding to messages as receiver. It
+follows that T3C behaves as T2 . Now consider 0 I I .G/. T1 believes the opponent is truthful and
+therefore best responds to messages, but sends a random message. T2C believes the opponent
+best responds and therefore sends and plays the payoff dominant equilibrium irrespective of the
+received message.
+Proof of Proposition 7
+First suppose that a i is not strictly dominant for any player. A T1 player faces truthful T0
+senders, so T1 sends a random message and best responds to the message pro le received. In
+particular, if m i D a i , then T1 plays a i since a is the payoff dominant equilibrium. T2 consequently believes that the opponents best-respond to messages. Since G has strategic complementarities, B Ri .m i / is non-decreasing in m i , and since there are positive spillovers, it is weakly
+dominant for a T2 player to send the message m i D a i . However, since a gives strictly higher
+payoff than all other outcomes of the game, it is strictly dominant to send the message m i D a i
+and play a i if m i D a i . T3C similarly achieves the highest payoff by sending a i and playing
+a i if m i D a i .
+If the action a i is strictly dominant for some player i, a T1 player i truthfully sends the message
+m i D a i and plays a i . If a j is strictly dominant for all other players j 6D i, then a T2 player i is
+indifferent about what message to send, but since a T2 player i expects to play a i , he sends a i .
+(If only some other players have strictly dominant strategies, the same argument for the behavior
+of T2 's message as in the previous paragraph hold.) T2C consequently sends a i and plays a i if
+m i D a i also in the presence of strictly dominant actions.
+
+

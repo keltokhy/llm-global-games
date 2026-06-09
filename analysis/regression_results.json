@@ -157,7 +157,13 @@
       "mean_predicted_prob": 0.3929,
       "base_model": "arcee-ai--trinity-large-preview_free",
       "base_treatment": "pure",
-      "n_clusters": 4700
+      "n_clusters": 4700,
+      "ame_discrete": {
+        "treat_comm": 0.0125,
+        "treat_flip": -0.036,
+        "treat_scramble": -0.0367,
+        "treat_surveillance": -0.1786
+      }
     },
     "theta_only_logit": {
       "n_obs": 240557,
@@ -490,7 +496,8 @@
           "ci_hi": -3.6096
         }
       },
-      "base_treatment": "beliefs_comm"
+      "base_treatment": "beliefs_comm",
+      "n_clusters": 369
     },
     "action_equation": {
       "n_obs": 14990,
@@ -548,7 +555,12 @@
         "treat_beliefs_surveillance": 0.0051
       },
       "mean_predicted_prob": 0.3964,
-      "base_treatment": "beliefs_comm"
+      "base_treatment": "beliefs_comm",
+      "n_clusters": 369,
+      "model_counts": {
+        "mistralai--mistral-small-creative": 14981,
+        "meta-llama--llama-3.3-70b-instruct": 9
+      }
     }
   },
   "finite_n_benchmark": {
@@ -559,20 +571,20 @@
         "x0": -0.0522
       },
       "n_bins": 15,
-      "n_periods": 1399,
+      "n_periods": 1400,
       "pearson_r": 0.9993,
       "pearson_p": 0.0,
       "rmse": 0.0187,
       "mae": 0.0068,
       "train_n_periods": 979,
-      "test_n_periods": 420,
+      "test_n_periods": 421,
       "bins": [
         {
-          "theta_mid": -2.7662,
-          "empirical_join_rate": 0.8517,
+          "theta_mid": -2.7828,
+          "empirical_join_rate": 0.8574,
           "empirical_fall_rate": 1.0,
           "predicted_fall_rate": 1.0,
-          "n_periods": 11
+          "n_periods": 12
         },
         {
           "theta_mid": -2.3455,
@@ -681,19 +693,26 @@
     "per_model": {
       "arcee-ai--trinity-large-preview_free": {
         "logistic_params": {
-          "L": 0.9668,
-          "k": -1.3397,
-          "x0": 0.1865
+          "L": 0.9058,
+          "k": -1.5042,
+          "x0": 0.3075
         },
-        "n_bins": 9,
-        "n_periods": 99,
-        "pearson_r": 0.9786,
-        "pearson_p": 5e-06,
-        "rmse": 0.1076,
-        "mae": 0.0429,
-        "train_n_periods": 69,
+        "n_bins": 10,
+        "n_periods": 100,
+        "pearson_r": 0.9798,
+        "pearson_p": 1e-06,
+        "rmse": 0.1021,
+        "mae": 0.0386,
+        "train_n_periods": 70,
         "test_n_periods": 30,
         "bins": [
+          {
+            "theta_mid": -2.8514,
+            "empirical_join_rate": 0.85,
+            "empirical_fall_rate": 1.0,
+            "predicted_fall_rate": 1.0,
+            "n_periods": 1
+          },
           {
             "theta_mid": -1.8128,
             "empirical_join_rate": 0.9067,
@@ -726,7 +745,7 @@
             "theta_mid": 0.1993,
             "empirical_join_rate": 0.4367,
             "empirical_fall_rate": 0.6842,
-            "predicted_fall_rate": 0.9991,
+            "predicted_fall_rate": 0.9994,
             "n_periods": 19
           },
           {
@@ -758,26 +777,33 @@
             "n_periods": 4
           }
         ],
-        "oos_pearson_r": 0.9086,
-        "oos_pearson_p": 0.000695,
-        "oos_rmse": 0.2098,
-        "oos_mae": 0.0919
+        "oos_pearson_r": 0.9076,
+        "oos_pearson_p": 0.000722,
+        "oos_rmse": 0.2112,
+        "oos_mae": 0.0924
       },
       "meta-llama--llama-3.3-70b-instruct": {
         "logistic_params": {
-          "L": 0.9788,
-          "k": -2.6854,
-          "x0": 0.0477
+          "L": 0.9866,
+          "k": -2.6452,
+          "x0": 0.039
         },
-        "n_bins": 9,
-        "n_periods": 99,
-        "pearson_r": 0.9536,
-        "pearson_p": 6.8e-05,
-        "rmse": 0.1558,
-        "mae": 0.0592,
-        "train_n_periods": 69,
+        "n_bins": 10,
+        "n_periods": 100,
+        "pearson_r": 0.9567,
+        "pearson_p": 1.5e-05,
+        "rmse": 0.1477,
+        "mae": 0.0533,
+        "train_n_periods": 70,
         "test_n_periods": 30,
         "bins": [
+          {
+            "theta_mid": -2.8514,
+            "empirical_join_rate": 1.0,
+            "empirical_fall_rate": 1.0,
+            "predicted_fall_rate": 1.0,
+            "n_periods": 1
+          },
           {
             "theta_mid": -1.8128,
             "empirical_join_rate": 0.9467,
@@ -810,7 +836,7 @@
             "theta_mid": 0.1993,
             "empirical_join_rate": 0.3474,
             "empirical_fall_rate": 0.5263,
-            "predicted_fall_rate": 0.9881,
+            "predicted_fall_rate": 0.9878,
             "n_periods": 19
           },
           {
@@ -842,26 +868,33 @@
             "n_periods": 4
           }
         ],
-        "oos_pearson_r": 0.8928,
-        "oos_pearson_p": 0.001193,
-        "oos_rmse": 0.2229,
-        "oos_mae": 0.0967
+        "oos_pearson_r": 0.8931,
+        "oos_pearson_p": 0.001182,
+        "oos_rmse": 0.2226,
+        "oos_mae": 0.0966
       },
       "minimax--minimax-m2-her": {
         "logistic_params": {
-          "L": 0.6431,
-          "k": -1.3385,
-          "x0": 1.0172
+          "L": 0.5711,
+          "k": -1.7021,
+          "x0": 1.2276
         },
-        "n_bins": 9,
-        "n_periods": 99,
-        "pearson_r": 0.9987,
+        "n_bins": 10,
+        "n_periods": 100,
+        "pearson_r": 0.9988,
         "pearson_p": 0.0,
-        "rmse": 0.0283,
-        "mae": 0.0132,
-        "train_n_periods": 69,
+        "rmse": 0.0262,
+        "mae": 0.0117,
+        "train_n_periods": 70,
         "test_n_periods": 30,
         "bins": [
+          {
+            "theta_mid": -2.8514,
+            "empirical_join_rate": 0.4167,
+            "empirical_fall_rate": 1.0,
+            "predicted_fall_rate": 1.0,
+            "n_periods": 1
+          },
           {
             "theta_mid": -1.8128,
             "empirical_join_rate": 0.6356,
@@ -894,14 +927,14 @@
             "theta_mid": 0.1993,
             "empirical_join_rate": 0.4855,
             "empirical_fall_rate": 0.9474,
-            "predicted_fall_rate": 0.9992,
+            "predicted_fall_rate": 0.9993,
             "n_periods": 19
           },
           {
             "theta_mid": 0.6534,
             "empirical_join_rate": 0.4077,
             "empirical_fall_rate": 0.0714,
-            "predicted_fall_rate": 0.0041,
+            "predicted_fall_rate": 0.0067,
             "n_periods": 14
           },
           {
@@ -929,7 +962,7 @@
         "oos_pearson_r": 0.9802,
         "oos_pearson_p": 4e-06,
         "oos_rmse": 0.1025,
-        "oos_mae": 0.0478
+        "oos_mae": 0.0479
       },
       "mistralai--mistral-small-creative": {
         "logistic_params": {
@@ -938,20 +971,20 @@
           "x0": -0.1114
         },
         "n_bins": 15,
-        "n_periods": 599,
+        "n_periods": 600,
         "pearson_r": 0.9968,
         "pearson_p": 0.0,
         "rmse": 0.0415,
         "mae": 0.0148,
         "train_n_periods": 420,
-        "test_n_periods": 179,
+        "test_n_periods": 180,
         "bins": [
           {
-            "theta_mid": -2.7187,
-            "empirical_join_rate": 0.8633,
+            "theta_mid": -2.7802,
+            "empirical_join_rate": 0.8775,
             "empirical_fall_rate": 1.0,
             "predicted_fall_rate": 1.0,
-            "n_periods": 3
+            "n_periods": 4
           },
           {
             "theta_mid": -2.3455,
@@ -1059,25 +1092,25 @@
       },
       "openai--gpt-oss-120b": {
         "logistic_params": {
-          "L": 0.8234,
-          "k": -3.1464,
-          "x0": -0.005
+          "L": 0.8287,
+          "k": -3.1019,
+          "x0": -0.011
         },
         "n_bins": 15,
-        "n_periods": 199,
+        "n_periods": 200,
         "pearson_r": 0.9968,
         "pearson_p": 0.0,
-        "rmse": 0.0382,
-        "mae": 0.0139,
-        "train_n_periods": 139,
+        "rmse": 0.0385,
+        "mae": 0.0141,
+        "train_n_periods": 140,
         "test_n_periods": 60,
         "bins": [
           {
-            "theta_mid": -2.5819,
-            "empirical_join_rate": 0.7917,
+            "theta_mid": -2.7167,
+            "empirical_join_rate": 0.8158,
             "empirical_fall_rate": 1.0,
             "predicted_fall_rate": 1.0,
-            "n_periods": 1
+            "n_periods": 2
           },
           {
             "theta_mid": -2.1557,
@@ -1132,7 +1165,7 @@
             "theta_mid": 0.2595,
             "empirical_join_rate": 0.2212,
             "empirical_fall_rate": 0.3333,
-            "predicted_fall_rate": 0.4371,
+            "predicted_fall_rate": 0.4391,
             "n_periods": 24
           },
           {
@@ -1178,32 +1211,32 @@
             "n_periods": 4
           }
         ],
-        "oos_pearson_r": 0.9706,
+        "oos_pearson_r": 0.9704,
         "oos_pearson_p": 0.0,
-        "oos_rmse": 0.118,
-        "oos_mae": 0.04
+        "oos_rmse": 0.1183,
+        "oos_mae": 0.0401
       },
       "qwen--qwen3-235b-a22b-2507": {
         "logistic_params": {
-          "L": 0.8689,
-          "k": -3.0219,
-          "x0": -0.0275
+          "L": 0.8836,
+          "k": -2.8866,
+          "x0": -0.0447
         },
         "n_bins": 15,
-        "n_periods": 199,
-        "pearson_r": 0.9886,
+        "n_periods": 200,
+        "pearson_r": 0.9878,
         "pearson_p": 0.0,
-        "rmse": 0.0732,
-        "mae": 0.0246,
-        "train_n_periods": 139,
+        "rmse": 0.0758,
+        "mae": 0.0253,
+        "train_n_periods": 140,
         "test_n_periods": 60,
         "bins": [
           {
-            "theta_mid": -2.5819,
-            "empirical_join_rate": 0.88,
+            "theta_mid": -2.7167,
+            "empirical_join_rate": 0.94,
             "empirical_fall_rate": 1.0,
             "predicted_fall_rate": 1.0,
-            "n_periods": 1
+            "n_periods": 2
           },
           {
             "theta_mid": -2.1557,
@@ -1258,7 +1291,7 @@
             "theta_mid": 0.2595,
             "empirical_join_rate": 0.1983,
             "empirical_fall_rate": 0.2083,
-            "predicted_fall_rate": 0.4715,
+            "predicted_fall_rate": 0.4824,
             "n_periods": 24
           },
           {
@@ -1304,26 +1337,33 @@
             "n_periods": 4
           }
         ],
-        "oos_pearson_r": 0.9668,
+        "oos_pearson_r": 0.9658,
         "oos_pearson_p": 0.0,
-        "oos_rmse": 0.1256,
-        "oos_mae": 0.0422
+        "oos_rmse": 0.1275,
+        "oos_mae": 0.0427
       },
       "qwen--qwen3-30b-a3b-instruct-2507": {
         "logistic_params": {
           "L": 1.0,
-          "k": -1.454,
-          "x0": 0.2012
+          "k": -1.458,
+          "x0": 0.201
         },
-        "n_bins": 9,
-        "n_periods": 99,
-        "pearson_r": 0.9864,
-        "pearson_p": 1e-06,
-        "rmse": 0.0876,
-        "mae": 0.0293,
-        "train_n_periods": 69,
+        "n_bins": 10,
+        "n_periods": 100,
+        "pearson_r": 0.9871,
+        "pearson_p": 0.0,
+        "rmse": 0.0831,
+        "mae": 0.0263,
+        "train_n_periods": 70,
         "test_n_periods": 30,
         "bins": [
+          {
+            "theta_mid": -2.8514,
+            "empirical_join_rate": 1.0,
+            "empirical_fall_rate": 1.0,
+            "predicted_fall_rate": 1.0,
+            "n_periods": 1
+          },
           {
             "theta_mid": -1.8128,
             "empirical_join_rate": 0.9733,

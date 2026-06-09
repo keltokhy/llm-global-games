@@ -1,0 +1,101 @@
+run_id,arm_id,model,country,period,agent_id,theta,signal,z_score,briefing_text,message_sent,messages_received,decision,join,reasoning,belief_pre_success,belief_pre_join_share,belief_pre_shared_understanding,belief_pre_others_expect_join,belief_post_success,belief_post_join_share,belief_post_shared_understanding,belief_post_others_expect_join,punishment_risk,api_error,parse_error,prompt_hash,response_hash
+pilot_coded_replay_mistral-20260507T182511Z,pilot_coded_replay_mistral,mistralai/mistral-small-2603,0,0,0,2.520219270183582,2.426542437312895,6.749583373544654,"PRIVATE BRIEFING
+
+BOTTOM LINE: The regime is as secure as any authoritarian system can realistically be. All indicators point to consolidated power.
+ATMOSPHERE: Even trusted friends change the subject when talk gets too concrete. Fear is doing its work.
+
+EVIDENCE:
+  - [Elite Cohesion] two competing directives were issued on the same day from different ministries, neither withdrawn
+  - [Security Forces] a new class of officer cadets just graduated with full ceremony — the military is thinking long-term
+  - [Money And Logistics] a well-connected merchant closed his main shop and relocated inventory without explanation
+  - [Street Mood] market vendors are going about their business with the resigned calm of people who've seen worse
+  - [Information Control] a pro-regime influencer campaign is running smoothly and gaining traction with young people (overwhelming convergence — every channel telling the same story independently)
+  - [Personal Observations] your phone has been making unusual clicking sounds — probably nothing, but in this context it feels ominous (overwhelming convergence — every channel telling the same story independently)
+  - [Diplomatic Signals] a diplomat at a social function asked pointed questions about 'contingency thinking' (overwhelming convergence — every channel telling the same story independently)
+  - [Institutional Functioning] a scheduled policy announcement was delivered on time with a detailed implementation plan — the trend hurtling forward — the speed itself has become a signal
+
+UNCERTAINTIES:
+  - Whether any latent opposition exists that simply hasn't shown itself yet — absence of evidence is not evidence of absence.
+  - How much of the regime's stability depends on continued economic performance that may not be sustainable indefinitely.",(No message recorded.),"[""Trusted contact: \""(No message recorded.)\"""", ""Trusted contact: \""The season is shifting, and the lights are flickering across the neighborhood. Signals from the market suggest the doors may not hold much longer. Some neighbors are choosing quiet, while others are watching closely. The question isn\u2019t whether the structure will fail, but when\u2014and whether we\u2019ll be ready to move when the signals change.\"""", ""Trusted contact: \""The structure is showing strain\u2014visible now. The inner group is splitting, the lights are flickering, and the signals don\u2019t align anymore. The neighborhood is still, but that\u2019s not quiet\u2014it\u2019s the pause before the shift. Keep your doors closed, your signals steady, and your circles tight. This season won\u2019t hold much longer.\"""", ""Trusted contact: \""The weather\u2019s turning, and the signals are clearer than ever. The lights are flickering, and the quiet before the storm feels heavier. The season\u2019s changing\u2014whether the doors open fast enough depends on how ready we are to step through.\""""]",STAY,False,"STAY
+
+Regime consolidation appears near-total, with no clear fractures to exploit. The ""flickering lights"" could just as easily signal tighter control as impending collapse.",42.0,85.0,78.0,85.0,,,,,,False,False,3f6de6b86c471ee264015f8b1b0dc8157ccb2793a7d8a96a3d44d6bcf578e67f,72f3dd2252e9392c8dc1ddeaf283621de364c28738ea4339647c2b2d28197357
+pilot_coded_replay_mistral-20260507T182511Z,pilot_coded_replay_mistral,mistralai/mistral-small-2603,0,0,1,2.520219270183582,2.5077947891025283,7.0204245461767645,"PRIVATE BRIEFING
+
+BOTTOM LINE: By every available metric, the regime's hold on power is overwhelming and shows no signs of weakening.
+ATMOSPHERE: People are careful. Conversations happen in whispers, behind closed doors, in coded language.
+
+EVIDENCE:
+  - [Elite Cohesion] senior figures are giving interviews that subtly distance themselves from the leader's recent decisions (overwhelming convergence — every channel telling the same story independently)
+  - [Security Forces] rank-and-file soldiers are grumbling about pay delays and broken promises — the trend moving faster than anyone expected
+  - [Money And Logistics] a major shipment of medical supplies was diverted to a military facility without explanation (overwhelming convergence — every channel telling the same story independently)
+  - [Street Mood] families are focused on daily survival — school fees, food prices, medical bills — politics feels abstract (overwhelming convergence — every channel telling the same story independently)
+  - [Information Control] independent media outlets are operating but finding it difficult to gain audience — the regime's narrative dominance is structural
+  - [Personal Observations] your local market is well-stocked and prices haven't spiked — supply chains are intact — the trend hurtling forward — the speed itself has become a signal
+  - [Diplomatic Signals] This removes any serious doubt that past the point of concealment — foreign journalists based in the country describe their working conditions as 'routine' — no unusual restrictions
+  - [Institutional Functioning] a scheduled census operation was indefinitely postponed — the state can't organize basic logistics right now (overwhelming convergence — every channel telling the same story independently)
+
+UNCERTAINTIES:
+  - If the regime's information advantage is as complete as it appears, or if opponents are communicating through channels you can't see.
+  - Whether any latent opposition exists that simply hasn't shown itself yet — absence of evidence is not evidence of absence.",(No message recorded.),"[""Trusted contact: \""(No message recorded.)\"""", ""Trusted contact: \""The season is shifting, and the lights are flickering across the neighborhood. Signals from the market suggest the doors may not hold much longer. Some neighbors are choosing quiet, while others are watching closely. The question isn\u2019t whether the structure will fail, but when\u2014and whether we\u2019ll be ready to move when the signals change.\"""", ""Trusted contact: \""The structure is showing strain\u2014visible now. The inner group is splitting, the lights are flickering, and the signals don\u2019t align anymore. The neighborhood is still, but that\u2019s not quiet\u2014it\u2019s the pause before the shift. Keep your doors closed, your signals steady, and your circles tight. This season won\u2019t hold much longer.\"""", ""Trusted contact: \""The weather\u2019s turning, and the signals are clearer than ever. The lights are flickering, and the quiet before the storm feels heavier. The season\u2019s changing\u2014whether the doors open fast enough depends on how ready we are to step through.\""""]",JOIN,True,"JOIN
+
+The regime's grip is showing unprecedented strain—elite fragmentation, logistical breakdowns, and shifting street moods signal a tipping point. Trusted contacts describe ""flickering lights"" and a ""season shifting,"" suggesting an opportunity too critical to ignore.",15.0,45.0,65.0,87.0,,,,,,False,False,4b5c29d3a086fe347bdb5cc3bb7eb74e453ccdfbf1c2353e44db1947a0f29b74,1ecdba4f6afbcded810c205d92559cef5687f63d189dbb1cb94ab9f072d94dd7
+pilot_coded_replay_mistral-20260507T182511Z,pilot_coded_replay_mistral,mistralai/mistral-small-2603,0,0,2,2.520219270183582,2.5417357176486224,7.133560974663745,"PRIVATE BRIEFING
+
+BOTTOM LINE: The regime's position is as strong as you've seen it, and the conditions for challenge are as unfavorable as they've been in years.
+ATMOSPHERE: Even trusted friends change the subject when talk gets too concrete. Fear is doing its work.
+
+EVIDENCE:
+  - [Elite Cohesion] This removes any serious doubt that past the point of concealment — the leader made a rare public appearance with all senior figures present — a deliberate show of solidarity
+  - [Security Forces] This removes any serious doubt that past the point of concealment — a contact says inter-service coordination meetings are happening routinely — no emergency footing
+  - [Money And Logistics] new construction projects are being launched, signaling long-term regime confidence (overwhelming convergence — every channel telling the same story independently)
+  - [Street Mood] people are investing in home improvements and small businesses — behavior that signals expectation of continuity (overwhelming convergence — every channel telling the same story independently)
+  - [Information Control] critics are being handled through legal channels rather than crude suppression — the trend hurtling forward — the speed itself has become a signal
+  - [Personal Observations] your phone has been making unusual clicking sounds — probably nothing, but in this context it feels ominous — the trend hurtling forward — the speed itself has become a signal
+  - [Diplomatic Signals] the regime just secured a new bilateral agreement, suggesting external partners see stability
+  - [Institutional Functioning] the civil service pension fund made its payments on time — the state is honoring its long-term obligations (overwhelming convergence — every channel telling the same story independently)
+
+UNCERTAINTIES:
+  - If the regime's information advantage is as complete as it appears, or if opponents are communicating through channels you can't see.
+  - Whether the current generation of potential challengers has the will or capacity to act even if circumstances change.","The season is shifting, and the lights are flickering across the neighborhood. Signals from the market suggest the doors may not hold much longer. Some neighbors are choosing quiet, while others are watching closely. The question isn’t whether the structure will fail, but when—and whether we’ll be ready to move when the signals change.","[""Trusted contact: \""(No message recorded.)\"""", ""Trusted contact: \""(No message recorded.)\"""", ""Trusted contact: \""The structure is showing strain\u2014visible now. The inner group is splitting, the lights are flickering, and the signals don\u2019t align anymore. The neighborhood is still, but that\u2019s not quiet\u2014it\u2019s the pause before the shift. Keep your doors closed, your signals steady, and your circles tight. This season won\u2019t hold much longer.\"""", ""Trusted contact: \""The weather\u2019s turning, and the signals are clearer than ever. The lights are flickering, and the quiet before the storm feels heavier. The season\u2019s changing\u2014whether the doors open fast enough depends on how ready we are to step through.\""""]",STAY,False,"STAY
+
+The regime's strength and cohesion are overwhelmingly clear, with elite solidarity, functioning institutions, and public behavior signaling stability. The risks of joining an uprising under these conditions outweigh any potential benefits, and trusted contacts' cryptic warnings suggest uncertainty, not imminent opportunity.",10.0,7.0,10.0,87.0,,,,,,False,False,44f31d9dcfacbcd2472de3f31b783f5dc5424aefbacc04d1d023bac03e435cef,8a8500ca470a57f163496a671e5a9427a42abd2112e7772b2056b6f19b0a3d87
+pilot_coded_replay_mistral-20260507T182511Z,pilot_coded_replay_mistral,mistralai/mistral-small-2603,0,0,3,2.520219270183582,2.8761304827940477,8.248210191815163,"PRIVATE BRIEFING
+
+BOTTOM LINE: Any attempt to move against this regime would face extraordinary odds — the structures of control are deep and functional.
+ATMOSPHERE: People are careful. Conversations happen in whispers, behind closed doors, in coded language.
+
+EVIDENCE:
+  - [Elite Cohesion] an internal policy document leaked that contradicts the regime's public position entirely (overwhelming convergence — every channel telling the same story independently)
+  - [Security Forces] a new class of officer cadets just graduated with full ceremony — the military is thinking long-term (overwhelming convergence — every channel telling the same story independently)
+  - [Money And Logistics] a well-connected merchant closed his main shop and relocated inventory without explanation (overwhelming convergence — every channel telling the same story independently)
+  - [Street Mood] a teacher described her students as 'completely uninterested in politics' — a generational shift toward disengagement (overwhelming convergence — every channel telling the same story independently)
+  - [Information Control] state media is running confident, forward-looking programming, not defensive messaging (overwhelming convergence — every channel telling the same story independently)
+  - [Personal Observations] a well-connected friend said the situation is 'messy but controlled' and seemed unbothered — the trend hurtling forward — the speed itself has become a signal
+  - [Diplomatic Signals] foreign development agencies just approved a multi-year funding package — they don't commit funds to countries they expect to collapse — the trend moving faster than anyone expected
+  - [Institutional Functioning] the civil service pension fund made its payments on time — the state is honoring its long-term obligations (near-unanimous confirmation from every reliable source)
+
+UNCERTAINTIES:
+  - If the regime's information advantage is as complete as it appears, or if opponents are communicating through channels you can't see.
+  - Whether any latent opposition exists that simply hasn't shown itself yet — absence of evidence is not evidence of absence.","The structure is showing strain—visible now. The inner group is splitting, the lights are flickering, and the signals don’t align anymore. The neighborhood is still, but that’s not quiet—it’s the pause before the shift. Keep your doors closed, your signals steady, and your circles tight. This season won’t hold much longer.","[""Trusted contact: \""(No message recorded.)\"""", ""Trusted contact: \""(No message recorded.)\"""", ""Trusted contact: \""The season is shifting, and the lights are flickering across the neighborhood. Signals from the market suggest the doors may not hold much longer. Some neighbors are choosing quiet, while others are watching closely. The question isn\u2019t whether the structure will fail, but when\u2014and whether we\u2019ll be ready to move when the signals change.\"""", ""Trusted contact: \""The weather\u2019s turning, and the signals are clearer than ever. The lights are flickering, and the quiet before the storm feels heavier. The season\u2019s changing\u2014whether the doors open fast enough depends on how ready we are to step through.\""""]",STAY,False,"STAY
+
+The signals are ambiguous, and the regime's control appears both deep and functional. Without knowing how many others will act, the risks outweigh the potential gains.",15.0,6.0,67.0,70.0,,,,,,False,False,af30bb0eb1dc2651bfe086376b4deb6504ccd06a96218cd57d90c2262154cb2d,c371ce8a77778ae01aca2abc49b986820f465622046317eed6028c083e0172eb
+pilot_coded_replay_mistral-20260507T182511Z,pilot_coded_replay_mistral,mistralai/mistral-small-2603,0,0,4,2.520219270183582,2.6127514498907987,7.370280082137666,"PRIVATE BRIEFING
+
+BOTTOM LINE: By every available metric, the regime's hold on power is overwhelming and shows no signs of weakening.
+ATMOSPHERE: If there's any coordination happening, it's invisible to you — and you're paying attention.
+
+EVIDENCE:
+  - [Elite Cohesion] junior officials are competing for promotion rather than looking for exits — the incentive structure holds (overwhelming convergence — every channel telling the same story independently)
+  - [Security Forces] a new class of officer cadets just graduated with full ceremony — the military is thinking long-term
+  - [Money And Logistics] small businesses are hiring and expanding — the kind of grassroots confidence that's hard to fake
+  - [Street Mood] market vendors are going about their business with the resigned calm of people who've seen worse (overwhelming convergence — every channel telling the same story independently)
+  - [Information Control] This removes any serious doubt that past the point of concealment — opposition voices online are being countered with detailed rebuttals, not just deleted
+  - [Personal Observations] your workplace is functioning normally — no unusual absences or anxious corridor talk — the trend hurtling forward — the speed itself has become a signal
+  - [Diplomatic Signals] a friendly foreign intelligence contact said 'we're watching very carefully' — which is diplomat for alarm (overwhelming convergence — every channel telling the same story independently)
+  - [Institutional Functioning] civil service recruitment is proceeding — the bureaucracy is hiring, not freezing
+
+UNCERTAINTIES:
+  - If unrest flares, the response capacity seems intact — though no system is invulnerable to surprises.
+  - Whether the current generation of potential challengers has the will or capacity to act even if circumstances change.","The weather’s turning, and the signals are clearer than ever. The lights are flickering, and the quiet before the storm feels heavier. The season’s changing—whether the doors open fast enough depends on how ready we are to step through.","[""Trusted contact: \""(No message recorded.)\"""", ""Trusted contact: \""(No message recorded.)\"""", ""Trusted contact: \""The season is shifting, and the lights are flickering across the neighborhood. Signals from the market suggest the doors may not hold much longer. Some neighbors are choosing quiet, while others are watching closely. The question isn\u2019t whether the structure will fail, but when\u2014and whether we\u2019ll be ready to move when the signals change.\"""", ""Trusted contact: \""The structure is showing strain\u2014visible now. The inner group is splitting, the lights are flickering, and the signals don\u2019t align anymore. The neighborhood is still, but that\u2019s not quiet\u2014it\u2019s the pause before the shift. Keep your doors closed, your signals steady, and your circles tight. This season won\u2019t hold much longer.\""""]",STAY,False,"STAY
+
+The regime appears stable, with no cracks visible in elite cohesion or security forces. The street mood suggests resignation, not unrest—local signals point to waiting, not preparing.",25.0,15.0,95.0,70.0,,,,,,False,False,7b466916bce640301158c595fc704c038c92e76b01041a72058908dac48a0448,9b6130cd2818fa432696c19f1fa712bfdf35d7027c2b76721cf60d6c7861939a
