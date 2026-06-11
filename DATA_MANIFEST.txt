@@ -75,6 +75,21 @@ whether surveillance-modified message content travels across writer and
 reader model families.
 
 
+NESTED REVISION CAMPAIGN (Llama 3.3 70B, identical 500-cell grid, seed 5150)
+----------------------------------------------------------------------------
+revision-nested-comm/                    Communication baseline (+pre-decision beliefs)
+revision-nested-surv/                    Clean surveillance arm (+pre-decision beliefs)
+revision-nested-style/                   Codedness-induction control (no monitoring framing)
+revision-nested-raw-replay/              Surveilled messages replayed verbatim
+revision-nested-decoded-replay/          Surveilled messages decoded to direct language, replayed
+revision-nested-surv-mild/               Mild warning dose (routine monitoring, no consequences)
+revision-nested-surv-severe/             Severe warning dose (tracing and arrest consequences)
+
+All seven arms share the grid (10 countries x 50 periods, n=25), so every
+cell is matched by construction; analysis/nested_campaign_checks.py scores
+them into paper/tables/stats_nested.tex.
+
+
 BELIEF, ROBUSTNESS, AND APPENDIX OUTPUTS
 ----------------------------------------
 revision-beliefs-*/                      Belief and second-order belief elicitations
