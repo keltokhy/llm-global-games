@@ -93,7 +93,10 @@ def paired(a: pd.DataFrame, b: pd.DataFrame):
 
 
 def fmt_p(p: float) -> str:
-    return "$<$0.001" if p < 0.001 else f"= {p:.3f}"
+    # Bare "<" because these macros are used inside math mode ("$p \XPText$");
+    # a "$<$" form would toggle out of math and render "<" as an inverted
+    # exclamation mark under OT1 text encoding.
+    return "<0.001" if p < 0.001 else f"= {p:.3f}"
 
 
 def main() -> None:
