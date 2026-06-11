@@ -8,11 +8,9 @@
 #   make paper    Compile LaTeX and bibliography
 #   make anonymous  Compile double-blind PDF
 #   make audit    Run submission-package checks
-#   make jebo-audit  Run JEBO-specific submission checks
-#   make jebo-final-audit  Run JEBO audit plus author-supplied portal checks
 #   make clean    Remove generated paper assets
 
-.PHONY: all stats tables figures paper anonymous lint audit jebo-cover-letter jebo-highlights jebo-package jebo-audit jebo-final-audit clean
+.PHONY: all stats tables figures paper anonymous lint audit clean
 
 all: stats tables figures paper
 
@@ -61,22 +59,6 @@ audit: lint
 	uv run python analysis/check_data_manifest.py
 	uv run python analysis/check_submission_package.py
 
-# ── JEBO Submission Audit ─────────────────────────────────────────
-jebo-cover-letter:
-	cd paper && pdflatex -interaction=nonstopmode cover_letter_jebo.tex
-
-jebo-highlights:
-	uv run python analysis/make_jebo_highlights_docx.py
-
-jebo-package: jebo-highlights jebo-cover-letter
-	uv run python analysis/build_jebo_submission_package.py
-
-jebo-audit: audit jebo-package
-	uv run python analysis/check_jebo_submission.py
-
-jebo-final-audit: jebo-audit
-	uv run python analysis/check_jebo_final_inputs.py
-
 # ── Revision experiments (require OPENROUTER_API_KEY; issue live API calls) ──
 revision-experiments:
 	uv run python analysis/contamination_audit.py
@@ -86,4 +68,3 @@ revision-experiments:
 clean:
 	rm -f paper/paper.aux paper/paper.log paper/paper.out paper/paper.bbl paper/paper.blg
 	rm -f paper/paper_anonymous.aux paper/paper_anonymous.log paper/paper_anonymous.out paper/paper_anonymous.bbl paper/paper_anonymous.blg
-	rm -f paper/cover_letter_jebo.aux paper/cover_letter_jebo.log

@@ -182,25 +182,6 @@ def test_makefile_has_submission_audit_target():
     assert (ROOT / "analysis" / "check_submission_package.py").exists()
 
 
-def test_makefile_has_jebo_submission_audit_target():
-    makefile = (ROOT / "Makefile").read_text()
-
-    assert "jebo-cover-letter:" in makefile
-    assert "jebo-highlights:" in makefile
-    assert "jebo-package:" in makefile
-    assert "jebo-audit:" in makefile
-    assert "jebo-final-audit:" in makefile
-    assert "pdflatex -interaction=nonstopmode cover_letter_jebo.tex" in makefile
-    assert "uv run python analysis/make_jebo_highlights_docx.py" in makefile
-    assert "uv run python analysis/build_jebo_submission_package.py" in makefile
-    assert "uv run python analysis/check_jebo_submission.py" in makefile
-    assert "uv run python analysis/check_jebo_final_inputs.py" in makefile
-    assert (ROOT / "analysis" / "make_jebo_highlights_docx.py").exists()
-    assert (ROOT / "analysis" / "build_jebo_submission_package.py").exists()
-    assert (ROOT / "analysis" / "check_jebo_submission.py").exists()
-    assert (ROOT / "analysis" / "check_jebo_final_inputs.py").exists()
-
-
 def test_generative_ai_declaration_is_before_references():
     tex = (PAPER_DIR / "paper.tex").read_text()
     title = (
@@ -216,82 +197,6 @@ def test_generative_ai_declaration_is_before_references():
     assert conclusion_pos < declaration_pos < references_pos
     assert "OpenAI Codex" in tex[declaration_pos:references_pos]
     assert "reviewed and edited" in tex[declaration_pos:references_pos]
-
-
-def test_jebo_highlights_are_submission_ready():
-    highlights_path = PAPER_DIR / "highlights_jebo.txt"
-    lines = [line for line in highlights_path.read_text().splitlines() if line.strip()]
-
-    assert 3 <= len(lines) <= 5
-    for line in lines:
-        assert line.startswith("- ")
-        highlight = line[2:].strip()
-        assert highlight
-        assert len(highlight) <= 85
-        assert not re.search(r"\\cite|doi:|https?://|\([12][0-9]{3}\)", highlight, re.I)
-
-
-def test_jebo_cover_letter_is_submission_ready():
-    tex = (PAPER_DIR / "cover_letter_jebo.tex").read_text()
-
-    required_phrases = [
-        "Journal of Economic Behavior \\& Organization",
-        "Speaking in Code: Surveillance and Coordinated Dissent in a\nLanguage-Based Global Game with LLM Agents".replace("\n", " "),
-        "global game",
-        "sender-side surveillance effect",
-    ]
-    missing = [phrase for phrase in required_phrases if phrase not in tex]
-
-    assert missing == []
-    assert not re.search(
-        r"\b(Funding:|competing interest|suggested reviewer|opposed reviewer)\b",
-        tex,
-        re.I,
-    )
-
-
-def test_jebo_source_package_target_is_documented():
-    readme = (ROOT / "REPLICATION_README.txt").read_text()
-
-    assert "make jebo-cover-letter" in readme
-    assert "make jebo-package" in readme
-    assert "make jebo-final-audit" in readme
-    assert "paper/jebo_submission_source.zip" in readme
-    assert "paper/jebo_submission_metadata.json" in readme
-    assert "paper/jebo_submission_metadata.schema.json" in readme
-    assert "paper/declaration_of_competing_interest.docx" in readme
-
-
-def test_jebo_submission_metadata_schema_matches_final_checker():
-    module = _load_module(ROOT / "analysis" / "check_jebo_final_inputs.py")
-    schema = __import__("json").loads((PAPER_DIR / "jebo_submission_metadata.schema.json").read_text())
-
-    assert set(module._flatten_schema_required_fields(schema)) == set(module.REQUIRED_METADATA_FIELDS)
-
-
-def test_jebo_final_input_checker_reports_all_missing_dependencies(tmp_path, monkeypatch, capsys):
-    module = _load_module(ROOT / "analysis" / "check_jebo_final_inputs.py")
-    paper_dir = tmp_path / "paper"
-    paper_dir.mkdir()
-    schema_path = paper_dir / "jebo_submission_metadata.schema.json"
-    schema_path.write_text((PAPER_DIR / "jebo_submission_metadata.schema.json").read_text())
-
-    monkeypatch.setattr(module, "ROOT", tmp_path)
-    monkeypatch.setattr(module, "PAPER_DIR", paper_dir)
-    monkeypatch.setattr(module, "METADATA_PATH", paper_dir / "jebo_submission_metadata.json")
-    monkeypatch.setattr(module, "METADATA_SCHEMA_PATH", schema_path)
-    monkeypatch.setattr(
-        module,
-        "COMPETING_INTEREST_DOCX",
-        paper_dir / "declaration_of_competing_interest.docx",
-    )
-
-    assert module.main() == 1
-    stderr = capsys.readouterr().err
-
-    assert "Dependency needed:" in stderr
-    assert "create paper/jebo_submission_metadata.json following" in stderr
-    assert "export the Elsevier declarations-tool Word document" in stderr
 
 
 def test_submission_front_matter_is_complete_and_concise():
@@ -396,15 +301,9 @@ def test_replication_readme_mentions_required_rebuild_artifacts():
         "make anonymous",
         "make lint",
         "make audit",
-        "make jebo-cover-letter",
-        "make jebo-audit",
-        "make jebo-package",
-        "make jebo-final-audit",
         "uv run pytest",
         "DATA_MANIFEST.txt",
         "paper/asset_manifest.tsv",
-        "paper/highlights_jebo.docx",
-        "paper/jebo_submission_source.zip",
         "analysis/models.py",
         "analysis/verified_stats.json",
         "scripts/make_data.py",

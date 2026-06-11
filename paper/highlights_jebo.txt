@@ -1,5 +1,0 @@
-- LLM agents reproduce global-game thresholds from prose private signals.
-- Pre-play communication turns private briefings into social information.
-- Sender-side monitoring alone suppresses joining in clean prompt reruns.
-- In a restricted elicitation, beliefs stay stable while actions fall.
-- Surveillance leaves weakness cues present but shifts them into coded speech.

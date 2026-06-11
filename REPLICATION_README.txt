@@ -58,11 +58,6 @@ Useful partial targets:
     make anonymous
     make lint
     make audit
-    make jebo-cover-letter
-    make jebo-highlights
-    make jebo-package
-    make jebo-audit
-    make jebo-final-audit
 
 For double-blind review, build the anonymized manuscript:
 
@@ -87,23 +82,11 @@ Run the target-neutral submission audit:
 
     make audit
 
-For a JEBO/Elsevier submission package, build the Highlights Word file
-and run the target-specific audit:
-
-    make jebo-audit
-
-This writes and validates:
-
-    paper/cover_letter_jebo.pdf
-    paper/highlights_jebo.docx
-    paper/jebo_submission_source.zip
-
 At the time this README was added, the current rebuilt paper passed:
 
     make paper
     make lint
     make audit
-    make jebo-audit
     uv run pytest
 
 The pytest suite includes checks that paper citations have bibliography
@@ -117,32 +100,6 @@ resolve to real local artifacts; scans built LaTeX logs; checks normal
 and anonymous PDF metadata; verifies the public replication URL in the
 normal manuscript; and verifies that the anonymous manuscript does not
 expose author or repository identifiers.
-The JEBO audit additionally checks the separate Highlights source and
-Word file, enforces the Elsevier 85-character limit for each highlight,
-and verifies that the generative-AI-use declaration appears immediately
-above the references. It also builds and checks a deterministic source
-zip containing the manuscript source, bibliography, editable table
-sources, separate figure PDFs, the compiled manuscript PDF, the JEBO
-cover letter, and the Highlights Word file.
-
-The final JEBO portal audit checks author-supplied inputs that cannot be
-inferred from repository data:
-
-    make jebo-final-audit
-
-This target intentionally requires real submission facts. It expects:
-
-    paper/jebo_submission_metadata.json
-    paper/jebo_submission_metadata.schema.json
-    paper/declaration_of_competing_interest.docx
-
-The metadata JSON must contain corresponding-author contact details,
-the funding statement, the acknowledgments statement, and affirmative
-submission declarations that all authors have approved the manuscript,
-the manuscript is not under consideration elsewhere, and the manuscript
-has not been previously published except as an allowed preprint. The
-competing-interest Word document must be exported from Elsevier's
-declarations tool.
 
 
 Data and Generated Artifacts
