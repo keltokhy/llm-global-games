@@ -157,6 +157,14 @@ Llama 3.3 70B     & $-0.047$ & $<0.0001$ & $\phantom{-}0.005$ & $0.31$ \\
 \par\smallskip\footnotesize{Notes: 348 held-out cells (181 with $\theta<0$); $\Delta$ = baseline $-$ surveillance; negative = analysts more accurate on baseline messages. 10{,}000-draw sign-flip permutation, seed fixed in the preregistration. Verdict: \textsc{confirmed}, 4/4 primaries, 4/4 placebos clean.}
 \end{table}
 
+\begin{figure}[ht]\centering
+\includegraphics[width=\textwidth]{figures/fig_crisis_blinding.pdf}
+\caption{\textbf{Crisis blindness.} (a) Analyst Brier error on regime survival by state, pooled over the four held-out analysts (348 preregistered fresh cells; cell-level 95\% bands). The arms coincide for $\theta \ge 0$ and diverge below it---and the gap peaks not in hopeless states, which are easy to call even from guarded text, but in the \emph{ambiguous tipping-point band}, exactly where the regime's response decision has value. (b) Paired crisis (purple) and calm (gray) Brier deltas by analyst, ordered by capability tier, on the main 150-cell sample. The frontier model loses as much in crisis as models costing two orders of magnitude less.}
+\label{fig:crisis}
+\end{figure}
+
+Figure~\ref{fig:crisis}(a) shows the result's structure. The blinding is not a uniform haze: surveilled and free traffic are equally readable in strong states and in hopelessly weak ones, and the gap concentrates in the band where the outcome hangs on coordination---the precise region where preemption and concession decisions are made.
+
 \subsection{The blindness is in the data, not the reader}
 
 The frontier analyst is the best model on every level metric (e.g., $|\rho(\text{FALL},\theta)| = 0.93$, the highest in the program) and loses as much in crisis as models costing two orders of magnitude less: crisis $\Delta$Brier $-0.085$ ($p<0.001$), crisis sender-accuracy loss $6.5$ points ($p=0.003$), with significant calm-state \emph{reversals}---surveillance improves its calm-state reading, because uniformly guarded quiet is easy to classify. Capability raises the level of intelligence everywhere; it does not protect the crisis margin, because no reader can extract content the senders never encoded.
@@ -173,11 +181,23 @@ Two margins are robust to surveillance. Aggregate temperature: analysts' join-sh
 
 \paragraph{Universal compliance, selected destruction.} Across 24{,}306 matched messages, a classifier on simple text features separates surveilled from free messages at AUC $0.93$--$0.97$ in \emph{every} sender-signal and state bin: essentially everyone shifts register under a warning. The divergence gradient is nonetheless monotone in the predicted direction (Spearman $\rho = -0.79$, $p=0.02$ across sender-signal bins; $\rho = -0.98$, $p<0.001$ across $\theta$ bins), but its magnitude makes clear that the style response is a trigger, not a margin. The information loss, by contrast, is sharply selected (Section~\ref{sec:results}): a guarded version of ``nothing is happening'' has the same likelihood ratio as its direct counterpart; a guarded version of ``people I trust are ready to move'' does not. This is Lemma~\ref{lem:register} read off the data, and it is why the model needs no coding-choice cutoff.
 
+\begin{figure}[ht]\centering
+\includegraphics[width=\textwidth]{figures/fig_lemma1_text.pdf}
+\caption{\textbf{Universal compliance, selected destruction} (24{,}306 matched messages). Purple: mean absolute standardized difference of text features (action cues, direct regime terms, hedges, commitment language, length) between arms, by sender-signal bin (a) and state bin (b), with bootstrap 95\% CIs. Gray (right axes): AUC of a classifier separating the arms on the same features. The style shift is near-universal---the arms are separable at AUC $0.93$--$0.97$ in every bin---while the divergence gradient is monotone in the predicted direction. The information loss (Figure~\ref{fig:crisis}) is far more selected than the style shift: Lemma~\ref{lem:register}'s structure, read off the text.}
+\label{fig:lemma1}
+\end{figure}
+
 \paragraph{Style alone is not enough.} On a codedness-control corpus---equally indirect, metaphorical messages elicited \emph{without} monitoring framing---analyst $\theta$-recovery degrades directionally for all three analysts tested but reaches at most marginal significance ($|\rho|$: $0.35$ vs.\ $0.21$, $p=0.06$; $0.44$ vs.\ $0.38$; $0.42$ vs.\ $0.37$). Combined with the companion paper's finding that coded style alone does not move \emph{receivers'} actions, the blinding travels with what monitored senders choose not to convey, more than with indirection as a form.
 
 \section{Dose-response and the regime's problem}\label{sec:dose}
 
-Graded warnings on the identical 500-cell grid trace both curves. Chilling (mean join fraction): none $0.471$, mild $0.408$, full $0.391$, severe $0.376$---monotone, strongly concave, two-thirds of the total at the mildest cue, which contains no consequence language at all. Blinding (crisis $\Delta$Brier, three analysts): the mild dose already delivers $75$--$85\%$ of the full-dose effect (e.g., DeepSeek $-0.082$ mild, $-0.112$ full, $-0.110$ severe; all $p<0.0001$ at every dose). Both effects arrive almost entirely at the extensive margin, supporting the trigger interpretation of compliance (Remark~\ref{rem:uniform}) and the binary statement of the regime's problem (Proposition~\ref{prop:extensive}).
+\begin{figure}[ht]\centering
+\includegraphics[width=\textwidth]{figures/fig_dose_response.pdf}
+\caption{\textbf{Both margins are step functions of monitoring salience.} (a) Mean join fraction across four warning doses on the identical 500-cell grid (cell-level 95\% CIs); the mild cue---``communications are sometimes subject to routine monitoring,'' no consequence language---delivers two-thirds of the total chilling. (b) Crisis-state Brier deltas by dose for three analysts; the mild dose already produces $75$--$85\%$ of full-dose blinding, and severity adds little.}
+\label{fig:dose}
+\end{figure}
+
+Graded warnings on the identical 500-cell grid trace both curves (Figure~\ref{fig:dose}). Chilling (mean join fraction): none $0.471$, mild $0.408$, full $0.391$, severe $0.376$---monotone, strongly concave, two-thirds of the total at the mildest cue, which contains no consequence language at all. Blinding (crisis $\Delta$Brier, three analysts): the mild dose already delivers $75$--$85\%$ of the full-dose effect (e.g., DeepSeek $-0.082$ mild, $-0.112$ full, $-0.110$ severe; all $p<0.0001$ at every dose). Both effects arrive almost entirely at the extensive margin, supporting the trigger interpretation of compliance (Remark~\ref{rem:uniform}) and the binary statement of the regime's problem (Proposition~\ref{prop:extensive}).
 
 The regime-side implication is uncomfortable for the watcher. Conditional on visible monitoring, more severity is roughly free: extra silence at little extra blindness. But the step from silence to any visible monitoring purchases nearly all the deterrence at nearly all the intelligence cost---and by Corollary~\ref{cor:trap}, the cost is invisible in the regime's own average metrics. \emph{[To add: calibrated survival comparison $S(1)$ vs.\ $S(0)$ using the measured $U$ and $I_R$ curves and a parameterized response function $H$; the exhibit traces the monitor-vs-silent frontier in $(H', G)$ space.]}
 
