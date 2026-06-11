@@ -122,5 +122,21 @@
       "output/revision-nested-surv/meta-llama--llama-3.3-70b-instruct/experiment_comm_log.json"
     ],
     "timestamp": "2026-06-11T20:17:06.275567+00:00"
+  },
+  {
+    "analyst_model": "meta-llama/llama-4-maverick-17b-128e-instruct",
+    "corpus": "nested",
+    "run_label": "decoder",
+    "n_cells": 150,
+    "n_messages": 0,
+    "seed": 5150,
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "prompt_version": "v1",
+    "source_paths": [
+      "output/revision-nested-comm/meta-llama--llama-3.3-70b-instruct/experiment_comm_log.json",
+      "output/revision-nested-surv/meta-llama--llama-3.3-70b-instruct/experiment_comm_log.json"
+    ],
+    "timestamp": "2026-06-11T21:41:56.168221+00:00"
   }
 ]
