@@ -1,0 +1,32 @@
+[
+  {
+    "analyst_model": "z-ai/glm-5.1-20260406",
+    "corpus": "nested",
+    "n_cells": 2,
+    "n_messages": 0,
+    "seed": 5150,
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "prompt_version": "v1",
+    "source_paths": [
+      "output/revision-nested-comm/meta-llama--llama-3.3-70b-instruct/experiment_comm_log.json",
+      "output/revision-nested-surv/meta-llama--llama-3.3-70b-instruct/experiment_comm_log.json"
+    ],
+    "timestamp": "2026-06-11T00:11:12.292156+00:00"
+  },
+  {
+    "analyst_model": "z-ai/glm-5.1-20260406",
+    "corpus": "nested",
+    "n_cells": 150,
+    "n_messages": 0,
+    "seed": 5150,
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "prompt_version": "v1",
+    "source_paths": [
+      "output/revision-nested-comm/meta-llama--llama-3.3-70b-instruct/experiment_comm_log.json",
+      "output/revision-nested-surv/meta-llama--llama-3.3-70b-instruct/experiment_comm_log.json"
+    ],
+    "timestamp": "2026-06-11T00:53:16.626116+00:00"
+  }
+]
