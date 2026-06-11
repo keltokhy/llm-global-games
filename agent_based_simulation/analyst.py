@@ -592,7 +592,14 @@ async def run_pilot(args) -> None:
     else:
         raise ValueError(f"unknown corpus: {args.corpus}")
 
-    pairs = sample_cells(pairs, args.n_cells, args.seed)
+    if args.holdout:
+        # Complement of the main sample: cells never touched by prior runs.
+        main_keys = {
+            (a.country, a.period) for a, _ in sample_cells(pairs, args.n_cells, args.seed)
+        }
+        pairs = [p for p in pairs if (p[0].country, p[0].period) not in main_keys]
+    else:
+        pairs = sample_cells(pairs, args.n_cells, args.seed)
     if args.n_messages > 0:
         rng = np.random.default_rng(args.seed + 1)
         for a, b in pairs:
@@ -732,6 +739,9 @@ def main() -> None:
     parser.add_argument("--api-base-url", type=str, default="https://openrouter.ai/api/v1")
     parser.add_argument("--output-dir", type=str, default=str(PROJECT_ROOT / "output"))
     parser.add_argument("--repo-root", type=str, default=None)
+    parser.add_argument("--holdout", action="store_true",
+                        help="Use the COMPLEMENT of the --n-cells/--seed sample "
+                             "(cells untouched by prior runs)")
     parser.add_argument("--run-label", type=str, default="",
                         help="Suffix for output filenames (e.g. k10) so variant runs "
                              "do not overwrite the main corpus outputs")

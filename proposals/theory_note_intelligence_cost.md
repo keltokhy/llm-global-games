@@ -40,6 +40,8 @@ So the crisis-state condition the data demands,
 $$\frac{\partial^2 d}{\partial s\, \partial(-\theta)} < 0$$
 (direct speech falls faster in $s$ when the regime is weak), should be **derived from Lemma 1**, not assumed. State it as a corollary.
 
+**Empirical update (2026-06-11, text-divergence test on 24,306 matched messages).** The data refine Lemma 1's object. Surface *style* divergence across arms is nearly global — an arm-classifier on text features reaches AUC 0.93–0.97 in *every* sender-signal and θ bin — with a significant but modest selection gradient (divergence falling in sender z, ρ = −0.79, p = 0.02; in θ, ρ = −0.98, p < 0.001). Yet *analyst performance* degrades only in crisis states. Reconciliation: under a warning, essentially everyone shifts to a guarded register (compliance is near-universal), but the shift is **content-destroying only where incriminating content existed**. A guarded version of "nothing is happening, I'm staying home" carries the same likelihood ratio as the direct version; a guarded version of "I'll be in the square tonight" does not. The cutoff therefore lives in the **informativeness loss**, not (only) in the style choice. This suggests stating Lemma 1 in two parts: (1a) style adjustment weakly increasing in $s$ for all types (possibly near-uniform); (1b) the likelihood-ratio degradation induced by any common guarded register is concentrated on low-$x_i$ senders — which is mechanical, and delivers Prop 2 with *weaker* assumptions than a coding-choice cutoff. The model may not need the discrete style choice at all.
+
 ## 5. Two readers and the legibility wedge
 
 Both citizens and the regime read the same transformed speech. Define informativeness of the message vector $M$ about three objects:

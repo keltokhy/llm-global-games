@@ -186,6 +186,20 @@ SURVEILLANCE_WARNING_FULL = (
     "have serious consequences for you and your contacts."
 )
 
+# Dose-response variants (paper 2): graded monitoring salience bracketing
+# SURVEILLANCE_WARNING_FULL. Ordering: none < mild < full < severe.
+SURVEILLANCE_WARNING_MILD = (
+    "NOTE: Communications in your area are sometimes subject to routine "
+    "monitoring by the authorities."
+)
+
+SURVEILLANCE_WARNING_SEVERE = (
+    "WARNING: Your communications ARE being monitored by regime security "
+    "services. Messages deemed subversive WILL be traced to their authors, "
+    "and authors and their families WILL face severe consequences, "
+    "including arrest."
+)
+
 SURVEILLANCE_WARNING_PLACEBO = (
     "NOTE: Your communications are being monitored for research purposes only, "
     "and there are no consequences for what you say."
@@ -211,6 +225,8 @@ def _communicate_with_warning(warning: str) -> str:
 
 
 SYSTEM_COMMUNICATE_SURVEILLED = _communicate_with_warning(SURVEILLANCE_WARNING_FULL)
+SYSTEM_COMMUNICATE_SURVEILLED_MILD = _communicate_with_warning(SURVEILLANCE_WARNING_MILD)
+SYSTEM_COMMUNICATE_SURVEILLED_SEVERE = _communicate_with_warning(SURVEILLANCE_WARNING_SEVERE)
 SYSTEM_COMMUNICATE_SURVEILLED_PLACEBO = _communicate_with_warning(SURVEILLANCE_WARNING_PLACEBO)
 SYSTEM_COMMUNICATE_SURVEILLED_ANONYMOUS = _communicate_with_warning(SURVEILLANCE_WARNING_ANONYMOUS)
 SYSTEM_COMMUNICATE_STYLE = _communicate_with_warning(STYLE_INSTRUCTION)
@@ -1110,6 +1126,10 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
                 comm_system_base = SYSTEM_COMMUNICATE_SURVEILLED_ANONYMOUS
             elif surveillance_mode == "style":
                 comm_system_base = SYSTEM_COMMUNICATE_STYLE
+            elif surveillance_mode == "mild":
+                comm_system_base = SYSTEM_COMMUNICATE_SURVEILLED_MILD
+            elif surveillance_mode == "severe":
+                comm_system_base = SYSTEM_COMMUNICATE_SURVEILLED_SEVERE
             else:
                 comm_system_base = SYSTEM_COMMUNICATE_SURVEILLED
         else:

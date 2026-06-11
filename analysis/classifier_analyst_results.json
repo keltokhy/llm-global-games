@@ -1,0 +1,40 @@
+{
+ "coup_in_domain": {
+  "all": {
+   "baseline": 0.9943021346469623,
+   "surveillance": 0.9915414145357537
+  },
+  "crisis": {
+   "baseline": null,
+   "surveillance": null
+  },
+  "calm": {
+   "baseline": 0.991326530612245,
+   "surveillance": 0.9903669724770642
+  }
+ },
+ "coup_retrained_surv": {
+  "all": 0.9925662046977684,
+  "crisis": null,
+  "calm": 0.989908256880734
+ },
+ "join_in_domain": {
+  "all": {
+   "baseline": 0.9733648442255036,
+   "surveillance": 0.9300829148080548
+  },
+  "crisis": {
+   "baseline": 0.9217093547718515,
+   "surveillance": 0.8439442619005072
+  },
+  "calm": {
+   "baseline": 0.9634426292376133,
+   "surveillance": 0.9351147388141751
+  }
+ },
+ "join_retrained_surv": {
+  "all": 0.9643755642130232,
+  "crisis": 0.9085812263791995,
+  "calm": 0.9638683413520035
+ }
+}
