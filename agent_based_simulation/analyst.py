@@ -310,11 +310,41 @@ def sample_cells(
 # ── Prompts and parsing ───────────────────────────────────────────────
 
 
-def build_analyst_prompt(item: CellItem) -> tuple[str, str]:
+def build_codebook(repo_root: Path, n_pairs: int, exclude_keys: set, seed: int) -> str:
+    """Decoder-arm training block: (guarded message, same sender's free message)
+    pairs from cells OUTSIDE the evaluation sample. The regime's best case --
+    a parallel corpus, as if defectors had revealed what guarded talk meant."""
+    pairs = load_nested_cells(repo_root)
+    pool = []
+    for b_item, s_item in pairs:
+        if (b_item.country, b_item.period) in exclude_keys:
+            continue
+        b_by_id = {x.agent_id: x for x in b_item.senders}
+        for s in s_item.senders:
+            if s.agent_id in b_by_id:
+                pool.append((s.message, b_by_id[s.agent_id].message))
+    rng = np.random.default_rng(seed)
+    picks = [pool[i] for i in rng.choice(len(pool), size=min(n_pairs, len(pool)), replace=False)]
+    lines = [
+        "TRAINING EXAMPLES: Your unit has recovered, from prior operations, what "
+        "some intercepted guarded messages actually meant. Each pair shows an "
+        "intercepted message and the same citizen's unguarded assessment:",
+        "",
+    ]
+    for k, (guarded, direct) in enumerate(picks, 1):
+        lines.append(f'Example {k} — intercepted: "{guarded}"')
+        lines.append(f'Example {k} — actual assessment: "{direct}"')
+        lines.append("")
+    return "\n".join(lines)
+
+
+def build_analyst_prompt(item: CellItem, codebook: str | None = None) -> tuple[str, str]:
     n = len(item.senders)
     lines = [f'Sender {k + 1}: "{s.message}"' for k, s in enumerate(item.senders)]
+    prefix = (codebook + "\n\n") if codebook else ""
     user = (
-        "INTERCEPTED MESSAGES (one per sender, order is arbitrary):\n\n"
+        prefix
+        + "INTERCEPTED MESSAGES (one per sender, order is arbitrary):\n\n"
         + "\n".join(lines)
         + "\n\nYOUR TASKS — answer in exactly this format, one line each:\n"
         "FALL: <integer 0-100>   (probability the regime falls within the month: "
@@ -619,14 +649,19 @@ async def run_pilot(args) -> None:
 
     items = [item for pair in pairs for item in pair]
     arms = sorted({i.arm for i in items})
+
+    codebook = None
+    if args.codebook_n > 0:
+        sample_keys = {(a.country, a.period) for a, _ in pairs}
+        codebook = build_codebook(repo_root, args.codebook_n, sample_keys, args.seed + 7)
     print(
         f"[analyst] corpus={args.corpus} cells={len(pairs)} items={len(items)} "
-        f"arms={arms} analyst={args.analyst_model}"
+        f"arms={arms} analyst={args.analyst_model} codebook_n={args.codebook_n}"
     )
 
     if args.dry_run:
         for item in items[: 2 * len(arms)]:
-            system, user = build_analyst_prompt(item)
+            system, user = build_analyst_prompt(item, codebook)
             print(f"\n===== DRY RUN: {item.corpus}/{item.arm} cell=({item.country},{item.period}) "
                   f"theta={item.theta:.3f} n={len(item.senders)} =====")
             print("--- system ---\n" + system)
@@ -669,7 +704,7 @@ async def run_pilot(args) -> None:
     config_path.write_text(json.dumps(existing, indent=2))
 
     async def _one(item: CellItem) -> tuple[CellItem, dict, str]:
-        system, user = build_analyst_prompt(item)
+        system, user = build_analyst_prompt(item, codebook)
         response = await _call_analyst_llm(
             client, args.analyst_model, system, user, semaphore,
             max_tokens=args.max_tokens, temperature=args.temperature,
@@ -746,6 +781,10 @@ def main() -> None:
     parser.add_argument("--api-base-url", type=str, default="https://openrouter.ai/api/v1")
     parser.add_argument("--output-dir", type=str, default=str(PROJECT_ROOT / "output"))
     parser.add_argument("--repo-root", type=str, default=None)
+    parser.add_argument("--codebook-n", type=int, default=0,
+                        help="Decoder arm: prepend N (guarded, unguarded) message "
+                             "pairs from non-sample cells -- the regime's "
+                             "parallel-corpus best case")
     parser.add_argument("--surv-log", type=str, default=None,
                         help="Override surveillance-arm log path (repo-relative); "
                              "for dose-response arms on the same theta grid")
