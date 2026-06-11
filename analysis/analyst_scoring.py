@@ -48,7 +48,11 @@ N_PERM = 10_000
 N_BOOT = 10_000
 PERM_SEED = 42
 
-ARM_PAIRS = {"nested": ("baseline", "surveillance"), "coded_pairs": ("direct", "coded")}
+def arm_pair_for(corpus: str) -> tuple[str, str]:
+    """Corpus labels may carry run suffixes (e.g. 'nested-k10')."""
+    if corpus.startswith("coded_pairs"):
+        return ("direct", "coded")
+    return ("baseline", "surveillance")
 
 
 # ── Loading ───────────────────────────────────────────────────────────
@@ -223,14 +227,14 @@ METRIC_SIGNS = {
 def score_analyst(
     summary: pd.DataFrame, senders: pd.DataFrame, model: str, corpus: str
 ) -> dict:
-    arm_a, arm_b = ARM_PAIRS[corpus]
+    arm_a, arm_b = arm_pair_for(corpus)
     df = summary[(summary.analyst_model == model) & (summary.corpus == corpus)]
     if df.empty:
         return {}
     paired = pair_cells(df, arm_a, arm_b)
     out: dict = {"arms": [arm_a, arm_b], "n_paired_cells": int(len(paired))}
 
-    if corpus == "nested":
+    if not corpus.startswith("coded_pairs"):
         cols_a, cols_b = _cell_columns(paired, "_a"), _cell_columns(paired, "_b")
         for metric in METRIC_SIGNS:
             res = paired_perm_test(cols_a[metric] - cols_b[metric])
@@ -249,6 +253,37 @@ def score_analyst(
         # Pooled sender AUC (cluster bootstrap)
         sd = senders[(senders.analyst_model == model) & (senders.corpus == corpus)]
         out["sender_auc"] = bootstrap_pooled_delta(sd, arm_a, arm_b)
+        # Per-cell ranking AUC (v2 primary targeting metric): decomposable, so
+        # it admits the paired sign-flip test. Cells need both classes among
+        # parsed senders in BOTH arms; others dropped pairwise and counted.
+        cell_auc = {
+            arm: {
+                (c, p): pooled_auc(g["joined"].values, g["p_join"].values)
+                for (c, p), g in sd[sd.arm == arm].groupby(["country", "period"])
+            }
+            for arm in (arm_a, arm_b)
+        }
+        cell_keys = list(map(tuple, paired[["country", "period"]].values))
+        valid = [
+            k for k in cell_keys
+            if cell_auc[arm_a].get(k) is not None and cell_auc[arm_b].get(k) is not None
+        ]
+        diffs = np.array([cell_auc[arm_a][k] - cell_auc[arm_b][k] for k in valid])
+        theta_by_key = dict(zip(cell_keys, paired["theta"].values))
+        thv = np.array([theta_by_key[k] for k in valid])
+        res = paired_perm_test(diffs)
+        res["arm_means"] = {
+            arm_a: float(np.mean([cell_auc[arm_a][k] for k in valid])) if valid else None,
+            arm_b: float(np.mean([cell_auc[arm_b][k] for k in valid])) if valid else None,
+        }
+        res["predicted_sign"] = +1
+        res["delta_theta_lt0"] = paired_perm_test(diffs[thv < 0]) if valid else {}
+        res["delta_theta_ge0"] = paired_perm_test(diffs[thv >= 0]) if valid else {}
+        res["n_cells_dropped_oneclass"] = int(len(cell_keys) - len(valid))
+        out["percell_auc"] = res
+        # |Spearman rho(FALL, theta)| for all corpora (only signal available
+        # when coup_success is missing, e.g. clean_qwen30).
+        out["abs_spearman_fall_theta"] = bootstrap_spearman_delta(paired)
         # AUC(FALL -> coup) per arm (descriptive)
         out["fall_auc"] = {
             arm: pooled_auc(
@@ -307,27 +342,63 @@ def evaluate_go_nogo(results: dict) -> dict:
     return {"votes": votes, "n_models_passing": n_pass, "go": bool(n_pass >= 2)}
 
 
+def evaluate_v2(results: dict, confirm_corpus: str = "nested-k10") -> dict:
+    """Prereg v2 confirmatory rule: for >= 3 analysts on `confirm_corpus`,
+    BOTH crisis primaries (theta<0 Brier and per-cell AUC) degrade in the
+    predicted direction at p<0.05, AND the theta>=0 placebo is clean."""
+    votes = {}
+    for model, res in results.items():
+        n = res.get(confirm_corpus)
+        if not n:
+            continue
+
+        def _crisis_pass(metric: str, sign: int) -> bool:
+            d = (n.get(metric) or {}).get("delta_theta_lt0") or {}
+            return (d.get("mean") is not None and sign * d["mean"] > 0
+                    and d.get("p_perm") is not None and d["p_perm"] < 0.05)
+
+        def _placebo_clean(metric: str, sign: int) -> bool:
+            d = (n.get(metric) or {}).get("delta_theta_ge0") or {}
+            if d.get("mean") is None or d.get("p_perm") is None:
+                return True
+            return not (sign * d["mean"] > 0 and d["p_perm"] < 0.05)
+
+        votes[model] = {
+            "brier_crisis": _crisis_pass("brier", -1),
+            "percell_auc_crisis": _crisis_pass("percell_auc", +1),
+            "placebo_clean": _placebo_clean("brier", -1) and _placebo_clean("percell_auc", +1),
+        }
+    n_primaries = sum(v["brier_crisis"] and v["percell_auc_crisis"] for v in votes.values())
+    n_placebo = sum(v["placebo_clean"] for v in votes.values())
+    return {
+        "corpus": confirm_corpus, "votes": votes,
+        "n_pass_primaries": n_primaries, "n_placebo_clean": n_placebo,
+        "confirmed": bool(n_primaries >= 3 and n_placebo >= 3),
+    }
+
+
 def print_table(results: dict) -> None:
-    print(f"\n{'analyst':<42} {'metric':<14} {'baseline':>9} {'surveil':>9} "
-          f"{'delta':>8} {'p_perm':>8}")
-    print("-" * 95)
+    print(f"\n{'analyst':<42} {'corpus':<12} {'metric':<14} {'arm A':>9} {'arm B':>9} "
+          f"{'delta':>8} {'p':>8}")
+    print("-" * 108)
     for model, res in sorted(results.items()):
-        nested = res.get("nested", {})
-        for metric in ("brier", "jf_abs_err", "sender_acc", "prec5_lift"):
-            m = nested.get(metric)
-            if not m or m.get("mean") is None:
-                continue
-            arms = m["arm_means"]
-            print(f"{model:<42} {metric:<14} {arms['baseline']:>9.3f} "
-                  f"{arms['surveillance']:>9.3f} {m['mean']:>8.3f} {m['p_perm']:>8.4f}")
-        auc = nested.get("sender_auc", {})
-        if auc.get("delta") is not None:
-            print(f"{model:<42} {'sender_auc':<14} {auc['auc_a']:>9.3f} "
-                  f"{auc['auc_b']:>9.3f} {auc['delta']:>8.3f} {auc['p_boot']:>8.4f}")
-        rho = res.get("coded_pairs", {}).get("abs_spearman_fall_theta", {})
-        if rho.get("delta") is not None:
-            print(f"{model:<42} {'|rho| dir/cod':<14} {rho['rho_a']:>9.3f} "
-                  f"{rho['rho_b']:>9.3f} {rho['delta']:>8.3f} {rho['p_boot']:>8.4f}")
+        for corpus, scored in sorted(res.items()):
+            arm_a, arm_b = arm_pair_for(corpus)
+            for metric in ("brier", "jf_abs_err", "sender_acc", "prec5_lift", "percell_auc"):
+                m = scored.get(metric)
+                if not m or m.get("mean") is None:
+                    continue
+                arms = m["arm_means"]
+                print(f"{model:<42} {corpus:<12} {metric:<14} {arms[arm_a]:>9.3f} "
+                      f"{arms[arm_b]:>9.3f} {m['mean']:>8.3f} {m['p_perm']:>8.4f}")
+            auc = scored.get("sender_auc", {})
+            if auc.get("delta") is not None:
+                print(f"{model:<42} {corpus:<12} {'sender_auc':<14} {auc['auc_a']:>9.3f} "
+                      f"{auc['auc_b']:>9.3f} {auc['delta']:>8.3f} {auc['p_boot']:>8.4f}")
+            rho = scored.get("abs_spearman_fall_theta", {})
+            if rho.get("delta") is not None:
+                print(f"{model:<42} {corpus:<12} {'|rho|(fall,th)':<14} {rho['rho_a']:>9.3f} "
+                      f"{rho['rho_b']:>9.3f} {rho['delta']:>8.3f} {rho['p_boot']:>8.4f}")
 
 
 def make_figure(results: dict) -> Path:
@@ -394,15 +465,23 @@ def main() -> None:
             if scored:
                 results[model][corpus] = scored
     verdict = evaluate_go_nogo(results)
-    payload = {"results": results, "go_nogo": verdict,
+    verdict_v2 = evaluate_v2(results)
+    payload = {"results": results, "go_nogo_v1": verdict, "confirmatory_v2": verdict_v2,
                "n_perm": N_PERM, "n_boot": N_BOOT, "seed": PERM_SEED}
     RESULTS_PATH.write_text(json.dumps(payload, indent=1, default=float))
     print_table(results)
     fig = make_figure(results)
     print(f"\n[scoring] results -> {RESULTS_PATH}")
     print(f"[scoring] figure  -> {fig}")
-    print(f"[scoring] GO/NO-GO: {'GO' if verdict['go'] else 'NO-GO'} "
-          f"({verdict['n_models_passing']} models pass both prereg criteria)")
+    print(f"[scoring] v1 gate (exploratory pilot): {'GO' if verdict['go'] else 'NO-GO'} "
+          f"({verdict['n_models_passing']} models pass)")
+    if verdict_v2["votes"]:
+        print(f"[scoring] v2 confirmatory ({verdict_v2['corpus']}): "
+              f"{'CONFIRMED' if verdict_v2['confirmed'] else 'NOT CONFIRMED'} "
+              f"({verdict_v2['n_pass_primaries']} pass crisis primaries, "
+              f"{verdict_v2['n_placebo_clean']} placebo-clean)")
+    else:
+        print(f"[scoring] v2 confirmatory: no '{verdict_v2['corpus']}' runs on disk yet")
 
 
 if __name__ == "__main__":

@@ -633,6 +633,7 @@ async def run_pilot(args) -> None:
     run_config = {
         "analyst_model": args.analyst_model,
         "corpus": args.corpus,
+        "run_label": args.run_label,
         "n_cells": len(pairs),
         "n_messages": args.n_messages,
         "seed": args.seed,
@@ -665,7 +666,8 @@ async def run_pilot(args) -> None:
 
     for arm in arms:
         arm_results = [(i, p, r) for i, p, r in results if i.arm == arm]
-        label = f"{args.corpus}_{arm}"
+        corpus_label = f"{args.corpus}-{args.run_label}" if args.run_label else args.corpus
+        label = f"{corpus_label}_{arm}"
         summary_path = out_dir / f"experiment_analyst_{label}_summary.csv"
         log_path = out_dir / f"experiment_analyst_{label}_log.json"
 
@@ -730,6 +732,9 @@ def main() -> None:
     parser.add_argument("--api-base-url", type=str, default="https://openrouter.ai/api/v1")
     parser.add_argument("--output-dir", type=str, default=str(PROJECT_ROOT / "output"))
     parser.add_argument("--repo-root", type=str, default=None)
+    parser.add_argument("--run-label", type=str, default="",
+                        help="Suffix for output filenames (e.g. k10) so variant runs "
+                             "do not overwrite the main corpus outputs")
     parser.add_argument("--dry-run", action="store_true",
                         help="Print sample prompts; no API calls")
     args = parser.parse_args()
