@@ -1,0 +1,6 @@
+analyst_model,corpus,arm,country,period,theta,theta_star,coup_success,n_senders_shown,jf_true_shown,n_join_true_shown,fall_est,join_pct_est,n_sender_parsed,n_sender_imputed_p,sender_accuracy,n_top5_join_true,parse_ok_fall,parse_ok_join_pct,api_error
+openai/gpt-5.5,nested,baseline,2,33,-0.5939124794752964,0.5,True,25,1.0,25,,,0,0,,,False,False,False
+openai/gpt-5.5,nested,baseline,4,30,-0.16113019107180887,0.5,True,25,0.96,24,,,0,0,,,False,False,False
+openai/gpt-5.5,nested,baseline,6,26,-1.4458961732689304,0.5,True,23,1.0,23,,,0,0,,,False,False,False
+openai/gpt-5.5,nested,baseline,6,46,-1.1622936868054512,0.5,True,25,0.96,24,,,0,0,,,False,False,False
+openai/gpt-5.5,nested,baseline,8,43,-0.5510645157372909,0.5,True,25,0.96,24,,,0,0,,,False,False,False

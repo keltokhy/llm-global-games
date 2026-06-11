@@ -42,5 +42,21 @@
       "CLEAN_RUN/message_banks/direct_coded_pairs.parquet"
     ],
     "timestamp": "2026-06-11T01:53:59.202031+00:00"
+  },
+  {
+    "analyst_model": "qwen/qwen3.7-plus",
+    "corpus": "nested",
+    "run_label": "k10",
+    "n_cells": 150,
+    "n_messages": 10,
+    "seed": 5150,
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "prompt_version": "v1",
+    "source_paths": [
+      "output/revision-nested-comm/meta-llama--llama-3.3-70b-instruct/experiment_comm_log.json",
+      "output/revision-nested-surv/meta-llama--llama-3.3-70b-instruct/experiment_comm_log.json"
+    ],
+    "timestamp": "2026-06-11T17:58:31.201829+00:00"
   }
 ]

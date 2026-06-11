@@ -42,5 +42,37 @@
       "CLEAN_RUN/message_banks/direct_coded_pairs.parquet"
     ],
     "timestamp": "2026-06-11T01:48:44.173973+00:00"
+  },
+  {
+    "analyst_model": "meta-llama/llama-4-maverick-17b-128e-instruct",
+    "corpus": "clean_qwen30",
+    "run_label": "",
+    "n_cells": 246,
+    "n_messages": 0,
+    "seed": 5150,
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "prompt_version": "v1",
+    "source_paths": [
+      "CLEAN_RUN/output/random_theta_pilot_large/large_random_comm_baseline_qwen30/agents.parquet",
+      "CLEAN_RUN/output/random_theta_pilot_large/large_random_surv_sender_only_qwen30/agents.parquet"
+    ],
+    "timestamp": "2026-06-11T17:50:20.082426+00:00"
+  },
+  {
+    "analyst_model": "meta-llama/llama-4-maverick-17b-128e-instruct",
+    "corpus": "nested",
+    "run_label": "k10",
+    "n_cells": 150,
+    "n_messages": 10,
+    "seed": 5150,
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "prompt_version": "v1",
+    "source_paths": [
+      "output/revision-nested-comm/meta-llama--llama-3.3-70b-instruct/experiment_comm_log.json",
+      "output/revision-nested-surv/meta-llama--llama-3.3-70b-instruct/experiment_comm_log.json"
+    ],
+    "timestamp": "2026-06-11T17:57:36.916077+00:00"
   }
 ]
