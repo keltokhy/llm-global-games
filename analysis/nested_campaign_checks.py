@@ -9,6 +9,10 @@ Analysis of the nested Llama 3.3 70B revision campaign:
                                   no monitoring framing)
   output/revision-nested-decoded-replay - decoded surveilled messages replayed
   output/revision-nested-raw-replay     - raw surveilled messages replayed
+  output/revision-nested-surv-mild      - mild warning (routine monitoring,
+                                          no consequence language)
+  output/revision-nested-surv-severe    - severe warning (explicit tracing and
+                                          arrest consequences)
 
 All arms share grid and seed (10 countries x 50 periods, n=25, seed 5150), so
 cells are nested by construction. Writes paper/tables/stats_nested.tex.
@@ -36,6 +40,8 @@ ARMS = {
     "style": ROOT / "output" / "revision-nested-style" / MODEL_DIR / "experiment_comm_log.json",
     "decoded": ROOT / "output" / "revision-nested-decoded-replay" / MODEL_DIR / "experiment_comm_log.json",
     "rawreplay": ROOT / "output" / "revision-nested-raw-replay" / MODEL_DIR / "experiment_comm_log.json",
+    "mild": ROOT / "output" / "revision-nested-surv-mild" / MODEL_DIR / "experiment_comm_log.json",
+    "severe": ROOT / "output" / "revision-nested-surv-severe" / MODEL_DIR / "experiment_comm_log.json",
 }
 
 CODED_PAT = re.compile(
@@ -104,7 +110,8 @@ def main() -> None:
     emit("NestedCommMeanJoinPct", f"{comm_cells['jf'].mean()*100:.1f}\\%")
 
     for arm, prefix in (("surv", "NestedSurv"), ("style", "NestedStyle"),
-                        ("decoded", "NestedDecoded"), ("rawreplay", "NestedRawReplay")):
+                        ("decoded", "NestedDecoded"), ("rawreplay", "NestedRawReplay"),
+                        ("mild", "NestedMild"), ("severe", "NestedSevere")):
         cells = arms[arm][0]
         if cells is None:
             print(f"  [skip] {arm}: no log yet")
@@ -133,6 +140,20 @@ def main() -> None:
         emit("NestedSurvVsStyleDeltaPP", f"{dpp:+.1f}")
         emit("NestedSurvVsStylePText", fmt_p(p))
         print(f"  surv-vs-style: N={n} delta={dpp:+.1f}pp p={p:.2g}")
+
+    # warning dose gradient: mild share of the full-warning effect, severe vs mild
+    if arms["mild"][0] is not None and arms["surv"][0] is not None:
+        _, d_mild, _, _ = paired(comm_cells, arms["mild"][0])
+        _, d_full, _, _ = paired(comm_cells, arms["surv"][0])
+        if d_full != 0:
+            emit("NestedMildShareOfFullPct", f"{100*d_mild/d_full:.0f}\\%")
+            print(f"  mild share of full effect: {100*d_mild/d_full:.0f}%")
+    if arms["mild"][0] is not None and arms["severe"][0] is not None:
+        n, dpp, t, p = paired(arms["mild"][0], arms["severe"][0])
+        emit("NestedSevereVsMildN", str(n))
+        emit("NestedSevereVsMildDeltaPP", f"{dpp:+.1f}")
+        emit("NestedSevereVsMildPText", fmt_p(p))
+        print(f"  severe-vs-mild: N={n} delta={dpp:+.1f}pp p={p:.2g}")
 
     # message manipulation check: coded/direct rates per arm
     for arm, prefix in (("comm", "NestedComm"), ("surv", "NestedSurv"), ("style", "NestedStyle")):
