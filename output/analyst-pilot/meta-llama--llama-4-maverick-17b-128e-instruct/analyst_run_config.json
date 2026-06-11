@@ -74,5 +74,53 @@
       "output/revision-nested-surv/meta-llama--llama-3.3-70b-instruct/experiment_comm_log.json"
     ],
     "timestamp": "2026-06-11T17:57:36.916077+00:00"
+  },
+  {
+    "analyst_model": "meta-llama/llama-4-maverick-17b-128e-instruct",
+    "corpus": "nested",
+    "run_label": "holdout",
+    "n_cells": 348,
+    "n_messages": 0,
+    "seed": 5150,
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "prompt_version": "v1",
+    "source_paths": [
+      "output/revision-nested-comm/meta-llama--llama-3.3-70b-instruct/experiment_comm_log.json",
+      "output/revision-nested-surv/meta-llama--llama-3.3-70b-instruct/experiment_comm_log.json"
+    ],
+    "timestamp": "2026-06-11T19:30:01.385400+00:00"
+  },
+  {
+    "analyst_model": "meta-llama/llama-4-maverick-17b-128e-instruct",
+    "corpus": "nested",
+    "run_label": "mild",
+    "n_cells": 150,
+    "n_messages": 0,
+    "seed": 5150,
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "prompt_version": "v1",
+    "source_paths": [
+      "output/revision-nested-comm/meta-llama--llama-3.3-70b-instruct/experiment_comm_log.json",
+      "output/revision-nested-surv/meta-llama--llama-3.3-70b-instruct/experiment_comm_log.json"
+    ],
+    "timestamp": "2026-06-11T20:00:20.133710+00:00"
+  },
+  {
+    "analyst_model": "meta-llama/llama-4-maverick-17b-128e-instruct",
+    "corpus": "nested",
+    "run_label": "severe",
+    "n_cells": 150,
+    "n_messages": 0,
+    "seed": 5150,
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "prompt_version": "v1",
+    "source_paths": [
+      "output/revision-nested-comm/meta-llama--llama-3.3-70b-instruct/experiment_comm_log.json",
+      "output/revision-nested-surv/meta-llama--llama-3.3-70b-instruct/experiment_comm_log.json"
+    ],
+    "timestamp": "2026-06-11T20:17:06.275567+00:00"
   }
 ]
