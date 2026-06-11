@@ -421,7 +421,7 @@ def test_june_feedback_comment_responses_do_not_regress():
 
     required_fragments = [
         "actionability cues",
-        'not a mediation result',
+        'rather than a mediation result',
         "not standardized by the prior-predictive signal standard deviation",
         r"(1+\sigma^2)/\sigma^2",
         "the comparison is external in the sense",
@@ -431,12 +431,12 @@ def test_june_feedback_comment_responses_do_not_regress():
         "Table~\\ref{tab:main_results}",
         "matched-cell estimator",
         'The full-scale evidence is the primary-model result',
-        "the codedness control below randomizes the coded form itself",
+        "the codedness control above randomizes the coded form itself",
         "separate dictionary counts",
         "That comparison uses its own live-message rerun",
         "The no-message control uses the main communication baseline",
         "separate 500-cell factorial rerun",
-        "not a mediation result",
+        "rather than a mediation result",
         "the rotation-matched Llama subset is smaller",
         "Inconclusive",
         "core benchmark suites",
@@ -467,7 +467,7 @@ def test_second_june_feedback_comment_responses_do_not_regress():
     tex = _compiled_tex()
 
     required_fragments = [
-        "sign checks on as few as 20 matched cells",
+        "sign checks on only 20 matched cells each",
         "20 matched cells",
         "grids were not nested",
         "weather terms are organic peer-message metaphors",
