@@ -146,11 +146,18 @@ def _shuffle_senders(senders: list[Sender], country: int, period: int, arm: str)
     return [senders[i] for i in order]
 
 
-def load_nested_cells(repo_root: Path) -> list[tuple[CellItem, CellItem]]:
-    """Load the paired nested-Llama corpus: (baseline_item, surveillance_item) per cell."""
+def load_nested_cells(
+    repo_root: Path, surv_log: str | None = None
+) -> list[tuple[CellItem, CellItem]]:
+    """Load the paired nested-Llama corpus: (baseline_item, surveillance_item) per cell.
+
+    surv_log overrides the surveillance-arm source (dose-response variants:
+    mild/severe arms on the identical theta grid, paired against the same
+    baseline).
+    """
     with open(repo_root / NESTED_BASELINE_LOG) as f:
         base_entries = json.load(f)
-    with open(repo_root / NESTED_SURVEILLANCE_LOG) as f:
+    with open(repo_root / (surv_log or NESTED_SURVEILLANCE_LOG)) as f:
         surv_entries = json.load(f)
 
     base_by_key = {(e["country"], e["period"]): e for e in base_entries}
@@ -584,7 +591,7 @@ async def run_pilot(args) -> None:
     repo_root = Path(args.repo_root) if args.repo_root else PROJECT_ROOT
 
     if args.corpus == "nested":
-        pairs = load_nested_cells(repo_root)
+        pairs = load_nested_cells(repo_root, surv_log=args.surv_log)
     elif args.corpus == "coded_pairs":
         pairs = load_coded_pairs(repo_root)
     elif args.corpus == "clean_qwen30":
@@ -739,6 +746,9 @@ def main() -> None:
     parser.add_argument("--api-base-url", type=str, default="https://openrouter.ai/api/v1")
     parser.add_argument("--output-dir", type=str, default=str(PROJECT_ROOT / "output"))
     parser.add_argument("--repo-root", type=str, default=None)
+    parser.add_argument("--surv-log", type=str, default=None,
+                        help="Override surveillance-arm log path (repo-relative); "
+                             "for dose-response arms on the same theta grid")
     parser.add_argument("--holdout", action="store_true",
                         help="Use the COMPLEMENT of the --n-cells/--seed sample "
                              "(cells untouched by prior runs)")
