@@ -25,8 +25,12 @@ Model & $N$ cells & Logistic $x_0$ & Pearson $r$ & RMSE & MAE \\
 $\Pr(\text{Binom}(n, \hat{p}(\theta)) > n\theta)$ where $\hat{p}(\theta)$
 is the fitted logistic join probability.
 ``$N$ cells'' is the number of unique country--period cells after pooling repeated log entries;
-for Mistral the pure-treatment log contains 1{,}000 runs over 600 unique country--period indices
+for Mistral the pure-treatment log contains 1{,}000 runs over 600 unique (country, period) indices
 (re-runs appended to the same log are pooled within a cell).
+Because $\theta$ is re-drawn whenever a batch is appended, those 600 (country, period) indices span
+680 unique (country, period, $\theta$) draws---the matching key on which the communication and
+surveillance estimators operate (Table~\ref{tab:comm_estimators}); this finite-$n$ check instead
+pools all $\theta$ draws within a (country, period).
 ``Logistic $x_0$'' is the midpoint of the logistic $\hat{p}(\theta) = L/(1+e^{-k(\theta - x_0)})$
 fitted to bin-averaged join rates on a random 70\% train split of cells (fixed seed);
 it can therefore differ from the full-sample cutoff in the logistic-parameters table,
