@@ -2458,10 +2458,14 @@ def compute_belief_factorial():
         bel_key = "belief_pre" if pre else "belief"
         sob_key = "second_order_belief_pre" if pre else "second_order_belief"
         for period in log:
+            country = period.get("country")
+            per = period.get("period")
             for agent in period.get("agents", []):
                 decision = agent.get("decision")
                 join = 1.0 if decision == "JOIN" else 0.0 if decision == "STAY" else np.nan
                 rows.append({
+                    "country": country,
+                    "period": per,
                     "belief": agent.get(bel_key),
                     "second_order_belief": agent.get(sob_key),
                     "join": join,
@@ -2491,10 +2495,95 @@ def compute_belief_factorial():
         if surv.empty or comm.empty:
             return {"delta": float("nan"), "t_stat": float("nan"), "p_value": float("nan")}
         t_stat, p_value = stats.ttest_ind(surv, comm, equal_var=False)
-        return {
+        out = {
             "delta": round(float((surv.mean() - comm.mean()) * scale), 2),
             "t_stat": round(float(t_stat), 4),
             "p_value": round(float(p_value), 6),
+        }
+        cl = _cluster_paired(surv_cell, comm_cell, col, scale=scale)
+        if cl is not None:
+            out["cluster"] = cl
+        return out
+
+    def _cluster_paired(surv_cell: str, comm_cell: str, col: str, *, scale: float = 1.0):
+        """Country-clustered inference on the surv-comm contrast.
+
+        Collapses each arm to country-period cell means (the matched unit),
+        pairs the two arms on (country, period), and treats the country as the
+        cluster. Reports a cluster-robust (CR1) t-test with G-1 degrees of
+        freedom and an exact restricted wild-cluster bootstrap p-value
+        (Rademacher weights, full 2^G enumeration over the G countries, so it
+        is deterministic and reproducible). This is the inferential unit the
+        rest of the paper uses; the agent-level Welch test above treats the
+        25 agents within a country-period as independent and is reported only
+        for comparability.
+        """
+        import itertools
+
+        def _cell_means(cell: str) -> pd.DataFrame:
+            df = cells[cell]
+            if df.empty or "country" not in df.columns:
+                return pd.DataFrame()
+            sub = df[["country", "period", col]].copy()
+            sub[col] = sub[col].astype(float)
+            sub = sub.dropna(subset=[col])
+            return sub.groupby(["country", "period"], as_index=False)[col].mean()
+
+        sm = _cell_means(surv_cell)
+        cm = _cell_means(comm_cell)
+        if sm.empty or cm.empty:
+            return None
+        merged = sm.merge(cm, on=["country", "period"], suffixes=("_surv", "_comm"))
+        if merged.empty:
+            return None
+        d = (merged[f"{col}_surv"] - merged[f"{col}_comm"]).to_numpy(dtype=float) * scale
+        countries = merged["country"].to_numpy()
+        groups = sorted(set(countries))
+        G = len(groups)
+        N = len(d)
+        if G < 2 or N <= 1:
+            return None
+        gidx = {c: k for k, c in enumerate(groups)}
+        gi = np.array([gidx[c] for c in countries])
+
+        def _beta_se(y: np.ndarray):
+            beta = float(y.mean())
+            e = y - beta
+            sg = np.array([e[gi == k].sum() for k in range(G)])
+            meat = float((sg ** 2).sum())
+            corr = (G / (G - 1)) * ((N - 1) / (N - 1))  # K=1
+            var = corr * meat / (N ** 2)
+            se = float(np.sqrt(var)) if var > 0 else float("nan")
+            return beta, se
+
+        beta, se = _beta_se(d)
+        t = beta / se if se and not np.isnan(se) else float("nan")
+        dof = G - 1
+        p_t = float(2 * stats.t.sf(abs(t), dof)) if not np.isnan(t) else float("nan")
+
+        # Exact restricted wild-cluster bootstrap (impose H0: mean = 0).
+        count = 0
+        total = 0
+        abs_t = abs(t)
+        for signs in itertools.product((-1.0, 1.0), repeat=G):
+            w = np.array(signs)[gi]
+            ystar = w * d  # restricted residuals u = d under H0: mean = 0
+            b_s, se_s = _beta_se(ystar)
+            t_s = b_s / se_s if se_s and not np.isnan(se_s) else 0.0
+            total += 1
+            if abs(t_s) >= abs_t - 1e-12:
+                count += 1
+        p_wild = count / total if total else float("nan")
+
+        return {
+            "delta": round(beta, 2),
+            "se": round(se, 4),
+            "t_stat": round(float(t), 4),
+            "dof": dof,
+            "n_cells": int(N),
+            "n_clusters": int(G),
+            "p_cluster_t": round(p_t, 6),
+            "p_wild_exact": round(float(p_wild), 6),
         }
 
     cell_summaries = {}

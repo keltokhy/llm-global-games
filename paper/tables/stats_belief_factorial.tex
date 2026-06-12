@@ -67,3 +67,23 @@
 \providecommand{\BFSurvDeltaSOBMsgPrePText}{<0.001}
 \providecommand{\BFSurvDeltaBelMsgPre}{-5.4}
 \providecommand{\BFSurvDeltaJoinMsgPrePP}{-15.1}
+
+% Country-clustered inference on the matched country-period cells.
+% Cluster-robust t has G-1 dof; wild-cluster bootstrap is exact (2^G).
+\providecommand{\BFNClusters}{10}
+\providecommand{\BFNCells}{500}
+\providecommand{\BFClusterDoF}{9}
+
+% Wild-cluster bootstrap p-values (self-contained, for '$p \X$' usage)
+\providecommand{\BFSurvDeltaBelNoMsgWildP}{= 0.002}
+\providecommand{\BFSurvDeltaSOBNoMsgWildP}{= 0.47}
+\providecommand{\BFActionNoMsgWildP}{= 0.002}
+\providecommand{\BFSurvDeltaBelMsgWildP}{= 0.002}
+\providecommand{\BFSurvDeltaSOBMsgWildP}{= 0.002}
+\providecommand{\BFActionMsgWildP}{= 0.002}
+\providecommand{\BFSurvDeltaSOBMsgPreWildP}{= 0.002}
+
+% Cluster-robust t-statistics (G-1 dof) for the key SOB / action wedge
+\providecommand{\BFSurvDeltaSOBNoMsgClT}{-0.7}
+\providecommand{\BFActionNoMsgClT}{-26.4}
+\providecommand{\BFSurvDeltaSOBMsgClT}{-32.8}

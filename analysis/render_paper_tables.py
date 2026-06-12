@@ -3092,6 +3092,51 @@ def render_stats_belief_factorial(stats: dict) -> str:
         f"\\providecommand{{\\BFSurvDeltaJoinMsgPrePP}}{{{_fmt_num(_cell_delta('comm_msg_pre', 'surv_msg_pre', 'join_mean', 100), 1)}}}",
         "",
     ]
+
+    # ── Country-clustered inference (Issue: agent-level Welch tests treat the
+    #    25 agents in a country-period as independent). Each contrast is
+    #    collapsed to the 500 matched country-period cells, paired across arms,
+    #    and clustered on the 10 countries: cluster-robust t (G-1 = 9 dof) plus
+    #    an exact restricted wild-cluster bootstrap (full 2^10 enumeration).
+    def _cl(name: str, field: str):
+        return ((effects.get(name) or {}).get("cluster") or {}).get(field)
+
+    def _wild_text(name: str) -> str:
+        """Wild-cluster bootstrap p for '$p \\BF...WildP$' usage."""
+        p = _cl(name, "p_wild_exact")
+        if p is None:
+            return "---"
+        if p >= 0.01:
+            return f"= {p:.2f}"
+        return f"= {p:.3f}"  # exact floor with 10 clusters is 2/1024 = 0.002
+
+    def _clnum(name: str, field: str, nd: int) -> str:
+        return _fmt_num(_cl(name, field), nd)
+
+    n_cl = _cl("surv_delta_join_msg", "n_clusters")
+    n_ce = _cl("surv_delta_join_msg", "n_cells")
+    lines += [
+        "% Country-clustered inference on the matched country-period cells.",
+        "% Cluster-robust t has G-1 dof; wild-cluster bootstrap is exact (2^G).",
+        f"\\providecommand{{\\BFNClusters}}{{{int(n_cl) if n_cl else 10}}}",
+        f"\\providecommand{{\\BFNCells}}{{{int(n_ce) if n_ce else 500}}}",
+        f"\\providecommand{{\\BFClusterDoF}}{{{int(_cl('surv_delta_join_msg', 'dof') or 9)}}}",
+        "",
+        "% Wild-cluster bootstrap p-values (self-contained, for '$p \\X$' usage)",
+        f"\\providecommand{{\\BFSurvDeltaBelNoMsgWildP}}{{{_wild_text('surv_delta_belief_nomsg')}}}",
+        f"\\providecommand{{\\BFSurvDeltaSOBNoMsgWildP}}{{{_wild_text('surv_delta_sob_nomsg')}}}",
+        f"\\providecommand{{\\BFActionNoMsgWildP}}{{{_wild_text('surv_delta_join_nomsg')}}}",
+        f"\\providecommand{{\\BFSurvDeltaBelMsgWildP}}{{{_wild_text('surv_delta_belief_msg')}}}",
+        f"\\providecommand{{\\BFSurvDeltaSOBMsgWildP}}{{{_wild_text('surv_delta_sob_msg')}}}",
+        f"\\providecommand{{\\BFActionMsgWildP}}{{{_wild_text('surv_delta_join_msg')}}}",
+        f"\\providecommand{{\\BFSurvDeltaSOBMsgPreWildP}}{{{_wild_text('surv_delta_sob_msg_pre')}}}",
+        "",
+        "% Cluster-robust t-statistics (G-1 dof) for the key SOB / action wedge",
+        f"\\providecommand{{\\BFSurvDeltaSOBNoMsgClT}}{{{_clnum('surv_delta_sob_nomsg', 't_stat', 1)}}}",
+        f"\\providecommand{{\\BFActionNoMsgClT}}{{{_clnum('surv_delta_join_nomsg', 't_stat', 1)}}}",
+        f"\\providecommand{{\\BFSurvDeltaSOBMsgClT}}{{{_clnum('surv_delta_sob_msg', 't_stat', 1)}}}",
+        "",
+    ]
     return "\n".join(lines)
 
 
