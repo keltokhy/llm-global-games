@@ -88,11 +88,79 @@ def contrast(treat: Path, ref: Path, scale: float = 100.0) -> dict:
     }
 
 
+def load_cells_csv(path: Path, arm: str) -> dict[tuple, float]:
+    """(country, period) -> join_valid for one arm, from the compact CSV."""
+    import csv
+    out = {}
+    with open(path, newline="") as f:
+        for r in csv.DictReader(f):
+            if r["arm"] == arm:
+                out[(int(r["country"]), int(r["period"]))] = float(r["join_valid"])
+    return out
+
+
+def contrast_cells(ct: dict, cr: dict, scale: float = 100.0) -> dict:
+    keys = sorted(set(ct) & set(cr))
+    if not keys:
+        return {"error": "no matched cells"}
+    d = np.array([ct[k] - cr[k] for k in keys]) * scale
+    countries = [k[0] for k in keys]
+    groups = sorted(set(countries))
+    G = len(groups)
+    gidx = {c: i for i, c in enumerate(groups)}
+    gi = np.array([gidx[c] for c in countries])
+    beta, se = _beta_se(d, gi, G)
+    t = beta / se if se else float("nan")
+    abs_t = abs(t)
+    count = total = 0
+    for signs in itertools.product((-1.0, 1.0), repeat=G):
+        w = np.array(signs)[gi]
+        b_s, se_s = _beta_se(w * d, gi, G)
+        t_s = b_s / se_s if se_s else 0.0
+        total += 1
+        if abs(t_s) >= abs_t - 1e-12:
+            count += 1
+    return {"delta_pp": round(beta, 2), "t": round(t, 2),
+            "p_wild_exact": round(count / total, 4), "n_cells": len(keys), "n_clusters": G}
+
+
+def run_from_csv(csv_path: Path) -> None:
+    """Reproduce all A/B contrasts from the committed compact CSV."""
+    arms = ["B_comm", "B_surv", "B_risk_stripped", "B_risk_only",
+            "A_w1_direct", "A_w1_coded", "A_w0_direct", "A_w0_coded"]
+    cells = {a: load_cells_csv(csv_path, a) for a in arms}
+    print("=== Arm means (valid join %) ===")
+    for a in arms:
+        v = np.array(list(cells[a].values()))
+        if len(v):
+            print(f"  {a:18s} {v.mean()*100:6.2f}%  (n={len(v)})")
+    contrasts = [
+        ("B_surv", "B_comm"), ("B_risk_stripped", "B_comm"), ("B_risk_stripped", "B_surv"),
+        ("B_risk_only", "B_comm"), ("B_risk_only", "B_surv"),
+        ("A_w1_direct", "A_w0_direct"), ("A_w1_coded", "A_w0_coded"),
+        ("A_w1_direct", "A_w1_coded"), ("A_w0_direct", "A_w0_coded"),
+        ("A_w1_direct", "B_comm"), ("A_w1_coded", "B_comm"),
+        ("A_w0_direct", "B_comm"), ("A_w0_coded", "B_comm"),
+    ]
+    print("\n=== Contrasts (country-clustered, exact wild-cluster bootstrap) ===")
+    for tr, rf in contrasts:
+        if cells[tr] and cells[rf]:
+            r = contrast_cells(cells[tr], cells[rf])
+            print(f"  {tr:16s} vs {rf:16s}: Δ={r['delta_pp']:+6.2f}pp  t={r['t']:+6.2f}  "
+                  f"p_wild={r['p_wild_exact']:.4f}  (n={r['n_cells']}, G={r['n_clusters']})")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("arms", nargs="+", help="LABEL=path pairs")
+    ap.add_argument("arms", nargs="*", help="LABEL=path pairs")
     ap.add_argument("--contrast", action="append", default=[], help="TREAT:REF")
+    ap.add_argument("--csv", type=Path, default=None,
+                    help="Reproduce all A/B contrasts from the compact cell-joins CSV")
     args = ap.parse_args()
+
+    if args.csv is not None:
+        run_from_csv(args.csv)
+        return
 
     arms = {}
     for a in args.arms:
