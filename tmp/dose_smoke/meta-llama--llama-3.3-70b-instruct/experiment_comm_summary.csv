@@ -1,0 +1,3 @@
+country,period,treatment,theta,theta_star,z,benefit,n_agents,n_join,join_fraction,n_valid,n_api_error,n_unparseable,join_fraction_valid,api_error_rate,unparseable_rate,coup_success,theoretical_attack,direction_transform,degrade_messages,no_peer_messages,beliefs_include_messages,belief_order,second_order_order,message_stage_context,decision_context,message_bundle_mode,message_source_country,message_source_period
+0,0,communication,-1.8935902769164685,0.5,-0.1367997713375338,1.0,5,5,1.0,5,0,0,1.0,0.0,0.0,True,0.9999999999999992,logistic,False,False,False,post,post,severe,none,live,,
+0,1,communication,-0.651524039034838,0.5,-0.0551039444292902,1.0,5,5,1.0,5,0,0,1.0,0.0,0.0,True,0.999938084079657,logistic,False,False,False,post,post,severe,none,live,,

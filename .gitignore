@@ -63,3 +63,11 @@ paper/website/
 
 # Scratch rebuild workspace (not part of canonical source tree)
 REBUILD/
+
+# Issue #109 surveillance-robustness raw logs (large; regenerable via run commands).
+# Compact per-cell cells.csv files are committed for reproducibility of the stats.
+output/temp-robustness/**/experiment_comm_log.json
+output/temp-robustness/**/experiment_comm_summary.csv
+output/structural-framing/**/experiment_comm_log.json
+output/structural-framing/**/experiment_comm_summary.csv
+output/_smoke/
