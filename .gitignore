@@ -71,3 +71,6 @@ output/temp-robustness/**/experiment_comm_summary.csv
 output/structural-framing/**/experiment_comm_log.json
 output/structural-framing/**/experiment_comm_summary.csv
 output/_smoke/
+
+# Local scratch / LLM caches (never commit)
+tmp/
