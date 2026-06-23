@@ -231,6 +231,20 @@ SYSTEM_COMMUNICATE_SURVEILLED_PLACEBO = _communicate_with_warning(SURVEILLANCE_W
 SYSTEM_COMMUNICATE_SURVEILLED_ANONYMOUS = _communicate_with_warning(SURVEILLANCE_WARNING_ANONYMOUS)
 SYSTEM_COMMUNICATE_STYLE = _communicate_with_warning(STYLE_INSTRUCTION)
 
+# Structural monitoring framing (Issue #109 Part B): conveys the SAME information
+# as SURVEILLANCE_WARNING_FULL (regime security monitors communications; subversive
+# messages bring serious consequences for author and contacts), but woven into the
+# scenario and channel description instead of appended as a separate "IMPORTANT:"
+# note. Tests whether the surveillance effect depends on the appended-note format.
+SYSTEM_COMMUNICATE_STRUCTURAL = (
+    "You are a citizen in a country whose regime security services monitor citizen "
+    "communications, and where messages deemed subversive bring serious consequences "
+    "for their authors and contacts. You have received a private intelligence briefing. "
+    "Through these monitored channels you are now in contact with a small number of "
+    "trusted people. Based on your briefing, write a brief message (1-2 sentences) to "
+    "share your read of the situation."
+)
+
 def _system_decide_comm_surveilled(n_agents=None):
     """Decision prompt with surveillance awareness (for fixed-messages test)."""
     return _system_decide_comm(n_agents=n_agents, decision_context="full")
@@ -1130,6 +1144,8 @@ async def run_communication_game(agents, theta, z, sigma, benefit, briefing_gen,
                 comm_system_base = SYSTEM_COMMUNICATE_SURVEILLED_MILD
             elif surveillance_mode == "severe":
                 comm_system_base = SYSTEM_COMMUNICATE_SURVEILLED_SEVERE
+            elif surveillance_mode == "structural":
+                comm_system_base = SYSTEM_COMMUNICATE_STRUCTURAL
             else:
                 comm_system_base = SYSTEM_COMMUNICATE_SURVEILLED
         else:
