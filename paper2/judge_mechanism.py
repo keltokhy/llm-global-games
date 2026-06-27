@@ -1,28 +1,35 @@
-"""LLM-judge validation of the data-named mechanism.
+"""LLM-judge validation of the data-named mechanism (beatability axis).
 
-A different-family judge (Qwen3-30B) scores each surveillance/comm source
-message on two dimensions: (1) how confidently it asserts the regime is
-beatable, (2) collective 'we' framing. We then (a) validate these against the
-lexicon proxies and (b) test whether they mediate the replay join drop within
-matched cells.
+A different-family judge scores each surveillance/comm source message 0-10 on
+how confidently it asserts the regime is beatable (and collective framing). We
+(a) validate against lexicon proxies and (b) test mediation of the replay join
+drop within matched cells.
+
+Per-message scores are cached to output/paper2_judge_cache/, so re-runs are cheap
+and deterministic; aggregate results are written to result_<judge>_<mode>.json
+for the macro emitter (emit_macros.py).
+
+Env: SURV, COMM, MODE (replay|live), JUDGE, N_CELLS.
 """
-import asyncio, json, os, re
+import asyncio, hashlib, json, os, re
 from pathlib import Path
 import numpy as np
 import pandas as pd
 import statsmodels.formula.api as smf
 from openai import AsyncOpenAI
 
-ROOT = Path("/Users/khaled/GitHub/llm-global-games")
+ROOT = Path(__file__).resolve().parent.parent
 SURV = ROOT / os.environ.get("SURV", "output/expB-surv-replay/meta-llama--llama-3.3-70b-instruct/experiment_comm_log.json")
 COMM = ROOT / os.environ.get("COMM", "output/expB-comm-replay/meta-llama--llama-3.3-70b-instruct/experiment_comm_log.json")
 JUDGE = os.environ.get("JUDGE", "qwen/qwen3-30b-a3b-instruct-2507")
-N_CELLS = 200
+MODE = os.environ.get("MODE", "replay")  # replay=messages_received, live=message_sent
+N_CELLS = int(os.environ.get("N_CELLS", "200"))
 MAX_MSGS = 6
+CACHE = ROOT / "output" / "paper2_judge_cache"
+SAFE = JUDGE.replace("/", "--")
 PREFIX = re.compile(r'^\s*(trusted contact|neighbor|colleague|friend|associate)\s*:\s*', re.I)
 CERT = re.compile(r"\b(will|certain|clearly|inevitable|undoubtedly|definitely|surely|no doubt|bound to)\b", re.I)
 WE = re.compile(r"\b(we|us|our|together|all of us|everyone|collective)\b", re.I)
-
 PROMPT = (
     "A private message between citizens deciding whether to join an uprising. Rate two things 0-10.\n"
     "beatable: how confidently does it assert the regime is weak / vulnerable / about to fall? "
@@ -36,40 +43,33 @@ PROMPT = (
 def clean(m): return PREFIX.sub("", m.strip().strip('"').strip()).strip().strip('"')
 
 
-MODE = os.environ.get("MODE", "replay")  # replay=messages_received, live=message_sent
-
 def cell_msgs(path, rng):
     d = json.loads(Path(path).read_text())
     out = {}
     for i, c in enumerate(d):
         seen = []
         if MODE == "live":
-            for ag in c.get("agents", []):
-                m = ag.get("message_sent")
-                cm = clean(m) if isinstance(m, str) else ""
-                if cm and cm not in seen:
-                    seen.append(cm)
+            cand = [ag.get("message_sent") for ag in c.get("agents", [])]
         else:
-            for ag in c.get("agents", []):
-                for m in ag.get("messages_received", []) or []:
-                    cm = clean(m) if isinstance(m, str) else ""
-                    if cm and cm not in seen:
-                        seen.append(cm)
+            cand = [m for ag in c.get("agents", []) for m in (ag.get("messages_received") or [])]
+        for m in cand:
+            cm = clean(m) if isinstance(m, str) else ""
+            if cm and cm not in seen:
+                seen.append(cm)
         if seen:
             rng.shuffle(seen)
             out[i] = {"theta": c["theta"], "join": c["join_fraction"], "msgs": seen[:MAX_MSGS]}
     return out
 
 
-async def judge(client, msg, sem):
+async def judge_one(client, msg, sem):
     async with sem:
         for k in range(4):
             try:
                 r = await client.chat.completions.create(
                     model=JUDGE, temperature=0,
                     messages=[{"role": "user", "content": PROMPT.format(msg=msg)}], max_tokens=40)
-                t = r.choices[0].message.content or ""
-                mt = re.search(r"\{[^}]*\}", t)
+                mt = re.search(r"\{[^}]*\}", r.choices[0].message.content or "")
                 if mt:
                     o = json.loads(mt.group(0))
                     return float(o["beatable"]), float(o["collective"])
@@ -79,58 +79,58 @@ async def judge(client, msg, sem):
 
 
 async def main():
-    key = os.environ.get("OPENROUTER_API_KEY") or next(
-        (l.split("=", 1)[1].strip().strip('"').strip("'") for l in (ROOT / ".env").read_text().splitlines()
-         if l.startswith("OPENROUTER_API_KEY=")), "")
-    client = AsyncOpenAI(base_url="https://openrouter.ai/api/v1", api_key=key)
-    sem = asyncio.Semaphore(40)
+    CACHE.mkdir(parents=True, exist_ok=True)
+    cache_path = CACHE / f"scores_{SAFE}.json"
+    cache = json.loads(cache_path.read_text()) if cache_path.exists() else {}
+
     rng = np.random.default_rng(0)
     S, C = cell_msgs(SURV, rng), cell_msgs(COMM, rng)
     cells = [i for i in S if i in C][:N_CELLS]
+    uniq = {m for i in cells for cond in (S, C) for m in cond[i]["msgs"]}
+    todo = [m for m in uniq if hashlib.sha1(m.encode()).hexdigest() not in cache]
+    print(f"{len(uniq)} unique messages, {len(todo)} to judge via {JUDGE} (mode={MODE}) ...", flush=True)
+    if todo:
+        key = os.environ.get("OPENROUTER_API_KEY") or next(
+            (l.split("=", 1)[1].strip().strip('"').strip("'") for l in (ROOT / ".env").read_text().splitlines()
+             if l.startswith("OPENROUTER_API_KEY=")), "")
+        client = AsyncOpenAI(base_url="https://openrouter.ai/api/v1", api_key=key)
+        sem = asyncio.Semaphore(40)
+        scores = await asyncio.gather(*(judge_one(client, m, sem) for m in todo))
+        for m, sc in zip(todo, scores):
+            cache[hashlib.sha1(m.encode()).hexdigest()] = sc
+        cache_path.write_text(json.dumps(cache))
 
-    # collect all (cell, cond, msg) jobs
-    jobs = []
-    for i in cells:
-        for cond, dd in (("s", S[i]), ("c", C[i])):
-            for m in dd["msgs"]:
-                jobs.append((i, cond, m))
-    print(f"judging {len(jobs)} messages across {len(cells)} matched cells via {JUDGE} ...", flush=True)
-    res = await asyncio.gather(*(judge(client, m, sem) for _, _, m in jobs))
+    def look(m):
+        return cache.get(hashlib.sha1(m.encode()).hexdigest(), (np.nan, np.nan))
 
-    rows = {}
-    for (i, cond, m), (b, col) in zip(jobs, res):
-        rows.setdefault((i, cond), []).append((b, col, len(CERT.findall(m)), len(WE.findall(m))))
     rec = []
     for i in cells:
-        rcs = {}
-        for cond in ("s", "c"):
-            arr = np.array(rows[(i, cond)], dtype=float)
-            rcs[cond] = np.nanmean(arr, axis=0)
-        rec.append({"cell": i,
-                    "beat_s": rcs["s"][0], "beat_c": rcs["c"][0],
-                    "coll_s": rcs["s"][1], "coll_c": rcs["c"][1],
-                    "cert_s": rcs["s"][2], "cert_c": rcs["c"][2],
-                    "we_s": rcs["s"][3], "we_c": rcs["c"][3],
-                    "join_s": S[i]["join"], "join_c": C[i]["join"]})
+        row = {"cell": i, "join_s": S[i]["join"], "join_c": C[i]["join"]}
+        for cond, dd in (("s", S[i]), ("c", C[i])):
+            b = [look(m)[0] for m in dd["msgs"]]
+            cl = [look(m)[1] for m in dd["msgs"]]
+            row[f"beat_{cond}"] = np.nanmean(b)
+            row[f"coll_{cond}"] = np.nanmean(cl)
+            row[f"cert_{cond}"] = np.nanmean([len(CERT.findall(m)) for m in dd["msgs"]])
+            row[f"we_{cond}"] = np.nanmean([len(WE.findall(m)) for m in dd["msgs"]])
+        rec.append(row)
     df = pd.DataFrame(rec).dropna()
-    print(f"\n=== judge means (surv vs comm), {len(df)} cells ===")
-    print(f"beatable:   surv={df.beat_s.mean():.2f}  comm={df.beat_c.mean():.2f}  diff={df.beat_s.mean()-df.beat_c.mean():+.2f}")
-    print(f"collective: surv={df.coll_s.mean():.2f}  comm={df.coll_c.mean():.2f}  diff={df.coll_s.mean()-df.coll_c.mean():+.2f}")
-    print(f"join:       surv={df.join_s.mean():.3f}  comm={df.join_c.mean():.3f}  diff={df.join_s.mean()-df.join_c.mean():+.3f}")
-
-    # validate judge vs lexicon (pool cell-level surv & comm)
-    jb = np.r_[df.beat_s, df.beat_c]; ct = np.r_[df.cert_s, df.cert_c]
-    jc = np.r_[df.coll_s, df.coll_c]; we = np.r_[df.we_s, df.we_c]
-    print(f"\n=== validation: judge vs lexicon (cell-level corr) ===")
-    print(f"judge beatable  ~ lexicon certainty: r={np.corrcoef(jb,ct)[0,1]:+.3f}")
-    print(f"judge collective~ lexicon we:        r={np.corrcoef(jc,we)[0,1]:+.3f}")
-
-    print(f"\n=== mediation within matched cells (Delta-join ~ Delta-judge) ===")
     df["dj"] = df.join_s - df.join_c
-    for dim, a, b in [("beatable", "beat_s", "beat_c"), ("collective", "coll_s", "coll_c")]:
-        df["d"] = df[a] - df[b]
-        fit = smf.ols("dj ~ d", df).fit()
-        print(f"{dim:11s}: surv-comm Delta={df.d.mean():+.3f}  slope(dj~d)={fit.params['d']:+.4f}  p={fit.pvalues['d']:.1e}")
+    df["d"] = df.beat_s - df.beat_c
+    fit = smf.ols("dj ~ d", df).fit()
+    val_r = float(np.corrcoef(np.r_[df.beat_s, df.beat_c], np.r_[df.cert_s, df.cert_c])[0, 1])
+
+    result = {
+        "judge": JUDGE, "mode": MODE, "n_cells": int(len(df)),
+        "beat_surv": float(df.beat_s.mean()), "beat_comm": float(df.beat_c.mean()),
+        "beat_delta": float(df.beat_s.mean() - df.beat_c.mean()),
+        "join_delta": float(df.dj.mean()),
+        "med_slope": float(fit.params["d"]), "med_p": float(fit.pvalues["d"]),
+        "med_share": float(fit.params["d"] * df.d.mean() / df.dj.mean()),
+        "val_r_beat_cert": val_r,
+    }
+    (CACHE / f"result_{SAFE}_{MODE}.json").write_text(json.dumps(result, indent=2))
+    print(json.dumps(result, indent=2), flush=True)
 
 
 if __name__ == "__main__":
