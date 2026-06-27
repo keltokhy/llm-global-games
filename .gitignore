@@ -75,6 +75,3 @@ output/_smoke/
 # Local scratch / LLM caches (never commit)
 tmp/
 
-# Paper 2 experiment runs (regenerable). Keep only the canonical run the paper builds from.
-paper2/output/*
-!paper2/output/paper2_adversarial_full/
