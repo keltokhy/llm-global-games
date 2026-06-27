@@ -39,6 +39,10 @@ class ArmSpec:
     residual_causal_cost: float = 0.0
     active_monitor_cost: float = 0.0
     message_cost: float = 0.002
+    monitor_full_message: bool = False
+    monitor_passive: bool = False
+    monitor_context: bool = False
+    monitor_updates: int | None = None
 
 
 def parse_args() -> argparse.Namespace:
@@ -253,6 +257,10 @@ def run_suite(
             residual_causal_cost=arm.residual_causal_cost,
             active_monitor_cost=arm.active_monitor_cost,
             message_cost=arm.message_cost,
+            monitor_full_message=arm.monitor_full_message,
+            monitor_passive=arm.monitor_passive,
+            monitor_context=arm.monitor_context,
+            **({"monitor_updates": arm.monitor_updates} if arm.monitor_updates is not None else {}),
         )
         for seed in seeds:
             print(f"[{learning_rule}] arm={arm_label(arm.name)} seed={seed}", flush=True)

@@ -85,6 +85,14 @@ class ContinuousPPOConfig:
     active_monitor_cost: float = 0.0
     monitor_learning_rate: float = 3e-4
     monitor_updates: int = 1
+    # Redesign: a full-information monitor sees the entire message (no structural
+    # null-space blind spot). monitor_context additionally gives the monitor the
+    # sender's private signal/type, the "key" the receiver uses to decode.
+    # monitor_passive trains/scores the monitor for readability without penalizing
+    # the sender (baseline readability arm).
+    monitor_full_message: bool = False
+    monitor_context: bool = False
+    monitor_passive: bool = False
     learning_rule: LearningRule = "ppo"
     device: str = "auto"
 
@@ -132,10 +140,26 @@ class CategoricalActorCritic(nn.Module):
 
 
 class ContentMonitor(nn.Module):
-    """Online auditor that predicts strategic content from the monitored projection."""
+    """Online auditor that predicts strategic content from what it is allowed to see.
 
-    def __init__(self, input_dim: int, hidden_dim: int, output_dim: int = 3) -> None:
+    full_message=False reproduces the legacy projection auditor (sees only z=Am).
+    full_message=True is the redesign: the monitor sees the entire message, so there
+    is no structural blind spot and any concealment must be learned. context=True
+    additionally feeds the monitor side information (the receiver's correlated key).
+    """
+
+    def __init__(
+        self,
+        input_dim: int,
+        hidden_dim: int,
+        output_dim: int = 3,
+        *,
+        full_message: bool = False,
+        context: bool = False,
+    ) -> None:
         super().__init__()
+        self.full_message = full_message
+        self.context = context
         self.net = nn.Sequential(
             nn.Linear(input_dim, hidden_dim),
             nn.Tanh(),
@@ -146,6 +170,20 @@ class ContentMonitor(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.net(x)
+
+
+def monitor_input(
+    messages: torch.Tensor,
+    auditor_observation: torch.Tensor,
+    context: torch.Tensor,
+    monitor: ContentMonitor | None,
+) -> torch.Tensor:
+    """Assemble the monitor's flat input from whatever it is allowed to observe."""
+
+    base = messages if (monitor is not None and monitor.full_message) else auditor_observation
+    if monitor is not None and monitor.context:
+        base = torch.cat([base, context], dim=-1)
+    return base.reshape(-1, base.shape[-1])
 
 
 @dataclass
@@ -239,8 +277,16 @@ def train_continuous_policy(
     receiver = CategoricalActorCritic(receiver_feature_dim(game_config), 2, ppo_config.hidden_dim).to(device)
     monitor = None
     monitor_optimizer = None
-    if ppo_config.active_monitor_cost > 0.0:
-        monitor = ContentMonitor(game_config.auditor_dim, ppo_config.hidden_dim).to(device)
+    monitor_enabled = ppo_config.active_monitor_cost > 0.0 or ppo_config.monitor_passive
+    if monitor_enabled:
+        base_dim = game_config.message_dim if ppo_config.monitor_full_message else game_config.auditor_dim
+        in_dim = base_dim + (private_feature_dim() if ppo_config.monitor_context else 0)
+        monitor = ContentMonitor(
+            in_dim,
+            ppo_config.hidden_dim,
+            full_message=ppo_config.monitor_full_message,
+            context=ppo_config.monitor_context,
+        ).to(device)
         monitor_optimizer = torch.optim.Adam(monitor.parameters(), lr=ppo_config.monitor_learning_rate, eps=1e-5)
     optimizer = torch.optim.Adam(
         list(sender.parameters()) + list(receiver.parameters()),
@@ -588,7 +634,7 @@ def monitor_scores(batch: ContinuousBatch, monitor: ContentMonitor | None) -> di
 
     monitor.eval()
     with torch.no_grad():
-        x = batch.auditor_observation.reshape(-1, batch.auditor_observation.shape[-1])
+        x = monitor_input(batch.messages, batch.auditor_observation, batch.sender_features, monitor)
         y = batch.content.reshape(-1)
         logits = monitor(x)
         probs = F.softmax(logits, dim=-1)
@@ -730,7 +776,7 @@ def training_rewards(
 
     if ppo_config.active_monitor_cost > 0.0 and monitor is not None:
         with torch.no_grad():
-            monitor_logits = monitor(auditor_observation.reshape(-1, auditor_observation.shape[-1]))
+            monitor_logits = monitor(monitor_input(messages, auditor_observation, private, monitor))
             monitor_probs = F.softmax(monitor_logits, dim=-1)
             true_prob = monitor_probs.gather(1, content.reshape(-1, 1)).reshape_as(raw_payoffs)
         adjusted = adjusted - ppo_config.active_monitor_cost * true_prob
@@ -746,7 +792,7 @@ def _monitor_update(
     rollout: ContinuousBatch,
     config: ContinuousPPOConfig,
 ) -> None:
-    x = rollout.auditor_observation.reshape(-1, rollout.auditor_observation.shape[-1]).detach()
+    x = monitor_input(rollout.messages, rollout.auditor_observation, rollout.sender_features, monitor).detach()
     y = rollout.content.reshape(-1).detach()
     monitor.train()
     for _ in range(max(1, config.monitor_updates)):
