@@ -1,0 +1,12 @@
+| Learning rule | Design | Payoff | Message value | Hidden use | Offline probe | Live monitor |
+| --- | --- | --- | --- | --- | --- | --- |
+| PPO | Public Only | 0.537 | 0.261 | 0.000 | 0.951 |  |
+| PPO | Private Allowed | 0.535 | 0.268 | 0.081 | 0.944 |  |
+| PPO | Public Monitored | 0.537 | 0.259 | 0.000 | 0.841 | 0.770 |
+| PPO | Private Monitored | 0.531 | 0.267 | 0.138 | 0.840 | 0.524 |
+| PPO | Monitored + Penalty | 0.531 | 0.268 | 0.016 | 0.802 | 0.617 |
+| REINFORCE | Public Only | 0.540 | 0.260 | 0.000 | 0.925 |  |
+| REINFORCE | Private Allowed | 0.539 | 0.266 | 0.077 | 0.917 |  |
+| REINFORCE | Public Monitored | 0.534 | 0.257 | 0.000 | 0.891 | 0.713 |
+| REINFORCE | Private Monitored | 0.539 | 0.275 | 0.183 | 0.851 | 0.517 |
+| REINFORCE | Monitored + Penalty | 0.534 | 0.257 | 0.014 | 0.781 | 0.700 |

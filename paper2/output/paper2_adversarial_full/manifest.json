@@ -1,0 +1,163 @@
+{
+  "runner": "paper2.run_paper2",
+  "resolved_device": "mps",
+  "args": {
+    "outdir": "paper2/output/paper2_adversarial_full",
+    "device": "mps",
+    "seeds": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "algorithm_seeds": [
+      0,
+      1
+    ],
+    "updates": 120,
+    "algorithm_updates": 80,
+    "batch_size": 6144,
+    "minibatch_size": 6144,
+    "ppo_epochs": 3,
+    "eval_episodes": 10000,
+    "robustness_episodes": 5000,
+    "auditor_episodes": 6000,
+    "hidden_dim": 128,
+    "message_dim": 6,
+    "auditor_dim": 2,
+    "sigma": 0.35,
+    "fast": false,
+    "plot_only": false,
+    "skip_stress_tests": false,
+    "skip_algorithm_diagnostic": false,
+    "skip_paper": false
+  },
+  "game_config": {
+    "n_agents": 5,
+    "theta_low": -0.2,
+    "theta_high": 1.8,
+    "sigma": 0.35,
+    "payoff_types": [
+      [
+        1.0,
+        0.45
+      ],
+      [
+        1.0,
+        0.75
+      ],
+      [
+        1.0,
+        1.1
+      ]
+    ],
+    "content_margin": 0.18,
+    "message_dim": 6,
+    "auditor_dim": 2,
+    "message_scale": 2.0,
+    "projection_seed": 17
+  },
+  "ppo_config": {
+    "updates": 120,
+    "batch_size": 6144,
+    "minibatch_size": 6144,
+    "epochs": 3,
+    "learning_rate": 0.0003,
+    "clip_coef": 0.2,
+    "value_coef": 0.5,
+    "receiver_entropy_coef": 0.015,
+    "sender_entropy_coef": 0.002,
+    "max_grad_norm": 0.7,
+    "hidden_dim": 128,
+    "reward_mode": "team",
+    "standardize_advantages": true,
+    "message_cost": 0.002,
+    "hidden_cost": 0.0,
+    "residual_causal_cost": 0.0,
+    "active_monitor_cost": 0.0,
+    "monitor_learning_rate": 0.0003,
+    "monitor_updates": 1,
+    "learning_rule": "ppo",
+    "device": "mps"
+  },
+  "arms": [
+    {
+      "name": "no_comm",
+      "receiver_observation": "none",
+      "hidden_cost": 0.0,
+      "residual_causal_cost": 0.0,
+      "active_monitor_cost": 0.0,
+      "message_cost": 0.0
+    },
+    {
+      "name": "visible_bottleneck",
+      "receiver_observation": "visible",
+      "hidden_cost": 0.04,
+      "residual_causal_cost": 0.0,
+      "active_monitor_cost": 0.0,
+      "message_cost": 0.002
+    },
+    {
+      "name": "asymmetric_free",
+      "receiver_observation": "full",
+      "hidden_cost": 0.0,
+      "residual_causal_cost": 0.0,
+      "active_monitor_cost": 0.0,
+      "message_cost": 0.002
+    },
+    {
+      "name": "public_monitored",
+      "receiver_observation": "visible",
+      "hidden_cost": 0.04,
+      "residual_causal_cost": 0.0,
+      "active_monitor_cost": 0.12,
+      "message_cost": 0.002
+    },
+    {
+      "name": "private_monitored",
+      "receiver_observation": "full",
+      "hidden_cost": 0.0,
+      "residual_causal_cost": 0.0,
+      "active_monitor_cost": 0.12,
+      "message_cost": 0.002
+    },
+    {
+      "name": "monitored_penalty",
+      "receiver_observation": "full",
+      "hidden_cost": 0.0,
+      "residual_causal_cost": 0.6,
+      "active_monitor_cost": 0.12,
+      "message_cost": 0.002
+    }
+  ],
+  "arm_labels": {
+    "no_comm": "No Messages",
+    "visible_bottleneck": "Public Only",
+    "asymmetric_free": "Private Allowed",
+    "public_monitored": "Public Monitored",
+    "private_monitored": "Private Monitored",
+    "monitored_penalty": "Monitored + Penalty"
+  },
+  "arm_order": [
+    "no_comm",
+    "visible_bottleneck",
+    "asymmetric_free",
+    "public_monitored",
+    "private_monitored",
+    "monitored_penalty"
+  ],
+  "outputs": [
+    "algorithm_results.csv",
+    "auditor_sample_curve.csv",
+    "continuous_history.csv",
+    "continuous_join_curves.csv",
+    "continuous_results.csv",
+    "continuous_summary.csv",
+    "crossplay_results.csv",
+    "crossplay_summary.csv",
+    "figures",
+    "research_design.md",
+    "robustness_results.csv",
+    "tables"
+  ]
+}
