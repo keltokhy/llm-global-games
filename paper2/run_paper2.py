@@ -518,6 +518,7 @@ def write_outputs(
             "hidden_causal_influence",
             "auditor_content_balanced_accuracy",
             "live_monitor_content_accuracy",
+            "live_monitor_content_balanced_accuracy",
         ],
     ).to_csv(outdir / "continuous_summary.csv", index=False)
     if not robustness.empty:

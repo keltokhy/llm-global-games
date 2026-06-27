@@ -12,10 +12,11 @@
     ],
     "algorithm_seeds": [
       0,
-      1
+      1,
+      2
     ],
     "updates": 120,
-    "algorithm_updates": 80,
+    "algorithm_updates": 120,
     "batch_size": 6144,
     "minibatch_size": 6144,
     "ppo_epochs": 3,
@@ -26,6 +27,8 @@
     "message_dim": 6,
     "auditor_dim": 2,
     "sigma": 0.35,
+    "monitor_updates": 1,
+    "monitor_lr": 0.0003,
     "fast": false,
     "plot_only": false,
     "skip_stress_tests": false,
@@ -156,6 +159,7 @@
     "crossplay_results.csv",
     "crossplay_summary.csv",
     "figures",
+    "manifest.json",
     "research_design.md",
     "robustness_results.csv",
     "tables"
