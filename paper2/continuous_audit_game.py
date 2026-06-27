@@ -581,8 +581,11 @@ def monitor_scores(batch: ContinuousBatch, monitor: ContentMonitor | None) -> di
     if monitor is None:
         return {
             "live_monitor_content_accuracy": float("nan"),
+            "live_monitor_content_balanced_accuracy": float("nan"),
             "live_monitor_true_probability": float("nan"),
         }
+    from sklearn.metrics import balanced_accuracy_score
+
     monitor.eval()
     with torch.no_grad():
         x = batch.auditor_observation.reshape(-1, batch.auditor_observation.shape[-1])
@@ -591,8 +594,14 @@ def monitor_scores(batch: ContinuousBatch, monitor: ContentMonitor | None) -> di
         probs = F.softmax(logits, dim=-1)
         pred = logits.argmax(dim=-1)
         true_prob = probs.gather(1, y[:, None]).squeeze(1)
+    y_np = _to_numpy(y)
+    pred_np = _to_numpy(pred)
+    balanced = float(balanced_accuracy_score(y_np, pred_np)) if np.unique(y_np).size > 1 else float("nan")
     return {
+        # Raw accuracy is dominated by the majority content class (~0.52 here); balanced
+        # accuracy (chance = 1/n_classes) is the auditor-comparable figure.
         "live_monitor_content_accuracy": _mean_float((pred == y).float()),
+        "live_monitor_content_balanced_accuracy": balanced,
         "live_monitor_true_probability": _mean_float(true_prob),
     }
 

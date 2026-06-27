@@ -64,7 +64,7 @@ def write_manuscript(outdir: Path, *, tex_path: Path = Path("paper2/auditability
 \maketitle
 
 \begin{{abstract}}
-Strategic AI agents can learn to communicate in ways that improve coordination, but monitoring becomes a control problem only when agents have an incentive to avoid being read. This paper studies that problem in a continuous-message global game. Agents privately observe noisy signals and payoff types, send learned continuous messages, and choose whether to join a collective action. A monitor observes only a lower-dimensional projection of each message. In active-monitor treatments, a live adversarial monitor predicts each sender's strategic content from that projection, and agents are penalized when the monitor assigns high probability to the truth. I define an auditability frontier that compares the payoff value of communication, the causal influence of monitor-hidden message components, and the live monitor's ability to recover strategic content. Across trained neural agents, communication raises payoff by {numbers['best_message_value']} payoff points relative to shuffled messages. Under active monitoring, private communication preserves message value ({numbers['private_monitored_value']}) while raising hidden influence to {numbers['private_monitored_hidden']} and reducing live monitor accuracy from {numbers['public_live_monitor']} in the public monitored design to {numbers['private_live_monitor']}. Adding a hidden-influence penalty cuts hidden influence to {numbers['penalty_hidden']}. Cross-play and distribution-shift tests show that some high-performing protocols are brittle private codes rather than portable public languages. The result is a measurement framework for controllable strategic communication: monitoring should be evaluated by whether strategic content remains visible under pressure and whether hidden channels are behaviorally irrelevant.
+Strategic AI agents can learn to communicate in ways that improve coordination, but monitoring becomes a control problem only when agents have an incentive to avoid being read. This paper studies that problem in a continuous-message global game. Agents privately observe noisy signals and payoff types, send learned continuous messages, and choose whether to join a collective action. A monitor observes only a lower-dimensional projection of each message. In active-monitor treatments, a live adversarial monitor predicts each sender's strategic content from that projection, and agents are penalized when the monitor assigns high probability to the truth. I define an auditability frontier that compares the payoff value of communication, the causal influence of monitor-hidden message components, and the live monitor's ability to recover strategic content. Across trained neural agents, communication raises payoff by {numbers['best_message_value']} payoff points relative to shuffled messages. Under active monitoring, private communication preserves message value ({numbers['private_monitored_value']}) while raising hidden influence to {numbers['private_monitored_hidden']} and reducing the live monitor's balanced accuracy (chance one third) from {numbers['public_live_monitor']} in the public monitored design to {numbers['private_live_monitor']}. Adding a hidden-influence penalty cuts hidden influence to {numbers['penalty_hidden']}. Cross-play and distribution-shift tests show that some high-performing protocols are brittle private codes rather than portable public languages. The result is a measurement framework for controllable strategic communication: monitoring should be evaluated by whether strategic content remains visible under pressure and whether hidden channels are behaviorally irrelevant.
 \end{{abstract}}
 
 \section{{Introduction}}
@@ -135,7 +135,7 @@ This is the central auditability statistic. It asks whether the monitor-hidden p
 
 The third estimand is finite-auditor readability. A logistic probe tries to recover the sender's strategic content class from only $z_i$. The reported score is balanced accuracy, so chance is one third. This is deliberately a weak auditor; the point is not to prove optimal decoding, but to test whether the visible channel contains accessible strategic information.
 
-The fourth estimand exists only in active-monitor treatments. Let $c_i$ denote the sender's strategic content class and let $q_\phi(c_i \mid z_i)$ be the live monitor's predicted probability of the true class. I report live monitor accuracy and the true-class probability. These are not post-hoc diagnostics. They enter the agents' objective during training.
+The fourth estimand exists only in active-monitor treatments. Let $c_i$ denote the sender's strategic content class and let $q_\phi(c_i \mid z_i)$ be the live monitor's predicted probability of the true class. I report the live monitor's balanced accuracy, comparable to the offline probe with chance one third, and the true-class probability. These are not post-hoc diagnostics. They enter the agents' objective during training.
 
 The stress tests are cross-play and distribution shift. Cross-play pairs one seed's sender with another seed's receiver. A large self-play to cross-play loss means the protocol is not portable. Distribution shifts re-evaluate trained policies under cleaner signals, noisier signals, knife-edge regimes, and harder regimes.
 
@@ -149,7 +149,7 @@ with terms omitted in treatments where the corresponding coefficient is zero. Th
 
 \section{{Results}}
 
-Figure~\ref{{fig:frontier}} plots the main frontier. The no-message baseline has zero message value by construction. Communication designs move upward when messages improve payoff and rightward when receivers rely on hidden message content. The passive private channel has hidden influence of {numbers['private_hidden']}. The active-monitor comparison is sharper: Public Monitored gains {numbers['public_monitored_value']} payoff points with hidden influence of {numbers['public_monitored_hidden']}, while Private Monitored gains {numbers['private_monitored_value']} with hidden influence of {numbers['private_monitored_hidden']}. At the same time, live monitor accuracy falls from {numbers['public_live_monitor']} to {numbers['private_live_monitor']}. That is the frontier: under surveillance pressure, private communication can preserve value by becoming less readable.
+Figure~\ref{{fig:frontier}} plots the main frontier. The no-message baseline has zero message value by construction. Communication designs move upward when messages improve payoff and rightward when receivers rely on hidden message content. The passive private channel has hidden influence of {numbers['private_hidden']}. The active-monitor comparison is sharper: Public Monitored gains {numbers['public_monitored_value']} payoff points with hidden influence of {numbers['public_monitored_hidden']}, while Private Monitored gains {numbers['private_monitored_value']} with hidden influence of {numbers['private_monitored_hidden']}. At the same time, the live monitor's balanced accuracy falls from {numbers['public_live_monitor']} to {numbers['private_live_monitor']}. That is the frontier: under surveillance pressure, private communication can preserve value while the in-the-loop monitor loses its grip on strategic content.
 
 \begin{{figure}}[t]
     \centering
@@ -158,14 +158,14 @@ Figure~\ref{{fig:frontier}} plots the main frontier. The no-message baseline has
     \label{{fig:frontier}}
 \end{{figure}}
 
-Figure~\ref{{fig:metrics}} decomposes the frontier into four quantities. The public-only design is the clean monitor-aligned benchmark: what the receiver sees is what the monitor sees. The private-allowed design tests passive hidden use. Public Monitored and Private Monitored isolate the effect of active monitoring by holding the monitor penalty fixed while changing whether the receiver can see the hidden subspace. Monitored + Penalty shows that direct control can reduce hidden influence to {numbers['penalty_hidden']} while keeping live monitor accuracy at {numbers['penalty_live_monitor']}.
+Figure~\ref{{fig:metrics}} decomposes the frontier into four quantities. The public-only design is the clean monitor-aligned benchmark: what the receiver sees is what the monitor sees. The private-allowed design tests passive hidden use. Public Monitored and Private Monitored isolate the effect of active monitoring by holding the monitor penalty fixed while changing whether the receiver can see the hidden subspace. Monitored + Penalty shows that direct control can reduce hidden influence to {numbers['penalty_hidden']} while keeping the live monitor's balanced accuracy at {numbers['penalty_live_monitor']}.
 
-A caveat sharpens the interpretation. A post-hoc logistic probe recovers strategic content from the visible projection about equally well under Public Monitored ({numbers['public_monitored_offline']}) and Private Monitored ({numbers['private_monitored_offline']}). The visible channel is therefore no less readable when the receiver gains access to the hidden subspace; what changes is the \emph{{live}} monitor, which is trained one step at a time against an adapting sender. The drop in live monitor accuracy from {numbers['public_live_monitor']} to {numbers['private_live_monitor']} thus measures the limits of an in-the-loop adversary, not evidence that strategic content has left the monitored projection. The model-free signature of a hidden channel is instead behavioral: removing the hidden component shifts receiver join probabilities by {numbers['private_monitored_hidden']} under Private Monitored, against {numbers['public_monitored_hidden']} under Public Monitored.
+A caveat sharpens the interpretation. A post-hoc logistic probe recovers strategic content from the visible projection about equally well under Public Monitored ({numbers['public_monitored_offline']}) and Private Monitored ({numbers['private_monitored_offline']}). The visible channel is therefore no less readable when the receiver gains access to the hidden subspace; what changes is the \emph{{live}} monitor, which is trained one step at a time against an adapting sender. The drop in the live monitor's balanced accuracy from {numbers['public_live_monitor']} to {numbers['private_live_monitor']}, near the one-third chance floor, thus measures the limits of an in-the-loop adversary, not evidence that strategic content has left the monitored projection. The model-free signature of a hidden channel is instead behavioral: removing the hidden component shifts receiver join probabilities by {numbers['private_monitored_hidden']} under Private Monitored, against {numbers['public_monitored_hidden']} under Public Monitored.
 
 \begin{{figure}}[t]
     \centering
     \includegraphics[width=\linewidth]{{fig2_control_metrics.pdf}}
-    \caption{{Control diagnostics by design. High message value means communication is useful. Hidden use measures receiver dependence on monitor-hidden content. Offline probe accuracy is post-hoc readability from $z_i$; live monitor accuracy is the adversarial monitor's performance during training.}}
+    \caption{{Control diagnostics by design. High message value means communication is useful. Hidden use measures receiver dependence on monitor-hidden content. Offline probe and live monitor are both balanced accuracy (chance one third); the offline probe is post-hoc readability from $z_i$, while the live monitor is the adversarial monitor trained inside the loop.}}
     \label{{fig:metrics}}
 \end{{figure}}
 
@@ -328,6 +328,7 @@ def _summary_with_crossplay(results: pd.DataFrame, crossplay: pd.DataFrame) -> p
             "hidden_causal_influence",
             "auditor_content_balanced_accuracy",
             "live_monitor_content_accuracy",
+            "live_monitor_content_balanced_accuracy",
             "probe_strategic_opacity_gap",
         ],
     )
@@ -346,7 +347,7 @@ def _format_summary_for_tex(summary: pd.DataFrame) -> pd.DataFrame:
             "Message value": summary["message_value_mean"],
             "Hidden use": summary["hidden_causal_influence_mean"],
             "Offline probe": summary["auditor_content_balanced_accuracy_mean"],
-            "Live monitor": summary["live_monitor_content_accuracy_mean"],
+            "Live monitor": summary["live_monitor_content_balanced_accuracy_mean"],
             "Cross-play loss": summary["crossplay_welfare_gap"],
         }
     )
@@ -368,6 +369,7 @@ def _numbers(
             "hidden_causal_influence",
             "auditor_content_balanced_accuracy",
             "live_monitor_content_accuracy",
+            "live_monitor_content_balanced_accuracy",
         ],
     )
     rows = {str(row["arm"]): row for _, row in summary.iterrows()}
@@ -383,9 +385,9 @@ def _numbers(
         value = row.get(column, float("nan"))
         return float(value) if pd.notna(value) else float("nan")
 
-    public_live = _metric(public_monitored, "live_monitor_content_accuracy_mean")
-    private_live = _metric(private_monitored, "live_monitor_content_accuracy_mean")
-    penalty_live = _metric(monitored_penalty, "live_monitor_content_accuracy_mean")
+    public_live = _metric(public_monitored, "live_monitor_content_balanced_accuracy_mean")
+    private_live = _metric(private_monitored, "live_monitor_content_balanced_accuracy_mean")
+    penalty_live = _metric(monitored_penalty, "live_monitor_content_balanced_accuracy_mean")
     monitor_drop = public_live - private_live if np_finite(public_live) and np_finite(private_live) else float("nan")
 
     public_offline = _metric(public_monitored, "auditor_content_balanced_accuracy_mean")
