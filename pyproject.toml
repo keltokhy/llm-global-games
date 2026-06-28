@@ -4,16 +4,20 @@ version = "0.1.0"
 description = "LLMs Can Play (Global) Games — Testing LLM agents in the Morris-Shin regime change game"
 requires-python = ">=3.12"
 dependencies = [
+    "kaleido>=0.2",
     "matplotlib>=3.10",
     "networkx>=3.0",
     "numpy>=2.0",
     "openai>=1.0",
     "pandas>=2.0",
+    "plotly>=5.24",
     "pyarrow>=24.0.0",
     "pyyaml>=6.0.3",
     "scikit-learn>=1.5",
     "scipy>=1.14",
+    "seaborn>=0.13.2",
     "statsmodels>=0.14.6",
+    "torch>=2.3",
     "tqdm>=4.0",
 ]
 
