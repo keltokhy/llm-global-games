@@ -1,4 +1,4 @@
-\begin{table*}[t]
+\begin{table}[t]
 \centering
 \caption{Model summary. Columns report period-level task rows in the pure, communication, and falsification (scramble+flip) benchmark suites. These core suites use $n=25$ agents per row and $\sigma=0.3$; Appendix~\ref{sec:robustness} varies agent count.}
 \label{tab:models}
@@ -22,4 +22,4 @@ MiniMax M2-Her & {\scriptsize\texttt{minimax/minimax-m2-her}} & MiniMax & 100 & 
 \begin{tablenotes}
 \footnotesize\emph{Notes:} Seven models spanning six architecture families; the identifier column gives each model's OpenRouter slug. Subsequent tables abbreviate Mistral Small Creative as Mistral, Trinity Large as Trinity, and MiniMax M2-Her as MiniMax M2. Counts are period-level task rows with 25 agents each in the core benchmark suites. Mistral includes appended batches; duplicate-cell accounting is reported in the main text and Table~\ref{tab:comm_estimators}. The communication total of 2,600 counts rows as collected; 1 Trinity Large row (all 25 agent calls failing at the provider) yields no valid join fraction, so Table~\ref{tab:comm_estimators} counts 2,599 valid communication rows. Models were accessed as hosted snapshots via the OpenRouter API; archived run manifests record a February 2026 collection window, and raw request--response pairs are cached with the run outputs. Core runs use $\sigma = 0.3$ and temperature $= 0.7$ unless otherwise stated.
 \end{tablenotes}
-\end{table*}
+\end{table}

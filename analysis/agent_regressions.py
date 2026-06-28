@@ -1017,9 +1017,9 @@ def generate_regression_table(results: dict) -> str:
         return "% No regression results available\n"
 
     lines: list[str] = []
-    lines.append(r"\begin{table*}[htbp]")
+    lines.append(r"\begin{table}[htbp]")
     lines.append(r"\centering")
-    lines.append(r"\small")
+    lines.append(r"\scriptsize")
 
     lines.append(r"\caption{Agent-level regressions}")
     lines.append(r"\label{tab:regressions}")
@@ -1170,7 +1170,7 @@ def generate_regression_table(results: dict) -> str:
     ame_surv = main.get("ame_discrete", {}).get("treat_surveillance")
 
     lines.append(r"\begin{tablenotes}")
-    lines.append(r"\small")
+    lines.append(r"\scriptsize")
     lines.append(r"\textit{Notes:} Logit coefficients with standard errors clustered at the model--country--period level in parentheses (all three columns; in column (3) the sample is almost entirely a single model, so clusters effectively coincide with country--period cells).")
     lines.append(r"Column (1): agent-level join decisions pooled across all seven models in the pure, communication, scramble, and flip treatments, plus surveillance runs for Mistral, Llama 3.3 70B, and Qwen3 30B"
                  + f" ($N = {_fmt_n(main_n)}$; ${_fmt_n(main_clusters)}$ clusters)."
@@ -1195,9 +1195,9 @@ def generate_regression_table(results: dict) -> str:
     lines.append(r"\end{tablenotes}")
 
 
-    lines.append(r"\end{table*}")
+    lines.append(r"\end{table}")
 
-    return "\n".join(lines)
+    return "\n".join(lines) + "\n"
 
 
 def generate_finite_n_table(results: dict) -> str:

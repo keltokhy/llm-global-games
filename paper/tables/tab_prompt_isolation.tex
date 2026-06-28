@@ -1,4 +1,4 @@
-\begin{table*}[t]
+\begin{table}[t]
 \centering
 \caption{Clean prompt-isolation surveillance reruns. The surveillance prompt is the baseline trusted-contact communication prompt plus one appended monitoring warning; the decision prompt is unchanged.}
 \label{tab:prompt_isolation}
@@ -21,4 +21,4 @@ Pooled matched & --- & 580 & --- & --- & $-13.5$ & 0.7 & --- & $<$0.001 \\
 \begin{tablenotes}
 \footnotesize\emph{Notes:} Baseline is each model's communication treatment. ``Full cells'' counts the available baseline and surveillance task cells after collapsing duplicate rows by the exact key (country, period, $\theta$, $z$, benefit, $\theta^*$); it is not the support used for the paired effect when common support is smaller. The non-primary baseline communication arms were shorter pilot grids (100--200 cells) while the later surveillance reruns used a larger grid; because those grids were not nested, only 20 exact cells overlap for several models. $N$ for each paired contrast is the number of matched common-support cells; Baseline, Surv., $\Delta$, SE, and $p$ are computed only on those cells, with $p$ from a paired one-sample $t$-test of cell-level (surveillance $-$ baseline) differences and SE the paired standard error of $\Delta$ in pp. $r(J,A)$ is the surveillance-arm threshold-alignment correlation on the full surveillance rerun. Aggregating the primary model's matched-cell deltas to country means ($N = 5$ countries) gives $t = -13.90$, $p <0.001$, so the headline effect survives country-level clustering.
 \end{tablenotes}
-\end{table*}
+\end{table}

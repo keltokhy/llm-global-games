@@ -1,6 +1,6 @@
-\begin{table*}[htbp]
+\begin{table}[htbp]
 \centering
-\small
+\scriptsize
 \caption{Agent-level regressions}
 \label{tab:regressions}
 \begin{tabular}{lcccccc}
@@ -33,7 +33,7 @@ Pseudo $R^2$ & \multicolumn{2}{c}{0.353} & \multicolumn{2}{c}{0.442} & \multicol
 \bottomrule
 \end{tabular}
 \begin{tablenotes}
-\small
+\scriptsize
 \textit{Notes:} Logit coefficients with standard errors clustered at the model--country--period level in parentheses (all three columns; in column (3) the sample is almost entirely a single model, so clusters effectively coincide with country--period cells).
 Column (1): agent-level join decisions pooled across all seven models in the pure, communication, scramble, and flip treatments, plus surveillance runs for Mistral, Llama 3.3 70B, and Qwen3 30B ($N = 240{,}557$; $4{,}700$ clusters). Regressors: $\theta$, treatment dummies (base category: pure), $\theta \times$ treatment interactions, and model fixed effects.
 Column (2): coordination ablation---$\Pr(\text{join}_i = 1) = \Lambda(\beta_0 + \beta_1 \text{Dir}_i + \beta_2 \text{Coord}_i + \beta_3 \text{Dir}_i \times \text{Coord}_i)$, where $\Lambda$ denotes the logistic CDF---using briefing slider values; pure treatment only, all seven models pooled, no model fixed effects ($N = 44{,}662$; $1{,}400$ clusters). Direction $\in [0,1]$ is increasing in regime strength; Coordination $\in [0,1]$ is decreasing (high = weaker regime). Because both are monotone logistic transforms of the same signal, they are near-collinear ($\rho \approx -1$); individual coefficients reflect the partial effect \textit{conditional on the other}, not the marginal effect.
@@ -44,4 +44,4 @@ For the binary surveillance treatment, a derivative-based marginal effect is not
 The very high pseudo-$R^2$ (0.975) and large intercept indicate near-deterministic prediction consistent with quasi-separation---belief almost perfectly predicts action, as expected when belief is stated \textit{post hoc}.
 ${}^{*}p<0.10$, ${}^{**}p<0.05$, ${}^{***}p<0.01$.
 \end{tablenotes}
-\end{table*}
+\end{table}

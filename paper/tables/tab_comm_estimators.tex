@@ -1,9 +1,10 @@
-\begin{table*}[t]
+\begin{table}[t]
 \centering
 \caption{Communication estimators: aggregation accounting.}
 \label{tab:comm_estimators}
 \footnotesize
 \setlength{\tabcolsep}{2.5pt}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccccccc}
 \toprule
 Model & Rows/arm & Row wt. (P/C) & Cells/arm & Matched & Cell wt. & Lost (P/C) & $\Delta$ unpaired (pp) & $\Delta$ paired (pp) \\
@@ -20,7 +21,8 @@ Equal-weight avg & --- & 14.3\% each & --- & --- & 14.3\% each & --- & $-0.30$ &
 Pooled & 1800/2599 & 100.0\% & 1480/2279 & 1479 & 100.0\% & 1/800 & $+1.39$ & $+2.10$ \\
 \bottomrule
 \end{tabular}
+}
 \begin{tablenotes}
 \footnotesize\emph{Notes:} Sample: valid country--period rows from the core pure and communication suites, each aggregating $n = 25$ agent decisions. ``Rows/arm'' counts valid country-period rows entering the pooled unpaired estimator in each arm. ``Cells/arm'' counts unique task cells after collapsing duplicates by the exact matching key (model, country, period, $\theta$, $z$, benefit, $\theta^*$). The paired estimator averages within these cells and keeps only common support; ``Row wt.'' and ``Cell wt.'' are the model shares in the pooled unpaired and pooled paired estimators, respectively. The pooled paired $\Delta$ of $+2.10$~pp has a paired standard error of 0.33~pp ($t = 6.38$, $p <0.001$, $N = 1{,}479$ matched cells). Trinity Large has one pure-only cell. Qwen3 235B has 800 communication-only cells because its communication arm is larger than its pure arm; those cells are excluded from the paired common-support estimator.
 \end{tablenotes}
-\end{table*}
+\end{table}

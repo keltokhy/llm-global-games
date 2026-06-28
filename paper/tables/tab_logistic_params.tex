@@ -1,8 +1,9 @@
-\begin{table*}[t]
+\begin{table}[t]
 \centering
 \caption{Logistic fit parameters by model and treatment. $\hat{\theta}^*$ is the estimated cutoff ($-b_0/b_1$); $\kappa \equiv b_1$ is the steepness parameter.}
 \label{tab:logistic_params}
 \small
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccccc}
 \toprule
 & \multicolumn{3}{c}{Pure} & \multicolumn{3}{c}{Communication} \\
@@ -18,7 +19,8 @@ Trinity Large & $+0.08$ (0.05) & $+1.34$ (0.11) & 100 & $-0.02$ (0.04) & $+2.23$
 MiniMax M2-Her & $-0.17$ (0.09) & $+0.61$ (0.06) & 100 & $-0.07$ (0.09) & $+0.66$ (0.06) & 100 \\
 \bottomrule
 \end{tabular}
+}
 \begin{tablenotes}
 \footnotesize\emph{Notes:} Fitted form: $P(\text{join}\mid\theta) = 1/(1+e^{b_0 + b_1\theta})$. $\hat{\theta}^* = -b_0/b_1$: estimated cutoff. $\kappa \equiv b_1$: logistic steepness (larger = sharper threshold). Sign convention: positive $\kappa$ corresponds to a join curve decreasing in $\theta$; in the agent-level logit (Table~\ref{tab:regressions}) the same comparative static appears as a negative coefficient on $\theta$. $N$ counts period-level rows entering each fit. Standard errors from the covariance matrix of the nonlinear fit; cutoff SE by delta method.
 \end{tablenotes}
-\end{table*}
+\end{table}

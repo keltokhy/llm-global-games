@@ -175,7 +175,7 @@ def render_tab_models(stats: dict) -> str:
             f"Table~\\ref{{tab:comm_estimators}} counts {int(comm_valid):,} valid communication rows."
         )
 
-    tex = r"""\begin{table*}[t]
+    tex = r"""\begin{table}[t]
 \centering
 \caption{Model summary. Columns report period-level task rows in the pure, communication, and falsification (scramble+flip) benchmark suites. These core suites use $n=25$ agents per row and $\sigma=0.3$; Appendix~\ref{sec:robustness} varies agent count.}
 \label{tab:models}
@@ -194,7 +194,7 @@ Model & Identifier (OpenRouter) & Arch. & Pure & Comm & Falsif. \\
 \begin{tablenotes}
 \footnotesize\emph{Notes:} Seven models spanning six architecture families; the identifier column gives each model's OpenRouter slug. Subsequent tables abbreviate Mistral Small Creative as Mistral, Trinity Large as Trinity, and MiniMax M2-Her as MiniMax M2. Counts are period-level task rows with 25 agents each in the core benchmark suites. Mistral includes appended batches; duplicate-cell accounting is reported in the main text and Table~\ref{tab:comm_estimators}.""" + trinity_note + r""" Models were accessed as hosted snapshots via the OpenRouter API; archived run manifests record a February 2026 collection window, and raw request--response pairs are cached with the run outputs. Core runs use $\sigma = 0.3$ and temperature $= 0.7$ unless otherwise stated.
 \end{tablenotes}
-\end{table*}
+\end{table}
 """
     return tex
 
@@ -284,12 +284,13 @@ def render_tab_main_results(stats: dict) -> str:
     mean_scr = mean_r_attack("scramble")
     mean_flip = mean_r_attack("flip")
 
-    tex = r"""\begin{table*}[t]
+    tex = r"""\begin{table}[t]
 \centering
 \caption{Threshold-policy alignment by model and treatment. Cells report Pearson $r$ between the empirical join fraction and the benchmark attack mass $A(\theta)$ under $B=C=1$ (so $\theta^* = 0.50$); 95\% Fisher-$z$ confidence intervals in brackets.}
 \label{tab:main_results}
 \scriptsize
 \setlength{\tabcolsep}{2.5pt}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccccc}
 \toprule
 & \multicolumn{2}{c}{Main treatments} & \multicolumn{2}{c}{Falsification} & & \\
@@ -316,10 +317,11 @@ Model & Pure & Comm & Scramble & Flip & $N$ (P/C/S/F) & Mean join (\%) \\
 \textbf{Mean across models} & """ + r_cell(mean_pure, 2) + r""" & """ + r_cell(mean_comm, 2) + r""" & """ + r_cell(mean_scr, 2) + r""" & """ + r_cell(mean_flip, 2) + r""" & --- & --- \\
 \bottomrule
 \end{tabular}
+}
 \begin{tablenotes}
 \footnotesize\emph{Notes:} $r = r(J, A(\theta))$: Pearson correlation between empirical join fraction and theoretical attack mass under $B = C = 1$, with 95\% Fisher-$z$ confidence intervals in brackets for every treatment. Join fraction uses valid decisions only (excluding parse errors); mean join is the pure-treatment average in percent. $N$ counts period-level rows (not agents) in the pure (P), communication (C), scramble (S), and flip (F) arms. Pooled: all period-level rows concatenated; Mean: equal-weighted average across models. Duplicate-cell accounting is reported in the main-text footnote and Table~\ref{tab:comm_estimators}.
 \end{tablenotes}
-\end{table*}
+\end{table}
 """
     return tex
 
@@ -440,7 +442,7 @@ def render_tab_crossmodel(stats: dict) -> str:
             f"{cell(model,'flip','mean')} & {cell(model,'flip','r')} \\\\"
         )
 
-    tex = r"""\begin{table*}[t]
+    tex = r"""\begin{table}[t]
 \centering
 \caption{Cross-model replication of key information design conditions. $r$ is the correlation $r(J, A(\theta))$ between join fraction and theoretical attack mass.}
 \label{tab:crossmodel}
@@ -457,7 +459,7 @@ Model & Mean & $r$ & Mean & $r$ & Mean & $r$ \\
 \end{tabular}
 \vspace{0.25em}
 \parbox{\textwidth}{\footnotesize\emph{Notes:} Information design $\theta$-grid $[0.20, 0.80]$. $r = r(J, A(\theta))$: Pearson correlation between join fraction and theoretical attack mass. $n = 25$ agents per period. Scramble mean join rates for some models reflect earlier experimental batches and are not directly comparable to baseline means; the diagnostic metric is $r \approx 0$.}
-\end{table*}
+\end{table}
 """
     return tex
 
@@ -604,11 +606,12 @@ def render_tab_logistic_params(stats: dict) -> str:
             f" & {_cell(c, 'cutoff', 'se_cutoff')} & {_cell(c, 'b1', 'se_b1')} & {_n(m, 'comm')} \\\\"
         )
 
-    tex = r"""\begin{table*}[t]
+    tex = r"""\begin{table}[t]
 \centering
 \caption{Logistic fit parameters by model and treatment. $\hat{\theta}^*$ is the estimated cutoff ($-b_0/b_1$); $\kappa \equiv b_1$ is the steepness parameter.}
 \label{tab:logistic_params}
 \small
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccccc}
 \toprule
 & \multicolumn{3}{c}{Pure} & \multicolumn{3}{c}{Communication} \\
@@ -619,10 +622,11 @@ Model & $\hat{\theta}^*$ (SE) & $\kappa$ (SE) & $N$ & $\hat{\theta}^*$ (SE) & $\
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
 \end{tabular}
+}
 \begin{tablenotes}
 \footnotesize\emph{Notes:} Fitted form: $P(\text{join}\mid\theta) = 1/(1+e^{b_0 + b_1\theta})$. $\hat{\theta}^* = -b_0/b_1$: estimated cutoff. $\kappa \equiv b_1$: logistic steepness (larger = sharper threshold). Sign convention: positive $\kappa$ corresponds to a join curve decreasing in $\theta$; in the agent-level logit (Table~\ref{tab:regressions}) the same comparative static appears as a negative coefficient on $\theta$. $N$ counts period-level rows entering each fit. Standard errors from the covariance matrix of the nonlinear fit; cutoff SE by delta method.
 \end{tablenotes}
-\end{table*}
+\end{table}
 """
     return tex
 
@@ -763,7 +767,7 @@ def render_tab_prompt_isolation(stats: dict) -> str:
             "country-level clustering."
         )
 
-    tex = r"""\begin{table*}[t]
+    tex = r"""\begin{table}[t]
 \centering
 \caption{Clean prompt-isolation surveillance reruns. The surveillance prompt is the baseline trusted-contact communication prompt plus one appended monitoring warning; the decision prompt is unchanged.}
 \label{tab:prompt_isolation}
@@ -780,7 +784,7 @@ Model & Full cells (B/S) & Matched cells & Baseline & Surv. & $\Delta$ (pp) & SE
 \begin{tablenotes}
 \footnotesize\emph{Notes:} Baseline is each model's communication treatment. ``Full cells'' counts the available baseline and surveillance task cells after collapsing duplicate rows by the exact key (country, period, $\theta$, $z$, benefit, $\theta^*$); it is not the support used for the paired effect when common support is smaller. The non-primary baseline communication arms were shorter pilot grids (100--200 cells) while the later surveillance reruns used a larger grid; because those grids were not nested, only 20 exact cells overlap for several models. $N$ for each paired contrast is the number of matched common-support cells; Baseline, Surv., $\Delta$, SE, and $p$ are computed only on those cells, with $p$ from a paired one-sample $t$-test of cell-level (surveillance $-$ baseline) differences and SE the paired standard error of $\Delta$ in pp. $r(J,A)$ is the surveillance-arm threshold-alignment correlation on the full surveillance rerun.""" + cc_note + r"""
 \end{tablenotes}
-\end{table*}
+\end{table}
 """
     return tex
 
@@ -1133,12 +1137,13 @@ def render_tab_comm_estimators(stats: dict) -> str:
             f"$p {_fmt_p_text_plain(paired.get('p_value'))}$, $N = {_fmt_int_sep(paired.get('n_pairs'))}$ matched cells)."
         )
 
-    tex = r"""\begin{table*}[t]
+    tex = r"""\begin{table}[t]
 \centering
 \caption{Communication estimators: aggregation accounting.}
 \label{tab:comm_estimators}
 \footnotesize
 \setlength{\tabcolsep}{2.5pt}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccccccc}
 \toprule
 Model & Rows/arm & Row wt. (P/C) & Cells/arm & Matched & Cell wt. & Lost (P/C) & $\Delta$ unpaired (pp) & $\Delta$ paired (pp) \\
@@ -1147,10 +1152,11 @@ Model & Rows/arm & Row wt. (P/C) & Cells/arm & Matched & Cell wt. & Lost (P/C) &
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
 \end{tabular}
+}
 \begin{tablenotes}
 \footnotesize\emph{Notes:} Sample: valid country--period rows from the core pure and communication suites, each aggregating $n = 25$ agent decisions. ``Rows/arm'' counts valid country-period rows entering the pooled unpaired estimator in each arm. ``Cells/arm'' counts unique task cells after collapsing duplicates by the exact matching key (""" + match_key + r"""). The paired estimator averages within these cells and keeps only common support; ``Row wt.'' and ``Cell wt.'' are the model shares in the pooled unpaired and pooled paired estimators, respectively.""" + paired_note + r""" Trinity Large has one pure-only cell. Qwen3 235B has 800 communication-only cells because its communication arm is larger than its pure arm; those cells are excluded from the paired common-support estimator.
 \end{tablenotes}
-\end{table*}
+\end{table}
 """
     return tex
 
@@ -2582,7 +2588,7 @@ def render_tab_hypotheses(stats: dict) -> str:
 
     bonf_alpha_text = f"{bonf_alpha:.5f}".rstrip("0").rstrip(".")
 
-    tex = r"""\begin{table*}[t]
+    tex = r"""\begin{table}[t]
 \centering
 \caption{Hypothesis family and test results. H1--H4 use pooled benchmark-phase data across all seven models; H5 uses the primary model (Mistral Small Creative). Effect size: $r$ for correlations (H1--H3), Cohen's $d$ or $d_z$ for mean comparisons (H4--H5). Outcome labels use $\alpha = 0.05$; H2 is reported as a falsification check, not as evidence for a zero effect.}
 \label{tab:hypotheses}
@@ -2603,7 +2609,7 @@ H & Hypothesis & Test & Statistic & $N$ & $p$ & Effect & Outcome \\
     tex += bonf_survivors
     tex += r""".
 \end{tablenotes}
-\end{table*}
+\end{table}
 """
     return tex
 
@@ -3151,12 +3157,13 @@ def render_tab_llama_ledger(stats: dict) -> str:
     conflated as "the full Llama" number again.
     """
     return r"""% Auto-generated by analysis/render_paper_tables.py. Do not edit by hand.
-\begin{table*}[t]
+\begin{table}[t]
 \centering
 \footnotesize
 \setlength{\tabcolsep}{5pt}
 \caption{Every Llama 3.3 70B surveillance estimate: effect size, matched support, grid, and purpose. All deltas are surveillance (or the stated arm) minus its own baseline on the matched cells. The full-scale nested estimate ($\NestedSurvDeltaPP$~pp, $N=\NestedSurvN$) is the headline cross-model confirmation; the original prompt-isolation estimate ($\PromptIsoLlamaDeltaPP$~pp) rests on only 20 overlapping cells and is a noisy sign check, not a full replication.}
 \label{tab:llama_ledger}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{llcll}
 \toprule
 Arm & $\Delta$ (pp) & Matched $N$ & Grid & Purpose \\
@@ -3183,10 +3190,11 @@ Arm & $\Delta$ (pp) & Matched $N$ & Grid & Purpose \\
 \quad Codedness-induction control & $\NestedStyleDeltaPP$ & \NestedStyleN & nested $10\times50$ & isolates coded form alone \\
 \bottomrule
 \end{tabular}
+}
 \begin{tablenotes}
 \footnotesize\emph{Notes:} ``Matched $N$'' is the number of common-support cells entering each paired contrast. ``Nested'' arms share the identical 500-cell grid ($10$ countries $\times 50$ periods, $n=25$, common seed) and are matched by construction. The original prompt-isolation estimate shares only 20 cells with its pilot baseline because those grids were not nested. Rotation contrasts are matched on (country, period, $\theta$) cells across writer and reader models. The private-bet and nested-coordination samples are not cell-matched to each other.
 \end{tablenotes}
-\end{table*}
+\end{table}
 """
 
 
