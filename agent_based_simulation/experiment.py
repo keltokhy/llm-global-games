@@ -186,7 +186,7 @@ SURVEILLANCE_WARNING_FULL = (
     "have serious consequences for you and your contacts."
 )
 
-# Dose-response variants (paper 2): graded monitoring salience bracketing
+# Dose-response variants: graded monitoring salience bracketing
 # SURVEILLANCE_WARNING_FULL. Ordering: none < mild < full < severe.
 SURVEILLANCE_WARNING_MILD = (
     "NOTE: Communications in your area are sometimes subject to routine "
