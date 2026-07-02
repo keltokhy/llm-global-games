@@ -92,6 +92,39 @@ def paired(a: pd.DataFrame, b: pd.DataFrame):
     return len(m), float(d.mean()) * 100, float(t), float(p)
 
 
+def msg_classifier_acc(a_msgs, b_msgs, *, length_only=False):
+    """Held-out message-classifier accuracy using the paper's primary recipe
+    (verify_paper_stats._classifier_summary): balanced subsample (seed 42), 70/30
+    stratified split, tf-idf uni+bi-grams (max 5000 features, min_df 10), logistic
+    regression. length_only replaces the text features with a single word-count
+    feature, a control for whether separation is a message-length artifact."""
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.model_selection import train_test_split
+    from sklearn.metrics import accuracy_score
+
+    a_msgs, b_msgs = list(a_msgs), list(b_msgs)
+    rng = np.random.default_rng(42)
+    n = min(len(a_msgs), len(b_msgs))
+    a_fit = [a_msgs[i] for i in rng.choice(len(a_msgs), n, replace=False)]
+    b_fit = [b_msgs[i] for i in rng.choice(len(b_msgs), n, replace=False)]
+    texts = a_fit + b_fit
+    labels = [0] * n + [1] * n
+    Xtr_txt, Xte_txt, ytr, yte = train_test_split(
+        texts, labels, test_size=0.3, random_state=42, stratify=labels
+    )
+    if length_only:
+        Xtr = np.array([[len(t.split())] for t in Xtr_txt], dtype=float)
+        Xte = np.array([[len(t.split())] for t in Xte_txt], dtype=float)
+    else:
+        vec = TfidfVectorizer(ngram_range=(1, 2), max_features=5000, min_df=10)
+        Xtr = vec.fit_transform(Xtr_txt)
+        Xte = vec.transform(Xte_txt)
+    clf = LogisticRegression(max_iter=2000, C=1.0)
+    clf.fit(Xtr, ytr)
+    return 100.0 * float(accuracy_score(yte, clf.predict(Xte)))
+
+
 def fmt_p(p: float) -> str:
     # Bare "<" because these macros are used inside math mode ("$p \XPText$");
     # a "$<$" form would toggle out of math and render "<" as an inverted
@@ -143,6 +176,17 @@ def main() -> None:
         emit("NestedSurvVsStyleDeltaPP", f"{dpp:+.1f}")
         emit("NestedSurvVsStylePText", fmt_p(p))
         print(f"  surv-vs-style: N={n} delta={dpp:+.1f}pp p={p:.2g}")
+
+    # surveillance vs style, TEXTUAL: can a classifier tell the two message
+    # distributions apart? (surveillance-induced coding vs instructed codedness,
+    # same model + grid + in-character mode). Length-only control rules out a
+    # message-length artifact.
+    if arms["surv"][1] and arms["style"][1]:
+        clf_acc = msg_classifier_acc(arms["surv"][1], arms["style"][1])
+        clf_len = msg_classifier_acc(arms["surv"][1], arms["style"][1], length_only=True)
+        emit("NestedSurvVsStyleClassifierAcc", f"{clf_acc:.1f}")
+        emit("NestedSurvVsStyleClassifierLenAcc", f"{clf_len:.1f}")
+        print(f"  surv-vs-style classifier: acc={clf_acc:.1f}% (length-only {clf_len:.1f}%)")
 
     # warning dose gradient: mild share of the full-warning effect, severe vs mild
     if arms["mild"][0] is not None and arms["surv"][0] is not None:
