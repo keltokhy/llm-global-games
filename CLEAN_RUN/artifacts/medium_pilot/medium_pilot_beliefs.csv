@@ -1,3 +1,0 @@
-arm_id,join_rate,pre_success,pre_join_share,pre_shared_understanding,pre_others_expect_join
-medium_coded_replay_qwen30,0.535,38.7125,28.895,68.8925,51.41
-medium_direct_replay_qwen30,0.535,41.185,33.36,65.4575,44.25

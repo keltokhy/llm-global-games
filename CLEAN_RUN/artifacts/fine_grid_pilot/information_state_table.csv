@@ -1,8 +1,0 @@
-arm,sender_sees_private_briefing,sender_sees_monitoring_warning,receiver_sees_private_briefing,receiver_sees_peer_messages,receiver_sees_monitoring_warning,belief_prompt_includes_messages,belief_timing,decision_task
-fine_pure_qwen30,no,no,yes,no,no,no,none,coordination
-fine_scramble_qwen30,no,no,yes,no,no,no,none,coordination
-fine_flip_qwen30,no,no,yes,no,no,no,none,coordination
-fine_comm_baseline_qwen30,yes,no,yes,yes,no,no,none,coordination
-fine_surv_sender_only_qwen30,yes,yes,yes,yes,no,no,none,coordination
-fine_direct_replay_qwen30,no,no,yes,yes,no,yes,pre,coordination
-fine_coded_replay_qwen30,no,no,yes,yes,no,yes,pre,coordination

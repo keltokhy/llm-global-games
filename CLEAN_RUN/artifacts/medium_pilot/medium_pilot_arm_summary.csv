@@ -1,8 +1,0 @@
-arm_id,period_rows,mean_join_fraction_valid,api_error_rate,unparseable_rate
-medium_coded_replay_qwen30,40,0.5349999999999999,0.0,0.0
-medium_comm_baseline_qwen30,40,0.5275000000000001,0.0,0.0
-medium_direct_replay_qwen30,40,0.5349999999999999,0.0,0.0
-medium_flip_qwen30,40,0.65,0.0,0.0
-medium_pure_qwen30,40,0.54,0.0,0.0
-medium_scramble_qwen30,40,0.54,0.0,0.0
-medium_surv_sender_only_qwen30,40,0.5125,0.0,0.0

@@ -1,8 +1,0 @@
-arm_id,claim,model,role,n_agents,n_countries,n_periods,expected_rows,message_source,message_transform,decision_task,belief_timing,belief_information
-pilot_pure_mistral,language_signal,mistralai/mistral-small-2603,reader_only,5,1,2,2,none,none,coordination,none,none
-pilot_scramble_mistral,language_signal,mistralai/mistral-small-2603,reader_only,5,1,2,2,none,none,coordination,none,none
-pilot_flip_mistral,language_signal,mistralai/mistral-small-2603,reader_only,5,1,2,2,none,none,coordination,none,none
-pilot_comm_baseline_mistral,sender_side_surveillance,mistralai/mistral-small-2603,writer_and_reader,5,1,2,2,live,none,coordination,none,none
-pilot_surv_sender_only_mistral,sender_side_surveillance,mistralai/mistral-small-2603,writer_and_reader,5,1,2,2,live,none,coordination,none,none
-pilot_direct_replay_mistral,direct_coded_mechanism,mistralai/mistral-small-2603,reader_with_fixed_messages,5,1,2,2,message_bank,direct,coordination,pre,messages_included
-pilot_coded_replay_mistral,direct_coded_mechanism,mistralai/mistral-small-2603,reader_with_fixed_messages,5,1,2,2,message_bank,coded,coordination,pre,messages_included

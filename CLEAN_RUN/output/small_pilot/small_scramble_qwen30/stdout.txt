@@ -1,2 +1,0 @@
-running small_scramble_qwen30 -> /Users/khaled/GitHub/llm-global-games/CLEAN_RUN/output/small_pilot/small_scramble_qwen30
-small_scramble_qwen30: completed 20 period rows

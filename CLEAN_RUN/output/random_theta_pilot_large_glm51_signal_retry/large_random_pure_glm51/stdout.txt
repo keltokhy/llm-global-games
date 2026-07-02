@@ -1,2 +1,0 @@
-running large_random_pure_glm51 -> /Users/khaled/GitHub/llm-global-games/CLEAN_RUN/output/random_theta_pilot_large_glm51_signal_retry/large_random_pure_glm51
-large_random_pure_glm51: completed 250 period rows

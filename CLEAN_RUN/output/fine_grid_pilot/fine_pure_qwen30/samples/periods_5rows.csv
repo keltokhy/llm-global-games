@@ -1,6 +1,0 @@
-run_id,arm_id,model,country,period,seed,theta,z_public,sigma,benefit,cost,theta_star,n_agents,n_valid,n_join,join_fraction_valid,coup_success,theoretical_attack,message_stage_context,decision_context,decision_task,message_source_arm,message_transform,belief_timing,belief_information,api_error_rate,unparseable_rate
-fine_pure_qwen30-20260507T212051Z,fine_pure_qwen30,qwen/qwen3-30b-a3b-instruct-2507,0,0,8180,-1.5,0.0,0.3,1.0,1.0,0.5,10,10,10,1.0,True,0.999999999986916,none,none,coordination,none,none,none,none,0.0,0.0
-fine_pure_qwen30-20260507T212051Z,fine_pure_qwen30,qwen/qwen3-30b-a3b-instruct-2507,0,1,8180,-1.25,0.0,0.3,1.0,1.0,0.5,10,10,10,1.0,True,0.9999999972834562,none,none,coordination,none,none,none,none,0.0,0.0
-fine_pure_qwen30-20260507T212051Z,fine_pure_qwen30,qwen/qwen3-30b-a3b-instruct-2507,0,2,8180,-1.0,0.0,0.3,1.0,1.0,0.5,10,10,10,1.0,True,0.9999997133484281,none,none,coordination,none,none,none,none,0.0,0.0
-fine_pure_qwen30-20260507T212051Z,fine_pure_qwen30,qwen/qwen3-30b-a3b-instruct-2507,0,3,8180,-0.75,0.0,0.3,1.0,1.0,0.5,10,10,9,0.9,True,0.9999845457031177,none,none,coordination,none,none,none,none,0.0,0.0
-fine_pure_qwen30-20260507T212051Z,fine_pure_qwen30,qwen/qwen3-30b-a3b-instruct-2507,0,4,8180,-0.5,0.0,0.3,1.0,1.0,0.5,10,10,10,1.0,True,0.9995709396668032,none,none,coordination,none,none,none,none,0.0,0.0
