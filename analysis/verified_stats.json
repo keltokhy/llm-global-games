@@ -4854,6 +4854,36 @@
           "p_wild_exact": 0.001953
         }
       }
+    },
+    "mediation": {
+      "n": 25000,
+      "n_per_arm": 12500,
+      "belief_corr": 0.9,
+      "total_pp": -15.0,
+      "indirect_fob_pp": -2.9,
+      "indirect_sob_pp": -7.9,
+      "direct_pp": -4.3,
+      "share_fob": 19,
+      "share_sob": 52,
+      "share_direct": 29,
+      "surv_after_fob_pp": -8.9,
+      "surv_after_sob_pp": -3.8,
+      "fob_absorb_pp": 6.1,
+      "sob_absorb_pp": 11.2,
+      "b_fob_pp": 53.3,
+      "b_sob_pp": 87.8,
+      "indirect_fob_ci": [
+        -3.3,
+        -2.5
+      ],
+      "indirect_sob_ci": [
+        -8.5,
+        -7.3
+      ],
+      "direct_ci": [
+        -5.4,
+        -3.1
+      ]
     }
   },
   "ck_interaction": {

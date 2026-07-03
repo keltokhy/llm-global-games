@@ -3143,6 +3143,38 @@ def render_stats_belief_factorial(stats: dict) -> str:
         f"\\providecommand{{\\BFSurvDeltaSOBMsgClT}}{{{_clnum('surv_delta_sob_msg', 't_stat', 1)}}}",
         "",
     ]
+
+    med = bf.get("mediation") or {}
+    if med:
+        _sg = lambda x: f"{float(x):+.1f}"
+        _ab = lambda x: f"{abs(float(x)):.1f}"
+        lines += [
+            "% Belief mediation of the surveillance action effect",
+            "% (pre-decision, messages-included cell; primary model; descriptive,",
+            "%  measured-mediator decomposition with regime strength partialled out).",
+            f"\\providecommand{{\\BFMedTotalPP}}{{{_sg(med['total_pp'])}}}",
+            f"\\providecommand{{\\BFMedTotalAbsPP}}{{{_ab(med['total_pp'])}}}",
+            f"\\providecommand{{\\BFMedIndirectSOBPP}}{{{_sg(med['indirect_sob_pp'])}}}",
+            f"\\providecommand{{\\BFMedIndirectSOBAbsPP}}{{{_ab(med['indirect_sob_pp'])}}}",
+            f"\\providecommand{{\\BFMedIndirectSOBShare}}{{{int(med['share_sob'])}}}",
+            f"\\providecommand{{\\BFMedIndirectFOBPP}}{{{_sg(med['indirect_fob_pp'])}}}",
+            f"\\providecommand{{\\BFMedIndirectFOBAbsPP}}{{{_ab(med['indirect_fob_pp'])}}}",
+            f"\\providecommand{{\\BFMedIndirectFOBShare}}{{{int(med['share_fob'])}}}",
+            f"\\providecommand{{\\BFMedDirectPP}}{{{_sg(med['direct_pp'])}}}",
+            f"\\providecommand{{\\BFMedDirectShare}}{{{int(med['share_direct'])}}}",
+            f"\\providecommand{{\\BFMedSurvAfterSOBPP}}{{{_sg(med['surv_after_sob_pp'])}}}",
+            f"\\providecommand{{\\BFMedSurvAfterFOBPP}}{{{_sg(med['surv_after_fob_pp'])}}}",
+            f"\\providecommand{{\\BFMedSOBAbsorbPP}}{{{_ab(med['sob_absorb_pp'])}}}",
+            f"\\providecommand{{\\BFMedFOBAbsorbPP}}{{{_ab(med['fob_absorb_pp'])}}}",
+            f"\\providecommand{{\\BFMedBeliefCorr}}{{{float(med['belief_corr']):.2f}}}",
+            f"\\providecommand{{\\BFMedSOBIndirectCILoPP}}{{{_sg(med['indirect_sob_ci'][0])}}}",
+            f"\\providecommand{{\\BFMedSOBIndirectCIHiPP}}{{{_sg(med['indirect_sob_ci'][1])}}}",
+            f"\\providecommand{{\\BFMedFOBIndirectCILoPP}}{{{_sg(med['indirect_fob_ci'][0])}}}",
+            f"\\providecommand{{\\BFMedFOBIndirectCIHiPP}}{{{_sg(med['indirect_fob_ci'][1])}}}",
+            f"\\providecommand{{\\BFMedN}}{{{int(med['n'])}}}",
+            "",
+        ]
+
     return "\n".join(lines)
 
 

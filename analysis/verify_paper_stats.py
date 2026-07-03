@@ -2432,6 +2432,93 @@ def compute_beliefs_v2():
     return results
 
 
+def _belief_mediation(comm_df, surv_df, *, seed: int = 42, n_boot: int = 2000) -> dict:
+    """Descriptive LPM mediation of the surveillance action effect through
+    first-order (success) and second-order (participation) beliefs, in the
+    pre-decision messages-included cell.
+
+    Beliefs are stated BEFORE the action, so this is not post-decision
+    rationalization. It is still a measured-mediator decomposition under a
+    single manipulation (belief and action are both downstream of the same
+    message shift), so it identifies the carrier descriptively, not by
+    intervention -- the same standing as the beatability axis in the main text.
+
+    Exact linear split of the total effect on joining:
+        c_total = c_direct + a_FOB * b_FOB + a_SOB * b_SOB,
+    all with regime strength theta partialled out. Beliefs are scaled to [0,1];
+    every effect is reported in join percentage points. Point estimates are
+    country-clustered; indirect-effect CIs come from a country case-bootstrap
+    (resample the 10 countries with replacement, B=2000, fixed seed).
+    """
+    def _prep(df, surv):
+        d = df[["country", "belief", "second_order_belief", "join", "theta"]].dropna().copy()
+        d["fob"] = d["belief"].astype(float) / 100.0
+        d["sob"] = d["second_order_belief"].astype(float) / 100.0
+        d["join"] = d["join"].astype(float)
+        d["theta"] = d["theta"].astype(float)
+        d["surv"] = float(surv)
+        return d[["country", "surv", "fob", "sob", "join", "theta"]]
+
+    pooled = pd.concat([_prep(comm_df, 0), _prep(surv_df, 1)], ignore_index=True)
+    if pooled.empty:
+        return {}
+
+    def _design(d, cols):
+        return np.column_stack([np.ones(len(d))] + [d[c].to_numpy(float) for c in cols])
+
+    def _ols(y, X):
+        return np.linalg.solve(X.T @ X, X.T @ y)
+
+    y = pooled["join"].to_numpy(float)
+    Xa = _design(pooled, ["surv", "theta"])
+    a_fob = _ols(pooled["fob"].to_numpy(float), Xa)[1]
+    a_sob = _ols(pooled["sob"].to_numpy(float), Xa)[1]
+    c_tot = _ols(y, _design(pooled, ["surv", "theta"]))[1]
+    bf = _ols(y, _design(pooled, ["surv", "fob", "sob", "theta"]))
+    c_dir, b_fob, b_sob = bf[1], bf[2], bf[3]
+    ind_fob, ind_sob = a_fob * b_fob, a_sob * b_sob
+    c_after_fob = _ols(y, _design(pooled, ["surv", "fob", "theta"]))[1]
+    c_after_sob = _ols(y, _design(pooled, ["surv", "sob", "theta"]))[1]
+
+    rng = np.random.default_rng(seed)
+    cids = pooled["country"].unique()
+    by = {c: pooled[pooled["country"] == c] for c in cids}
+    boot_fob, boot_sob, boot_dir = [], [], []
+    for _ in range(n_boot):
+        samp = pd.concat([by[c] for c in rng.choice(cids, len(cids), replace=True)], ignore_index=True)
+        ys = samp["join"].to_numpy(float)
+        Xa_ = _design(samp, ["surv", "theta"])
+        af_ = _ols(samp["fob"].to_numpy(float), Xa_)[1]
+        as_ = _ols(samp["sob"].to_numpy(float), Xa_)[1]
+        bf_ = _ols(ys, _design(samp, ["surv", "fob", "sob", "theta"]))
+        boot_fob.append(af_ * bf_[2]); boot_sob.append(as_ * bf_[3]); boot_dir.append(bf_[1])
+
+    pp = lambda x: round(float(x) * 100, 1)
+    ci = lambda a: [pp(np.percentile(a, 2.5)), pp(np.percentile(a, 97.5))]
+    share = lambda x: round(float(100 * x / c_tot))
+    return {
+        "n": int(len(pooled)),
+        "n_per_arm": int(len(pooled) // 2),
+        "belief_corr": round(float(np.corrcoef(pooled["fob"], pooled["sob"])[0, 1]), 2),
+        "total_pp": pp(c_tot),
+        "indirect_fob_pp": pp(ind_fob),
+        "indirect_sob_pp": pp(ind_sob),
+        "direct_pp": pp(c_dir),
+        "share_fob": share(ind_fob),
+        "share_sob": share(ind_sob),
+        "share_direct": share(c_dir),
+        "surv_after_fob_pp": pp(c_after_fob),
+        "surv_after_sob_pp": pp(c_after_sob),
+        "fob_absorb_pp": round(abs(pp(c_tot) - pp(c_after_fob)), 1),
+        "sob_absorb_pp": round(abs(pp(c_tot) - pp(c_after_sob)), 1),
+        "b_fob_pp": pp(b_fob),
+        "b_sob_pp": pp(b_sob),
+        "indirect_fob_ci": ci(boot_fob),
+        "indirect_sob_ci": ci(boot_sob),
+        "direct_ci": ci(boot_dir),
+    }
+
+
 def compute_belief_factorial():
     """Belief elicitation factorial: surveillance x messages-in-belief prompt.
 
@@ -2466,6 +2553,7 @@ def compute_belief_factorial():
                 rows.append({
                     "country": country,
                     "period": per,
+                    "theta": period.get("theta"),
                     "belief": agent.get(bel_key),
                     "second_order_belief": agent.get(sob_key),
                     "join": join,
@@ -2618,7 +2706,11 @@ def compute_belief_factorial():
             "surv_delta_join_msg_pre": _delta("surv_msg_pre", "comm_msg_pre", "join", scale=100.0),
         })
 
-    return {"cells": cell_summaries, "effects": effects}
+    mediation = {}
+    if not cells["comm_msg_pre"].empty and not cells["surv_msg_pre"].empty:
+        mediation = _belief_mediation(cells["comm_msg_pre"], cells["surv_msg_pre"])
+
+    return {"cells": cell_summaries, "effects": effects, "mediation": mediation}
 
 
 def compute_hypothesis_table(all_stats: dict) -> list[dict]:
