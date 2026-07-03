@@ -228,7 +228,7 @@ Equilibrium object & Continuum BNE attack mass $A(\theta)$, used only as an exte
 \end{table}
 
 %% 3. EXPERIMENTAL DESIGN
-\section{Experimental Design} \label{sec:design}
+\section{Experimental Design and Behavioral Benchmark} \label{sec:design}
 
 The experiment has two phases. In the first, I establish that LLM agents display threshold-like policies in the global game when private signals are conveyed in natural language, using a pure treatment (private signals only), a communication treatment (pre-play messaging), and falsification tests. In the second, I test whether an authoritarian regime can exploit the communication channel through surveillance. All LLM interactions use the same prompt structure across models.
 
@@ -256,8 +256,8 @@ The clean surveillance treatment appends a monitoring warning to the baseline co
 
 The results have two scope limits. First, the Morris--Shin game and human accounts of coded speech under surveillance (samizdat, Aesopian language) are in every model's training corpus, so threshold behavior and the direct-to-coded message shift may partly reflect learned patterns. A direct audit (Appendix~\ref{sec:identification_appendix}) confirms that models can recognize the setting and articulate the experimenter's hypothesis when asked. The measurement claim requires a coherent language-to-action map, not independent strategic intent. Second, the results characterize the hosted model snapshots and decoding configuration listed in Table~\ref{tab:models}. Temperature robustness (Appendix~\ref{sec:temp_robustness}) covers both the surveillance contrast and the benchmark phase, with the effect stable across $T \in \{0.3, 0.7, 1.0\}$.
 
-%% 4. BEHAVIORAL BENCHMARK
-\section{Behavioral Benchmark} \label{sec:results}
+%% BEHAVIORAL BENCHMARK (subsection of Experimental Design)
+\subsection{Threshold Behavior} \label{sec:results}
 
 \begin{figure}[htbp]\centering\includegraphics[width=\columnwidth]{figures/fig01_sigmoid.pdf}
 \caption{Empirical join fraction vs.\ $\theta$ (Mistral, \PrimaryPureNObs\ period-level rows, pure treatment). Dots are binned period-level join fractions; the shaded band is a 95\% confidence interval around the empirical curve; dotted vertical lines mark the fitted cutoff $\hat{\theta}^* = \PrimaryPureCutoff$ and the theoretical $\theta^* = 0.50$. The empirical sigmoid is shifted leftward relative to theory. Cross-model results in Table~\ref{tab:main_results} (mean $r = \MeanModelRPureAttack$, all $p \PureAllModelsAttackPText$).}\label{fig:sigmoid}
@@ -400,7 +400,7 @@ Message content changes systematically, and in one direction. A logistic classif
 
 Receiver rationales do not support fear contagion as the dominant channel. Explicit references to monitoring or surveillance are rare in both arms (\RatSurvInferBasePct\ of \RatNBase\ valid baseline rationales vs.\ \RatSurvInferSurvPct\ of \RatNSurv\ under surveillance), and fear and caution references \emph{fall} from \RatFearBasePct\ to \RatFearSurvPct\ ($p \RatFearPText$). Engagement with the peer channel also falls: references to contacts and peer messages drop from \RatPeerBasePct\ to \RatPeerSurvPct\ ($p \RatPeerPText$), while regime-weakness references rise from \RatWeakBasePct\ to \RatWeakSurvPct. Receivers still read bad news but rely less on coded peer messages, as the actionability interpretation predicts. These post hoc dictionary counts describe stated rationales, not the model's internal computation.
 
-The degraded-messages control (Section~\ref{sec:results}, Communication) replaces all peer messages with generic text and, on its own live-message rerun, drops joining below even the pure game. Two implications follow. First, decision-stage agents use message content. Second, generic text depresses participation by itself---the degraded drop even exceeds the surveillance effect---which is why the codedness control matters: induced metaphorical style without monitoring framing leaves joining nearly unchanged, tying the surveillance effect to the monitoring context rather than to generic degradation. The no-message control tells the same story across the three models with such data (Mistral, Llama 3.3 70B, Qwen3 30B): removing peer messages lowers joining in every case ($-$\NoMsgDeltaAbsMinPP\ to $-$\NoMsgDeltaAbsMaxPP~pp), smallest and only marginally significant in the primary model---consistent with agents weighting peer messages as informational input.
+The degraded-messages control (Section~\ref{sec:communication}) replaces all peer messages with generic text and, on its own live-message rerun, drops joining below even the pure game. Two implications follow. First, decision-stage agents use message content. Second, generic text depresses participation by itself---the degraded drop even exceeds the surveillance effect---which is why the codedness control matters: induced metaphorical style without monitoring framing leaves joining nearly unchanged, tying the surveillance effect to the monitoring context rather than to generic degradation. The no-message control tells the same story across the three models with such data (Mistral, Llama 3.3 70B, Qwen3 30B): removing peer messages lowers joining in every case ($-$\NoMsgDeltaAbsMinPP\ to $-$\NoMsgDeltaAbsMaxPP~pp), smallest and only marginally significant in the primary model---consistent with agents weighting peer messages as informational input.
 
 Surveillance's position relative to this floor varies. In Mistral it falls below silence; in Llama and Qwen3 30B it remains above silence but below baseline communication. Monitoring degraded the communication channel in all three models examined; the below-silence pattern, which suggests active poisoning beyond information removal, appears only in the primary model.
 
