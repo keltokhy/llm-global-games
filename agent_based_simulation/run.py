@@ -761,7 +761,8 @@ def main():
                         help="When to elicit second-order beliefs: 'post' (after decision, default), "
                              "'pre' (before decision), or 'both'. Only effective with --elicit-second-order.")
     parser.add_argument("--surveillance-mode", type=str,
-                        choices=["full", "placebo", "anonymous", "style", "mild", "severe", "structural"], default="full",
+                        choices=["full", "placebo", "anonymous", "style", "mild", "severe", "structural",
+                                 "evasion_explicit", "evasion_coached"], default="full",
                         help="Surveillance framing: 'full' (consequences, default), "
                              "'placebo' (monitored, no consequences), 'anonymous' (aggregated anonymously), "
                              "'style' (indirect/metaphorical style instruction, no monitoring framing), "
