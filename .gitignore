@@ -75,3 +75,6 @@ output/_smoke/
 # Local scratch / LLM caches (never commit)
 tmp/
 
+# Generated personalized course bundle
+output/course/strategic_ai_agents/
+output/pdf/strategic_ai_agents_*.pdf
