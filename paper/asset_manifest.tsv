@@ -5,6 +5,8 @@ tables/tab_llama_ledger.tex	analysis/render_paper_tables.py	paper/tables/stats_m
 tables/stats_rationale.tex	analysis/rationale_theta_checks.py	output/mistralai--mistral-small-creative/experiment_comm_log.json; output/prompt-isolation-surveillance/mistralai--mistral-small-creative/experiment_comm_log.json
 tables/stats_contamination.tex	analysis/contamination_audit.py	analysis/contamination_audit_results.json
 tables/stats_nested.tex	analysis/nested_campaign_checks.py	output/revision-nested-*/meta-llama--llama-3.3-70b-instruct/experiment_comm_log.json
+tables/stats_replay.tex	analysis/exp_replay_analyze.py	analysis/exp_ab_cell_joins.csv
+tables/tab_replay_mechanisms.tex	analysis/exp_replay_analyze.py	analysis/exp_ab_cell_joins.csv
 figures/diagram_pipeline.pdf	analysis/make_diagrams.py	agent_based_simulation/{briefing.py,experiment.py,infodesign.py}
 tables/tab_models.tex	analysis/render_paper_tables.py	analysis/verified_stats.json; analysis/models.py
 figures/fig01_sigmoid.pdf	analysis/make_figures.py	output/*/experiment_pure_summary.csv

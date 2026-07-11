@@ -23,6 +23,7 @@ tables: stats
 	uv run python analysis/agent_regressions.py
 	uv run python analysis/rationale_theta_checks.py
 	uv run python analysis/nested_campaign_checks.py
+	uv run python analysis/exp_replay_analyze.py --csv analysis/exp_ab_cell_joins.csv --stats-out paper/tables/stats_replay.tex --table-out paper/tables/tab_replay_mechanisms.tex
 	uv run python analysis/classifier_baselines.py
 	uv run python analysis/render_paper_tables.py
 

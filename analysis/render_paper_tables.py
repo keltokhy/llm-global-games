@@ -18,6 +18,7 @@ from models import DISPLAY_ORDER, DISPLAY_NAMES, PART1_SLUGS, PRIMARY_SLUG
 ANALYSIS_DIR = Path(__file__).resolve().parent
 STATS_PATH = ANALYSIS_DIR / "verified_stats.json"
 OUT_DIR = ANALYSIS_DIR.parent / "paper" / "tables"
+OUTPUT_DIR = ANALYSIS_DIR.parent / "output"
 
 
 def _fmt_num(x: float, nd: int = 3) -> str:
@@ -133,6 +134,16 @@ def render_tab_models(stats: dict) -> str:
         DISPLAY_NAMES[s]: s.replace("--", "/").replace("_", r"\_")
         for s in PART1_SLUGS
     }
+    raw_slug_by_display = {DISPLAY_NAMES[s]: s for s in PART1_SLUGS}
+
+    def cutoff_center(model: str) -> str:
+        slug = raw_slug_by_display[model]
+        path = OUTPUT_DIR / slug / f"calibrated_params_{slug}.json"
+        if not path.exists():
+            return "---"
+        with path.open(encoding="utf-8") as file:
+            value = json.load(file).get("cutoff_center")
+        return "---" if value is None else f"{float(value):+.3f}"
 
     lines = []
     total_pure = 0
@@ -156,7 +167,7 @@ def render_tab_models(stats: dict) -> str:
         falsif_cell = f"{falsif_n}" if falsif_n is not None else "---"
         slug_cell = f"{{\\scriptsize\\texttt{{{slug_by_display.get(m, '')}}}}}"
         lines.append(
-            f"{m} & {slug_cell} & {arch.get(m,'')} & {pure_n} & {comm_n} & {falsif_cell} \\\\"
+            f"{m} & {slug_cell} & {arch.get(m,'')} & {cutoff_center(m)} & {pure_n} & {comm_n} & {falsif_cell} \\\\"
         )
 
     # Reconcile collected vs valid communication rows (Trinity API failure)
@@ -177,22 +188,24 @@ def render_tab_models(stats: dict) -> str:
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{Model summary. Columns report period-level task rows in the pure, communication, and falsification (scramble+flip) benchmark suites. These core suites use $n=25$ agents per row and $\sigma=0.3$; Appendix~\ref{sec:robustness} varies agent count.}
+\caption{Model summary and briefing calibration. Columns report the model-specific briefing cutoff center and period-level task rows in the private-information, communication, and falsification (scramble+flip) benchmark suites.}
 \label{tab:models}
 \footnotesize
 \setlength{\tabcolsep}{4pt}
-\begin{tabular}{lllccc}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llllccc}
 \toprule
-Model & Identifier (OpenRouter) & Arch. & Pure & Comm & Falsif. \\
+Model & Identifier (OpenRouter) & Arch. & Center & Private & Comm & Falsif. \\
 \midrule
 """
     tex += "\n".join(lines) + "\n"
     tex += r"""\midrule
-\textbf{Total} & & & \textbf{""" + f"{total_pure}" + r"""} & \textbf{""" + f"{total_comm}" + r"""} & \textbf{""" + f"{total_falsif}" + r"""} \\
+\textbf{Total} & & & & \textbf{""" + f"{total_pure}" + r"""} & \textbf{""" + f"{total_comm}" + r"""} & \textbf{""" + f"{total_falsif}" + r"""} \\
 \bottomrule
 \end{tabular}
+}
 \begin{tablenotes}
-\footnotesize\emph{Notes:} Seven models spanning six architecture families; the identifier column gives each model's OpenRouter slug. Subsequent tables abbreviate Mistral Small Creative as Mistral, Trinity Large as Trinity, and MiniMax M2-Her as MiniMax M2. Counts are period-level task rows with 25 agents each in the core benchmark suites. Mistral includes appended batches; duplicate-cell accounting is reported in the main text and Table~\ref{tab:comm_estimators}.""" + trinity_note + r""" Models were accessed as hosted snapshots via the OpenRouter API; archived run manifests record a February 2026 collection window, and raw request--response pairs are cached with the run outputs. Core runs use $\sigma = 0.3$ and temperature $= 0.7$ unless otherwise stated.
+\footnotesize\emph{Notes:} Seven models spanning six architecture families; the identifier column gives each model's OpenRouter slug. ``Center'' is the logged model-specific \texttt{cutoff\_center} subtracted from each briefing $z$-score before phrase selection. A pre-run calibration sweep selects this shift to reduce fitted-midpoint error; it does not optimize the join-curve slope. Every treatment within a model uses the same center. Subsequent tables abbreviate Mistral Small Creative as Mistral, Trinity Large as Trinity, and MiniMax M2-Her as MiniMax M2. Counts are period-level task rows with 25 agents each in the core benchmark suites. Mistral includes appended batches; duplicate-cell accounting is reported in the main text and Table~\ref{tab:comm_estimators}.""" + trinity_note + r""" Models were accessed as hosted snapshots via the OpenRouter API; archived run manifests record a February 2026 collection window, and raw request--response pairs are cached with the run outputs. Core runs use $\sigma = 0.3$ and temperature $= 0.7$ unless otherwise stated.
 \end{tablenotes}
 \end{table}
 """
@@ -286,7 +299,7 @@ def render_tab_main_results(stats: dict) -> str:
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{Threshold-policy alignment by model and treatment. Cells report Pearson $r$ between the empirical join fraction and the benchmark attack mass $A(\theta)$ under $B=C=1$ (so $\theta^* = 0.50$); 95\% Fisher-$z$ confidence intervals in brackets.}
+\caption{Correlation with the external attack-mass benchmark by model and treatment. Cells report Pearson $r$ between the empirical join fraction and $A(\theta)$ under $B=C=1$; agents are not shown the parameters needed to derive this curve.}
 \label{tab:main_results}
 \scriptsize
 \setlength{\tabcolsep}{2.5pt}
@@ -782,7 +795,7 @@ Model & Full cells (B/S) & Matched cells & Baseline & Surv. & $\Delta$ (pp) & SE
     tex += r"""\bottomrule
 \end{tabular}
 \begin{tablenotes}
-\footnotesize\emph{Notes:} Baseline is each model's communication treatment. ``Full cells'' counts the available baseline and surveillance task cells after collapsing duplicate rows by the exact key (country, period, $\theta$, $z$, benefit, $\theta^*$); it is not the support used for the paired effect when common support is smaller. The non-primary baseline communication arms were shorter pilot grids (100--200 cells) while the later surveillance reruns used a larger grid; because those grids were not nested, only 20 exact cells overlap for several models. $N$ for each paired contrast is the number of matched common-support cells; Baseline, Surv., $\Delta$, SE, and $p$ are computed only on those cells, with $p$ from a paired one-sample $t$-test of cell-level (surveillance $-$ baseline) differences and SE the paired standard error of $\Delta$ in pp. $r(J,A)$ is the surveillance-arm threshold-alignment correlation on the full surveillance rerun.""" + cc_note + r"""
+\footnotesize\emph{Notes:} Baseline is each model's communication treatment. ``Full cells'' counts the available baseline and monitoring task cells after collapsing duplicate rows by the exact key (country, period, $\theta$, $z$, benefit, $\theta^*$); it is not the support used for the paired effect when common support is smaller. The non-primary baseline communication arms were shorter pilot grids (100--200 cells) while the later monitoring reruns used a larger grid; because those grids were not nested, only 20 exact cells overlap for several models. $N$ for each paired contrast is the number of matched common-support cells; Baseline, Surv., $\Delta$, SE, and $p$ are computed only on those cells. $r(J,A)$ is the monitoring-arm correlation with the external attack-mass benchmark on the full rerun.""" + cc_note + r"""
 \end{tablenotes}
 \end{table}
 """
@@ -913,7 +926,7 @@ def render_tab_temperature(stats: dict) -> str:
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{Temperature robustness. The pure global game is run at three LLM decoding temperatures using Mistral Small Creative. The correlation $r(J, A(\theta))$ and logistic parameters are stable across temperatures.}
+\caption{Temperature robustness. The private-information treatment is run at three LLM decoding temperatures using Mistral Small Creative. The external-benchmark correlation $r(J, A(\theta))$ and logistic summaries are stable.}
 \label{tab:temperature}
 \small
 \resizebox{\columnwidth}{!}{%
@@ -1173,16 +1186,6 @@ def render_tab_msg_features(stats: dict) -> str:
 
     surv = clf.get("top_surv_features", [])[:10]
     base = clf.get("top_base_features", [])[:10]
-    weather = mc.get("weather_token_audit", {}) or {}
-    weather_note = ""
-    if weather:
-        weather_note = (
-            f" The weather terms are organic peer-message metaphors, not placebo leakage: "
-            f"{_fmt_int_sep(weather.get('base_count'))} baseline messages "
-            f"({weather.get('base_pct', '---')}\\%) and "
-            f"{_fmt_int_sep(weather.get('surv_count'))} surveillance messages "
-            f"({weather.get('surv_pct', '---')}\\%) contain the token \\texttt{{weather}}."
-        )
     rows = []
     for i in range(max(len(surv), len(base))):
         s = surv[i] if i < len(surv) else {"feature": "", "coef": None}
@@ -1209,7 +1212,7 @@ def render_tab_msg_features(stats: dict) -> str:
     out.append("\\bottomrule")
     out.append("\\end{tabular}")
     out.append("\\begin{tablenotes}")
-    out.append("\\footnotesize\\emph{Notes:} Logistic regression on tf-idf uni- and bi-grams (max 5{,}000 features, min document frequency 10). Train/test split 70/30, stratified ($N_{\\text{train}} = \\MsgClassifierNTrain$, $N_{\\text{test}} = \\MsgClassifierNTest$). Positive coefficients distinguish surveillance messages, negative coefficients distinguish baseline. The sample contains only baseline communication and clean surveillance peer messages; placebo/weather-stakes conditions are excluded." + weather_note + " Direct-reference and coded-metaphor claims in the text come from separate dictionary counts, not from this top-n-gram list alone.")
+    out.append("\\footnotesize\\emph{Notes:} Logistic regression on tf-idf uni- and bi-grams (max 5{,}000 features, min document frequency 10). Train/test split 70/30, stratified ($N_{\\text{train}} = \\MsgClassifierNTrain$, $N_{\\text{test}} = \\MsgClassifierNTest$). Positive coefficients distinguish surveillance messages, negative coefficients distinguish baseline. The sample contains only baseline communication and clean surveillance peer messages; all other conditions are excluded. Direct-reference and coded-metaphor claims in the text come from separate dictionary counts, not from this top-n-gram list alone.")
     out.append("\\end{tablenotes}")
     out.append("\\end{table}")
     return "\n".join(out) + "\n"
@@ -2534,7 +2537,7 @@ def render_tab_beliefs(stats: dict) -> str:
     tex += r"""\bottomrule
 \end{tabular}
 \begin{tablenotes}
-\footnotesize\emph{Notes:} $N$ counts agent-level observations (one elicited belief per agent decision). Beliefs are elicited on a 0--100 probability scale; mean belief is reported on that percent scale. $r_{\text{belief,posterior}}$: stated belief vs.\ the theoretical posterior $P(\theta < \theta^* \mid x_i)$ implied by the agent's signal. $r_{\text{belief,decision}}$: stated belief vs.\ the JOIN/STAY decision. $r_{\text{partial}}$: belief--decision partial correlation controlling for the signal z-score. 95\% Fisher-$z$ confidence intervals in brackets.
+\footnotesize\emph{Notes:} $N$ counts agent-level observations (one elicited belief per agent decision). Beliefs are elicited on a 0--100 probability scale. $r_{\text{belief,posterior}}$ compares stated belief with the researcher-computed benchmark $P(\theta < \theta^* \mid x_i)$; agents are not shown the prior or noise parameters needed to compute it. $r_{\text{belief,decision}}$ compares belief with the JOIN/STAY decision. $r_{\text{partial}}$ controls for the signal z-score.
 \end{tablenotes}
 \end{table}
 """
@@ -2560,7 +2563,13 @@ def render_tab_hypotheses(stats: dict) -> str:
     rows = []
     for h in hyp:
         hid = h["id"]
-        label = h["hypothesis"]
+        label = {
+            "H1": "External-Benchmark Correlation",
+            "H2": "Scramble Falsification",
+            "H3": "Directional Sensitivity",
+            "H4": "Pooled Communication Contrast",
+            "H5": "Sender-Side Monitoring",
+        }.get(hid, h["hypothesis"])
         estimand = h.get("estimand", "---")
         null = h.get("null", "---")
         test = h.get("test", "---")
@@ -2573,6 +2582,8 @@ def render_tab_hypotheses(stats: dict) -> str:
         if es != "---":
             es = f"${es}$"
         supported = h.get("supported", "---")
+        if hid == "H4":
+            supported = "Pooled effect; heterogeneous"
         rows.append(
             f"{hid} & {label} & {test} & {stat} & {n} & {p} & {es} & {supported} \\\\"
         )
@@ -2590,20 +2601,20 @@ def render_tab_hypotheses(stats: dict) -> str:
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{Hypothesis family and test results. H1--H4 use pooled benchmark-phase data across all seven models; H5 uses the primary model (Mistral Small Creative). Effect size: $r$ for correlations (H1--H3), Cohen's $d$ or $d_z$ for mean comparisons (H4--H5). Outcome labels use $\alpha = 0.05$; H2 is reported as a falsification check, not as evidence for a zero effect.}
+\caption{Headline contrast family and test results. The family was assembled for transparent reporting rather than preregistered. H1--H4 use pooled benchmark-phase data; H5 uses the primary model.}
 \label{tab:hypotheses}
 \scriptsize
 \setlength{\tabcolsep}{3pt}
 \begin{tabular}{llllcccl}
 \toprule
-H & Hypothesis & Test & Statistic & $N$ & $p$ & Effect & Outcome \\
+ID & Contrast & Test & Statistic & $N$ & $p$ & Effect & Outcome \\
 \midrule
 """
     tex += "\n".join(rows) + "\n"
     tex += r"""\bottomrule
 \end{tabular}
 \begin{tablenotes}
-\footnotesize\emph{Notes:} The Test column gives the statistic type for each row: Pearson $r$ for H1--H3 (the Statistic column reports $r$ itself) and paired $t$-tests for H4--H5 (the Statistic column reports $t$). $N$ counts period-level rows for H1--H3 (H2 uses the pooled scramble arm) and matched task cells for the paired tests H4--H5. H1--H4: pooled benchmark-phase data across all seven models (H4 uses a paired $t$-test matched on model/country/period/$\theta$ task cells). H5: primary model (Mistral Small Creative), paired on matched prompt-isolation cells. Bonferroni survivors at $\alpha = """
+\footnotesize\emph{Notes:} The Test column gives Pearson $r$ for H1--H3 and paired $t$-tests for H4--H5. H4 is a cell-pooled contrast whose equal-weighted model average is near zero, so its outcome records heterogeneity. H5 uses the primary model and matched prompt-isolation cells. The ex-post Bonferroni calculation is descriptive, not confirmatory. Survivors at $\alpha = """
     tex += bonf_alpha_text
     tex += r"""$: """
     tex += bonf_survivors
@@ -2713,7 +2724,7 @@ def render_tab_temperature_expanded(stats: dict) -> str:
 
     tex = r"""\begin{table}[t]
 \centering
-\caption{Temperature robustness across three models. The pure global game is run at varying LLM decoding temperatures. The correlation $r(J, A(\theta))$ is stable across all temperatures and models.}
+\caption{Temperature robustness across three models. The private-information treatment is run at varying decoding temperatures. The external-benchmark correlation $r(J, A(\theta))$ is stable across the tested settings.}
 \label{tab:temperature_expanded}
 \scriptsize
 \setlength{\tabcolsep}{3pt}

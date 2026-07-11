@@ -2,8 +2,8 @@ DATA MANIFEST — output/
 ========================
 
 This directory contains the experiment outputs used by
-paper/paper.tex ("Speaking in Code: Surveillance and Coordinated
-Dissent in a Language-Based Global Game with LLM Agents").  Paper asset lineage is recorded in
+paper/paper.tex ("Monitoring Cues, Peer Communication, and Coordination
+Among LLM Agents").  Paper asset lineage is recorded in
 paper/asset_manifest.tsv; scripts/make_data.py declares the runnable
 targets needed to reproduce missing data.
 
@@ -88,6 +88,33 @@ revision-nested-surv-severe/             Severe warning dose (tracing and arrest
 All seven arms share the grid (10 countries x 50 periods, n=25), so every
 cell is matched by construction; analysis/nested_campaign_checks.py scores
 them into paper/tables/stats_nested.tex.
+
+
+FIXED-MESSAGE MECHANISM INTERVENTIONS (Llama 3.3 70B receivers)
+----------------------------------------------------------------
+Experiment A crosses explicit willingness-to-act content with direct versus
+coded form.  Experiment B replays baseline and surveillance messages, adds a
+single repression-risk clause to baseline messages, and strips risk/guarded
+framing from surveilled messages.  Qwen3 30B produced the rewrites; fresh
+Llama receivers ran on the same 500-cell grid with seed 4242 and a
+surveillance-free decision prompt.
+
+Full replay logs live under output/expA-*-replay/ and output/expB-*-replay/
+and are omitted from git because of size.  The committed sufficient statistic
+analysis/exp_ab_cell_joins.csv contains arm, country, period, theta, valid join
+fraction, and valid-decision count for all 4,000 arm-cells.  Reproduce the
+reported matched-cell estimates and generated paper table with:
+
+  uv run python analysis/exp_replay_analyze.py \
+    --csv analysis/exp_ab_cell_joins.csv \
+    --stats-out paper/tables/stats_replay.tex \
+    --table-out paper/tables/tab_replay_mechanisms.tex
+
+The analysis drops responses that do not satisfy the JOIN/STAY parser.  Valid
+response rates are balanced at 82.9--83.5% across Experiment A arms but range
+from 87.4% to 94.0% across Experiment B arms.  The generated table reports
+uniform all-STAY and all-JOIN recoding sensitivities and treats the risk-only
+contrast as conditional on valid decisions.
 
 
 BELIEF, ROBUSTNESS, AND APPENDIX OUTPUTS

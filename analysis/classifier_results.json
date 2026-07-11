@@ -191,18 +191,6 @@
       "n_obs": 270,
       "logistic_b0": -1.5448,
       "logistic_b1": 3.9289
-    },
-    "bc_high_cost": {
-      "actual_join": 0.1902,
-      "classifier_predicted_join": 0.4089,
-      "gap_pp": 21.9,
-      "n_obs": 270
-    },
-    "bc_low_cost": {
-      "actual_join": 0.693,
-      "classifier_predicted_join": 0.4089,
-      "gap_pp": -28.4,
-      "n_obs": 270
     }
   }
 }

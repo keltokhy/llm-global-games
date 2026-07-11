@@ -1,21 +1,21 @@
 \begin{table}[t]
 \centering
-\caption{Hypothesis family and test results. H1--H4 use pooled benchmark-phase data across all seven models; H5 uses the primary model (Mistral Small Creative). Effect size: $r$ for correlations (H1--H3), Cohen's $d$ or $d_z$ for mean comparisons (H4--H5). Outcome labels use $\alpha = 0.05$; H2 is reported as a falsification check, not as evidence for a zero effect.}
+\caption{Headline contrast family and test results. The family was assembled for transparent reporting rather than preregistered. H1--H4 use pooled benchmark-phase data; H5 uses the primary model.}
 \label{tab:hypotheses}
 \scriptsize
 \setlength{\tabcolsep}{3pt}
 \begin{tabular}{llllcccl}
 \toprule
-H & Hypothesis & Test & Statistic & $N$ & $p$ & Effect & Outcome \\
+ID & Contrast & Test & Statistic & $N$ & $p$ & Effect & Outcome \\
 \midrule
-H1 & Sigmoid Response & Pearson & $0.757$ & 1{,}800 & $<$0.001 & $0.757$ & Supported \\
+H1 & External-Benchmark Correlation & Pearson & $0.757$ & 1{,}800 & $<$0.001 & $0.757$ & Supported \\
 H2 & Scramble Falsification & Pearson & $0.014$ & 1{,}200 & 0.638 & $0.014$ & Passes falsification \\
 H3 & Directional Sensitivity & Pearson (1-sided) & $-0.791$ & 1{,}100 & $<$0.001 & $-0.791$ & Supported \\
-H4 & Communication Channel & Paired $t$ & $6.383$ & 1{,}479 & $<$0.001 & $0.166$ & Supported \\
-H5 & Surveillance Chilling & Paired $t$ & $-19.109$ & 500 & $<$0.001 & $-0.855$ & Supported \\
+H4 & Pooled Communication Contrast & Paired $t$ & $6.383$ & 1{,}479 & $<$0.001 & $0.166$ & Pooled effect; heterogeneous \\
+H5 & Sender-Side Monitoring & Paired $t$ & $-19.109$ & 500 & $<$0.001 & $-0.855$ & Supported \\
 \bottomrule
 \end{tabular}
 \begin{tablenotes}
-\footnotesize\emph{Notes:} The Test column gives the statistic type for each row: Pearson $r$ for H1--H3 (the Statistic column reports $r$ itself) and paired $t$-tests for H4--H5 (the Statistic column reports $t$). $N$ counts period-level rows for H1--H3 (H2 uses the pooled scramble arm) and matched task cells for the paired tests H4--H5. H1--H4: pooled benchmark-phase data across all seven models (H4 uses a paired $t$-test matched on model/country/period/$\theta$ task cells). H5: primary model (Mistral Small Creative), paired on matched prompt-isolation cells. Bonferroni survivors at $\alpha = 0.01$: H1, H3, H4, H5.
+\footnotesize\emph{Notes:} The Test column gives Pearson $r$ for H1--H3 and paired $t$-tests for H4--H5. H4 is a cell-pooled contrast whose equal-weighted model average is near zero, so its outcome records heterogeneity. H5 uses the primary model and matched prompt-isolation cells. The ex-post Bonferroni calculation is descriptive, not confirmatory. Survivors at $\alpha = 0.01$: H1, H3, H4, H5.
 \end{tablenotes}
 \end{table}

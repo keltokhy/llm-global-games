@@ -3,7 +3,7 @@ Replication README
 
 Paper
 -----
-Speaking in Code: Surveillance and Coordinated Dissent in a Language-Based Global Game with LLM Agents
+Monitoring Cues, Peer Communication, and Coordination Among LLM Agents
 
 This repository contains the simulation code, raw experiment outputs,
 analysis scripts, generated tables and figures, and LaTeX source needed
@@ -36,6 +36,7 @@ This runs the full pipeline:
     analysis/agent_regressions.py
     analysis/rationale_theta_checks.py
     analysis/nested_campaign_checks.py
+    analysis/exp_replay_analyze.py
     analysis/classifier_baselines.py
     analysis/render_paper_tables.py
     analysis/make_figures.py
@@ -82,13 +83,6 @@ Run the target-neutral submission audit:
 
     make audit
 
-At the time this README was added, the current rebuilt paper passed:
-
-    make paper
-    make lint
-    make audit
-    uv run pytest
-
 The pytest suite includes checks that paper citations have bibliography
 entries, generated assets listed in paper/asset_manifest.tsv exist, the
 asset manifest matches the compiled paper, and compiled LaTeX labels do
@@ -123,6 +117,13 @@ The canonical model roster used by analysis scripts is:
 The main verified statistics cache is:
 
     analysis/verified_stats.json
+
+The fixed-message mechanism estimates are reproduced from:
+
+    analysis/exp_ab_cell_joins.csv
+    analysis/exp_replay_analyze.py
+
+`make tables` regenerates both the replay macros and the mechanism table.
 
 Generated LaTeX tables are under:
 

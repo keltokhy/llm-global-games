@@ -1,0 +1,29 @@
+\begin{table}[t]
+\centering
+\caption{Fixed-message interventions on willingness, style, and repression-risk content. Every row compares parseable decisions from fresh Llama 3.3 70B receivers on the same 500 country--period cells.}
+\label{tab:replay_mechanisms}
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrl}
+\toprule
+Contrast & Reference join & Treatment join & $\Delta$ (pp) & Exact wild-cluster $p$ \\
+\midrule
+\multicolumn{5}{l}{\textit{Panel A: willingness $\times$ style interventions}} \\
+Willingness stated, direct form & \ReplayNoWillingDirectMeanJoinPct & \ReplayWillingDirectMeanJoinPct & \ReplayWillingDirectDeltaPP & $p \ReplayWillingDirectPText$ \\
+Willingness stated, coded form & \ReplayNoWillingCodedMeanJoinPct & \ReplayWillingCodedMeanJoinPct & \ReplayWillingCodedDeltaPP & $p \ReplayWillingCodedPText$ \\
+Direct rather than coded, willingness stated & \ReplayWillingCodedMeanJoinPct & \ReplayWillingDirectMeanJoinPct & \ReplayDirectWithWillingDeltaPP & $p \ReplayDirectWithWillingPText$ \\
+Direct rather than coded, willingness omitted & \ReplayNoWillingCodedMeanJoinPct & \ReplayNoWillingDirectMeanJoinPct & \ReplayDirectNoWillingDeltaPP & $p \ReplayDirectNoWillingPText$ \\
+\addlinespace
+\multicolumn{5}{l}{\textit{Panel B: repression-risk interventions}} \\
+Surveillance replay vs. baseline & \ReplayBaselineMeanJoinPct & \ReplaySurvMeanJoinPct & \ReplaySurvDeltaPP & $p \ReplaySurvPText$ \\
+Risk clause added to baseline messages & \ReplayBaselineMeanJoinPct & \ReplayRiskOnlyMeanJoinPct & \ReplayRiskOnlyDeltaPP & $p \ReplayRiskOnlyPText$ \\
+Risk language stripped from surveilled messages & \ReplayBaselineMeanJoinPct & \ReplayRiskStrippedMeanJoinPct & \ReplayRiskStrippedVsBaseDeltaPP & $p \ReplayRiskStrippedVsBasePText$ \\
+Risk-stripped vs. surveillance replay & \ReplaySurvMeanJoinPct & \ReplayRiskStrippedMeanJoinPct & \ReplayRiskStrippedVsSurvDeltaPP & $p \ReplayRiskStrippedVsSurvPText$ \\
+\bottomrule
+\end{tabular}
+}
+\begin{tablenotes}
+\footnotesize\emph{Notes:} Each arm contains $N=\ReplayN$ matched cells in $G=\ReplayG$ country clusters; $p$-values enumerate all $2^G$ sign assignments in an exact restricted wild-cluster bootstrap. Qwen3 30B rewrote messages while holding the factual regime-strength assessment fixed; fresh Llama 3.3 70B receivers then saw the rewritten messages with a surveillance-free decision prompt. Panel A crosses an explicit claim that others are willing to act with direct or coded form. Valid-decision rates are tightly balanced in Panel A (\ReplayWillingDirectValidPct--\ReplayNoWillingCodedValidPct); coding every unparseable response uniformly as STAY or uniformly as JOIN leaves the willingness contrasts positive (direct: \ReplayWillingDirectAllStayDeltaPP/\ReplayWillingDirectAllJoinDeltaPP~pp; coded: \ReplayWillingCodedAllStayDeltaPP/\ReplayWillingCodedAllJoinDeltaPP~pp). Panel B adds a single risk clause to baseline messages or removes risk and guarded phrasing from surveilled messages. Its valid-decision rates differ (baseline \ReplayBaselineValidPct, surveillance \ReplaySurvValidPct, risk-stripped \ReplayRiskStrippedValidPct, risk-only \ReplayRiskOnlyValidPct). The surveillance replay remains negative under the same two uniform recodings (\ReplaySurvAllStayDeltaPP/\ReplaySurvAllJoinDeltaPP~pp), but the risk-only contrast does not (\ReplayRiskOnlyAllStayDeltaPP/\ReplayRiskOnlyAllJoinDeltaPP~pp). The risk-stripped rewrite also sharpens actionability. Panels A and B therefore triangulate mechanisms rather than form an additive decomposition, and the risk-only estimate is conditional on valid decisions.
+\end{tablenotes}
+\end{table}
